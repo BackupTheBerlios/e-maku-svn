@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE attributes PUBLIC "-//NetBeans//DTD DefaultAttributes 1.0//EN" "http://www.netbeans.org/dtds/attributes-1_0.dtd">
+<attributes version="1.0">
+    <fileobject name="InsertTableField.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="InsertTableField"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="InsertTableField"/>
+    </fileobject>
+    <fileobject name="PropertiesTable.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="PropertiesTable"/>
+        <attr name="class_dependency_java.awt.event.KeyListener" stringvalue="PropertiesTable"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="PropertiesTable"/>
+        <attr name="class_dependency_java.awt.event.FocusListener" stringvalue="PropertiesTable"/>
+    </fileobject>
+    <fileobject name="Structures.java">
+        <attr name="class_dependency_javax.swing.table.AbstractTableModel" stringvalue="Structures.MyTableModel"/>
+        <attr name="class_dependency_java.awt.event.KeyListener" stringvalue="Structures"/>
+        <attr name="class_dependency_javax.swing.SwingConstants" stringvalue="Structures"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="Structures"/>
+        <attr name="class_dependency_javax.swing.JPanel" stringvalue="Structures"/>
+        <attr name="class_dependency_java.awt.event.FocusListener" stringvalue="Structures"/>
+    </fileobject>
+</attributes>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE attributes PUBLIC "-//NetBeans//DTD DefaultAttributes 1.0//EN" "http://www.netbeans.org/dtds/attributes-1_0.dtd">
+<attributes version="1.0">
+    <fileobject name="InsertData.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="InsertData"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="InsertData"/>
+    </fileobject>
+    <fileobject name="DropTableRecord.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="DropTableRecord"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="DropTableRecord"/>
+    </fileobject>
+    <fileobject name="UpdateWhere.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="UpdateWhere"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="UpdateWhere"/>
+    </fileobject>
+    <fileobject name="CustomizeFilter.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="CustomizeFilter"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="CustomizeFilter"/>
+    </fileobject>
+    <fileobject name="UpdateTable.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="UpdateTable"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="UpdateTable"/>
+    </fileobject>
+    <fileobject name="AdvancedFilter.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="AdvancedFilter"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="AdvancedFilter"/>
+    </fileobject>
+    <fileobject name="DisplayControl.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="DisplayControl"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="DisplayControl"/>
+    </fileobject>
+    <fileobject name="TextDataInput.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="TextDataInput"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="TextDataInput"/>
+    </fileobject>
+    <fileobject name="UpdateRecord.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="UpdateRecord"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="UpdateRecord"/>
+    </fileobject>
+    <fileobject name="Records.java">
+        <attr name="class_dependency_javax.swing.SwingConstants" stringvalue="Records"/>
+        <attr name="class_dependency_javax.swing.JPanel" stringvalue="Records"/>
+        <attr name="class_dependency_java.awt.event.FocusListener" stringvalue="Records"/>
+        <attr name="class_dependency_java.awt.event.ItemListener" stringvalue="Records.CheckBoxListener"/>
+        <attr name="class_dependency_javax.swing.table.AbstractTableModel" stringvalue="Records.MyTableModel"/>
+        <attr name="class_dependency_java.awt.event.KeyListener" stringvalue="Records"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="Records"/>
+        <attr name="class_dependency_javax.swing.table.DefaultTableCellRenderer" stringvalue="ColoredTableCellRenderer"/>
+    </fileobject>
+</attributes>

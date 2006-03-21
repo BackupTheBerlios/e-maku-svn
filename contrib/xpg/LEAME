@@ -1,0 +1,80 @@
+************************************************************************ 
+          XPg 0.1 (Interfaz Grafica de Usuario para PostgreSQL)
+************************************************************************
+
+- Que es XPg?
+
+  XPg es una herramienta gráfica multiplataforma ( desarrollada en Java ) 
+  que permite acceder a  múltiples bases de datos PostgreSQL dentro de un 
+  servidor de manera concurrente. 
+  Utilizando esta aplicación, usted  podrá realizar una  gran cantidad de 
+  operaciones como consultas, inserción, eliminación, modificación de 
+  registros, etc. sobre cada tabla de sus bases de datos. 
+  Estará en  capacidad de  crear nuevas tablas, eliminar y  modificar las 
+  tablas de las bases de datos  abiertas. También  podrá crear y eliminar 
+  bases de datos y generar reportes en formato HTML a partir de consultas 
+  o tablas.
+  El Driver JDBC que viene incluido con la aplicacion es el mismo que viene 
+  incluido en las fuentes de PostgreSQL y esta compilado para versiones 
+  7.4.* o superior. 
+
+- Licencia
+
+  XPg es un desarrollo GNU cubierto  por la licencia GPL, es decir, que su 
+  codigo fuente es publico y de libre distribucion, bajo  las  condiciones 
+  expresadas  en el archivo "LICENSE" adjunto tanto a las fuentes  como al 
+  binario de esta aplicacion.
+  Advertencia: Este desarrollo NO ofrece ningun tipo de garantia o soporte.
+
+- Motivaciones
+
+  * Ofrecer una alternativa para programadores JAVA interesados en 
+    participar en el  desarrollo de  una herramienta gráfica  para trabajo
+    con bases de datos PostgreSQL.
+
+  * Ofrecer  una herramienta  de trabajo ( multi-plataforma ) para usuarios
+    PostgreSQL.
+
+- Requerimientos
+
+  Para ejecutar XPg, son necesarios los siguientes requerimientos minimos:
+  - En Hardware
+    * Procesador a 300 MHz
+    * 64 MB en RAM
+  - En Software
+    * SDK 1.4 o superior instalado (Recuerde que esta es una aplicacion 
+      JAVA). El SDK se encuentra disponible en http://java.sun.com 
+    * Mozilla o Firefox (Opcional para visualizar Reportes)
+    * Acceso a una Base de Datos PostgreSQL 7.4 o superior
+
+- Para Desarrolladores
+ 
+  Si usted esta interesado en contribuir con el desarrollo de XPg, le 
+  sugerimos revisar el archivo "MapaDeClases.txt" incluido en estas 
+  fuentes para que se familiarice con el diseño de la herramienta.
+
+  La estructura del codigo fuente de XPg ha sido adecuada para permitir
+  su uso y depuracion desde la popular herramienta de desarrollo Eclipse
+  (http://www.eclipse.org), esto con el fin de facilitar la adicion de
+  cambios por parte de colaboradores desde cualquier lugar del mundo.
+
+  Para reportar fallas o errores en el programa, consulte:
+                  http://www.kazak.ws/xpg/bugs.php
+
+  Aportes y colaboracion son siempre bienvenidos :)
+
+- Contactos
+  
+  Toda la informacion referente a XPg (incluyendo su codigo fuente) puede 
+  ser consultada en:
+                       http://www.kazak.ws/xpg
+
+  Para Comentarios, Dudas y Sugerencias escribir a:
+                               xpg@kazak.ws 
+
+***************************************************************************
+                          Desarrollado por
+                       Soluciones Kazak Ltda
+         Grupo de Investigacion y Desarrollo de Software Libre
+                        http://www.kazak.ws
+***************************************************************************

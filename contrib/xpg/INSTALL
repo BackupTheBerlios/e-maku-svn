@@ -1,0 +1,151 @@
+***************************************************************************
+                          XPg 0.1c (INSTALLATION)
+***************************************************************************
+
+Due to changes in the project management, now the source code and the 
+binaries of XPg are included in the same compressed file, which means that 
+with the same file that you downloaded, you can use XPg as an end user or 
+you can to modify the source code of the project for your needs and to 
+compile a new version of XPg.
+
+***************************************************************************
+
+ REQUIREMENTS
+
+ - For End Users of the aplication: 
+
+ * SDK 1.4.*
+
+ Before the begin, you must to install the Java Standard Development 
+ Kit (SDK) version 1.4.* or higher avalaible from http://java.sun.com
+
+ - For Developers insterested in to help to this project:
+
+ * Eclipse
+
+ The XPg's source code what is together with this document has been organized
+ as an "Eclipse Project". Eclipse is an Interface Developement Environment to
+ many programming languages).
+ If you wish to modify this source code or you want to compile it, then you 
+ must to install Eclipse in your computer. 
+
+                         http://www.eclipse.org
+
+ Eclipse has been selected as the official tool for developing XPg because 
+ it is an open source project and it offers a lot of funcionalities and 
+ useful options as an IDE application.  
+***************************************************************************
+
+ XPg INSTALLATION FOR END USERS 
+
+ - For Unix users:
+
+  1. Download the compress file of the project (xpg-0.1c.tar.bz2) from the 
+     official web site: 
+                    http://www.kazak.ws/xpg/
+
+  2. Uncompress the file into the directory where you want to install XPg.
+     i.e.:
+         user% mv xpg-0.1c.tar.bz2 /home/foo
+         user% cd /home/foo
+         user% tar xvfj xpg-0.1c.tar.bz2
+
+     A directory called "xpg" will be created in the path you choosed to 
+     uncompress the installer.
+
+  3. Now, you just have to create a direct access to the file "xpg.sh", which
+     is located inside the directory "xpg" or if you want, you can run it from
+     the start script directly:
+     i.e.: 
+         user% /home/pepe/xpg/xpg.sh 
+
+ --------------------------------------------------------------------------
+
+  - For Windows users:
+
+  1. Download the compress file of the project (xpg-0.1c.zip) from the
+     official web site:
+                    http://www.kazak.ws/xpg/
+
+  2. Uncompress the file into the directory where you want to install XPg.
+     You can do it using your graphical interface or you can use a D.O.S
+     console. i.e.:
+         c:/> move xpg-0.1c.zip c:/foo>
+         c:/> cd c:/foo>
+         c:/> unzip xpg-0.1c.zip
+
+     The directory "xpg" will be created inside the path you choosed to 
+     uncompress the installer.
+
+  3. Now, you just have to create an direct access to the file "xpg.bat" 
+     located inside the directory "xpg" or if you wish, you can run it
+     from a D.O.S console. i.e.:
+         c:/pepe/xpg> xpg.bat
+
+  Note: Remember that you need the Java SDK installed in your system if you
+        want to see XPg working.
+
+***************************************************************************
+
+ XPg SOURCE CODE INSTALLATION (FOR DEVELOPERS)
+
+ Note: To report bugs or fails about XPg, please visit:
+                    http://www.kazak.ws/xpg/bugs.php
+
+ - For Unix users:
+ 
+ 1. Download the compressed file of the application (xpg-0.1c.tar.bz2) from 
+    the official website:
+                    http://www.kazak.ws/xpg/
+
+ 2. Uncompress the file into the directory called "workspace" of your 
+    Eclipse installation. i.e.:
+         user% mv xpg-0.1c.tar.bz2 /home/foo/eclipse/workspace
+         user% cd /home/foo/eclipse/workspace
+         user% tar xvfj xpg-0.1c.tar.bz2
+    Or if you want:
+         user% mv xpg-0.1c.tar.bz2 /home/foo/eclipse/workspace
+         user% cd /home/foo/eclipse/workspace
+         user% bunzip2 xpg-0.1c.tar.bz2
+         user% tar xvf xpg-0.1c.tar
+
+ 3. A directory called "xpg" will be created into the directory called 
+    "workspace". Now, you have to run your Eclipse version. 
+
+ 4. Inside the Eclipse interface, choose:
+    "File" -> "Import" -> "Existing Project into Workspace"
+
+ 5. Now, Choose the option "Next".
+
+ 6. Click on the botton "Browse" and choose the directory "xpg" from  
+    the projects list.
+    The option "Proyect name" should set the value "xpg" automatically. 
+
+ 7. Choose the option "Finish". From this moment,  you could to modify
+    and to compile the XPg source code from Eclipse.
+
+ 8. If you want to create a direct access to the XPg application, you can 
+    do it using the file "xpg.sh", located into the directory "xpg" inside 
+    the directory "workspace" of your Eclipse installation.
+
+ ----------------------------------------------------------------
+
+- For Windows 95/98/XP users:
+
+  The installation procedure of the XPg source code on Windows systems is 
+  the same to the described above. The only difference is in the compression 
+  format of the compressed file ("zip" extension what you can open with Winzip 
+  or any other Windows compression tool) and the path of the directory 
+  "workspace" of the Eclipse installation, which depends of the path choosed 
+  by you when installed Eclipse.
+
+  For questions, comments or suggestions about the XPg installation, please
+  email us to: xpg@kazak.ws
+  We want to help you!
+
+***************************************************************************
+                               Developed by
+                           Soluciones Kazak Ltda
+                        Free Software Research Group
+                            http://www.kazak.ws
+***************************************************************************

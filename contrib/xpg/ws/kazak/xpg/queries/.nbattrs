@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE attributes PUBLIC "-//NetBeans//DTD DefaultAttributes 1.0//EN" "http://www.netbeans.org/dtds/attributes-1_0.dtd">
+<attributes version="1.0">
+    <fileobject name="HotQueries.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="HotQueries"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="HotQueries"/>
+    </fileobject>
+    <fileobject name="SQLFunctionDisplay.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="SQLFunctionDisplay"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="SQLFunctionDisplay"/>
+    </fileobject>
+    <fileobject name="Queries.java">
+        <attr name="class_dependency_javax.swing.table.AbstractTableModel" stringvalue="Queries.MyTableModel"/>
+        <attr name="class_dependency_java.awt.event.KeyListener" stringvalue="Queries"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="Queries"/>
+        <attr name="class_dependency_javax.swing.SwingConstants" stringvalue="Queries"/>
+        <attr name="class_dependency_javax.swing.JPanel" stringvalue="Queries"/>
+        <attr name="class_dependency_java.awt.event.FocusListener" stringvalue="Queries"/>
+    </fileobject>
+</attributes>

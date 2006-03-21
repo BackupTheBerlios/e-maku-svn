@@ -1,0 +1,153 @@
+***************************************************************************
+                          XPg 0.1c (INSTALACION)
+***************************************************************************
+
+Por cambios en la administracion del proyecto, ahora el codigo fuente y los
+binarios  de XPg  seran  distribuidos dentro  del mismo  comprimido, lo que 
+significa  que a partir  de los archivos  adjuntos  a este  documento usted 
+puede utilizar XPg como un usuario final o puede modificar el codigo fuente 
+a sus necesidades y volver a compilar su propia version de XPg.
+
+***************************************************************************
+
+ PRE-REQUISITOS
+
+ - Para usuarios finales de la aplicacion:
+
+ * SDK 1.4.*
+
+ Antes de empezar, usted debe asegurarse de instalar el Standard Development 
+ Kit (SDK) version 1.4.* disponible en http://java.sun.com
+
+ - Para desarrolladores interesados en aportar codigo a este proyecto:
+
+ * Eclipse
+
+ El codigo fuente de XPg adjunto a este documento se encuentra empaquetado 
+ como un proyecto de Eclipse (Un entorno de desarrollo libre para diferentes
+ lenguajes de programacion). 
+ Si usted desea hacer modificaciones sobre el codigo o compilar las fuentes
+ de XPg entonces debe asegurarse de instalar Eclipse en su computador.
+
+                         http://www.eclipse.org
+
+ Eclipse ha sido escogida como la herramienta oficial de desarrollo para XPg
+ debido a que es un projecto de codigo abierto y a que ofrece una gran 
+ cantidad de funcionalidades y facilidades como entorno de trabajo.
+
+***************************************************************************
+
+ INSTALACION DE XPg PARA USUARIOS FINALES
+
+ - Para usuarios Unix:
+
+  1. Descargue el comprimido de la aplicacion (xpg-0.1c.tar.bz2) desde la
+     pagina web del proyecto:
+                    http://www.kazak.ws/xpg/
+
+  2. Descomprima el archivo en el directorio en donde desee hacer la 
+     instalacion de XPg. Ej:
+         user% mv xpg-0.1c.tar.bz2 /home/pepe
+         user% cd /home/pepe
+         user% tar xvfj xpg-0.1c.tar.bz2
+
+     El directorio "xpg" sera creado en la ruta escogida para descomprimir
+     el instalador. 
+
+  3. Cree un acceso directo al archivo "xpg.sh" ubicado dentro del directorio
+     "xpg" o si lo desea, puede ejecutar el script de arranque directamente. 
+      Ej: 
+         user% /home/pepe/xpg/xpg.sh 
+
+ --------------------------------------------------------------------------
+
+  - Para usuarios Windows:
+
+  1. Descargue el comprimido de la aplicacion (xpg-0.1c.zip) desde la
+     pagina web del proyecto:
+                    http://www.kazak.ws/xpg/
+
+  2. Descomprima el archivo en el directorio en donde desea hacer la
+     instalacion de XPg. Puede hacerlo a traves de la interfaz grafica
+     o por medio de la consola de D.O.S. Ej:
+         c:/> move xpg-0.1c.zip c:/pepe>
+         c:/> cd c:/pepe>
+         c:/> unzip xpg-0.1c.zip
+
+     El directorio "xpg" sera creado en la ruta escogida para descomprimir
+     el instalador.
+
+  3. Cree un acceso directo al archivo "xpg.bat" ubicado dentro del directorio
+     "xpg" o si lo desea, puede ejecutar el script de arranque directamente
+     desde consola. Ej:
+         c:/pepe/xpg> xpg.bat
+
+  Nota: Recuerde que es indispensable tener el SDK de Java instalado en su 
+        computador para que XPg pueda funcionar. 
+
+***************************************************************************
+
+ INSTALACION DE LAS FUENTES DE XPg (PARA DESARROLLADORES)
+
+ Nota: Para reportar fallas o errores en XPg, consulte:
+                    http://www.kazak.ws/xpg/bugs.php
+
+ - Para usuarios Unix:
+ 
+ 1. Descargue el comprimido de la aplicacion (xpg-0.1c.tar.bz2) desde la 
+    pagina web:
+                    http://www.kazak.ws/xpg/
+
+ 2. Descomprima el archivo en el directorio llamado "workspace" de su 
+    instalacion de Eclipse. Por ejemplo:
+         user% mv xpg-0.1c.tar.bz2 /home/pepe/eclipse/workspace
+         user% cd /home/pepe/eclipse/workspace
+         user% tar xvfj xpg-0.1c.tar.bz2
+    o si lo prefiere:
+         user% mv xpg-0.1c.tar.bz2 /home/pepe/eclipse/workspace
+         user% cd /home/pepe/eclipse/workspace
+         user% bunzip2 xpg-0.1c.tar.bz2
+         user% tar xvf xpg-0.1c.tar
+
+ 3. Un directorio llamado "xpg" sera creado dentro del directorio 
+    "workspace". Ahora proceda a abrir su version de Eclipse. 
+
+ 4. Dentro de la interfaz de Eclipse, seleccione:
+    "File" -> "Import" -> "Existing Project into Workspace"
+
+ 5. Seleccione la opcion "Next"
+
+ 6. Presione el boton "Browse" y seleccione el directorio "xpg" dentro
+    de la lista de proyectos.
+    La opcion "Proyect name" debera adquirir el valor "xpg" 
+    automaticamente.
+
+ 7. Escoja la opcion "Finish". A partir de ese momento, usted ya podra
+    modificar y compilar las fuentes de XPg desde Eclipse.  
+
+ 8. Si desea crear un acceso directo a la aplicacion, puede hacerlo 
+    utilizando el archivo "xpg.sh" ubicado dentro del directorio 
+    "xpg" creado dentro del directorio "workspace" de su instalacion
+    de Eclipse. 
+
+ ----------------------------------------------------------------
+
+- Para usuarios Windows 95/98/XP:
+
+  El procedimiento de instalacion de la fuentes de XPg en sistemas Windows
+  es exactamente igual al expresado en las instrucciones anteriores, las
+  unicas diferencias radican en el formato de compresion de las fuentes en
+  formato "zip" y la ubicacion del directorio "workspace" de la instalacion
+  de Eclipse, dependiendo de las rutas escogidas por el usuario al momento
+  de instalar Eclipse. 
+
+  Si tiene dudas o inconvenientes durante la instalacion de XPg, no dude en
+  escribirnos a: xpg@kazak.ws
+  Con gusto le ayudaremos.
+
+***************************************************************************
+                            Desarrollado por
+                         Soluciones Kazak Ltda
+         Grupo de Investigacion y Desarrollo de Software Libre
+                           http://www.kazak.ws
+***************************************************************************

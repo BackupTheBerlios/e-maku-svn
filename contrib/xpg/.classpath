@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path=""/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/home/pastuxso/xpg/lib/icons.jar"/>
+	<classpathentry kind="lib" path="/home/pastuxso/xpg/lib/jdom.jar"/>
+	<classpathentry kind="lib" path="/home/pastuxso/xpg/lib/kunststoff.jar"/>
+	<classpathentry kind="lib" path="/home/pastuxso/xpg/lib/Language.jar"/>
+	<classpathentry kind="lib" path="/home/pastuxso/xpg/lib/looks.jar"/>
+	<classpathentry kind="lib" path="/home/pastuxso/xpg/lib/postgresql.jar"/>
+	<classpathentry kind="output" path=""/>
+</classpath>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE attributes PUBLIC "-//NetBeans//DTD DefaultAttributes 1.0//EN" "http://www.netbeans.org/dtds/attributes-1_0.dtd">
+<attributes version="1.0">
+    <fileobject name="ReportHeader.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="ReportHeader"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="ReportHeader"/>
+    </fileobject>
+    <fileobject name="ExportToReport.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="ExportToReport"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="ExportToReport"/>
+    </fileobject>
+    <fileobject name="ReportFooter.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="ReportFooter"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="ReportFooter"/>
+    </fileobject>
+    <fileobject name="ReportAppearance.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="ReportAppearance"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="ReportAppearance"/>
+    </fileobject>
+    <fileobject name="ReportDesigner.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="ReportDesigner"/>
+        <attr name="class_dependency_java.awt.event.KeyListener" stringvalue="ReportDesigner"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="ReportDesigner"/>
+        <attr name="class_dependency_java.awt.event.FocusListener" stringvalue="ReportDesigner"/>
+    </fileobject>
+    <fileobject name="StyleSelector.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="StyleSelector"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="StyleSelector"/>
+        <attr name="class_dependency_javax.swing.event.ListSelectionListener" stringvalue="StyleSelector"/>
+    </fileobject>
+</attributes>

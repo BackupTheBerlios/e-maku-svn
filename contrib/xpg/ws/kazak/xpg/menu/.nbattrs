@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE attributes PUBLIC "-//NetBeans//DTD DefaultAttributes 1.0//EN" "http://www.netbeans.org/dtds/attributes-1_0.dtd">
+<attributes version="1.0">
+    <fileobject name="DumpTable.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="DumpTable"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="DumpTable"/>
+    </fileobject>
+    <fileobject name="AlterUser.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="AlterUser"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="AlterUser"/>
+    </fileobject>
+    <fileobject name="CreateGroup.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="CreateGroup"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="CreateGroup"/>
+    </fileobject>
+    <fileobject name="TablesGrant.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="TablesGrant"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="TablesGrant"/>
+    </fileobject>
+    <fileobject name="DropTable.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="DropTable"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="DropTable"/>
+    </fileobject>
+    <fileobject name="Constraint.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="Constraint"/>
+        <attr name="class_dependency_java.awt.event.KeyListener" stringvalue="Constraint"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="Constraint"/>
+        <attr name="class_dependency_java.awt.event.FocusListener" stringvalue="Constraint"/>
+    </fileobject>
+    <fileobject name="CreateTable.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="CreateTable"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="CreateTable"/>
+    </fileobject>
+    <fileobject name="AlterGroup.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="AlterGroup"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="AlterGroup"/>
+    </fileobject>
+    <fileobject name="CreateUser.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="CreateUser"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="CreateUser"/>
+    </fileobject>
+    <fileobject name="CreateDB.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="CreateDB"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="CreateDB"/>
+    </fileobject>
+    <fileobject name="DropGroup.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="DropGroup"/>
+    </fileobject>
+    <fileobject name="Inherit.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="Inherit"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="Inherit"/>
+    </fileobject>
+    <fileobject name="DropDB.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="DropDB"/>
+    </fileobject>
+    <fileobject name="DropUser.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="DropUser"/>
+    </fileobject>
+    <fileobject name="DumpDb.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="DumpDb"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="DumpDb"/>
+    </fileobject>
+</attributes>

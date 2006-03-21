@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE attributes PUBLIC "-//NetBeans//DTD DefaultAttributes 1.0//EN" "http://www.netbeans.org/dtds/attributes-1_0.dtd">
+<attributes version="1.0">
+    <fileobject name="BoolOption.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="BoolOption"/>
+    </fileobject>
+    <fileobject name="ImportSeparatorField.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="ImportSeparatorField"/>
+    </fileobject>
+    <fileobject name="ExportToFile.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="ExportToFile"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="ExportToFile"/>
+    </fileobject>
+    <fileobject name="ExportSeparatorField.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="ExportSeparatorField"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="ExportSeparatorField"/>
+    </fileobject>
+    <fileobject name="ChooseIdiom.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="ChooseIdiom"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="ChooseIdiom.RadioListener"/>
+    </fileobject>
+    <fileobject name="ChooseIdiomButton.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="ChooseIdiomButton"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="ChooseIdiomButton.RadioListener"/>
+    </fileobject>
+    <fileobject name="ErrorDialog.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="ErrorDialog"/>
+    </fileobject>
+</attributes>

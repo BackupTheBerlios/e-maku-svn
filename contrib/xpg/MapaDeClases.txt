@@ -1,0 +1,177 @@
+***************************************************************************************************
+                                       Mapa de Clases (67 Archivos)
+***************************************************************************************************
+
+- XPg esta formado por las siguientes clases:
+
+     [  Constructor: Descripcion breve. ]
+
+     0* XPg(): Inicia  el entorno gráfico.
+
+     1* ConfigFileReader(String fileX,int oper) : Opera el Archivo de Configuracion "xpg.cfg"
+
+     2* Language(String word) : Carga el idioma a utilizar y llama a:
+        3- SpanishGlossary() : Clase del idioma Español
+        4- EnglishGlossary() : Clase del idioma Ingles
+
+     5* ConnectionDialog (Language dicc, JTextArea monitor, JFrame father): Captura los datos iniciales de 
+        conexion y llama a:
+        6- ErrorDialog(JDialog parent, String[] messages, Language glossary) :
+           Muestra mensaje de Error
+
+     7* DBStructure(String db,boolean open,Vector vecTables,PGConnection link) : 
+        Estructura de datos de una BD, requiere:
+        8- Table(String nTable,TableHeader strucTable) : Estructura de datos de una tabla; 
+           requiere:
+           9* TableHeader(Vector columns) : Estructura de datos de la estruc. de una tabla; 
+              requiere:
+              10- TableFieldRecord(String NameField,String NameType,OptionField opc) :
+                  Estructura de datos de un campo en una tabla; requiere:
+                  11* OptionField(...) : Estructura de datos de las opciones de un campo
+
+     12* ConnectionWatcher(String host, int port, XPg frame) : Verifica el estado de la conexion al 
+         servidor DB
+
+     13* Structures(JFrame parent, Language glossary) : Carpeta 1 de la Interfaz Principal, llama 
+         a:
+           - MyTableModel : Modelo Logico de una JTable (Clase envenvida en otros archivos)
+
+     14* Records(Language glossary,JFrame xframe) : Carpeta 2 de la Interfaz Principal, llama a:
+         15- InsertData(Table table,JFrame frame) : Inserta un registro en una tabla
+         16- DropTableRecord(Table table,JFrame frame) : Elimina uno o varios registros de una tabla 
+         17- UpdateTable(Table table,JFrame frame) : Actualiza uno o varios registros; llama a: 
+             18* UpdateWhere(Table table,JDialog parent) : Ventana de Where para UpdateTable
+         19- ReportMaker(Vector columnas,Vector datos) : Interfaz para hacer reportes, llama a:
+             20- ExtensionFilter() : Filtro para archivos de extension html 
+         21- AdvancedFilter(Table table,JFrame frame) : Filtro Avanzado
+         22- CustomizeFilter(Table table,JFrame frame) : Filtro Personalizado
+
+     23* Querys (JFrame frame,Language glossary,JTextArea monitor) : Carpeta 3 de la Interfaz 
+         Principal, llama a:
+         24- SQLCompiler(File file) : Revisa y formatea un archivo con consultas sql
+         25- ExportSeparatorField(Frame aFrame, Language lang) : Selecciona el separador de datos
+             para importar una consulta.
+
+     26* GenericQuestionDialog(JFrame p, String button1, String button2, String title, String message):
+         Dialogo que presenta una pregunta con dos opciones (si/no)
+
+     27* CreateDB(Frame aFrame, Language lang, PGConnection currentConn) : Dialogo para crear
+         una base de datos.
+
+     28* DropDB(Frame aFrame, Language lang, PGConnection currentConn) :
+         Dialogo que elimina una base de datos.
+
+     29* CreateTable(Frame aFrame) : Dialogo que crea una base de datos.
+         30- Inherit(JDialog jframe, Language language,String as[], Vector ht): Dialogo que define 
+             el grupo de tablas a heredar en la creacion de una nueva tabla.
+         31- Constraint(JDialog jframe, Language language, Vector names, Vector descrip): Dialogo que 
+             define las restricciones asociadas a la tabla que desea crearse.
+
+     32* DropTable(JFrame aFrame,Vector dbnm,Vector VecC) : Dialogo para eliminar una Tabla.
+
+     33* CreateUser(JFrame aFrame, Language lang, PGConnection pg, JTextArea area) : Dialogo para 
+         crear un usuario.
+
+     34* AlterUser(JFrame jframe, Language language, PGConnection pg_konnection, 
+         JTextArea jtextarea) : Dialogo para modificar los valores de un Grupo.
+
+     35* DropUser(JFrame aFrame, Language lang, PGConnection pg, JTextArea area) : Dialogo para 
+         eliminar un usuario.
+
+     36* CreateGroup(JFrame jframe, Language language, PGConnection pg_konnection, 
+         JTextArea jtextarea) : Dialogo para crear un grupo.
+
+     37* AlterGroup(JFrame aFrame, Language lang,PGConnection pg, JTextArea area) : Dialogo para 
+         modificar los valores de un Grupo.
+
+     38* DropGroup(JFrame jframe, Language language, PGConnection pg_konnection, 
+         JTextArea jtextarea) : Dialogo para eliminar un grupo.
+
+     39* PGConnection(ConnectionInfo User_Entry, Language idiom) : Interface entre el Driver JDBC
+         y la aplicacion XPg.
+
+     40* ConnectionInfo(String Host, String DB, String User,int numPort,String sel): Estructura
+         de datos para una conexion.
+
+     41* DumpTable(JFrame aFrame,Vector dbnames,Hashtable ListDataBases) : Dialogo para exportar
+         una o varias tablas de una base de datos. 
+
+     42* ChooseIdiomButton(XPg aFrame, Language lang) : Dialogo para seleccionar el idioma por 
+         defecto de la aplicacion.
+
+     43* ChooseIdiom(Frame frame) : Ventana inicial para escoger idioma.
+
+     44* UpdateDBTree(XPg app,Vector DBs) : Actualiza de manera diskreta las bases de datos 
+         disponibles para el usuario.
+
+     45* BuildConfigFile(array,language) : Configura el archivo xpg.cfg
+
+     46* ReportDesigner(JFrame aframe,Vector ColumNames,Vector Datos, Language lang) : Dialogo para 
+         definir los campos que haran parte de un reporte. Llama a:
+         47- ReportAppearance(JDialog extern, JFrame aframe, Language lang) : Dialogo para definir la 
+         apariencia del reporte a generar, llama a:
+         48- HtmlProperties(int type) : Estructura de datos que contiene los colores asociados 
+         a las partes de un reporte.
+
+     49* ReportFooter(JDialog dialog,JFrame parent) : Dialogo para definir el pie de pagina de un 
+         reporte. 
+
+     50* TablesGrant(JFrame aFrame,Language lang,PGConnection pg, JTextArea area,String[] tb) : Dialogo 
+         para asignar o eliminar permisos a una o varias tablas.
+
+     51* ReportHeader(JDialog diag,JFrame parent, Language lang) : Dialogo para definir la 
+         apariencia del encabezado de un reporte.
+     
+     52* InsertTableField(JFrame frame,String TName,Language lang) : Dialogo para incluir un campo 
+         adicional dentro de la estructura de una tabla.
+
+     53* PropertiesTable(JFrame aFrame,PGConnection kon,String Ctable,Language lang,JTextArea LW):
+         Ventana con varios dialogos referentes a las propiedades de una tabla.
+
+     54* StyleSelector(JDialog dialog,Language leng) : Dialogo para seleccionar el tipo de 
+         apariencia predefinida para un reporte.
+
+     55* DumpDb(JFrame aFrame,String dbname,PGConnection dbConn,Language lang) : Dialogo para exportar
+         todas las tablas de una base de datos.
+
+     56* SQLFunctionDisplay(Language lang,JFrame app,String html) : Dialogo para mostrar la descripcion
+         de cualquier funcion SQL.
+
+     57* SQLFunctionDataStruc(Language lang,JFrame app,String html) : Estructura de Datos que define la
+         descripcion de una funcion SQL.
+
+     58* SQLFuncBasic(Language lang, String commandName, String commandDescrip, String commandSyntax) :
+         Esta clase es similar a SQLFunctionDataStruc, pero se limita a definir funciones basicas de SQL.
+
+     59* ImportSeparatorField(Frame aFrame, Language lang) : Dialogo que define que separador sera usado
+         para importar registros desde un archivo a una tabla.
+
+     60* ExportToFile(JFrame aFrame,String table,PGConnection dbConn,Language lang,int numReg) :
+         Dialogo para definir si el usuario desea exportar o importar datos desde o hacia una tabla.
+
+     61* HotQueries(JFrame parent,Language leng) : Dialogo para definir y editar consultas definidas
+         por el usuario.
+
+     62* HQStructure(String file, String descrip, boolean doIt) : Estructura de datos que define una
+         consulta rapida.
+
+     63* TextDataInput(TextDataInput(JDialog dialog, Language leng, String fieldName, String previewStr):
+         Dialogo para insertar una cadena larga en un campo de tipo texto.
+
+     64* DisplayControl(Table table,JFrame parent,Language leng, String nameFields, boolean keepOn):
+         Dialogo para definir que campos de una tabla seran mostrados en el modulo de Registros. 
+
+     65* ForeignKey(String fkn,String tf,String option,String f,String ff) : Estructura de datos que
+         define una llave foranea.
+
+     66* UpdateRecord(Table table,JFrame frame,Language leng) : Dialogo para actualizar un conjunto
+         especifico de registros seleccionados por sus "oid"
+
+     67* ExportToReport(JFrame aFrame,Language lang) : Dialogo para escoger el tipo de datos a incluir
+         en un reporte.
+
+     68* Path(): Clase que se encarga de detectar la ruta de instalacion de XPg en sistemas Windows. 
+
+***************************************************************************************************
+                                              FIN ;)
+***************************************************************************************************

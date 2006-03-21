@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE attributes PUBLIC "-//NetBeans//DTD DefaultAttributes 1.0//EN" "http://www.netbeans.org/dtds/attributes-1_0.dtd">
+<attributes version="1.0">
+    <fileobject name="XPg.java">
+        <attr name="class_dependency_java.awt.event.KeyListener" stringvalue="XPg"/>
+        <attr name="class_dependency_javax.swing.SwingConstants" stringvalue="XPg"/>
+        <attr name="class_dependency_java.awt.event.ActionListener" stringvalue="XPg"/>
+        <attr name="class_dependency_javax.swing.JFrame" stringvalue="XPg"/>
+        <attr name="class_dependency_java.awt.event.MouseListener" stringvalue="XPg"/>
+        <attr name="class_dependency_java.awt.event.FocusListener" stringvalue="XPg"/>
+    </fileobject>
+    <fileobject name="ConnectionWatcher.java">
+        <attr name="class_dependency_java.lang.Thread" stringvalue="ConnectionWatcher"/>
+    </fileobject>
+    <fileobject name="ConnectWin.java">
+        <attr name="class_dependency_javax.swing.JDialog" stringvalue="ConnectWin"/>
+        <attr name="class_dependency_java.awt.event.KeyListener" stringvalue="ConnectWin"/>
+        <attr name="class_dependency_java.awt.event.FocusListener" stringvalue="ConnectWin"/>
+    </fileobject>
+</attributes>
