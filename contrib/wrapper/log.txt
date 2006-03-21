@@ -1,0 +1,80 @@
+Buildfile: build.xml
+
+init-windows-nt:
+
+init-windows-2000:
+
+init-windows-xp:
+
+init-windows:
+
+init-linux:
+
+init-solaris:
+
+init-aix:
+
+init-hpux:
+
+init-hpux64:
+
+init-macosx:
+
+init-osf1:
+
+init-freebsd:
+
+init-irix:
+
+init:
+     [echo] OS='Linux'
+
+convert:
+
+update-info:
+     [copy] Copying 1 file to /home/spy/Documentos/midas/startup/wrapper_3.1.2_src/src/java/org/tanukisoftware/wrapper
+     [copy] Copying 1 file to /home/spy/Documentos/midas/startup/wrapper_3.1.2_src/src/c
+
+compile-java:
+    [javac] Compiling 1 source file to /home/spy/Documentos/midas/startup/wrapper_3.1.2_src/build/classes
+
+    [javac]           WARNING
+
+    [javac] The -source switch defaults to 1.5 in JDK 1.5.
+    [javac] If you specify -target 1.2 you now must also specify -source 1.2.
+    [javac] Ant will implicitly add -source 1.2 for you.  Please change your build file.
+    [javac] Compiling 1 source file to /home/spy/Documentos/midas/startup/wrapper_3.1.2_src/build/testclasses
+
+    [javac]           WARNING
+
+    [javac] The -source switch defaults to 1.5 in JDK 1.5.
+    [javac] If you specify -target 1.2 you now must also specify -source 1.2.
+    [javac] Ant will implicitly add -source 1.2 for you.  Please change your build file.
+    [javac] /home/spy/Documentos/midas/startup/wrapper_3.1.2_src/src/test/org/tanukisoftware/wrapper/WrapperManagerSystemTimeTestCase.java:36: package junit.framework does not exist
+    [javac] import junit.framework.TestCase;
+    [javac]                        ^
+    [javac] /home/spy/Documentos/midas/startup/wrapper_3.1.2_src/src/test/org/tanukisoftware/wrapper/WrapperManagerSystemTimeTestCase.java:42: cannot find symbol
+    [javac] symbol: class TestCase
+    [javac]     extends TestCase
+    [javac]             ^
+    [javac] /home/spy/Documentos/midas/startup/wrapper_3.1.2_src/src/test/org/tanukisoftware/wrapper/WrapperManagerSystemTimeTestCase.java:76: cannot find symbol
+    [javac] symbol  : method assertEquals(java.lang.String,int,int)
+    [javac] location: class org.tanukisoftware.wrapper.WrapperManagerSystemTimeTestCase
+    [javac]         assertEquals( "getSystemTicks( " + time + " ) failed", expectedTicks, ticks );
+    [javac]         ^
+    [javac] /home/spy/Documentos/midas/startup/wrapper_3.1.2_src/src/test/org/tanukisoftware/wrapper/WrapperManagerSystemTimeTestCase.java:79: cannot find symbol
+    [javac] symbol  : method assertEquals(java.lang.String,long,long)
+    [javac] location: class org.tanukisoftware.wrapper.WrapperManagerSystemTimeTestCase
+    [javac]         assertEquals( "getTickAge( " + posTicks + ", " + expectedTicks + " )", 1000L, posAge );
+    [javac]         ^
+    [javac] /home/spy/Documentos/midas/startup/wrapper_3.1.2_src/src/test/org/tanukisoftware/wrapper/WrapperManagerSystemTimeTestCase.java:82: cannot find symbol
+    [javac] symbol  : method assertEquals(java.lang.String,long,long)
+    [javac] location: class org.tanukisoftware.wrapper.WrapperManagerSystemTimeTestCase
+    [javac]         assertEquals( "getTickAge( " + negTicks + ", " + expectedTicks + " )", -1000L, negAge );
+    [javac]         ^
+    [javac] 5 errors
+
+BUILD FAILED
+/home/spy/Documentos/midas/startup/wrapper_3.1.2_src/build.xml:215: Compile failed; see the compiler error output for details.
+
+Total time: 9 seconds
