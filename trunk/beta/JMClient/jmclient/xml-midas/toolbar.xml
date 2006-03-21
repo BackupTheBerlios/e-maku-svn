@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ToolBar>
+  <JToolBar>
+    <JButtonBar>
+      <Activo />
+      <Acelerator></Acelerator>
+      <ActionCommand>salir</ActionCommand>
+      <Icon>/icons/ico_salir.png</Icon>
+      <ToolTipText>TIP-SALIR</ToolTipText>
+      <Clase>jmclient.Run</Clase>
+      <Metodo>salir</Metodo>
+    </JButtonBar>
+  </JToolBar>
+  <JToolBar>
+    <JButtonBar>
+      <Activo />
+      <Transaction>TR00014</Transaction>
+      <Icon>/icons/ico_terceros.png</Icon>
+    </JButtonBar>
+  </JToolBar>
+  <JToolBar>
+    <JButtonBar>
+      <Activo />
+      <Transaction>TR00038</Transaction>
+      <Icon>/icons/ico_nprod.png</Icon>
+    </JButtonBar>
+  </JToolBar>
+  <JToolBar>
+    <JButtonBar>
+      <Activo />
+      <Transaction>TR00076</Transaction>
+      <Icon>/icons/ico_pedido.png</Icon>
+    </JButtonBar>
+  </JToolBar>
+  <JToolBar>
+    <JButtonBar>
+      <Activo />
+      <Transaction>TR00099</Transaction>
+      <Icon>/icons/ico_cotizacion.png</Icon>
+    </JButtonBar>
+  </JToolBar>
+  <JToolBar>
+    <JButtonBar>
+      <Activo />
+      <Transaction>TR00051</Transaction>
+      <Icon>/icons/ico_factura.png</Icon>
+    </JButtonBar>
+  </JToolBar>
+  <JToolBar>
+    <JButtonBar>
+      <Activo />
+      <Transaction>TR00067</Transaction>
+      <Icon>/icons/ico_fcredito.png</Icon>
+    </JButtonBar>
+  </JToolBar>
+  <JToolBar>
+    <JButtonBar>
+      <Activo />
+      <Transaction>TR00081</Transaction>
+      <Icon>/icons/ico_remision.png</Icon>
+    </JButtonBar>
+  </JToolBar>
+  <JToolBar>
+    <JButtonBar>
+      <Activo />
+      <Transaction>TR00089</Transaction>
+      <Icon>/icons/ico_guias.png</Icon>
+    </JButtonBar>
+  </JToolBar>
+  <JToolBar>
+    <JButtonBar>
+      <Activo />
+      <Transaction>TR00096</Transaction>
+      <Icon>/icons/ico_devolucion.png</Icon>
+    </JButtonBar>
+  </JToolBar>
+</ToolBar>

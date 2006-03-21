@@ -1,0 +1,9 @@
+#Mon Nov 01 11:18:37 COT 2004
+useAnnotationsPrefPage=true
+org.eclipse.jdt.ui.formatterprofiles.version=6
+org.eclipse.jface.textfont=1|Monospace|10|0|GTK|1|;
+eclipse.preferences.version=1
+fontPropagated=true
+Refactoring.ErrorPage.severityThreshold=2
+useQuickDiffPrefPage=true
+tabWidthPropagated=true

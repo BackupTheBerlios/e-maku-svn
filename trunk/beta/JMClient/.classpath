@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path=""/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="/JMLib"/>
+	<classpathentry kind="lib" path="/home/midas/alfa/lib/midas/icons.jar"/>
+	<classpathentry kind="lib" path="/home/midas/alfa/lib/contrib/jdom.jar"/>
+	<classpathentry kind="lib" path="/JMLib/bin"/>
+	<classpathentry kind="lib" path="/home/midas/alfa/lib/contrib/bsh-core.jar"/>
+	<classpathentry kind="lib" path="/home/midas/alfa/lib/midas/credits.jar"/>
+	<classpathentry kind="lib" path="/home/midas/alfa/lib/contrib/ostermillerutils.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
