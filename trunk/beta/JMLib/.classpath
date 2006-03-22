@@ -2,13 +2,13 @@
 <classpath>
 	<classpathentry kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/midas/alfa/lib/contrib/jdom.jar"/>
-	<classpathentry kind="lib" path="/home/midas/alfa/lib/contrib/ostermillerutils.jar"/>
-	<classpathentry kind="lib" path="/home/midas/alfa/lib/contrib/jai_core.jar"/>
-	<classpathentry kind="lib" path="/home/midas/alfa/lib/contrib/jai_codec.jar"/>
-	<classpathentry kind="lib" path="/home/midas/alfa/lib/contrib/bcprov.jar"/>
-	<classpathentry kind="lib" path="/home/midas/alfa/lib/contrib/ant.jar"/>
-	<classpathentry kind="lib" path="/home/midas/alfa/lib/contrib/itext.jar"/>
-	<classpathentry kind="lib" path="/home/midas/alfa/lib/contrib/jpedal.jar"/>
+	<classpathentry kind="lib" path="/home/midas/beta/lib/contrib/jdom.jar"/>
+	<classpathentry kind="lib" path="/home/midas/beta/lib/contrib/ostermillerutils.jar"/>
+	<classpathentry kind="lib" path="/home/midas/beta/lib/contrib/jai_core.jar"/>
+	<classpathentry kind="lib" path="/home/midas/beta/lib/contrib/jai_codec.jar"/>
+	<classpathentry kind="lib" path="/home/midas/beta/lib/contrib/bcprov.jar"/>
+	<classpathentry kind="lib" path="/home/midas/beta/lib/contrib/ant.jar"/>
+	<classpathentry kind="lib" path="/home/midas/beta/lib/contrib/itext.jar"/>
+	<classpathentry kind="lib" path="/home/midas/beta/lib/contrib/jpedal.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
