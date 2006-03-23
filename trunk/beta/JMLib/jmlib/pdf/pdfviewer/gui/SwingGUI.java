@@ -61,7 +61,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
@@ -87,7 +86,6 @@ import jmlib.pdf.pdfviewer.Commands;
 import jmlib.pdf.pdfviewer.Values;
 import jmlib.pdf.pdfviewer.gui.generic.GUIButton;
 import jmlib.pdf.pdfviewer.gui.generic.GUICombo;
-import jmlib.pdf.pdfviewer.gui.generic.GUIThumbnailPanel;
 import jmlib.pdf.pdfviewer.gui.swing.CommandListener;
 import jmlib.pdf.pdfviewer.gui.swing.FrameCloser;
 import jmlib.pdf.pdfviewer.gui.swing.SwingButton;
@@ -101,7 +99,6 @@ import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
 import org.jpedal.io.StatusBar;
 import org.jpedal.objects.PdfPageData;
-import org.jpedal.utils.LogWriter;
 import org.w3c.dom.Node;
 
 /**
@@ -124,10 +121,8 @@ public class SwingGUI extends GUI implements GUIFactory {
 	/**holds back/forward buttons at bottom of page*/
 	private JToolBar bottomNavButtons = new JToolBar();
 	
-	//<start-forms>
 	/**tell user on first form change it can be saved*/
 	private boolean firstTimeFormMessage=true;
-	//<end-forms>
 	
 	/** visual display of current cursor co-ords on page*/
 	private JLabel coords=new JLabel();
@@ -141,10 +136,8 @@ public class SwingGUI extends GUI implements GUIFactory {
 	private final Font headFont=new Font("SansSerif",Font.BOLD,14);
 	
 	private final Font textFont=new Font("Serif",Font.PLAIN,12);
-	
-	
 	private Color color = new Color(200,200,255);
-	//private Color color = new Color(220,220,220);
+
 	/**Interactive display object - needs to be added to PdfDecoder*/
 	private StatusBar statusBar=new StatusBar(color);
 	
@@ -152,64 +145,15 @@ public class SwingGUI extends GUI implements GUIFactory {
 	
 	private JLabel pageCounter3;	
 			
-	public SwingGUI(PdfDecoder decode_pdf,Values commonValues,GUIThumbnailPanel thumbnails){
+	public SwingGUI(PdfDecoder decode_pdf,Values commonValues){
 	
 		this.decode_pdf=decode_pdf;
 		this.commonValues=commonValues;
-		this.thumbnails=thumbnails;
-		//this.properties=properties;
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		frame.setFrameIcon(new ImageIcon(getClass().getResource("/icons/ico_reporte.png")));
 	}
 	
-	/**used when clicking on thumbnails to move onto new page*/
-	private class PageChanger implements ActionListener {
-		
-		int page;
-		public PageChanger(int i){
-			i++;
-			page=i;
-		}
-		
-		public void actionPerformed(ActionEvent e) {
-			if((!commonValues.isProcessing())&&(commonValues.getCurrentPage()!=page)){
-				commonValues.setCurrentPage(page);
-				
-				statusBar.resetStatus("");
-		
-				setScalingToDefault();
-				
-				decode_pdf.setPageParameters(getScaling(), commonValues.getCurrentPage());
-				
-				decodePage(false);
-				
-			}
-		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#initLayoutMenus(javax.swing.JMenu, java.lang.String[], int[])
-	 *
-	public void initLayoutMenus(JMenu pageLayout, String[] descriptions, int[] value) {
-		
-		ButtonGroup group = new ButtonGroup();
-		int count=value.length;
-		for(int i=0;i<count;i++){
-			
-			JCheckBoxMenuItem pageView=new JCheckBoxMenuItem(descriptions[i]);
-			pageView.setBorder(BorderFactory.createEmptyBorder());
-			group.add(pageView);
-			if(i==0)
-				pageView.setSelected(true);
-			
-			pageView.addActionListener(new PageViewChanger(value[i]));
-			pageLayout.add(pageView);	
-		}
-	}	
-	*/
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#init(java.lang.String[], jmlib.pdf.pdfviewer.Commands, jmlib.pdf.pdfviewer.utils.Printer)
-	 */
 	public void init(String[] scalingValues,final Commands currentCommands,Printer currentPrinter) {
 		
 		/**
@@ -228,19 +172,13 @@ public class SwingGUI extends GUI implements GUIFactory {
 		scalingBox.setEditable(true);
 		scalingBox.setSelectedIndex(defaultSelection); //set default before we add a listener
 		
-		//if you enable, remember to change rotation and quality Comboboxes
-		//scalingBox.setPreferredSize(new Dimension(85,25));
-		
 		/**
 		 * add the pdf display to show page
 		 **/
 		scrollPane.getViewport().add(decode_pdf);
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(80);
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(80);
 		
-		//bottomNavButtons.setBorder(BorderFactory.createEmptyBorder());
 		bottomNavButtons.setBorder(BorderFactory.createEtchedBorder());
 		bottomNavButtons.setLayout(new FlowLayout(FlowLayout.LEADING));
 		bottomNavButtons.setFloatable(false);
@@ -268,14 +206,10 @@ public class SwingGUI extends GUI implements GUIFactory {
 		pageCounter2.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 		pageCounter2.addActionListener(new ActionListener(){
-			
 			public void actionPerformed(ActionEvent arg0) {
-				
 				String value=pageCounter2.getText().trim();
-				
 				currentCommands.gotoPage(value);
 			}
-			
 		});
 		pageCounter3=new JLabel(Language.getWord("OF")+" "); 
 		pageCounter3.setOpaque(false);
@@ -286,11 +220,8 @@ public class SwingGUI extends GUI implements GUIFactory {
 		JPanel top = new JPanel();
 		top.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
-		//JPanel middle = new JPanel();
-		//middle.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
 		frame.getContentPane().add(top, BorderLayout.NORTH);
-		//frame.getContentPane().add(middle, BorderLayout.CENTER);
 		
 		/** nav bar at bottom to select pages and setup Toolbar on it*/
 		JPanel bottom = new JPanel();
@@ -303,7 +234,6 @@ public class SwingGUI extends GUI implements GUIFactory {
 		comboBar.setFont(new Font("SansSerif", Font.PLAIN, 8));
         // Barra de Navegacion
 		bottom.add(comboBar, BorderLayout.NORTH);
-		//middle.add(comboBar, BorderLayout.CENTER);
 		/**
 		 * navigation toolbar for moving between pages
 		 */
@@ -312,12 +242,10 @@ public class SwingGUI extends GUI implements GUIFactory {
 		/**
 		 * create other tool bars and add to display
 		 */
-		//topButtons.setBorder(BorderFactory.createEmptyBorder());
 		topButtons.setBorder(BorderFactory.createEtchedBorder());
 		topButtons.setLayout(new FlowLayout(FlowLayout.LEADING));
 		topButtons.setFloatable(false);
 		topButtons.setFont(new Font("SansSerif", Font.PLAIN, 8));
-		//topButtons.add(comboBar, BorderLayout.NORTH);
 		
 		// Imprimir y Grabar Como
 		top.add(topButtons);
@@ -326,11 +254,6 @@ public class SwingGUI extends GUI implements GUIFactory {
 		 */
 		top.add(bottomNavButtons);
 		
-		//top.add(bottomNavButtons,BorderLayout.EAST);
-						
-		/**move over if we will display thumbnails*/
-		//if (thumbnails.isShownOnscreen())
-		//	displayPane.setDividerLocation(thumbLocation);
 		
 		/**
 		 * set display to occupy half screen size and display, add listener and
@@ -355,7 +278,8 @@ public class SwingGUI extends GUI implements GUIFactory {
 				}
 			
 			});
-			frame.addInternalFrameListener(new FrameCloser(currentCommands, this,decode_pdf,currentPrinter,thumbnails,commonValues));
+			frame.setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
+			frame.addInternalFrameListener(new FrameCloser(currentCommands, this,decode_pdf,currentPrinter,commonValues));
 			
 		}
 	}
@@ -385,7 +309,6 @@ public class SwingGUI extends GUI implements GUIFactory {
 			menuItem.setAccelerator( KeyStroke.getKeyStroke("HOME") );
 			break;
 		case Commands.BACKPAGE:
-			//menuItem.setAccelerator( KeyStroke.getKeyStroke("LEFT") );
 			menuItem.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_LEFT,
 					java.awt.Event.CTRL_MASK));
 			break;
@@ -403,9 +326,6 @@ public class SwingGUI extends GUI implements GUIFactory {
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#addButton(int, java.lang.String, java.lang.String, int)
-	 */
 	public void addButton(int line,String toolTip,String path,final int ID) {
 		
 		GUIButton newButton = new SwingButton();
@@ -435,10 +355,8 @@ public class SwingGUI extends GUI implements GUIFactory {
 		
 		newButton.init(path, ID,toolTip);
 		
-		//add listener
 		((AbstractButton) newButton).addActionListener(currentCommandListener);
 		
-		//add to toolbar
 		if(line==BUTTONBAR){
 			topButtons.add((AbstractButton) newButton);
 			topButtons.add(Box.createHorizontalGlue());
@@ -448,9 +366,6 @@ public class SwingGUI extends GUI implements GUIFactory {
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#addMenuItem(javax.swing.JMenu, java.lang.String, java.lang.String, int)
-	 */
 	public void addMenuItem(JMenu parentMenu,String text,String toolTip,final int ID) {
 		
 		SwingMenuItem menuItem = new SwingMenuItem(text);
@@ -458,14 +373,10 @@ public class SwingGUI extends GUI implements GUIFactory {
 		menuItem.setID(ID);
 		setKeyAccelerators(ID,menuItem);
 		
-		//add listener
 		menuItem.addActionListener(currentCommandListener);
 		parentMenu.add(menuItem);
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#addCombo(java.lang.String, java.lang.String, int)
-	 */
 	public void addCombo(String title,String tooltip,int ID){
 		
 		GUICombo combo=null;
@@ -480,74 +391,43 @@ public class SwingGUI extends GUI implements GUIFactory {
 		bottomNavButtons.add(label);
 		bottomNavButtons.add((SwingCombo) combo);
 		
-		//add listener
 		((SwingCombo)combo).addActionListener(currentCommandListener);
 		
 	}
 	
-	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#setViewerTitle(java.lang.String)
-	 */
 	public void setViewerTitle(final String title) {
-		
-		if(title!=null) {
-			frame.setTitle(title);
-		} 
-		else 
-		 frame.setTitle("");
+		frame.setTitle(title!=null?title:"");
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#resetComboBoxes(boolean)
-	 */
 	public void resetComboBoxes(boolean value) {
-		//qualityBox.setEnabled(value);
 		scalingBox.setEnabled(value);
-		//rotationBox.setEnabled(value);
-		
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#getSelectedComboIndex(int)
-	 */
 	public int getSelectedComboIndex(int ID) {
-
 		if (ID == Commands.SCALING){
 			return scalingBox.getSelectedIndex();
 		}
-		else
-	      return -1;
+		return -1;
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#setSelectedComboIndex(int, int)
-	 */
 	public void setSelectedComboIndex(int ID,int index) {
 		if (ID == Commands.SCALING){
 			scalingBox.setSelectedIndex(index);	
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#setSelectedComboItem(int, java.lang.String)
-	 */
 	public void setSelectedComboItem(int ID,String index) {
 		if (ID == Commands.SCALING){
 			scalingBox.setSelectedItem(index);	
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#getSelectedComboItem(int)
-	 */
 	public Object getSelectedComboItem(int ID) {
 
 		if (ID == Commands.SCALING){
 			return scalingBox.getSelectedItem();	
 		}
-		else
-			return null;
+		return null;
 	}
 	
 	/**refresh screen display*/
@@ -556,9 +436,6 @@ public class SwingGUI extends GUI implements GUIFactory {
 		frame.validate();
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#zoom()
-	 */
 	public void zoom() {
 		
 		if(decode_pdf!=null){
@@ -574,8 +451,7 @@ public class SwingGUI extends GUI implements GUIFactory {
 						zoom= Float.parseFloat(numberValue);
 					}catch(Exception e){
 						zoom=-1;
-						//its got characters in it so get first valid number string
-						int length=numberValue.length();
+							int length=numberValue.length();
 						int ii=0;
 						while(ii<length){
 							char c=numberValue.charAt(ii);
@@ -669,10 +545,7 @@ public class SwingGUI extends GUI implements GUIFactory {
 		
 		
 	}
-	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#decodePage(boolean)
-	 */
+
 	public void decodePage(final boolean resizePanel){		
 		
 		/**ensure text and color extracted. If you do not need color, take out 
@@ -691,10 +564,6 @@ public class SwingGUI extends GUI implements GUIFactory {
 		resetComboBoxes(false);
 		
 		decode_pdf.clearScreen();
-		
-		/** if running terminate first */
-		thumbnails.terminateDrawing();
-		
 		commonValues.setProcessing(true);
 		
 		/**
@@ -717,7 +586,7 @@ public class SwingGUI extends GUI implements GUIFactory {
 					/**
 					 * make sure screen fits display nicely
 					 */
-					if ((resizePanel) && (thumbnails.isShownOnscreen())) 
+					if (resizePanel) 
 						zoom();
 					
 					if (Thread.interrupted())
@@ -752,12 +621,6 @@ public class SwingGUI extends GUI implements GUIFactory {
 						cropY = page_data.getCropBoxY(commonValues.getCurrentPage());
 						cropW = page_data.getCropBoxWidth(commonValues.getCurrentPage());
 						cropH = page_data.getCropBoxHeight(commonValues.getCurrentPage());
-												
-						//<start-forms>
-						//read annotations data
-						//commonValues.setPageAnnotations(decode_pdf.getPdfAnnotsData(null));
-						//<end-forms>
-						
 						statusBar.updateStatus("Displaying Page",0); 
 						
 					} catch (Exception e) {
@@ -788,26 +651,9 @@ public class SwingGUI extends GUI implements GUIFactory {
 						showMessageDialog("Page contains embedded fonts which may not display correctly using Font substitution."); 
 						
 					}
-					/**/
-					if ((thumbnails.isShownOnscreen())) {
-						thumbnails.addNewThumbnails(commonValues.getCurrentPage(),decode_pdf);
-					} else
-						commonValues.setProcessing(false);
-					
 					//make sure fully drawn
 					decode_pdf.repaint();
 					
-					//<start-13>
-					//setViewerTitle(mainTitle); //restore title
-					//<end-13>
-					
-					
-					if (thumbnails.isShownOnscreen()) {
-						
-						/**setup thumbnails in foreground*/
-						thumbnails.setupThumbnailsOnDecode(commonValues.getCurrentPage(),decode_pdf);
-						
-					}
 					
 				} catch (Exception e) {
 					//<start-13>
@@ -989,7 +835,7 @@ public class SwingGUI extends GUI implements GUIFactory {
 		 * set up first 10 thumbnails by default. Rest created as needed.
 		 */
 		//add if statement or comment out this section to remove thumbnails
-		if(thumbnails.isShownOnscreen()){
+		/*if(thumbnails.isShownOnscreen()){
 			
 			int pages=decode_pdf.getPageCount();
 			
@@ -998,19 +844,18 @@ public class SwingGUI extends GUI implements GUIFactory {
 				LogWriter.writeLog("Thumbnails not used on files over 100 pages long");
 			}else{
 				
-				//add listener so clicking on button changes to page - has to be in SimpleViewer so it can update it
+		
 				Object[] buttons=thumbnails.getButtons();
 				for(int i=0;i<pages;i++)
 					((JButton)buttons[i]).addActionListener(new PageChanger(i));
 				
-				//<start-13>
-				//add global listener
+		
 				thumbnails.addComponentListener();
-				//<end-13>
+		
 				
 			}
 			
-		}
+		}*/
 		
 		/**
 		 * add any outline
@@ -1067,15 +912,11 @@ public class SwingGUI extends GUI implements GUIFactory {
 	}
 	
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#removeOutlinePanels()
-	 */
 	public void removeOutlinePanels() {
 		
 		/**
 		 * reset left hand nav bar
 		 */
-		thumbnails.removeAll();
 		if(tree!=null)
 			tree.setMinimumSize(new Dimension(50,frame.getHeight()));
 		
@@ -1083,37 +924,18 @@ public class SwingGUI extends GUI implements GUIFactory {
 		hasOutlinesDrawn=false;		
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#initStatus()
-	 */
 	public void initStatus() {
 		decode_pdf.setStatusBarObject(statusBar);
 		resetStatus();
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#resetStatus()
-	 */
-	public void resetStatus() {
-		//set status bar child color
-		statusBar.setColorForSubroutines(Color.blue);
-		//and initialise the display
-		bottomNavButtons.add(statusBar.getStatusObject());
-		
-	}
-	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#initThumbnails(int, org.jpedal.utils.repositories.Vector_Int)
-	 *
-	public void initThumbnails(int itemSelectedCount, Vector_Int pageUsed) {
-		navOptionsPanel.removeAll();
-		displayPane.setDividerLocation(divLocation);
-		navOptionsPanel.add(thumbnails.setupThumbnails(itemSelectedCount-1,pageUsed.get(),commonValues.getPageCount()),"Extracted items");
 
+	public void resetStatus() {
+		statusBar.setColorForSubroutines(Color.blue);
+		bottomNavButtons.add(statusBar.getStatusObject());
 	}
-	*/
 	
-//	<start-forms>
+	
 	class FormActionListener implements ActionListener{
 		
 		private Container c;
@@ -1184,46 +1006,16 @@ public class SwingGUI extends GUI implements GUIFactory {
 				}
 			}
 			commonValues.setFormsChanged(true);
-			//setViewerTitle(mainTitle);
-			
 			if(showMessage)
 				JOptionPane.showMessageDialog(c,"FormName >>"+formName+"<<. Value changed to "+value);
 			
 		}
 	}
-	//<end-forms>
-	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#setCoordText(java.lang.String)
-	 */
+
 	public void setCoordText(String string) {
 		coords.setText(string);
 	}
-/*	
-	private JLabel initCoordBox() {
-		
-		coords.setBackground(Color.white);
-		coords.setOpaque(true);
-		coords.setBorder(BorderFactory.createLineBorder(Color.black,1));
-		
-		return coords;
-		
-	}
-	*/
-	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#toggleSnapshotButton()
-	 *
-	public void toggleSnapshotButton() {
-			snapshotButton.setIcon(new ImageIcon(getClass().getResource("/jmlib/pdf/pdfviewer/res/snapshot.gif")));
-		
-		
-	}
-	*/
-	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#setPageNumber()
-	 */
+
 	public void setPageNumber() {
 		pageCounter2.setForeground(Color.black);
 		pageCounter2.setText(" " + commonValues.getCurrentPage());
@@ -1257,75 +1049,38 @@ public class SwingGUI extends GUI implements GUIFactory {
 		
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#addToMainMenu(javax.swing.JMenu)
-	 *
-	public void addToMainMenu(JMenu fileMenuList) {
-		currentMenu.add(fileMenuList);
-		
-	}
-	*/
-	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#getTopButtonBar()
-	 */
+
 	public JToolBar getTopButtonBar() {
 		return topButtons;
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#showMessageDialog(java.lang.Object)
-	 */
 	public void showMessageDialog(Object message1){
-		JOptionPane.showMessageDialog(frame,message1);
+		JOptionPane.showInternalMessageDialog(frame,message1);
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#showMessageDialog(java.lang.Object, java.lang.String, int)
-	 */
 	public void showMessageDialog(Object message,String title,int type){
-		JOptionPane.showMessageDialog(frame,message,title,type);
+		JOptionPane.showInternalMessageDialog(frame,message,title,type);
 	}
 	
-	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#showInputDialog(java.lang.Object, java.lang.String, int)
-	 */
 	public String showInputDialog(Object message, String title, int type) {
-		return JOptionPane.showInputDialog(frame, message, title, type);
+		return JOptionPane.showInternalInputDialog(frame, message, title, type);
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#showInputDialog(java.lang.String)
-	 */
 	public String showInputDialog(String message) {
-		
-		return 	JOptionPane.showInputDialog(frame,message);
+		return JOptionPane.showInternalInputDialog(frame,message);
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#showOptionDialog(java.lang.Object, java.lang.String, int, int, java.lang.Object, java.lang.Object[], java.lang.Object)
-	 */
 	public int showOptionDialog(Object displayValue, String message, int option, int type, Object icon, Object[] options, Object initial) {
-		
-		return JOptionPane.showOptionDialog(frame, displayValue,message,option,type, (Icon)icon, options,initial);
+		return JOptionPane.showInternalOptionDialog(frame, displayValue,message,option,type, (Icon)icon, options,initial);
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#showConfirmDialog(java.lang.String, java.lang.String, int)
-	 */
 	public int showConfirmDialog(String message, String message2, int option) {
-		
-		return JOptionPane.showConfirmDialog(frame, message,message2,option);
+		return JOptionPane.showInternalConfirmDialog(frame, message,message2,option);
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#showOverwriteDialog(String file,boolean yesToAllPresent)
-	 */
 	public int showOverwriteDialog(String file,boolean yesToAllPresent) {
 		
 		int n = -1;
-		
 		if(yesToAllPresent){
 			
 			final Object[] buttonRowObjects = new Object[] { 
@@ -1341,7 +1096,8 @@ public class SwingGUI extends GUI implements GUIFactory {
 					buttonRowObjects,
 					buttonRowObjects[0]);
 			
-		}else{
+		}
+		else{
 			n = JOptionPane.showOptionDialog(frame, 
 					file+"\nThe file already exists\nReplace the existing file?",
 					"Overwrite?",
@@ -1353,202 +1109,40 @@ public class SwingGUI extends GUI implements GUIFactory {
 		return n;
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#showMessageDialog(javax.swing.JTextArea)
-	 */
 	public void showMessageDialog(JTextArea info) {
 		JOptionPane.showMessageDialog(frame, info);
-		
 	}
 	
-	/*
-	public void showItextPopup() {
-		JEditorPane p = new JEditorPane(
-				"text/html",
-				"Itext is not on the classpath.<BR>"
-						+ "JPedal includes code to take advantage of itext and<BR>"
-						+ "provide additional functionality with options<BR>"
-						+ "to spilt pdf files, and resave forms data<BR>"
-						+ "\nItext website - <a href=http://www.lowagie.com/iText/>http://www.lowagie.com/iText/</a>");
-		p.setEditable(false);
-		p.setOpaque(false);
-		p.addHyperlinkListener( new HyperlinkListener() {
-			public void hyperlinkUpdate(HyperlinkEvent e) {
-				if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {
-					try {
-						BrowserLauncher.openURL("http://www.lowagie.com/iText/");
-					} catch (IOException e1) {
-						showMessageDialog("Unable to launch browser");
-					}
-				}
-			}
-		});
-		
-		//<start-13>
-		showMessageDialog(p);
-		//<end-13>
-		
-		// Hack for 13 to make sure the message box is large enough to hold the message
-		//<start-13>
-		/**
-		//<end-13>
-		JOptionPane optionPane = new JOptionPane();
-		optionPane.setMessage(p);
-		optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
-		optionPane.setOptionType(JOptionPane.DEFAULT_OPTION);
-		
-		JDialog dialog = optionPane.createDialog(frame, "iText");
-		dialog.pack();
-		dialog.setSize(400,200);
-		dialog.show(); 
-		
-	}
-*/
-	
-/*	
-	public void showFirstTimePopup(){
-		
-		try{
-			final JPanel a = new JPanel();
-			a.setLayout(new BorderLayout());
-			JLabel lab=new JLabel(new ImageIcon(getClass().getResource("/org/jpedal/objects/acroforms/ceo.jpg")));
-			
-			//lab.setBorder(BorderFactory.createRaisedBevelBorder());
-			a.add(lab,BorderLayout.NORTH);
-			final JLabel message=new JLabel("<html>JPedal library from www.jpedal.org");
-			message.setHorizontalAlignment(JLabel.CENTER);
-			message.setForeground(Color.blue);
-			message.setFont(new Font("Lucida",Font.PLAIN,16));
-			
-			message.addMouseListener(new MouseListener() {
-				public void mouseEntered(MouseEvent e) {
-					a.setCursor(new Cursor(Cursor.HAND_CURSOR));
-					message.setText("<html><a href=http://www.jpedal.org>JPedal library from www.jpedal.org</a>");
-				}
-				
-				public void mouseExited(MouseEvent e) {
-					a.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-					message.setText("<html>JPedal library from www.jpedal.org");
-				}
-				
-				public void mouseClicked(MouseEvent e) {
-					try {
-						BrowserLauncher.openURL("http://www.jpedal.org");
-					} catch (IOException e1) {
-						showMessageDialog("Unable to launch browser");
-					}
-				}
-				
-				public void mousePressed(MouseEvent e) {}
-				public void mouseReleased(MouseEvent e) {}
-			});	
-			
-			
-			a.add(message,BorderLayout.CENTER);
-			
-			a.setPreferredSize(new Dimension(300,214));
-			Object[] options = { "Run Software" };
-			int n =
-				JOptionPane.showOptionDialog(
-						frame,
-						a,
-						"Running JPedal for first Time",
-						JOptionPane.DEFAULT_OPTION,
-						JOptionPane.PLAIN_MESSAGE,
-						null,
-						options,
-						options[0]);
-		}catch(Exception e){
-			//JOptionPane.showMessageDialog(null, "caught an exception "+e);
-			System.err.println("Unable to find image and setup splash screen");
-		}catch(Error e){
-			//JOptionPane.showMessageDialog(null, "caught an error "+e);
-			System.err.println("Unable to find image and setup splash screen");
-		}
-	}
-	
-	*/
-	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#showConfirmDialog(java.lang.Object, java.lang.String, int, int)
-	 */
 	public void showConfirmDialog(Object label, String message, int option, int plain_message) {
 		JOptionPane.showConfirmDialog(frame,label,message,option,plain_message);
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#initPDFOutlines(org.w3c.dom.Node, java.lang.String)
-	 */
 	public String initPDFOutlines(Node rootNode, String bookmark) {
-		
 		tree=new SwingOutline(rootNode);
-		
-		//tree.readChildNodes(rootNode,null);
-		
 		return tree.getPage(bookmark);
-		
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#removeThumbnails()
-	 */
 	public void removeThumbnails() {
-		//displayPane.setDividerLocation(0);
 		setPDFOutlineVisible(false);
-		//navOptionsPanel.removeAll();
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#setSplitDividerLocation(int)
-	 */
-	public void setSplitDividerLocation(int size) {
-		//displayPane.setDividerLocation(size);
-		
-	}
+	public void setSplitDividerLocation(int size) {}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#updateStatusMessage(java.lang.String)
-	 */
 	public void updateStatusMessage(String message) {
 		statusBar.updateStatus(message,0);
-		
-		
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#resetStatusMessage(java.lang.String)
-	 */
 	public void resetStatusMessage(String message) {
 		statusBar.resetStatus(message);
-		
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#setStatusProgress(int)
-	 */
 	public void setStatusProgress(int size) {
 		statusBar.setProgress(size);	
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#isPDFOutlineVisible()
-	 *
-	public boolean isPDFOutlineVisible() {
-		return navOptionsPanel.isVisible();
-		
-	} */
-	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#setPDFOutlineVisible(boolean)
-	 */
-	public void setPDFOutlineVisible(boolean visible) {
-		//navOptionsPanel.setVisible(visible);
-	}
+	public void setPDFOutlineVisible(boolean visible) {}
 
-	public void setQualityBoxVisible(boolean visible){
-		//qualityBox.setVisible(visible);
-		//optimizationLabel.setVisible(visible);
-	}
+	public void setQualityBoxVisible(boolean visible){}
 	
 	public void close() {
 		frame.dispose();

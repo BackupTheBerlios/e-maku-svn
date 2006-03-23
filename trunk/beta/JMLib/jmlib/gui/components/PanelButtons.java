@@ -397,9 +397,6 @@ public class PanelButtons extends JPanel implements ActionListener, KeyListener 
         		PDFViewer pdf = new PDFViewer(GFforma,idReport);
             	JInternalFrame jiframe = pdf.getGUI().getFrame();
 				GFforma.getJDPpanel().add(jiframe);
-				jiframe.setLocation(
-						(GFforma.getJDPpanel().getWidth()/2) - (jiframe.getWidth()/2),
-						(GFforma.getJDPpanel().getHeight()/2) - (jiframe.getHeight()/2));
 				try {
 					jiframe.setVisible(true);
 					jiframe.setSelected(true);

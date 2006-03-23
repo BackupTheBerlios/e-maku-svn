@@ -48,15 +48,13 @@ import javax.swing.JOptionPane;
 
 import jmlib.miscelanea.idiom.Language;
 import jmlib.pdf.pdfviewer.gui.SwingGUI;
-import jmlib.pdf.pdfviewer.gui.generic.GUISearchWindow;
-import jmlib.pdf.pdfviewer.gui.generic.GUIThumbnailPanel;
 import jmlib.pdf.pdfviewer.gui.popups.ErrorDialog;
 import jmlib.pdf.pdfviewer.utils.FileFilterer;
 import jmlib.pdf.pdfviewer.utils.Printer;
-//import jmlib.pdf.pdfviewer.utils.PropertiesFile;
 import jmlib.pdf.pdfviewer.utils.SwingWorker;
 
 import org.jpedal.PdfDecoder;
+import org.jpedal.examples.simpleviewer.utils.Messages;
 import org.jpedal.exception.PdfException;
 import org.jpedal.objects.PdfFileInformation;
 
@@ -117,7 +115,6 @@ public class Commands {
 	private SwingGUI currentGUI;
 	private PdfDecoder decode_pdf;
 	
-	private GUIThumbnailPanel thumbnails;
 	
 	/**image if file tiff or png or jpg*/
 	private BufferedImage img=null;
@@ -127,12 +124,10 @@ public class Commands {
 //	public Commands(Values commonValues,SwingGUI currentGUI,PdfDecoder decode_pdf,GUIThumbnailPanel thumbnails, 
 			//PropertiesFile properties , GUISearchWindow searchFrame,Printer currentPrinter) {
 	
-public Commands(Values commonValues,SwingGUI currentGUI,PdfDecoder decode_pdf,GUIThumbnailPanel thumbnails, 
-	GUISearchWindow searchFrame,Printer currentPrinter) {
+public Commands(Values commonValues,SwingGUI currentGUI,PdfDecoder decode_pdf,Printer currentPrinter) {
 		this.commonValues=commonValues;
 		this.currentGUI=currentGUI;
 		this.decode_pdf=decode_pdf;
-		this.thumbnails=thumbnails;
 		this.currentPrinter=currentPrinter;
 	}
 	
@@ -235,8 +230,6 @@ public Commands(Values commonValues,SwingGUI currentGUI,PdfDecoder decode_pdf,GU
 		
 		decode_pdf.clearScreen();
 		
-		/** if running terminate first */
-		thumbnails.terminateDrawing();
 		
 		commonValues.setProcessing(true);
 		
@@ -252,7 +245,7 @@ public Commands(Values commonValues,SwingGUI currentGUI,PdfDecoder decode_pdf,GU
 					/**
 					 * make sure screen fits display nicely
 					 */
-					if ((resizePanel) && (thumbnails.isShownOnscreen()))
+					if (resizePanel)
 						currentGUI.zoom();
 					
 					if (Thread.interrupted())
@@ -354,7 +347,7 @@ public Commands(Values commonValues,SwingGUI currentGUI,PdfDecoder decode_pdf,GU
 	/**
 	 *  checks file can be opened (permission) 
 	 */
-	protected void openFile(byte [] bytes) {
+	protected void openFile() {
 		
 		//get any user set dpi
 		String hiresFlag=System.getProperty("hires");
@@ -367,8 +360,6 @@ public Commands(Values commonValues,SwingGUI currentGUI,PdfDecoder decode_pdf,GU
 			commonValues.setUseHiresImage(false);
 		}
 		
-		//reset flag
-		thumbnails.resetToDefault();
 		
 		//<start-forms>
 		//flush forms list
@@ -651,16 +642,11 @@ public Commands(Values commonValues,SwingGUI currentGUI,PdfDecoder decode_pdf,GU
 	/**Clean up and exit program*/
 	private void exit() {
 		
-		thumbnails.stopProcessing();
+		int confirm=JOptionPane.showInternalConfirmDialog(currentGUI.getFrame(),Messages.getMessage("PdfViewerCloseing.message"),"",JOptionPane.YES_NO_OPTION);
 		
-		/**
-		 * create the dialog
-		 *
-		currentGUI.showConfirmDialog(new JLabel(Messages.getMessage("PdfViewerExiting")),
-				Messages.getMessage("PdfViewerprogramExit"), 
-				JOptionPane.DEFAULT_OPTION,
-				JOptionPane.PLAIN_MESSAGE);
-		*/
+		if(confirm==JOptionPane.NO_OPTION){
+			return;
+		}
 		
 		/**cleanup*/
 		decode_pdf.closePdfFile();

@@ -41,16 +41,14 @@ package jmlib.pdf.pdfviewer.gui;
 
 
 import java.awt.Rectangle;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Collections;
 
 import jmlib.pdf.pdfviewer.Values;
 import jmlib.pdf.pdfviewer.gui.generic.GUIButton;
 import jmlib.pdf.pdfviewer.gui.generic.GUICombo;
 import jmlib.pdf.pdfviewer.gui.generic.GUIOutline;
-import jmlib.pdf.pdfviewer.gui.generic.GUIThumbnailPanel;
-//import jmlib.pdf.pdfviewer.utils.PropertiesFile;
 
 import org.jpedal.PdfDecoder;
 
@@ -151,73 +149,39 @@ public class GUI {
 	
 	protected Values commonValues;
 	
-	protected GUIThumbnailPanel thumbnails;
-	
-	//protected PropertiesFile properties;
-	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#allowScrolling()
-	 */
 	public boolean allowScrolling() {
 		return allowScrolling;
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#setNoPagesDecoded()
-	 */
 	public void setNoPagesDecoded() {
-		//<start-forms>
 		pagesDecoded.clear();
-		//<end-forms>		
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#setScalingToDefault()
-	 */
 	public void setScalingToDefault(){
 		scaling = (float) 1.0;
 		scalingBox.setSelectedIndex(2); 
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#setRectangle(java.awt.Rectangle)
-	 */
 	public void setRectangle(Rectangle newRect) {
 		currentRectangle=newRect;
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#getRectangle()
-	 */
 	public Rectangle getRectangle() {
 		return currentRectangle;
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#toogleAutoScrolling()
-	 */
 	public void toogleAutoScrolling() {
 		allowScrolling=!allowScrolling;
-		
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#getRotation()
-	 */
 	public int getRotation() {
 		return rotation;
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#getScaling()
-	 */
 	public float getScaling() {
 		return scaling;
 	}
 	
-	/* (non-Javadoc)
-	 * @see jmlib.pdf.pdfviewer.gui.swing.GUIFactory#getPDFDisplayInset()
-	 */
 	public int getPDFDisplayInset() {
 		return inset;
 	}

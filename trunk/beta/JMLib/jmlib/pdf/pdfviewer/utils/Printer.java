@@ -13,11 +13,10 @@ import javax.print.attribute.standard.PageRanges;
 import javax.swing.ProgressMonitor;
 import javax.swing.Timer;
 
+import jmlib.miscelanea.idiom.Language;
 import jmlib.pdf.pdfviewer.gui.GUIFactory;
 
 import org.jpedal.PdfDecoder;
-
-import jmlib.miscelanea.idiom.Language;
 
 /**
  * handle printing for GUI viewer
@@ -69,8 +68,9 @@ public class Printer {
 					
 					//setup print job and objects
 					PrinterJob printJob = PrinterJob.getPrinterJob();
-					PageFormat pf = printJob.defaultPage();
 					
+					PageFormat pf = printJob.defaultPage();
+
 					Paper paper = new Paper();
 					paper.setSize(595, 842);
 					paper.setImageableArea(43, 43, 509, 756);
@@ -81,7 +81,7 @@ public class Printer {
 						
 					//VERY useful for debugging! (shows the imageable
 					// area as a green box bordered by a rectangle)
-					//decode_pdf.showImageableArea();
+					decode_pdf.showImageableArea();
 						
 					/**
 					 * Example 1 - uses Pagable interface and can get page Range
@@ -97,7 +97,7 @@ public class Printer {
 					aset.add(new PageRanges(1,decode_pdf.getPageCount()));
 			
 					boolean printFile=printJob.printDialog(aset);
-				
+					System.out.println("Pase por aqui en la impresion val {"+printFile+"}");
   				    //set page range
 					PageRanges r=(PageRanges) aset.get(PageRanges.class);
 					if((r!=null)&&(printFile)){
@@ -154,9 +154,7 @@ public class Printer {
 					}
 				} catch (PrinterException ee) {
 					ee.printStackTrace();
-					//<start-13>
 					currentGUI.showMessageDialog(ee.getMessage()+" "+ee+" "+" "+ee.getCause());
-					//<end-13>
 				} catch (Exception e) {
 					e.printStackTrace();
 					currentGUI.showMessageDialog("Excepcion "+e);
@@ -197,8 +195,6 @@ public class Printer {
 				}
 			}
 		};
-		
-		//start printing in background (comment out if not required)
 		worker.start();
 		
 	}

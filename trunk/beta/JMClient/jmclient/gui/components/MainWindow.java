@@ -2,6 +2,7 @@ package jmclient.gui.components;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Vector;
@@ -94,7 +95,17 @@ public class MainWindow extends JFrame {
          * Adicionando componentes al panel central
          */
 
-        JDPpanel = new JDesktopPane();
+        JDPpanel = new JDesktopPane() {
+			private static final long serialVersionUID = -2087223016881101556L;
+			@Override
+			public Component add(Component comp) {
+				Component component = super.add(comp);
+				component.setLocation(
+						(JDPpanel.getWidth()/2)-(component.getWidth()/2),
+						(JDPpanel.getHeight()/2)-(component.getHeight()/2));
+				return component;
+			}
+		};
         JPcentral.add(JDPpanel,BorderLayout.CENTER);
         JDPpanel.setForeground(Color.darkGray);
 

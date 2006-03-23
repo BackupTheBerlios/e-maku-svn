@@ -38,17 +38,17 @@ package jmlib.pdf.pdfviewer.gui.swing;
 
 import java.awt.event.WindowEvent;
 
+import javax.swing.JOptionPane;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
 import jmlib.pdf.pdfviewer.Commands;
 import jmlib.pdf.pdfviewer.Values;
 import jmlib.pdf.pdfviewer.gui.GUIFactory;
-import jmlib.pdf.pdfviewer.gui.generic.GUIThumbnailPanel;
-//import jmlib.pdf.pdfviewer.utils.Messages;
 import jmlib.pdf.pdfviewer.utils.Printer;
 
 import org.jpedal.PdfDecoder;
+import org.jpedal.examples.simpleviewer.utils.Messages;
 
 /**cleanly shutdown if user closes window*/
 public class FrameCloser implements InternalFrameListener {
@@ -57,26 +57,19 @@ public class FrameCloser implements InternalFrameListener {
 	GUIFactory currentGUI;
 	PdfDecoder decode_pdf;
 	private Printer currentPrinter;
-	GUIThumbnailPanel thumbnails;
 	Values commonValues;
 	
-	public FrameCloser(Commands currentCommands,GUIFactory currentGUI,PdfDecoder decode_pdf, Printer currentPrinter,GUIThumbnailPanel thumbnails,Values commonValues) {
+	public FrameCloser(Commands currentCommands,GUIFactory currentGUI,PdfDecoder decode_pdf, Printer currentPrinter,Values commonValues) {
 		this.currentCommands=currentCommands;
 		this.currentGUI=currentGUI;
 		this.decode_pdf=decode_pdf;
 		this.currentPrinter=currentPrinter;
-		this.thumbnails=thumbnails;
 		this.commonValues=commonValues;
 	}
 	
-	public void windowClosing(WindowEvent e) {
-		
-		
-	}
+	public void windowClosing(WindowEvent e) {}
 
-	public void internalFrameOpened(InternalFrameEvent e) {
-		
-	}
+	public void internalFrameOpened(InternalFrameEvent e) {}
 
 	public void internalFrameClosing(InternalFrameEvent e) {
 		
@@ -84,49 +77,26 @@ public class FrameCloser implements InternalFrameListener {
 		if(currentPrinter.isPrinting())
 			currentGUI.showMessageDialog("PdfViewerBusyPrinting.message");
 		if(!commonValues.isProcessing()){
+			int confirm=JOptionPane.showInternalConfirmDialog(currentGUI.getFrame(),Messages.getMessage("PdfViewerCloseing.message"),"",JOptionPane.YES_NO_OPTION);
 			
-			//tell our code to exit cleanly asap
-			thumbnails.terminateDrawing();
-			
-			//int confirm=currentGUI.showConfirmDialog(Messages.getMessage("PdfViewerCloseing.message"),null,JOptionPane.YES_NO_OPTION);
-			
-			//if(confirm==0){
-				
-				//<start-forms>
-				/**
-				 * warn user on forms
-				 */
-				//currentCommands.handleUnsaveForms();
-				//<end-forms>
-				
+			if(confirm==JOptionPane.YES_OPTION){
 				decode_pdf.closePdfFile();
-				//System.exit(0);
-			//}
+				currentGUI.getFrame().dispose();
+			}
 			
 		}else{
-
 			currentGUI.showMessageDialog("PdfViewerDecodeWait.message");
 		}
 		
 	}
 
-	public void internalFrameClosed(InternalFrameEvent e) {
-		
-	}
+	public void internalFrameClosed(InternalFrameEvent e) {}
 
-	public void internalFrameIconified(InternalFrameEvent e) {
-		
-	}
+	public void internalFrameIconified(InternalFrameEvent e) {}
 
-	public void internalFrameDeiconified(InternalFrameEvent e) {
-		
-	}
+	public void internalFrameDeiconified(InternalFrameEvent e) {}
 
-	public void internalFrameActivated(InternalFrameEvent e) {
-		
-	}
+	public void internalFrameActivated(InternalFrameEvent e) {}
 
-	public void internalFrameDeactivated(InternalFrameEvent e) {
-		
-	}
+	public void internalFrameDeactivated(InternalFrameEvent e) {}
 }
