@@ -1,39 +1,33 @@
 /**
- * ===========================================
- * Java Pdf Extraction Decoding Access Library
- * ===========================================
- *
+ * Esta clase esta basada en el archivo Values.java del proyecto JPedal.
+ * Mayor informacion: 
+ * 
  * Project Info:  http://www.jpedal.org
  * Project Lead:  Mark Stephens (mark@idrsolutions.com)
- *
- * (C) Copyright 2006, IDRsolutions and Contributors.
- *
- * 	This file is part of JPedal
- *
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    General Public License for more details.
-
-    You should have received a copy of the GNU General Public
-    License along with this library; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-
- *
- * ---------------
- * Values.java
- * ---------------
- *
+ * (C) Copyright 2006, by IDRsolutions and Contributors.
  * Original Author:  Mark Stephens (mark@idrsolutions.com)
- * Contributor(s):
+ * 
+ * Values.java moficiado a partir de 23-mar-2006
+ * 
+ * Este archivo es parte de JMServerII
+ * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
  *
+ * JMServerII es Software Libre; usted puede redistribuirlo y/o realizar
+ * modificaciones bajo los terminos de la Licencia Publica General
+ * GNU GPL como esta publicada por la Fundacion del Software Libre (FSF);
+ * tanto en la version 2 de la licencia, o cualquier version posterior.
+ *
+ * E-Maku es distribuido con la expectativa de ser util, pero
+ * SIN NINGUNA GARANTIA; sin ninguna garantia aun por COMERCIALIZACION
+ * o por un PROPOSITO PARTICULAR. Consulte la Licencia Publica General
+ * GNU GPL para mas detalles.
+ * <br>
+ * Informacion de la clase
+ * <br>
+ * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
+ * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
+
 package jmlib.pdf.pdfviewer;
 
 import org.jpedal.objects.PdfAnnots;
@@ -313,5 +307,4 @@ public class Values {
 	public void setPdfArray(byte[] pdfArray) {
 		this.pdfArray = pdfArray;
 	}
-	
 }
