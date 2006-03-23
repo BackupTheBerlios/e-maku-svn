@@ -1,3 +1,33 @@
+/**
+ * Esta clase esta basada en el archivo PDFViewer.java del proyecto JPedal.
+ * Mayor informacion: 
+ * 
+ * Project Info:  http://www.jpedal.org
+ * Project Lead:  Mark Stephens (mark@idrsolutions.com)
+ * (C) Copyright 2006, by IDRsolutions and Contributors.
+ * Original Author:  Mark Stephens (mark@idrsolutions.com)
+ * 
+ * PdfViewer.java moficiado a partir de 23-mar-2006
+ * 
+ * Este archivo es parte de JMServerII
+ * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
+ *
+ * JMServerII es Software Libre; usted puede redistribuirlo y/o realizar
+ * modificaciones bajo los terminos de la Licencia Publica General
+ * GNU GPL como esta publicada por la Fundacion del Software Libre (FSF);
+ * tanto en la version 2 de la licencia, o cualquier version posterior.
+ *
+ * E-Maku es distribuido con la expectativa de ser util, pero
+ * SIN NINGUNA GARANTIA; sin ninguna garantia aun por COMERCIALIZACION
+ * o por un PROPOSITO PARTICULAR. Consulte la Licencia Publica General
+ * GNU GPL para mas detalles.
+ * <br>
+ * Informacion de la clase
+ * <br>
+ * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
+ * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
+ */
+
 package jmlib.pdf.pdfviewer;
 
 import java.awt.Cursor;
@@ -141,7 +171,8 @@ public class PDFViewer implements ReportListener {
 			for (int i = 0; i < count; i++) {
 				Font f = new Font(fontList[i], 1, 10);
 				System.out.println(
-						fontList[i] + " ("
+						fontList[i]
+						+ " ("
 						+ Language.getWord("FUENTESDISP") + "=" + f.getPSName()
 						+ ")");
 

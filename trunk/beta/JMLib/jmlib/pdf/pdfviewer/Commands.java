@@ -1,39 +1,33 @@
 /**
- * ===========================================
- * Java Pdf Extraction Decoding Access Library
- * ===========================================
- *
+ * Esta clase esta basada en el archivo Commands.java del proyecto JPedal.
+ * Mayor informacion: 
+ * 
  * Project Info:  http://www.jpedal.org
  * Project Lead:  Mark Stephens (mark@idrsolutions.com)
- *
- * (C) Copyright 2006, IDRsolutions and Contributors.
- *
- * 	This file is part of JPedal
- *
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    General Public License for more details.
-
-    You should have received a copy of the GNU General Public
-    License along with this library; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-
- *
- * ---------------
- * Commands.java
- * ---------------
- *
+ * (C) Copyright 2006, by IDRsolutions and Contributors.
  * Original Author:  Mark Stephens (mark@idrsolutions.com)
- * Contributor(s):
+ * 
+ * Commands.java moficiado a partir de 23-mar-2006
+ * 
+ * Este archivo es parte de JMServerII
+ * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
  *
+ * JMServerII es Software Libre; usted puede redistribuirlo y/o realizar
+ * modificaciones bajo los terminos de la Licencia Publica General
+ * GNU GPL como esta publicada por la Fundacion del Software Libre (FSF);
+ * tanto en la version 2 de la licencia, o cualquier version posterior.
+ *
+ * E-Maku es distribuido con la expectativa de ser util, pero
+ * SIN NINGUNA GARANTIA; sin ninguna garantia aun por COMERCIALIZACION
+ * o por un PROPOSITO PARTICULAR. Consulte la Licencia Publica General
+ * GNU GPL para mas detalles.
+ * <br>
+ * Informacion de la clase
+ * <br>
+ * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
+ * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
+
 package jmlib.pdf.pdfviewer;
 
 import java.awt.Color;
@@ -61,24 +55,15 @@ import org.jpedal.objects.PdfFileInformation;
 /**code to execute the actual commands*/
 public class Commands {
 	
-	public static final int INFO = 1;
-	public static final int BITMAP = 2;
-	public static final int IMAGES = 3;
-	public static final int TEXT = 4;
+	//public static final int INFO = 1;
+	//public static final int BITMAP = 2;
+	//public static final int IMAGES = 3;
+	//public static final int TEXT = 4;
 	public static final int SAVE = 5;
 	public static final int PRINT = 6;
 	public static final int EXIT = 7;
 	public static final int AUTOSCROLL = 8;
-//	public static final int DOCINFO = 9;
 	public static final int OPENFILE = 10;
-// public static final int BOOKMARK = 11;
-//	public static final int FIND = 12;
-//	public static final int SNAPSHOT = 13;
-//	public static final int OPENURL = 14;
-//	public static final int VISITWEBSITE = 15;
-//	public static final int PREVIOUSDOCUMENT = 16;
-//	public static final int NEXTDOCUMENT = 17;
-	
 	public static final int FIRSTPAGE = 50;
 	public static final int FBACKPAGE = 51;
 	public static final int BACKPAGE = 52;
@@ -88,27 +73,24 @@ public class Commands {
 	public static final int GOTO = 56;
 	
 	/**combo boxes start at 250*/
-//	public static final int QUALITY = 250;
-//	public static final int ROTATION = 251;
 	public static final int SCALING = 252;
 	
 	/**
 	 * external/itext menu options start at 500 - add your own CONSTANT here
 	 * and refer to action using name at ALL times
 	 */
-	public static final int SAVEFORM = 500;
-	public static final int PDF = 501;
-	public static final int ROTATE=502;
-	public static final int DELETE=503;
-	public static final int ADD=504;
-	public static final int SECURITY=505;
-	public static final int ADDHEADERFOOTER=506;
-	public static final int STAMPTEXT=507;
-	public static final int STAMPIMAGE=508;
-	public static final int SETCROP=509;
-	public static final int NUP = 510;
-	public static final int HANDOUTS = 511;
-	//public static final int NEWFUNCTION = 512;
+	//public static final int SAVEFORM = 500;
+	//public static final int PDF = 501;
+	//public static final int ROTATE=502;
+	//public static final int DELETE=503;
+	//public static final int ADD=504;
+	//public static final int SECURITY=505;
+	//public static final int ADDHEADERFOOTER=506;
+	//public static final int STAMPTEXT=507;
+	//public static final int STAMPIMAGE=508;
+	//public static final int SETCROP=509;
+	//public static final int NUP = 510;
+	//public static final int HANDOUTS = 511;
 	
 	
 	private Values commonValues;
@@ -118,13 +100,10 @@ public class Commands {
 	
 	/**image if file tiff or png or jpg*/
 	private BufferedImage img=null;
-	
 	private Printer currentPrinter;
 	
-//	public Commands(Values commonValues,SwingGUI currentGUI,PdfDecoder decode_pdf,GUIThumbnailPanel thumbnails, 
-			//PropertiesFile properties , GUISearchWindow searchFrame,Printer currentPrinter) {
 	
-public Commands(Values commonValues,SwingGUI currentGUI,PdfDecoder decode_pdf,Printer currentPrinter) {
+	public Commands(Values commonValues,SwingGUI currentGUI,PdfDecoder decode_pdf,Printer currentPrinter) {
 		this.commonValues=commonValues;
 		this.currentGUI=currentGUI;
 		this.decode_pdf=decode_pdf;
@@ -147,14 +126,18 @@ public Commands(Values commonValues,SwingGUI currentGUI,PdfDecoder decode_pdf,Pr
 				if(!currentPrinter.isPrinting()){
 					if(!commonValues.isPDF()){
 						currentGUI.showMessageDialog(Language.getWord("IMPRIERR"));
-					}else{
+					}
+					else{
 						currentPrinter.printPDF(decode_pdf,currentGUI);
 					}
-				}else {
+				}
+				else {
 					currentGUI.showMessageDialog(Language.getWord("IMPRIESP"));
 				}
-			}else
-				currentGUI.showMessageDialog(Language.getWord("NOARCHIMP")); 
+			}
+			else {
+				currentGUI.showMessageDialog(Language.getWord("NOARCHIMP"));
+			}
 			break;
 			
 		case EXIT:
@@ -204,12 +187,6 @@ public Commands(Values commonValues,SwingGUI currentGUI,PdfDecoder decode_pdf,Pr
 					currentGUI.zoom();
 			}
 			break;
-			
-/*		case ROTATION:
-			if(commonValues.getPdfArray()!=null)
-				currentGUI.rotate(); 
-			break; */
-
 		default:
 			System.out.println(Language.getWord("ITEMNOSEL"));
 		}

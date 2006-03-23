@@ -1,41 +1,33 @@
 /**
- * ===========================================
- * Java Pdf Extraction Decoding Access Library
- * ===========================================
- *
+ * Esta clase esta basada en el archivo SwingGUI.java del proyecto JPedal.
+ * Mayor informacion: 
+ * 
  * Project Info:  http://www.jpedal.org
  * Project Lead:  Mark Stephens (mark@idrsolutions.com)
- *
- * (C) Copyright 2005, IDRsolutions and Contributors.
- * 
- * 	This file is part of JPedal
- *
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    General Public License for more details.
-
-    You should have received a copy of the GNU General Public
-    License along with this library; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-
- *
- * ---------------
- * SwingGUI.java
- * ---------------
  * (C) Copyright 2006, by IDRsolutions and Contributors.
- *
-
  * Original Author:  Mark Stephens (mark@idrsolutions.com)
- * Contributor(s):
+ * 
+ * SwingGUI.java moficiado a partir de el 23-mar-2006
+ * 
+ * Este archivo es parte de JMServerII
+ * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
  *
+ * JMServerII es Software Libre; usted puede redistribuirlo y/o realizar
+ * modificaciones bajo los terminos de la Licencia Publica General
+ * GNU GPL como esta publicada por la Fundacion del Software Libre (FSF);
+ * tanto en la version 2 de la licencia, o cualquier version posterior.
+ *
+ * E-Maku es distribuido con la expectativa de ser util, pero
+ * SIN NINGUNA GARANTIA; sin ninguna garantia aun por COMERCIALIZACION
+ * o por un PROPOSITO PARTICULAR. Consulte la Licencia Publica General
+ * GNU GPL para mas detalles.
+ * <br>
+ * Informacion de la clase
+ * <br>
+ * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
+ * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
+ 
 package jmlib.pdf.pdfviewer.gui;
 
 import java.awt.BorderLayout;
@@ -355,7 +347,8 @@ public class SwingGUI extends GUI implements GUIFactory {
 		if(line==BUTTONBAR){
 			topButtons.add((AbstractButton) newButton);
 			topButtons.add(Box.createHorizontalGlue());
-		}else if(line==NAVBAR){
+		}
+		else if(line==NAVBAR){
 			comboBar.add((AbstractButton) newButton);
 			comboBar.add(Box.createHorizontalGlue());
 		}
@@ -442,9 +435,10 @@ public class SwingGUI extends GUI implements GUIFactory {
 				
 				float zoom=-1;
 				if((numberValue!=null)&&(numberValue.length()>0)){
-					try{
+					try {
 						zoom= Float.parseFloat(numberValue);
-					}catch(Exception e){
+					}
+					catch(Exception e){
 						zoom=-1;
 							int length=numberValue.length();
 						int ii=0;
@@ -461,9 +455,12 @@ public class SwingGUI extends GUI implements GUIFactory {
 						
 						//try again if we reset above
 						if(zoom==-1){
-							try{
+							try {
 								zoom= Float.parseFloat(numberValue);
-							}catch(Exception e1){zoom=-1;}
+							}
+							catch(Exception e1){
+								zoom=-1;
+							}
 						}
 					}
 					if(zoom>1000){
@@ -472,26 +469,28 @@ public class SwingGUI extends GUI implements GUIFactory {
 				}
 				
 				//if nothing off either attempt, use window value
-				if(zoom==-1){
+				if(zoom==-1) {
 					//its not set so use To window value
 					index=defaultSelection;
 					setSelectedComboIndex(Commands.SCALING, index);
-				}else{
+				}
+				else {
 					scaling=zoom/100;
 					setSelectedComboItem(Commands.SCALING, zoom+"");	
 				}
 			}
 			
 			if(index!=-1){
-				if(index<3){ //handle scroll to width/height/window
+				if(index<3) { //handle scroll to width/height/window
 					
 					PdfPageData pageData = decode_pdf.getPdfPageData();
 					int cw,ch;
 					//int raw_rotation=pageData.getRotation(commonValues.getCurrentPage());
-					if(rotation==90 || rotation==270){
+					if(rotation==90 || rotation==270) {
 						cw = pageData.getCropBoxHeight(commonValues.getCurrentPage());
 						ch = pageData.getCropBoxWidth(commonValues.getCurrentPage());
-					}else{
+					}
+					else {
 						cw = pageData.getCropBoxWidth(commonValues.getCurrentPage());
 						ch = pageData.getCropBoxHeight(commonValues.getCurrentPage());
 					}
@@ -560,15 +559,6 @@ public class SwingGUI extends GUI implements GUIFactory {
 		
 		decode_pdf.clearScreen();
 		commonValues.setProcessing(true);
-		
-		/**
-		 * add outline if appropriate in a scrollbar on the left to
-		 * replicate L & F or Acrobat
-		 */
-		/*if (!hasOutlinesDrawn) {
-			hasOutlinesDrawn=true;
-			createOutlinePanels();
-		}*/
 		
 		SwingWorker worker = new SwingWorker() {
 			public Object construct() {
@@ -651,9 +641,7 @@ public class SwingGUI extends GUI implements GUIFactory {
 					
 					
 				} catch (Exception e) {
-					//<start-13>
-					//setViewerTitle(mainTitle); //restore title
-					//<end-13>
+
 				}
 				
 				statusBar.setProgress(100);
@@ -664,16 +652,6 @@ public class SwingGUI extends GUI implements GUIFactory {
 				
 				//<start-forms>
 				addFormsListeners();
-				
-				/*
-				if(decode_pdf.isXFAForm()){
-					showMessageDialog("This PDF contains XFA form objects\n" +
-							"Support for these will be in JPedal release 3.0\n" +
-					"Available from http://www.jpedal.org in early 2006");
-				}
-				*/
-				
-				//<end-forms>
 				
 				return null;
 			}
