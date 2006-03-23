@@ -325,7 +325,6 @@ public Commands(Values commonValues,SwingGUI currentGUI,PdfDecoder decode_pdf,Pr
 				//<end-13>
 			}
 			
-			currentGUI.removeOutlinePanels();
 			
 			if (fileCanBeOpened) {				
 				/** reset values */
@@ -369,7 +368,7 @@ public Commands(Values commonValues,SwingGUI currentGUI,PdfDecoder decode_pdf,Pr
 		commonValues.maxViewY=0;// rensure reset for any viewport
 		commonValues.setPDF(true);
 		
-		currentGUI.setQualityBoxVisible(commonValues.isPDF());
+		//currentGUI.setQualityBoxVisible(commonValues.isPDF());
 				
 		boolean fileCanBeOpened=openUpFile(commonValues.getPdfArray());
 		commonValues.setCurrentPage(1);

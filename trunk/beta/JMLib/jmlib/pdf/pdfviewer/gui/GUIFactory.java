@@ -16,25 +16,6 @@ public interface GUIFactory {
 
 	public int BUTTONBAR = 0;
 	public int NAVBAR = 1;
-	
-	
-	/**sets up layout menu (controls page views - Multiple, facing,etc)
-	public void initLayoutMenus(JMenu pageLayout, String[] descriptions,
-			int[] value); */
-
-	/**
-	 * display a box giving user info about program
-	 */
-	//public void getInfoBox();
-
-	/**
-	 * align rotation combo box to default for page
-	 *
-	public void resetRotationBox(); */
-
-	/**popup box with details on current PDF file on tabbed Window
-	public void showDocumentProperties(String selectedFile, String inputDir,
-			long size, int pageCount, int currentPage); */
 
 	/**
 	 * main method to initialise Swing specific code and create GUI display
@@ -126,21 +107,9 @@ public interface GUIFactory {
 	 */
 	public void decodePage(final boolean resizePanel);
 
-	/**
-	 * remove outlines and flag for redraw
-	 */
-	public void removeOutlinePanels();
-
-	/**
-	 * show/hide PDF outline panel
-	 *
-	public void togglePDFOutline(); */
-
 	public void initStatus();
 
 	public void resetStatus();
-
-	//public void initThumbnails(int itemSelectedCount, Vector_Int pageUsed);
 
 	/**flush list of pages decoded*/
 	public void setNoPagesDecoded();
@@ -148,14 +117,10 @@ public interface GUIFactory {
 	/**set text displayed in cursor co-ordinates box*/
 	public void setCoordText(String string);
 
-	/**change snapshot according to commonValues.isExtractImageOnSelection()*/
-	//public void toggleSnapshotButton();
 
 	/**set page number at bottom of screen*/
 	public void setPageNumber();
 
-	/**add MenuItem to main menu*/
-	//public void addToMainMenu(JMenu fileMenuList);
 
 	/**allow access to root frame if required*/
 	public JInternalFrame getFrame();
@@ -182,8 +147,6 @@ public interface GUIFactory {
 	
 	public int showOverwriteDialog(String file,boolean yesToAllPresent);
 
-	//public void showItextPopup();
-	
 	public void showConfirmDialog(Object label, String message, int option,
 			int plain_message);
 
@@ -192,18 +155,6 @@ public interface GUIFactory {
 	/**show if user has set auto-scrolling on or off - if on moves at edge of panel to show more*/
 	public boolean allowScrolling();
 
-	//public boolean isPDFOutlineVisible();
-
-	public void setPDFOutlineVisible(boolean visible);
-
-	/**
-	 * remove the thumbnail display panel
-	 */
-	public void removeThumbnails();
-
-	/**set location of split pane between main PDF and outline/thumbnail panel*/
-	public void setSplitDividerLocation(int size);
-
 	/**message to show in status object*/
 	public void updateStatusMessage(String message);
 
@@ -211,7 +162,4 @@ public interface GUIFactory {
 
 	/**set current status value 0 -100*/
 	public void setStatusProgress(int size);
-
-	public void setQualityBoxVisible(boolean visible);
-	
 }

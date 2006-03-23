@@ -48,7 +48,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -75,11 +74,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.JToolBar;
-import javax.swing.JTree;
 import javax.swing.KeyStroke;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import jmlib.miscelanea.idiom.Language;
 import jmlib.pdf.pdfviewer.Commands;
@@ -570,10 +565,10 @@ public class SwingGUI extends GUI implements GUIFactory {
 		 * add outline if appropriate in a scrollbar on the left to
 		 * replicate L & F or Acrobat
 		 */
-		if (!hasOutlinesDrawn) {
+		/*if (!hasOutlinesDrawn) {
 			hasOutlinesDrawn=true;
 			createOutlinePanels();
-		}
+		}*/
 		
 		SwingWorker worker = new SwingWorker() {
 			public Object construct() {
@@ -825,105 +820,6 @@ public class SwingGUI extends GUI implements GUIFactory {
 	}
 	//<end-forms>
 	
-	/**
-	 *  put the outline data into a display panel which we can pop up 
-	 * for the user - outlines, thumbnails
-	 */
-	private void createOutlinePanels() {
-	
-		/**
-		 * set up first 10 thumbnails by default. Rest created as needed.
-		 */
-		//add if statement or comment out this section to remove thumbnails
-		/*if(thumbnails.isShownOnscreen()){
-			
-			int pages=decode_pdf.getPageCount();
-			
-			if(pages>100){
-				thumbnails.setIsDisplayedOnscreen(false);
-				LogWriter.writeLog("Thumbnails not used on files over 100 pages long");
-			}else{
-				
-		
-				Object[] buttons=thumbnails.getButtons();
-				for(int i=0;i<pages;i++)
-					((JButton)buttons[i]).addActionListener(new PageChanger(i));
-				
-		
-				thumbnails.addComponentListener();
-		
-				
-			}
-			
-		}*/
-		
-		/**
-		 * add any outline
-		 */
-		if(decode_pdf.hasOutline()&& showOutlines){
-			
-			/**graphical display*/
-			
-			Node rootNode= decode_pdf.getOutlineAsXML().getFirstChild();
-			if(rootNode!=null){
-				
-				tree=new SwingOutline(rootNode);
-				
-				//Listen for when the selection changes - looks up dests at present
-				((JTree) tree.getTree()).addTreeSelectionListener(new TreeSelectionListener(){
-					
-					/** Required by TreeSelectionListener interface. */
-					public void valueChanged(TreeSelectionEvent e) {
-						
-						if(tree.isIgnoreAlteredBookmark())
-							return;
-						
-						DefaultMutableTreeNode node = tree.getLastSelectedPathComponent();
-						
-						if (node == null) return;
-										
-						/**get title and open page if valid*/
-						String title=(String)node.getUserObject();
-						String page=tree.getPage(title);
-						
-						if((page!=null)&&(page.length()>0)){
-							int pageToDisplay=Integer.parseInt(page);
-							
-							if((!commonValues.isProcessing())&&(commonValues.getCurrentPage()!=pageToDisplay)){
-								commonValues.setCurrentPage(pageToDisplay);
-								/**reset as rotation may change!*/
-								setScalingToDefault();
-								
-								decode_pdf.setPageParameters(getScaling(), commonValues.getCurrentPage());
-								decodePage(false);
-							}
-							
-							Point p= tree.getPoint(title);
-							if(p!=null)
-								decode_pdf.ensurePointIsVisible(p);
-							
-						}else
-							System.out.println("No dest page set for "+title);
-					}
-				});
-				
-			}
-		}		
-	}
-	
-	
-	public void removeOutlinePanels() {
-		
-		/**
-		 * reset left hand nav bar
-		 */
-		if(tree!=null)
-			tree.setMinimumSize(new Dimension(50,frame.getHeight()));
-		
-		/**flag for redraw*/
-		hasOutlinesDrawn=false;		
-	}
-	
 	public void initStatus() {
 		decode_pdf.setStatusBarObject(statusBar);
 		resetStatus();
@@ -1122,12 +1018,6 @@ public class SwingGUI extends GUI implements GUIFactory {
 		return tree.getPage(bookmark);
 	}
 	
-	public void removeThumbnails() {
-		setPDFOutlineVisible(false);
-	}
-	
-	public void setSplitDividerLocation(int size) {}
-	
 	public void updateStatusMessage(String message) {
 		statusBar.updateStatus(message,0);
 	}
@@ -1139,10 +1029,6 @@ public class SwingGUI extends GUI implements GUIFactory {
 	public void setStatusProgress(int size) {
 		statusBar.setProgress(size);	
 	}
-	
-	public void setPDFOutlineVisible(boolean visible) {}
-
-	public void setQualityBoxVisible(boolean visible){}
 	
 	public void close() {
 		frame.dispose();

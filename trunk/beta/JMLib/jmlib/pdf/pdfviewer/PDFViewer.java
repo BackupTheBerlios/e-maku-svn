@@ -20,7 +20,6 @@ import org.jdom.Element;
 import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfFontException;
 
-
 public class PDFViewer implements ReportListener {
 
 	/** repository for general settings */

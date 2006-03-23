@@ -9,6 +9,7 @@ import java.util.Vector;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
@@ -100,9 +101,11 @@ public class MainWindow extends JFrame {
 			@Override
 			public Component add(Component comp) {
 				Component component = super.add(comp);
-				component.setLocation(
-						(JDPpanel.getWidth()/2)-(component.getWidth()/2),
-						(JDPpanel.getHeight()/2)-(component.getHeight()/2));
+				if (component instanceof JInternalFrame && !((JInternalFrame)component).isIcon()) {
+					component.setLocation(
+							(JDPpanel.getWidth()/2)-(component.getWidth()/2),
+							(JDPpanel.getHeight()/2)-(component.getHeight()/2));
+				}
 				return component;
 			}
 		};
