@@ -123,6 +123,16 @@
         <en_US>can't create the statement</en_US>
     </palabra>
     <palabra>
+        <clave>ERR_DELETE_DOCUMENT_NOT_FOUND</clave>
+        <es_CO>Error, el documento a borrar no existe</es_CO>
+        <en_US>Error, the document to delete not found</en_US>
+    </palabra>
+    <palabra>
+        <clave>ERR_ANNUL_DOCUMENT_NOT_FOUND</clave>
+        <es_CO>Error, el documento a anular no existe</es_CO>
+        <en_US>Error, the document to annul not found</en_US>
+    </palabra>
+    <palabra>
         <clave>ERR_RS</clave>
         <es_CO>Error en el resulset</es_CO>
         <en_US>can't create the statement</en_US>

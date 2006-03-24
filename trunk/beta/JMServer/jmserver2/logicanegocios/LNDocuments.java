@@ -135,6 +135,9 @@ public class LNDocuments {
 	                 * tengan valor, si no es asi este valor debe venir en el primer 
 	                 * paquete de la transaccion
 	                 */
+	                
+	                System.out.println("accion del documento: "+actionDocument);
+	                
 	                if (actionDocument.equals(CREATE_DOCUMENT)) {
 
 	                    boolean parameters = true;
@@ -227,6 +230,11 @@ public class LNDocuments {
 	                	String numero = subpackage.getValue();
     	                String primaryKey = getPrimaryKey(numero);
 
+                    if (primaryKey==null) {
+                    		System.out.println("la llave es nula");
+                    		undoTransaction(Language.getWord("ERR_ANNUL_DOCUMENT_NOT_FOUND"));
+                    		break;
+                    }
     	                /*
     	                 * Se verifica que el documento no haya sido anulado anteriormente
     	                 */
@@ -269,19 +277,24 @@ public class LNDocuments {
                         	break;
                         }
 	                } else if (actionDocument.equals(DELETE_DOCUMENT)) {
-	                	/*
-	                	 * El primer paquete recibido del cliente debe ser el numero de documento
-	                	 * a borrar, se lo obtiene para adicionar su llave primaria para poder
-	                	 * hacer los procedimientos necesarios para la anulacion
-	                	 */
-	                	String numero = subpackage.getValue();
-    	                String key = getPrimaryKey(numero);
-    	                System.out.println("llave primaria: "+key);
-                        if (i.hasNext()) {
-                        	subpackage = (Element) j.next();
+		                	/*
+		                	 * El primer paquete recibido del cliente debe ser el numero de documento
+		                	 * a borrar, se lo obtiene para adicionar su llave primaria para poder
+		                	 * hacer los procedimientos necesarios para la anulacion
+		                	 */
+		                	String numero = subpackage.getValue();
+	    	                String key = getPrimaryKey(numero);
+	    	                System.out.println("llave primaria: "+key);
+                        if (key==null) {
+                        		System.out.println("la llave es nula");
+                        		undoTransaction(Language.getWord("ERR_DELETE_DOCUMENT_NOT_FOUND"));
+                        		break;
+                        }
+	    	                if (i.hasNext()) {
+                        		subpackage = (Element) j.next();
                         }
                         else {
-                        	break;
+                        		break;
                         }
 	                	
 	                } else if (actionDocument.equals(EDIT_DOCUMENT)) {
