@@ -4,14 +4,17 @@ import java.awt.Font;
 import java.io.IOException;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+import jmclient.gui.components.MainWindow;
 import jmclient.gui.formas.Conexion;
 import jmclient.miscelanea.JMClientCons;
 import jmclient.miscelanea.configuracion.ConfigFile;
 import jmclient.miscelanea.configuracion.ConfigFileNotLoadException;
 import jmlib.comunicaciones.SocketConnect;
 import jmlib.gui.formas.FirstDialog;
+import jmlib.miscelanea.idiom.Language;
 
 //import com.l2fprod.gui.plaf.skin.Skin;
 //import com.l2fprod.gui.plaf.skin.SkinLookAndFeel;
@@ -93,16 +96,17 @@ public class Run {
 
     public static void salir() {
         try {
-            SocketConnect.getSock().close();
+        	int confirm=JOptionPane.showConfirmDialog(MainWindow.getRefWindow(),Language.getWord("CLOSE_CURRENT_APP"),"",JOptionPane.YES_NO_OPTION);
+    		if(confirm==JOptionPane.YES_OPTION){
+    			SocketConnect.getSock().close();
+	            System.exit(0);
+    		}
         }
         catch (NullPointerException e) {
 
         }
         catch (IOException e) {
-            e.printStackTrace();
-        }
-        finally {
-            System.exit(0);
+            
         }
     }
 }

@@ -3512,23 +3512,23 @@
   </palabra>
   <palabra>
     <clave>CLOSE_CURRENT_WINDOW</clave>
-    <es_CO>desea cerrar la actula venta?</es_CO>
+    <es_CO>Desea cerrar la actula venta?</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>exit current window?</en_US>
+    <en_US>Exit current window?</en_US>
   </palabra>
   <palabra>
     <clave>CLOSE_CURRENT_APP</clave>
-    <es_CO>desea cerrar la aplicación?</es_CO>
+    <es_CO>Desea cerrar la aplicación?</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>exit aplication?</en_US>
+    <en_US>Exit aplication?</en_US>
   </palabra>
   <palabra>
     <clave>CURRENT_WINDOW_BUSY</clave>
-    <es_CO>la actual venta esta ocupada!</es_CO>
+    <es_CO>La actual venta esta ocupada!</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>current windows is busy!</en_US>
+    <en_US>Current windows is busy!</en_US>
   </palabra>
 </idioma>

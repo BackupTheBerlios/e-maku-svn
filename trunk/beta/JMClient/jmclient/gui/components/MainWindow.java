@@ -11,9 +11,9 @@ import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLayeredPane;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import jmclient.Run;
 import jmclient.gui.formas.Splash;
 import jmclient.gui.menuXML.LoadMenu;
 import jmclient.gui.toolbarXML.JButtonXML;
@@ -61,7 +61,8 @@ public class MainWindow extends JFrame {
      */
 
     private static Vector Vtoolbar1;
-
+    private static JFrame refWindow;
+    
     public MainWindow() {
         
         super("E-Maku - Cliente");
@@ -128,11 +129,7 @@ public class MainWindow extends JFrame {
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-            	int confirm=JOptionPane.showConfirmDialog((Component) e.getSource(),Language.getWord("CLOSE_CURRENT_APP"),"",JOptionPane.YES_NO_OPTION);
-        		if(confirm==JOptionPane.NO_OPTION){
-        			return;
-        		}
-                System.exit(0);
+                Run.salir();
             }
         });
 
@@ -142,6 +139,7 @@ public class MainWindow extends JFrame {
         this.setVisible(true);
         Splash.DisposeSplash();
         this.setExtendedState(JFrame.NORMAL);
+        MainWindow.refWindow = this;
    }
 
     /**
@@ -165,9 +163,6 @@ public class MainWindow extends JFrame {
     public static JLayeredPane getJDPpanel() {
         return JDPpanel;
     }
-    public static void salir(){
-        System.exit(0);
-    }
     public static int getAncho(){
         return JDPpanel.getWidth();
     }
@@ -176,6 +171,10 @@ public class MainWindow extends JFrame {
     }
     public static JDesktopPane getJDPanel(){
         return JDPpanel;
+    }
+    
+    public static JFrame getRefWindow() {
+    	return refWindow;
     }
     	
 }
