@@ -42,13 +42,13 @@ import javax.swing.JOptionPane;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
+import jmlib.miscelanea.idiom.Language;
 import jmlib.pdf.pdfviewer.Commands;
 import jmlib.pdf.pdfviewer.Values;
 import jmlib.pdf.pdfviewer.gui.GUIFactory;
 import jmlib.pdf.pdfviewer.utils.Printer;
 
 import org.jpedal.PdfDecoder;
-import org.jpedal.examples.simpleviewer.utils.Messages;
 
 /**cleanly shutdown if user closes window*/
 public class FrameCloser implements InternalFrameListener {
@@ -75,9 +75,9 @@ public class FrameCloser implements InternalFrameListener {
 		
 		currentCommands.flush();
 		if(currentPrinter.isPrinting())
-			currentGUI.showMessageDialog("PdfViewerBusyPrinting.message");
+			currentGUI.showMessageDialog(Language.getWord("CURRENT_WINDOW_BUSY"));
 		if(!commonValues.isProcessing()){
-			int confirm=JOptionPane.showInternalConfirmDialog(currentGUI.getFrame(),Messages.getMessage("PdfViewerCloseing.message"),"",JOptionPane.YES_NO_OPTION);
+			int confirm=JOptionPane.showInternalConfirmDialog(currentGUI.getFrame(),Language.getWord("CLOSE_CURRENT_WINDOW"),"",JOptionPane.YES_NO_OPTION);
 			
 			if(confirm==JOptionPane.YES_OPTION){
 				decode_pdf.closePdfFile();

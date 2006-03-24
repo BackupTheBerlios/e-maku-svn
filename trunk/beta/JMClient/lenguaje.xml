@@ -3378,136 +3378,157 @@
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Printing is not available on images at this time</en_US>
-  </palabra>  
+  </palabra>
   <palabra>
     <clave>IMPRIESP</clave>
     <es_CO>Por favor, espere a que el proceso de impresión termine</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Please wait for print to finish</en_US>
-  </palabra> 
+  </palabra>
   <palabra>
     <clave>NOARCHIMP</clave>
     <es_CO>No hay archivo para imprimir</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>No file to print</en_US>
-  </palabra> 
+  </palabra>
   <palabra>
     <clave>AUNIMP</clave>
     <es_CO>Páginas aún en impresión</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Pages still printing</en_US>
-  </palabra> 
+  </palabra>
   <palabra>
     <clave>ITEMNOSEL</clave>
     <es_CO>Ningún item seleccionado</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>No menu item set</en_US>
-  </palabra> 
+  </palabra>
   <palabra>
     <clave>DECOPAG</clave>
     <es_CO>Decodificando Página</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Decoding Page</en_US>
-  </palabra> 
+  </palabra>
   <palabra>
     <clave>ABRIARCHIVO</clave>
     <es_CO>Abriendo Archivo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Opening File</en_US>
-  </palabra>  
+  </palabra>
   <palabra>
     <clave>CLAVEPDF</clave>
     <es_CO>Por favor, digite la clave del archivo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Please enter password</en_US>
-  </palabra>    
+  </palabra>
   <palabra>
     <clave>CLAVEPDFREQ</clave>
     <es_CO>Una clave válida es requerida para abrir el archivo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>A valid password is required to display encrypted files</en_US>
-  </palabra>    
+  </palabra>
   <palabra>
     <clave>ABRIERROR</clave>
     <es_CO>Este archivo a generado una excepción y no se puede abrir. Por favor envie el mensaje de eror que recibio a Qhatu Ltda para corregirlo.</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>This file generated an exception and cannot continue. Please send file to Qhatu Co. for analysis</en_US>
-  </palabra>   
+  </palabra>
   <palabra>
     <clave>PAGFUERANGO</clave>
     <es_CO>fuera de rango. Abriendo en la última página</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>out of range. Opening on last page</en_US>
-  </palabra> 
+  </palabra>
   <palabra>
     <clave>CARGANDOPAG</clave>
     <es_CO>Cargando Página</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Loading Page</en_US>
-  </palabra>    
+  </palabra>
   <palabra>
     <clave>ESPCARGANDOPAG</clave>
     <es_CO>Por favor, espere mientras se carga la página</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Please wait for page to display</en_US>
-  </palabra>    
+  </palabra>
   <palabra>
     <clave>RANGOFU</clave>
     <es_CO>está fuera del rango. Número de páginas=</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>is not in range. Total pagecount=</en_US>
-  </palabra>    
+  </palabra>
   <palabra>
     <clave>RANGOFU</clave>
     <es_CO>no es válido. Por favor, ingrese un valor númerico</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>is not valid. Please use a number (ie 4)</en_US>
-  </palabra> 
+  </palabra>
   <palabra>
     <clave>ARCHIVOEX</clave>
     <es_CO>El archivo ya existe.</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>The file already exists.</en_US>
-  </palabra> 
+  </palabra>
   <palabra>
     <clave>ARCHIVORESC</clave>
     <es_CO>Reemplazar el archivo existente?</es_CO>
     <en_US>Replace the existing file?</en_US>
-  </palabra> 
+  </palabra>
   <palabra>
     <clave>NAVTIP</clave>
     <es_CO>Para ir a una página - Ingrese el número de la página y presione la tecla Enter</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>To go to a page - Type in page number and press return</en_US>
-  </palabra> 
-   <palabra>
-  <clave>IMPFIN</clave>
+  </palabra>
+  <palabra>
+    <clave>IMPFIN</clave>
     <es_CO>Impresión Finalizada</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Printing order finished</en_US>
-  </palabra>  
+  </palabra>
   <palabra>
     <clave>CERRAR</clave>
     <es_CO>Cerrar</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Close</en_US>
+  </palabra>
+  <palabra>
+    <clave>CLOSE_CURRENT_WINDOW</clave>
+    <es_CO>desea cerrar la actula venta?</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>exit current window?</en_US>
+  </palabra>
+  <palabra>
+    <clave>CLOSE_CURRENT_APP</clave>
+    <es_CO>desea cerrar la aplicación?</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>exit aplication?</en_US>
+  </palabra>
+  <palabra>
+    <clave>CURRENT_WINDOW_BUSY</clave>
+    <es_CO>la actual venta esta ocupada!</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>current windows is busy!</en_US>
   </palabra>
 </idioma>

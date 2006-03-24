@@ -48,17 +48,12 @@ import jmlib.pdf.pdfviewer.utils.Printer;
 import jmlib.pdf.pdfviewer.utils.SwingWorker;
 
 import org.jpedal.PdfDecoder;
-import org.jpedal.examples.simpleviewer.utils.Messages;
 import org.jpedal.exception.PdfException;
 import org.jpedal.objects.PdfFileInformation;
 
 /**code to execute the actual commands*/
 public class Commands {
 	
-	//public static final int INFO = 1;
-	//public static final int BITMAP = 2;
-	//public static final int IMAGES = 3;
-	//public static final int TEXT = 4;
 	public static final int SAVE = 5;
 	public static final int PRINT = 6;
 	public static final int EXIT = 7;
@@ -74,24 +69,6 @@ public class Commands {
 	
 	/**combo boxes start at 250*/
 	public static final int SCALING = 252;
-	
-	/**
-	 * external/itext menu options start at 500 - add your own CONSTANT here
-	 * and refer to action using name at ALL times
-	 */
-	//public static final int SAVEFORM = 500;
-	//public static final int PDF = 501;
-	//public static final int ROTATE=502;
-	//public static final int DELETE=503;
-	//public static final int ADD=504;
-	//public static final int SECURITY=505;
-	//public static final int ADDHEADERFOOTER=506;
-	//public static final int STAMPTEXT=507;
-	//public static final int STAMPIMAGE=508;
-	//public static final int SETCROP=509;
-	//public static final int NUP = 510;
-	//public static final int HANDOUTS = 511;
-	
 	
 	private Values commonValues;
 	private SwingGUI currentGUI;
@@ -618,8 +595,7 @@ public class Commands {
 	/**Clean up and exit program*/
 	private void exit() {
 		
-		int confirm=JOptionPane.showInternalConfirmDialog(currentGUI.getFrame(),Messages.getMessage("PdfViewerCloseing.message"),"",JOptionPane.YES_NO_OPTION);
-		
+		int confirm=JOptionPane.showInternalConfirmDialog(currentGUI.getFrame(),Language.getWord("CLOSE_CURRENT_WINDOW"),"",JOptionPane.YES_NO_OPTION);
 		if(confirm==JOptionPane.NO_OPTION){
 			return;
 		}

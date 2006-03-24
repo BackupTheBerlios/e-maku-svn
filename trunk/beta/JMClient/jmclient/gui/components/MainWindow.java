@@ -11,6 +11,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import jmclient.gui.formas.Splash;
@@ -124,9 +125,13 @@ public class MainWindow extends JFrame {
         
         StatusBar.setLabel1(Language.getWord("ESTADO"));
         StatusBar.setLabel2(Language.getWord("ON_LINE"));
-        
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
+            	int confirm=JOptionPane.showConfirmDialog((Component) e.getSource(),Language.getWord("CLOSE_CURRENT_APP"),"",JOptionPane.YES_NO_OPTION);
+        		if(confirm==JOptionPane.NO_OPTION){
+        			return;
+        		}
                 System.exit(0);
             }
         });
