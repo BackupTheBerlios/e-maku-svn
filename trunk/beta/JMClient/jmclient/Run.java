@@ -61,22 +61,22 @@ public class Run {
             UIManager.setLookAndFeel(new SkinLookAndFeel());*/
              
             Font f = new Font("ARIAL", Font.PLAIN, 12);
-            UIManager.put("Menu.font", f);
-            UIManager.put("MenuItem.font", f);
-            UIManager.put("Button.font", f);
-            UIManager.put("Label.font", f);
-            UIManager.put("TextField.font", f);
-            UIManager.put("ComboBox.font", f);
-            UIManager.put("CheckBox.font", f);
-            UIManager.put("TextPane.font", f);
-            UIManager.put("TextArea.font", f);
-            UIManager.put("List.font", f);
-            UIManager.put("Slider.font", f);
-            UIManager.put("TitledBorder.font", f);
-            UIManager.put("RadioButton.font", f);
-            UIManager.put("InternalFrame.font", f);
-            UIManager.put("Table.font", f);
-            UIManager.put("TabbedPane.font", f);
+            UIManager.put("Menu.font",			f);
+            UIManager.put("MenuItem.font",		f);
+            UIManager.put("Button.font",		f);
+            UIManager.put("Label.font",			f);
+            UIManager.put("TextField.font",		f);
+            UIManager.put("ComboBox.font",		f);
+            UIManager.put("CheckBox.font",		f);
+            UIManager.put("TextPane.font",		f);
+            UIManager.put("TextArea.font",		f);
+            UIManager.put("List.font",			f);
+            UIManager.put("Slider.font",		f);
+            UIManager.put("TitledBorder.font",	f);
+            UIManager.put("RadioButton.font",	f);
+            UIManager.put("InternalFrame.font",	f);
+            UIManager.put("Table.font",			f);
+            UIManager.put("TabbedPane.font",	f);
 
             ConfigFile.Cargar();
             new Conexion();
@@ -84,8 +84,7 @@ public class Run {
         }
 
         catch (ConfigFileNotLoadException e) {
-            FirstDialog dialogo = new FirstDialog(new JFrame(),
-                    JMClientCons.KeyClient);
+            FirstDialog dialogo = new FirstDialog(new JFrame(),JMClientCons.KeyClient);
             dialogo.setLocationRelativeTo(dialogo.getParent());
             dialogo.setVisible(true);
         }
@@ -97,17 +96,16 @@ public class Run {
     public static void salir() {
     	int confirm = -1;
         try {
-        	confirm=JOptionPane.showConfirmDialog(MainWindow.getRefWindow(),Language.getWord("CLOSE_CURRENT_APP"),"",JOptionPane.YES_NO_OPTION);
+        	confirm=JOptionPane.showConfirmDialog(
+        			MainWindow.getRefWindow(),
+        			Language.getWord("CLOSE_CURRENT_APP"),
+        			"",JOptionPane.YES_NO_OPTION);
     		if(confirm==JOptionPane.YES_OPTION){
     			SocketConnect.getSock().close();
     		}
         }
-        catch (NullPointerException e) {
-
-        }
-        catch (IOException e) {
-            
-        }
+        catch (NullPointerException e) {}
+        catch (IOException e) {}
         finally {
         	if (confirm == JOptionPane.YES_OPTION) {
         		System.exit(0);

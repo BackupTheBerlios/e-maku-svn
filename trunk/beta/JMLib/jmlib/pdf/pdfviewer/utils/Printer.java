@@ -65,6 +65,7 @@ public class Printer {
 				        case 2: //Reduce to scaling
 					    decode_pdf.setPrintPageScalingMode(PdfDecoder.PAGE_SCALING_REDUCE_TO_PRINTER_MARGINS);
 					    */
+
 					
 					//setup print job and objects
 					PrinterJob printJob = PrinterJob.getPrinterJob();
@@ -111,10 +112,11 @@ public class Printer {
 						if(p2==2147483647)
 							p2=decode_pdf.getPageCount();
 						
-						if(p1<p2){
+						if(p1<p2) {
 							rangeStart=p1;
 							rangeEnd=p2;
-						}else{
+						}
+						else {
 							rangeStart=p2;
 							rangeEnd=p1;
 						}			
@@ -204,7 +206,7 @@ public class Printer {
 	
 	private void updatePrinterProgess(PdfDecoder decode_pdf,int currentPage, int pageCount) {
 		
-		if(status.isCanceled()){
+		if(status.isCanceled()) {
 	
 			decode_pdf.stopPrinting();
 			updatePrinterProgress.stop();
@@ -239,7 +241,7 @@ public class Printer {
 			percentage=1;
 		
 		//invert percentage so percentage works correctly
-		if(isBackwards){
+		if(isBackwards) {
 			percentage=-percentage;
 			currentPrintingPage=-currentPrintingPage;
 		}
@@ -251,14 +253,15 @@ public class Printer {
 		String message=currentPrintingPage + " of " + 
 		noOfPagesPrinting + ": " + percentage + "%"+" "+dots;
 		
-		if(isBackwards)
+		if(isBackwards) {
 			status.setNote("Reversed Printing " + message);
-		else
-			status.setNote("Printing " + message);
-			
 		}
-		
-
+		else {
+			status.setNote("Printing " + message);
+		}
+			
+	}
+	
 	public boolean isPrinting() {
 		
 		return printingThreads>0;

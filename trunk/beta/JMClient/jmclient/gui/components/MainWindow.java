@@ -45,21 +45,16 @@ import jmlib.miscelanea.idiom.Language;
 
 public class MainWindow extends JFrame {
 
-    /**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -5660450407954687999L;
-
 	/**
-     * Objeto para pocicion de JFrames
+     * Objeto para pocicion de JInternalFrames
      */
-
     private static JDesktopPane JDPpanel;
 
     /**
      * Vectores de las barras de herramientas
      */
-
     private static Vector Vtoolbar1;
     private static JFrame refWindow = null;
     
@@ -176,5 +171,4 @@ public class MainWindow extends JFrame {
     public static JFrame getRefWindow() {
     	return refWindow;
     }
-    	
 }

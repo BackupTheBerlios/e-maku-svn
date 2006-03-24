@@ -64,11 +64,9 @@ public class MakeReport extends Thread {
 					Element arg = (Element) it.next();
 					args[i] = arg.getValue();
 				}
-				rs = new RunQuery(SocketServer.getBd(socket), sql, args)
-						.ejecutarSELECT();
+				rs = new RunQuery(SocketServer.getBd(socket), sql, args).ejecutarSELECT();
 			} else {
-				rs = new RunQuery(SocketServer.getBd(socket), sql)
-						.ejecutarSELECT();
+				rs = new RunQuery(SocketServer.getBd(socket), sql).ejecutarSELECT();
 			}
 
 			JRResultSetDataSource jrRS = new JRResultSetDataSource(rs);
@@ -123,7 +121,5 @@ public class MakeReport extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
-
 }
