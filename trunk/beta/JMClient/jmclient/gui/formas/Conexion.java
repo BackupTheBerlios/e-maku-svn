@@ -131,6 +131,7 @@ public class Conexion {
 
         JPAutenticacion.setVisible(true);
         
+        JFConexion.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         JFConexion.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) { Run.salir(); }
         });

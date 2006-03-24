@@ -95,11 +95,11 @@ public class Run {
     }
 
     public static void salir() {
+    	int confirm = -1;
         try {
-        	int confirm=JOptionPane.showConfirmDialog(MainWindow.getRefWindow(),Language.getWord("CLOSE_CURRENT_APP"),"",JOptionPane.YES_NO_OPTION);
+        	confirm=JOptionPane.showConfirmDialog(MainWindow.getRefWindow(),Language.getWord("CLOSE_CURRENT_APP"),"",JOptionPane.YES_NO_OPTION);
     		if(confirm==JOptionPane.YES_OPTION){
     			SocketConnect.getSock().close();
-	            System.exit(0);
     		}
         }
         catch (NullPointerException e) {
@@ -107,6 +107,11 @@ public class Run {
         }
         catch (IOException e) {
             
+        }
+        finally {
+        	if (confirm == JOptionPane.YES_OPTION) {
+        		System.exit(0);
+        	}
         }
     }
 }

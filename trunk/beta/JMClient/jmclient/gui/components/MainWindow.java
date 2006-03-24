@@ -61,7 +61,7 @@ public class MainWindow extends JFrame {
      */
 
     private static Vector Vtoolbar1;
-    private static JFrame refWindow;
+    private static JFrame refWindow = null;
     
     public MainWindow() {
         
