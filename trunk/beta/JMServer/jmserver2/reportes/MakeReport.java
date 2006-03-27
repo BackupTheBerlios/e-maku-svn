@@ -19,11 +19,14 @@ import jmserver2.basedatos.sql.SQLBadArgumentsException;
 import jmserver2.basedatos.sql.SQLNotFoundException;
 import jmserver2.comunicaciones.SocketServer;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRReport;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.fill.JRBaseFiller;
+import net.sf.jasperreports.engine.fill.JRHorizontalFiller;
+import net.sf.jasperreports.engine.fill.JRVerticalFiller;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -86,11 +89,15 @@ public class MakeReport extends Thread {
 			}
 			System.out.println(" * =========================");
 			//JasperCompileManager.compileReportToStream(jasperDesign,new FileOutputStream("/home/pastuxso/report.jasper"));
-			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, jrRS);
+			
+			
+			//JasperPrint jasperPrint = FillManager.fillReport(jasperReport, parameters, jrRS);
 
-			
+			JRBaseFiller filler = createFiller(jasperReport);
+			System.out.println(" * CreateFiller");
+			JasperPrint jasperPrint = filler.fill(parameters,jrRS);
+			System.out.println(" * Filler.fill");
 			System.out.println(" * Creando reporte XML...");
-			
 			JasperExportManager.exportReportToPdfStream(jasperPrint,os);
 			System.out.println(" * exportado a pdf");
 			os.close();
@@ -121,5 +128,37 @@ public class MakeReport extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public JRBaseFiller createFiller(JasperReport jasperReport) throws JRException {
+		JRBaseFiller filler = null;
+
+		switch (jasperReport.getPrintOrder())
+		{
+			case JRReport.PRINT_ORDER_HORIZONTAL :
+			{
+				filler = new HorizontalFiller(jasperReport);
+				break;
+			}
+			case JRReport.PRINT_ORDER_VERTICAL :
+			{
+				filler = new VerticalFiller(jasperReport);
+				break;
+			}
+		}
+		return filler;
+	}
+}
+
+class HorizontalFiller extends JRHorizontalFiller {
+
+	protected HorizontalFiller(JasperReport arg0) throws JRException {
+		super(arg0);
+	}
+}
+class VerticalFiller extends JRVerticalFiller {
+
+	protected VerticalFiller(JasperReport arg0) throws JRException {
+		super(arg0);
 	}
 }
