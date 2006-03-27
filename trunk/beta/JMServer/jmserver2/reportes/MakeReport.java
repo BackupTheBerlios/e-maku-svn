@@ -53,7 +53,7 @@ public class MakeReport extends Thread {
 					"SEL0208",
 					new String[] { codigo }).ejecutarSELECT();
 			rs.next();
-			System.out.println("Generando reporte No. " + codigo);
+			//System.out.println("Generando reporte No. " + codigo);
 			//InputStream iosTemplate = rs.getAsciiStream(1);
 			String sql = rs.getString(2);
 			this.id = element.getChildText("id");
@@ -77,27 +77,25 @@ public class MakeReport extends Thread {
 			Map <String,String>parameters = new HashMap<String,String>();
 			parameters.put("Title", "BALANCE GENERAL / ENERO 31 DE 2006");
 
-			System.out.println(" * Cargando entrada XML...");
+			//System.out.println(" * Cargando entrada XML...");
 			//JasperDesign jasperDesign = JRXmlLoader.load(iosTemplate);
 			ObjectInputStream obj = new ObjectInputStream(new FileInputStream("/home/midas/report.jasper"));
 			JasperReport jasperReport = null;
 			try {
 				jasperReport = (JasperReport)obj.readObject();
+				System.out.println(" * jasperReport = (JasperReport)obj.readObject();");
 			} catch (ClassNotFoundException e) {
-
 				e.printStackTrace();
 			}
-			System.out.println(" * =========================");
 			//JasperCompileManager.compileReportToStream(jasperDesign,new FileOutputStream("/home/pastuxso/report.jasper"));
 			
 			
 			//JasperPrint jasperPrint = FillManager.fillReport(jasperReport, parameters, jrRS);
-
+			
 			JRBaseFiller filler = createFiller(jasperReport);
-			System.out.println(" * CreateFiller");
+			System.out.println(" * createFiller(jasperReport)");
 			JasperPrint jasperPrint = filler.fill(parameters,jrRS);
-			System.out.println(" * Filler.fill");
-			System.out.println(" * Creando reporte XML...");
+			System.out.println(" * filler.fill(parameters,jrRS)");
 			JasperExportManager.exportReportToPdfStream(jasperPrint,os);
 			System.out.println(" * exportado a pdf");
 			os.close();
