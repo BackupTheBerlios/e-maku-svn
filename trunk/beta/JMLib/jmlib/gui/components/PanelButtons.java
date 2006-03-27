@@ -57,10 +57,9 @@ public class PanelButtons extends JPanel implements ActionListener, KeyListener 
     private GenericForm GFforma;
     private Hashtable <String,Vector>Heventos;
     private Hashtable <String,Vector>Hform;
-    private Hashtable <String,JButton>Hbuttons;
+    private Hashtable <String,Button>Hbuttons;
     private String idTransaction;
     private String accel = "";
-	private String typePackage = "TRANSACTION";
 	private String idReport;
     
     public PanelButtons(GenericForm GFforma, Document doc) {
@@ -69,12 +68,12 @@ public class PanelButtons extends JPanel implements ActionListener, KeyListener 
         this.setLayout(new FlowLayout());
 
         Heventos = new Hashtable<String,Vector>();
-        Hbuttons = new Hashtable<String,JButton>();
+        Hbuttons = new Hashtable<String,Button>();
         Hform = new Hashtable<String,Vector>();
         
         Element args = doc.getRootElement();
         Iterator i = args.getChildren().iterator();
-        JButton button;
+        Button button;
         
         while (i.hasNext()) {
             Element e = (Element) i.next();
@@ -83,6 +82,7 @@ public class PanelButtons extends JPanel implements ActionListener, KeyListener 
             String icon = null;
             String keyStroke = null;
             boolean enabled=true;
+            String typePackage = null;
             
             if ("false".equals(e.getAttributeValue("enabled")))
                 enabled=false;
@@ -114,6 +114,9 @@ public class PanelButtons extends JPanel implements ActionListener, KeyListener 
             if (label!=null) {
             	button = buildButton(label,icon,enabled,keyStroke);
             	name = label;
+            	if (typePackage!=null && !"".equals(typePackage)) {
+            		button.setTypePackage(typePackage);
+            	}
             }
             else {
 	            button = buildButton(name,enabled);
@@ -123,8 +126,8 @@ public class PanelButtons extends JPanel implements ActionListener, KeyListener 
         }
     }
 
-    private JButton buildButton(String label,String icon,boolean enabled, String keyStroke) {
-    	JButton button = new JButton();
+    private Button buildButton(String label,String icon,boolean enabled, String keyStroke) {
+    	Button button = new Button();
     	try {
     		button.setIcon(new ImageIcon(this.getClass().getResource(Icons.getIcon(icon))));
     	}
@@ -141,8 +144,8 @@ public class PanelButtons extends JPanel implements ActionListener, KeyListener 
 		return button;
 	}
 
-	private JButton buildButton(String name,boolean enabled) {
-    	JButton button = new JButton();
+	private Button buildButton(String name,boolean enabled) {
+    	Button button = new Button();
         try {
 	        button.setEnabled(enabled);
 	        button.setActionCommand(name);
@@ -267,9 +270,11 @@ public class PanelButtons extends JPanel implements ActionListener, KeyListener 
         GFforma.close();
     }
 
-    private void callEvent(Vector vec) 
+    private void callEvent(String action) 
     throws InvocationTargetException,NotFoundComponentException {
-
+    	
+    	Vector vec = Heventos.get(action);
+    	String typePackage = Hbuttons.get(action).getTypePackage();
         Vector <Element>pack = new Vector<Element>();
         Element elementos = null;
         Element multielementos[] = null;
@@ -302,12 +307,13 @@ public class PanelButtons extends JPanel implements ActionListener, KeyListener 
             	else {
             		elementos = (Element) GFforma.invokeMethod(comp.getDriver(), comp.getMethod());
             	}
-	            if (elementos != null)
+	            if (elementos != null) {
 	                pack.addElement(elementos);
 	            }
+            }
         }
 
-        if (pack.size() > 0) {
+        if (pack.size() >= 0) {
        		try {
 				formatPackageStructure(pack,typePackage);
 			} catch (MalformedProfileException e) {
@@ -326,7 +332,7 @@ public class PanelButtons extends JPanel implements ActionListener, KeyListener 
         } else {
             try {
             	if (Heventos.containsKey(action)) {
-            		callEvent(Heventos.get(action));
+            		callEvent(action);
             	}
             	if (Hform.containsKey(action)) {
             		Vector vforms = Hform.get(action);
@@ -386,7 +392,7 @@ public class PanelButtons extends JPanel implements ActionListener, KeyListener 
     private void formatPackageStructure(Vector pack,String packageName) throws MalformedProfileException {
         Document transaction = new Document();
         transaction.setRootElement(new Element(packageName));
-
+        System.out.println("Yuju yuju");
         Element driver = new Element("driver");
         if ("TRANSACTION".equals(packageName)) {
         	driver.setText(GFforma.getIdTransaction());
@@ -477,15 +483,7 @@ class Componentes {
     private String driver;
     private String method;
     private Element args;
-    private boolean report;
-
-    public boolean isReport() {
-		return report;
-	}
-
-	public void setReport(boolean report) {
-		this.report = report;
-	}
+    private String typePackage = "TRANSACTION";
 
 	public String getDriver() {
         return driver;
@@ -517,4 +515,27 @@ class Componentes {
 		}
 		return false;
 	}
+
+	public String getTypePackage() {
+		return typePackage;
+	}
+
+	public void setTypePackage(String typePackage) {
+		this.typePackage = typePackage;
+	}
+}
+
+class Button extends JButton {
+	
+	private static final long serialVersionUID = 1L;
+	private String typePackage = "TRANSACTION";
+
+	public String getTypePackage() {
+		return typePackage;
+	}
+
+	public void setTypePackage(String typePackage) {
+		this.typePackage = typePackage;
+	}
+	
 }

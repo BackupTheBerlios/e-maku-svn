@@ -18,7 +18,6 @@ public class Help extends JInternalFrame {
 	  JLabel title = new JLabel("Contenido");
 	  base.add(title);
 	  
-	  this.setBounds((MainWindow.getAncho()/2)-200,(MainWindow.getAlto()/2)-210,420,410);
       this.setClosable(true);
 	  
 	  this.add(base);
