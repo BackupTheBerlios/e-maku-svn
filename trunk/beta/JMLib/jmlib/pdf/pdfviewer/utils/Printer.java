@@ -51,7 +51,7 @@ public class Printer {
 		Thread worker = new Thread() {
 			public void run() {
 				
-				boolean canceled=false;
+				boolean canceled=true;
 				
 				try {
 					  /* Nota: Opciones utilizables en el futuro
@@ -98,7 +98,6 @@ public class Printer {
 					aset.add(new PageRanges(1,decode_pdf.getPageCount()));
 			
 					boolean printFile=printJob.printDialog(aset);
-					System.out.println("Pase por aqui en la impresion val {"+printFile+"}");
   				    //set page range
 					PageRanges r=(PageRanges) aset.get(PageRanges.class);
 					if((r!=null)&&(printFile)){
@@ -149,10 +148,13 @@ public class Printer {
 						/**
 						 * generic call to both Pageable and printable
 						 */
-						if (printFile)
+						if (printFile) {
 							printJob.print();
-						else
+							canceled = false;
+						}
+						else {
 							canceled=true;
+						}
 					}
 				} catch (PrinterException ee) {
 					ee.printStackTrace();

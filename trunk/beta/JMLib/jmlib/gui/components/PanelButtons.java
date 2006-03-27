@@ -67,9 +67,9 @@ public class PanelButtons extends JPanel implements ActionListener, KeyListener 
         this.GFforma = GFforma;
         this.setLayout(new FlowLayout());
 
-        Heventos = new Hashtable<String,Vector>();
-        Hbuttons = new Hashtable<String,Button>();
-        Hform = new Hashtable<String,Vector>();
+        Heventos= new Hashtable<String,Vector>();
+        Hbuttons= new Hashtable<String,Button>();
+        Hform	= new Hashtable<String,Vector>();
         
         Element args = doc.getRootElement();
         Iterator i = args.getChildren().iterator();
@@ -273,10 +273,10 @@ public class PanelButtons extends JPanel implements ActionListener, KeyListener 
     private void callEvent(String action) 
     throws InvocationTargetException,NotFoundComponentException {
     	
-    	Vector vec = Heventos.get(action);
-    	String typePackage = Hbuttons.get(action).getTypePackage();
-        Vector <Element>pack = new Vector<Element>();
-        Element elementos = null;
+    	Vector vec				= Heventos.get(action);
+    	String typePackage		= Hbuttons.get(action).getTypePackage();
+        Vector <Element>pack	= new Vector<Element>();
+        Element elementos	 	= null;
         Element multielementos[] = null;
         
         for (int i = 0; i < vec.size(); i++) {
@@ -392,7 +392,6 @@ public class PanelButtons extends JPanel implements ActionListener, KeyListener 
     private void formatPackageStructure(Vector pack,String packageName) throws MalformedProfileException {
         Document transaction = new Document();
         transaction.setRootElement(new Element(packageName));
-        System.out.println("Yuju yuju");
         Element driver = new Element("driver");
         if ("TRANSACTION".equals(packageName)) {
         	driver.setText(GFforma.getIdTransaction());
