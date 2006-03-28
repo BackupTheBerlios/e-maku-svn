@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="/home/midas/beta/lib/contrib/ant.jar"/>
 	<classpathentry kind="lib" path="/home/midas/beta/lib/contrib/itext.jar"/>
 	<classpathentry kind="lib" path="/home/midas/beta/lib/contrib/jpedal.jar"/>
+	<classpathentry kind="lib" path="/home/midas/beta/lib/midas/reports.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

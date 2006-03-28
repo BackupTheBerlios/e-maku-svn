@@ -8,6 +8,7 @@ import jmserver2.basedatos.conexion.PoolConexiones;
 import jmserver2.basedatos.conexion.PoolNotLoadException;
 import jmserver2.basedatos.sql.CacheEnlace;
 import jmserver2.comunicaciones.SocketServer;
+import jmserver2.control.ReportsStore;
 import jmserver2.miscelanea.JMServerIICons;
 import jmserver2.miscelanea.configuracion.ConfigFile;
 import jmserver2.miscelanea.configuracion.ConfigFileNotLoadException;
@@ -42,6 +43,7 @@ public class Run {
 		try {		    
 			ConfigFile.Cargar();
 			PoolConexiones.CargarBD();
+			ReportsStore.Load();
 			CacheEnlace.cargar();
 			new SocketServer();
 			

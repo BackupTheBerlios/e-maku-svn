@@ -74,18 +74,17 @@ public class FrameCloser implements InternalFrameListener {
 	public void internalFrameClosing(InternalFrameEvent e) {
 		
 		currentCommands.flush();
-		if(currentPrinter.isPrinting())
+		if(currentPrinter.isPrinting()) {
 			currentGUI.showMessageDialog(Language.getWord("CURRENT_WINDOW_BUSY"));
-		if(!commonValues.isProcessing()){
+		}
+		else if(commonValues.isProcessing()){
 			int confirm=JOptionPane.showInternalConfirmDialog(currentGUI.getFrame(),Language.getWord("CLOSE_CURRENT_WINDOW"),"",JOptionPane.YES_NO_OPTION);
-			
 			if(confirm==JOptionPane.YES_OPTION){
 				decode_pdf.closePdfFile();
 				currentGUI.getFrame().dispose();
 			}
-			
-		}else{
-			currentGUI.showMessageDialog("PdfViewerDecodeWait.message");
+		} else {
+			currentGUI.getFrame().dispose();
 		}
 		
 	}

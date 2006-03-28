@@ -1,9 +1,7 @@
 package jmserver2.reportes;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.nio.channels.SocketChannel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,6 +16,7 @@ import jmserver2.basedatos.sql.RunQuery;
 import jmserver2.basedatos.sql.SQLBadArgumentsException;
 import jmserver2.basedatos.sql.SQLNotFoundException;
 import jmserver2.comunicaciones.SocketServer;
+import jmserver2.control.ReportsStore;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRReport;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
@@ -79,20 +78,21 @@ public class MakeReport extends Thread {
 
 			//System.out.println(" * Cargando entrada XML...");
 			//JasperDesign jasperDesign = JRXmlLoader.load(iosTemplate);
-			ObjectInputStream obj = new ObjectInputStream(new FileInputStream("/home/midas/report.jasper"));
-			JasperReport jasperReport = null;
-			try {
+			//ObjectInputStream obj = new ObjectInputStream(new FileInputStream("/home/midas/report.jasper"));
+			//JasperReport jasperReport = null;
+			/*try {
 				jasperReport = (JasperReport)obj.readObject();
 				System.out.println(" * jasperReport = (JasperReport)obj.readObject();");
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
-			}
+			}*/
 			//JasperCompileManager.compileReportToStream(jasperDesign,new FileOutputStream("/home/pastuxso/report.jasper"));
 			
 			
 			//JasperPrint jasperPrint = FillManager.fillReport(jasperReport, parameters, jrRS);
 			
-			JRBaseFiller filler = createFiller(jasperReport);
+			//JRBaseFiller filler = createFiller(jasperReport);
+			JRBaseFiller filler = createFiller(ReportsStore.getReportClass(codigo));
 			System.out.println(" * createFiller(jasperReport)");
 			JasperPrint jasperPrint = filler.fill(parameters,jrRS);
 			System.out.println(" * filler.fill(parameters,jrRS)");
