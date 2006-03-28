@@ -21,8 +21,9 @@ public class ReportsStore {
 			JarFile jarfile = new JarFile(JMServerIICons.JM_HOME+"/lib/midas/reports.jar");
 			
 			Enumeration enumEntries = jarfile.entries();
-			enumEntries.nextElement();
-			enumEntries.nextElement();
+			enumEntries.nextElement(); // META-INF
+			enumEntries.nextElement(); // MANIFEST.MF
+			/*  Listing reports */
 			while(enumEntries.hasMoreElements()) {
 				JarEntry entry = (JarEntry) enumEntries.nextElement();
 				ObjectInputStream obj = new ObjectInputStream(jarfile.getInputStream(entry));
