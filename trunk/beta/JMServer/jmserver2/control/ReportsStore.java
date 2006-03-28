@@ -2,27 +2,31 @@ package jmserver2.control;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.JarURLConnection;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import jmserver2.miscelanea.JMServerIICons;
 import net.sf.jasperreports.engine.JasperReport;
+
 
 public class ReportsStore {
 	
 	private static Hashtable<String,JasperReport>  reports;
 	
-	public static void Load() {
+	public static void Load(URL url) {
+		
 		reports = new Hashtable<String,JasperReport>();
 		try {
-			System.out.println("Reportes compilados: " + JMServerIICons.JM_HOME+"/lib/midas/reports.jar");
-			JarFile jarfile = new JarFile(JMServerIICons.JM_HOME+"/lib/midas/reports.jar");
-			
+			System.out.println("Reportes compilados: " + url);
+			JarURLConnection conn = (JarURLConnection)url.openConnection();
+			JarFile jarfile = conn.getJarFile();
 			Enumeration enumEntries = jarfile.entries();
 			enumEntries.nextElement(); // META-INF
 			enumEntries.nextElement(); // MANIFEST.MF
+			enumEntries.nextElement(); // /reports
 			/*  Listing reports */
 			while(enumEntries.hasMoreElements()) {
 				JarEntry entry = (JarEntry) enumEntries.nextElement();
@@ -42,6 +46,6 @@ public class ReportsStore {
 	}
 	
 	public static JasperReport getReportClass(String codeReport) {
-		return reports.get(codeReport);
+		return reports.get("reports/"+codeReport);
 	}
 }

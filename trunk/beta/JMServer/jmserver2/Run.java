@@ -43,7 +43,7 @@ public class Run {
 		try {		    
 			ConfigFile.Cargar();
 			PoolConexiones.CargarBD();
-			ReportsStore.Load();
+			ReportsStore.Load(this.getClass().getResource("/reports"));
 			CacheEnlace.cargar();
 			new SocketServer();
 			

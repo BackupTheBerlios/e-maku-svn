@@ -307,11 +307,10 @@ public class PanelButtons extends JPanel implements ActionListener, KeyListener 
 	                pack.addElement(elementos);
 	            }
         }
-
-        if (pack.size() > 0) {
+		String namePackage = "SAVE".equals(action)?"TRANSACTION":typePackage;
+        if (pack.size() > 0 || !namePackage.equals("TRANSACTION")) {
        		try {
-       			String namePackage = "SAVE".equals(action)?"TRANSACTION":typePackage;
-				formatPackageStructure(pack,namePackage);
+       			formatPackageStructure(pack,typePackage);
 			} catch (MalformedProfileException e) {
 				e.printStackTrace();
 			}
@@ -399,9 +398,6 @@ public class PanelButtons extends JPanel implements ActionListener, KeyListener 
         		PDFViewer pdf = new PDFViewer(GFforma,idReport);
             	JInternalFrame jiframe = pdf.getGUI().getFrame();
 				GFforma.getJDPpanel().add(jiframe);
-				jiframe.setLocation(
-						(GFforma.getJDPpanel().getWidth()/2) - (jiframe.getWidth()/2),
-						(GFforma.getJDPpanel().getHeight()/2) - (jiframe.getHeight()/2));
 				try {
 					jiframe.setVisible(true);
 					jiframe.setSelected(true);
@@ -523,3 +519,5 @@ class Componentes {
 		return false;
 	}
 }
+
+

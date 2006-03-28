@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry excluding="*.class" kind="src" path=""/>
-	<classpathentry kind="con" exported="true" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="/JMLib"/>
 	<classpathentry kind="lib" path="/home/midas/beta/lib/contrib/jdom.jar"/>
 	<classpathentry kind="lib" path="/home/midas/beta/lib/contrib/jdbc-pgsql.jar"/>
@@ -17,5 +17,6 @@
 	<classpathentry kind="lib" path="/home/midas/beta/lib/contrib/digester.jar"/>
 	<classpathentry kind="lib" path="/home/midas/beta/lib/contrib/logging.jar"/>
 	<classpathentry kind="lib" path="/home/midas/beta/lib/contrib/jdt-compiler.jar"/>
+	<classpathentry kind="lib" path="/home/midas/beta/lib/midas/reports.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
