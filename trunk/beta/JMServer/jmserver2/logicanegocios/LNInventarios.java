@@ -301,7 +301,7 @@ public class LNInventarios {
         		record= new String[lenght+5];
         }
         else {
-        		record= new String[lenght+4];
+        		record= new String[lenght+5];
         }
         
         /*

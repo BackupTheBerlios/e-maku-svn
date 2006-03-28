@@ -385,6 +385,8 @@ public class GenericForm extends JInternalFrame{
 
             else if (nombre.equals("icon")) {
                 try {
+                		System.out.println("Ruta de icono: "+this.getClass().getResource(
+	                        Icons.getIcon(e.getValue())));
 	                this.setFrameIcon(new ImageIcon(this.getClass().getResource(
 	                        Icons.getIcon(e.getValue()))));
                 }
@@ -1275,10 +1277,17 @@ public class GenericForm extends JInternalFrame{
 
 		Element pack = new Element("package");
 		boolean blankPackage = false;
+		boolean nullField = false;
 		int cont = 0;
-		Element arg = element.getChild("arg");
-		if (arg!=null && "blanckPackage".equals(arg.getAttributeValue("attribute"))) {
-			blankPackage = Boolean.parseBoolean(arg.getValue());
+		Iterator arg = element.getChildren("arg").iterator();
+		while (arg.hasNext()) {
+			Element elm = (Element)arg.next();
+			if ("blankPackage".equals(elm.getAttributeValue("attribute"))) {
+				blankPackage = Boolean.parseBoolean(elm.getValue());
+			}
+			else if ("nullField".equals(elm.getAttributeValue("attribute"))) {
+				nullField = Boolean.parseBoolean(elm.getValue());
+			}			
 		}
 		
 		Iterator it = element.getChild("subarg").getChildren().iterator();
@@ -1301,7 +1310,12 @@ public class GenericForm extends JInternalFrame{
 				else if (!blankPackage) {
 					throw new VoidPackageException(value);
 				}
-				Element e = new Element("field").setText(text);
+				
+				if ((text==null ||text.equals("")) && nullField) {
+					text = "NULL";
+				}
+				
+				Element e= new Element("field").setText(text);
 
 				if (attributeName!=null) {
 					e.setAttribute(attributeName,attributeValue);
