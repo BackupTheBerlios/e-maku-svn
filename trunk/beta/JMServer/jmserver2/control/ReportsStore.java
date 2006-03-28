@@ -17,7 +17,7 @@ public class ReportsStore {
 	public static void Load() {
 		reports = new Hashtable<String,JasperReport>();
 		try {
-			System.out.println(JMServerIICons.JM_HOME+"/lib/midas/reports.jar");
+			System.out.println("Reportes compilados: " + JMServerIICons.JM_HOME+"/lib/midas/reports.jar");
 			JarFile jarfile = new JarFile(JMServerIICons.JM_HOME+"/lib/midas/reports.jar");
 			
 			Enumeration enumEntries = jarfile.entries();
@@ -33,7 +33,7 @@ public class ReportsStore {
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
-				reports.put("REP0001",jasperReport);
+				reports.put(entry.getName(),jasperReport);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
