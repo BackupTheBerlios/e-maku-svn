@@ -267,9 +267,10 @@ public class PanelButtons extends JPanel implements ActionListener, KeyListener 
         GFforma.close();
     }
 
-    private void callEvent(Vector vec) 
+    private void callEvent(String action) 
     throws InvocationTargetException,NotFoundComponentException {
 
+    	Vector vec = Heventos.get(action);
         Vector <Element>pack = new Vector<Element>();
         Element elementos = null;
         Element multielementos[] = null;
@@ -309,7 +310,8 @@ public class PanelButtons extends JPanel implements ActionListener, KeyListener 
 
         if (pack.size() > 0) {
        		try {
-				formatPackageStructure(pack,typePackage);
+       			String namePackage = "SAVE".equals(action)?"TRANSACTION":typePackage;
+				formatPackageStructure(pack,namePackage);
 			} catch (MalformedProfileException e) {
 				e.printStackTrace();
 			}
@@ -326,7 +328,7 @@ public class PanelButtons extends JPanel implements ActionListener, KeyListener 
         } else {
             try {
             	if (Heventos.containsKey(action)) {
-            		callEvent(Heventos.get(action));
+            		callEvent(action);
             	}
             	if (Hform.containsKey(action)) {
             		Vector vforms = Hform.get(action);
