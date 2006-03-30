@@ -3531,4 +3531,25 @@
     <es_ES></es_ES>
     <en_US>Current windows is busy!</en_US>
   </palabra>
+  <palabra>
+    <clave>TOTALFAC</clave>
+    <es_CO>Total Fac.</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Total Fac.</en_US>
+  </palabra>
+  <palabra>
+    <clave>TOTALMRET</clave>
+    <es_CO>Total Menos Ret.</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Total Menos Ret.</en_US>
+  </palabra>
+  <palabra>
+    <clave>GENERAR</clave>
+    <es_CO>Generar</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Generar</en_US>
+  </palabra>
 </idioma>

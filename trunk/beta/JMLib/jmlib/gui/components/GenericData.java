@@ -617,13 +617,13 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
     		
         	Element arg = (Element) it.next();
 	    	if ("calculate".equals(arg.getAttributeValue("attribute"))) {
-	    		pack.addContent(new Element("field").setText(String.valueOf(OperateFormule(arg.getValue()))));
+	    		pack.addContent(new Element("field").setText(String.valueOf(formulaHandler(arg.getValue()))));
 	    	}
 	    	if ("maxValue".equals(arg.getAttributeValue("attribute"))) {
 	    		try {
 		    		StringTokenizer stk = new StringTokenizer(arg.getValue(),":");
-		        	double maximo = OperateFormule(stk.nextToken());
-		        	double checkValue = OperateFormule(stk.nextToken());
+		        	double maximo = formulaHandler(stk.nextToken());
+		        	double checkValue = formulaHandler(stk.nextToken());
 		        	if (maximo < checkValue ) {
 		    			throw new Exception(Language.getWord("ERR_MAX_VALUE"));
 		    		}
@@ -880,7 +880,9 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
     		synchronized(xmltf) {
 	    		if (xmltf.isCalculateExportvalue()) {
 	    			String formula = xmltf.getCalculateExportValue();
-	    			xmltf.setText(formatear(OperateFormule(formula)));
+	    			double valor = formulaHandler(formula);
+	    			xmltf.setText(formatear(valor));
+	    			xmltf.setNumberValue(valor);
 	    		}
 	    		if (xmltf.isCalculateDate()) {
 	    			try {
@@ -919,7 +921,7 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
 		}
 	}
 	
-	public double OperateFormule(String formula) {
+	public double formulaHandler(String formula) {
 		String formulaFinal = "";
 		int max = formula.length();
 		String acumText = "";
