@@ -391,4 +391,8 @@
     <key>NOTA-CONTABILIDAD</key>
     <path>/icons/ico_notas.png</path>
   </icon>
+  <icon>
+    <key>REPORT</key>
+    <path>/icons/ico_reporte.png</path>
+  </icon>
 </icons>

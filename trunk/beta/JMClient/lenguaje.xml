@@ -3552,4 +3552,11 @@
     <es_ES></es_ES>
     <en_US>Generar</en_US>
   </palabra>
+  <palabra>
+    <clave>REPORT</clave>
+    <es_CO>Reporte</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Reporte</en_US>
+  </palabra>
 </idioma>
