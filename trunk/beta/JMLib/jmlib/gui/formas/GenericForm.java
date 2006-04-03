@@ -385,8 +385,6 @@ public class GenericForm extends JInternalFrame{
 
             else if (nombre.equals("icon")) {
                 try {
-                		System.out.println("Ruta de icono: "+this.getClass().getResource(
-	                        Icons.getIcon(e.getValue())));
 	                this.setFrameIcon(new ImageIcon(this.getClass().getResource(
 	                        Icons.getIcon(e.getValue()))));
                 }

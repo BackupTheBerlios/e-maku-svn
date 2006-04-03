@@ -336,6 +336,14 @@ public class LNContabilidad {
 	}
 	
 	/**
+	 * Este metodo se encarga de anular un documento, este proceso consiste en
+	 * debitar los asientos acreditados y acreditar los asientos debitados.
+	 * @param pack
+	 */
+	public void annulDocument(Element pack) {
+		
+	}
+	/**
 	 * Ete metodo se encarga de procesar la información recibida de una tabla,
 	 * cuando viene la totalidad de la informacion necesaria para ser almacenada
 	 * en los libros auxiliares.
