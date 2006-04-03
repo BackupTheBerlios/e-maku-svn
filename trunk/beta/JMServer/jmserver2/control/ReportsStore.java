@@ -40,6 +40,7 @@ public class ReportsStore {
 				}
 				reports.put(entry.getName(),jasperReport);
 			}
+			jarfile.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

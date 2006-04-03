@@ -23,7 +23,7 @@ public class Help extends JInternalFrame {
 	  this.add(base);
       this.setTitle(Language.getWord("HELP"));
       this.setVisible(true);
-      
+      this.setSize(400,300);
       this.getContentPane().add(base);
       
       MainWindow.getJDPanel().add(this);
