@@ -307,7 +307,7 @@ public class PanelButtons extends JPanel implements ActionListener, KeyListener 
 	                pack.addElement(elementos);
 	            }
         }
-		String namePackage = "SAVE".equals(action)?"TRANSACTION":typePackage;
+		String namePackage = !"REPORT".equals(action)?"TRANSACTION":typePackage;
         if (pack.size() > 0 || !namePackage.equals("TRANSACTION")) {
        		try {
        			formatPackageStructure(pack,typePackage);
