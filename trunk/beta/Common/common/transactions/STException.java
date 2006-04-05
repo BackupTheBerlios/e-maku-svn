@@ -1,4 +1,4 @@
-package jmlib.transactions;
+package common.transactions;
 
 /**
  * STException.java Creado el 30-ago-2004

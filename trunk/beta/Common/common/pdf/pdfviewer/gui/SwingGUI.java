@@ -28,7 +28,7 @@
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
  
-package jmlib.pdf.pdfviewer.gui;
+package common.pdf.pdfviewer.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -68,19 +68,19 @@ import javax.swing.JTextPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
-import jmlib.miscelanea.idiom.Language;
-import jmlib.pdf.pdfviewer.Commands;
-import jmlib.pdf.pdfviewer.Values;
-import jmlib.pdf.pdfviewer.gui.generic.GUIButton;
-import jmlib.pdf.pdfviewer.gui.generic.GUICombo;
-import jmlib.pdf.pdfviewer.gui.swing.CommandListener;
-import jmlib.pdf.pdfviewer.gui.swing.FrameCloser;
-import jmlib.pdf.pdfviewer.gui.swing.SwingButton;
-import jmlib.pdf.pdfviewer.gui.swing.SwingCombo;
-import jmlib.pdf.pdfviewer.gui.swing.SwingMenuItem;
-import jmlib.pdf.pdfviewer.gui.swing.SwingOutline;
-import jmlib.pdf.pdfviewer.utils.Printer;
-import jmlib.pdf.pdfviewer.utils.SwingWorker;
+import common.miscelanea.idiom.Language;
+import common.pdf.pdfviewer.Commands;
+import common.pdf.pdfviewer.Values;
+import common.pdf.pdfviewer.gui.generic.GUIButton;
+import common.pdf.pdfviewer.gui.generic.GUICombo;
+import common.pdf.pdfviewer.gui.swing.CommandListener;
+import common.pdf.pdfviewer.gui.swing.FrameCloser;
+import common.pdf.pdfviewer.gui.swing.SwingButton;
+import common.pdf.pdfviewer.gui.swing.SwingCombo;
+import common.pdf.pdfviewer.gui.swing.SwingMenuItem;
+import common.pdf.pdfviewer.gui.swing.SwingOutline;
+import common.pdf.pdfviewer.utils.Printer;
+import common.pdf.pdfviewer.utils.SwingWorker;
 
 import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
@@ -722,7 +722,7 @@ public class SwingGUI extends GUI implements GUIFactory {
 			instructions.setEditable(false);
 			instructions.setText("This provides a simple example of Forms handling. We have"+
 					" added a listener to each form so clicking on it shows the form name.\n\n"+
-					"Code is in addExampleListeners() in jmlib.pdf.pdfviewer.PDFViewer\n\n"+
+					"Code is in addExampleListeners() in common.pdf.pdfviewer.PDFViewer\n\n"+
 					"This could be easily be extended to interface with a database directly "+
 					"or collect results on an action and write back using itext.\n\n"+
 					"Forms have been converted into Swing components and are directly accessible"+

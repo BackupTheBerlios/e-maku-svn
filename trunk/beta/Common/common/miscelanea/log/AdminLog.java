@@ -1,4 +1,4 @@
-package jmlib.miscelanea.log;
+package common.miscelanea.log;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,7 +8,7 @@ import java.io.RandomAccessFile;
 import java.util.Calendar;
 import java.util.zip.GZIPOutputStream;
 
-import jmlib.miscelanea.JMLibCons;
+import common.miscelanea.CommonCons;
 
 /**
  * AdminLog.java Creado el 29-jun-2004
@@ -68,7 +68,7 @@ public class AdminLog {
      */
     public static void setMessage(String mensaje, int prioridad) {
    // 		System.out.println("prioridad del mensaje: "+prioridad+" mensaje "+mensaje+" valueLog: "+ValueLog);
-        if (ValueLog.equals("Default") && (prioridad == JMLibCons.ERROR)) {
+        if (ValueLog.equals("Default") && (prioridad == CommonCons.ERROR)) {
             System.out.println(mensaje);
         } else if (ValueLog.equals("Verbose")) {
             System.out.println(mensaje);
@@ -76,7 +76,7 @@ public class AdminLog {
             System.out.println(mensaje);
             EscribirArchivo(mensaje);
         } else if (ValueLog.equals("LogFile")) {
-            if (prioridad == JMLibCons.ERROR)
+            if (prioridad == CommonCons.ERROR)
                 System.out.println(mensaje);
             EscribirArchivo(mensaje);
         }
@@ -85,16 +85,16 @@ public class AdminLog {
 
     /**
      * Este metodo se encarga de escribir el fichero JMServerII.log 
-     * @param mensaje Cadena de texto a añadir al JMServerII.log
+     * @param mensaje Cadena de texto a aï¿½adir al JMServerII.log
      */
 
     private synchronized static void EscribirArchivo(String mensaje) {
         try {
             long max = Flog.length();
 
-            if (max >= JMLibCons.MAX_SIZE_FILE_LOG) {
+            if (max >= CommonCons.MAX_SIZE_FILE_LOG) {
                 byte[] Blog = new byte[(int) max];
-                File Ffile = new File(JMLibCons.TMP, namefile+"-"
+                File Ffile = new File(CommonCons.TMP, namefile+"-"
                         + Calendar.getInstance().get(Calendar.YEAR) + "-"
                         + Calendar.getInstance().get(Calendar.MONTH) + "-"
                         + Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
@@ -120,7 +120,7 @@ public class AdminLog {
     
     private static void newFile() {
         try {
-            Flog = new File(JMLibCons.TMP, namefile+".log");
+            Flog = new File(CommonCons.TMP, namefile+".log");
             RAFlog = new RandomAccessFile(Flog, "rw");
             RAFlog.seek(RAFlog.length());
         } catch (FileNotFoundException FNFEe) {

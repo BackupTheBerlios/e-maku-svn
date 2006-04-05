@@ -1,4 +1,4 @@
-package jmlib.gui.components;
+package common.gui.components;
 
 import java.util.EventObject;
 

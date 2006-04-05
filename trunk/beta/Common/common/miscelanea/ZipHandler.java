@@ -1,4 +1,4 @@
-package jmlib.miscelanea;
+package common.miscelanea;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

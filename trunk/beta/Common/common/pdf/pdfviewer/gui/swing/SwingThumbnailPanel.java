@@ -34,7 +34,7 @@
  * 
  * --------------------------
  */
-package jmlib.pdf.pdfviewer.gui.swing;
+package common.pdf.pdfviewer.gui.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -60,9 +60,9 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import jmlib.pdf.pdfviewer.Values;
-import jmlib.pdf.pdfviewer.gui.generic.GUIThumbnailPanel;
-import jmlib.pdf.pdfviewer.utils.SwingWorker;
+import common.pdf.pdfviewer.Values;
+import common.pdf.pdfviewer.gui.generic.GUIThumbnailPanel;
+import common.pdf.pdfviewer.utils.SwingWorker;
 
 import org.jpedal.PdfDecoder;
 import org.jpedal.objects.PdfPageData;

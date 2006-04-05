@@ -1,4 +1,4 @@
-package jmlib.control;
+package common.control;
 
 import java.util.EventObject;
 

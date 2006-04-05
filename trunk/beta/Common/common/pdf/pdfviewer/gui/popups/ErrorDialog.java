@@ -34,7 +34,7 @@
  * Contributor(s):
  *
  */
-package jmlib.pdf.pdfviewer.gui.popups;
+package common.pdf.pdfviewer.gui.popups;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;

@@ -34,7 +34,7 @@
  * Contributor(s):
  *
  */
-package jmlib.pdf.pdfviewer.gui.popups;
+package common.pdf.pdfviewer.gui.popups;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -52,7 +52,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import jmlib.pdf.pdfviewer.utils.FileFilterer;
+import common.pdf.pdfviewer.utils.FileFilterer;
 
 import org.jpedal.utils.LogWriter;
 

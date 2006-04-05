@@ -1,4 +1,4 @@
-package jmlib.gui.components;
+package common.gui.components;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -19,12 +19,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
-import jmlib.gui.formas.GenericForm;
-import jmlib.gui.formas.NotFoundComponentException;
-import jmlib.miscelanea.Icons;
-import jmlib.miscelanea.idiom.Language;
-import jmlib.pdf.pdfviewer.PDFViewer;
-import jmlib.transactions.STResultSet;
+import common.gui.formas.GenericForm;
+import common.gui.formas.NotFoundComponentException;
+import common.miscelanea.Icons;
+import common.miscelanea.idiom.Language;
+import common.pdf.pdfviewer.PDFViewer;
+import common.transactions.STResultSet;
 
 import org.jdom.Document;
 import org.jdom.Element;

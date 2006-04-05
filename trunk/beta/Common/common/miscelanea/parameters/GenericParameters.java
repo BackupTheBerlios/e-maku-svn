@@ -1,4 +1,4 @@
-package jmlib.miscelanea.parameters;
+package common.miscelanea.parameters;
 
 import java.util.Hashtable;
 

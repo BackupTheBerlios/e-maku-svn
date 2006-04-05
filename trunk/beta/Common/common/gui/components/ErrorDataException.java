@@ -1,6 +1,6 @@
-package jmlib.gui.components;
+package common.gui.components;
 
-import jmlib.miscelanea.idiom.Language;
+import common.miscelanea.idiom.Language;
 
 /**
  * ErrorDataException.java Creado el 13-abr-2005

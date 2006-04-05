@@ -34,7 +34,7 @@
 * 
 * --------------------------
 */
-package jmlib.pdf.pdfviewer.gui.swing;
+package common.pdf.pdfviewer.gui.swing;
 
 import java.awt.event.MouseEvent;
 import java.util.Map;

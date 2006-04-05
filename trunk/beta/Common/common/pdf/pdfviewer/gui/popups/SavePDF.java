@@ -31,7 +31,7 @@
  * ---------------
  *
  */
-package jmlib.pdf.pdfviewer.gui.popups;
+package common.pdf.pdfviewer.gui.popups;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

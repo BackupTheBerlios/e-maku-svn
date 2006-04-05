@@ -1,4 +1,4 @@
-package jmlib.comunicaciones;
+package common.comunicaciones;
 
 import org.jdom.Document;
 import org.jdom.Element;

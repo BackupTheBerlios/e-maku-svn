@@ -1,4 +1,4 @@
-package jmlib.transactions;
+package common.transactions;
 
 import java.util.Hashtable;
 import java.util.Iterator;

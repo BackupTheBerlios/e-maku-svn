@@ -34,7 +34,7 @@
  * Contributor(s):
  *
  */
-package jmlib.pdf.pdfviewer.gui.swing;
+package common.pdf.pdfviewer.gui.swing;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -44,7 +44,7 @@ import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-import jmlib.pdf.pdfviewer.gui.generic.GUIButton;
+import common.pdf.pdfviewer.gui.generic.GUIButton;
 
 /**Swing specific implementation of GUIButton interface*/
 public class SwingButton extends JButton implements GUIButton{

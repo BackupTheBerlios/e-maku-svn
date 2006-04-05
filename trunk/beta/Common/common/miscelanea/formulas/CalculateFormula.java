@@ -1,4 +1,4 @@
-package jmlib.miscelanea.formulas;
+package common.miscelanea.formulas;
 
 import java.math.BigDecimal;
 import java.util.Vector;

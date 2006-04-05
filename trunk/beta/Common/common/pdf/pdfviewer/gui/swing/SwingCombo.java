@@ -34,11 +34,11 @@
  * Contributor(s):
  *
  */
-package jmlib.pdf.pdfviewer.gui.swing;
+package common.pdf.pdfviewer.gui.swing;
 
 import javax.swing.JComboBox;
 
-import jmlib.pdf.pdfviewer.gui.generic.GUICombo;
+import common.pdf.pdfviewer.gui.generic.GUICombo;
 
 public class SwingCombo extends JComboBox implements GUICombo{
 	

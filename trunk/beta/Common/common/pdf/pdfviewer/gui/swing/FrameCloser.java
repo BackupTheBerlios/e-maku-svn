@@ -34,7 +34,7 @@
  * Contributor(s):
  *
  */
-package jmlib.pdf.pdfviewer.gui.swing;
+package common.pdf.pdfviewer.gui.swing;
 
 import java.awt.event.WindowEvent;
 
@@ -42,11 +42,11 @@ import javax.swing.JOptionPane;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
-import jmlib.miscelanea.idiom.Language;
-import jmlib.pdf.pdfviewer.Commands;
-import jmlib.pdf.pdfviewer.Values;
-import jmlib.pdf.pdfviewer.gui.GUIFactory;
-import jmlib.pdf.pdfviewer.utils.Printer;
+import common.miscelanea.idiom.Language;
+import common.pdf.pdfviewer.Commands;
+import common.pdf.pdfviewer.Values;
+import common.pdf.pdfviewer.gui.GUIFactory;
+import common.pdf.pdfviewer.utils.Printer;
 
 import org.jpedal.PdfDecoder;
 

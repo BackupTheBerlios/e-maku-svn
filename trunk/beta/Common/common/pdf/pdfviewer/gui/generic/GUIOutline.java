@@ -34,7 +34,7 @@
  * Contributor(s):
  *
  */
-package jmlib.pdf.pdfviewer.gui.generic;
+package common.pdf.pdfviewer.gui.generic;
 
 import java.awt.Dimension;
 import java.awt.Point;

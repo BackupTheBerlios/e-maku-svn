@@ -1,10 +1,10 @@
-package jmlib.control;
+package common.control;
 
 import java.util.ArrayList;
 import java.util.Vector;
 
-import jmlib.transactions.Cache;
-import jmlib.transactions.STResultSet;
+import common.transactions.Cache;
+import common.transactions.STResultSet;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -77,7 +77,7 @@ public class ValidHeadersClient {
         }
         
         /*
-         *  Validación paquetes UPDATECODE
+         *  Validaciï¿½n paquetes UPDATECODE
          */
         
         else if(nombre.equals("UPDATECODE")) {
@@ -89,7 +89,7 @@ public class ValidHeadersClient {
         }
         
         /*
-         *  Validación paquetes DATE
+         *  Validaciï¿½n paquetes DATE
          */
         
         else if(nombre.equals("DATE")) {
@@ -109,7 +109,7 @@ public class ValidHeadersClient {
 			return true;
         }
         /*
-         *  Validación paquetes CACHE-ANSWER
+         *  Validaciï¿½n paquetes CACHE-ANSWER
          */
         
         else if (nombre.equals("CACHE-ANSWER")) {

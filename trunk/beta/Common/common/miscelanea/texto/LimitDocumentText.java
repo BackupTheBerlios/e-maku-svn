@@ -20,7 +20,7 @@
  * Created on 29 de mayo de 2002, 10:02
  */
 
-package jmlib.miscelanea.texto;
+package common.miscelanea.texto;
 
 
 import java.awt.Toolkit;
@@ -39,7 +39,7 @@ public class LimitDocumentText extends PlainDocument {
     
     public LimitDocumentText(int limit) {
         super();
-        setLimit(limit); // store the limit    
+        setLimit(limit); // store the limitï¿½ï¿½ï¿½ï¿½
     }
     
     public final int getLimit() {

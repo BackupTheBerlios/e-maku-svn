@@ -1,4 +1,4 @@
-package jmlib.gui.formas;
+package common.gui.formas;
 
 public class MultiPackageException extends Exception {
 

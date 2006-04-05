@@ -1,12 +1,12 @@
-package jmlib.transactions;
+package common.transactions;
 
 import java.nio.channels.SocketChannel;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
-import jmlib.comunicaciones.SocketConnect;
-import jmlib.comunicaciones.WriteSocket;
+import common.comunicaciones.SocketConnect;
+import common.comunicaciones.WriteSocket;
 
 import org.jdom.Document;
 import org.jdom.Element;

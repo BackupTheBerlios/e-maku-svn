@@ -19,7 +19,7 @@
  * Created on 9 de abril de 2004, 13:31
  */
 
-package jmlib.miscelanea.texto;
+package common.miscelanea.texto;
 
 /**
  *

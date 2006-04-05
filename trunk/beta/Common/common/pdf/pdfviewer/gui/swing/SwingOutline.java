@@ -34,7 +34,7 @@
  * Contributor(s):
  *
  */
-package jmlib.pdf.pdfviewer.gui.swing;
+package common.pdf.pdfviewer.gui.swing;
 
 import java.awt.Point;
 import java.util.HashMap;
@@ -46,7 +46,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
-import jmlib.pdf.pdfviewer.gui.generic.GUIOutline;
+import common.pdf.pdfviewer.gui.generic.GUIOutline;
 
 //import org.w3c.dom.Element;
 import org.w3c.dom.Node;

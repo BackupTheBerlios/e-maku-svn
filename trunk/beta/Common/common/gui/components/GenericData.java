@@ -1,4 +1,4 @@
-package jmlib.gui.components;
+package common.gui.components;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -25,19 +25,19 @@ import java.util.Vector;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import jmlib.control.DateEvent;
-import jmlib.control.DateListener;
-import jmlib.control.ValidHeadersClient;
-import jmlib.gui.formas.ChangeExternalValueEvent;
-import jmlib.gui.formas.ChangeExternalValueListener;
-import jmlib.gui.formas.FinishEvent;
-import jmlib.gui.formas.GenericForm;
-import jmlib.gui.formas.InitiateFinishListener;
-import jmlib.gui.formas.NotFoundComponentException;
-import jmlib.miscelanea.formulas.CalculateFormula;
-import jmlib.miscelanea.idiom.Language;
-import jmlib.transactions.STException;
-import jmlib.transactions.STResultSet;
+import common.control.DateEvent;
+import common.control.DateListener;
+import common.control.ValidHeadersClient;
+import common.gui.formas.ChangeExternalValueEvent;
+import common.gui.formas.ChangeExternalValueListener;
+import common.gui.formas.FinishEvent;
+import common.gui.formas.GenericForm;
+import common.gui.formas.InitiateFinishListener;
+import common.gui.formas.NotFoundComponentException;
+import common.miscelanea.formulas.CalculateFormula;
+import common.miscelanea.idiom.Language;
+import common.transactions.STException;
+import common.transactions.STResultSet;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -813,7 +813,7 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
  	public void initiateFinishEvent(FinishEvent e) {
 		try {
 			callAddAnswerListener();
-			/* Añadido por pastuxso para el calculo de fechas*/
+			/* Aï¿½adido por pastuxso para el calculo de fechas*/
 			GFforma.addChangeExternalValueListener(this);
 		}
 		catch(NotFoundComponentException NFCEe) {

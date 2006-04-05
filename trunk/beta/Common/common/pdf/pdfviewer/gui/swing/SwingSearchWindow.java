@@ -34,7 +34,7 @@
  * Contributor(s):
  *
  */
-package jmlib.pdf.pdfviewer.gui.swing;
+package common.pdf.pdfviewer.gui.swing;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,10 +46,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import jmlib.pdf.pdfviewer.Values;
-import jmlib.pdf.pdfviewer.gui.SwingGUI;
-import jmlib.pdf.pdfviewer.gui.generic.GUISearchWindow;
-import jmlib.pdf.pdfviewer.utils.SwingWorker;
+import common.pdf.pdfviewer.Values;
+import common.pdf.pdfviewer.gui.SwingGUI;
+import common.pdf.pdfviewer.gui.generic.GUISearchWindow;
+import common.pdf.pdfviewer.utils.SwingWorker;
 
 import org.jpedal.PdfDecoder;
 

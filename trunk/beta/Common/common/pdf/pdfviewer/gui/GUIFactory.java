@@ -1,4 +1,4 @@
-package jmlib.pdf.pdfviewer.gui;
+package common.pdf.pdfviewer.gui;
 
 import java.awt.Rectangle;
 
@@ -7,8 +7,8 @@ import javax.swing.JMenu;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 
-import jmlib.pdf.pdfviewer.Commands;
-import jmlib.pdf.pdfviewer.utils.Printer;
+import common.pdf.pdfviewer.Commands;
+import common.pdf.pdfviewer.utils.Printer;
 
 import org.w3c.dom.Node;
 

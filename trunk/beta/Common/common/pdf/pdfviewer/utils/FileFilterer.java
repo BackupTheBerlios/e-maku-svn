@@ -34,7 +34,7 @@
  * Contributor(s):
  *
  */
-package jmlib.pdf.pdfviewer.utils;
+package common.pdf.pdfviewer.utils;
 import java.io.File;
 
 /**

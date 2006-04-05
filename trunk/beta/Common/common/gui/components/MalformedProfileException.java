@@ -1,4 +1,4 @@
-package jmlib.gui.components;
+package common.gui.components;
 
 public class MalformedProfileException extends Exception {
 

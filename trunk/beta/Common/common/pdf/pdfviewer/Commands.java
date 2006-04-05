@@ -28,7 +28,7 @@
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
 
-package jmlib.pdf.pdfviewer;
+package common.pdf.pdfviewer;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -40,12 +40,12 @@ import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import jmlib.miscelanea.idiom.Language;
-import jmlib.pdf.pdfviewer.gui.SwingGUI;
-import jmlib.pdf.pdfviewer.gui.popups.ErrorDialog;
-import jmlib.pdf.pdfviewer.utils.FileFilterer;
-import jmlib.pdf.pdfviewer.utils.Printer;
-import jmlib.pdf.pdfviewer.utils.SwingWorker;
+import common.miscelanea.idiom.Language;
+import common.pdf.pdfviewer.gui.SwingGUI;
+import common.pdf.pdfviewer.gui.popups.ErrorDialog;
+import common.pdf.pdfviewer.utils.FileFilterer;
+import common.pdf.pdfviewer.utils.Printer;
+import common.pdf.pdfviewer.utils.SwingWorker;
 
 import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;

@@ -1,4 +1,4 @@
-package jmlib.comunicaciones;
+package common.comunicaciones;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -7,12 +7,12 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
-import jmlib.miscelanea.JMLibCons;
-import jmlib.miscelanea.idiom.Language;
-import jmlib.miscelanea.log.AdminLog;
-
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
+
+import common.miscelanea.CommonCons;
+import common.miscelanea.idiom.Language;
+import common.miscelanea.log.AdminLog;
 
 /**
  * WriteSocket.java Creado el 23-jul-2004
@@ -97,7 +97,7 @@ public class WriteSocket {
         }
         catch (IOException IOEe) {
             AdminLog.setMessage(Language.getWord("ERR_WRITING_SOCKET") + "\n"
-                    + IOEe.getMessage(), JMLibCons.ERROR);
+                    + IOEe.getMessage(), CommonCons.ERROR);
         }
     }
 }

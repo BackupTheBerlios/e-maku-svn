@@ -1,4 +1,4 @@
-package jmlib.gui.components;
+package common.gui.components;
 
 import java.awt.Component;
 import java.awt.Graphics;
@@ -11,10 +11,10 @@ import java.util.Vector;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import jmlib.gui.formas.FinishEvent;
-import jmlib.gui.formas.GenericForm;
-import jmlib.gui.formas.InitiateFinishListener;
-import jmlib.gui.formas.NotFoundComponentException;
+import common.gui.formas.FinishEvent;
+import common.gui.formas.GenericForm;
+import common.gui.formas.InitiateFinishListener;
+import common.gui.formas.NotFoundComponentException;
 
 import org.jdom.Document;
 import org.jdom.Element;

@@ -1,7 +1,7 @@
-package jmlib.miscelanea;
+package common.miscelanea;
 
 /**
- * JMLibCons.java Creado el 07-oct-2004
+ * commonCons.java Creado el 07-oct-2004
  * 
  * Este archivo es parte de JMServerII
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
@@ -21,7 +21,7 @@ package jmlib.miscelanea;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
-public interface JMLibCons {
+public interface CommonCons {
     public final int ERROR 			= 0;
     public final int WARNING 		= 1;
     public final int MESSAGE 		= 2;

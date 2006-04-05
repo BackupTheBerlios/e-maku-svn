@@ -1,6 +1,6 @@
-package jmlib.gui.formas;
+package common.gui.formas;
 
-import jmlib.miscelanea.idiom.Language;
+import common.miscelanea.idiom.Language;
 
 /**
  * NotFoundComponentException.java Creado el 27-jun-2005

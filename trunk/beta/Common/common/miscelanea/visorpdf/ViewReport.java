@@ -1,4 +1,4 @@
-package jmlib.miscelanea.visorpdf;
+package common.miscelanea.visorpdf;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import jmlib.miscelanea.idiom.Language;
+import common.miscelanea.idiom.Language;
 
 import org.jpedal.PdfDecoder;
 

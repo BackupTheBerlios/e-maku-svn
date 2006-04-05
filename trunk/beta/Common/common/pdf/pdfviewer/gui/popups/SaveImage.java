@@ -30,7 +30,7 @@
  * saveBitmap.java
  *
  */
-package jmlib.pdf.pdfviewer.gui.popups;
+package common.pdf.pdfviewer.gui.popups;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 

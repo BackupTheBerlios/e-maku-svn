@@ -1,4 +1,4 @@
-package jmlib.pdf.pdfviewer.utils;
+package common.pdf.pdfviewer.utils;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PageFormat;
@@ -13,8 +13,8 @@ import javax.print.attribute.standard.PageRanges;
 import javax.swing.ProgressMonitor;
 import javax.swing.Timer;
 
-import jmlib.miscelanea.idiom.Language;
-import jmlib.pdf.pdfviewer.gui.GUIFactory;
+import common.miscelanea.idiom.Language;
+import common.pdf.pdfviewer.gui.GUIFactory;
 
 import org.jpedal.PdfDecoder;
 

@@ -28,7 +28,7 @@
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
 
-package jmlib.pdf.pdfviewer;
+package common.pdf.pdfviewer;
 
 import java.awt.Cursor;
 import java.awt.Font;
@@ -36,15 +36,15 @@ import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
-import jmlib.control.ReportEvent;
-import jmlib.control.ReportListener;
-import jmlib.control.ValidHeadersClient;
-import jmlib.gui.formas.GenericForm;
-import jmlib.miscelanea.ZipHandler;
-import jmlib.miscelanea.idiom.Language;
-import jmlib.pdf.pdfviewer.gui.GUIFactory;
-import jmlib.pdf.pdfviewer.gui.SwingGUI;
-import jmlib.pdf.pdfviewer.utils.Printer;
+import common.control.ReportEvent;
+import common.control.ReportListener;
+import common.control.ValidHeadersClient;
+import common.gui.formas.GenericForm;
+import common.miscelanea.ZipHandler;
+import common.miscelanea.idiom.Language;
+import common.pdf.pdfviewer.gui.GUIFactory;
+import common.pdf.pdfviewer.gui.SwingGUI;
+import common.pdf.pdfviewer.utils.Printer;
 
 import org.jdom.Element;
 import org.jpedal.PdfDecoder;

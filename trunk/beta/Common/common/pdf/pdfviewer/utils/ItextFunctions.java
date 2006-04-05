@@ -34,7 +34,7 @@
  * Contributor(s):
  *
  */
-package jmlib.pdf.pdfviewer.utils;
+package common.pdf.pdfviewer.utils;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -50,9 +50,9 @@ import javax.swing.JRadioButton;
 import javax.swing.ProgressMonitor;
 import javax.swing.text.JTextComponent;
 
-import jmlib.pdf.pdfviewer.gui.GUIFactory;
-import jmlib.pdf.pdfviewer.gui.SwingGUI;
-import jmlib.pdf.pdfviewer.gui.popups.SavePDF;
+import common.pdf.pdfviewer.gui.GUIFactory;
+import common.pdf.pdfviewer.gui.SwingGUI;
+import common.pdf.pdfviewer.gui.popups.SavePDF;
 
 import org.jpedal.PdfDecoder;
 

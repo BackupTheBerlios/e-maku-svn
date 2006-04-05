@@ -34,7 +34,7 @@
  * Contributor(s):
  *
  */
-package jmlib.pdf.pdfviewer.gui.swing;
+package common.pdf.pdfviewer.gui.swing;
 
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -42,10 +42,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
-import jmlib.pdf.pdfviewer.Commands;
-import jmlib.pdf.pdfviewer.Values;
-import jmlib.pdf.pdfviewer.gui.SwingGUI;
-import jmlib.pdf.pdfviewer.gui.generic.GUIMouseHandler;
+import common.pdf.pdfviewer.Commands;
+import common.pdf.pdfviewer.Values;
+import common.pdf.pdfviewer.gui.SwingGUI;
+import common.pdf.pdfviewer.gui.generic.GUIMouseHandler;
 
 import org.jpedal.PdfDecoder;
 /**handles all mouse activity in GUI using Swing classes*/

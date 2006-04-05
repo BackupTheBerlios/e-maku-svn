@@ -1,13 +1,13 @@
-package jmlib.gui.components;
+package common.gui.components;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Vector;
 
-import jmlib.gui.formas.GenericForm;
-import jmlib.transactions.STException;
-import jmlib.transactions.STResultSet;
+import common.gui.formas.GenericForm;
+import common.transactions.STException;
+import common.transactions.STResultSet;
 
 import org.jdom.Document;
 import org.jdom.Element;

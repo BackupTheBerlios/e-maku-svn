@@ -1,4 +1,4 @@
-package jmlib.comunicaciones;
+package common.comunicaciones;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

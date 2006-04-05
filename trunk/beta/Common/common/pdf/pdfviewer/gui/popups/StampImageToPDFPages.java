@@ -34,7 +34,7 @@
 * 
 * --------------------------
 */
-package jmlib.pdf.pdfviewer.gui.popups;
+package common.pdf.pdfviewer.gui.popups;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -57,7 +57,7 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SpinnerNumberModel;
 
-import jmlib.pdf.pdfviewer.utils.FileFilterer;
+import common.pdf.pdfviewer.utils.FileFilterer;
 
 import org.jpedal.utils.LogWriter;
 

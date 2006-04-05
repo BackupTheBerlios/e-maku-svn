@@ -37,7 +37,7 @@
  * Contributor(s):
  *
  */
-package jmlib.pdf.pdfviewer.gui;
+package common.pdf.pdfviewer.gui;
 
 
 import java.awt.Rectangle;
@@ -45,10 +45,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import jmlib.pdf.pdfviewer.Values;
-import jmlib.pdf.pdfviewer.gui.generic.GUIButton;
-import jmlib.pdf.pdfviewer.gui.generic.GUICombo;
-import jmlib.pdf.pdfviewer.gui.generic.GUIOutline;
+import common.pdf.pdfviewer.Values;
+import common.pdf.pdfviewer.gui.generic.GUIButton;
+import common.pdf.pdfviewer.gui.generic.GUICombo;
+import common.pdf.pdfviewer.gui.generic.GUIOutline;
 
 import org.jpedal.PdfDecoder;
 

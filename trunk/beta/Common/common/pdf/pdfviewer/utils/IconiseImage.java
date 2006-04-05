@@ -34,7 +34,7 @@
  * 
  * --------------------------
  */
-package jmlib.pdf.pdfviewer.utils;
+package common.pdf.pdfviewer.utils;
 
 import java.awt.Component;
 import java.awt.Graphics;

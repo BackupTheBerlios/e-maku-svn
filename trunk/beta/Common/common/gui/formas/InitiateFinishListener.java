@@ -1,4 +1,4 @@
-package jmlib.gui.formas;
+package common.gui.formas;
 
 /**
  * InitiateFinishListener.java Creado el 23-jun-2005

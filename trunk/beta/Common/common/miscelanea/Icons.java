@@ -1,4 +1,4 @@
-package jmlib.miscelanea;
+package common.miscelanea;
 
 import java.io.IOException;
 import java.util.Hashtable;

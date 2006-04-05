@@ -28,7 +28,7 @@
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
 
-package jmlib.pdf.pdfviewer;
+package common.pdf.pdfviewer;
 
 import org.jpedal.objects.PdfAnnots;
 

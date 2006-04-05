@@ -1,4 +1,4 @@
-package jmlib.gui.components;
+package common.gui.components;
 
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -13,8 +13,8 @@ import java.util.StringTokenizer;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import jmlib.gui.formas.GenericForm;
-import jmlib.miscelanea.idiom.Language;
+import common.gui.formas.GenericForm;
+import common.miscelanea.idiom.Language;
 
 import org.jdom.Document;
 import org.jdom.Element;

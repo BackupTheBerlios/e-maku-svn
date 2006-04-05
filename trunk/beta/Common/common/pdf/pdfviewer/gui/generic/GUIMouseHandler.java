@@ -34,7 +34,7 @@
  * Contributor(s):
  *
  */
-package jmlib.pdf.pdfviewer.gui.generic;
+package common.pdf.pdfviewer.gui.generic;
 
 /**abstract level of mouse support in SimpleViewer*/
 public interface GUIMouseHandler {

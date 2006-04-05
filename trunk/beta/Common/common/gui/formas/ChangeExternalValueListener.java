@@ -1,4 +1,4 @@
-package jmlib.gui.formas;
+package common.gui.formas;
 
 import java.util.EventListener;
 

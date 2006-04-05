@@ -1,4 +1,4 @@
-package jmlib.gui.components;
+package common.gui.components;
 
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -21,12 +21,12 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
-import jmlib.control.DateEvent;
-import jmlib.control.UpdateCodeEvent;
-import jmlib.control.UpdateCodeListener;
-import jmlib.control.ValidHeadersClient;
-import jmlib.miscelanea.idiom.Language;
-import jmlib.miscelanea.texto.LimitDocumentText;
+import common.control.DateEvent;
+import common.control.UpdateCodeEvent;
+import common.control.UpdateCodeListener;
+import common.control.ValidHeadersClient;
+import common.miscelanea.idiom.Language;
+import common.miscelanea.texto.LimitDocumentText;
 
 import org.jdom.Element;
 
@@ -254,7 +254,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see jmlib.control.DateListener#cathDateEvent(jmlib.control.DateEvent)
+	 * @see common.control.DateListener#cathDateEvent(common.control.DateEvent)
 	 */
 	public void cathDateEvent(DateEvent e) {
 
@@ -263,7 +263,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see jmlib.control.UpdateCodeListener#cathUpdateCodeEvent(jmlib.control.UpdateCodeEvent)
+	 * @see common.control.UpdateCodeListener#cathUpdateCodeEvent(common.control.UpdateCodeEvent)
 	 */
 	public void cathUpdateCodeEvent(UpdateCodeEvent e) {
 		// TODO Auto-generated method stub

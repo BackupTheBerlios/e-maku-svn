@@ -1,4 +1,4 @@
-package jmlib.comunicaciones;
+package common.comunicaciones;
 
 import java.io.IOException;
 import java.net.ConnectException;

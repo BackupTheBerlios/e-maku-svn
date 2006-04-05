@@ -18,7 +18,7 @@
 * 2004-06-09		Add as proof of concept example
 *
 */
-package jmlib.pdf.printing;
+package common.pdf.printing;
 
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;

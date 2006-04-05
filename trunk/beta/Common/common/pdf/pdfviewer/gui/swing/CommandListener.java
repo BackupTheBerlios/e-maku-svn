@@ -34,13 +34,13 @@
  * Contributor(s):
  *
  */
-package jmlib.pdf.pdfviewer.gui.swing;
+package common.pdf.pdfviewer.gui.swing;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import jmlib.pdf.pdfviewer.Commands;
-import jmlib.pdf.pdfviewer.gui.generic.GUIButton;
+import common.pdf.pdfviewer.Commands;
+import common.pdf.pdfviewer.gui.generic.GUIButton;
 
 /**single listener to execute all GUI commands and call Commands to execute*/
 public class CommandListener implements ActionListener {

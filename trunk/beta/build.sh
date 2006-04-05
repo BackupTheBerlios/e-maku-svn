@@ -78,7 +78,7 @@ compile_client() {
              echo " * Compilando el Cliente..."
              echo
 
-             cd JMClient
+             cd Client
              $JAVA_HOME/bin/java -Dant.home=$ANT_HOME -classpath $LOCALCLASSPATH${PS}$ADDITIONALCLASSPATH org.apache.tools.ant.Main $*
              cd ..
 }
@@ -98,7 +98,7 @@ compile_server() {
              echo
              echo " * Compilando el Servidor de Transacciones..."
              echo
-             cd JMServer
+             cd Server
              $JAVA_HOME/bin/java -Dant.home=$ANT_HOME -classpath $LOCALCLASSPATH${PS}$ADDITIONALCLASSPATH org.apache.tools.ant.Main $*
              cd ..
 }
@@ -127,36 +127,36 @@ install_server() {
              cp -f $ROOT/conf/server.conf $EMAKU_HOME/conf
              cp -f $ROOT/conf/wrapper.conf $EMAKU_HOME/conf
              cp -f $ROOT/bin/wrapper $EMAKU_HOME/bin
-             cp -f $ROOT/bin/jmidas_daemon $EMAKU_HOME/bin
+             cp -f $ROOT/bin/emaku-server-daemon $EMAKU_HOME/bin
 
              echo "#!/bin/sh" > $EMAKU_HOME/bin/emaku-server
              echo " " >> $EMAKU_HOME/bin/emaku-server
              echo "EMAKU_HOME=$JMIDAS_HOME" >> $JMIDAS_HOME/bin/emaku-server
              echo "export EMAKU_HOME" >> $JMIDAS_HOME/bin/emaku-server
-             cat $ROOT/bin/emaku-server >> $EMAKU_HOME/bin/jmserver
+             cat $ROOT/bin/emaku-server >> $EMAKU_HOME/bin/emaku-server
 
              if [ ! -L /usr/sbin/emaku-server ] ; then
-               ln -s $EMAKU_HOME/bin/emaku-server /usr/sbin/jmserver
+               ln -s $EMAKU_HOME/bin/emaku-server /usr/sbin/emaku-server
              fi
 
-             if [ ! -L /usr/sbin/jmidas_daemon ] ; then
-               ln -s $EMAKU_HOME/bin/jmidas_daemon /usr/sbin/jmidas_daemon
+             if [ ! -L /usr/sbin/emaku-server-daemon ] ; then
+               ln -s $EMAKU_HOME/bin/emaku-server-daemon /usr/sbin/emaku-server-daemon
              fi
 
              echo " Instalando scripts de inicio..."
              if [ -d /etc/init.d ] ; then
-               cp -f $EMAKU_HOME/bin/emaku-server /etc/init.d/jmidas
-               if [ -d /etc/rc3.d ] && [ ! -e /etc/rc3.d/S20jmidas ] ; then
-                 ln -s /etc/init.d/jmidas /etc/rc3.d/S20jmidas
+               cp -f $EMAKU_HOME/bin/emaku-server /etc/init.d/emaku
+               if [ -d /etc/rc3.d ] && [ ! -e /etc/rc3.d/S20emaku ] ; then
+                 ln -s /etc/init.d/emaku /etc/rc3.d/S20emaku
                fi
-               if [ -d /etc/rc5.d ] && [ ! -e /etc/rc3.d/S20jmidas ] ; then
-                 ln -s /etc/init.d/jmidas /etc/rc5.d/S20jmidas
+               if [ -d /etc/rc5.d ] && [ ! -e /etc/rc3.d/S20emaku ] ; then
+                 ln -s /etc/init.d/emaku /etc/rc5.d/S20emaku
                fi
-               if [ -d /etc/rc0.d ] && [ ! -e /etc/rc0.d/K20jmidas ] ; then
-                 ln -s /etc/init.d/jmidas /etc/rc0.d/K20jmidas
+               if [ -d /etc/rc0.d ] && [ ! -e /etc/rc0.d/K20emaku ] ; then
+                 ln -s /etc/init.d/emaku /etc/rc0.d/K20emaku
                fi
-               if [ -d /etc/rc6.d ] && [ ! -e /etc/rc0.d/K20jmidas ] ; then
-                 ln -s /etc/init.d/jmidas /etc/rc6.d/K20jmidas
+               if [ -d /etc/rc6.d ] && [ ! -e /etc/rc0.d/K20emaku ] ; then
+                 ln -s /etc/init.d/emaku /etc/rc6.d/K20emaku
                fi
              else
                RC_PREV=`egrep emaku-server /etc/rc.d/rc.local`
@@ -175,10 +175,10 @@ install_client() {
              echo " " >> $EMAKU_HOME/bin/emaku-client
              echo "EMAKU_HOME=$JMIDAS_HOME" >> $JMIDAS_HOME/bin/emaku-client
              echo "export EMAKU_HOME" >> $JMIDAS_HOME/bin/emaku-client
-             cat $ROOT/bin/emaku-client >> $EMAKU_HOME/bin/jmclient
+             cat $ROOT/bin/emaku-client >> $EMAKU_HOME/bin/emaku-client
 
              if [ ! -L /usr/bin/emaku-client ] ; then
-               ln -s $EMAKU_HOME/bin/emaku-client /usr/bin/jmclient
+               ln -s $EMAKU_HOME/bin/emaku-client /usr/bin/emaku-client
              fi
 }
 
@@ -192,10 +192,10 @@ help(){
              echo "  compile client           : Compila el componente cliente E-Maku "
              echo "  -c                       : Elimina archivos .class "
              echo "  clean                    : Elimina archivos .class "
-             echo "  -i                       : Instala E-Maku en /usr/local/jmidas "
-             echo "  install                  : Instala E-Maku en /usr/local/jmidas "
-             echo "  -i -p /ruta/jmidas       : Instala E-Maku en /ruta/jmidas"
-             echo "  -i --prefix=/ruta/jmidas : Instala E-Maku en /ruta/jmidas"
+             echo "  -i                       : Instala E-Maku en /usr/local/emaku "
+             echo "  install                  : Instala E-Maku en /usr/local/emaku "
+             echo "  -i -p /ruta/emaku       : Instala E-Maku en /ruta/emaku"
+             echo "  -i --prefix=/ruta/emaku : Instala E-Maku en /ruta/emaku"
              echo "  uninstall                : Elimina la instalacion de E-Maku "
              echo "  -u                       : Elimina la instalacion de E-Maku "
              echo
@@ -204,9 +204,9 @@ help(){
 remove(){
              find . -name '*.class' -exec rm {} \;
              \rm -rf build
-             \rm -f lib/midas/common,jar
-             \rm -f lib/midas/emaku-client.jar
-             \rm -f lib/midas/emaku-server2.jar 
+             \rm -f lib/emaku/common,jar
+             \rm -f lib/emaku/emaku-client.jar
+             \rm -f lib/emaku/emaku-server.jar 
              \rm -f *.log
 }
 
@@ -230,8 +230,8 @@ case "$1" in
 
              if [ -z $2 ] ; then
                echo
-               echo " Utilizando ruta de instalacion por defecto (/usr/local/jmidas)"
-               EMAKU_HOME=/usr/local/jmidas
+               echo " Utilizando ruta de instalacion por defecto (/usr/local/emaku)"
+               EMAKU_HOME=/usr/local/emaku
              else
                case "$2" in
                  -p) 
@@ -240,7 +240,7 @@ case "$1" in
                     else
                       echo 
                       echo " ERROR: La ruta de instalacion de E-Maku no fue ingresada."
-                      echo "        Ej: ./build.sh -i -p /usr/local/jmidas"
+                      echo "        Ej: ./build.sh -i -p /usr/local/emaku"
                       echo
                       exit 1
                     fi
@@ -250,7 +250,7 @@ case "$1" in
                     if [ "$EMAKU_HOME" = "" ] ; then
                       echo
                       echo " ERROR: La ruta de instalacion de E-Maku no fue ingresada."
-                      echo "        Ej: ./build.sh -i --prefix=/usr/local/jmidas"
+                      echo "        Ej: ./build.sh -i --prefix=/usr/local/emaku"
                       echo
                       exit 1
                     fi
@@ -349,19 +349,19 @@ case "$1" in
              fi
 
              echo " Eliminando scripts de inicio..."
-             if [ -d /etc/init.d ] && [ -e /etc/init.d/jmidas ] ; then
-               rm -f /etc/init.d/jmidas
-               if [ -d /etc/rc3.d ] && [ -e /etc/rc3.d/S20jmidas ] ; then
-                 rm -f /etc/rc3.d/S20jmidas
+             if [ -d /etc/init.d ] && [ -e /etc/init.d/emaku ] ; then
+               rm -f /etc/init.d/emaku
+               if [ -d /etc/rc3.d ] && [ -e /etc/rc3.d/S20emaku ] ; then
+                 rm -f /etc/rc3.d/S20emaku
                fi
-               if [ -d /etc/rc5.d ] && [ -e /etc/rc3.d/S20jmidas ] ; then
-                 rm -f /etc/rc5.d/S20jmidas
+               if [ -d /etc/rc5.d ] && [ -e /etc/rc3.d/S20emaku ] ; then
+                 rm -f /etc/rc5.d/S20emaku
                fi
-              if [ -d /etc/rc0.d ] && [ -e /etc/rc0.d/K20jmidas ] ; then
-                 rm -f /etc/rc0.d/K20jmidas
+              if [ -d /etc/rc0.d ] && [ -e /etc/rc0.d/K20emaku ] ; then
+                 rm -f /etc/rc0.d/K20emaku
                fi
-              if [ -d /etc/rc6.d ] && [ -e /etc/rc0.d/K20jmidas ] ; then
-                 rm -f /etc/rc6.d/K20jmidas
+              if [ -d /etc/rc6.d ] && [ -e /etc/rc0.d/K20emaku ] ; then
+                 rm -f /etc/rc6.d/K20emaku
                fi
              else
                RC_PREV=`egrep emaku-server /etc/rc.d/rc.local`

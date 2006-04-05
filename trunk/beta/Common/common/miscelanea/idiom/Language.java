@@ -1,4 +1,4 @@
-package jmlib.miscelanea.idiom;
+package common.miscelanea.idiom;
 
 import java.io.IOException;
 import java.util.Hashtable;
@@ -27,7 +27,7 @@ import org.jdom.input.SAXBuilder;
  *
  * Fecha: 2001/10/01
  *
- * Autores: Beatriz Florián  - bettyflor@kazak.ws
+ * Autores: Beatriz Floriï¿½n  - bettyflor@kazak.ws
  *          Gustavo Gonzalez - xtingray@kazak.ws
  *
  * 2004/03/23
@@ -41,7 +41,7 @@ import org.jdom.input.SAXBuilder;
  * esta clase cada que se la necesita, sino simplemente llamar al metodo que se necesite de
  * forma similar a como se manejan las interfaces.
  *
- * @author Beatriz Florián, Gustavo Gonzalez, Luis Felipe Hernandez, Cristian David Cepeda.
+ * @author Beatriz Floriï¿½n, Gustavo Gonzalez, Luis Felipe Hernandez, Cristian David Cepeda.
  *
  */
 public class Language  {

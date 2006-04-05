@@ -1,6 +1,6 @@
-package jmlib.gui.components;
+package common.gui.components;
 
-import jmlib.miscelanea.idiom.Language;
+import common.miscelanea.idiom.Language;
 
 /**
  * VoidPackageException.java Creado el 28-sep-2004

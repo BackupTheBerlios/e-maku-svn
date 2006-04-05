@@ -1,4 +1,4 @@
-package jmlib.gui.formas;
+package common.gui.formas;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -29,16 +29,16 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.TitledBorder;
 
-import jmlib.comunicaciones.SendDATE;
-import jmlib.comunicaciones.SendUPDATECODE;
-import jmlib.comunicaciones.SocketConnect;
-import jmlib.comunicaciones.WriteSocket;
-import jmlib.gui.components.VoidPackageException;
-import jmlib.miscelanea.Icons;
-import jmlib.miscelanea.idiom.Language;
-import jmlib.miscelanea.parameters.GenericParameters;
-import jmlib.transactions.STException;
-import jmlib.transactions.STResultSet;
+import common.comunicaciones.SendDATE;
+import common.comunicaciones.SendUPDATECODE;
+import common.comunicaciones.SocketConnect;
+import common.comunicaciones.WriteSocket;
+import common.gui.components.VoidPackageException;
+import common.miscelanea.Icons;
+import common.miscelanea.idiom.Language;
+import common.miscelanea.parameters.GenericParameters;
+import common.transactions.STException;
+import common.transactions.STResultSet;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -973,12 +973,12 @@ public class GenericForm extends JInternalFrame{
     public void setEnabledButton(String name,boolean bool) {
         try {
             if (bool)
-	            invokeMethod("jmlib.gui.components.PanelButtons", 
+	            invokeMethod("common.gui.components.PanelButtons", 
                 			 "setEnabled",
                 			 new Class[] {String.class,boolean.class},
                 			 new Object[] {name,Boolean.TRUE});
             else
-                invokeMethod("jmlib.gui.components.PanelButtons", 
+                invokeMethod("common.gui.components.PanelButtons", 
 		           			 "setEnabled",
 		           			 new Class[] {String.class,boolean.class},
 		           			 new Object[] {name,Boolean.FALSE});
