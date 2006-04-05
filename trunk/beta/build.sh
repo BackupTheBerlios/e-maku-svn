@@ -59,7 +59,7 @@ set_vars() {
                PS=":"
              fi
 
-             LOCALCLASSPATH=${JAVA_HOME}/lib/tools.jar${PS}${JAVA_HOME}/lib/dev.jar${PS}../lib/contrib/ant.jar${PS}../lib/contrib/icons.jar${PS}../lib/contrib/jdom.jar${PS}../lib/contrib/jdbc-pgsql.jar${PS}../lib/midas/jmlib.jar${PS}../lib/contrib/bsh-core.jar${PS}../lib/contrib/ostermillerutils.jar${PS}../lib/contrib/jpedal.jar${PS}../lib/contrib/jai_codec.jar${PS}../lib/contrib/jai_core.jar${PS}../lib/contrib/itext.jar${PS}../lib/contrib/digester.jar${PS}../lib/contrib/jdt-compiler.jar${PS}../lib/contrib/bcprov.jar${PS}../lib/contrib/jasper.jar
+             LOCALCLASSPATH=${JAVA_HOME}/lib/tools.jar${PS}${JAVA_HOME}/lib/dev.jar${PS}../lib/contrib/ant.jar${PS}../lib/contrib/icons.jar${PS}../lib/contrib/jdom.jar${PS}../lib/contrib/jdbc-pgsql.jar${PS}../lib/midas/common,jar${PS}../lib/contrib/bsh-core.jar${PS}../lib/contrib/ostermillerutils.jar${PS}../lib/contrib/jpedal.jar${PS}../lib/contrib/jai_codec.jar${PS}../lib/contrib/jai_core.jar${PS}../lib/contrib/itext.jar${PS}../lib/contrib/digester.jar${PS}../lib/contrib/jdt-compiler.jar${PS}../lib/contrib/bcprov.jar${PS}../lib/contrib/jasper.jar
 
              ANT_HOME=../lib
 
@@ -88,7 +88,7 @@ compile_libs() {
              echo " * Compilando las Librerias..."
              echo
 
-             cd JMLib/
+             cd Common/
              $JAVA_HOME/bin/java -Dant.home=$ANT_HOME -classpath $LOCALCLASSPATH${PS}$ADDITIONALCLASSPATH org.apache.tools.ant.Main $*
              cd ..
 }
@@ -114,38 +114,38 @@ compile_all() {
 }
 
 install_base() {
-             mkdir -p $JMIDAS_HOME
-             mkdir -p $JMIDAS_HOME/lib
-             mkdir -p $JMIDAS_HOME/bin 
-             cp -rf $ROOT/lib $JMIDAS_HOME
-             chmod -R 755 $JMIDAS_HOME
-             echo "$JMIDAS_HOME" > $ROOT/install.log
+             mkdir -p $EMAKU_HOME
+             mkdir -p $EMAKU_HOME/lib
+             mkdir -p $EMAKU_HOME/bin 
+             cp -rf $ROOT/lib $EMAKU_HOME
+             chmod -R 755 $EMAKU_HOME
+             echo "$EMAKU_HOME" > $ROOT/install.log
 }
 
 install_server() {
-             mkdir -p $JMIDAS_HOME/conf
-             cp -f $ROOT/conf/server.conf $JMIDAS_HOME/conf
-             cp -f $ROOT/conf/wrapper.conf $JMIDAS_HOME/conf
-             cp -f $ROOT/bin/wrapper $JMIDAS_HOME/bin
-             cp -f $ROOT/bin/jmidas_daemon $JMIDAS_HOME/bin
+             mkdir -p $EMAKU_HOME/conf
+             cp -f $ROOT/conf/server.conf $EMAKU_HOME/conf
+             cp -f $ROOT/conf/wrapper.conf $EMAKU_HOME/conf
+             cp -f $ROOT/bin/wrapper $EMAKU_HOME/bin
+             cp -f $ROOT/bin/jmidas_daemon $EMAKU_HOME/bin
 
-             echo "#!/bin/sh" > $JMIDAS_HOME/bin/jmserver
-             echo " " >> $JMIDAS_HOME/bin/jmserver
-             echo "JMIDAS_HOME=$JMIDAS_HOME" >> $JMIDAS_HOME/bin/jmserver
-             echo "export JMIDAS_HOME" >> $JMIDAS_HOME/bin/jmserver
-             cat $ROOT/bin/jmserver >> $JMIDAS_HOME/bin/jmserver
+             echo "#!/bin/sh" > $EMAKU_HOME/bin/emaku-server
+             echo " " >> $EMAKU_HOME/bin/emaku-server
+             echo "EMAKU_HOME=$JMIDAS_HOME" >> $JMIDAS_HOME/bin/emaku-server
+             echo "export EMAKU_HOME" >> $JMIDAS_HOME/bin/emaku-server
+             cat $ROOT/bin/emaku-server >> $EMAKU_HOME/bin/jmserver
 
-             if [ ! -L /usr/sbin/jmserver ] ; then
-               ln -s $JMIDAS_HOME/bin/jmserver /usr/sbin/jmserver
+             if [ ! -L /usr/sbin/emaku-server ] ; then
+               ln -s $EMAKU_HOME/bin/emaku-server /usr/sbin/jmserver
              fi
 
              if [ ! -L /usr/sbin/jmidas_daemon ] ; then
-               ln -s $JMIDAS_HOME/bin/jmidas_daemon /usr/sbin/jmidas_daemon
+               ln -s $EMAKU_HOME/bin/jmidas_daemon /usr/sbin/jmidas_daemon
              fi
 
              echo " Instalando scripts de inicio..."
              if [ -d /etc/init.d ] ; then
-               cp -f $JMIDAS_HOME/bin/jmserver /etc/init.d/jmidas
+               cp -f $EMAKU_HOME/bin/emaku-server /etc/init.d/jmidas
                if [ -d /etc/rc3.d ] && [ ! -e /etc/rc3.d/S20jmidas ] ; then
                  ln -s /etc/init.d/jmidas /etc/rc3.d/S20jmidas
                fi
@@ -159,26 +159,26 @@ install_server() {
                  ln -s /etc/init.d/jmidas /etc/rc6.d/K20jmidas
                fi
              else
-               RC_PREV=`egrep jmserver /etc/rc.d/rc.local`
+               RC_PREV=`egrep emaku-server /etc/rc.d/rc.local`
                if [ "$RC_PREV" = "" ] && [ -e /etc/rc.d/rc.local ] ; then
                  echo "" >> /etc/rc.d/rc.local
                  echo "# Iniciando servidor E-Maku..." >> /etc/rc.d/rc.local
-                 echo "/usr/sbin/jmserver start >& /dev/null" >> /etc/rc.d/rc.local
+                 echo "/usr/sbin/emaku-server start >& /dev/null" >> /etc/rc.d/rc.local
                fi
              fi
 
-             chmod -R 600 $JMIDAS_HOME/conf
+             chmod -R 600 $EMAKU_HOME/conf
 }
 
 install_client() {
-             echo "#!/bin/sh" > $JMIDAS_HOME/bin/jmclient
-             echo " " >> $JMIDAS_HOME/bin/jmclient
-             echo "JMIDAS_HOME=$JMIDAS_HOME" >> $JMIDAS_HOME/bin/jmclient
-             echo "export JMIDAS_HOME" >> $JMIDAS_HOME/bin/jmclient
-             cat $ROOT/bin/jmclient >> $JMIDAS_HOME/bin/jmclient
+             echo "#!/bin/sh" > $EMAKU_HOME/bin/emaku-client
+             echo " " >> $EMAKU_HOME/bin/emaku-client
+             echo "EMAKU_HOME=$JMIDAS_HOME" >> $JMIDAS_HOME/bin/emaku-client
+             echo "export EMAKU_HOME" >> $JMIDAS_HOME/bin/emaku-client
+             cat $ROOT/bin/emaku-client >> $EMAKU_HOME/bin/jmclient
 
-             if [ ! -L /usr/bin/jmclient ] ; then
-               ln -s $JMIDAS_HOME/bin/jmclient /usr/bin/jmclient
+             if [ ! -L /usr/bin/emaku-client ] ; then
+               ln -s $EMAKU_HOME/bin/emaku-client /usr/bin/jmclient
              fi
 }
 
@@ -204,9 +204,9 @@ help(){
 remove(){
              find . -name '*.class' -exec rm {} \;
              \rm -rf build
-             \rm -f lib/midas/jmlib.jar
-             \rm -f lib/midas/jmclient.jar
-             \rm -f lib/midas/jmserver2.jar 
+             \rm -f lib/midas/common,jar
+             \rm -f lib/midas/emaku-client.jar
+             \rm -f lib/midas/emaku-server2.jar 
              \rm -f *.log
 }
 
@@ -231,12 +231,12 @@ case "$1" in
              if [ -z $2 ] ; then
                echo
                echo " Utilizando ruta de instalacion por defecto (/usr/local/jmidas)"
-               JMIDAS_HOME=/usr/local/jmidas
+               EMAKU_HOME=/usr/local/jmidas
              else
                case "$2" in
                  -p) 
                     if [ "$3" != "" ] ; then
-                      JMIDAS_HOME=$3
+                      EMAKU_HOME=$3
                     else
                       echo 
                       echo " ERROR: La ruta de instalacion de E-Maku no fue ingresada."
@@ -246,8 +246,8 @@ case "$1" in
                     fi
                     ;;
                 --prefix=*)
-                    JMIDAS_HOME=`echo $2 | cut -f2 -d=`  
-                    if [ "$JMIDAS_HOME" = "" ] ; then
+                    EMAKU_HOME=`echo $2 | cut -f2 -d=`  
+                    if [ "$EMAKU_HOME" = "" ] ; then
                       echo
                       echo " ERROR: La ruta de instalacion de E-Maku no fue ingresada."
                       echo "        Ej: ./build.sh -i --prefix=/usr/local/jmidas"
@@ -327,11 +327,11 @@ case "$1" in
                echo
                exit 1 
              else
-               JMIDAS_HOME=`cat $ROOT/install.log` 
-               if [ ! -d "$JMIDAS_HOME" ] ; then
+               EMAKU_HOME=`cat $ROOT/install.log` 
+               if [ ! -d "$EMAKU_HOME" ] ; then
                  echo
                  echo " ERROR: No se encuentra el directorio de instalacion de E-Maku" 
-                 echo " Aparentemente el directorio \"$JMIDAS_HOME\" ya fue eliminado."
+                 echo " Aparentemente el directorio \"$EMAKU_HOME\" ya fue eliminado."
                  echo
                  exit 1
                fi
@@ -339,13 +339,13 @@ case "$1" in
              
              echo 
              echo " Eliminando directorio de instalacion de E-Maku..."
-             rm -rf $JMIDAS_HOME
+             rm -rf $EMAKU_HOME
 
-             if [ -L /usr/bin/jmclient ] ; then
-               rm -f /usr/bin/jmclient
+             if [ -L /usr/bin/emaku-client ] ; then
+               rm -f /usr/bin/emaku-client
              fi
-             if [ -L /usr/sbin/jmserver ] ; then
-               rm -f /usr/sbin/jmserver
+             if [ -L /usr/sbin/emaku-server ] ; then
+               rm -f /usr/sbin/emaku-server
              fi
 
              echo " Eliminando scripts de inicio..."
@@ -364,9 +364,9 @@ case "$1" in
                  rm -f /etc/rc6.d/K20jmidas
                fi
              else
-               RC_PREV=`egrep jmserver /etc/rc.d/rc.local`
+               RC_PREV=`egrep emaku-server /etc/rc.d/rc.local`
                if [ "$RC_PREV" != "" ] && [ -e /etc/rc.d/rc.local ] ; then
-                 egrep -v jmserver /etc/rc.d/rc.local | grep -v E-Maku > /tmp/rc.local.tmp
+                 egrep -v emaku-server /etc/rc.d/rc.local | grep -v E-Maku > /tmp/rc.local.tmp
                  cp -f /tmp/rc.local.tmp /etc/rc.d/rc.local
                  rm -f /tmp/rc.local.tmp
                fi
