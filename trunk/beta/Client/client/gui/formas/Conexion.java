@@ -1,4 +1,4 @@
-package jmclient.gui.formas;
+package client.gui.formas;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
@@ -26,17 +26,17 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import jmclient.Run;
-import jmclient.comunicaciones.SendCNX;
-import jmclient.control.ValidHeaders;
-import jmclient.gui.components.panels.PAutentication;
-import jmclient.miscelanea.JMClientCons;
-import jmclient.miscelanea.configuracion.ConfigFile;
-import jmlib.comunicaciones.PackageToXML2;
-import jmlib.comunicaciones.SocketConnect;
-import jmlib.comunicaciones.WriteSocket;
-import jmlib.miscelanea.idiom.Language;
-import jmlib.miscelanea.parameters.GenericParameters;
+import client.Run;
+import client.comunicaciones.SendCNX;
+import client.control.ValidHeaders;
+import client.gui.components.panels.PAutentication;
+import client.miscelanea.JMClientCons;
+import client.miscelanea.configuracion.ConfigFile;
+import common.comunicaciones.PackageToXML2;
+import common.comunicaciones.SocketConnect;
+import common.comunicaciones.WriteSocket;
+import common.miscelanea.idiom.Language;
+import common.miscelanea.parameters.GenericParameters;
 
 /**
  * Conexion.java Creado el 03-ago-2004
@@ -53,7 +53,7 @@ import jmlib.miscelanea.parameters.GenericParameters;
  * GARANTIA; sin ninguna garantia aun por COMERCIALIZACION o por un PROPOSITO
  * PARTICULAR. Consulte la Licencia Publica General GNU GPL para mas detalles.
  * <br>
- * Esta clase se encarga de la parte de autenticacion del jmlib
+ * Esta clase se encarga de la parte de autenticacion del common
  * <br>
  * 
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez </A>

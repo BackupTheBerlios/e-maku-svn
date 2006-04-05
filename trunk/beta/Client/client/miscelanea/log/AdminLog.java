@@ -1,4 +1,4 @@
-package jmclient.miscelanea.log;
+package client.miscelanea.log;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,7 +8,7 @@ import java.io.RandomAccessFile;
 import java.util.Calendar;
 import java.util.zip.GZIPOutputStream;
 
-import jmclient.miscelanea.JMClientCons;
+import client.miscelanea.JMClientCons;
 
 
 /**
@@ -83,7 +83,7 @@ public class AdminLog {
 
     /**
      * Este metodo se encarga de escribir el fichero JMServerII.log 
-     * @param mensaje Cadena de texto a añadir al JMServerII.log
+     * @param mensaje Cadena de texto a aï¿½adir al JMServerII.log
      */
 
     private synchronized static void EscribirArchivo(String mensaje) {

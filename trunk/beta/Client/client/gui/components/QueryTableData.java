@@ -1,4 +1,4 @@
-package jmclient.gui.components;
+package client.gui.components;
 
 import java.util.Iterator;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.Vector;
 
 import javax.swing.table.AbstractTableModel;
 
-import jmlib.transactions.STException;
-import jmlib.transactions.STResultSet;
+import common.transactions.STException;
+import common.transactions.STResultSet;
 
 import org.jdom.Document;
 import org.jdom.Element;

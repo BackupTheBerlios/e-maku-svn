@@ -1,6 +1,6 @@
-package jmserver2.basedatos.sql;
+package server.basedatos.sql;
 
-import jmlib.miscelanea.idiom.Language;
+import common.miscelanea.idiom.Language;
 
 /**
  * SQLBadArgumentsException.java Creado el 26-jul-2004

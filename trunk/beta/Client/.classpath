@@ -2,12 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="/JMLib"/>
-	<classpathentry kind="lib" path="/home/midas/beta/lib/midas/icons.jar"/>
-	<classpathentry kind="lib" path="/home/midas/beta/lib/contrib/jdom.jar"/>
-	<classpathentry kind="lib" path="/JMLib/bin"/>
-	<classpathentry kind="lib" path="/home/midas/beta/lib/contrib/bsh-core.jar"/>
-	<classpathentry kind="lib" path="/home/midas/beta/lib/midas/credits.jar"/>
-	<classpathentry kind="lib" path="/home/midas/beta/lib/contrib/ostermillerutils.jar"/>
+	<classpathentry kind="lib" path="/home/emaku/beta/lib/emaku/icons.jar"/>
+	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/jdom.jar"/>
+	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/bsh-core.jar"/>
+	<classpathentry kind="lib" path="/home/emaku/beta/lib/emaku/credits.jar"/>
+	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/ostermillerutils.jar"/>
+	<classpathentry kind="lib" path="/Common/bin"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

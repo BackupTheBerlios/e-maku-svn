@@ -1,4 +1,4 @@
-package jmserver2.miscelanea;
+package server.miscelanea;
 
 /**
  * JMServerIICons.java Creado el 29-jun-2004

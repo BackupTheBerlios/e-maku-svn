@@ -1,4 +1,4 @@
-package jmserver2.miscelanea.configuracion;
+package server.miscelanea.configuracion;
 
 
 /**

@@ -1,4 +1,4 @@
-package jmserver2.basedatos.sql;
+package server.basedatos.sql;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

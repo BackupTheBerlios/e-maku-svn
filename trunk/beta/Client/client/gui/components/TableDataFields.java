@@ -1,17 +1,17 @@
-package jmclient.gui.components;
+package client.gui.components;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Vector;
 
-import jmlib.gui.components.GenericData;
-import jmlib.gui.components.XMLTextField;
-import jmlib.gui.formas.FinishEvent;
-import jmlib.gui.formas.GenericForm;
-import jmlib.gui.formas.InitiateFinishListener;
-import jmlib.gui.formas.NotFoundComponentException;
-import jmlib.miscelanea.formulas.CalculateFormula;
+import common.gui.components.GenericData;
+import common.gui.components.XMLTextField;
+import common.gui.formas.FinishEvent;
+import common.gui.formas.GenericForm;
+import common.gui.formas.InitiateFinishListener;
+import common.gui.formas.NotFoundComponentException;
+import common.miscelanea.formulas.CalculateFormula;
 
 import org.jdom.Document;
 
@@ -116,7 +116,7 @@ public class TableDataFields extends GenericData implements InitiateFinishListen
     
     public void initiateFinishEvent(FinishEvent e) {
         try {
-          	TMFDtabla = (TMFindData) GFforma.invokeMethod("jmclient.gui.components.TableFindData"+getEnlaceTabla(),
+          	TMFDtabla = (TMFindData) GFforma.invokeMethod("client.gui.components.TableFindData"+getEnlaceTabla(),
 	        "getTMFDtabla");
 	        TMFDtabla.addTotalEventListener(this);
         	callAddAnswerListener();

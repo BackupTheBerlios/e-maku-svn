@@ -21,7 +21,7 @@
  * Created on 4 de abril de 2004, 17:24
  */
 
-package jmclient.gui.toolbarXML;
+package client.gui.toolbarXML;
 
 
 import java.awt.Dimension;
@@ -33,12 +33,12 @@ import java.lang.reflect.Method;
 
 import javax.swing.JButton;
 
-import jmclient.control.ACPFormEvent;
-import jmclient.control.ACPFormListener;
-import jmclient.control.ACPHandler;
-import jmclient.gui.components.MainWindow;
-import jmclient.miscelanea.JMClientCons;
-import jmlib.gui.formas.GenericForm;
+import client.control.ACPFormEvent;
+import client.control.ACPFormListener;
+import client.control.ACPHandler;
+import client.gui.components.MainWindow;
+import client.miscelanea.JMClientCons;
+import common.gui.formas.GenericForm;
 
 /**
  * Clase encargada de generar los JButton y la manipulaci?n de los eventos de cada

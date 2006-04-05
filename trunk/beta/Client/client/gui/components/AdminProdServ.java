@@ -1,4 +1,4 @@
-package jmclient.gui.components;
+package client.gui.components;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -12,16 +12,16 @@ import java.util.Vector;
 
 import javax.swing.JPanel;
 
-import jmlib.gui.components.AnswerEvent;
-import jmlib.gui.components.AnswerListener;
-import jmlib.gui.components.ChangeValueEvent;
-import jmlib.gui.components.ChangeValueListener;
-import jmlib.gui.components.QueryData;
-import jmlib.gui.components.VoidPackageException;
-import jmlib.gui.components.XMLTextField;
-import jmlib.gui.formas.GenericForm;
-import jmlib.transactions.STException;
-import jmlib.transactions.STResultSet;
+import common.gui.components.AnswerEvent;
+import common.gui.components.AnswerListener;
+import common.gui.components.ChangeValueEvent;
+import common.gui.components.ChangeValueListener;
+import common.gui.components.QueryData;
+import common.gui.components.VoidPackageException;
+import common.gui.components.XMLTextField;
+import common.gui.formas.GenericForm;
+import common.transactions.STException;
+import common.transactions.STResultSet;
 
 import org.jdom.Document;
 import org.jdom.Element;

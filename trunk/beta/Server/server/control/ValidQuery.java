@@ -1,9 +1,9 @@
-package jmserver2.control;
+package server.control;
 
 import java.util.Iterator;
 import java.util.List;
 
-import jmserver2.basedatos.sql.InstruccionesSQL;
+import server.basedatos.sql.InstruccionesSQL;
 
 import org.jdom.Element;
 

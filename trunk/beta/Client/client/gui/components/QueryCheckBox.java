@@ -1,10 +1,10 @@
-package jmclient.gui.components;
+package client.gui.components;
 
 import java.util.Iterator;
 
-import jmlib.gui.formas.GenericForm;
-import jmlib.transactions.STException;
-import jmlib.transactions.STResultSet;
+import common.gui.formas.GenericForm;
+import common.transactions.STException;
+import common.transactions.STResultSet;
 
 import org.jdom.Document;
 import org.jdom.Element;

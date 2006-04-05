@@ -1,4 +1,4 @@
-package jmclient.gui.formas;
+package client.gui.formas;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
 
-import jmclient.miscelanea.JMClientCons;
+import client.miscelanea.JMClientCons;
 
 /**
  * Splash.java Creado el 22-abr-2005

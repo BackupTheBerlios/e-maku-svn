@@ -1,4 +1,4 @@
-package jmserver2.comunicaciones;
+package server.comunicaciones;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -13,10 +13,10 @@ import java.nio.channels.SocketChannel;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-import jmlib.miscelanea.idiom.Language;
-import jmlib.miscelanea.log.AdminLog;
-import jmserver2.miscelanea.JMServerIICons;
-import jmserver2.miscelanea.configuracion.ConfigFile;
+import common.miscelanea.idiom.Language;
+import common.miscelanea.log.AdminLog;
+import server.miscelanea.JMServerIICons;
+import server.miscelanea.configuracion.ConfigFile;
 /**
  * SocketServer.java Creado el 21-jul-2004
  * 

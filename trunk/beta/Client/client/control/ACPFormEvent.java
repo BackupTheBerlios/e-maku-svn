@@ -1,4 +1,4 @@
-package jmclient.control;
+package client.control;
 
 import java.util.EventObject;
 

@@ -1,13 +1,13 @@
-package jmserver2.basedatos.sql;
+package server.basedatos.sql;
 
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import jmserver2.basedatos.conexion.PoolConexiones;
-import jmserver2.miscelanea.JMServerIICons;
-import jmlib.miscelanea.log.AdminLog;
+import server.basedatos.conexion.PoolConexiones;
+import server.miscelanea.JMServerIICons;
+import common.miscelanea.log.AdminLog;
 
-import jmlib.miscelanea.idiom.Language;
+import common.miscelanea.idiom.Language;
 
 /**
  * RunIUD.java Creado el 6-jul-2004

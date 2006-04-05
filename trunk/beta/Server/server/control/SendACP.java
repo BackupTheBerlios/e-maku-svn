@@ -1,4 +1,4 @@
-package jmserver2.control;
+package server.control;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -8,13 +8,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import jmlib.comunicaciones.WriteSocket;
-import jmlib.miscelanea.ZipHandler;
-import jmserver2.basedatos.conexion.PoolConexiones;
-import jmserver2.basedatos.sql.CloseSQL;
-import jmserver2.basedatos.sql.RunQuery;
-import jmserver2.basedatos.sql.SQLBadArgumentsException;
-import jmserver2.basedatos.sql.SQLNotFoundException;
+import common.comunicaciones.WriteSocket;
+import common.miscelanea.ZipHandler;
+import server.basedatos.conexion.PoolConexiones;
+import server.basedatos.sql.CloseSQL;
+import server.basedatos.sql.RunQuery;
+import server.basedatos.sql.SQLBadArgumentsException;
+import server.basedatos.sql.SQLNotFoundException;
 
 import org.jdom.Document;
 import org.jdom.Element;

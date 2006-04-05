@@ -1,6 +1,6 @@
-package jmserver2.basedatos.conexion;
+package server.basedatos.conexion;
 
-import jmlib.miscelanea.idiom.Language;
+import common.miscelanea.idiom.Language;
 
 
 /**

@@ -1,4 +1,4 @@
-package jmclient.gui.components;
+package client.gui.components;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -13,13 +13,13 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-import jmclient.Run;
-import jmclient.gui.formas.Splash;
-import jmclient.gui.menuXML.LoadMenu;
-import jmclient.gui.toolbarXML.JButtonXML;
-import jmclient.gui.toolbarXML.LoadToolbar;
-import jmclient.miscelanea.JMClientCons;
-import jmlib.miscelanea.idiom.Language;
+import client.Run;
+import client.gui.formas.Splash;
+import client.gui.menuXML.LoadMenu;
+import client.gui.toolbarXML.JButtonXML;
+import client.gui.toolbarXML.LoadToolbar;
+import client.miscelanea.JMClientCons;
+import common.miscelanea.idiom.Language;
 
 /**
  * MainWindow.java Creado el 03-ago-2004
@@ -78,13 +78,13 @@ public class MainWindow extends JFrame {
          */
 
         LoadMenu menu = 
-            new LoadMenu(this.getClass().getResource("/jmclient/xml-midas/menu.xml"));
+            new LoadMenu(this.getClass().getResource("/client/xml-midas/menu.xml"));
         
         menu.Loading();
         menu.setDisabledAll();
 
         LoadToolbar toolbar1 = new LoadToolbar(this.getClass().getResource(
-                "/jmclient/xml-midas/toolbar.xml"));
+                "/client/xml-midas/toolbar.xml"));
 
         Vtoolbar1 = toolbar1.Loading();
         setDisabledAll();

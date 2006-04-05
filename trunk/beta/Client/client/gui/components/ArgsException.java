@@ -1,6 +1,6 @@
-package jmclient.gui.components;
+package client.gui.components;
 
-import jmlib.miscelanea.idiom.Language;
+import common.miscelanea.idiom.Language;
 
 /**
  * ArgsException.java Creado el 20-abr-2005

@@ -1,4 +1,4 @@
-package jmserver2.comunicaciones;
+package server.comunicaciones;
 
 import java.nio.channels.SocketChannel;
 import java.sql.ResultSet;
@@ -6,15 +6,15 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Hashtable;
 
-import jmserver2.basedatos.sql.CloseSQL;
-import jmserver2.basedatos.sql.RunQuery;
-import jmserver2.basedatos.sql.SQLBadArgumentsException;
-import jmserver2.basedatos.sql.SQLNotFoundException;
-import jmserver2.miscelanea.JMServerIICons;
+import server.basedatos.sql.CloseSQL;
+import server.basedatos.sql.RunQuery;
+import server.basedatos.sql.SQLBadArgumentsException;
+import server.basedatos.sql.SQLNotFoundException;
+import server.miscelanea.JMServerIICons;
 
-import jmlib.miscelanea.log.AdminLog;
-import jmlib.comunicaciones.WriteSocket;
-import jmlib.miscelanea.idiom.Language;
+import common.miscelanea.log.AdminLog;
+import common.comunicaciones.WriteSocket;
+import common.miscelanea.idiom.Language;
 
 import org.jdom.Document;
 
@@ -145,7 +145,7 @@ public class CacheXML extends Document {
                 WriteSocket.writing(sock,JMServerIICons.TAGS_HEAD[1]);
                         	                
                 /*
-                 * Se recorre el resulset para añadir los datos que contenga, y
+                 * Se recorre el resulset para aï¿½adir los datos que contenga, y
                  * se escriben directamente en el socket en formato XML
                  */
                 

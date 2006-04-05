@@ -1,4 +1,4 @@
-package jmserver2.control;
+package server.control;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

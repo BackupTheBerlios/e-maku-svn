@@ -1,4 +1,4 @@
-package jmclient.gui.components;
+package client.gui.components;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -10,9 +10,9 @@ import java.awt.RenderingHints;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import jmlib.gui.components.VoidPackageException;
-import jmlib.gui.formas.GenericForm;
-import jmlib.miscelanea.idiom.Language;
+import common.gui.components.VoidPackageException;
+import common.gui.formas.GenericForm;
+import common.miscelanea.idiom.Language;
 
 import org.jdom.Document;
 import org.jdom.Element;

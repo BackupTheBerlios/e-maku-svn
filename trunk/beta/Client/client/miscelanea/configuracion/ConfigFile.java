@@ -1,4 +1,4 @@
-package jmclient.miscelanea.configuracion;
+package client.miscelanea.configuracion;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,10 +6,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 
-import jmclient.miscelanea.JMClientCons;
-import jmlib.miscelanea.Icons;
-import jmlib.miscelanea.idiom.Language;
-import jmlib.miscelanea.parameters.GenericParameters;
+import client.miscelanea.JMClientCons;
+import common.miscelanea.Icons;
+import common.miscelanea.idiom.Language;
+import common.miscelanea.parameters.GenericParameters;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -33,7 +33,7 @@ import org.jdom.output.XMLOutputter;
  * PARTICULAR. Consulte la Licencia Publica General GNU GPL para mas detalles.
  * <br>
  * Esta clase es la encargada de almacenar los datos de configuracion necesarios
- * para el jmlib <br>
+ * para el common <br>
  * 
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez </A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David
@@ -124,7 +124,7 @@ public class ConfigFile extends GenericParameters {
 
             /**
              * Ciclo encargado de leer las primeras etiquetas del archivo XML,
-             * en este caso Configuración
+             * en este caso Configuraciï¿½n
              */
 
             while (i.hasNext()) {

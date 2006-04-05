@@ -1,13 +1,13 @@
-package jmserver2.logicanegocios;
+package server.logicanegocios;
 
 import java.nio.channels.SocketChannel;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import jmlib.miscelanea.idiom.Language;
-import jmserver2.basedatos.sql.SQLBadArgumentsException;
-import jmserver2.basedatos.sql.SQLNotFoundException;
+import common.miscelanea.idiom.Language;
+import server.basedatos.sql.SQLBadArgumentsException;
+import server.basedatos.sql.SQLNotFoundException;
 
 import org.jdom.Document;
 import org.jdom.Element;

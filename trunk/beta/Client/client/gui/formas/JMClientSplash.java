@@ -1,4 +1,4 @@
-package jmclient.gui.formas;
+package client.gui.formas;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;

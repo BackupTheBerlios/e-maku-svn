@@ -1,4 +1,4 @@
-package jmclient.control;
+package client.control;
 
 import java.awt.Cursor;
 import java.io.IOException;
@@ -7,15 +7,15 @@ import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import jmclient.gui.components.MainWindow;
-import jmclient.gui.components.StatusBar;
-import jmclient.gui.formas.Conexion;
-import jmclient.gui.formas.Splash;
-import jmlib.comunicaciones.ArrivePackageEvent;
-import jmlib.comunicaciones.ArrivePackageListener;
-import jmlib.comunicaciones.SocketConnect;
-import jmlib.control.ValidHeadersClient;
-import jmlib.transactions.STResultSet;
+import client.gui.components.MainWindow;
+import client.gui.components.StatusBar;
+import client.gui.formas.Conexion;
+import client.gui.formas.Splash;
+import common.comunicaciones.ArrivePackageEvent;
+import common.comunicaciones.ArrivePackageListener;
+import common.comunicaciones.SocketConnect;
+import common.control.ValidHeadersClient;
+import common.transactions.STResultSet;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -74,7 +74,7 @@ public class ValidHeaders implements ArrivePackageListener {
         
         /*
          * Se validan las cabeceras genericas, que necesitan acceso desde el paquete
-         * jmlib
+         * common
          */
         
         if (!ValidHeadersClient.validGeneral(doc)) {
@@ -133,7 +133,7 @@ public class ValidHeaders implements ArrivePackageListener {
 	        }
 	        
 	        /*
-	         *  Validación paquetes SUCCESS
+	         *  Validaciï¿½n paquetes SUCCESS
 	         */
 	        
 	        else if(nombre.equals("SUCCESS")) {

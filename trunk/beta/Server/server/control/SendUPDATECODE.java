@@ -1,4 +1,4 @@
-package jmserver2.control;
+package server.control;
 
 import org.jdom.Document;
 import org.jdom.Element;

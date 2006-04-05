@@ -1,4 +1,4 @@
-package jmclient.gui.components.panels;
+package client.gui.components.panels;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import jmlib.miscelanea.idiom.Language;
+import common.miscelanea.idiom.Language;
 
 /**
  * PAutentication.java Creado el 03-ago-2004
@@ -150,7 +150,7 @@ public class PAutentication extends JPanel {
     }
 
     /**
-     * @return Este metodo retorna la contraseña del campo de texto base de
+     * @return Este metodo retorna la contraseï¿½a del campo de texto base de
      *         Clave
      */
     public char[] getClave() {

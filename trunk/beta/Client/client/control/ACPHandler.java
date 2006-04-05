@@ -1,4 +1,4 @@
-package jmclient.control;
+package client.control;
 
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
@@ -7,10 +7,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import jmclient.gui.components.StatusBar;
-import jmlib.comunicaciones.SocketConnect;
-import jmlib.comunicaciones.WriteSocket;
-import jmlib.miscelanea.ZipHandler;
+import client.gui.components.StatusBar;
+import common.comunicaciones.SocketConnect;
+import common.comunicaciones.WriteSocket;
+import common.miscelanea.ZipHandler;
 
 import org.jdom.Document;
 import org.jdom.Element;

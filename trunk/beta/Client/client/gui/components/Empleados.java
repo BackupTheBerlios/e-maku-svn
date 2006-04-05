@@ -1,4 +1,4 @@
-package jmclient.gui.components;
+package client.gui.components;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -14,15 +14,15 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import jmlib.gui.components.AnswerEvent;
-import jmlib.gui.components.AnswerListener;
-import jmlib.gui.components.QueryData;
-import jmlib.gui.components.VoidPackageException;
-import jmlib.gui.components.XMLTextField;
-import jmlib.gui.formas.GenericForm;
-import jmlib.miscelanea.idiom.Language;
-import jmlib.transactions.STException;
-import jmlib.transactions.STResultSet;
+import common.gui.components.AnswerEvent;
+import common.gui.components.AnswerListener;
+import common.gui.components.QueryData;
+import common.gui.components.VoidPackageException;
+import common.gui.components.XMLTextField;
+import common.gui.formas.GenericForm;
+import common.miscelanea.idiom.Language;
+import common.transactions.STException;
+import common.transactions.STResultSet;
 
 import org.jdom.Document;
 import org.jdom.Element;

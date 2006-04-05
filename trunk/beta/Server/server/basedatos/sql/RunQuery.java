@@ -1,10 +1,10 @@
-package jmserver2.basedatos.sql;
+package server.basedatos.sql;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import jmserver2.basedatos.conexion.PoolConexiones;
+import server.basedatos.conexion.PoolConexiones;
 
 import org.jdom.Element;
 

@@ -1,12 +1,12 @@
-package jmclient.gui.formas;
+package client.gui.formas;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 
-import jmclient.gui.components.MainWindow;
+import client.gui.components.MainWindow;
 
-import jmlib.miscelanea.idiom.Language;
+import common.miscelanea.idiom.Language;
 
 public class Help extends JInternalFrame {
 	

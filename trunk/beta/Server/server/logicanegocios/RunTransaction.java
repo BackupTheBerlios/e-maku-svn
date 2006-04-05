@@ -1,4 +1,4 @@
-package jmserver2.logicanegocios;
+package server.logicanegocios;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -7,16 +7,16 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.List;
 
-import jmlib.comunicaciones.WriteSocket;
-import jmlib.miscelanea.idiom.Language;
-import jmlib.miscelanea.log.AdminLog;
-import jmserver2.basedatos.sql.CacheEnlace;
-import jmserver2.basedatos.sql.ClassLogicDriver;
-import jmserver2.basedatos.sql.InstruccionesSQL;
-import jmserver2.comunicaciones.ErrorXML;
-import jmserver2.comunicaciones.SocketServer;
-import jmserver2.comunicaciones.SuccessXML;
-import jmserver2.miscelanea.JMServerIICons;
+import common.comunicaciones.WriteSocket;
+import common.miscelanea.idiom.Language;
+import common.miscelanea.log.AdminLog;
+import server.basedatos.sql.CacheEnlace;
+import server.basedatos.sql.ClassLogicDriver;
+import server.basedatos.sql.InstruccionesSQL;
+import server.comunicaciones.ErrorXML;
+import server.comunicaciones.SocketServer;
+import server.comunicaciones.SuccessXML;
+import server.miscelanea.JMServerIICons;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -38,7 +38,7 @@ import org.jdom.Element;
  * GNU GPL para mas detalles.
  * <br>
  * Esta clase se encarga de llamar las clases y metodos encargados de ejecutar
- * la logica de negocios que procesara la información del paquete transaction
+ * la logica de negocios que procesara la informaciï¿½n del paquete transaction
  * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  */
@@ -80,7 +80,7 @@ public class RunTransaction {
                 pack.addContent((Element)e.clone());
         }
         /*
-         * Con esta información se verifica si el usuario tiene
+         * Con esta informaciï¿½n se verifica si el usuario tiene
          * permisos para efectuar la transaccion
          */
         

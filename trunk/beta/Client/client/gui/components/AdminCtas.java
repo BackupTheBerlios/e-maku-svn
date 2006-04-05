@@ -1,4 +1,4 @@
-package jmclient.gui.components;
+package client.gui.components;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -32,16 +32,16 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.table.TableCellRenderer;
 
-import jmclient.control.SuccessEvent;
-import jmclient.control.SuccessListener;
-import jmclient.control.ValidHeaders;
-import jmlib.gui.components.VoidPackageException;
-import jmlib.gui.components.XMLTextField;
-import jmlib.gui.formas.GenericForm;
-import jmlib.gui.formas.NotFoundComponentException;
-import jmlib.miscelanea.idiom.Language;
-import jmlib.transactions.STException;
-import jmlib.transactions.STResultSet;
+import client.control.SuccessEvent;
+import client.control.SuccessListener;
+import client.control.ValidHeaders;
+import common.gui.components.VoidPackageException;
+import common.gui.components.XMLTextField;
+import common.gui.formas.GenericForm;
+import common.gui.formas.NotFoundComponentException;
+import common.miscelanea.idiom.Language;
+import common.transactions.STException;
+import common.transactions.STResultSet;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -249,7 +249,7 @@ public class AdminCtas extends JPanel implements ActionListener,
 		int longitud = texto.length();
 
 		/*
-		 * Validación nomenclatura valida 1 caracter: Clase 2 caracteres: Grupo
+		 * Validaciï¿½n nomenclatura valida 1 caracter: Clase 2 caracteres: Grupo
 		 * 4 caracteres: Cuenta 6 caracteres: SubCuenta 8 caracteres: Auxiliar
 		 * 10 caracteres: subAuxiliar
 		 * 
@@ -755,7 +755,7 @@ public class AdminCtas extends JPanel implements ActionListener,
 	public void cathSuccesEvent(SuccessEvent SEe) {
 		try {
 			String id = (String) GFforma.invokeMethod(
-					"jmlib.gui.components.PanelButtons", "getIdTransaction");
+					"common.gui.components.PanelButtons", "getIdTransaction");
 			if (id.equals(SEe.getIdPackage())) {
 				loadingTablePUC();
 			}

@@ -1,4 +1,4 @@
-package jmclient.gui.components;
+package client.gui.components;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -33,18 +33,18 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-import jmlib.gui.components.AnswerEvent;
-import jmlib.gui.components.AnswerListener;
-import jmlib.gui.components.VoidPackageException;
-import jmlib.gui.components.XMLTextField;
-import jmlib.gui.formas.FinishEvent;
-import jmlib.gui.formas.GenericForm;
-import jmlib.gui.formas.InitiateFinishListener;
-import jmlib.gui.formas.NotFoundComponentException;
-import jmlib.miscelanea.Icons;
-import jmlib.miscelanea.idiom.Language;
-import jmlib.transactions.STException;
-import jmlib.transactions.STResultSet;
+import common.gui.components.AnswerEvent;
+import common.gui.components.AnswerListener;
+import common.gui.components.VoidPackageException;
+import common.gui.components.XMLTextField;
+import common.gui.formas.FinishEvent;
+import common.gui.formas.GenericForm;
+import common.gui.formas.InitiateFinishListener;
+import common.gui.formas.NotFoundComponentException;
+import common.miscelanea.Icons;
+import common.miscelanea.idiom.Language;
+import common.transactions.STException;
+import common.transactions.STResultSet;
 
 import org.jdom.Document;
 import org.jdom.Element;

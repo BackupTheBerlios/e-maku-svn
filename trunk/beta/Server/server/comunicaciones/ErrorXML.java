@@ -1,4 +1,4 @@
-package jmserver2.comunicaciones;
+package server.comunicaciones;
 
 import org.jdom.Document;
 import org.jdom.Element;

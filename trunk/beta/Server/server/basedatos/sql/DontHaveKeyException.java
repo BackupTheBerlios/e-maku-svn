@@ -17,9 +17,9 @@
  * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  */
-package jmserver2.basedatos.sql;
+package server.basedatos.sql;
 
-import jmlib.miscelanea.idiom.Language;
+import common.miscelanea.idiom.Language;
 
 public class DontHaveKeyException extends Exception {
 

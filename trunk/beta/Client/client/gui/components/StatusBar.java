@@ -20,7 +20,7 @@
  * Created on 29 de Mayo de 2003, 8:32
  */
 
-package jmclient.gui.components;
+package client.gui.components;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -32,7 +32,7 @@ import javax.swing.JToolBar;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
-import jmlib.miscelanea.idiom.Language;
+import common.miscelanea.idiom.Language;
 
 public class StatusBar extends JToolBar {
 

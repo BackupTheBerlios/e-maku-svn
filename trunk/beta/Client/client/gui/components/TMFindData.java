@@ -1,6 +1,6 @@
-package jmclient.gui.components;
+package client.gui.components;
 
-import static jmclient.gui.components.Formula.*;
+import static client.gui.components.Formula.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -24,20 +24,20 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
-import jmlib.gui.components.ChangeValueEvent;
-import jmlib.gui.components.ChangeValueListener;
-import jmlib.gui.components.ErrorDataException;
-import jmlib.gui.components.VoidPackageException;
-import jmlib.gui.formas.ChangeExternalValueEvent;
-import jmlib.gui.formas.ChangeExternalValueListener;
-import jmlib.gui.formas.FinishEvent;
-import jmlib.gui.formas.GenericForm;
-import jmlib.gui.formas.InitiateFinishListener;
-import jmlib.gui.formas.NotFoundComponentException;
-import jmlib.miscelanea.formulas.CalculateFormula;
-import jmlib.miscelanea.idiom.Language;
-import jmlib.transactions.STException;
-import jmlib.transactions.STResultSet;
+import common.gui.components.ChangeValueEvent;
+import common.gui.components.ChangeValueListener;
+import common.gui.components.ErrorDataException;
+import common.gui.components.VoidPackageException;
+import common.gui.formas.ChangeExternalValueEvent;
+import common.gui.formas.ChangeExternalValueListener;
+import common.gui.formas.FinishEvent;
+import common.gui.formas.GenericForm;
+import common.gui.formas.InitiateFinishListener;
+import common.gui.formas.NotFoundComponentException;
+import common.miscelanea.formulas.CalculateFormula;
+import common.miscelanea.idiom.Language;
+import common.transactions.STException;
+import common.transactions.STResultSet;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -680,7 +680,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 		                	newVar+=sum(var.substring(j+4,j+5));
 		                	j+=5;
 		                }
-		                /* Añadido metodo equals para las formulas */
+		                /* Aï¿½adido metodo equals para las formulas */
 		                else if (var.length()>=j+8 && var.substring(j,j+6).equals("equals")) {
 		                	int colind = getColIndex(var.substring(j+7,j+8));
 		                	newVar+="equals(\""+getValueAt(rowIndex,colind)+"\")";
@@ -695,7 +695,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 		                	newVar+=var.substring(j,j+6);
 		                	j+=5;
 		                }
-		                /* Añadida palabra reservada null, pendiente para analizar */
+		                /* Aï¿½adida palabra reservada null, pendiente para analizar */
 		                else if (var.length()>=j+4 && var.substring(j,j+4).equals("null")) {
 		                	newVar+="\"\"";
 		                	j+=3;

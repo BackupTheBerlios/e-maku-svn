@@ -1,6 +1,6 @@
-package jmserver2.control;
+package server.control;
 
-import jmserver2.basedatos.sql.ValidarUsuario;
+import server.basedatos.sql.ValidarUsuario;
 
 import org.jdom.Element;
 

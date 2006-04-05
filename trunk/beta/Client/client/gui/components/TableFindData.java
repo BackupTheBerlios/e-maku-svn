@@ -1,4 +1,4 @@
-package jmclient.gui.components;
+package client.gui.components;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -37,16 +37,16 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import jmlib.gui.components.AnswerEvent;
-import jmlib.gui.components.AnswerListener;
-import jmlib.gui.components.ErrorDataException;
-import jmlib.gui.components.VoidPackageException;
-import jmlib.gui.formas.ChangeExternalValueEvent;
-import jmlib.gui.formas.ChangeExternalValueListener;
-import jmlib.gui.formas.GenericForm;
-import jmlib.gui.formas.NotFoundComponentException;
-import jmlib.transactions.STException;
-import jmlib.transactions.STResultSet;
+import common.gui.components.AnswerEvent;
+import common.gui.components.AnswerListener;
+import common.gui.components.ErrorDataException;
+import common.gui.components.VoidPackageException;
+import common.gui.formas.ChangeExternalValueEvent;
+import common.gui.formas.ChangeExternalValueListener;
+import common.gui.formas.GenericForm;
+import common.gui.formas.NotFoundComponentException;
+import common.transactions.STException;
+import common.transactions.STResultSet;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -599,7 +599,7 @@ public class TableFindData extends JPanel implements AnswerListener,ChangeExtern
     /*
      * (non-Javadoc)
      * 
-     * @see jmlib.gui.components.AnswerListener#arriveAnswerEvent(jmlib.gui.components.AnswerEvent)
+     * @see common.gui.components.AnswerListener#arriveAnswerEvent(common.gui.components.AnswerEvent)
      */
     public void arriveAnswerEvent(AnswerEvent e) {
     		boolean isKey = false;

@@ -1,4 +1,4 @@
-package jmserver2.basedatos.sql;
+package server.basedatos.sql;
 
 /**
  * InstruccionesNotLoadException.java Creado el 14-jul-2004

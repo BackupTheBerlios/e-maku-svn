@@ -1,4 +1,4 @@
-package jmclient.miscelanea;
+package client.miscelanea;
 
 import java.awt.Toolkit;
 
@@ -25,7 +25,7 @@ import java.awt.Toolkit;
  */
 public interface JMClientCons {
 
-	public final String KeyClient = "jmclient";
+	public final String KeyClient = "client";
 
 	public final String HOME = System.getProperty("user.home");
     public final String SEPARATOR = System.getProperty("file.separator");

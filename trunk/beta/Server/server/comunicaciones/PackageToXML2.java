@@ -1,4 +1,4 @@
-package jmserver2.comunicaciones;
+package server.comunicaciones;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -8,13 +8,13 @@ import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SocketChannel;
 import java.util.Vector;
 
-import jmlib.comunicaciones.WriteSocket;
-import jmlib.miscelanea.idiom.Language;
-import jmlib.miscelanea.log.AdminLog;
+import common.comunicaciones.WriteSocket;
+import common.miscelanea.idiom.Language;
+import common.miscelanea.log.AdminLog;
 
-import jmserver2.control.ValidHeaders;
-import jmserver2.miscelanea.JMServerIICons;
-import jmserver2.miscelanea.configuracion.ConfigFile;
+import server.control.ValidHeaders;
+import server.miscelanea.JMServerIICons;
+import server.miscelanea.configuracion.ConfigFile;
 
 import org.jdom.Document;
 import org.jdom.JDOMException;

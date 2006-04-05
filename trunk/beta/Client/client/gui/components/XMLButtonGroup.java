@@ -1,4 +1,4 @@
-package jmclient.gui.components;
+package client.gui.components;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;

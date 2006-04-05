@@ -1,4 +1,4 @@
-package jmserver2.logicanegocios;
+package server.logicanegocios;
 
 import java.nio.channels.SocketChannel;
 import java.sql.SQLException;
@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import jmlib.miscelanea.idiom.Language;
-import jmserver2.basedatos.sql.RunQuery;
-import jmserver2.basedatos.sql.SQLBadArgumentsException;
-import jmserver2.basedatos.sql.SQLNotFoundException;
-import jmserver2.comunicaciones.SocketServer;
+import common.miscelanea.idiom.Language;
+import server.basedatos.sql.RunQuery;
+import server.basedatos.sql.SQLBadArgumentsException;
+import server.basedatos.sql.SQLNotFoundException;
+import server.comunicaciones.SocketServer;
 
 import org.jdom.Document;
 import org.jdom.Element;

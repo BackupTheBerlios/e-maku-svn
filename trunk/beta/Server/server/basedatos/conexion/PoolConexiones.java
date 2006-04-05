@@ -1,15 +1,15 @@
-package jmserver2.basedatos.conexion;
+package server.basedatos.conexion;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Hashtable;
 
-import jmserver2.miscelanea.JMServerIICons;
-import jmserver2.miscelanea.configuracion.ConfigFile;
-import jmlib.miscelanea.log.AdminLog;
+import server.miscelanea.JMServerIICons;
+import server.miscelanea.configuracion.ConfigFile;
+import common.miscelanea.log.AdminLog;
 
-import jmlib.miscelanea.idiom.Language;
+import common.miscelanea.idiom.Language;
 
 /**
  * PoolConexiones.java Creado el 25-jun-2004

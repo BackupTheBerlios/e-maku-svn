@@ -1,17 +1,17 @@
-package jmserver2;
+package server;
 
 import java.io.IOException;
 
-import jmlib.miscelanea.idiom.Language;
-import jmlib.miscelanea.log.AdminLog;
-import jmserver2.basedatos.conexion.PoolConexiones;
-import jmserver2.basedatos.conexion.PoolNotLoadException;
-import jmserver2.basedatos.sql.CacheEnlace;
-import jmserver2.comunicaciones.SocketServer;
-import jmserver2.control.ReportsStore;
-import jmserver2.miscelanea.JMServerIICons;
-import jmserver2.miscelanea.configuracion.ConfigFile;
-import jmserver2.miscelanea.configuracion.ConfigFileNotLoadException;
+import common.miscelanea.idiom.Language;
+import common.miscelanea.log.AdminLog;
+import server.basedatos.conexion.PoolConexiones;
+import server.basedatos.conexion.PoolNotLoadException;
+import server.basedatos.sql.CacheEnlace;
+import server.comunicaciones.SocketServer;
+import server.control.ReportsStore;
+import server.miscelanea.JMServerIICons;
+import server.miscelanea.configuracion.ConfigFile;
+import server.miscelanea.configuracion.ConfigFileNotLoadException;
 
 /**
  * Run.java Creado el 28-jun-2004

@@ -19,7 +19,7 @@
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  */
 
-package jmserver2.logicanegocios;
+package server.logicanegocios;
 
 import java.sql.SQLException;
 import java.util.Iterator;
@@ -28,11 +28,11 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import jmserver2.basedatos.sql.CacheEnlace;
-import jmserver2.basedatos.sql.DontHaveKeyException;
-import jmserver2.basedatos.sql.RunQuery;
-import jmserver2.basedatos.sql.SQLBadArgumentsException;
-import jmserver2.basedatos.sql.SQLNotFoundException;
+import server.basedatos.sql.CacheEnlace;
+import server.basedatos.sql.DontHaveKeyException;
+import server.basedatos.sql.RunQuery;
+import server.basedatos.sql.SQLBadArgumentsException;
+import server.basedatos.sql.SQLNotFoundException;
 
 import org.jdom.Element;
 
@@ -344,7 +344,7 @@ public class LNContabilidad {
 		
 	}
 	/**
-	 * Ete metodo se encarga de procesar la información recibida de una tabla,
+	 * Ete metodo se encarga de procesar la informaciï¿½n recibida de una tabla,
 	 * cuando viene la totalidad de la informacion necesaria para ser almacenada
 	 * en los libros auxiliares.
 	 * Nota: no se especifica naturaleza.
@@ -361,7 +361,7 @@ public class LNContabilidad {
 		Iterator i = pack.getChildren().iterator();
 
 		/*
-		 * El orden de la información sera ingresada de la siguiente forma
+		 * El orden de la informaciï¿½n sera ingresada de la siguiente forma
 		 * 
 		 * Infomacion obtenida de llaves
 		 * 

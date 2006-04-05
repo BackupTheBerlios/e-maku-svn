@@ -1,4 +1,4 @@
-package jmclient.gui.formas;
+package client.gui.formas;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -9,9 +9,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import jmclient.gui.components.HTMLdoc;
-import jmclient.gui.components.MainWindow;
-import jmlib.miscelanea.idiom.Language;
+import client.gui.components.HTMLdoc;
+import client.gui.components.MainWindow;
+import common.miscelanea.idiom.Language;
 
 /**
  * About.java Creado el 22-abr-2005

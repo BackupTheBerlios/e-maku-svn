@@ -1,14 +1,14 @@
 
-package jmserver2.miscelanea.configuracion;
+package server.miscelanea.configuracion;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Vector;
 
-import jmlib.miscelanea.idiom.Language;
-import jmlib.miscelanea.log.AdminLog;
-import jmserver2.miscelanea.JMServerIICons;
+import common.miscelanea.idiom.Language;
+import common.miscelanea.log.AdminLog;
+import server.miscelanea.JMServerIICons;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -68,7 +68,7 @@ public class ConfigFile {
                 
             /**
              * Ciclo encargado de leer las primeras etiquetas del archivo XML, en este
-             * caso Configuración
+             * caso Configuraciï¿½n
              */
             
             while (i.hasNext()) {
@@ -226,7 +226,7 @@ public class ConfigFile {
 }
     
 /**
- * Esta clase almacena una estructura con la información necesaria
+ * Esta clase almacena una estructura con la informaciï¿½n necesaria
  * para poder instanciar una base de datos
  */
     

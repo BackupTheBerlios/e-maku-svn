@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>JMClient</name>
+	<name>Client</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -18,7 +18,7 @@
 		<link>
 			<name>bin</name>
 			<type>2</type>
-			<location>/home/midas/beta/JMClient/bin</location>
+			<location>/home/emaku/beta/Client/bin</location>
 		</link>
 	</linkedResources>
 </projectDescription>

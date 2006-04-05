@@ -1,4 +1,4 @@
-package jmserver2.logicanegocios;
+package server.logicanegocios;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;

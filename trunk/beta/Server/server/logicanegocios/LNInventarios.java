@@ -1,4 +1,4 @@
-package jmserver2.logicanegocios;
+package server.logicanegocios;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -7,11 +7,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import jmlib.miscelanea.idiom.Language;
-import jmserver2.basedatos.sql.CacheEnlace;
-import jmserver2.basedatos.sql.RunQuery;
-import jmserver2.basedatos.sql.SQLBadArgumentsException;
-import jmserver2.basedatos.sql.SQLNotFoundException;
+import common.miscelanea.idiom.Language;
+import server.basedatos.sql.CacheEnlace;
+import server.basedatos.sql.RunQuery;
+import server.basedatos.sql.SQLBadArgumentsException;
+import server.basedatos.sql.SQLNotFoundException;
 
 import org.jdom.Element;
 
@@ -293,7 +293,7 @@ public class LNInventarios {
         
         
         /*
-         * 1. Se define el tamaño del registro adicionando 4 campos mas que seran para almacenar al
+         * 1. Se define el tamaï¿½o del registro adicionando 4 campos mas que seran para almacenar al
          *    Fecha,PCosto,Saldo y Valor_saldo
          */
         

@@ -1,4 +1,4 @@
-package jmclient.gui.components;
+package client.gui.components;
 
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -9,7 +9,7 @@ import java.awt.RenderingHints;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
-import jmlib.miscelanea.idiom.Language;
+import common.miscelanea.idiom.Language;
 
 import org.jdom.Element;
 

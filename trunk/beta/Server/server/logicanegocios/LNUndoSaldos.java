@@ -1,8 +1,8 @@
-package jmserver2.logicanegocios;
+package server.logicanegocios;
 
 import java.util.Enumeration;
 
-import jmserver2.basedatos.sql.CacheEnlace;
+import server.basedatos.sql.CacheEnlace;
 
 import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
 

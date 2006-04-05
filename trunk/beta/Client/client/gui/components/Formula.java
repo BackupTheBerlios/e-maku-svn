@@ -1,4 +1,4 @@
-package jmclient.gui.components;
+package client.gui.components;
 
 public class Formula {
 	

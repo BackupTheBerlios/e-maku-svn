@@ -1,4 +1,4 @@
-package jmclient.gui.components;
+package client.gui.components;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -6,7 +6,7 @@ import java.awt.RenderingHints;
 
 import javax.swing.JRadioButton;
 
-import jmlib.miscelanea.idiom.Language;
+import common.miscelanea.idiom.Language;
 
 /**
  * IDRadioButton.java Creado el 23-dic-2004

@@ -18,9 +18,9 @@
  * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  */
-package jmserver2.logicanegocios;
+package server.logicanegocios;
 
-import jmlib.miscelanea.idiom.Language;
+import common.miscelanea.idiom.Language;
 
 public class DontHaveBalanceException extends Exception {
 

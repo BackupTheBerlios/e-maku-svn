@@ -1,4 +1,4 @@
-package jmclient;
+package client;
 
 import java.awt.Font;
 import java.io.IOException;
@@ -7,14 +7,14 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import jmclient.gui.components.MainWindow;
-import jmclient.gui.formas.Conexion;
-import jmclient.miscelanea.JMClientCons;
-import jmclient.miscelanea.configuracion.ConfigFile;
-import jmclient.miscelanea.configuracion.ConfigFileNotLoadException;
-import jmlib.comunicaciones.SocketConnect;
-import jmlib.gui.formas.FirstDialog;
-import jmlib.miscelanea.idiom.Language;
+import client.gui.components.MainWindow;
+import client.gui.formas.Conexion;
+import client.miscelanea.JMClientCons;
+import client.miscelanea.configuracion.ConfigFile;
+import client.miscelanea.configuracion.ConfigFileNotLoadException;
+import common.comunicaciones.SocketConnect;
+import common.gui.formas.FirstDialog;
+import common.miscelanea.idiom.Language;
 
 //import com.l2fprod.gui.plaf.skin.Skin;
 //import com.l2fprod.gui.plaf.skin.SkinLookAndFeel;

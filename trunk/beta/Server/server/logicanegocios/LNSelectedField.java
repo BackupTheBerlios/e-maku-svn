@@ -1,13 +1,13 @@
-package jmserver2.logicanegocios;
+package server.logicanegocios;
 
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import jmserver2.basedatos.sql.RunQuery;
-import jmserver2.basedatos.sql.SQLBadArgumentsException;
-import jmserver2.basedatos.sql.SQLNotFoundException;
+import server.basedatos.sql.RunQuery;
+import server.basedatos.sql.SQLBadArgumentsException;
+import server.basedatos.sql.SQLNotFoundException;
 
 import org.jdom.Element;
 
@@ -128,7 +128,7 @@ public class LNSelectedField {
 	public void getFields(Element pack) throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
 		/*
 		 * Se define un arreglo en el que se almacenara la informacion para 
-		 * generar la transaccion sql, este arreglo es igual al tamaño del 
+		 * generar la transaccion sql, este arreglo es igual al tamaï¿½o del 
 		 * arreglo de fields mas el numero de llaves
 		 */
 		

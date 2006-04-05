@@ -1,4 +1,4 @@
-package jmclient.miscelanea.configuracion;
+package client.miscelanea.configuracion;
 
 
 /**

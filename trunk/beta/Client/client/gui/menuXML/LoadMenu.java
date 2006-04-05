@@ -1,4 +1,4 @@
-package jmclient.gui.menuXML;
+package client.gui.menuXML;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -20,13 +20,13 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 
-import jmclient.control.ACPFormEvent;
-import jmclient.control.ACPFormListener;
-import jmclient.control.ACPHandler;
-import jmclient.gui.components.MainWindow;
-import jmclient.miscelanea.JMClientCons;
-import jmlib.gui.formas.GenericForm;
-import jmlib.miscelanea.idiom.Language;
+import client.control.ACPFormEvent;
+import client.control.ACPFormListener;
+import client.control.ACPHandler;
+import client.gui.components.MainWindow;
+import client.miscelanea.JMClientCons;
+import common.gui.formas.GenericForm;
+import common.miscelanea.idiom.Language;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -49,7 +49,7 @@ import org.jdom.input.SAXBuilder;
  * PARTICULAR. Consulte la Licencia Publica General GNU GPL para mas detalles.
  * <br>
  * Esta clase se encarga de generar de forma dinamica y recursiva los Menus de
- * E-Maku o JMServer, dependiendo de la información obtenida de un archivo XML
+ * E-Maku o JMServer, dependiendo de la informaciï¿½n obtenida de un archivo XML
  * <br>
  * 
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez </A>
@@ -296,7 +296,7 @@ public class LoadMenu extends JMenuBar {
 }
 
 /**
- * Clase encargada de generar los JMenuItem y la manipulación de los eventos de
+ * Clase encargada de generar los JMenuItem y la manipulaciï¿½n de los eventos de
  * cada uno de ellos
  */
 

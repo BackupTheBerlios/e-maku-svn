@@ -1,4 +1,4 @@
-package jmserver2.reportes;
+package server.reportes;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,13 +10,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import jmlib.comunicaciones.WriteSocket;
-import jmlib.miscelanea.ZipHandler;
-import jmserver2.basedatos.sql.RunQuery;
-import jmserver2.basedatos.sql.SQLBadArgumentsException;
-import jmserver2.basedatos.sql.SQLNotFoundException;
-import jmserver2.comunicaciones.SocketServer;
-import jmserver2.control.ReportsStore;
+import common.comunicaciones.WriteSocket;
+import common.miscelanea.ZipHandler;
+import server.basedatos.sql.RunQuery;
+import server.basedatos.sql.SQLBadArgumentsException;
+import server.basedatos.sql.SQLNotFoundException;
+import server.comunicaciones.SocketServer;
+import server.control.ReportsStore;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRReport;
 import net.sf.jasperreports.engine.JRResultSetDataSource;

@@ -1,22 +1,22 @@
-package jmserver2.control;
+package server.control;
 
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
 
-import jmlib.comunicaciones.WriteSocket;
-import jmlib.miscelanea.idiom.Language;
-import jmlib.miscelanea.log.AdminLog;
-import jmserver2.basedatos.conexion.PoolConexiones;
-import jmserver2.basedatos.sql.CacheEnlace;
-import jmserver2.basedatos.sql.TotalizarCuentas;
-import jmserver2.comunicaciones.AcpFailure;
-import jmserver2.comunicaciones.CacheXML;
-import jmserver2.comunicaciones.ErrorXML;
-import jmserver2.comunicaciones.SelectXML;
-import jmserver2.comunicaciones.SocketServer;
-import jmserver2.logicanegocios.RunTransaction;
-import jmserver2.miscelanea.JMServerIICons;
-import jmserver2.reportes.MakeReport;
+import common.comunicaciones.WriteSocket;
+import common.miscelanea.idiom.Language;
+import common.miscelanea.log.AdminLog;
+import server.basedatos.conexion.PoolConexiones;
+import server.basedatos.sql.CacheEnlace;
+import server.basedatos.sql.TotalizarCuentas;
+import server.comunicaciones.AcpFailure;
+import server.comunicaciones.CacheXML;
+import server.comunicaciones.ErrorXML;
+import server.comunicaciones.SelectXML;
+import server.comunicaciones.SocketServer;
+import server.logicanegocios.RunTransaction;
+import server.miscelanea.JMServerIICons;
+import server.reportes.MakeReport;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -63,17 +63,17 @@ public class ValidHeaders {
         String nom_raiz = raiz.getName();
         
         /*
-         *  Validación de solicitud de paquetes, se verifica si el socket ya fue
+         *  Validaciï¿½n de solicitud de paquetes, se verifica si el socket ya fue
          *  autenticado, si lo fue entonces se procede a validar la solicitud 
          *  del paquete requerido, si no se procede a validar un paquete CNX o la
          *  solicitud de paquetes no autorizados (solicitud de paquetes sin previa
-         *  autentificación)
+         *  autentificaciï¿½n)
          */
         
         if (SocketServer.isLoged(sock)) {
 
             /*
-             *  Validación de un paquete transaccion
+             *  Validaciï¿½n de un paquete transaccion
              */
             if (nom_raiz.equals("TRANSACTION")) {
                 System.out.println("Paquete TRANSACCION");
@@ -197,7 +197,7 @@ public class ValidHeaders {
         } 
         
         /*
-         *  Validacion de una solicitud de un paquete conexió
+         *  Validacion de una solicitud de un paquete conexiï¿½
          */
         
         else if (nom_raiz.equals("CNX")) {
@@ -221,7 +221,7 @@ public class ValidHeaders {
         } 
         
         /*
-         * Validación de solicitud de paquetes no autorizados 
+         * Validaciï¿½n de solicitud de paquetes no autorizados 
          */
         
         else {

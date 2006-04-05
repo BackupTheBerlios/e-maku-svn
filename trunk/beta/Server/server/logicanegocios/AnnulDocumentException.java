@@ -1,6 +1,6 @@
-package jmserver2.logicanegocios;
+package server.logicanegocios;
 
-import jmlib.miscelanea.idiom.Language;
+import common.miscelanea.idiom.Language;
 
 public class AnnulDocumentException extends Exception {
 

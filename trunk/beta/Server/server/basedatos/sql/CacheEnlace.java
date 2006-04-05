@@ -1,4 +1,4 @@
-package jmserver2.basedatos.sql;
+package server.basedatos.sql;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -10,14 +10,14 @@ import java.sql.Statement;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import jmlib.comunicaciones.WriteSocket;
-import jmlib.miscelanea.idiom.Language;
-import jmlib.miscelanea.log.AdminLog;
-import jmserver2.basedatos.conexion.PoolConexiones;
-import jmserver2.comunicaciones.SocketServer;
-import jmserver2.control.SendUPDATECODE;
-import jmserver2.miscelanea.JMServerIICons;
-import jmserver2.miscelanea.configuracion.ConfigFile;
+import common.comunicaciones.WriteSocket;
+import common.miscelanea.idiom.Language;
+import common.miscelanea.log.AdminLog;
+import server.basedatos.conexion.PoolConexiones;
+import server.comunicaciones.SocketServer;
+import server.control.SendUPDATECODE;
+import server.miscelanea.JMServerIICons;
+import server.miscelanea.configuracion.ConfigFile;
 
 import org.jdom.Document;
 import org.jdom.JDOMException;
@@ -98,7 +98,7 @@ public class CacheEnlace {
                                      "sentencia_sql ORDER BY codigo desc");
                 
                 /*
-                 * Se almacena la información en la hashtable Hinstrucciones 
+                 * Se almacena la informaciï¿½n en la hashtable Hinstrucciones 
                  */
                 
                 while(rs.next()){
@@ -149,7 +149,7 @@ public class CacheEnlace {
                 					 "SEL0026"));
 
                 /*
-                 * Se almacena la información en la tabla hashtable Hlogica_drivers
+                 * Se almacena la informaciï¿½n en la tabla hashtable Hlogica_drivers
                  */
 
                 SAXBuilder builder = new SAXBuilder(false);
@@ -214,7 +214,7 @@ public class CacheEnlace {
                 rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getNombreBD(i),"SEL0089"));
 
                 /*
-                 * Se almacena la información en un objeto InfoInventario y luego en la
+                 * Se almacena la informaciï¿½n en un objeto InfoInventario y luego en la
                  * tabla hashtable Hinventarios
                  */
 
@@ -232,7 +232,7 @@ public class CacheEnlace {
                 rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getNombreBD(i),"SEL0094"));
 
                 /*
-                 * Se almacena la información en un objeto PerfilCta y luego en la
+                 * Se almacena la informaciï¿½n en un objeto PerfilCta y luego en la
                  * tabla hashtable Hperfil_cta
                  */
 
@@ -255,7 +255,7 @@ public class CacheEnlace {
                 rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getNombreBD(i),"SEL0095"));
 
                 /*
-                 * Se almacena la información en un objeto PerfilCta y luego en la
+                 * Se almacena la informaciï¿½n en un objeto PerfilCta y luego en la
                  * tabla hashtable Hperfil_cta
                  */
 
@@ -273,7 +273,7 @@ public class CacheEnlace {
                 rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getNombreBD(i),"SEL0096"));
 
                 /*
-                 * Se almacena la información en un objeto PerfilCta y luego en la
+                 * Se almacena la informaciï¿½n en un objeto PerfilCta y luego en la
                  * tabla hashtable Hperfil_cta
                  */
 
@@ -292,7 +292,7 @@ public class CacheEnlace {
                 rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getNombreBD(i),"SEL0097"));
 
                 /*
-                 * Se almacena la información en la tabla hashtable Hlibro_aux
+                 * Se almacena la informaciï¿½n en la tabla hashtable Hlibro_aux
                  */
 
                 while (rs.next()) {

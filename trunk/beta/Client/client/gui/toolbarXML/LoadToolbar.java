@@ -24,7 +24,7 @@
  * E-Maku o JMServer, dependiendo de la informaci?n obtenida de un archivo XML
  */
 
-package jmclient.gui.toolbarXML;
+package client.gui.toolbarXML;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,7 +36,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
-import jmlib.miscelanea.idiom.Language;
+import common.miscelanea.idiom.Language;
 
 import org.jdom.Document;
 import org.jdom.Element;

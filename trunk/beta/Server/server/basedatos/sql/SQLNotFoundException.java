@@ -1,6 +1,6 @@
-package jmserver2.basedatos.sql;
+package server.basedatos.sql;
 
-import jmlib.miscelanea.idiom.Language;
+import common.miscelanea.idiom.Language;
 
 /**
  * SQLNotFoundException.java Creado el 15-jul-2004
