@@ -7,6 +7,7 @@
 	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/bsh-core.jar"/>
 	<classpathentry kind="lib" path="/home/emaku/beta/lib/emaku/credits.jar"/>
 	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/ostermillerutils.jar"/>
+	<classpathentry kind="lib" path="/Common/"/>
 	<classpathentry kind="lib" path="/Common/bin"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
