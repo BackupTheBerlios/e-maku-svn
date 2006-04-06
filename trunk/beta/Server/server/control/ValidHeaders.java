@@ -15,7 +15,7 @@ import server.comunicaciones.ErrorXML;
 import server.comunicaciones.SelectXML;
 import server.comunicaciones.SocketServer;
 import server.logicanegocios.RunTransaction;
-import server.miscelanea.JMServerIICons;
+import server.miscelanea.ServerConst;
 import server.reportes.MakeReport;
 
 import org.jdom.Document;
@@ -25,10 +25,10 @@ import org.jdom.output.XMLOutputter;
 /**
  * ValidHeadersClient.java Creado el 22-jul-2004
  * 
- * Este archivo es parte de JMServerII <A
+ * Este archivo es parte de E-Maku <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
  * 
- * JMServerII es Software Libre; usted puede redistribuirlo y/o realizar
+ * E-Maku es Software Libre; usted puede redistribuirlo y/o realizar
  * modificaciones bajo los terminos de la Licencia Publica General GNU GPL como
  * esta publicada por la Fundacion del Software Libre (FSF); tanto en la version
  * 2 de la licencia, o cualquier version posterior.
@@ -113,9 +113,9 @@ public class ValidHeaders {
                     String tmp = Language.getWord("SQL_ACCESS_DENIED") + 
                     		" "+valida.getQuery()+" "+
                             sock.socket();
-                    AdminLog.setMessage(tmp, JMServerIICons.MESSAGE);
+                    AdminLog.setMessage(tmp, ServerConst.MESSAGE);
                     WriteSocket.writing(sock, error.returnError(
-                            JMServerIICons.ERROR, "", tmp));
+                            ServerConst.ERROR, "", tmp));
                 }
 
             } 
@@ -179,7 +179,7 @@ public class ValidHeaders {
                 String tmp = Language.getWord("ERR_FORMAT_PROTOCOL") + " "
                         + sock.socket();
 
-                AdminLog.setMessage(tmp, JMServerIICons.ERROR);
+                AdminLog.setMessage(tmp, ServerConst.ERROR);
 
                 System.out.println("ERROR FORMATO PROTOCOLO");
                 XMLOutputter xmlOutputter = new XMLOutputter();
@@ -191,7 +191,7 @@ public class ValidHeaders {
                     e.printStackTrace();
                 }
                 WriteSocket.writing(sock, error.returnError(
-                        JMServerIICons.ERROR, "", tmp));
+                        ServerConst.ERROR, "", tmp));
             }
 
         } 
@@ -214,7 +214,7 @@ public class ValidHeaders {
 	                WriteSocket.writing(sock, new AcpFailure(Language.getWord("ACPFAILURE")));
 	            }
             } else {
-            	AdminLog.setMessage(Language.getWord("DBNFEX") + raiz.getChild("db").getValue(), JMServerIICons.ERROR);
+            	AdminLog.setMessage(Language.getWord("DBNFEX") + raiz.getChild("db").getValue(), ServerConst.ERROR);
             	WriteSocket.writing(sock, new AcpFailure(Language.getWord("ACPFAILURE")));
             }
 
@@ -255,10 +255,10 @@ public class ValidHeaders {
                 String tmp = Language.getWord("ERR_FORMAT_PROTOCOL") + " "
                         + sock.socket();
 
-                AdminLog.setMessage(tmp, JMServerIICons.ERROR);
+                AdminLog.setMessage(tmp, ServerConst.ERROR);
 
                 WriteSocket.writing(sock, error.returnError(
-                        JMServerIICons.ERROR, "", tmp));
+                        ServerConst.ERROR, "", tmp));
                 //SocketServer.setDecrementSocketsCount();
             }
 

@@ -3,7 +3,7 @@ package client.miscelanea;
 import java.awt.Toolkit;
 
 /**
- * JMClientCons.java Creado el 29-jul-2004
+ * ClientConst.java Creado el 29-jul-2004
  * 
  * Este archivo es parte de JMClient <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
@@ -23,7 +23,7 @@ import java.awt.Toolkit;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David
  *         Cepeda </A>
  */
-public interface JMClientCons {
+public interface ClientConst {
 
 	public final String KeyClient = "client";
 

@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Hashtable;
 
-import server.miscelanea.JMServerIICons;
+import server.miscelanea.ServerConst;
 import server.miscelanea.configuracion.ConfigFile;
 import common.miscelanea.log.AdminLog;
 
@@ -14,10 +14,10 @@ import common.miscelanea.idiom.Language;
 /**
  * PoolConexiones.java Creado el 25-jun-2004
  * 
- * Este archivo es parte de JMServerII
+ * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
  *
- * JMServerII es Software Libre; usted puede redistribuirlo y/o realizar
+ * E-Maku es Software Libre; usted puede redistribuirlo y/o realizar
  * modificaciones bajo los terminos de la Licencia Publica General
  * GNU GPL como esta publicada por la Fundacion del Software Libre (FSF);
  * tanto en la version 2 de la licencia, o cualquier version posterior.
@@ -50,7 +50,7 @@ public class PoolConexiones {
             try {
                 AdminLog.setMessage(
                 		Language.getWord("LOADING_DB") +" "+ConfigFile.getNombreBD(i),
-						JMServerIICons.MESSAGE);
+						ServerConst.MESSAGE);
                 
                 Class.forName(ConfigFile.getDriver(i));
                 
@@ -64,14 +64,14 @@ public class PoolConexiones {
             catch (ClassNotFoundException CNFEe) {
                 AdminLog.setMessage(
                 		Language.getWord("ERR_CLASS") + " " + CNFEe.getMessage(),
-						JMServerIICons.ERROR);
+						ServerConst.ERROR);
                 
                 throw new PoolNotLoadException(ConfigFile.getNombreBD(i));
             } 
             catch (SQLException SQLEe){
                 AdminLog.setMessage(
                 		Language.getWord("ERR_SQL") + " " + SQLEe.getMessage(),
-						JMServerIICons.ERROR);
+						ServerConst.ERROR);
                 throw new PoolNotLoadException(ConfigFile.getNombreBD(i));
             }
     }

@@ -8,7 +8,7 @@ import java.util.Vector;
 
 import common.miscelanea.idiom.Language;
 import common.miscelanea.log.AdminLog;
-import server.miscelanea.JMServerIICons;
+import server.miscelanea.ServerConst;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -18,10 +18,10 @@ import org.jdom.input.SAXBuilder;
 /**
  * ConfigFile.java Creado el 25-jun-2004
  * 
- * Este archivo es parte de JMServerII
+ * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
  *
- * JMServerII es Software Libre; usted puede redistribuirlo y/o realizar
+ * E-Maku es Software Libre; usted puede redistribuirlo y/o realizar
  * modificaciones bajo los terminos de la Licencia Publica General
  * GNU GPL como esta publicada por la Fundacion del Software Libre (FSF);
  * tanto en la version 2 de la licencia, o cualquier version posterior.
@@ -54,12 +54,12 @@ public class ConfigFile {
     public static void Cargar() throws ConfigFileNotLoadException{
         try {
             builder = new SAXBuilder(false);
-            System.out.println("Configuracion: "+JMServerIICons.CONF+
-                    JMServerIICons.SEPARATOR+
+            System.out.println("Configuracion: "+ServerConst.CONF+
+                    ServerConst.SEPARATOR+
                     "server.conf");
             doc = builder.build(
-                                JMServerIICons.CONF+
-                                JMServerIICons.SEPARATOR+
+                                ServerConst.CONF+
+                                ServerConst.SEPARATOR+
                                 "server.conf");
             
             raiz = doc.getRootElement();
@@ -79,7 +79,7 @@ public class ConfigFile {
                 } else if (datos.getName().equals("Lenguaje")) {
                     idioma.CargarLenguaje(datos.getValue());
                 } else if (datos.getName().equals("Log")) {
-                    new AdminLog(datos.getValue(),JMServerIICons.KeyServer);
+                    new AdminLog(datos.getValue(),ServerConst.KeyServer);
                 } else if (datos.getName().equals("SocketJClient")) {
                     SocketJClient = Integer.parseInt(datos.getValue());
                 } else if (datos.getName().equals("SocketJAdmin")) {
@@ -88,7 +88,7 @@ public class ConfigFile {
                     MaxClients = Integer.parseInt(datos.getValue());
                 }
             }
-            AdminLog.setMessage(Language.getWord("LOADING_CF"), JMServerIICons.MESSAGE);
+            AdminLog.setMessage(Language.getWord("LOADING_CF"), ServerConst.MESSAGE);
         }
         catch (FileNotFoundException FNFEe) {
         	System.out.println("El archivo de configuracion no existe");

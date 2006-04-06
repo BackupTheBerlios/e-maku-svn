@@ -15,15 +15,15 @@ import java.util.Iterator;
 
 import common.miscelanea.idiom.Language;
 import common.miscelanea.log.AdminLog;
-import server.miscelanea.JMServerIICons;
+import server.miscelanea.ServerConst;
 import server.miscelanea.configuracion.ConfigFile;
 /**
  * SocketServer.java Creado el 21-jul-2004
  * 
- * Este archivo es parte de JMServerII <A
+ * Este archivo es parte de E-Maku <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
  * 
- * JMServerII es Software Libre; usted puede redistribuirlo y/o realizar
+ * E-Maku es Software Libre; usted puede redistribuirlo y/o realizar
  * modificaciones bajo los terminos de la Licencia Publica General GNU GPL como
  * esta publicada por la Fundacion del Software Libre (FSF); tanto en la version
  * 2 de la licencia, o cualquier version posterior.
@@ -78,9 +78,9 @@ public class SocketServer {
             SSCcanal2.register(selector, SelectionKey.OP_ACCEPT);
 
             AdminLog.setMessage(Language.getWord("SOCKET_SERVER_OPEN") + " "
-                    + ConfigFile.getSocketJClient(), JMServerIICons.MESSAGE);
+                    + ConfigFile.getSocketJClient(), ServerConst.MESSAGE);
             AdminLog.setMessage(Language.getWord("SOCKET_SERVER_OPEN") + " "
-                    + ConfigFile.getSocketJAdmin(), JMServerIICons.MESSAGE);
+                    + ConfigFile.getSocketJAdmin(), ServerConst.MESSAGE);
 
             while (true) {
                 int n = selector.select();
@@ -110,7 +110,7 @@ public class SocketServer {
                                             + canalsocket.socket()
                                             + " "
                                             + (setIncrementSocketsCount()),
-                                            JMServerIICons.MESSAGE);
+                                            ServerConst.MESSAGE);
                                 }
                                 Thread.sleep(50);
 

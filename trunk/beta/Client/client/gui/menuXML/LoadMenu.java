@@ -24,7 +24,7 @@ import client.control.ACPFormEvent;
 import client.control.ACPFormListener;
 import client.control.ACPHandler;
 import client.gui.components.MainWindow;
-import client.miscelanea.JMClientCons;
+import client.miscelanea.ClientConst;
 import common.gui.formas.GenericForm;
 import common.miscelanea.idiom.Language;
 
@@ -425,7 +425,7 @@ class JMenuItemXML extends JMenuItem implements ActionListener , ACPFormListener
             
             new GenericForm(ACPHandler.getDocForm(transaction),
                     						   MainWindow.getJDPanel(),
-                    						   JMClientCons.KeyClient,
+                    						   ClientConst.KeyClient,
                     						   size,
                     						   transaction);
         }

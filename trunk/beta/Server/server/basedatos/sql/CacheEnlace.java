@@ -16,7 +16,7 @@ import common.miscelanea.log.AdminLog;
 import server.basedatos.conexion.PoolConexiones;
 import server.comunicaciones.SocketServer;
 import server.control.SendUPDATECODE;
-import server.miscelanea.JMServerIICons;
+import server.miscelanea.ServerConst;
 import server.miscelanea.configuracion.ConfigFile;
 
 import org.jdom.Document;
@@ -25,10 +25,10 @@ import org.jdom.input.SAXBuilder;
 /**
  * CacheEnlace.java Creado el 1-jul-2004
  * 
- * Este archivo es parte de JMServerII <A
+ * Este archivo es parte de E-Maku <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
  * 
- * JMServerII es Software Libre; usted puede redistribuirlo y/o realizar
+ * E-Maku es Software Libre; usted puede redistribuirlo y/o realizar
  * modificaciones bajo los terminos de la Licencia Publica General GNU GPL como
  * esta publicada por la Fundacion del Software Libre (FSF); tanto en la version
  * 2 de la licencia, o cualquier version posterior.
@@ -70,7 +70,7 @@ public class CacheEnlace {
         int max = ConfigFile.SizeDB();
 
         AdminLog.setMessage(Language.getWord("LOADING_SL"),
-                JMServerIICons.MESSAGE);
+                ServerConst.MESSAGE);
 
         /**
          * Este ciclo recorre todas las bases de datos configuradas en el
@@ -82,7 +82,7 @@ public class CacheEnlace {
             try {
 
                 AdminLog.setMessage(Language.getWord("LOADING_CACHE") + " "
-                        + ConfigFile.getNombreBD(i), JMServerIICons.MESSAGE);
+                        + ConfigFile.getNombreBD(i), ServerConst.MESSAGE);
 
                 /**
                  * Establezco la conexion con la base de datos
@@ -91,8 +91,8 @@ public class CacheEnlace {
                 cn = PoolConexiones.getConnection(ConfigFile.getNombreBD(i));
                 st = cn.createStatement();
 
-                AdminLog.setMessage(Language.getWord("INIT_BDS"), JMServerIICons.MESSAGE);
-                AdminLog.setMessage(Language.getWord("LOADING_ST") + " " + ConfigFile.getNombreBD( i ) , JMServerIICons.MESSAGE);
+                AdminLog.setMessage(Language.getWord("INIT_BDS"), ServerConst.MESSAGE);
+                AdminLog.setMessage(Language.getWord("LOADING_ST") + " " + ConfigFile.getNombreBD( i ) , ServerConst.MESSAGE);
 
                 rs = st.executeQuery("SELECT codigo,sentencia FROM "+
                                      "sentencia_sql ORDER BY codigo desc");
@@ -181,12 +181,12 @@ public class CacheEnlace {
                     catch(IOException IOEe) {
                         AdminLog.setMessage(Language.getWord("ERR_LOADING_LG") + " "
                                 + ConfigFile.getNombreBD(i) + " "+rs.getString("codigo")+" "+IOEe.getMessage(),
-                                JMServerIICons.ERROR);
+                                ServerConst.ERROR);
                     }
                     catch(JDOMException JDOMEe) {
                         AdminLog.setMessage(Language.getWord("ERR_LOADING_LG") + " "
                                 + ConfigFile.getNombreBD(i) + " "+rs.getString("codigo")+" " + JDOMEe.getMessage(),
-                                JMServerIICons.ERROR);
+                                ServerConst.ERROR);
                     }
                 }
                 
@@ -310,13 +310,13 @@ public class CacheEnlace {
             	SQLEe.printStackTrace();
                 AdminLog.setMessage(Language.getWord("ERROR_LOADING_SL") + " "
                         + ConfigFile.getNombreBD(i) + SQLEe.getMessage(),
-                        JMServerIICons.ERROR);
+                        ServerConst.ERROR);
             }
             catch (SQLNotFoundException SQLNFEe) {
             	SQLNFEe.printStackTrace();
                 AdminLog.setMessage(Language.getWord("ERROR_LOADING_SL") + " "
                         + ConfigFile.getNombreBD(i) + SQLNFEe.getMessage(),
-                        JMServerIICons.ERROR);
+                        ServerConst.ERROR);
             }
             
             
@@ -344,7 +344,7 @@ public class CacheEnlace {
             catch (NumberFormatException NFEe){
                 AdminLog.setMessage(Language.getWord("ERR_CONSECUTIVE") + " "
                         + nombreBD + NFEe.getMessage(),
-                        JMServerIICons.ERROR);
+                        ServerConst.ERROR);
                 return "0000000000";
             }
         }
@@ -640,7 +640,7 @@ public class CacheEnlace {
         catch (NumberFormatException NFEe){
             AdminLog.setMessage(Language.getWord("ERR_CONSECUTIVE") + " "
                     + bd + NFEe.getMessage(),
-                    JMServerIICons.ERROR);
+                    ServerConst.ERROR);
         }
         
     }

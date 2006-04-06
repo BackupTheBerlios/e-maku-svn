@@ -16,7 +16,7 @@ import server.basedatos.sql.InstruccionesSQL;
 import server.comunicaciones.ErrorXML;
 import server.comunicaciones.SocketServer;
 import server.comunicaciones.SuccessXML;
-import server.miscelanea.JMServerIICons;
+import server.miscelanea.ServerConst;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -24,10 +24,10 @@ import org.jdom.Element;
 /**
  * RunTransaction.java Creado el 18-ene-2005
  * 
- * Este archivo es parte de JMServerII
+ * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
  *
- * JMServerII es Software Libre; usted puede redistribuirlo y/o realizar
+ * E-Maku es Software Libre; usted puede redistribuirlo y/o realizar
  * modificaciones bajo los terminos de la Licencia Publica General
  * GNU GPL como esta publicada por la Fundacion del Software Libre (FSF);
  * tanto en la version 2 de la licencia, o cualquier version posterior.
@@ -197,9 +197,9 @@ public class RunTransaction {
             					     String id_transaction,
             					     String message) {
         ErrorXML error = new ErrorXML();
-        AdminLog.setMessage(message, JMServerIICons.ERROR);
+        AdminLog.setMessage(message, ServerConst.ERROR);
         WriteSocket.writing(sock, 
-                		    error.returnError(JMServerIICons.ERROR,
+                		    error.returnError(ServerConst.ERROR,
                 		            	      SocketServer.getBd(sock),
                 		            	      id_transaction,
                 		            	      message));
@@ -210,7 +210,7 @@ public class RunTransaction {
 									  String id_transaction,
 									  String message) {
 		SuccessXML success = new SuccessXML();
-		AdminLog.setMessage(message, JMServerIICons.MESSAGE);
+		AdminLog.setMessage(message, ServerConst.MESSAGE);
 		WriteSocket.writing(sock, 
 			    		    success.returnSuccess(id_transaction,message));
     }

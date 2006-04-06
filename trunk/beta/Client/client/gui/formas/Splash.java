@@ -8,15 +8,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
 
-import client.miscelanea.JMClientCons;
+import client.miscelanea.ClientConst;
 
 /**
  * Splash.java Creado el 22-abr-2005
  * 
- * Este archivo es parte de JMServerII
+ * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
  *
- * JMServerII es Software Libre; usted puede redistribuirlo y/o realizar
+ * E-Maku es Software Libre; usted puede redistribuirlo y/o realizar
  * modificaciones bajo los terminos de la Licencia Publica General
  * GNU GPL como esta publicada por la Fundacion del Software Libre (FSF);
  * tanto en la version 2 de la licencia, o cualquier version posterior.
@@ -48,8 +48,8 @@ public class Splash {
         JLabel labelx = new JLabel(new ImageIcon(window.getClass().getResource("/icons/e-maku_splash.png")),JLabel.CENTER);
         pe.add(labelx,BorderLayout.CENTER);
         window.getContentPane().add(pe);
-        window.setBounds(((int)JMClientCons.MAX_WIN_SIZE_WIDTH/2)-150,
-                		(int)(JMClientCons.MAX_WIN_SIZE_HEIGHT/2)-143,300,341);
+        window.setBounds(((int)ClientConst.MAX_WIN_SIZE_WIDTH/2)-150,
+                		(int)(ClientConst.MAX_WIN_SIZE_HEIGHT/2)-143,300,341);
         window.setVisible(true);
     }
     

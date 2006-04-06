@@ -8,7 +8,7 @@ import java.io.RandomAccessFile;
 import java.util.Calendar;
 import java.util.zip.GZIPOutputStream;
 
-import client.miscelanea.JMClientCons;
+import client.miscelanea.ClientConst;
 
 
 /**
@@ -66,7 +66,7 @@ public class AdminLog {
      * @param prioridad
      */
     public static void setMessage(String mensaje, int prioridad) {
-        if (ValueLog.equals("Default") && (prioridad == JMClientCons.ERROR)) {
+        if (ValueLog.equals("Default") && (prioridad == ClientConst.ERROR)) {
             System.out.println(mensaje);
         } else if (ValueLog.equals("Verbose")) {
             System.out.println(mensaje);
@@ -74,7 +74,7 @@ public class AdminLog {
             System.out.println(mensaje);
             EscribirArchivo(mensaje);
         } else if (ValueLog.equals("LogFile")) {
-            if (prioridad == JMClientCons.ERROR)
+            if (prioridad == ClientConst.ERROR)
                 System.out.println(mensaje);
             EscribirArchivo(mensaje);
         }
@@ -82,17 +82,17 @@ public class AdminLog {
     }
 
     /**
-     * Este metodo se encarga de escribir el fichero JMServerII.log 
-     * @param mensaje Cadena de texto a a�adir al JMServerII.log
+     * Este metodo se encarga de escribir el fichero E-Maku.log 
+     * @param mensaje Cadena de texto a a�adir al E-Maku.log
      */
 
     private synchronized static void EscribirArchivo(String mensaje) {
         try {
             long max = Flog.length();
 
-            if (max >= JMClientCons.MAX_SIZE_FILE_LOG) {
+            if (max >= ClientConst.MAX_SIZE_FILE_LOG) {
                 byte[] Blog = new byte[(int) max];
-                File Ffile = new File(JMClientCons.TMP, "JMClient-"
+                File Ffile = new File(ClientConst.TMP, "JMClient-"
                         + Calendar.getInstance().get(Calendar.YEAR) + "-"
                         + Calendar.getInstance().get(Calendar.MONTH) + "-"
                         + Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
@@ -118,7 +118,7 @@ public class AdminLog {
     
     private static void newFile() {
         try {
-            Flog = new File(JMClientCons.TMP, "JMClient.log");
+            Flog = new File(ClientConst.TMP, "JMClient.log");
             RAFlog = new RandomAccessFile(Flog, "rw");
             RAFlog.seek(RAFlog.length());
         } catch (FileNotFoundException FNFEe) {

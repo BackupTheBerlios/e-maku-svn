@@ -6,7 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 
-import client.miscelanea.JMClientCons;
+import client.miscelanea.ClientConst;
 import common.miscelanea.Icons;
 import common.miscelanea.idiom.Language;
 import common.miscelanea.parameters.GenericParameters;
@@ -20,10 +20,10 @@ import org.jdom.output.XMLOutputter;
 /**
  * ConfigFile.java Creado el 25-jun-2004
  * 
- * Este archivo es parte de JMServerII <A
+ * Este archivo es parte de E-Maku <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
  * 
- * JMServerII es Software Libre; usted puede redistribuirlo y/o realizar
+ * E-Maku es Software Libre; usted puede redistribuirlo y/o realizar
  * modificaciones bajo los terminos de la Licencia Publica General GNU GPL como
  * esta publicada por la Fundacion del Software Libre (FSF); tanto en la version
  * 2 de la licencia, o cualquier version posterior.
@@ -83,7 +83,7 @@ public class ConfigFile extends GenericParameters {
         out.setFormat(Format.getPrettyFormat());
         
         File file = 
-            new File(JMClientCons.CONF);//,"client.conf");
+            new File(ClientConst.CONF);//,"client.conf");
 
         try {
         	if (!file.exists()) {
@@ -91,7 +91,7 @@ public class ConfigFile extends GenericParameters {
         	}
         	
         	if (file.isDirectory()) {
-        		file = new File(JMClientCons.CONF,"client.conf");
+        		file = new File(ClientConst.CONF,"client.conf");
         		FileOutputStream outFile = new FileOutputStream(file);
         		out.output(doc, outFile);
         		outFile.close();
@@ -117,7 +117,7 @@ public class ConfigFile extends GenericParameters {
         try {
             
             builder = new SAXBuilder(false);
-            doc = builder.build(JMClientCons.CONF+"client.conf");
+            doc = builder.build(ClientConst.CONF+"client.conf");
             raiz = doc.getRootElement();
             java.util.List Lconfig = raiz.getChildren();
             Iterator i = Lconfig.iterator();
@@ -148,7 +148,7 @@ public class ConfigFile extends GenericParameters {
             
             icons.loadIcons();
             //AdminLog.setMessage(Language.getWord("LOADING_CF"),
-            // JMClientCons.MESSAGE);
+            // ClientConst.MESSAGE);
         }
         catch (FileNotFoundException FNFEe) {
 

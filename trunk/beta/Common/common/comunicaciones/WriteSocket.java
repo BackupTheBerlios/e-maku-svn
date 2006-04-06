@@ -10,17 +10,17 @@ import java.nio.channels.SocketChannel;
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 
-import common.miscelanea.CommonCons;
+import common.miscelanea.CommonConst;
 import common.miscelanea.idiom.Language;
 import common.miscelanea.log.AdminLog;
 
 /**
  * WriteSocket.java Creado el 23-jul-2004
  * 
- * Este archivo es parte de JMServerII <A
+ * Este archivo es parte de E-Maku <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
  * 
- * JMServerII es Software Libre; usted puede redistribuirlo y/o realizar
+ * E-Maku es Software Libre; usted puede redistribuirlo y/o realizar
  * modificaciones bajo los terminos de la Licencia Publica General GNU GPL como
  * esta publicada por la Fundacion del Software Libre (FSF); tanto en la version
  * 2 de la licencia, o cualquier version posterior.
@@ -97,7 +97,7 @@ public class WriteSocket {
         }
         catch (IOException IOEe) {
             AdminLog.setMessage(Language.getWord("ERR_WRITING_SOCKET") + "\n"
-                    + IOEe.getMessage(), CommonCons.ERROR);
+                    + IOEe.getMessage(), CommonConst.ERROR);
         }
     }
 }

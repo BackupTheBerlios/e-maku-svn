@@ -18,7 +18,7 @@ import client.gui.formas.Splash;
 import client.gui.menuXML.LoadMenu;
 import client.gui.toolbarXML.JButtonXML;
 import client.gui.toolbarXML.LoadToolbar;
-import client.miscelanea.JMClientCons;
+import client.miscelanea.ClientConst;
 import common.miscelanea.idiom.Language;
 
 /**
@@ -62,8 +62,8 @@ public class MainWindow extends JFrame {
         
         super("E-Maku - Cliente");
 
-        this.setBounds(0, 0, JMClientCons.MAX_WIN_SIZE_WIDTH,
-                JMClientCons.MAX_WIN_SIZE_HEIGHT);
+        this.setBounds(0, 0, ClientConst.MAX_WIN_SIZE_WIDTH,
+                ClientConst.MAX_WIN_SIZE_HEIGHT);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         
         /**

@@ -30,7 +30,7 @@ import client.Run;
 import client.comunicaciones.SendCNX;
 import client.control.ValidHeaders;
 import client.gui.components.panels.PAutentication;
-import client.miscelanea.JMClientCons;
+import client.miscelanea.ClientConst;
 import client.miscelanea.configuracion.ConfigFile;
 import common.comunicaciones.PackageToXML2;
 import common.comunicaciones.SocketConnect;
@@ -113,7 +113,7 @@ public class Conexion {
         Properties Phistory = new Properties();
         boolean history = false;
          try {
-			FIShistory = new FileInputStream(new File(JMClientCons.CONF+"history"));
+			FIShistory = new FileInputStream(new File(ClientConst.CONF+"history"));
 			Phistory.load(FIShistory);
 			JPAutenticacion.setBaseDatos(Phistory.getProperty("database"));
 			JPAutenticacion.setUsuario(Phistory.getProperty("user"));
@@ -138,8 +138,8 @@ public class Conexion {
 
         JFConexion.pack();
         JFConexion.setLocation(
-                (JMClientCons.MAX_WIN_SIZE_WIDTH / 2) - JFConexion.getWidth() / 2,
-                (JMClientCons.MAX_WIN_SIZE_HEIGHT / 2) - JFConexion.getHeight() / 2);
+                (ClientConst.MAX_WIN_SIZE_WIDTH / 2) - JFConexion.getWidth() / 2,
+                (ClientConst.MAX_WIN_SIZE_HEIGHT / 2) - JFConexion.getHeight() / 2);
         JFConexion.setVisible(true);
         if (history) 
         	JPAutenticacion.getJPFclave().requestFocus();
@@ -198,7 +198,7 @@ public class Conexion {
 			 */
 			
 			try {
-				FileOutputStream FOShistory = new FileOutputStream(new File(JMClientCons.CONF+"history"));
+				FileOutputStream FOShistory = new FileOutputStream(new File(ClientConst.CONF+"history"));
 				String database="database="+JPAutenticacion.getBaseDatos()+"\n";
 				String user="user="+JPAutenticacion.getUsuario()+"\n";
 				FOShistory.write(database.getBytes());

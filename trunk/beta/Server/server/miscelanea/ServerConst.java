@@ -1,12 +1,12 @@
 package server.miscelanea;
 
 /**
- * JMServerIICons.java Creado el 29-jun-2004
+ * ServerConst.java Creado el 29-jun-2004
  * 
- * Este archivo es parte de JMServerII
+ * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
  *
- * JMServerII es Software Libre; usted puede redistribuirlo y/o realizar
+ * E-Maku es Software Libre; usted puede redistribuirlo y/o realizar
  * modificaciones bajo los terminos de la Licencia Publica General
  * GNU GPL como esta publicada por la Fundacion del Software Libre (FSF);
  * tanto en la version 2 de la licencia, o cualquier version posterior.
@@ -21,9 +21,9 @@ package server.miscelanea;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
-public interface JMServerIICons {
+public interface ServerConst {
     
-	public final String KeyServer = "JMServerII";
+	public final String KeyServer = "E-Maku";
 
 	public final String JM_HOME       =  System.getenv("EMAKU_HOME");
 	public final String HOME 		= System.getProperty("user.home");

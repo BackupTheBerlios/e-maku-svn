@@ -3,17 +3,17 @@ package server.basedatos.sql;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import server.miscelanea.JMServerIICons;
+import server.miscelanea.ServerConst;
 import common.miscelanea.log.AdminLog;
 
 import common.miscelanea.idiom.Language;
 /**
  * ValidarUsuario.java Creado el 23-jul-2004
  * 
- * Este archivo es parte de JMServerII <A
+ * Este archivo es parte de E-Maku <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
  * 
- * JMServerII es Software Libre; usted puede redistribuirlo y/o realizar
+ * E-Maku es Software Libre; usted puede redistribuirlo y/o realizar
  * modificaciones bajo los terminos de la Licencia Publica General GNU GPL como
  * esta publicada por la Fundacion del Software Libre (FSF); tanto en la version
  * 2 de la licencia, o cualquier version posterior.
@@ -59,17 +59,17 @@ public class ValidarUsuario {
         catch (SQLException SQLEe) {
 
             AdminLog.setMessage(db + ": " + Language.getWord("ERR_RS")
-                    + " " + SQLEe.getMessage(), JMServerIICons.ERROR);
+                    + " " + SQLEe.getMessage(), ServerConst.ERROR);
         }
         catch (SQLNotFoundException SQLNFEe) {
 
-            AdminLog.setMessage(db + ": " + SQLNFEe.getMessage(), JMServerIICons.ERROR);
+            AdminLog.setMessage(db + ": " + SQLNFEe.getMessage(), ServerConst.ERROR);
 
         }
         catch (SQLBadArgumentsException SQLBAEe) {
             
             String err = SQLBAEe.getMessage();
-            AdminLog.setMessage(err, JMServerIICons.ERROR);
+            AdminLog.setMessage(err, ServerConst.ERROR);
         }
         
         CloseSQL.close(rs);

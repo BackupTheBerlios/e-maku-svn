@@ -11,7 +11,7 @@ import server.basedatos.sql.CloseSQL;
 import server.basedatos.sql.RunQuery;
 import server.basedatos.sql.SQLBadArgumentsException;
 import server.basedatos.sql.SQLNotFoundException;
-import server.miscelanea.JMServerIICons;
+import server.miscelanea.ServerConst;
 
 import common.miscelanea.log.AdminLog;
 import common.comunicaciones.WriteSocket;
@@ -23,10 +23,10 @@ import org.jdom.output.XMLOutputter;
 /**
  * SelectXML.java Creado el 14-jul-2004
  * 
- * Este archivo es parte de JMServerII
+ * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
  *
- * JMServerII es Software Libre; usted puede redistribuirlo y/o realizar
+ * E-Maku es Software Libre; usted puede redistribuirlo y/o realizar
  * modificaciones bajo los terminos de la Licencia Publica General
  * GNU GPL como esta publicada por la Fundacion del Software Libre (FSF);
  * tanto en la version 2 de la licencia, o cualquier version posterior.
@@ -99,20 +99,20 @@ public class SelectXML extends Document {
 	                ResultSetMetaData RSMDinfo = RSdatos.getMetaData();
 	                int columnas = RSMDinfo.getColumnCount();
 	                writeBufferSocket(sock,
-	                        JMServerIICons.CONTEN_TYPE+
-	                        JMServerIICons.TAGS_ANSWER[0]+
-	                        JMServerIICons.TAGS_ID[0]+id+JMServerIICons.TAGS_ID[1]+
-	                        JMServerIICons.TAGS_HEAD[0]);
+	                        ServerConst.CONTEN_TYPE+
+	                        ServerConst.TAGS_ANSWER[0]+
+	                        ServerConst.TAGS_ID[0]+id+ServerConst.TAGS_ID[1]+
+	                        ServerConst.TAGS_HEAD[0]);
 	                
 	                for (int i = 1; i <= columnas; i++) {
 	                    writeBufferSocket(sock,
-	                            JMServerIICons.TAGS_COL_HEAD[0]+
+	                            ServerConst.TAGS_COL_HEAD[0]+
 	                            XMLformat.escapeAttributeEntities(RSMDinfo.getColumnTypeName(i))+
-	                            JMServerIICons.TAGS_COL_HEAD[1]+
+	                            ServerConst.TAGS_COL_HEAD[1]+
 	                            XMLformat.escapeAttributeEntities(RSMDinfo.getColumnName(i))+
-	                            JMServerIICons.TAGS_COL[1]);
+	                            ServerConst.TAGS_COL[1]);
 	                }
-	                writeBufferSocket(sock,JMServerIICons.TAGS_HEAD[1]);
+	                writeBufferSocket(sock,ServerConst.TAGS_HEAD[1]);
 	                
 	                /**
 	                 * Se recorre el resulset para a�adir los datos que contenga, y
@@ -120,7 +120,7 @@ public class SelectXML extends Document {
 	                 */
 	                byte [] res;
 	                while (RSdatos.next()) {
-	                    writeBufferSocket(sock,JMServerIICons.TAGS_ROW[0]);
+	                    writeBufferSocket(sock,ServerConst.TAGS_ROW[0]);
 	                    for (int j = 1; j <= columnas; j++) {
 	                        
 	                        res = RSdatos.getBytes(j);
@@ -128,28 +128,28 @@ public class SelectXML extends Document {
 	                        if (res==null)
 	                            res= new String("").getBytes();
 	                        
-	                        writeBufferSocket(sock,JMServerIICons.TAGS_COL[0] + 
+	                        writeBufferSocket(sock,ServerConst.TAGS_COL[0] + 
 	                                XMLformat.escapeAttributeEntities(new String(res))+
-	                                JMServerIICons.TAGS_COL[1]
+	                                ServerConst.TAGS_COL[1]
 	                                );
 	                    }
-	                    writeBufferSocket(sock,JMServerIICons.TAGS_ROW[1]);
+	                    writeBufferSocket(sock,ServerConst.TAGS_ROW[1]);
 	                }
-	                writeBufferSocket(sock,JMServerIICons.TAGS_ANSWER[1]);
+	                writeBufferSocket(sock,ServerConst.TAGS_ANSWER[1]);
 	                bufferSocket.write(new String ("\n\r\f").getBytes());
 	                WriteSocket.writing(sock,bufferSocket);
 	                bufferSocket.close();
 	                CloseSQL.close(RSdatos);
 //	                AdminLog.setMessage(Language.getWord("OK_CREATING_XML"),
-//	                        JMServerIICons.MESSAGE);
+//	                        ServerConst.MESSAGE);
 	
 	            }
 	            catch (SQLException SQLEe) {
 	                String err =
 	                    Language.getWord("ERR_RS") + " " + SQLEe.getMessage();
-	                AdminLog.setMessage(err, JMServerIICons.ERROR);
+	                AdminLog.setMessage(err, ServerConst.ERROR);
 	                ErrorXML error = new ErrorXML();
-	                WriteSocket.writing(sock,error.returnError(JMServerIICons.ERROR, bd, err));
+	                WriteSocket.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
 	                SQLEe.printStackTrace();
 	            }
 	            catch (IOException e) {
@@ -160,24 +160,24 @@ public class SelectXML extends Document {
 	        }
 	        catch (SQLNotFoundException QNFEe) {
 	            String err = QNFEe.getMessage();
-	            AdminLog.setMessage(err, JMServerIICons.ERROR);
+	            AdminLog.setMessage(err, ServerConst.ERROR);
 	            ErrorXML error = new ErrorXML();
-	            WriteSocket.writing(sock,error.returnError(JMServerIICons.ERROR, bd, err));
+	            WriteSocket.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
 	            QNFEe.printStackTrace();
 	
 	        } 
 	        catch (SQLException SQLEe) {
 	            String err = Language.getWord("ERR_ST") + " " + SQLEe.getMessage();
-	            AdminLog.setMessage(err, JMServerIICons.ERROR);
+	            AdminLog.setMessage(err, ServerConst.ERROR);
 	            ErrorXML error = new ErrorXML();
-	            WriteSocket.writing(sock,error.returnError(JMServerIICons.ERROR, bd, err));
+	            WriteSocket.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
 	            SQLEe.printStackTrace();
 	        }
 	        catch (SQLBadArgumentsException QBAEe) {
 	            String err = QBAEe.getMessage();
-	            AdminLog.setMessage(err, JMServerIICons.ERROR);
+	            AdminLog.setMessage(err, ServerConst.ERROR);
 	            ErrorXML error = new ErrorXML();
-	            WriteSocket.writing(sock,error.returnError(JMServerIICons.ERROR, bd, err));
+	            WriteSocket.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
 	            QBAEe.printStackTrace();
 	        }
         }

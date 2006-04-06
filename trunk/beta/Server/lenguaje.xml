@@ -179,8 +179,8 @@
     </palabra>
     <palabra>
         <clave>SOCKET_SERVER_OPEN</clave>
-        <es_CO>JMServerII en escucha por el puerto</es_CO>
-        <en_US>JMServerII listening by port</en_US>
+        <es_CO>EMaku-Server en escucha por el puerto</es_CO>
+        <en_US>EMaku-Server listening by port</en_US>
     </palabra>
     <palabra>
         <clave>ERR_IO_SOCKET</clave>

@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import server.basedatos.conexion.PoolConexiones;
-import server.miscelanea.JMServerIICons;
+import server.miscelanea.ServerConst;
 import common.miscelanea.log.AdminLog;
 
 import common.miscelanea.idiom.Language;
@@ -12,10 +12,10 @@ import common.miscelanea.idiom.Language;
 /**
  * RunIUD.java Creado el 6-jul-2004
  * 
- * Este archivo es parte de JMServerII
+ * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
  *
- * JMServerII es Software Libre; usted puede redistribuirlo y/o realizar
+ * E-Maku es Software Libre; usted puede redistribuirlo y/o realizar
  * modificaciones bajo los terminos de la Licencia Publica General
  * GNU GPL como esta publicada por la Fundacion del Software Libre (FSF);
  * tanto en la version 2 de la licencia, o cualquier version posterior.
@@ -60,17 +60,17 @@ public class RunIUD {
             catch(SQLException SQLEe) {
                 AdminLog.setMessage(
                 		Language.getWord("EXECUTE_IUD_ERR") + " " + SQLEe.getMessage(),
-						JMServerIICons.ERROR);
+						ServerConst.ERROR);
                 return Language.getWord("EXECUTE_IUD_ERR");
             }
             CloseSQL.close(st);
-            AdminLog.setMessage(Language.getWord("EXECUTE_IUD_OK"), JMServerIICons.MESSAGE);
+            AdminLog.setMessage(Language.getWord("EXECUTE_IUD_OK"), ServerConst.MESSAGE);
             return Language.getWord("EXECUTE_IUD_OK");
         } 
         catch(SQLException SQLEe) {
             AdminLog.setMessage(
             		Language.getWord("ERR_ST") + " " + SQLEe.getMessage(),
-					JMServerIICons.ERROR);
+					ServerConst.ERROR);
             return Language.getWord("ERR_ST");
         }
     }

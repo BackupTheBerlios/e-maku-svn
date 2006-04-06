@@ -8,15 +8,15 @@ import java.io.RandomAccessFile;
 import java.util.Calendar;
 import java.util.zip.GZIPOutputStream;
 
-import common.miscelanea.CommonCons;
+import common.miscelanea.CommonConst;
 
 /**
  * AdminLog.java Creado el 29-jun-2004
  * 
- * Este archivo es parte de JMServerII
+ * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
  *
- * JMServerII es Software Libre; usted puede redistribuirlo y/o realizar
+ * E-Maku es Software Libre; usted puede redistribuirlo y/o realizar
  * modificaciones bajo los terminos de la Licencia Publica General
  * GNU GPL como esta publicada por la Fundacion del Software Libre (FSF);
  * tanto en la version 2 de la licencia, o cualquier version posterior.
@@ -68,7 +68,7 @@ public class AdminLog {
      */
     public static void setMessage(String mensaje, int prioridad) {
    // 		System.out.println("prioridad del mensaje: "+prioridad+" mensaje "+mensaje+" valueLog: "+ValueLog);
-        if (ValueLog.equals("Default") && (prioridad == CommonCons.ERROR)) {
+        if (ValueLog.equals("Default") && (prioridad == CommonConst.ERROR)) {
             System.out.println(mensaje);
         } else if (ValueLog.equals("Verbose")) {
             System.out.println(mensaje);
@@ -76,25 +76,24 @@ public class AdminLog {
             System.out.println(mensaje);
             EscribirArchivo(mensaje);
         } else if (ValueLog.equals("LogFile")) {
-            if (prioridad == CommonCons.ERROR)
+            if (prioridad == CommonConst.ERROR)
                 System.out.println(mensaje);
             EscribirArchivo(mensaje);
         }
-
     }
 
     /**
-     * Este metodo se encarga de escribir el fichero JMServerII.log 
-     * @param mensaje Cadena de texto a a�adir al JMServerII.log
+     * Este metodo se encarga de escribir el fichero E-Maku.log 
+     * @param mensaje Cadena de texto a a�adir al E-Maku.log
      */
 
     private synchronized static void EscribirArchivo(String mensaje) {
         try {
             long max = Flog.length();
 
-            if (max >= CommonCons.MAX_SIZE_FILE_LOG) {
+            if (max >= CommonConst.MAX_SIZE_FILE_LOG) {
                 byte[] Blog = new byte[(int) max];
-                File Ffile = new File(CommonCons.TMP, namefile+"-"
+                File Ffile = new File(CommonConst.TMP, namefile+"-"
                         + Calendar.getInstance().get(Calendar.YEAR) + "-"
                         + Calendar.getInstance().get(Calendar.MONTH) + "-"
                         + Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
@@ -120,7 +119,7 @@ public class AdminLog {
     
     private static void newFile() {
         try {
-            Flog = new File(CommonCons.TMP, namefile+".log");
+            Flog = new File(CommonConst.TMP, namefile+".log");
             RAFlog = new RandomAccessFile(Flog, "rw");
             RAFlog.seek(RAFlog.length());
         } catch (FileNotFoundException FNFEe) {

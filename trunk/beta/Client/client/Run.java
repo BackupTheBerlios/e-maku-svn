@@ -9,7 +9,7 @@ import javax.swing.UIManager;
 
 import client.gui.components.MainWindow;
 import client.gui.formas.Conexion;
-import client.miscelanea.JMClientCons;
+import client.miscelanea.ClientConst;
 import client.miscelanea.configuracion.ConfigFile;
 import client.miscelanea.configuracion.ConfigFileNotLoadException;
 import common.comunicaciones.SocketConnect;
@@ -84,7 +84,7 @@ public class Run {
         }
 
         catch (ConfigFileNotLoadException e) {
-            FirstDialog dialogo = new FirstDialog(new JFrame(),JMClientCons.KeyClient);
+            FirstDialog dialogo = new FirstDialog(new JFrame(),ClientConst.KeyClient);
             dialogo.setLocationRelativeTo(dialogo.getParent());
             dialogo.setVisible(true);
         }
