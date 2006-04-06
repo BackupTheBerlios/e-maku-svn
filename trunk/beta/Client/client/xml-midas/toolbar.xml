@@ -7,7 +7,7 @@
       <ActionCommand>salir</ActionCommand>
       <Icon>/icons/ico_salir.png</Icon>
       <ToolTipText>TIP-SALIR</ToolTipText>
-      <Clase>jmclient.Run</Clase>
+      <Clase>client.Run</Clase>
       <Metodo>salir</Metodo>
     </JButtonBar>
   </JToolBar>

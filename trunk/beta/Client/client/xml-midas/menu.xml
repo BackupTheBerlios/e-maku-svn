@@ -10,7 +10,7 @@
       <Icon>/icons/ico_salir.png</Icon>
       <Mnemonic>NEMO-SALIR</Mnemonic>
       <Text>SALIR</Text>
-      <Clase>jmclient.Run</Clase>
+      <Clase>client.Run</Clase>
       <Metodo>salir</Metodo>
     </JMenuItem>
   </JMenu>
@@ -1433,7 +1433,7 @@
       <Icon>/icons/ico_acerca.png</Icon>
       <Mnemonic>NEMO-ABOUT</Mnemonic>
       <Text>ABOUT</Text>
-      <Clase>jmclient.gui.formas.About</Clase>
+      <Clase>client.gui.formas.About</Clase>
     </JMenuItem>
     <JSeparator />
     <JMenuItem>
@@ -1443,7 +1443,7 @@
       <Icon>/icons/ico_ayuda.png</Icon>
       <Mnemonic>NEMO-CONTENIDO</Mnemonic>
       <Text>CONTENIDO</Text>
-      <Clase>jmclient.gui.formas.Help</Clase>
+      <Clase>client.gui.formas.Help</Clase>
     </JMenuItem>
   </JMenu>
 </Menu>

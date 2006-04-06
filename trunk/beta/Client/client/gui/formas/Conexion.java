@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.UnresolvedAddressException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Properties;
 
 import javax.swing.ImageIcon;
@@ -32,6 +34,7 @@ import client.control.ValidHeaders;
 import client.gui.components.panels.PAutentication;
 import client.miscelanea.ClientConst;
 import client.miscelanea.configuracion.ConfigFile;
+
 import common.comunicaciones.PackageToXML2;
 import common.comunicaciones.SocketConnect;
 import common.comunicaciones.WriteSocket;
@@ -162,12 +165,23 @@ public class Conexion {
 	            GenericParameters.removeParameter("userLogin");
 	            GenericParameters.addParameter("userLogin",JPAutenticacion.getUsuario());
 	            SocketChannel socket = SocketConnect.getSock();
+	            MessageDigest md = MessageDigest.getInstance("MD5");
+	            String password = new String(JPAutenticacion.getClave());
+	    		md.update(password.getBytes());
+	    		byte[] bytes = md.digest();
+	    		String md5 ="";
+	    		for (byte b : bytes) {
+	    			int sec = (b & 0xff);
+	    			if ( sec<10 ) {
+	    				md5+="0";	
+	    			}
+					md5+= Integer.toHexString( sec );
+	    		}
 	            WriteSocket.writing(socket,
 				                    SendCNX.getPackage(
 				                            JPAutenticacion.getBaseDatos(),
-				                            JPAutenticacion.getUsuario(),
-				                            JPAutenticacion.getClave()));
-	             
+				                            JPAutenticacion.getUsuario(),md5.toCharArray()));
+	            md = null;
 			} catch (ConnectException CEe){
 				JOptionPane.showMessageDialog(
 	                    JFConexion,Language.getWord("ERR_CONNECT")+"\n"+
@@ -190,6 +204,8 @@ public class Conexion {
 				JBconectar.setEnabled(true);
 				JFConexion.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
 			
