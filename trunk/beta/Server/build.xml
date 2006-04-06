@@ -46,8 +46,11 @@
 	<target name="dist" depends="compile" description="generate the distribution">
 		<!-- Create the distribution directory -->
 		<mkdir dir="../lib/emaku" />
-		<!-- Put everything in ${build} into the jmlib-${DSTAMP}.jar file -->
+		<!-- Put everything in ${build} into the common-${DSTAMP}.jar file -->
 		<jar jarfile="../lib/emaku/server.jar" basedir="${build}" />
+		<manifest>
+			<attribute name="Main-Class" value="server.Run" />
+		</manifest>
 	</target>
 
 </project>
