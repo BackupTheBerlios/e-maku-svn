@@ -21,7 +21,7 @@ import java.util.EventListener;
  * Interface necesaria para la generacion de eventos al recibir un paquete Success
  * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
- * @author <A href='mailto:cristian_david@universia.net.co'>Cristian David Cepeda</A>
+ * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
 
 public interface SuccessListener extends EventListener {

@@ -21,7 +21,7 @@ import common.miscelanea.idiom.Language;
  * Informacion de la clase
  * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
- * @author <A href='mailto:cristian_david@universia.net.co'>Cristian David Cepeda</A>
+ * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
 public class ArgsException  extends Exception {
 
