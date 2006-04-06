@@ -37,4 +37,4 @@ fi
 
 LOCALCLASSPATH=${JAVA_HOME}/lib/tools.jar${PS}${JAVA_HOME}/lib/dev.jar${PS}$JMIDAS_HOME/lib/contrib/ant.jar${PS}$JMIDAS_HOME/lib/emaku/icons.jar${PS}$JMIDAS_HOME/lib/contrib/jdom.jar${PS}$JMIDAS_HOME/lib/contrib/jdbc-pgsql.jar${PS}$JMIDAS_HOME/lib/emaku/common.jar${PS}$JMIDAS_HOME/lib/emaku/client.jar${PS}$JMIDAS_HOME/lib/emaku/credits.jar${PS}$JMIDAS_HOME/lib/contrib/bsh-core.jar${PS}$JMIDAS_HOME/lib/contrib/ostermillerutils.jar${PS}$JMIDAS_HOME/lib/contrib/jpedal.jar${PS}$JMIDAS_HOME/lib/contrib/jai_codec.jar${PS}$JMIDAS_HOME/lib/contrib/jai_core.jar${PS}$JMIDAS_HOME/lib/contrib/itext.jar
 
-$JAVA_HOME/bin/java -classpath $LOCALCLASSPATH${PS}$ADDITIONALCLASSPATH -jar client.jar
+$JAVA_HOME/bin/java -classpath $LOCALCLASSPATH${PS}$ADDITIONALCLASSPATH client.Run
