@@ -15,7 +15,7 @@ APP_NAME="ST"
 APP_LONG_NAME="Servidor de Transacciones (E-Maku)"
 
 # Wrapper
-WRAPPER_CMD="jmidas_daemon"
+WRAPPER_CMD="emaku-server-daemon"
 WRAPPER_CONF="../conf/wrapper.conf"
 
 # Priority at which to run the wrapper.  See "man nice" for valid priorities.

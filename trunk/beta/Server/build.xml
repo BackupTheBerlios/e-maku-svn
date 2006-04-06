@@ -2,49 +2,52 @@
 <!-- ====================================================================== 
      22-feb-2005 15:14:40                                                        
 
-     jmserver2    
+	 server    
      Servidor de transacciones
                    
      jUgo                                                                
      ====================================================================== -->
-<project name="server" default="dist">
-    <description>
+<project name="server" default="dist" basedir=".">
+	<description>
             Servidor de transacciones
     </description>
 
-	<property name="build" location="../build/JMServer"/>
-	<property name="dist"  location="dist"/>
+	<property name="build" location="../build/server" />
+	<property name="dist" location="dist" />
 
 	<target name="init">
 		<!-- Create the time stamp -->
-		<tstamp/>
+		<tstamp />
 		<!-- Create the build directory structure used by compile -->
-		<mkdir dir="${build}"/>
+		<mkdir dir="${build}" />
 	</target>
-	
-	
-	<target name="compile" depends="init" description="Compila el codigo fuente" >
-		<javac srcdir="."  destdir="${build}" debug="true" optimize="false" includes="**/*.java">
+
+
+	<target name="compile" depends="init" description="Compila el codigo fuente">
+		<javac srcdir="." destdir="${build}" debug="true" optimize="false" includes="**/*.java">
 			<classpath>
-				<pathelement path="${classpath}"/>
-				<fileset dir="../lib">
-					<include name="*.jar"/>
+				<pathelement path="${classpath}" />
+				<fileset dir="../lib/emaku">
+					<include name="*.jar" />
+				</fileset>
+				<fileset dir="../lib/contrib">
+					<include name="*.jar" />
 				</fileset>
 			</classpath>
 		</javac>
-		 <!-- copia los XML al directorio ${build} -->
+		<!-- copia los XML al directorio ${build} -->
 		<copy todir="${build}">
 			<fileset dir=".">
-				<include name="**/*.xml"/>
+				<include name="**/*.xml" />
 			</fileset>
 		</copy>
 	</target>
-	
-	<target name="dist" depends="compile" description="generate the distribution" >
+
+	<target name="dist" depends="compile" description="generate the distribution">
 		<!-- Create the distribution directory -->
-		<mkdir dir="../lib/emaku"/>
+		<mkdir dir="../lib/emaku" />
 		<!-- Put everything in ${build} into the jmlib-${DSTAMP}.jar file -->
-		<jar jarfile="../lib/emaku/server.jar" basedir="${build}"/>
+		<jar jarfile="../lib/emaku/server.jar" basedir="${build}" />
 	</target>
 
 </project>

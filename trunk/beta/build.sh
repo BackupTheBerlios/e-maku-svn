@@ -59,7 +59,7 @@ set_vars() {
                PS=":"
              fi
 
-             LOCALCLASSPATH=${JAVA_HOME}/lib/tools.jar${PS}${JAVA_HOME}/lib/dev.jar${PS}../lib/contrib/ant.jar${PS}../lib/contrib/icons.jar${PS}../lib/contrib/jdom.jar${PS}../lib/contrib/jdbc-pgsql.jar${PS}../lib/midas/common,jar${PS}../lib/contrib/bsh-core.jar${PS}../lib/contrib/ostermillerutils.jar${PS}../lib/contrib/jpedal.jar${PS}../lib/contrib/jai_codec.jar${PS}../lib/contrib/jai_core.jar${PS}../lib/contrib/itext.jar${PS}../lib/contrib/digester.jar${PS}../lib/contrib/jdt-compiler.jar${PS}../lib/contrib/bcprov.jar${PS}../lib/contrib/jasper.jar
+             LOCALCLASSPATH=${JAVA_HOME}/lib/tools.jar${PS}${JAVA_HOME}/lib/dev.jar${PS}../lib/contrib/ant.jar${PS}../lib/contrib/icons.jar${PS}../lib/contrib/jdom.jar${PS}../lib/contrib/jdbc-pgsql.jar${PS}../lib/emaku/common,jar${PS}../lib/contrib/bsh-core.jar${PS}../lib/contrib/ostermillerutils.jar${PS}../lib/contrib/jpedal.jar${PS}../lib/contrib/jai_codec.jar${PS}../lib/contrib/jai_core.jar${PS}../lib/contrib/itext.jar${PS}../lib/contrib/digester.jar${PS}../lib/contrib/jdt-compiler.jar${PS}../lib/contrib/bcprov.jar${PS}../lib/contrib/jasper.jar
 
              ANT_HOME=../lib
 
@@ -131,8 +131,8 @@ install_server() {
 
              echo "#!/bin/sh" > $EMAKU_HOME/bin/emaku-server
              echo " " >> $EMAKU_HOME/bin/emaku-server
-             echo "EMAKU_HOME=$JMIDAS_HOME" >> $JMIDAS_HOME/bin/emaku-server
-             echo "export EMAKU_HOME" >> $JMIDAS_HOME/bin/emaku-server
+             echo "EMAKU_HOME=$Jemaku_HOME" >> $Jemaku_HOME/bin/emaku-server
+             echo "export EMAKU_HOME" >> $Jemaku_HOME/bin/emaku-server
              cat $ROOT/bin/emaku-server >> $EMAKU_HOME/bin/emaku-server
 
              if [ ! -L /usr/sbin/emaku-server ] ; then
@@ -173,8 +173,8 @@ install_server() {
 install_client() {
              echo "#!/bin/sh" > $EMAKU_HOME/bin/emaku-client
              echo " " >> $EMAKU_HOME/bin/emaku-client
-             echo "EMAKU_HOME=$JMIDAS_HOME" >> $JMIDAS_HOME/bin/emaku-client
-             echo "export EMAKU_HOME" >> $JMIDAS_HOME/bin/emaku-client
+             echo "EMAKU_HOME=$Jemaku_HOME" >> $Jemaku_HOME/bin/emaku-client
+             echo "export EMAKU_HOME" >> $Jemaku_HOME/bin/emaku-client
              cat $ROOT/bin/emaku-client >> $EMAKU_HOME/bin/emaku-client
 
              if [ ! -L /usr/bin/emaku-client ] ; then
