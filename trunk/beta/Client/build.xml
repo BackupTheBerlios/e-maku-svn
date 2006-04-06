@@ -7,12 +7,12 @@
                    
      jUgo                                                                
      ====================================================================== -->
-<project name="jmclient" default="dist">
+<project name="client" default="dist">
     <description>
             Aplicacion Cliente
     </description>
 
-	<property name="build" location="../build/JMClient"/>
+	<property name="build" location="../build/client"/>
 	<property name="dist"  location="dist"/>
 
 	<target name="init">
@@ -42,9 +42,9 @@
 	
 	<target name="dist" depends="compile" description="generate the distribution" >
 		<!-- Create the distribution directory -->
-		<mkdir dir="../lib/midas"/>
+		<mkdir dir="../lib/emaku"/>
 		<!-- Put everything in ${build} into the jmlib-${DSTAMP}.jar file -->
-		<jar jarfile="../lib/midas/jmclient.jar" basedir="${build}"/>
+		<jar jarfile="../lib/emaku/client.jar" basedir="${build}"/>
 	</target>
 
 </project>

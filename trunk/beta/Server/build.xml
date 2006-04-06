@@ -7,7 +7,7 @@
                    
      jUgo                                                                
      ====================================================================== -->
-<project name="jmserver2" default="dist">
+<project name="server" default="dist">
     <description>
             Servidor de transacciones
     </description>
@@ -42,9 +42,9 @@
 	
 	<target name="dist" depends="compile" description="generate the distribution" >
 		<!-- Create the distribution directory -->
-		<mkdir dir="../lib/midas"/>
+		<mkdir dir="../lib/emaku"/>
 		<!-- Put everything in ${build} into the jmlib-${DSTAMP}.jar file -->
-		<jar jarfile="../lib/midas/jmserver2.jar" basedir="${build}"/>
+		<jar jarfile="../lib/emaku/server.jar" basedir="${build}"/>
 	</target>
 
 </project>
