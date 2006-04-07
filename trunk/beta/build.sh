@@ -131,8 +131,8 @@ install_server() {
 
              echo "#!/bin/sh" > $EMAKU_HOME/bin/emaku-server
              echo " " >> $EMAKU_HOME/bin/emaku-server
-             echo "EMAKU_HOME=$Jemaku_HOME" >> $Jemaku_HOME/bin/emaku-server
-             echo "export EMAKU_HOME" >> $Jemaku_HOME/bin/emaku-server
+             echo "EMAKU_HOME=$EMAKU_HOME" >> $EMAKU_HOME/bin/emaku-server
+             echo "export EMAKU_HOME" >> $EMAKU_HOME/bin/emaku-server
              cat $ROOT/bin/emaku-server >> $EMAKU_HOME/bin/emaku-server
 
              if [ ! -L /usr/sbin/emaku-server ] ; then
@@ -166,8 +166,6 @@ install_server() {
                  echo "/usr/sbin/emaku-server start >& /dev/null" >> /etc/rc.d/rc.local
                fi
              fi
-
-             chmod -R 600 $EMAKU_HOME/conf
 }
 
 install_client() {
@@ -207,7 +205,6 @@ remove(){
              \rm -f lib/emaku/common,jar
              \rm -f lib/emaku/emaku-client.jar
              \rm -f lib/emaku/emaku-server.jar 
-             \rm -f *.log
 }
 
 case "$1" in
@@ -216,6 +213,7 @@ case "$1" in
              echo
              echo " Eliminando archivos de compilacion y archivos temporales..."
              remove
+             \rm -f *.log
              echo " Hecho."
              echo
              ;;
@@ -264,6 +262,9 @@ case "$1" in
                esac
              fi
 
+             echo "Instalando en: $EMAKU_HOME"
+             echo "Raiz: $ROOT"
+
              CORE=`cat $ROOT/core.log`
 
              install_base
@@ -281,13 +282,16 @@ case "$1" in
                     install_server
                     ;;
              esac
+
              echo " Hecho."
              echo
              ;;
 
   compile)
              if [ -z $2 ] ; then
+               echo "Creando archivo core en $ROOT..."
                echo "ALL" > $ROOT/core.log
+               ls -al $ROOT/core.log 
                compile_all
              else
                set_previous

@@ -155,7 +155,7 @@ verify() {
       exit 1
     fi
 
-    #if [ ! -r $JMIDAS_HOME/conf ] ; then
+    #if [ ! -r $EMAKU_HOME/conf ] ; then
     #  echo
     #  echo "ERROR: El usuario \"$USER\" no posee privilegios suficientes"
     #  echo "       para iniciar el servidor E-Maku."
