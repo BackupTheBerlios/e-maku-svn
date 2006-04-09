@@ -40,7 +40,16 @@ public class Run {
 	 * 
 	 */
 	public Run() {
-		try {		    
+		try {		
+			
+			String owner = System.getProperty("user.name");
+			if (owner.equals("root")) {
+				System.out.println("*** Excepción de Seguridad: El Servidor de Transacciones no puede ser ");
+				System.out.println("                            ejecutado por el usuario root.");
+				System.out.println("    El usuario indicado para iniciar este servicio es \"emaku\".");
+				System.exit(0);	
+			}
+			
 			ConfigFile.Cargar();
 			PoolConexiones.CargarBD();
 			ReportsStore.Load(this.getClass().getResource("/reports"));
