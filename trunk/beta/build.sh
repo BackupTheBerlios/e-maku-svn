@@ -13,7 +13,26 @@ check_root() {
              fi
 }
 
+check_emaku_user() {
+
+             E_USER=`egrep "^emaku" /etc/passwd`
+             E_GROUP=`egrep "^emaku" /etc/group`
+
+             if [ "$E_USER" = "" ] || [ "$E_GROUP" = "" ] ; then
+               echo
+               echo "ERROR: El usuario \"emaku\" o el grupo \"emaku\" no existen."
+               echo "---"
+               echo " Por razones de seguridad, el servidor de transacciones solo puede "
+               echo " ser iniciado por el usuario emaku. Por favor, cree la cuenta y el "
+               echo " grupo emaku para continuar con la instalacion."
+               echo "---"
+               echo
+               exit 1
+             fi
+}
+
 check_deps() {
+
              if [ "$JAVA_HOME" = "" ] ; then
                echo
                echo "ERROR: la variable de entorno JAVA_HOME no se encuentra definida."
@@ -116,18 +135,29 @@ compile_all() {
 install_base() {
              mkdir -p $EMAKU_HOME
              mkdir -p $EMAKU_HOME/lib
+             mkdir -p $EMAKU_HOME/lib/contrib
+             mkdir -p $EMAKU_HOME/lib/emaku
              mkdir -p $EMAKU_HOME/bin 
-             cp -rf $ROOT/lib $EMAKU_HOME
-             chmod -R 755 $EMAKU_HOME
+             cp -f $ROOT/lib/contrib/*.jar $EMAKU_HOME/lib/contrib/
+             cp -f $ROOT/lib/emaku/*.jar $EMAKU_HOME/lib/emaku/ 
              echo "$EMAKU_HOME" > $ROOT/install.log
 }
 
 install_server() {
+
+             cp -rf $ROOT/reports $EMAKU_HOME/
+
              mkdir -p $EMAKU_HOME/conf
              cp -f $ROOT/conf/server.conf $EMAKU_HOME/conf
              cp -f $ROOT/conf/wrapper.conf $EMAKU_HOME/conf
-             cp -f $ROOT/bin/wrapper $EMAKU_HOME/bin
-             cp -f $ROOT/bin/emaku-server-daemon $EMAKU_HOME/bin
+
+             ARCH=32
+             if [ -d "/lib64" ] ; then
+               ARCH=64
+             fi
+
+             cp -f $ROOT/bin/emaku-server-daemon-$ARCH $EMAKU_HOME/bin/emaku-server-daemon
+             cp -f $ROOT/lib/contrib/lib$ARCH/libwrapper.so $EMAKU_HOME/lib/contrib/
 
              echo "#!/bin/sh" > $EMAKU_HOME/bin/emaku-server
              echo " " >> $EMAKU_HOME/bin/emaku-server
@@ -171,8 +201,8 @@ install_server() {
 install_client() {
              echo "#!/bin/sh" > $EMAKU_HOME/bin/emaku-client
              echo " " >> $EMAKU_HOME/bin/emaku-client
-             echo "EMAKU_HOME=$Jemaku_HOME" >> $Jemaku_HOME/bin/emaku-client
-             echo "export EMAKU_HOME" >> $Jemaku_HOME/bin/emaku-client
+             echo "EMAKU_HOME=$EMAKU_HOME" >> $EMAKU_HOME/bin/emaku-client
+             echo "export EMAKU_HOME" >> $EMAKU_HOME/bin/emaku-client
              cat $ROOT/bin/emaku-client >> $EMAKU_HOME/bin/emaku-client
 
              if [ ! -L /usr/bin/emaku-client ] ; then
@@ -219,6 +249,9 @@ case "$1" in
              ;;
 
   -i|install)
+
+             check_emaku_user
+
              if [ ! -d "build" ] ; then 
                echo "ALL" > $ROOT/core.log
                compile_all
@@ -262,9 +295,6 @@ case "$1" in
                esac
              fi
 
-             echo "Instalando en: $EMAKU_HOME"
-             echo "Raiz: $ROOT"
-
              CORE=`cat $ROOT/core.log`
 
              install_base
@@ -283,15 +313,18 @@ case "$1" in
                     ;;
              esac
 
+             chmod -R 755 $EMAKU_HOME
+
+             chown -R emaku $EMAKU_HOME
+             chgrp -R emaku $EMAKU_HOME
+
              echo " Hecho."
              echo
              ;;
 
   compile)
              if [ -z $2 ] ; then
-               echo "Creando archivo core en $ROOT..."
                echo "ALL" > $ROOT/core.log
-               ls -al $ROOT/core.log 
                compile_all
              else
                set_previous

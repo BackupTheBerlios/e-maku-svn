@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="/Common"/>
+	<classpathentry exported="true" kind="src" path="/Common"/>
 	<classpathentry kind="lib" path="/home/emaku/beta/lib/emaku/icons.jar"/>
 	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/jdom.jar"/>
 	<classpathentry kind="lib" path="/Common/bin"/>

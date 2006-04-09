@@ -3512,7 +3512,7 @@
   </palabra>
   <palabra>
     <clave>CLOSE_CURRENT_WINDOW</clave>
-    <es_CO>Desea cerrar la actula venta?</es_CO>
+    <es_CO>Desea cerrar la ventana actual?</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Exit current window?</en_US>

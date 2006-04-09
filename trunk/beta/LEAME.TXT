@@ -138,32 +138,32 @@
 
  - Cree un directorio para descargar las fuentes del proyecto:
   
-   % mkdir /home/usuario/midas
+   % mkdir /home/usuario/emaku
 
  - Ingrese al directorio de trabajo que acaba de crear:
 
-   % cd /home/usuario/midas
+   % cd /home/usuario/emaku
 
  - Descargue el codigo fuente del proyecto a traves del servidor
    svn:
 
-   % svn checkout http://svn.berlios.de/svnroot/repos/jmidas/alfa
+   % svn checkout http://svn.berlios.de/svnroot/repos/e-maku/beta
 
    Nota: Si usted no tiene el comando svn instalado en sus sistema,
    por favor, remitase a: http://subversion.tigris.org/
 
  - Verifique el contenido de los archivos descargados:
  
-   % dir /home/usuario/midas/alfa
+   % dir /home/usuario/emaku/beta
   
    Debera encontrar la siguiente lista de archivos y directorios:
 
-   bin/  build.sh  documentacion/  etc/  JMAdmin/  JMClient/  JMLib/  
-   JMServer/  lib/  sql/
+   bin/  build.sh  documentacion/  etc/  Admin/  Client/  Common/  
+   Server/  lib/  sql/  reports/
 
  - Ingrese al directorio de las fuentes:
 
-   % cd /home/usuario/midas/alfa
+   % cd /home/usuario/emaku/beta
 
  - Compile el codigo fuente ejecutando la instruccion:
 
@@ -182,16 +182,22 @@
 
    % su
 
-   Nota: El sistema le pedira la clave de "root".
+   Nota: Por razones de seguridad, el Servidor de Transacciones
+   no permite ser ejecutado por el usuario root. Es por este motivo
+   que se requiere de un usuario y un grupo sin privilegios para 
+   iniciar el ST (el usuario "emaku"). Para ello, ejecute: 
+
+   % groupadd emaku 
+   % adduser emaku     
 
    A continuacion, ejecute la instruccion:
 
-   % sh build.sh install --prefix=/ruta/instalacion/jmidas
+   % sh build.sh install --prefix=/ruta/instalacion/emaku
 
    Nota: La opcion "--prefix" le permitira escoger el directorio
    en donde desea realizar la instalacion. Si usted no utiliza esta
    opcion, E-Maku sera instalado por defecto en el directorio 
-   "/usr/local/jmidas" 
+   "/usr/local/emaku" 
 
  - Como parte de la configuracion del Servidor de Transacciones es
    necesario crear una base de datos, siguiendo los siguientes 
@@ -205,15 +211,15 @@
      permisos para crear bases de datos (el nombre del usuario puede
      ser modificado a consideracion del administrador del sistema).
 
-     % createuser -U postgres midas
+     % createuser -U postgres emaku 
        Shall the new user be allowed to create databases? (y/n) y
        Shall the new user be allowed to create more new users? (y/n) n
        CREATE USER
 
    - Cree una base de datos con el nombre "mi_empresa" utilizando el
-     usuario "midas":
+     usuario "emaku":
 
-     % createdb -U midas mi_empresa
+     % createdb -U emaku mi_empresa
 
    - Asegurese de dar permisos de acceso al equipo en donde estara 
      instalado el Servidor de Transacciones:
@@ -226,7 +232,7 @@
 
      - Adicione la siguiente linea:
 
-       host    mi_empresa    midas    192.168.0.0/32        trust
+       host    mi_empresa    emaku    192.168.0.0/32        trust
 
        Nota: Escoja las direcciones ip y el metodo de autenticacion 
        de la linea anterior de acuerdo a sus necesidades.       
@@ -242,11 +248,11 @@
        acaba de crear. Para ello, ingrese al directorio "sql" del
        codigo fuente de E-Maku:
 
-       % cd /home/usuario/midas/alfa/sql 
+       % cd /home/usuario/emaku/beta/sql 
  
        Y ejecute la siguiente instruccion:
 
-       % psql -U midas mi_empresa <  postgres.sql >& /tmp/log.txt
+       % psql -U emaku mi_empresa <  postgres.sql >& /tmp/log.txt
 
        Nota: En el archivo "/tmp/log.txt" encontrara el registro de 
        todas las advertencias o errores generados al cargar la base
@@ -264,12 +270,12 @@
    - Ingrese al directorio donde se encuentra el archivo de 
      configuracion del Servidor de Transacciones:
 
-     % cd /ruta/instalacion/jmidas/conf
+     % cd /ruta/instalacion/emaku/conf
 
      Nota: Si la instalacion fue realizada en la ruta por defecto,
      entonces la instruccion seria:
    
-     % cd /usr/local/jmidas/conf
+     % cd /usr/local/emaku/conf
 
    - Edite el archivo de configuracion "server.conf"
 
@@ -281,23 +287,26 @@
      segun sea la direccion IP de su servidor de bases de datos PostgreSQL. 
 
      linea 27: <url>jdbc:postgresql://ip_servidor_postgres:5432/mi_empresa</url>
-               <usuario>midas</usuario>
+               <usuario>emaku</usuario>
                <password></password>
 
      Nota: Recuerde que si modifico el nombre del usuario de bases de datos 
-     (midas), o el nombre de la base de datos (mi_empresa), es necesario que 
+     (emaku), o el nombre de la base de datos (mi_empresa), es necesario que 
      modifique esos valores en las lineas 27 y 28 del archivo de 
      configuracion (server.conf). 
   
    - Inicie el Servidor de Transacciones:
 
-     % jmserver start
+     % emaku-server start
        * Iniciando el Servidor de Transacciones (E-Maku)...
        Usando Java version: 1.5.0_01
 
     Nota: A partir de este momento, su Servidor de Transacciones esta
     listo para recibir conexiones de Programas Cliente. Por defecto,
     el ST espera conexiones en el puerto 9117.
+
+    Si desea iniciarlo en modo de depuracion, ejecute:
+    % emaku-server console 
 
  5.2 Instalando el Programa Cliente
      ==============================
@@ -308,7 +317,7 @@
    mencionadas anteriormente y desea probar el cliente de E-Maku 
    en el mismo equipo donde instalo el ST, solo basta con ejecutar:
 
-   % jmclient &
+   % emaku-client &
 
    La primera vez que lo ejecute, un formulario sera desplegado en 
    pantalla, solicitando los siguientes datos:
@@ -328,8 +337,8 @@
    un pequen~o formulario solicitando los siguientes datos:
 
    Empresa: mi_empresa
-   Usuario: jmidas
-   Clave:   jmidas
+   Usuario: emaku 
+   Clave:   emaku 
 
    Nota: A partir de este momento, si los datos son correctos, la
    interfaz de usuario del cliente sera desplegada en pantalla,
@@ -345,33 +354,33 @@
 
    - Cree un directorio para descargar las fuentes del proyecto:
 
-     % mkdir /home/usuario/midas
+     % mkdir /home/usuario/emaku
 
    - Ingrese al directorio de trabajo que acaba de crear:
 
-     % cd /home/usuario/midas
+     % cd /home/usuario/emaku
 
    - Descargue el codigo fuente del proyecto a traves del servidor
      svn:
 
-     % svn checkout http://svn.berlios.de/svnroot/repos/jmidas/alfa
+     % svn checkout http://svn.berlios.de/svnroot/repos/e-maku/beta
 
      Nota: Si usted no tiene el comando svn instalado en sus sistema,
      por favor, remitase a: http://subversion.tigris.org/
 
    - Verifique el contenido de los archivos descargados:
 
-     % dir /home/usuario/midas/alfa
+     % dir /home/usuario/emaku/beta
 
      Debera encontrar la siguiente lista de archivos y directorios:
 
-     bin/  build.sh  documentacion/  etc/  JMAdmin/  JMClient/  JMLib/
-     JMServer/  lib/  sql/
+     bin/  build.sh  documentacion/  etc/  Admin/  Client/  Common/
+     Server/  lib/  sql/  reports/
 
    - Ingrese al directorio en donde descargo el codigo fuente de
      E-Maku:  
 
-     % cd /home/usuario/midas/alfa
+     % cd /home/usuario/emaku/beta
 
    - Compile el codigo fuente ejecutando la instruccion:
 
@@ -395,12 +404,12 @@
 
      A continuacion, ejecute la instruccion:
 
-     % sh build.sh install --prefix=/ruta/instalacion/jmidas
+     % sh build.sh install --prefix=/ruta/instalacion/emaku
 
      Nota: La opcion "--prefix" le permitira escoger el directorio
      en donde desea realizar la instalacion. Si usted no utiliza esta
      opcion, E-Maku sera instalado por defecto en el directorio
-     "/usr/local/jmidas"
+     "/usr/local/emaku"
 
    - Abandone la cuenta de "root", ejecutando:
 
@@ -408,7 +417,7 @@
 
    - Para iniciar el cliente E-Maku, ejecute:
 
-   % jmclient &
+   % emaku-client &
 
    La primera vez que lo ejecute, un formulario sera desplegado en
    pantalla, solicitando los siguientes datos:
@@ -428,8 +437,8 @@
    un pequen~o formulario solicitando los siguientes datos:
 
    Empresa: mi_empresa
-   Usuario: jmidas
-   Clave:   jmidas
+   Usuario: emaku 
+   Clave:   emaku 
 
    Nota: A partir de este momento, si los datos son correctos, la
    interfaz de usuario del cliente sera desplegada en pantalla,
@@ -603,7 +612,7 @@
 
   Nombre:  Java Service Wrapper 
   Archivo: wrapper.jar
-  Version: 3.1.2
+  Version: 3.2.0
   Funcion: Sistema de Gestion de Aplicaciones Java
   URL:     http://wrapper.tanukisoftware.org/doc/english/introduction.html
 
