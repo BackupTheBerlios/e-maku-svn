@@ -141,14 +141,14 @@ public class Values {
 	/**
 	 *get current page number (1 - pageCount)
 	 */
-	public synchronized int getCurrentPage() {
+	public int getCurrentPage() {
 		return currentPage;
 	}
 	
 	/**
 	 * set current page number (1 - pageCount)
 	 */
-	public synchronized void setCurrentPage(int currentPage) {
+	public void setCurrentPage(int currentPage) {
 		this.currentPage = currentPage;
 	}
 	
