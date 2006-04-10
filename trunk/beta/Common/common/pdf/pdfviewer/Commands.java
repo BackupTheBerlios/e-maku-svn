@@ -442,9 +442,9 @@ public class Commands {
 	}
 	
 	/**move forward one page*/
-	private void forward(int count) {
+	private synchronized void forward(int count) {
 		
-		if (!commonValues.isProcessing()) { //lock to stop multiple accesses
+		//if (!commonValues.isProcessing()) { //lock to stop multiple accesses
 			
 			/**if in range update count and decode next page. Decoded pages are cached so will redisplay
 			 * almost instantly*/
@@ -464,16 +464,16 @@ public class Commands {
 					currentGUI.zoom();
 				
 			}
-		}else
-			currentGUI.showMessageDialog(Language.getWord("ESPCARGANDOPAG"));
+		//}else
+			//currentGUI.showMessageDialog(Language.getWord("ESPCARGANDOPAG"));
 	}
 	
 	
 	
 	/** move back one page */
-	private void back(int count) {
+	private synchronized void back(int count) {
 		
-		if (!commonValues.isProcessing()) { //lock to stop multiple accesses
+		//if (!commonValues.isProcessing()) { //lock to stop multiple accesses
 			
 			/**
 			 * if in range update count and decode next page. Decoded pages are
@@ -494,8 +494,8 @@ public class Commands {
 				if(currentGUI.getSelectedComboIndex(Commands.SCALING)<3)
 					currentGUI.zoom();				
 			}
-		}else
-			currentGUI.showMessageDialog(Language.getWord("ESPCARGANDOPAG")); 
+		//}else
+			//currentGUI.showMessageDialog(Language.getWord("ESPCARGANDOPAG")); 
 	}
 	
 	public void gotoPage(String page) {

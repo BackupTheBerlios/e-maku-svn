@@ -10,13 +10,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import common.comunicaciones.WriteSocket;
-import common.miscelanea.ZipHandler;
-import server.basedatos.sql.RunQuery;
-import server.basedatos.sql.SQLBadArgumentsException;
-import server.basedatos.sql.SQLNotFoundException;
-import server.comunicaciones.SocketServer;
-import server.control.ReportsStore;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRReport;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
@@ -29,6 +22,15 @@ import net.sf.jasperreports.engine.fill.JRVerticalFiller;
 
 import org.jdom.Document;
 import org.jdom.Element;
+
+import server.basedatos.sql.RunQuery;
+import server.basedatos.sql.SQLBadArgumentsException;
+import server.basedatos.sql.SQLNotFoundException;
+import server.comunicaciones.SocketServer;
+import server.control.ReportsStore;
+
+import common.comunicaciones.WriteSocket;
+import common.miscelanea.ZipHandler;
 
 public class MakeReport extends Thread {
 
@@ -52,11 +54,13 @@ public class MakeReport extends Thread {
 					"SEL0208",
 					new String[] { codigo }).ejecutarSELECT();
 			rs.next();
+			
 			//System.out.println("Generando reporte No. " + codigo);
 			//InputStream iosTemplate = rs.getAsciiStream(1);
+			String title = rs.getString(1);
 			String sql = rs.getString(2);
 			this.id = element.getChildText("id");
-			List list = element.getChildren("subarg");
+			List list = element.getChild("package").getChildren();
 			Iterator it = list.iterator();
 			args = new String[list.size()];
 			rs.close();
@@ -70,11 +74,10 @@ public class MakeReport extends Thread {
 			} else {
 				rs = new RunQuery(SocketServer.getBd(socket), sql).ejecutarSELECT();
 			}
-
 			JRResultSetDataSource jrRS = new JRResultSetDataSource(rs);
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			Map <String,String>parameters = new HashMap<String,String>();
-			parameters.put("Title", "BALANCE GENERAL / ENERO 31 DE 2006");
+			parameters.put("Title", title);
 
 			//System.out.println(" * Cargando entrada XML...");
 			//JasperDesign jasperDesign = JRXmlLoader.load(iosTemplate);
