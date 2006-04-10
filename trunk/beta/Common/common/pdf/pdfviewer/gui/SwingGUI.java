@@ -68,6 +68,12 @@ import javax.swing.JTextPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
+import org.jpedal.PdfDecoder;
+import org.jpedal.exception.PdfException;
+import org.jpedal.io.StatusBar;
+import org.jpedal.objects.PdfPageData;
+import org.w3c.dom.Node;
+
 import common.miscelanea.idiom.Language;
 import common.pdf.pdfviewer.Commands;
 import common.pdf.pdfviewer.Values;
@@ -81,12 +87,6 @@ import common.pdf.pdfviewer.gui.swing.SwingMenuItem;
 import common.pdf.pdfviewer.gui.swing.SwingOutline;
 import common.pdf.pdfviewer.utils.Printer;
 import common.pdf.pdfviewer.utils.SwingWorker;
-
-import org.jpedal.PdfDecoder;
-import org.jpedal.exception.PdfException;
-import org.jpedal.io.StatusBar;
-import org.jpedal.objects.PdfPageData;
-import org.w3c.dom.Node;
 
 /**
  * Scope:<b>(All)</b>
@@ -540,7 +540,7 @@ public class SwingGUI extends GUI implements GUIFactory {
 		
 	}
 
-	public void decodePage(final boolean resizePanel){		
+	public synchronized void decodePage(final boolean resizePanel){		
 		
 		/**ensure text and color extracted. If you do not need color, take out 
 		 * line for faster decode
