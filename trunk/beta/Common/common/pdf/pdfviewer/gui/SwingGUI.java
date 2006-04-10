@@ -540,7 +540,7 @@ public class SwingGUI extends GUI implements GUIFactory {
 		
 	}
 
-	public synchronized void decodePage(final boolean resizePanel){		
+	public void decodePage(final boolean resizePanel){		
 		
 		/**ensure text and color extracted. If you do not need color, take out 
 		 * line for faster decode
@@ -655,9 +655,10 @@ public class SwingGUI extends GUI implements GUIFactory {
 				
 				return null;
 			}
+
 		};
 		
-		worker.start();
+		worker.construct();
 		
 	}
 	
