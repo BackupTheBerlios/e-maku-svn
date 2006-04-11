@@ -22,6 +22,8 @@ import net.sf.jasperreports.engine.fill.JRVerticalFiller;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
 import server.basedatos.sql.RunQuery;
 import server.basedatos.sql.SQLBadArgumentsException;
@@ -54,7 +56,9 @@ public class MakeReport extends Thread {
 					"SEL0208",
 					new String[] { codigo }).ejecutarSELECT();
 			rs.next();
-			
+			XMLOutputter xmout = new XMLOutputter();
+			xmout.setFormat(Format.getPrettyFormat());
+			xmout.output(element,System.out);
 			//System.out.println("Generando reporte No. " + codigo);
 			//InputStream iosTemplate = rs.getAsciiStream(1);
 			String title = rs.getString(1);

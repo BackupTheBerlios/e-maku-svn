@@ -1,5 +1,6 @@
 package server.control;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.JarURLConnection;
@@ -24,24 +25,31 @@ public class ReportsStore {
 			JarURLConnection conn = (JarURLConnection)url.openConnection();
 			JarFile jarfile = conn.getJarFile();
 			Enumeration enumEntries = jarfile.entries();
-			enumEntries.nextElement(); // META-INF
-			enumEntries.nextElement(); // MANIFEST.MF
-			enumEntries.nextElement(); // /reports
 			/*  Listing reports */
 			while(enumEntries.hasMoreElements()) {
 				JarEntry entry = (JarEntry) enumEntries.nextElement();
-				ObjectInputStream obj = new ObjectInputStream(jarfile.getInputStream(entry));
-				JasperReport jasperReport = null;
-				try {
-					jasperReport = (JasperReport)obj.readObject();
-					obj.close();
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
+				String name = entry.getName();
+				if (!"META-INF/".equals(name) && 
+					!"META-INF/MANIFEST.MF".equals(name) && 
+					!"reports/".equals(name)) {
+					ObjectInputStream obj = new ObjectInputStream(jarfile.getInputStream(entry));
+					JasperReport jasperReport = null;
+					try {
+						jasperReport = (JasperReport)obj.readObject();
+						obj.close();
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					reports.put(entry.getName(),jasperReport);
 				}
-				reports.put(entry.getName(),jasperReport);
 			}
 			jarfile.close();
-		} catch (IOException e) {
+		}
+		catch (EOFException e) {
+			System.out.println("Exception message " + e.getMessage());
+		}
+		catch (IOException e) {
+			System.out.println("Exception message " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
