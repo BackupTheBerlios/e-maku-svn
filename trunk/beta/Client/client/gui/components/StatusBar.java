@@ -99,12 +99,14 @@ public class StatusBar extends JToolBar {
         JPBbarra.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
     	JPBbarra.setMinimum(min);
     	JPBbarra.setMaximum(max);
+    	JPBbarra.setStringPainted(true);
     }
     
     public static synchronized void  incrementProgresValue() {
     	JPBbarra.setValue(JPBbarra.getValue()+1);
     	if (JPBbarra.getValue() == JPBbarra.getMaximum()) {
     		resetProgresValue();
+    		JPBbarra.setStringPainted(false);
     	}
     } 
     
