@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.channels.SocketChannel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -82,6 +83,9 @@ public class MakeReport extends Thread {
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			Map <String,String>parameters = new HashMap<String,String>();
 			parameters.put("Title", title);
+			parameters.put("Empresa", SocketServer.getBd(socket));
+			parameters.put("Nit", "");
+			parameters.put("Fecha", new Date().toString());
 
 			//System.out.println(" * Cargando entrada XML...");
 			//JasperDesign jasperDesign = JRXmlLoader.load(iosTemplate);
@@ -138,15 +142,12 @@ public class MakeReport extends Thread {
 	public JRBaseFiller createFiller(JasperReport jasperReport) throws JRException {
 		JRBaseFiller filler = null;
 
-		switch (jasperReport.getPrintOrder())
-		{
-			case JRReport.PRINT_ORDER_HORIZONTAL :
-			{
+		switch (jasperReport.getPrintOrder()) {
+			case JRReport.PRINT_ORDER_HORIZONTAL :{
 				filler = new HorizontalFiller(jasperReport);
 				break;
 			}
-			case JRReport.PRINT_ORDER_VERTICAL :
-			{
+			case JRReport.PRINT_ORDER_VERTICAL :{
 				filler = new VerticalFiller(jasperReport);
 				break;
 			}
