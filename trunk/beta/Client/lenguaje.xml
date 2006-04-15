@@ -3559,4 +3559,172 @@
     <es_ES></es_ES>
     <en_US>Reporte</en_US>
   </palabra>
+  <palabra>
+    <clave>REPORTS</clave>
+    <es_CO>Reportes</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Reports</en_US>
+  </palabra>
+  <palabra>
+    <clave>KEYWORD</clave>
+    <es_CO>Palabra Clave</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Key Word</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-REPORTE</clave>
+    <es_CO>R</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>R</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTES</clave>
+    <es_CO>Reportes</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>R</en_US>
+  </palabra>
+  <palabra>
+    <clave>INFORME-VENTAS</clave>
+    <es_CO>Informes de Ventas</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Say Report</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-INFORME-VENTAS</clave>
+    <es_CO>I</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>I</en_US>
+  </palabra>
+  <palabra>
+    <clave>INFORME-COMPRAS</clave>
+    <es_CO>Informes de Compras</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Buy Report</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-INFORME-COMPRAS</clave>
+    <es_CO>I</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>B</en_US>
+  </palabra>
+  <palabra>
+    <clave>INFORME-CONTABILIDAD</clave>
+    <es_CO>Informes de Contabilidad</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Bookkeeping Report</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-INFORME-CONTABILIDAD</clave>
+    <es_CO>I</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>B</en_US>
+  </palabra>
+  <palabra>
+    <clave>INFORME-INVENTARIOS</clave>
+    <es_CO>Informes de Inventarios</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Inventory Report</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-INFORME-INVENTARIOS</clave>
+    <es_CO>I</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>I</en_US>
+  </palabra>
+  <palabra>
+    <clave>INFORME-BANCOS</clave>
+    <es_CO>Informes de Bancos</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Bank Report</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-INFORME-BANCOS</clave>
+    <es_CO>I</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>B</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-PEDIDOS-NUMERO</clave>
+    <es_CO>Reporte de pedidos por numero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of request by number</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-REPORTE-PEDIDOS-NUMERO</clave>
+    <es_CO>n</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>n</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-PEDIDOS-TERCERO</clave>
+    <es_CO>Reporte de pedidos por tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of request by third</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-REPORTE-PEDIDOS-TERCERO</clave>
+    <es_CO>t</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>t</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-PEDIDOS-FECHA-PRODUCTO</clave>
+    <es_CO>Reporte de pedidos por fecha y producto</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of request by date and product</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-REPORTE-PEDIDOS-FECHA-PRODUCTO</clave>
+    <es_CO>p</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>p</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-PEDIDOS-FECHA-TERCERO</clave>
+    <es_CO>Reporte de pedidos por fecha y tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of request by date and third</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-REPORTE-PEDIDOS-FECHA-TERCERO</clave>
+    <es_CO>e</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>h</en_US>
+  </palabra>
+  <palabra>
+    <clave>FECHAI</clave>
+    <es_CO>Fecha Inicial</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Init Date</en_US>
+  </palabra>
+  <palabra>
+    <clave>FECHAF</clave>
+    <es_CO>Fecha Final</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Final Date</en_US>
+  </palabra>
 </idioma>

@@ -26,6 +26,7 @@ import client.control.ACPHandler;
 import client.gui.components.MainWindow;
 import client.miscelanea.ClientConst;
 import common.gui.formas.GenericForm;
+import common.miscelanea.Icons;
 import common.miscelanea.idiom.Language;
 
 import org.jdom.Document;
@@ -131,7 +132,12 @@ public class LoadMenu extends JMenuBar {
 	            else if (subdatos.getName().equals("Mnemonic"))
 	                JMtmp.setMnemonic(Language.getNemo(value));
 	            else if (subdatos.getName().equals("Icon"))
-	                JMtmp.setIcon(new ImageIcon(this.getClass().getResource(value)));
+	            	try {
+	            		JMtmp.setIcon(new ImageIcon(this.getClass().getResource(Icons.getIcon(value))));
+	            	}
+	            	catch(NullPointerException NPEe) {
+	            		JMtmp.setIcon(new ImageIcon(this.getClass().getResource(value)));
+	            	}
 	            else if (subdatos.getName().equals("JSeparator"))
 	                JMtmp.add(new JSeparator());
 	            else {
@@ -175,8 +181,14 @@ public class LoadMenu extends JMenuBar {
             } else if (subdatos.getName().equals("ActionCommand"))
                 JMItmp.setActionCommand(subdatos.getValue());
             else if (subdatos.getName().equals("Icon"))
-                JMItmp.setIcon(new ImageIcon(this.getClass().getResource(
-                        subdatos.getValue())));
+            	try {
+	                JMItmp.setIcon(new ImageIcon(this.getClass().getResource(
+	                        Icons.getIcon(subdatos.getValue()))));
+            	}
+            	catch (NullPointerException NPEe) {
+            	    JMItmp.setIcon(new ImageIcon(this.getClass().getResource(
+	                        subdatos.getValue())));
+            	}
             else if (subdatos.getName().equals("Text"))
                 JMItmp.setText(Language.getWord(subdatos.getValue()));
             else if (subdatos.getName().equals("Mnemonic"))

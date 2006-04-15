@@ -395,4 +395,8 @@
     <key>REPORT</key>
     <path>/icons/ico_reporte.png</path>
   </icon>
+  <icon>
+    <key>GREPORTS</key>
+    <path>/icons/ico_grupo_reportes.png</path>
+  </icon>
 </icons>
