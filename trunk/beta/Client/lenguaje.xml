@@ -3727,4 +3727,75 @@
     <es_ES></es_ES>
     <en_US>Final Date</en_US>
   </palabra>
+  <palabra>
+    <clave>REPORTE-COTIZACION-NUMERO</clave>
+    <es_CO>Reporte de cotización por numero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of market price by number</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-REPORTE-COTIZACION-NUMERO</clave>
+    <es_CO>z</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>k</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-COTIZACION-TERCERO</clave>
+    <es_CO>Reporte de cotización por tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of market price by third</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-REPORTE-COTIZACION-TERCERO</clave>
+    <es_CO>t</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>t</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-COTIZACION-FECHA-PRODUCTO</clave>
+    <es_CO>Reporte de cotización por fecha y producto</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of market price by date and product</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-REPORTE-COTIZACION-FECHA-PRODUCTO</clave>
+    <es_CO>i</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>y</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-COTIZACION-FECHA-TERCERO</clave>
+    <es_CO>Reporte de cotización por fecha y tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of market price by date and third</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-REPORTE-COTIZACION-FECHA-TERCERO</clave>
+    <es_CO>d</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>n</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-COTIZACION-FECHA-VALOR</clave>
+    <es_CO>Reporte de cotización por fecha y valor</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of market price by date and value</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-REPORTE-COTIZACION-FECHA-VALOR</clave>
+    <es_CO>v</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>v</en_US>
+  </palabra>
+  
 </idioma>

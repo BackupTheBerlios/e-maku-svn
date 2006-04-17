@@ -699,6 +699,41 @@
                 <Icon>GREPORTS</Icon>
                 <Text>REPORTS</Text>
                 <Activo />
+                <JMenuItem>
+                    <Text>REPORTE-COTIZACION-NUMERO</Text>
+                    <Icon>REPORT</Icon>
+                    <Mnemonic>NEMO-REPORTE-COTIZACION-NUMERO</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00137</Transaction>
+                </JMenuItem>
+                <JMenuItem>
+                    <Text>REPORTE-COTIZACION-TERCERO</Text>
+                    <Icon>REPORT</Icon>
+                    <Mnemonic>NEMO-REPORTE-COTIZACION-TERCERO</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00138</Transaction>
+                </JMenuItem>
+                <JMenuItem>
+                    <Text>REPORTE-COTIZACION-FECHA-PRODUCTO</Text>
+                    <Icon>REPORT</Icon>
+                    <Mnemonic>NEMO-REPORTE-COTIZACION-FECHA-PRODUCTO</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00139</Transaction>
+                </JMenuItem>
+                <JMenuItem>
+                    <Text>REPORTE-COTIZACION-FECHA-TERCERO</Text>
+                    <Icon>REPORT</Icon>
+                    <Mnemonic>NEMO-REPORTE-COTIZACION-FECHA-TERCERO</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00140</Transaction>
+                </JMenuItem>
+                <JMenuItem>
+                    <Text>REPORTE-COTIZACION-FECHA-VALOR</Text>
+                    <Icon>REPORT</Icon>
+                    <Mnemonic>NEMO-REPORTE-COTIZACION-FECHA-VALOR</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00141</Transaction>
+                </JMenuItem>
             </JMenu>
         </JMenu>
         <JMenu>
