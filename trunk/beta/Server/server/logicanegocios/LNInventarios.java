@@ -300,8 +300,10 @@ public class LNInventarios {
         if (ANULARSALIDA.equals(tipoMovimiento.trim().toLowerCase())) {
         		record= new String[lenght+5];
         }
-        else {
-        		record= new String[lenght+5];
+        else if (ENTRADA.equals(tipoMovimiento.trim().toLowerCase())){
+        		record= new String[lenght+4];
+        } else {
+    		record= new String[lenght+5];
         }
         
         /*
