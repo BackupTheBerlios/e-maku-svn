@@ -3665,25 +3665,11 @@
     <en_US>Report of request by number</en_US>
   </palabra>
   <palabra>
-    <clave>NEMO-REPORTE-PEDIDOS-NUMERO</clave>
-    <es_CO>n</es_CO>
-    <es_EC></es_EC>
-    <es_ES></es_ES>
-    <en_US>n</en_US>
-  </palabra>
-  <palabra>
     <clave>REPORTE-PEDIDOS-TERCERO</clave>
     <es_CO>Reporte de pedidos por tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of request by third</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-REPORTE-PEDIDOS-TERCERO</clave>
-    <es_CO>t</es_CO>
-    <es_EC></es_EC>
-    <es_ES></es_ES>
-    <en_US>t</en_US>
   </palabra>
   <palabra>
     <clave>REPORTE-PEDIDOS-FECHA-PRODUCTO</clave>
@@ -3693,25 +3679,11 @@
     <en_US>Report of request by date and product</en_US>
   </palabra>
   <palabra>
-    <clave>NEMO-REPORTE-PEDIDOS-FECHA-PRODUCTO</clave>
-    <es_CO>p</es_CO>
-    <es_EC></es_EC>
-    <es_ES></es_ES>
-    <en_US>p</en_US>
-  </palabra>
-  <palabra>
     <clave>REPORTE-PEDIDOS-FECHA-TERCERO</clave>
     <es_CO>Reporte de pedidos por fecha y tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of request by date and third</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-REPORTE-PEDIDOS-FECHA-TERCERO</clave>
-    <es_CO>e</es_CO>
-    <es_EC></es_EC>
-    <es_ES></es_ES>
-    <en_US>h</en_US>
   </palabra>
   <palabra>
     <clave>FECHAI</clave>
@@ -3735,25 +3707,11 @@
     <en_US>Report of market price by number</en_US>
   </palabra>
   <palabra>
-    <clave>NEMO-REPORTE-COTIZACION-NUMERO</clave>
-    <es_CO>z</es_CO>
-    <es_EC></es_EC>
-    <es_ES></es_ES>
-    <en_US>k</en_US>
-  </palabra>
-  <palabra>
     <clave>REPORTE-COTIZACION-TERCERO</clave>
     <es_CO>Reporte de cotización por tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of market price by third</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-REPORTE-COTIZACION-TERCERO</clave>
-    <es_CO>t</es_CO>
-    <es_EC></es_EC>
-    <es_ES></es_ES>
-    <en_US>t</en_US>
   </palabra>
   <palabra>
     <clave>REPORTE-COTIZACION-FECHA-PRODUCTO</clave>
@@ -3763,25 +3721,11 @@
     <en_US>Report of market price by date and product</en_US>
   </palabra>
   <palabra>
-    <clave>NEMO-REPORTE-COTIZACION-FECHA-PRODUCTO</clave>
-    <es_CO>i</es_CO>
-    <es_EC></es_EC>
-    <es_ES></es_ES>
-    <en_US>y</en_US>
-  </palabra>
-  <palabra>
     <clave>REPORTE-COTIZACION-FECHA-TERCERO</clave>
     <es_CO>Reporte de cotización por fecha y tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of market price by date and third</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-REPORTE-COTIZACION-FECHA-TERCERO</clave>
-    <es_CO>d</es_CO>
-    <es_EC></es_EC>
-    <es_ES></es_ES>
-    <en_US>n</en_US>
   </palabra>
   <palabra>
     <clave>REPORTE-COTIZACION-FECHA-VALOR</clave>
@@ -3791,11 +3735,257 @@
     <en_US>Report of market price by date and value</en_US>
   </palabra>
   <palabra>
-    <clave>NEMO-REPORTE-COTIZACION-FECHA-VALOR</clave>
+    <clave>VALOR_MIN</clave>
+    <es_CO>Valor Minimo</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Min. Value</en_US>
+  </palabra>
+  <palabra>
+    <clave>VALOR_MAX</clave>
+    <es_CO>Valor Maximo</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Max. Value</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-FCONTADO-NUMERO</clave>
+    <es_CO>Reporte factura de contado por numero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of invoice by number</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-FCONTADO-TERCERO</clave>
+    <es_CO>Reporte factura de contado por tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of invoice by third</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-FCONTADO-FECHA-PRODUCTO</clave>
+    <es_CO>Reporte factura de contado por fecha y producto</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of invoice by date and product</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-FCONTADO-FECHA-TERCERO</clave>
+    <es_CO>Reporte factura de contado por fecha y tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of invoice by date and third</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-FCONTADO-FECHA-VALOR</clave>
+    <es_CO>Reporte factura de contado por fecha y valor</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of invoice by date and value</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-FCREDITO-NUMERO</clave>
+    <es_CO>Reporte factura de credito por numero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of credit invoice by number</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-FCREDITO-TERCERO</clave>
+    <es_CO>Reporte factura de credito por tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of credit invoice by third</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-FCREDITO-FECHA-PRODUCTO</clave>
+    <es_CO>Reporte factura de contado por fecha y producto</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of credit invoice by date and product</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-FCREDITO-FECHA-TERCERO</clave>
+    <es_CO>Reporte factura de credito por fecha y tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of credit invoice by date and third</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-FCREDITO-FECHA-VALOR</clave>
+    <es_CO>Reporte factura de credito por fecha y valor</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of credit invoice by date and value</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-REMISION-NUMERO</clave>
+    <es_CO>Reporte de remisiones por numero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of remissions by number</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-REMISION-TERCERO</clave>
+    <es_CO>Reporte de remisiones por tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of remissions by third</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-REMISION-FECHA-PRODUCTO</clave>
+    <es_CO>Reporte de remisiones por fecha y producto</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of remissions by date and product</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-REMISION-FECHA-TERCERO</clave>
+    <es_CO>Reporte de remisiones por fecha y tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of remissions by date and third</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-NUMERO</clave>
+    <es_CO>Reporte por numero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report by number</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-REPORTE-NUMERO</clave>
+    <es_CO>n</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>n</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-TERCERO</clave>
+    <es_CO>Reporte por tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report by third</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-REPORTE-TERCERO</clave>
+    <es_CO>t</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>t</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-FECHA-PRODUCTO</clave>
+    <es_CO>Reporte por fecha y producto</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report by date and product</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-REPORTE-FECHA-PRODUCTO</clave>
+    <es_CO>p</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>p</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-FECHA-TERCERO</clave>
+    <es_CO>Reporte por fecha y tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report by date and third</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-REPORTE-FECHA-TERCERO</clave>
+    <es_CO>f</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>d</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-FECHA-VALOR</clave>
+    <es_CO>Reporte por fecha y valor</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report by date and value</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-REPORTE-FECHA-VALOR</clave>
     <es_CO>v</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>v</en_US>
+  </palabra>
+
+  <palabra>
+    <clave>REPORTE-OCOMPRA-NUMERO</clave>
+    <es_CO>Reporte orden de compra por numero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of buy order invoice by number</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-OCOMPRA-TERCERO</clave>
+    <es_CO>Reporte orden de compra por tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of buy order by third</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-OCOMPRA-FECHA-PRODUCTO</clave>
+    <es_CO>Reporte factura de contado por fecha y producto</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of buy order by date and product</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-OCOMPRA-FECHA-TERCERO</clave>
+    <es_CO>Reporte orden de compra por fecha y tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of buy order by date and third</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-OCOMPRA-FECHA-VALOR</clave>
+    <es_CO>Reporte orden de compra por fecha y valor</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of buy order by date and value</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-EALMACEN-NUMERO</clave>
+    <es_CO>Reporte entrada a almacen por numero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of store in by number</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-EALMACEN-TERCERO</clave>
+    <es_CO>Reporte entrada a almacen por tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of store in by third</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-EALMACEN-FECHA-PRODUCTO</clave>
+    <es_CO>Reporte factura de contado por fecha y producto</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of store in by date and product</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-EALMACEN-FECHA-TERCERO</clave>
+    <es_CO>Reporte entrada a almacen por fecha y tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of store in by date and third</en_US>
+  </palabra>
+  <palabra>
+    <clave>REPORTE-EALMACEN-FECHA-VALOR</clave>
+    <es_CO>Reporte entrada a almacen por fecha y valor</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of store in by date and value</en_US>
   </palabra>
   
 </idioma>
