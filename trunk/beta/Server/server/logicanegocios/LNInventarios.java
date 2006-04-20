@@ -297,10 +297,7 @@ public class LNInventarios {
          *    Fecha,PCosto,Saldo y Valor_saldo
          */
         
-        if (ANULARSALIDA.equals(tipoMovimiento.trim().toLowerCase())) {
-        		record= new String[lenght+5];
-        }
-        else if (ENTRADA.equals(tipoMovimiento.trim().toLowerCase())){
+        if (ENTRADA.equals(tipoMovimiento.trim().toLowerCase())){
         		record= new String[lenght+4];
         } else {
     		record= new String[lenght+5];
@@ -453,6 +450,66 @@ public class LNInventarios {
             List lpack = pack.getChildren();
             record[j] = ((Element)lpack.get(cols[j])).getValue();
         }
+        return record;
+    }
+    
+    /**
+     * Este metodo se encarga de efectuar traslados entre diferentes bodegas, 
+     * el paquete recibido puede obtener una lista de productos a mover o un solo 
+     * producto. 
+     *
+     */
+    public void traslados(Element pack) {
+    	
+    }
+    
+    private String[] salidaBodega() {
+         
+    	/*
+         * REGISTRO DE UNA SALIDA
+         * 
+         * record[0] = fecha
+         * record[1] = ndocumento
+         * record[2] = id_bodega
+         * record[3] = id_prod_serv
+         * record[4] = salida
+         * record[5] = valor_sal
+         * record[6] = pinventario
+         * record[7] = saldo
+         * record[8] = valor_saldo
+         */
+    	
+        String[] record = new String[8];
+        
+        /*
+         * El primer registro es la fecha;
+         */
+        record[0] = CacheKeys.getDate();
+        record[1] = CacheKeys.getKey("ndocumento");
+        
+        return record;
+    }
+    
+    private String[] entradaBodega() {
+    	/* 
+         * REGISTROS DE UNA ENTRADA
+         * 
+         * record[0] = fecha
+         * record[1] = ndocumento
+         * record[2] = id_bodega
+         * record[3] = id_prod_serv
+         * record[4] = entrada
+         * record[5] = valor_ent
+         * record[6] = pinventario
+         * record[7] = saldo
+         * record[8] = valor_saldo
+         */
+
+    	String[] record = new String[8];
+    	
+        record[0] = CacheKeys.getDate();
+        record[1] = CacheKeys.getKey("ndocumento");
+
         return record;
     }
 }
