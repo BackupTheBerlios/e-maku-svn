@@ -40,7 +40,7 @@ import common.control.ReportEvent;
 import common.control.ReportListener;
 import common.control.ValidHeadersClient;
 import common.gui.formas.GenericForm;
-import common.miscelanea.ZipHandler;
+import common.misc.ZipHandler;
 import common.miscelanea.idiom.Language;
 import common.pdf.pdfviewer.gui.GUIFactory;
 import common.pdf.pdfviewer.gui.SwingGUI;

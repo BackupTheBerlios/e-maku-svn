@@ -11,9 +11,9 @@ import client.gui.components.MainWindow;
 import client.gui.components.StatusBar;
 import client.gui.formas.Conexion;
 import client.gui.formas.Splash;
-import common.comunicaciones.ArrivePackageEvent;
-import common.comunicaciones.ArrivePackageListener;
-import common.comunicaciones.SocketConnect;
+import common.comunications.ArrivePackageEvent;
+import common.comunications.ArrivePackageListener;
+import common.comunications.SocketConnect;
 import common.control.ValidHeadersClient;
 import common.transactions.STResultSet;
 

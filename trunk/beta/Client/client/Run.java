@@ -12,7 +12,7 @@ import client.gui.formas.Conexion;
 import client.miscelanea.ClientConst;
 import client.miscelanea.configuracion.ConfigFile;
 import client.miscelanea.configuracion.ConfigFileNotLoadException;
-import common.comunicaciones.SocketConnect;
+import common.comunications.SocketConnect;
 import common.gui.formas.FirstDialog;
 import common.miscelanea.idiom.Language;
 

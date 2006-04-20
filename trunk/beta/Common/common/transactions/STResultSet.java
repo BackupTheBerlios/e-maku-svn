@@ -5,8 +5,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
-import common.comunicaciones.SocketConnect;
-import common.comunicaciones.WriteSocket;
+import common.comunications.SocketConnect;
+import common.comunications.WriteSocket;
 
 import org.jdom.Document;
 import org.jdom.Element;

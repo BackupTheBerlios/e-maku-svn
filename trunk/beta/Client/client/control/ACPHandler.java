@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Vector;
 
 import client.gui.components.StatusBar;
-import common.comunicaciones.SocketConnect;
-import common.comunicaciones.WriteSocket;
-import common.miscelanea.ZipHandler;
+import common.comunications.SocketConnect;
+import common.comunications.WriteSocket;
+import common.misc.ZipHandler;
 
 import org.jdom.Document;
 import org.jdom.Element;

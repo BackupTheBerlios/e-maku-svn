@@ -4,14 +4,14 @@ import java.io.IOException;
 
 import common.miscelanea.idiom.Language;
 import common.miscelanea.log.AdminLog;
-import server.basedatos.conexion.PoolConexiones;
-import server.basedatos.conexion.PoolNotLoadException;
-import server.basedatos.sql.CacheEnlace;
-import server.comunicaciones.SocketServer;
+import server.comunications.SocketServer;
 import server.control.ReportsStore;
-import server.miscelanea.ServerConst;
-import server.miscelanea.configuracion.ConfigFile;
-import server.miscelanea.configuracion.ConfigFileNotLoadException;
+import server.database.connection.PoolConexiones;
+import server.database.connection.PoolNotLoadException;
+import server.database.sql.CacheEnlace;
+import server.misc.ServerConst;
+import server.misc.settings.ConfigFile;
+import server.misc.settings.ConfigFileNotLoadException;
 
 /**
  * Run.java Creado el 28-jun-2004

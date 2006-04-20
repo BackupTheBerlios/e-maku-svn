@@ -41,7 +41,7 @@ import common.gui.formas.FinishEvent;
 import common.gui.formas.GenericForm;
 import common.gui.formas.InitiateFinishListener;
 import common.gui.formas.NotFoundComponentException;
-import common.miscelanea.Icons;
+import common.misc.Icons;
 import common.miscelanea.idiom.Language;
 import common.transactions.STException;
 import common.transactions.STResultSet;

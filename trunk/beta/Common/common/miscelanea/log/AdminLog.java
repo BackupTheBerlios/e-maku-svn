@@ -8,7 +8,7 @@ import java.io.RandomAccessFile;
 import java.util.Calendar;
 import java.util.zip.GZIPOutputStream;
 
-import common.miscelanea.CommonConst;
+import common.misc.CommonConst;
 
 /**
  * AdminLog.java Creado el 29-jun-2004

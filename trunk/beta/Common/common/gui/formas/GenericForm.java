@@ -29,12 +29,12 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.TitledBorder;
 
-import common.comunicaciones.SendDATE;
-import common.comunicaciones.SendUPDATECODE;
-import common.comunicaciones.SocketConnect;
-import common.comunicaciones.WriteSocket;
+import common.comunications.SendDATE;
+import common.comunications.SendUPDATECODE;
+import common.comunications.SocketConnect;
+import common.comunications.WriteSocket;
 import common.gui.components.VoidPackageException;
-import common.miscelanea.Icons;
+import common.misc.Icons;
 import common.miscelanea.idiom.Language;
 import common.miscelanea.parameters.GenericParameters;
 import common.transactions.STException;

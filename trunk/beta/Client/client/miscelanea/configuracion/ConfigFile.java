@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import client.miscelanea.ClientConst;
-import common.miscelanea.Icons;
+import common.misc.Icons;
 import common.miscelanea.idiom.Language;
 import common.miscelanea.parameters.GenericParameters;
 

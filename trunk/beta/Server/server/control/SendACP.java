@@ -8,13 +8,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import common.comunicaciones.WriteSocket;
-import common.miscelanea.ZipHandler;
-import server.basedatos.conexion.PoolConexiones;
-import server.basedatos.sql.CloseSQL;
-import server.basedatos.sql.RunQuery;
-import server.basedatos.sql.SQLBadArgumentsException;
-import server.basedatos.sql.SQLNotFoundException;
+import common.comunications.WriteSocket;
+import common.misc.ZipHandler;
+import server.database.connection.PoolConexiones;
+import server.database.sql.CloseSQL;
+import server.database.sql.RunQuery;
+import server.database.sql.SQLBadArgumentsException;
+import server.database.sql.SQLNotFoundException;
 
 import org.jdom.Document;
 import org.jdom.Element;

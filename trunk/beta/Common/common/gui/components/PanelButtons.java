@@ -21,7 +21,7 @@ import javax.swing.KeyStroke;
 
 import common.gui.formas.GenericForm;
 import common.gui.formas.NotFoundComponentException;
-import common.miscelanea.Icons;
+import common.misc.Icons;
 import common.miscelanea.idiom.Language;
 import common.pdf.pdfviewer.PDFViewer;
 import common.transactions.STResultSet;

@@ -3,7 +3,7 @@ package server.control;
 import java.util.Iterator;
 import java.util.List;
 
-import server.basedatos.sql.InstruccionesSQL;
+import server.database.sql.InstruccionesSQL;
 
 import org.jdom.Element;
 

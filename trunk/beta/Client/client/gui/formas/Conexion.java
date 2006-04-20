@@ -35,9 +35,9 @@ import client.gui.components.panels.PAutentication;
 import client.miscelanea.ClientConst;
 import client.miscelanea.configuracion.ConfigFile;
 
-import common.comunicaciones.PackageToXML2;
-import common.comunicaciones.SocketConnect;
-import common.comunicaciones.WriteSocket;
+import common.comunications.PackageToXML2;
+import common.comunications.SocketConnect;
+import common.comunications.WriteSocket;
 import common.miscelanea.idiom.Language;
 import common.miscelanea.parameters.GenericParameters;
 

@@ -1,11 +1,7 @@
-package server.control;
-
-import server.database.sql.ValidarUsuario;
-
-import org.jdom.Element;
+package common.misc;
 
 /**
- * LoginUser.java Creado el 23-jul-2004
+ * commonCons.java Creado el 07-oct-2004
  * 
  * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
@@ -25,35 +21,11 @@ import org.jdom.Element;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
-public class LoginUser {
-    
-    private Element data;
-    private String bd;
-    private String login;
-    
-    public String getBD(){
-        return bd;
-    }
-    public String getLogin() {
-        return login;
-    }
-    public LoginUser(Element data){
-    	this.data = data;
-        
-    }
-    
-    
-    public boolean valid() {
-        try {
-        	
-	        bd = data.getChild("db").getValue();
-	        login = data.getChild("login").getValue();
-	        String password = data.getChild("password").getValue();
-        	return ValidarUsuario.validdb(bd,login,password);
+public interface CommonConst {
+    public final int ERROR 			= 0;
+    public final int WARNING 		= 1;
+    public final int MESSAGE 		= 2;
+    public final long MAX_SIZE_FILE_LOG = 5242880;
+    public final String TMP 		= System.getProperty("java.io.tmpdir");
 
-        }
-        catch (NullPointerException NPEe) {
-        	return false;
-        }
-    }
 }

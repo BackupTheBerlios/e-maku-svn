@@ -26,7 +26,7 @@ import client.control.ACPHandler;
 import client.gui.components.MainWindow;
 import client.miscelanea.ClientConst;
 import common.gui.formas.GenericForm;
-import common.miscelanea.Icons;
+import common.misc.Icons;
 import common.miscelanea.idiom.Language;
 
 import org.jdom.Document;

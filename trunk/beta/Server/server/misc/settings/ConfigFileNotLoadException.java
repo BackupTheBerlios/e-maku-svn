@@ -1,11 +1,8 @@
-package server.control;
+package server.misc.settings;
 
-import server.database.sql.ValidarUsuario;
-
-import org.jdom.Element;
 
 /**
- * LoginUser.java Creado el 23-jul-2004
+ * ConfigFileNotLoadException.java Creado el 13-jul-2004
  * 
  * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
@@ -25,35 +22,9 @@ import org.jdom.Element;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
-public class LoginUser {
-    
-    private Element data;
-    private String bd;
-    private String login;
-    
-    public String getBD(){
-        return bd;
-    }
-    public String getLogin() {
-        return login;
-    }
-    public LoginUser(Element data){
-    	this.data = data;
-        
-    }
-    
-    
-    public boolean valid() {
-        try {
-        	
-	        bd = data.getChild("db").getValue();
-	        login = data.getChild("login").getValue();
-	        String password = data.getChild("password").getValue();
-        	return ValidarUsuario.validdb(bd,login,password);
+public class ConfigFileNotLoadException extends Exception {
 
-        }
-        catch (NullPointerException NPEe) {
-        	return false;
-        }
-    }
-}
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6699701194901457973L;}
