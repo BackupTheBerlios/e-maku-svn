@@ -1,0 +1,396 @@
+#
+# Skeleton sh script suitable for starting and stopping 
+# wrapped Java apps on the Solaris platform. 
+#
+# Make sure that PIDFILE points to the correct location,
+# if you have changed the default location set in the 
+# wrapper configuration file.
+#
+
+#-----------------------------------------------------------------------------
+# These settings can be modified to fit the needs of your application
+
+# Application
+APP_NAME="ST"
+APP_LONG_NAME="Servidor de Transacciones (E-Maku)"
+
+# Wrapper
+WRAPPER_CMD="emaku-server-daemon"
+WRAPPER_CONF="../conf/wrapper.conf"
+
+# Priority at which to run the wrapper.  See "man nice" for valid priorities.
+#  nice is only used if a priority is specified.
+PRIORITY=
+
+# Location of the pid file.
+PIDDIR="/tmp"
+
+# If uncommented, causes the Wrapper to be shutdown using an anchor file.
+#  When launched with the 'start' command, it will also ignore all INT and
+#  TERM signals.
+#IGNORE_SIGNALS=true
+
+# If specified, the Wrapper will be run as the specified user when the 'start'
+#  command is passed to this script.  When running with the 'console' command
+#  the current user will be used.
+# IMPORTANT - Make sure that the user has the required privileges to write
+#  the PID file and wrapper.log files.  Failure to be able to write the log
+#  file will cause the Wrapper to exit without any way to write out an error
+#  message.
+# NOTE - This will set the user which is used to run the Wrapper as well as
+#  the JVM and is not useful in situations where a privileged resource or
+#  port needs to be allocated prior to the user being changed.
+#RUN_AS_USER=
+
+# Do not modify anything beyond this point
+#-----------------------------------------------------------------------------
+
+# Get the fully qualified path to the script
+case $0 in
+    /*)
+        SCRIPT="$0"
+        ;;
+    *)
+        PWD=`pwd`
+        SCRIPT="$PWD/$0"
+        ;;
+esac
+
+# Change spaces to ":" so the tokens can be parsed.
+SCRIPT=`echo $SCRIPT | sed -e 's; ;:;g'`
+# Get the real path to this script, resolving any symbolic links
+TOKENS=`echo $SCRIPT | sed -e 's;/; ;g'`
+REALPATH=
+for C in $TOKENS; do
+    REALPATH="$REALPATH/$C"
+    while [ -h "$REALPATH" ] ; do
+        LS="`ls -ld "$REALPATH"`"
+        LINK="`expr "$LS" : '.*-> \(.*\)$'`"
+        if expr "$LINK" : '/.*' > /dev/null; then
+            REALPATH="$LINK"
+        else
+            REALPATH="`dirname "$REALPATH"`""/$LINK"
+        fi
+    done
+done
+# Change ":" chars back to spaces.
+REALPATH=`echo $REALPATH | sed -e 's;:; ;g'`
+
+# Change the current directory to the location of the script
+cd "`dirname "$REALPATH"`"
+
+# Process ID
+ANCHORFILE="$PIDDIR/$APP_NAME.anchor"
+PIDFILE="$PIDDIR/$APP_NAME.pid"
+pid=""
+
+# Resolve the location of the 'ps' command
+PSEXE="/usr/bin/ps"
+if [ ! -x $PSEXE ]
+then
+    PSEXE="/bin/ps"
+    if [ ! -x $PSEXE ]
+    then
+        echo " ERROR: No se puede localizar el comando 'ps'."
+        echo " Asegurese de que el comando existe en la ruta /usr o /usr/bin."
+        exit 1
+    fi
+fi
+
+# Build the nice clause
+if [ "X$PRIORITY" = "X" ]
+then
+    CMDNICE=""
+else
+    CMDNICE="nice -$PRIORITY"
+fi
+
+# Check the configured user
+if [ "X$RUN_AS_USER" != "X" ]
+then
+    # Resolve the location of the 'id' command
+    IDEXE="/usr/xpg4/bin/id"
+    if [ ! -x $IDEXE ]
+    then
+        IDEXE="/usr/bin/id"
+        if [ ! -x $IDEXE ]
+        then
+            echo " ERROR: No se puede localizar el comando 'id'."
+            echo " Asegurese de que el comando existe en la ruta /usr o /usr/bin."
+            exit 1
+        fi
+    fi
+
+    if [ "`$IDEXE -u -n`" = "$RUN_AS_USER" ]
+    then
+        # Already running as the configured user.  Avoid password prompts by not calling su.
+        RUN_AS_USER=""
+    fi
+fi
+
+verify() {
+
+    if [ "$JAVA_HOME" = "" ] ; then
+      echo
+      echo "ERROR: la variable de entorno JAVA_HOME no se encuentra definida."
+      echo "---"
+      echo " Por favor, defina la variable JAVA_HOME con el valor de la ruta"
+      echo " en donde se encuentra la instalacion de Java."
+      echo " Ej: export JAVA_HOME=/usr/local/java"
+      echo "---"
+      exit 1
+    fi
+
+    java -version >& /tmp/java.log;
+    JAVAVERSION=`head -1 /tmp/java.log | cut -d'"' -f2`
+    rm -f /tmp/java.log
+
+    VER=`echo $JAVAVERSION | cut -d'.' -f2`
+
+    if [ "$VER" -lt "5" ] ; then
+      echo "---"
+      echo " E-Maku requiere Java 1.5 o superior para ejecutarse."
+      echo " Por favor, actualice su version de Java."
+      echo "---"
+      exit 1
+    fi
+
+    #if [ ! -r $EMAKU_HOME/conf ] ; then
+    #  echo
+    #  echo "ERROR: El usuario \"$USER\" no posee privilegios suficientes"
+    #  echo "       para iniciar el servidor E-Maku."
+    #  echo "---"
+    #  echo " Por defecto, el usuario autorizado para iniciar este servicio"
+    #  echo " es el \"root\"."
+    #  echo "---"
+    #  exit 1
+    #fi
+
+}
+
+getpid() {
+    if [ -f $PIDFILE ]
+    then
+        if [ -r $PIDFILE ]
+        then
+            pid=`cat $PIDFILE`
+            if [ "X$pid" != "X" ]
+            then
+                # Verify that a process with this pid is still running.
+                pid=`$PSEXE -p $pid | grep $pid | grep -v grep | awk '{print $1}' | tail -1`
+                if [ "X$pid" = "X" ]
+                then
+                    # This is a stale pid file.
+                    rm -f $PIDFILE
+                    echo " Removiendo archivo: $PIDFILE"
+                fi
+            fi
+        else
+            echo " ERROR: No se puede leer el archivo $PIDFILE."
+            exit 1
+        fi
+    fi
+}
+
+testpid() {
+    pid=`$PSEXE -p $pid | grep $pid | grep -v grep | awk '{print $1}' | tail -1`
+    if [ "X$pid" = "X" ]
+    then
+        # Process is gone so remove the pid file.
+        rm -f $PIDFILE
+    fi
+}
+
+console() {
+
+    verify
+
+    echo " * Iniciando el $APP_LONG_NAME..."
+    getpid
+    if [ "X$pid" = "X" ]
+    then
+        if [ "X$IGNORE_SIGNALS" = "X" ]
+        then
+            exec $CMDNICE $WRAPPER_CMD $WRAPPER_CONF wrapper.pidfile=$PIDFILE
+        else
+            exec $CMDNICE $WRAPPER_CMD $WRAPPER_CONF wrapper.pidfile=$PIDFILE wrapper.anchorfile=$ANCHORFILE
+        fi
+    else
+        echo " ADVERTENCIA: El $APP_LONG_NAME ya se encuentra en ejecucion."
+        exit 1
+    fi
+}
+ 
+start() {
+
+    verify
+
+    echo " * Iniciando el $APP_LONG_NAME..."
+    echo "   Usando Java version: $JAVAVERSION"
+    getpid
+    if [ "X$pid" = "X" ]
+    then
+        if [ "X$IGNORE_SIGNALS" = "X" ]
+        then
+            if [ "X$RUN_AS_USER" = "X" ]
+            then
+                exec $CMDNICE $WRAPPER_CMD $WRAPPER_CONF wrapper.pidfile=$PIDFILE wrapper.daemonize=TRUE
+            else
+                su -m $RUN_AS_USER -c "exec $CMDNICE $WRAPPER_CMD $WRAPPER_CONF wrapper.pidfile=$PIDFILE wrapper.daemonize=TRUE"
+            fi
+        else
+            if [ "X$RUN_AS_USER" = "X" ]
+            then
+                exec $CMDNICE $WRAPPER_CMD $WRAPPER_CONF wrapper.pidfile=$PIDFILE wrapper.anchorfile=$ANCHORFILE wrapper.ignore_signals=TRUE wrapper.daemonize=TRUE
+            else
+                su -m $RUN_AS_USER -c "exec $CMDNICE $WRAPPER_CMD $WRAPPER_CONF wrapper.pidfile=$PIDFILE wrapper.anchorfile=$ANCHORFILE wrapper.ignore_signals=TRUE wrapper.daemonize=TRUE"
+            fi
+        fi
+    else
+        echo " ADVERTENCIA: El $APP_LONG_NAME ya se encuentra en ejecucion."
+        exit 1
+    fi
+}
+ 
+stopit() {
+    echo " * Deteniendo el $APP_LONG_NAME..."
+    getpid
+    if [ "X$pid" = "X" ]
+    then
+        echo " ADVERTENCIA: El $APP_LONG_NAME no estaba en ejecucion."
+    else
+        if [ "X$IGNORE_SIGNALS" = "X" ]
+        then
+            # Running so try to stop it.
+            kill $pid
+            if [ $? -ne 0 ]
+            then
+                # An explanation for the failure should have been given
+                echo " ERROR: No se puede detener el $APP_LONG_NAME."
+                exit 1
+            fi
+        else
+            rm -f $ANCHORFILE
+            if [ -f $ANCHORFILE ]
+            then
+                # An explanation for the failure should have been given
+                echo " ERROR: No se puede detener el $APP_LONG_NAME."
+                exit 1
+            fi
+        fi
+
+        # We can not predict how long it will take for the wrapper to
+        #  actually stop as it depends on settings in wrapper.conf.
+        #  Loop until it does.
+        savepid=$pid
+        CNT=0
+        TOTCNT=0
+        while [ "X$pid" != "X" ]
+        do
+            # Loop for up to 5 minutes
+            if [ "$TOTCNT" -lt "300" ]
+            then
+                if [ "$CNT" -lt "5" ]
+                then
+                    CNT=`expr $CNT + 1`
+                else
+                    echo " * Esperando al $APP_LONG_NAME para salir..."
+                    CNT=0
+                fi
+                TOTCNT=`expr $TOTCNT + 1`
+
+                sleep 1
+
+                testpid
+            else
+                pid=
+            fi
+        done
+
+        pid=$savepid
+        testpid
+        if [ "X$pid" != "X" ]
+        then
+            echo " ADVERTENCIA: El $APP_LONG_NAME no responde."
+            echo " Intentando cerrar la aplicacion..."
+            kill -9 $pid
+        fi
+
+        pid=$savepid
+        testpid
+        if [ "X$pid" != "X" ]
+        then
+            echo " ERROR: No se pudo detener el $APP_LONG_NAME."
+            exit 1
+        else
+            echo " * $APP_LONG_NAME detenido satisfactoriamente."
+        fi
+    fi
+}
+
+status() {
+    getpid
+    if [ "X$pid" = "X" ]
+    then
+        echo " ADVERTENCIA: El $APP_LONG_NAME no esta en ejecucion."
+        exit 1
+    else
+        echo " El $APP_LONG_NAME esta en ejecucion ($pid)."
+        exit 0
+    fi
+}
+
+dump() {
+    echo " * Deteniendo el $APP_LONG_NAME..."
+    getpid
+    if [ "X$pid" = "X" ]
+    then
+        echo " ADVERTENCIA: El $APP_LONG_NAME no estaba en ejecucion."
+
+    else
+        kill -3 $pid
+
+        if [ $? -ne 0 ]
+        then
+            echo " ERROR: No se pudo detener el $APP_LONG_NAME."
+            exit 1
+        else
+            echo " * Cerrando $APP_LONG_NAME."
+        fi
+    fi
+}
+
+case "$1" in
+
+    'console')
+        console
+        ;;
+
+    'start')
+        start
+        ;;
+
+    'stop')
+        stopit
+        ;;
+
+    'restart')
+        stopit
+        start
+        ;;
+
+    'status')
+        status
+        ;;
+
+    'dump')
+        dump
+        ;;
+
+    *)
+        echo "Uso: $0 { console | start | stop | restart | status | dump }"
+        exit 1
+        ;;
+esac
+
+exit 0

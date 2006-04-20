@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<idioma>
+	<palabra>
+		<clave>ARCHIVO</clave>
+		<espanol>Archivo</espanol>
+		<ingles>File</ingles>
+	</palabra>
+	<palabra>
+		<clave>TITLE-CONEC</clave>
+		<espanol>Conexion Servidor de Transacciones</espanol>
+		<ingles>Connection Transaction Server</ingles>
+	</palabra>
+	<palabra>
+		<clave>CONECTAR</clave>
+		<espanol>Conectar</espanol>
+		<ingles>Connect</ingles>
+	</palabra>
+	<palabra>
+		<clave>DESCONECTAR</clave>
+		<espanol>Desconectar del Servidor de Transacciones</espanol>
+		<ingles>Disconnect to Transaction Server</ingles>
+	</palabra>
+	<palabra>
+		<clave>SALIR</clave>
+		<espanol>Salir</espanol>
+		<ingles>Exit</ingles>
+	</palabra>
+	<palabra>
+		<clave>BD</clave>
+		<espanol>Base Datos: </espanol>
+		<ingles>Database: </ingles>
+	</palabra>
+	<palabra>
+		<clave>USER</clave>
+		<espanol>Usuario: </espanol>
+		<ingles>User: </ingles>
+	</palabra>
+	<palabra>
+		<clave>PASS</clave>
+		<espanol>Contraseña: </espanol>
+		<ingles>Password: </ingles>
+	</palabra>
+	<palabra>
+		<clave>ESTADO</clave>
+		<espanol>Estado</espanol>
+		<ingles>Status</ingles>
+	</palabra>
+	<palabra>
+		<clave>OFF_LINE</clave>
+		<espanol>Desconectado</espanol>
+		<ingles>Off Line</ingles>
+	</palabra>
+	<palabra>
+		<clave>CANCEL</clave>
+		<espanol>Cancelar</espanol>
+		<ingles>Cancel</ingles>
+	</palabra>
+	<palabra>
+		<clave>CONFIG</clave>
+		<espanol>Configurar</espanol>
+		<ingles>Configure</ingles>
+	</palabra>
+	<palabra>
+		<clave>NEMO-ARCHIVO</clave>
+		<espanol>A</espanol>
+		<ingles>F</ingles>
+	</palabra>
+	<palabra>
+		<clave>NEMO-CONECTAR</clave>
+		<espanol>n</espanol>
+		<ingles>n</ingles>
+	</palabra>
+	<palabra>
+		<clave>NEMO-DESCONECTAR</clave>
+		<espanol>D</espanol>
+		<ingles>s</ingles>
+	</palabra>
+	<palabra>
+		<clave>NEMO-SALIR</clave>
+		<espanol>S</espanol>
+		<ingles>x</ingles>
+	</palabra>
+		<palabra>
+		<clave>TIP-CONECTAR</clave>
+		<espanol>Conectar a la Base de Datos</espanol>
+		<ingles>To connect data base</ingles>
+	</palabra>
+	<palabra>
+		<clave>TIP-SALIR</clave>
+		<espanol>Salir de JMClient</espanol>
+		<ingles>Exit of JMClient</ingles>
+	</palabra>
+</idioma>
+

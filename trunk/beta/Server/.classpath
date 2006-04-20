@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="*.class" kind="src" path=""/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="/Common"/>
+	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/jdom.jar"/>
+	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/jdbc-pgsql.jar"/>
+	<classpathentry kind="lib" path="/Common/bin"/>
+	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/ostermillerutils.jar"/>
+	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/ant.jar"/>
+	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/commons.jar"/>
+	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/commons-beanutils-bean-collections.jar"/>
+	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/commons-beanutils.jar"/>
+	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/commons-beanutils-core.jar"/>
+	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/itext.jar"/>
+	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/jasper.jar"/>
+	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/digester.jar"/>
+	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/logging.jar"/>
+	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/jdt-compiler.jar"/>
+	<classpathentry kind="lib" path="/home/emaku/beta/lib/emaku/reports.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

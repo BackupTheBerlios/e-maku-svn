@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Menu>
+	<JMenu>
+		<Text>ARCHIVO</Text>
+		<Mnemonic>NEMO-ARCHIVO</Mnemonic>
+		<JMenuItem>
+			<Activo />
+			<Acelerator/>
+			<ActionCommand>conectar</ActionCommand>
+			<Icon>/icons/ConectDB.png</Icon>
+			<Mnemonic>NEMO-CONECTAR</Mnemonic>
+			<Text>CONECTAR</Text>
+			<Clase>jmadmin.gui.formas.Conexion</Clase>
+		</JMenuItem>
+		<JMenuItem>
+			<Acelerator/>
+			<ActionCommand>desconectar</ActionCommand>
+			<Icon>/icons/CloseDB.png</Icon>
+			<Mnemonic>NEMO-DESCONECTAR</Mnemonic>
+			<Text>DESCONECTAR</Text>
+			<Clase>jmadmin.gui.formas.Conexion</Clase>
+			<Metodo>desconectar</Metodo>
+		</JMenuItem>
+		<JSeparator />
+		<JMenuItem>
+			<Activo />
+			<Acelerator/>
+			<ActionCommand>salir</ActionCommand>
+			<Icon>/icons/Exit.png</Icon>
+			<Mnemonic>NEMO-SALIR</Mnemonic>
+			<Text>SALIR</Text>
+			<Clase>jmadmin.Run</Clase>
+			<Metodo>salir</Metodo>
+		</JMenuItem>
+	</JMenu>
+</Menu>

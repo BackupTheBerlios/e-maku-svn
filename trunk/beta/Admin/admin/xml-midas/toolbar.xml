@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ToolBar>
+	<JToolBar>
+		<JButtonBar>
+			<Activo />
+			<Acelerator>
+			</Acelerator>
+			<ActionCommand>conectar</ActionCommand>
+			<Icon>/icons/ConectDB.png</Icon>
+			<ToolTipText>TIP-CONECTAR</ToolTipText>
+			<Clase>jmadmin.gui.formas.Conexion</Clase>
+		</JButtonBar>
+		<JButtonBar>
+			<Acelerator>
+			</Acelerator>
+			<ActionCommand>desconectar</ActionCommand>
+			<Icon>/icons/CloseDB.png</Icon>
+			<ToolTipText>TIP-DESCONECTAR</ToolTipText>
+			<Clase>jmadmin.gui.formas.Conexion</Clase>
+			<Metodo>desconectar</Metodo>
+		</JButtonBar>
+		<JButtonBar>
+			<Activo />
+			<Acelerator>
+			</Acelerator>
+			<ActionCommand>salir</ActionCommand>
+			<Icon>/icons/Exit.png</Icon>
+			<ToolTipText>TIP-SALIR</ToolTipText>
+			<Clase>jmadmin.Run</Clase>
+			<Metodo>salir</Metodo>
+		</JButtonBar>
+	</JToolBar>
+</ToolBar>

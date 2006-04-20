@@ -1,0 +1,630 @@
+
+  ************************************************************
+  PROYECTO MIDAS: Estandar Abierto para desarrollo de Software 
+  Administrativo Financiero para Empresas Comerciales y de 
+  Servicios
+  ************************************************************
+
+  CONTENIDO
+  =========
+
+  1. Que es Midas?
+  2. Que es E-Maku?
+  3. Terminos de Licenciamiento
+  4. Requerimientos minimos de E-Maku (Hardware y Software)
+  5. Instalacion y Uso
+  6. Documentacion adicional
+  7. Dependencias de Software
+  8. Contactos / Pagina oficial
+
+  ------------------------------------------------------------
+
+  1. Que es Midas?
+
+  El proyecto MIDAS  consiste en  un conjunto  abierto de 
+  especificaciones tecnicas que definen un modelo generico 
+  orientado a la implementacion de Software Administrativo  
+  Financiero (SAF)  para empresas  de tipo Comercial y/o de 
+  Servicios.
+
+  En otras palabras, MIDAS es un repositorio de  documentacion 
+  tecnica referida al disen~o de una herramienta SAF. Dado 
+  que solo se trata de un disen~o (a manera de estandar), la 
+  intencion de este proyecto es fomentar multiples 
+  implementaciones (en diversos lenguajes de Programacion, por  
+  ejemplo: Java, Php, Perl, etc) de  aplicativos parciales 
+  (ej: componentes) o comprensivos de las funcionalidades 
+  comunes incluidas en la definicion de Midas.
+
+  Las implementaciones seran independientes de la plataforma 
+  en la medida en que los lenguajes de programacion que se  
+  utilicen asi lo permitan, sin embargo, dado que las 
+  especificaciones  son abiertas, se espera  que  la 
+  compatibilidad entre  aplicaciones sea  una caracteristica 
+  por defecto.
+
+  Repositorio oficial de documentacion:
+  http://www.kazak.ws/midas/doc.php
+
+  ------------------------------------------------------------
+
+  2. Que es E-Maku?
+ 
+  Es una implementacion de las especificaciones de MIDAS en 
+  lenguaje Java.
+  E-Maku consta de un Servidor de Transacciones, un Programa 
+  Cliente y un Programa Administrador. 
+
+  Mas detalles sobre la implementacion en:
+  http://www.kazak.ws/midas/documentos/arquitectura.php
+
+  ------------------------------------------------------------
+
+  3. Terminos de Licenciamiento
+
+  Este proyecto se encuentra cubierto por los terminos de la
+  licencia GNU GPL, la cual, bajo el consentimiento del creador
+  el programa, permite las siguientes libertades:
+
+   - Uso del programa
+   - Distribucion de los binarios y el codigo fuente 
+   - Acceso al codigo fuente
+   - Modificacion al codigo fuente y Distribucion de nuevas 
+     versiones
+
+  Para mas informacion, leer el archivo LICENCIA.TXT incluido
+  con las fuentes de E-Maku o consultar la pagina web: 
+           http://www.gnu.org/copyleft/gpl.es.html
+
+  ------------------------------------------------------------
+
+  4. Requerimientos minimos de E-Maku (Hardware y Software)
+    
+  Los requerimientos minimos para ejecutar E-Maku son:
+
+  - Para el servidor de transacciones:
+
+    - Hardware
+      * Procesador: Intel/AMD 1 GHz
+      * Memoria:    256 MB
+
+    - Software:
+      * jdk 1.5 o superior
+      * Postgres 7.4 o superior
+
+  - Para los programas cliente:
+
+    - Hardware
+      * Procesador: Intel/AMD 1 GHz
+      * Memoria:     256 MB
+
+    - Software
+      * jdk 1.5 o superior
+
+  ------------------------------------------------------------
+
+  5. Instalacion y Uso
+ 
+  La implementacion E-Maku aun se encuentra en proceso de 
+  desarrollo, por lo cual esta instalacion esta dirigida
+  exclusivamente a desarrolladores y a personas interesadas
+  en adicionar nuevo codigo o detectar y notificar errores 
+  en los componentes.
+
+  El proyecto E-Maku en la actualidad se basa en los siguientes 
+  componentes:
+  - Una base de datos PostgreSQL: Encargada de la persistencia
+    de los datos. Por defecto, esta base de datos se llama 
+    "mi_empresa" (Este valor puede ser cambiado a consideracion
+    del administrador del sistema).
+  - Un Servidor de Transacciones (ST): Es un servicio escrito 
+    en Java que hace la interfaz entre los Clientes Midas y las
+    bases de datos.
+  - Un Programa Cliente: Es una interfaz diseñada para realizar
+    todas las operaciones sobre el sistema admin/financiero.
+    Por cada Servidor de Transacciones pueden instalarse tantos
+    clientes como se desee.
+
+  Es importante tener claro que el montaje de todo el sistema
+  puede realizarse en un solo computador, o puede distribuirse
+  en diferentes equipos, segun las necesidades del entorno en
+  donde se desee probar.
+
+ 5.1 Instalando el Servidor de Transacciones (ST)
+     ============================================
+
+ Para instalar el Servidor de Transacciones siga las siguientes
+ instrucciones:
+
+ - Cree un directorio para descargar las fuentes del proyecto:
+  
+   % mkdir /home/usuario/emaku
+
+ - Ingrese al directorio de trabajo que acaba de crear:
+
+   % cd /home/usuario/emaku
+
+ - Descargue el codigo fuente del proyecto a traves del servidor
+   svn:
+
+   % svn checkout http://svn.berlios.de/svnroot/repos/e-maku/beta
+
+   Nota: Si usted no tiene el comando svn instalado en sus sistema,
+   por favor, remitase a: http://subversion.tigris.org/
+
+ - Verifique el contenido de los archivos descargados:
+ 
+   % dir /home/usuario/emaku/beta
+  
+   Debera encontrar la siguiente lista de archivos y directorios:
+
+   bin/  build.sh  documentacion/  etc/  Admin/  Client/  Common/  
+   Server/  lib/  sql/  reports/
+
+ - Ingrese al directorio de las fuentes:
+
+   % cd /home/usuario/emaku/beta
+
+ - Compile el codigo fuente ejecutando la instruccion:
+
+   % sh build.sh compile
+
+   Nota: Esta opcion compila tanto el cliente como el servidor 
+         de E-Maku.
+         Asegurese de utilizar una version de Java igual o
+         superior a la 1.5
+         Para consultar otras opciones del script build.sh, 
+         ejecute:
+         % sh build.sh -h
+
+ - Para continuar con la instalacion de E-Maku es necesario 
+   ingresar a la cuenta del usuario "root", para ello ejecute:
+
+   % su
+
+   Nota: Por razones de seguridad, el Servidor de Transacciones
+   no permite ser ejecutado por el usuario root. Es por este motivo
+   que se requiere de un usuario y un grupo sin privilegios para 
+   iniciar el ST (el usuario "emaku"). Para ello, ejecute: 
+
+   % groupadd emaku 
+   % adduser emaku     
+
+   A continuacion, ejecute la instruccion:
+
+   % sh build.sh install --prefix=/ruta/instalacion/emaku
+
+   Nota: La opcion "--prefix" le permitira escoger el directorio
+   en donde desea realizar la instalacion. Si usted no utiliza esta
+   opcion, E-Maku sera instalado por defecto en el directorio 
+   "/usr/local/emaku" 
+
+ - Como parte de la configuracion del Servidor de Transacciones es
+   necesario crear una base de datos, siguiendo los siguientes 
+   pasos:
+
+   - Ingrese a la cuenta del usuario Postgres:
+
+     % su - postgres
+
+   - Cree un usuario de bases de datos con el nombre "midas", con
+     permisos para crear bases de datos (el nombre del usuario puede
+     ser modificado a consideracion del administrador del sistema).
+
+     % createuser -U postgres emaku 
+       Shall the new user be allowed to create databases? (y/n) y
+       Shall the new user be allowed to create more new users? (y/n) n
+       CREATE USER
+
+   - Cree una base de datos con el nombre "mi_empresa" utilizando el
+     usuario "emaku":
+
+     % createdb -U emaku mi_empresa
+
+   - Asegurese de dar permisos de acceso al equipo en donde estara 
+     instalado el Servidor de Transacciones:
+
+     - Edite el archivo "pg_hba.conf":
+
+       % vi /ruta_postgres/data/pg_hba.conf
+
+       Nota: utilice su editor de preferencia: vi, nano, emacs, etc.
+
+     - Adicione la siguiente linea:
+
+       host    mi_empresa    emaku    192.168.0.0/32        trust
+
+       Nota: Escoja las direcciones ip y el metodo de autenticacion 
+       de la linea anterior de acuerdo a sus necesidades.       
+       Mas informacion en:   
+       http://www.postgresql.org/docs/8.0/interactive/client-authentication.html
+
+     - Reinicie el servidor PostgreSQL para validar los cambios que
+       acaba de realizar.
+
+       % pg_ctl restart 
+
+     - Cargue las instrucciones SQL de Midas en la base de datos que
+       acaba de crear. Para ello, ingrese al directorio "sql" del
+       codigo fuente de E-Maku:
+
+       % cd /home/usuario/emaku/beta/sql 
+ 
+       Y ejecute la siguiente instruccion:
+
+       % psql -U emaku mi_empresa <  postgres.sql >& /tmp/log.txt
+
+       Nota: En el archivo "/tmp/log.txt" encontrara el registro de 
+       todas las advertencias o errores generados al cargar la base
+       de datos "mi_empresa".
+       Es importante tener en cuenta que el archivo "postgresql.sql"
+       contiene la estructura de tablas del estandar Midas y 
+       adicionalmente algunos registros de prueba que usted puede
+       modificar segun sus necesidades.
+
+     - Abandone la cuenta del usuario "postgres", para continuar con
+       la instalacion:
+      
+       % exit
+
+   - Ingrese al directorio donde se encuentra el archivo de 
+     configuracion del Servidor de Transacciones:
+
+     % cd /ruta/instalacion/emaku/conf
+
+     Nota: Si la instalacion fue realizada en la ruta por defecto,
+     entonces la instruccion seria:
+   
+     % cd /usr/local/emaku/conf
+
+   - Edite el archivo de configuracion "server.conf"
+
+     % vi server.conf
+
+     Nota: utilice su editor de preferencia: vi, nano, emacs, etc.
+ 
+   - Modifique en la linea 27 del archivo, el valor "ip_servidor_postgres"
+     segun sea la direccion IP de su servidor de bases de datos PostgreSQL. 
+
+     linea 27: <url>jdbc:postgresql://ip_servidor_postgres:5432/mi_empresa</url>
+               <usuario>emaku</usuario>
+               <password></password>
+
+     Nota: Recuerde que si modifico el nombre del usuario de bases de datos 
+     (emaku), o el nombre de la base de datos (mi_empresa), es necesario que 
+     modifique esos valores en las lineas 27 y 28 del archivo de 
+     configuracion (server.conf). 
+  
+   - Inicie el Servidor de Transacciones:
+
+     % emaku-server start
+       * Iniciando el Servidor de Transacciones (E-Maku)...
+       Usando Java version: 1.5.0_01
+
+    Nota: A partir de este momento, su Servidor de Transacciones esta
+    listo para recibir conexiones de Programas Cliente. Por defecto,
+    el ST espera conexiones en el puerto 9117.
+
+    Si desea iniciarlo en modo de depuracion, ejecute:
+    % emaku-server console 
+
+ 5.2 Instalando el Programa Cliente
+     ==============================
+
+ - En el mismo equipo donde se instalo el Servidor de Transacciones: 
+
+   Si usted siguio las instrucciones para la instalacion del ST 
+   mencionadas anteriormente y desea probar el cliente de E-Maku 
+   en el mismo equipo donde instalo el ST, solo basta con ejecutar:
+
+   % emaku-client &
+
+   La primera vez que lo ejecute, un formulario sera desplegado en 
+   pantalla, solicitando los siguientes datos:
+   - Idioma: 
+     Ingles/Espan~ol
+   - Servidor (donde se encuentra el ST):
+     Nombre o Direccion IP del servidor (en este caso "localhost")
+     Puerto (por defecto 9117)
+   - Tipo de almacenamiento para mensajes del sistema (Logs):
+     Consola/Archivo/Ninguno
+
+   El sistema creara un archivo en la ruta "/home/usuario/.midas/client.conf"
+   dentro del directorio del usuario que ejecuta la aplicacion, en donde 
+   quedara almacenada la configuracion por defecto para ese usuario.
+
+   A partir de ese momento, normalmente el sistema siempre iniciara con 
+   un pequen~o formulario solicitando los siguientes datos:
+
+   Empresa: mi_empresa
+   Usuario: emaku 
+   Clave:   emaku 
+
+   Nota: A partir de este momento, si los datos son correctos, la
+   interfaz de usuario del cliente sera desplegada en pantalla,
+   dejandolo acceder a todas las funciones hasta ahora implementadas
+   en el proyecto (Facturacion, Inventario, etc). 
+
+ ================================================================= 
+
+ - En una terminal diferente al ST:
+
+   Para instalar el Programa Cliente de E-Maku en una terminal, 
+   siga las siguientes instrucciones:
+
+   - Cree un directorio para descargar las fuentes del proyecto:
+
+     % mkdir /home/usuario/emaku
+
+   - Ingrese al directorio de trabajo que acaba de crear:
+
+     % cd /home/usuario/emaku
+
+   - Descargue el codigo fuente del proyecto a traves del servidor
+     svn:
+
+     % svn checkout http://svn.berlios.de/svnroot/repos/e-maku/beta
+
+     Nota: Si usted no tiene el comando svn instalado en sus sistema,
+     por favor, remitase a: http://subversion.tigris.org/
+
+   - Verifique el contenido de los archivos descargados:
+
+     % dir /home/usuario/emaku/beta
+
+     Debera encontrar la siguiente lista de archivos y directorios:
+
+     bin/  build.sh  documentacion/  etc/  Admin/  Client/  Common/
+     Server/  lib/  sql/  reports/
+
+   - Ingrese al directorio en donde descargo el codigo fuente de
+     E-Maku:  
+
+     % cd /home/usuario/emaku/beta
+
+   - Compile el codigo fuente ejecutando la instruccion:
+
+     % sh build.sh compile client
+
+     Nota: Esta opcion compila tanto el cliente como el servidor
+           de E-Maku.
+           Asegurese de utilizar una version de Java igual o
+           superior a la 1.5
+           Para consultar otras opciones del script build.sh,
+           ejecute:
+           % sh build.sh -h
+
+   - Para continuar con la instalacion del cliente E-Maku es 
+     necesario ingresar a la cuenta del usuario "root", para 
+     ello ejecute:
+
+     % su
+
+     Nota: El sistema le pedira la clave de "root".
+
+     A continuacion, ejecute la instruccion:
+
+     % sh build.sh install --prefix=/ruta/instalacion/emaku
+
+     Nota: La opcion "--prefix" le permitira escoger el directorio
+     en donde desea realizar la instalacion. Si usted no utiliza esta
+     opcion, E-Maku sera instalado por defecto en el directorio
+     "/usr/local/emaku"
+
+   - Abandone la cuenta de "root", ejecutando:
+
+     % exit
+
+   - Para iniciar el cliente E-Maku, ejecute:
+
+   % emaku-client &
+
+   La primera vez que lo ejecute, un formulario sera desplegado en
+   pantalla, solicitando los siguientes datos:
+   - Idioma:
+     Ingles/Espan~ol
+   - Servidor (donde se encuentra el ST):
+     Nombre o Direccion IP del servidor
+     Puerto (por defecto 9117)
+   - Tipo de almacenamiento para mensajes del sistema (Logs):
+     Consola/Archivo/Ninguno
+
+   El sistema creara un archivo en la ruta "/home/usuario/.midas/client.conf"
+   dentro del directorio del usuario que ejecuta la aplicacion, en donde
+   quedara almacenada la configuracion por defecto para ese usuario.
+
+   A partir de ese momento, normalmente el sistema siempre iniciara con
+   un pequen~o formulario solicitando los siguientes datos:
+
+   Empresa: mi_empresa
+   Usuario: emaku 
+   Clave:   emaku 
+
+   Nota: A partir de este momento, si los datos son correctos, la
+   interfaz de usuario del cliente sera desplegada en pantalla,
+   dejandolo acceder a todas las funciones hasta ahora implementadas
+   en el proyecto (Facturacion, Inventario, etc).
+
+  ------------------------------------------------------------
+
+  6. Documentacion tecnica adicional 
+
+  Si usted es programador y desea revisar informacion tecnica
+  "offline" del proyecto, consulte el directorio "documentacion/"
+  dentro de las fuentes que usted descargo junto con este archivo.
+
+  ------------------------------------------------------------
+
+  7. Dependencias de Software
+
+  E-Maku requiere de varios componentes pertenencientes a otros
+  proyectos de Software. Estas son las bibliotecas utilizadas
+  como soporte a este desarrollo:
+
+  Nombre:  The Bouncy Castle Crypto package  
+  Archivo: bcprov.jar
+  Version: 1.31 
+  Funcion: Implementacion Java de Algoritmos Criptgraficos
+  URL:     http://www.bouncycastle.org/
+
+  *************************************************************
+
+  Nombre:  The BeanShell Scripting Language 
+  Archivo: bsh-core.jar
+  Version: 2.0b4
+  Funcion: Interprete de Codigo Java con caracteristicas de 
+           lenguaje scripting
+  URL:     http://www.beanshell.org 
+
+  *************************************************************
+
+  Nombre:  The Jakarta Commons BeanUtils Bean Collections
+  Archivo: commons-beanutils-bean-collections.jar
+  Version: 1.7.0  
+  Funcion: API para acceso dinamico a propiedades de objetos Java
+  URL:     http://jakarta.apache.org/commons/beanutils/
+
+  *************************************************************
+
+  Nombre:  The Jakarta Commons BeanUtils Core
+  Archivo: commons-beanutils-core.jar
+  Version: 1.7.0 
+  Funcion: API para acceso dinamico a propiedades de objetos Java
+  URL:     http://jakarta.apache.org/commons/beanutils/
+
+  *************************************************************
+
+  Nombre:  The Jakarta Commons BeanUtils 
+  Archivo: commons-beanutils.jar
+  Version: 1.7.0
+  Funcion: API para acceso dinamico a propiedades de objetos Java
+  URL:     http://jakarta.apache.org/commons/beanutils/
+
+  *************************************************************
+
+  Nombre:  The Jakarta Commons Collections
+  Archivo: commons.jar
+  Version: 3.1 
+  Funcion: API para desarrollo rapido de Aplicaciones Java a 
+           partir de Estructuras de Datos Especiales
+  URL:     http://jakarta.apache.org/commons/
+
+  *************************************************************
+
+  Nombre:  The Jakarta Digester 
+  Archivo: digester.jar
+  Version: 1.7
+  Funcion: Modulo de Mapeo de Objetos Java y Documentos XML 
+  URL:     http://jakarta.apache.org/commons/digester/ 
+
+  *************************************************************
+
+  Nombre:  IText: Java PDF Library 
+  Archivo: itext.jar 
+  Version: 1.3
+  Funcion: Generador de archivos PDF desde aplicaciones Java.
+  URL:     http://www.lowagie.com/iText/
+
+  *************************************************************
+
+  Nombre:  The Java Advanced Imaging API  
+  Archivo: jai_codec.jar
+  Version: 1.1.3
+  Funcion: API Avanzado para manipulacion de Imagenes 
+  URL:     https://jai.dev.java.net/ 
+
+  *************************************************************
+
+  Nombre:  The Java Advanced Imaging API  
+  Archivo: jai_core.jar
+  Version: 1.1.3
+  Funcion: API Avanzado para manipulacion de Imagenes
+  URL:     https://jai-core.dev.java.net/
+
+  *************************************************************
+
+  Nombre:  Jasper Reports 
+  Archivo: jasper.jar
+  Version: 1.2
+  Funcion: API para generacion de Reportes en diversos formatos
+  URL:     http://jasperreports.sourceforge.net/
+
+  *************************************************************
+
+  Nombre:  JDOM 
+  Archivo: jdom.jar
+  Version: 1.0 
+  Funcion: API para manipulacion de archivos XML
+  URL:     http://www.jdom.org/
+
+  *************************************************************
+
+  Nombre:  Eclipse Java Development Tools (JDT)   
+  Archivo: jdt-compiler.jar 
+  Version: 3.1.1
+  Funcion: Utilidades para el desarrollo de aplicaciones Java
+  URL:     http://www.eclipse.org/jdt/       
+
+  *************************************************************
+
+  Nombre:  JPedal (Java Pdf Extraction Decoding Access Library) 
+  Archivo: jpedal.jar 
+  Version: 14
+  Funcion: Libreria de Extraccion, Decodificacion y Acceso a 
+           Documentos PDF 
+  URL:     http://www.jpedal.org/ 
+
+  *************************************************************
+
+  Nombre:  Commons Logging  
+  Archivo: logging.jar
+  Version: 1.0.4
+  Funcion: Sistema de captura y almacenamiento de registros (logs) 
+  URL:     http://jakarta.apache.org/commons/logging/
+
+  *************************************************************
+
+  Nombre:  MM Mysql JDBC 
+  Archivo: mysql.jar
+  Version: 3.0.1
+  Funcion: Implementacion JDBC para conexion a bases de datos 
+           Mysql
+  URL:     http://sourceforge.net/projects/mmmysql/ 
+
+  *************************************************************
+
+  Nombre:  Oster Miller Utils 
+  Archivo: ostermillerutils.jar 
+  Version: 1.6.0
+  Funcion:  
+  URL:     http://jordie.di.unipi.it:8080/strollo/jscl?menuSelected=JSCL  
+
+  *************************************************************
+
+  Nombre:  PostgreSQL JDBC Driver
+  Archivo: pgsql.jar
+  Version: 7.3b1 - jdbc 3.0 
+  Funcion: Implementacion JDBC para conexion a bases de datos 
+           PostgreSQL
+  URL:     http://jdbc.postgresql.org/
+
+  *************************************************************
+
+  Nombre:  Java Service Wrapper 
+  Archivo: wrapper.jar
+  Version: 3.2.0
+  Funcion: Sistema de Gestion de Aplicaciones Java
+  URL:     http://wrapper.tanukisoftware.org/doc/english/introduction.html
+
+  ------------------------------------------------------------
+
+  8. Contactos / Pagina oficial
+
+  Si usted desea ser parte del grupo de desarrollo o quiere 
+  contactar al equipo de trabajo, puede hacerlo a traves de:
+
+  Correo Electronico:  comunidad@qhatu.net
+  Pagina Web:          http://comunidad.qhatu.net
+  IRC:                 irc.freenode.net / #midas
+
+  ------------------------------------------------------------

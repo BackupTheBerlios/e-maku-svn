@@ -1,0 +1,40 @@
+
+if [ "$JAVA_HOME" = "" ] ; then
+  echo
+  echo "ERROR: la variable de entorno JAVA_HOME no se encuentra definida."
+  echo "---"
+  echo " Por favor, defina la variable JAVA_HOME con el valor de la ruta"
+  echo " en donde se encuentra la instalacion de Java."
+  echo " Ej: export JAVA_HOME=/usr/local/java"
+  echo "---"
+  echo
+  exit 1
+fi
+
+java -version >& /tmp/java.log;
+JAVAVERSION=`head -1 /tmp/java.log | cut -d'"' -f2`
+rm -f /tmp/java.log
+
+echo "Usando Java version: $JAVAVERSION"
+
+VER=`echo $JAVAVERSION | cut -d'.' -f2`
+
+if [ "$VER" -lt "5" ] ; then
+  echo "---"
+  echo " E-Maku requiere Java 1.5 o superior para ejecutarse."
+  echo " Por favor, actualice su version de Java."
+  echo "---"
+  exit 1
+fi
+
+if [ `uname | grep -n CYGWIN` ]; then
+  PS=";"
+elif [ `uname | grep -n Windows` ]; then
+  PS=";"
+else
+  PS=":"
+fi
+
+LOCALCLASSPATH=${JAVA_HOME}/lib/tools.jar${PS}${JAVA_HOME}/lib/dev.jar${PS}$EMAKU_HOME/lib/contrib/ant.jar${PS}$EMAKU_HOME/lib/emaku/icons.jar${PS}$EMAKU_HOME/lib/contrib/jdom.jar${PS}$EMAKU_HOME/lib/contrib/jdbc-pgsql.jar${PS}$EMAKU_HOME/lib/emaku/common.jar${PS}$EMAKU_HOME/lib/emaku/client.jar${PS}$EMAKU_HOME/lib/emaku/credits.jar${PS}$EMAKU_HOME/lib/contrib/bsh-core.jar${PS}$EMAKU_HOME/lib/contrib/ostermillerutils.jar${PS}$EMAKU_HOME/lib/contrib/jpedal.jar${PS}$EMAKU_HOME/lib/contrib/jai_codec.jar${PS}$EMAKU_HOME/lib/contrib/jai_core.jar${PS}$EMAKU_HOME/lib/contrib/itext.jar
+
+$JAVA_HOME/bin/java -classpath $LOCALCLASSPATH${PS}$ADDITIONALCLASSPATH client.Run

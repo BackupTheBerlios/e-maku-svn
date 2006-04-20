@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<project name="common" default="dist" basedir=".">
+	<property name="build" location="../build/common"/>
+	<property name="dist"  location="dist"/>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+
+
+	<target name="compile" depends="init" description="Compila el codigo fuente" >
+        <javac srcdir="."  destdir="${build}" debug="true" optimize="false" includes="**/*.java">
+			
+			<classpath>
+			  <pathelement path="${classpath}"/>
+			  <fileset dir="../lib/contrib">
+				<include name="*.jar"/>
+			  </fileset>
+			</classpath>
+			
+		</javac>
+    </target>
+
+  <target name="dist" depends="compile"
+        description="generate the distribution" >
+    <!-- Create the distribution directory -->
+    <mkdir dir="../lib/emaku"/>
+    <!-- Put everything in ${build} into the common-${DSTAMP}.jar file -->
+    <jar jarfile="../lib/emaku/common.jar" basedir="${build}"/>
+  </target>
+  
+</project>
