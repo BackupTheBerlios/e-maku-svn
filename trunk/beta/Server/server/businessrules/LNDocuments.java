@@ -579,6 +579,9 @@ public class LNDocuments {
             if (method.equals("movimientos")) {
                 LNIprocesar.movimientos(pack);
             }
+            else if(method.equals("traslados")) {
+            	LNIprocesar.equals(pack);
+            }
             else {
                 throw new NoSuchMethodException(method);
             }

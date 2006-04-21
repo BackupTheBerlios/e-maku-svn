@@ -61,32 +61,33 @@ public class LNInventarios {
     public LNInventarios(Element parameters,String bd) {
         
         this.bd=bd;
-        Iterator i = parameters.getChildren().iterator();
-        while (i.hasNext()) {
-            Element e = (Element)i.next();
-            String attribute = e.getAttributeValue("attribute");
-            String value = e.getValue();
-            if (attribute.equals("externalKeys")) {
-                if (value.equals("1") || value.equals("true") || value.equals("True") || value.equals("TRUE")) {
-                    externalKeys = true;
-                }
-            } 
-            else if (attribute.equals("validCols")) {
-                validCols = e.getValue();
-            }
-            else if (attribute.equals("campoMov")){
-                campoMov=Integer.parseInt(e.getValue());
-            }
-            else if (attribute.equals("colGasto") || attribute.equals("colDescuento")) { 
-            		colValid=Integer.parseInt(e.getValue());
-            }
-            else if (attribute.equals("tipoMovimiento")) {
-            	tipoMovimiento = e.getValue();
-            }
-            
-        }
+        if (parameters!=null) {
+	        Iterator i = parameters.getChildren().iterator();
+	        while (i.hasNext()) {
+	            Element e = (Element)i.next();
+	            String attribute = e.getAttributeValue("attribute");
+	            String value = e.getValue();
+	            if (attribute.equals("externalKeys")) {
+	                if (value.equals("1") || value.equals("true") || value.equals("True") || value.equals("TRUE")) {
+	                    externalKeys = true;
+	                }
+	            } 
+	            else if (attribute.equals("validCols")) {
+	                validCols = e.getValue();
+	            }
+	            else if (attribute.equals("campoMov")){
+	                campoMov=Integer.parseInt(e.getValue());
+	            }
+	            else if (attribute.equals("colGasto") || attribute.equals("colDescuento")) { 
+	            		colValid=Integer.parseInt(e.getValue());
+	            }
+	            else if (attribute.equals("tipoMovimiento")) {
+	            	tipoMovimiento = e.getValue();
+	            }
+	            
+	        }
         
-
+        }
     }
 
     /**
@@ -459,12 +460,56 @@ public class LNInventarios {
      * producto. 
      *
      */
-    public void traslados(Element pack) {
-    	
+    public void traslados(Element pack) throws LNErrorProcecuteException, 
+    SQLBadArgumentsException,SQLBadArgumentsException, SQLNotFoundException, SQLException {
+        try {
+            
+            RunQuery RQentradas = new RunQuery(bd,"INS0052");
+            RunQuery RQsalidas = new RunQuery(bd,"INS0038");
+ 
+            /*
+	         * Se verifica si el paquete entregado contiene un solo registro <field/>
+	         * o varios registros <package/>
+	         */
+	        
+	        
+	        /*
+	         * Si tiene un solo registro entonces
+	         */
+            
+            if (((Element)pack.getChildren().iterator().next()).getName().equals("field")) {
+            	makeRecord(RQentradas,RQsalidas,pack);
+            }
+            /*
+             * Si no es por que tiene un conjuto de registros o <subpackage/>
+             */
+            else {
+    	        Iterator ipack = pack.getChildren().iterator();
+                while (ipack.hasNext()) {
+                    Element epack = (Element)ipack.next();
+                    makeRecord(RQentradas,RQsalidas,epack);
+                }
+            }
+
+        }
+        catch(NumberFormatException NFEe) {
+            throw new LNErrorProcecuteException(Language.getWord("ERR_ARGS"));
+        }
+        catch(IndexOutOfBoundsException IOOBEe) {
+        	IOOBEe.printStackTrace();
+            throw new LNErrorProcecuteException(Language.getWord("ERR_ARGS"));
+        }
     }
     
-    @SuppressWarnings("unused")
-	private String[] salidaBodega() {
+    private void makeRecord(RunQuery RQentradas,RunQuery RQsalidas,Element pack) 
+    throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+    	String[] records = salidaBodega(pack);
+    	RQsalidas.ejecutarSQL(records);
+    	String valorEntrada = records[6];
+    	RQentradas.ejecutarSQL(entradaBodega(pack,valorEntrada));
+    }
+    
+	private String[] salidaBodega(Element pack) {
          
     	/*
          * REGISTRO DE UNA SALIDA
@@ -487,12 +532,56 @@ public class LNInventarios {
          */
         record[0] = CacheKeys.getDate();
         record[1] = CacheKeys.getKey("ndocumento");
+        record[2] = CacheKeys.getKey("bodegaSaliente");
+
+        Iterator i = pack.getChildren().iterator();
+        /*
+         * Este ciclo se encarga de sacar la informacion necesaria para generar
+         * una salida
+         */
+        while (i.hasNext()) {
+        	Element field = (Element)i.next();
+        	String nameField = field.getAttributeValue("nameField");
+        	if ("idProdServ".equals(nameField)) {
+        		record[3] = field.getValue();
+        	}
+        	else if ("cantidad".equals(nameField)) {
+        		record[4] = field.getValue();
+        	}
+        }
         
+        /*
+         * Los tres ultimos campos seran para pcosto,saldo y vsaldo, los cuales se calculan dependiendo
+         * si es una entrada o una salida.
+         */
+        double saldo = CacheEnlace.getSaldoInventario(bd, record[2], record[3]);
+        double vsaldo = CacheEnlace.getVSaldoInventario(bd, record[2], record[3]);
+        
+        /*
+         * Se almacena primer saldo de la transaccion
+         */
+        
+        LNUndoSaldos.setSaldoAntInv(bd, record[2], record[3],saldo);
+        
+        /*
+         * si es una salida entonces solo se calculara el saldo y vsaldo, se obtendra pcosto que sera
+         * igual al del registro anterior.
+         */
+        
+        double salida = Double.parseDouble(record[4]);
+        
+        double pcosto = CacheEnlace.getPCosto(bd, record[2], record[3]);
+        saldo-= salida;
+        vsaldo-=(salida*pcosto);    
+        record[5]   = String.valueOf(pcosto);
+        record[6]   = String.valueOf(pcosto);
+        record[7] = String.valueOf(saldo);
+        record[8] = String.valueOf(vsaldo);
         return record;
+        
     }
     
-    @SuppressWarnings("unused")
-	private String[] entradaBodega() {
+	private String[] entradaBodega(Element pack,String valorEntrada) {
     	/* 
          * REGISTROS DE UNA ENTRADA
          * 
@@ -511,6 +600,47 @@ public class LNInventarios {
     	
         record[0] = CacheKeys.getDate();
         record[1] = CacheKeys.getKey("ndocumento");
+        record[2] = CacheKeys.getKey("bodegaEntrante");
+
+        Iterator i = pack.getChildren().iterator();
+        /*
+         * Este ciclo se encarga de sacar la informacion necesaria para generar
+         * una salida
+         */
+        while (i.hasNext()) {
+        	Element field = (Element)i.next();
+        	String nameField = field.getAttributeValue("nameField");
+        	if ("idProdServ".equals(nameField)) {
+        		record[3] = field.getValue();
+        	}
+        	else if ("cantidad".equals(nameField)) {
+        		record[4] = field.getValue();
+        	}
+        }
+        
+        record[5] = valorEntrada;
+        double ventrada = Double.parseDouble(valorEntrada);
+        double saldo = CacheEnlace.getSaldoInventario(bd, record[2], record[3]);
+        double vsaldo = CacheEnlace.getVSaldoInventario(bd, record[2], record[3]);
+        
+        /*
+         * Se almacena primer saldo de la transaccion
+         */
+
+        LNUndoSaldos.setSaldoAntInv(bd, record[2], record[3],saldo);
+        double entrada = Double.parseDouble(record[4]);
+        vsaldo+= (entrada*ventrada);
+        saldo+= entrada;
+	    
+	    System.out.println("entrada: "+entrada+" ventrada: "+ventrada+" nuevo saldo "+vsaldo);
+	    double pcosto=(vsaldo/saldo);
+	    BigDecimal bigDecimal = new BigDecimal(pcosto);
+	    bigDecimal = bigDecimal.setScale(2,BigDecimal.ROUND_HALF_UP);
+	    pcosto = bigDecimal.doubleValue();
+	    record[6]   = String.valueOf(pcosto);
+	    record[7] = String.valueOf(saldo);
+	    record[8] = String.valueOf(vsaldo);
+	    CacheEnlace.setPCosto(bd, record[2], record[3],pcosto);
 
         return record;
     }
