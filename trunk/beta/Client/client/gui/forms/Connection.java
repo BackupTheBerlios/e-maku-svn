@@ -35,9 +35,9 @@ import client.gui.components.panels.PAutentication;
 import client.misc.ClientConst;
 import client.misc.settings.ConfigFile;
 
-import common.comunications.PackageToXML2;
-import common.comunications.SocketConnect;
-import common.comunications.WriteSocket;
+import common.comunications.PackageToXML;
+import common.comunications.SocketConnector;
+import common.comunications.SocketWriter;
 import common.misc.language.Language;
 import common.misc.parameters.GenericParameters;
 
@@ -150,21 +150,21 @@ public class Connection {
 
     private boolean conexion() {
    	
-            SocketConnect connect;
+            SocketConnector connect;
             JBconectar.setEnabled(false);
             JFConexion.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			try {
-				PackageToXML2 packageXML = new PackageToXML2();
+				PackageToXML packageXML = new PackageToXML();
 				HeadersValidator valid = new HeadersValidator();
 				packageXML.addArrivePackageistener(valid);
-				connect = new SocketConnect(ConfigFile.getHost(),
+				connect = new SocketConnector(ConfigFile.getHost(),
 						  ConfigFile.getServerport(),packageXML);
 				
 	            connect.start();
 	            
 	            GenericParameters.removeParameter("userLogin");
 	            GenericParameters.addParameter("userLogin",JPAutenticacion.getUsuario());
-	            SocketChannel socket = SocketConnect.getSock();
+	            SocketChannel socket = SocketConnector.getSock();
 	            MessageDigest md = MessageDigest.getInstance("MD5");
 	            String password = new String(JPAutenticacion.getClave());
 	    		md.update(password.getBytes());
@@ -177,7 +177,7 @@ public class Connection {
 	    			}
 					md5+= Integer.toHexString( sec );
 	    		}
-	            WriteSocket.writing(socket,
+	            SocketWriter.writing(socket,
 				                    SendCNX.getPackage(
 				                            JPAutenticacion.getBaseDatos(),
 				                            JPAutenticacion.getUsuario(),md5.toCharArray()));

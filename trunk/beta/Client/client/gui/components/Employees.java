@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 
 import common.gui.components.AnswerEvent;
 import common.gui.components.AnswerListener;
-import common.gui.components.QueryData;
+import common.gui.components.GenericDataFiller;
 import common.gui.components.VoidPackageException;
 import common.gui.components.XMLTextField;
 import common.gui.forms.GenericForm;
@@ -196,7 +196,7 @@ public class Employees extends JPanel {
                 class SearchQuery extends Thread {
                     public void run() {
                         //try {
-                            QueryData QDsearch = new QueryData(
+                            GenericDataFiller QDsearch = new GenericDataFiller(
                                     GFforma,
                                     namebutton, enablebutton, "SEL0037",
                                     new String[] { returnValue }, XMLTFnitcc
@@ -208,7 +208,7 @@ public class Employees extends JPanel {
 
                                 // Consultado info_empleado
                                 
-                                new QueryData(
+                                new GenericDataFiller(
                                         GFforma,
                                         "SEL0084",
                                         XMLTFnitcc.getText(),

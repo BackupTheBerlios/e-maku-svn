@@ -10,7 +10,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 
 /**
- * ValidHeadersClient.java Creado el 22-jul-2004
+ * ClientHeaderValidator.java Creado el 22-jul-2004
  * 
  * Este archivo es parte de JMClient <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
@@ -32,7 +32,7 @@ import org.jdom.Element;
  *         Cepeda </A>
  */
 
-public class ValidHeadersClient {
+public class ClientHeaderValidator {
 
     private static Element raiz;
     private static Vector <DateListener>dateListener = new Vector<DateListener>();
@@ -83,7 +83,7 @@ public class ValidHeadersClient {
         else if(nombre.equals("UPDATECODE")) {
             String key = raiz.getChildText("idDocument");
             String consecutive = raiz.getChildText("consecutive");
-                       UpdateCodeEvent event = new UpdateCodeEvent(new ValidHeadersClient(),key,consecutive);
+                       UpdateCodeEvent event = new UpdateCodeEvent(new ClientHeaderValidator(),key,consecutive);
             notifyUpdateCode(event);
             return true;
         }
@@ -94,14 +94,14 @@ public class ValidHeadersClient {
         
         else if(nombre.equals("DATE")) {
             String systemDate = raiz.getChildText("systemDate");
-            DateEvent event = new DateEvent(new ValidHeadersClient(),systemDate);
+            DateEvent event = new DateEvent(new ClientHeaderValidator(),systemDate);
             notifyDate(event);
             return true;
         }
         else if(nombre.equals("REPORT")) {
 			// Aqui se debe notificar que llego el reporte
 			ReportEvent report = new ReportEvent(
-										new ValidHeadersClient(),
+										new ClientHeaderValidator(),
 										raiz.getChildText("idReport"),
 										raiz.getChildText("titleReport"),
 										raiz.getChild("data"));

@@ -12,10 +12,10 @@ import org.jdom.output.XMLOutputter;
 
 import common.misc.CommonConst;
 import common.misc.language.Language;
-import common.misc.log.AdminLog;
+import common.misc.log.LogAdmin;
 
 /**
- * WriteSocket.java Creado el 23-jul-2004
+ * SocketWriter.java Creado el 23-jul-2004
  * 
  * Este archivo es parte de E-Maku <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
@@ -35,7 +35,7 @@ import common.misc.log.AdminLog;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David
  *         Cepeda </A>
  */
-public class WriteSocket {
+public class SocketWriter {
 
     
     public static void writing(SocketChannel sock,Document doc) {
@@ -96,7 +96,7 @@ public class WriteSocket {
             }
         }
         catch (IOException IOEe) {
-            AdminLog.setMessage(Language.getWord("ERR_WRITING_SOCKET") + "\n"
+            LogAdmin.setMessage(Language.getWord("ERR_WRITING_SOCKET") + "\n"
                     + IOEe.getMessage(), CommonConst.ERROR);
         }
     }

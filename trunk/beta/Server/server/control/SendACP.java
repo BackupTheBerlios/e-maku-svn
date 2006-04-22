@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import common.comunications.WriteSocket;
+import common.comunications.SocketWriter;
 import common.misc.ZipHandler;
 import server.database.connection.PoolConexiones;
 import server.database.sql.CloseSQL;
@@ -91,7 +91,7 @@ public class SendACP extends Thread{
 	        docACPBegin.setRootElement(element);
 	        element.addContent(new Element("transactions").setText(numTrans));
 	        element.addContent(new Element("querys").setText(numQuerys));
-			WriteSocket.writing(sock,this.docACPBegin);
+			SocketWriter.writing(sock,this.docACPBegin);
         }
         catch (SQLException e) {
 			e.printStackTrace();
@@ -133,7 +133,7 @@ public class SendACP extends Thread{
 	                transaction.addContent(form.detachRootElement());
 	                element.addContent(transaction);
 	                
-	                WriteSocket.writing(sock,compressDocument(doc,driver.getValue()));
+	                SocketWriter.writing(sock,compressDocument(doc,driver.getValue()));
                 }
                 catch (JDOMException e) {
                     e.printStackTrace();
@@ -157,7 +157,7 @@ public class SendACP extends Thread{
                 query.addContent(sql);
             }
             doc.getRootElement().addContent(query);
-            WriteSocket.writing(sock,compressDocument(doc,query.getName()));
+            SocketWriter.writing(sock,compressDocument(doc,query.getName()));
         }
         catch (SQLException e) {
 			e.printStackTrace();

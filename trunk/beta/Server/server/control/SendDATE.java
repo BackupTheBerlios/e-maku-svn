@@ -7,7 +7,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 
 /**
- * SendDATE.java Creado el 28-jun-2005
+ * DateSender.java Creado el 28-jun-2005
  * 
  * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>

@@ -10,9 +10,9 @@ import java.sql.Statement;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import common.comunications.WriteSocket;
+import common.comunications.SocketWriter;
 import common.misc.language.Language;
-import common.misc.log.AdminLog;
+import common.misc.log.LogAdmin;
 import server.comunications.SocketServer;
 import server.control.SendUPDATECODE;
 import server.database.connection.PoolConexiones;
@@ -69,7 +69,7 @@ public class CacheEnlace {
         /** Obtengo el numero de conexiones que maneja el ST */
         int max = ConfigFile.SizeDB();
 
-        AdminLog.setMessage(Language.getWord("LOADING_SL"),
+        LogAdmin.setMessage(Language.getWord("LOADING_SL"),
                 ServerConst.MESSAGE);
 
         /**
@@ -81,7 +81,7 @@ public class CacheEnlace {
         for (int i = 0; i < max; i++)
             try {
 
-                AdminLog.setMessage(Language.getWord("LOADING_CACHE") + " "
+                LogAdmin.setMessage(Language.getWord("LOADING_CACHE") + " "
                         + ConfigFile.getNombreBD(i), ServerConst.MESSAGE);
 
                 /**
@@ -91,8 +91,8 @@ public class CacheEnlace {
                 cn = PoolConexiones.getConnection(ConfigFile.getNombreBD(i));
                 st = cn.createStatement();
 
-                AdminLog.setMessage(Language.getWord("INIT_BDS"), ServerConst.MESSAGE);
-                AdminLog.setMessage(Language.getWord("LOADING_ST") + " " + ConfigFile.getNombreBD( i ) , ServerConst.MESSAGE);
+                LogAdmin.setMessage(Language.getWord("INIT_BDS"), ServerConst.MESSAGE);
+                LogAdmin.setMessage(Language.getWord("LOADING_ST") + " " + ConfigFile.getNombreBD( i ) , ServerConst.MESSAGE);
 
                 rs = st.executeQuery("SELECT codigo,sentencia FROM "+
                                      "sentencia_sql ORDER BY codigo desc");
@@ -179,12 +179,12 @@ public class CacheEnlace {
                                     			  docMth));
                     }
                     catch(IOException IOEe) {
-                        AdminLog.setMessage(Language.getWord("ERR_LOADING_LG") + " "
+                        LogAdmin.setMessage(Language.getWord("ERR_LOADING_LG") + " "
                                 + ConfigFile.getNombreBD(i) + " "+rs.getString("codigo")+" "+IOEe.getMessage(),
                                 ServerConst.ERROR);
                     }
                     catch(JDOMException JDOMEe) {
-                        AdminLog.setMessage(Language.getWord("ERR_LOADING_LG") + " "
+                        LogAdmin.setMessage(Language.getWord("ERR_LOADING_LG") + " "
                                 + ConfigFile.getNombreBD(i) + " "+rs.getString("codigo")+" " + JDOMEe.getMessage(),
                                 ServerConst.ERROR);
                     }
@@ -308,13 +308,13 @@ public class CacheEnlace {
             }
             catch (SQLException SQLEe) {
             	SQLEe.printStackTrace();
-                AdminLog.setMessage(Language.getWord("ERROR_LOADING_SL") + " "
+                LogAdmin.setMessage(Language.getWord("ERROR_LOADING_SL") + " "
                         + ConfigFile.getNombreBD(i) + SQLEe.getMessage(),
                         ServerConst.ERROR);
             }
             catch (SQLNotFoundException SQLNFEe) {
             	SQLNFEe.printStackTrace();
-                AdminLog.setMessage(Language.getWord("ERROR_LOADING_SL") + " "
+                LogAdmin.setMessage(Language.getWord("ERROR_LOADING_SL") + " "
                         + ConfigFile.getNombreBD(i) + SQLNFEe.getMessage(),
                         ServerConst.ERROR);
             }
@@ -342,7 +342,7 @@ public class CacheEnlace {
                 return sNextValue.substring(sNextValue.length()-10);
             }
             catch (NumberFormatException NFEe){
-                AdminLog.setMessage(Language.getWord("ERR_CONSECUTIVE") + " "
+                LogAdmin.setMessage(Language.getWord("ERR_CONSECUTIVE") + " "
                         + nombreBD + NFEe.getMessage(),
                         ServerConst.ERROR);
                 return "0000000000";
@@ -631,14 +631,14 @@ public class CacheEnlace {
             while (sockets.hasMoreElements()) {
                 SocketChannel sock = (SocketChannel)sockets.nextElement();
                 if (SocketServer.getBd(sock).equals(bd)) {
-		            WriteSocket.writing(sock,
+		            SocketWriter.writing(sock,
 		                    SendUPDATECODE.getPackage(key,
 		                                              CacheEnlace.getConsecutive(bd,key)));
                 }
             }
         }
         catch (NumberFormatException NFEe){
-            AdminLog.setMessage(Language.getWord("ERR_CONSECUTIVE") + " "
+            LogAdmin.setMessage(Language.getWord("ERR_CONSECUTIVE") + " "
                     + bd + NFEe.getMessage(),
                     ServerConst.ERROR);
         }

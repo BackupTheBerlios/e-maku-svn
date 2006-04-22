@@ -4,7 +4,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 
 /**
- * SendDATE.java Creado el 27-jun-2005
+ * DateSender.java Creado el 27-jun-2005
  * 
  * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
@@ -25,7 +25,7 @@ import org.jdom.Element;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
-public class SendDATE {
+public class DateSender {
 
     public static Document getPackage() {
         Document doc = new Document();

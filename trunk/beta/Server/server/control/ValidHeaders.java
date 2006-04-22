@@ -3,14 +3,14 @@ package server.control;
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
 
-import common.comunications.WriteSocket;
+import common.comunications.SocketWriter;
 import common.misc.language.Language;
-import common.misc.log.AdminLog;
+import common.misc.log.LogAdmin;
 import server.businessrules.RunTransaction;
 import server.comunications.AcpFailure;
 import server.comunications.CacheXML;
 import server.comunications.ErrorXML;
-import server.comunications.SelectXML;
+import server.comunications.ResultSetToXML;
 import server.comunications.SocketServer;
 import server.database.connection.PoolConexiones;
 import server.database.sql.CacheEnlace;
@@ -23,7 +23,7 @@ import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 /**
- * ValidHeadersClient.java Creado el 22-jul-2004
+ * ClientHeaderValidator.java Creado el 22-jul-2004
  * 
  * Este archivo es parte de E-Maku <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
@@ -99,12 +99,12 @@ public class ValidHeaders {
                 String codigo = "";
                 if (valida.isValid()) {
                     codigo = raiz.getChild("sql").getValue();
-                    SelectXML answer;
+                    ResultSetToXML answer;
                     
                     if (valida.changeStructParam()) {
-                        answer = new SelectXML(bd, codigo, valida.getArgs());
+                        answer = new ResultSetToXML(bd, codigo, valida.getArgs());
                     } else {
-                        answer = new SelectXML(bd, codigo);
+                        answer = new ResultSetToXML(bd, codigo);
                     }
                     answer.transmition(sock,valida.getId());
                     
@@ -113,8 +113,8 @@ public class ValidHeaders {
                     String tmp = Language.getWord("SQL_ACCESS_DENIED") + 
                     		" "+valida.getQuery()+" "+
                             sock.socket();
-                    AdminLog.setMessage(tmp, ServerConst.MESSAGE);
-                    WriteSocket.writing(sock, error.returnError(
+                    LogAdmin.setMessage(tmp, ServerConst.MESSAGE);
+                    SocketWriter.writing(sock, error.returnError(
                             ServerConst.ERROR, "", tmp));
                 }
 
@@ -137,7 +137,7 @@ public class ValidHeaders {
              */
             
             else if (nom_raiz.equals("DATE")) {
-                WriteSocket.writing(sock,SendDATE.getPackage());
+                SocketWriter.writing(sock,SendDATE.getPackage());
                 
             }
             
@@ -156,7 +156,7 @@ public class ValidHeaders {
             else if (nom_raiz.equals("UPDATECODE")) {
                 String bd = SocketServer.getBd(sock);
                 String key = raiz.getChild("idDocument").getValue();
-                WriteSocket.writing(sock,
+                SocketWriter.writing(sock,
                                     SendUPDATECODE.getPackage(key,
                                                               CacheEnlace.getConsecutive(bd,key)));
 
@@ -179,7 +179,7 @@ public class ValidHeaders {
                 String tmp = Language.getWord("ERR_FORMAT_PROTOCOL") + " "
                         + sock.socket();
 
-                AdminLog.setMessage(tmp, ServerConst.ERROR);
+                LogAdmin.setMessage(tmp, ServerConst.ERROR);
 
                 System.out.println("ERROR FORMATO PROTOCOLO");
                 XMLOutputter xmlOutputter = new XMLOutputter();
@@ -190,7 +190,7 @@ public class ValidHeaders {
                 catch (IOException e) {
                     e.printStackTrace();
                 }
-                WriteSocket.writing(sock, error.returnError(
+                SocketWriter.writing(sock, error.returnError(
                         ServerConst.ERROR, "", tmp));
             }
 
@@ -211,11 +211,11 @@ public class ValidHeaders {
 	                SendACP docacp = new SendACP(sock,bd,login);
 	                docacp.start();
 	            } else {
-	                WriteSocket.writing(sock, new AcpFailure(Language.getWord("ACPFAILURE")));
+	                SocketWriter.writing(sock, new AcpFailure(Language.getWord("ACPFAILURE")));
 	            }
             } else {
-            	AdminLog.setMessage(Language.getWord("DBNFEX") + raiz.getChild("db").getValue(), ServerConst.ERROR);
-            	WriteSocket.writing(sock, new AcpFailure(Language.getWord("ACPFAILURE")));
+            	LogAdmin.setMessage(Language.getWord("DBNFEX") + raiz.getChild("db").getValue(), ServerConst.ERROR);
+            	SocketWriter.writing(sock, new AcpFailure(Language.getWord("ACPFAILURE")));
             }
 
         } 
@@ -255,9 +255,9 @@ public class ValidHeaders {
                 String tmp = Language.getWord("ERR_FORMAT_PROTOCOL") + " "
                         + sock.socket();
 
-                AdminLog.setMessage(tmp, ServerConst.ERROR);
+                LogAdmin.setMessage(tmp, ServerConst.ERROR);
 
-                WriteSocket.writing(sock, error.returnError(
+                SocketWriter.writing(sock, error.returnError(
                         ServerConst.ERROR, "", tmp));
                 //SocketServer.setDecrementSocketsCount();
             }

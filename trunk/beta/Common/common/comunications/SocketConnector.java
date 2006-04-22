@@ -10,7 +10,7 @@ import java.nio.channels.UnresolvedAddressException;
 import java.util.Iterator;
 
 /**
- * SocketConnect.java Creado el 29-jul-2004
+ * SocketConnector.java Creado el 29-jul-2004
  * 
  * Este archivo es parte de JMClient <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
@@ -32,11 +32,11 @@ import java.util.Iterator;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David
  *         Cepeda </A>
  */
-public class SocketConnect extends Thread {
+public class SocketConnector extends Thread {
 
 	//private static Hashtable Hsockets = new Hashtable();
     private static SocketChannel socket;
-    private PackageToXML2 packageXML;
+    private PackageToXML packageXML;
     /**
      * Este constructor inicializa el hilo de conexion al
      * servidor de transacciones.
@@ -44,7 +44,7 @@ public class SocketConnect extends Thread {
      * @param port
      */
     
-    public SocketConnect(String host,int port,PackageToXML2 packageXML) 
+    public SocketConnector(String host,int port,PackageToXML packageXML) 
     throws UnresolvedAddressException, IOException{
     	this.packageXML=packageXML;
         socket = SocketChannel.open();
@@ -54,7 +54,7 @@ public class SocketConnect extends Thread {
         socket.connect(addr);
   //  	Hsockets.put(key,socket);
         
-//    	new PackageToXML2();
+//    	new PackageToXML();
         /*
          * Se intenta establecer una conexion con el servidor,
          * si en 5 segundos esta no es posible, se lanza la 
@@ -94,7 +94,7 @@ public class SocketConnect extends Thread {
                         
                         if (clave.isReadable()) {
                         		packageXML.work(socket);
-//                            new PackageToXML2(key,socket).work();
+//                            new PackageToXML(key,socket).work();
                         } else if(clave.isValid()){
                             socket.close();
                             socket=null;

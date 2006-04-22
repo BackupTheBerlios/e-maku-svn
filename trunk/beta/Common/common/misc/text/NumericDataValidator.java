@@ -15,7 +15,7 @@
  * @author  Luis Felipe Hernandez Z.
  * @see e-mail felipe@qhatu.net
  *
- * LimitDocument.java
+ * NumericDataValidator.java
  *
  * Created on 29 de mayo de 2002, 10:02
  */
@@ -29,14 +29,14 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
-public class LimitDocument extends PlainDocument {
+public class NumericDataValidator extends PlainDocument {
 
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 4060866073050927871L;
 	private int limit;
-    public LimitDocument(int limit) {
+    public NumericDataValidator(int limit) {
         super();
         setLimit(limit); // store the limit����
     }

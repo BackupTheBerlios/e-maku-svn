@@ -4,7 +4,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 
 /**
- * SendUPDATECODE.java Creado el 28-jun-2005
+ * UpdateCodeSender.java Creado el 28-jun-2005
  * 
  * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
@@ -25,7 +25,7 @@ import org.jdom.Element;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  */
 
-public class SendUPDATECODE {
+public class UpdateCodeSender {
 
     public static Document getPackage(String idDocument) {
         Document doc = new Document();

@@ -34,7 +34,7 @@ import common.gui.forms.FinishEvent;
 import common.gui.forms.GenericForm;
 import common.gui.forms.InitiateFinishListener;
 import common.gui.forms.NotFoundComponentException;
-import common.misc.formulas.CalculateFormula;
+import common.misc.formulas.FormulaCalculator;
 import common.misc.language.Language;
 import common.transactions.STException;
 import common.transactions.STResultSet;
@@ -574,7 +574,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 	    		Object result = null;
 	    		int col= getColIndex(key);
 	        if (tipoFormula) {
-	        		result = CalculateFormula.operar(newVar);	
+	        		result = FormulaCalculator.operar(newVar);	
 	        }
 	        else {
 	        		result = shellScript.eval(newVar);
@@ -797,7 +797,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 		                    newVar+=key.substring(j,j+1);
 		                }
 		            }
-		            double val = ((Double)(CalculateFormula.operar(newVar))).doubleValue();
+		            double val = ((Double)(FormulaCalculator.operar(newVar))).doubleValue();
 		            GFforma.setExternalValues(exportTotalCols.get(key.toUpperCase()),val);
 		        }
 	            notificando();

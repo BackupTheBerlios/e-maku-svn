@@ -13,8 +13,8 @@ import client.gui.forms.Connection;
 import client.gui.forms.Splash;
 import common.comunications.ArrivePackageEvent;
 import common.comunications.ArrivePackageListener;
-import common.comunications.SocketConnect;
-import common.control.ValidHeadersClient;
+import common.comunications.SocketConnector;
+import common.control.ClientHeaderValidator;
 import common.transactions.STResultSet;
 
 import org.jdom.Document;
@@ -23,7 +23,7 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 /**
- * ValidHeadersClient.java Creado el 22-jul-2004
+ * ClientHeaderValidator.java Creado el 22-jul-2004
  * 
  * Este archivo es parte de JMClient <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
@@ -77,7 +77,7 @@ public class HeadersValidator implements ArrivePackageListener {
          * common
          */
         
-        if (!ValidHeadersClient.validGeneral(doc)) {
+        if (!ClientHeaderValidator.validGeneral(doc)) {
 	        /*
 	         *  Validacion paquete ACP
 	         */
@@ -97,7 +97,7 @@ public class HeadersValidator implements ArrivePackageListener {
 	            Connection.setEnabled();
 	            Connection.setCursorState(Cursor.DEFAULT_CURSOR);
 	            try {
-					SocketConnect.getSock().close();
+					SocketConnector.getSock().close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

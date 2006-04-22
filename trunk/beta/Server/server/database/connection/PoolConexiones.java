@@ -8,7 +8,7 @@ import java.util.Hashtable;
 import server.misc.ServerConst;
 import server.misc.settings.ConfigFile;
 import common.misc.language.Language;
-import common.misc.log.AdminLog;
+import common.misc.log.LogAdmin;
 
 
 /**
@@ -48,7 +48,7 @@ public class PoolConexiones {
         int max = ConfigFile.SizeDB();
         for (int i=0;i<max;i++)
             try {
-                AdminLog.setMessage(
+                LogAdmin.setMessage(
                 		Language.getWord("LOADING_DB") +" "+ConfigFile.getNombreBD(i),
 						ServerConst.MESSAGE);
                 
@@ -62,14 +62,14 @@ public class PoolConexiones {
 								ConfigFile.getPassword(i)));
             } 
             catch (ClassNotFoundException CNFEe) {
-                AdminLog.setMessage(
+                LogAdmin.setMessage(
                 		Language.getWord("ERR_CLASS") + " " + CNFEe.getMessage(),
 						ServerConst.ERROR);
                 
                 throw new PoolNotLoadException(ConfigFile.getNombreBD(i));
             } 
             catch (SQLException SQLEe){
-                AdminLog.setMessage(
+                LogAdmin.setMessage(
                 		Language.getWord("ERR_SQL") + " " + SQLEe.getMessage(),
 						ServerConst.ERROR);
                 throw new PoolNotLoadException(ConfigFile.getNombreBD(i));

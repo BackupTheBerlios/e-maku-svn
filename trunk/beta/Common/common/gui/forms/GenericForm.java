@@ -29,10 +29,10 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.TitledBorder;
 
-import common.comunications.SendDATE;
-import common.comunications.SendUPDATECODE;
-import common.comunications.SocketConnect;
-import common.comunications.WriteSocket;
+import common.comunications.DateSender;
+import common.comunications.UpdateCodeSender;
+import common.comunications.SocketConnector;
+import common.comunications.SocketWriter;
 import common.gui.components.VoidPackageException;
 import common.misc.Icons;
 import common.misc.language.Language;
@@ -973,12 +973,12 @@ public class GenericForm extends JInternalFrame{
     public void setEnabledButton(String name,boolean bool) {
         try {
             if (bool)
-	            invokeMethod("common.gui.components.PanelButtons", 
+	            invokeMethod("common.gui.components.ButtonsPanel", 
                 			 "setEnabled",
                 			 new Class[] {String.class,boolean.class},
                 			 new Object[] {name,Boolean.TRUE});
             else
-                invokeMethod("common.gui.components.PanelButtons", 
+                invokeMethod("common.gui.components.ButtonsPanel", 
 		           			 "setEnabled",
 		           			 new Class[] {String.class,boolean.class},
 		           			 new Object[] {name,Boolean.FALSE});
@@ -1050,8 +1050,8 @@ public class GenericForm extends JInternalFrame{
     }
 
     public void sendTransaction(Document doc) {
-        SocketChannel socket = SocketConnect.getSock();
-        WriteSocket.writing(socket, doc);
+        SocketChannel socket = SocketConnector.getSock();
+        SocketWriter.writing(socket, doc);
     }
 
     public void close() {
@@ -1090,11 +1090,11 @@ public class GenericForm extends JInternalFrame{
          */
         
         if (date) {
-            sendTransaction(SendDATE.getPackage());
+            sendTransaction(DateSender.getPackage());
         }
         
         if (consecutive!=null) {
-            sendTransaction(SendUPDATECODE.getPackage(consecutive));
+            sendTransaction(UpdateCodeSender.getPackage(consecutive));
         }
     }
 

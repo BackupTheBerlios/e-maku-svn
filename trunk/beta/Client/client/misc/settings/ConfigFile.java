@@ -135,7 +135,7 @@ public class ConfigFile extends GenericParameters {
                     idioma.CargarLenguaje(datos.getValue());
                 } /*
                    * else if (datos.getName().equals("Log")) { new
-                   * AdminLog(datos.getValue()); }
+                   * LogAdmin(datos.getValue()); }
                    */
                 else if (nombre.equals("host")) {
                     host = datos.getValue();
@@ -147,7 +147,7 @@ public class ConfigFile extends GenericParameters {
             }
             
             icons.loadIcons();
-            //AdminLog.setMessage(Language.getWord("LOADING_CF"),
+            //LogAdmin.setMessage(Language.getWord("LOADING_CF"),
             // ClientConst.MESSAGE);
         }
         catch (FileNotFoundException FNFEe) {

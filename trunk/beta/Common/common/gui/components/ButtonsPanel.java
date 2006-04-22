@@ -30,7 +30,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 
 /**
- * PanelButtons.java Creado el 22-sep-2004
+ * ButtonsPanel.java Creado el 22-sep-2004
  * 
  * Este archivo es parte de E-Maku <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
@@ -50,7 +50,7 @@ import org.jdom.Element;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David
  *         Cepeda </A>
  */
-public class PanelButtons extends JPanel implements ActionListener, KeyListener {
+public class ButtonsPanel extends JPanel implements ActionListener, KeyListener {
 
     private static final long serialVersionUID = 8883108186183650115L;
 
@@ -63,7 +63,7 @@ public class PanelButtons extends JPanel implements ActionListener, KeyListener 
 	private String typePackage = "TRANSACTION";
 	private String idReport;
     
-    public PanelButtons(GenericForm GFforma, Document doc) {
+    public ButtonsPanel(GenericForm GFforma, Document doc) {
 
         this.GFforma = GFforma;
         this.setLayout(new FlowLayout());

@@ -1,4 +1,4 @@
-package common.misc.log;
+package client.misc.log;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,15 +8,16 @@ import java.io.RandomAccessFile;
 import java.util.Calendar;
 import java.util.zip.GZIPOutputStream;
 
-import common.misc.CommonConst;
+import client.misc.ClientConst;
+
 
 /**
- * AdminLog.java Creado el 29-jun-2004
+ * LogAdmin.java Creado el 29-jun-2004
  * 
- * Este archivo es parte de E-Maku
+ * Este archivo es parte de JMClient
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
  *
- * E-Maku es Software Libre; usted puede redistribuirlo y/o realizar
+ * JMClient es Software Libre; usted puede redistribuirlo y/o realizar
  * modificaciones bajo los terminos de la Licencia Publica General
  * GNU GPL como esta publicada por la Fundacion del Software Libre (FSF);
  * tanto en la version 2 de la licencia, o cualquier version posterior.
@@ -31,7 +32,7 @@ import common.misc.CommonConst;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
-public class AdminLog {
+public class LogAdmin {
 
     private static File Flog;
 
@@ -39,7 +40,6 @@ public class AdminLog {
 
     private static String ValueLog = "VerboseFile";
 
-    private static String namefile="Nonamelog";
     /**
      * Este constructor inicializa el Administrador de logs con la prioridad
      * asignada en el archivo de configuracion
@@ -55,9 +55,8 @@ public class AdminLog {
      *            <br>
      */
 
-    public AdminLog(String ValueLog,String namefile) {
-        AdminLog.ValueLog = ValueLog;
-        AdminLog.namefile=namefile;
+    public LogAdmin(String ValueLog) {
+        LogAdmin.ValueLog = ValueLog;
         newFile();
     }
     
@@ -67,8 +66,7 @@ public class AdminLog {
      * @param prioridad
      */
     public static void setMessage(String mensaje, int prioridad) {
-   // 		System.out.println("prioridad del mensaje: "+prioridad+" mensaje "+mensaje+" valueLog: "+ValueLog);
-        if (ValueLog.equals("Default") && (prioridad == CommonConst.ERROR)) {
+        if (ValueLog.equals("Default") && (prioridad == ClientConst.ERROR)) {
             System.out.println(mensaje);
         } else if (ValueLog.equals("Verbose")) {
             System.out.println(mensaje);
@@ -76,10 +74,11 @@ public class AdminLog {
             System.out.println(mensaje);
             EscribirArchivo(mensaje);
         } else if (ValueLog.equals("LogFile")) {
-            if (prioridad == CommonConst.ERROR)
+            if (prioridad == ClientConst.ERROR)
                 System.out.println(mensaje);
             EscribirArchivo(mensaje);
         }
+
     }
 
     /**
@@ -91,9 +90,9 @@ public class AdminLog {
         try {
             long max = Flog.length();
 
-            if (max >= CommonConst.MAX_SIZE_FILE_LOG) {
+            if (max >= ClientConst.MAX_SIZE_FILE_LOG) {
                 byte[] Blog = new byte[(int) max];
-                File Ffile = new File(CommonConst.TMP, namefile+"-"
+                File Ffile = new File(ClientConst.TMP, "JMClient-"
                         + Calendar.getInstance().get(Calendar.YEAR) + "-"
                         + Calendar.getInstance().get(Calendar.MONTH) + "-"
                         + Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
@@ -119,7 +118,7 @@ public class AdminLog {
     
     private static void newFile() {
         try {
-            Flog = new File(CommonConst.TMP, namefile+".log");
+            Flog = new File(ClientConst.TMP, "JMClient.log");
             RAFlog = new RandomAccessFile(Flog, "rw");
             RAFlog.seek(RAFlog.length());
         } catch (FileNotFoundException FNFEe) {

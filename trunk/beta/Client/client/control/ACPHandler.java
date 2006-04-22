@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Vector;
 
 import client.gui.components.StatusBar;
-import common.comunications.SocketConnect;
-import common.comunications.WriteSocket;
+import common.comunications.SocketConnector;
+import common.comunications.SocketWriter;
 import common.misc.ZipHandler;
 
 import org.jdom.Document;
@@ -98,8 +98,8 @@ public class ACPHandler {
 			 */
 
 			else if (e.getName().equals("CACHE-QUERY")) {
-				SocketChannel socket = SocketConnect.getSock();
-				WriteSocket.writing(socket, new Document(e));
+				SocketChannel socket = SocketConnector.getSock();
+				SocketWriter.writing(socket, new Document(e));
 			}
 		}
 	}

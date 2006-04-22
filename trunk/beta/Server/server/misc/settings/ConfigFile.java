@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import common.misc.language.Language;
-import common.misc.log.AdminLog;
+import common.misc.log.LogAdmin;
 import server.misc.ServerConst;
 
 import org.jdom.Document;
@@ -79,7 +79,7 @@ public class ConfigFile {
                 } else if (datos.getName().equals("Lenguaje")) {
                     idioma.CargarLenguaje(datos.getValue());
                 } else if (datos.getName().equals("Log")) {
-                    new AdminLog(datos.getValue(),ServerConst.KeyServer);
+                    new LogAdmin(datos.getValue(),ServerConst.KeyServer);
                 } else if (datos.getName().equals("SocketJClient")) {
                     SocketJClient = Integer.parseInt(datos.getValue());
                 } else if (datos.getName().equals("SocketJAdmin")) {
@@ -88,7 +88,7 @@ public class ConfigFile {
                     MaxClients = Integer.parseInt(datos.getValue());
                 }
             }
-            AdminLog.setMessage(Language.getWord("LOADING_CF"), ServerConst.MESSAGE);
+            LogAdmin.setMessage(Language.getWord("LOADING_CF"), ServerConst.MESSAGE);
         }
         catch (FileNotFoundException FNFEe) {
         	System.out.println("El archivo de configuracion no existe");

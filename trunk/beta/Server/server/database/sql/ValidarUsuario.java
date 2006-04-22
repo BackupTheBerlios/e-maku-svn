@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import server.misc.ServerConst;
 import common.misc.language.Language;
-import common.misc.log.AdminLog;
+import common.misc.log.LogAdmin;
 
 /**
  * ValidarUsuario.java Creado el 23-jul-2004
@@ -58,18 +58,18 @@ public class ValidarUsuario {
         }
         catch (SQLException SQLEe) {
 
-            AdminLog.setMessage(db + ": " + Language.getWord("ERR_RS")
+            LogAdmin.setMessage(db + ": " + Language.getWord("ERR_RS")
                     + " " + SQLEe.getMessage(), ServerConst.ERROR);
         }
         catch (SQLNotFoundException SQLNFEe) {
 
-            AdminLog.setMessage(db + ": " + SQLNFEe.getMessage(), ServerConst.ERROR);
+            LogAdmin.setMessage(db + ": " + SQLNFEe.getMessage(), ServerConst.ERROR);
 
         }
         catch (SQLBadArgumentsException SQLBAEe) {
             
             String err = SQLBAEe.getMessage();
-            AdminLog.setMessage(err, ServerConst.ERROR);
+            LogAdmin.setMessage(err, ServerConst.ERROR);
         }
         
         CloseSQL.close(rs);

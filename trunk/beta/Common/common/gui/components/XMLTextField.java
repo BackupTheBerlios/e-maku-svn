@@ -24,9 +24,9 @@ import javax.swing.text.PlainDocument;
 import common.control.DateEvent;
 import common.control.UpdateCodeEvent;
 import common.control.UpdateCodeListener;
-import common.control.ValidHeadersClient;
+import common.control.ClientHeaderValidator;
 import common.misc.language.Language;
-import common.misc.text.LimitDocumentText;
+import common.misc.text.TextDataValidator;
 
 import org.jdom.Element;
 
@@ -85,7 +85,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 		super(length);
 		this.chars = chars;
 		Generar(label, length);
-		this.setDocument(new LimitDocumentText(chars));
+		this.setDocument(new TextDataValidator(chars));
 	}
 
 	public XMLTextField(String label, int length, int chars, String TYPE) {
@@ -95,7 +95,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 		if (TYPE.equals(NUMERIC)) {
 			this.setDocument(new LimitDocument(chars));
 		} else {
-			this.setDocument(new LimitDocumentText(chars));
+			this.setDocument(new TextDataValidator(chars));
 		}
 		type = TYPE;
 	}
@@ -110,7 +110,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 			if (Mask.equals("NUMERIC"))
 				this.setDocument(new LimitDocument(chars));
 			else {
-				this.setDocument(new LimitDocumentText(chars));
+				this.setDocument(new TextDataValidator(chars));
 			}
 		}
 		type = TYPE;
@@ -248,7 +248,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	
 	public void setIdDocument(String idDocument) {
 		this.idDocument = idDocument;
-		ValidHeadersClient.addUpdateCodeListener(this);
+		ClientHeaderValidator.addUpdateCodeListener(this);
 	}
 
 	/*

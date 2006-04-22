@@ -14,14 +14,14 @@ import server.database.sql.SQLNotFoundException;
 import server.misc.ServerConst;
 
 import common.misc.language.Language;
-import common.misc.log.AdminLog;
-import common.comunications.WriteSocket;
+import common.misc.log.LogAdmin;
+import common.comunications.SocketWriter;
 
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 
 /**
- * SelectXML.java Creado el 14-jul-2004
+ * ResultSetToXML.java Creado el 14-jul-2004
  * 
  * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
@@ -42,7 +42,7 @@ import org.jdom.output.XMLOutputter;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
-public class SelectXML extends Document {
+public class ResultSetToXML extends Document {
 
     /**
 	 * 
@@ -64,11 +64,11 @@ public class SelectXML extends Document {
      *            Sentencia SQL
      */
 
-    public SelectXML(String bd, String sql) {
+    public ResultSetToXML(String bd, String sql) {
         this.bd = bd;
         this.sql = sql;
     }
-    public SelectXML(String bd, String sql, String [] args) {
+    public ResultSetToXML(String bd, String sql, String [] args) {
         this.bd = bd;
         this.sql = sql;
         this.args = args; 
@@ -137,19 +137,19 @@ public class SelectXML extends Document {
 	                }
 	                writeBufferSocket(sock,ServerConst.TAGS_ANSWER[1]);
 	                bufferSocket.write(new String ("\n\r\f").getBytes());
-	                WriteSocket.writing(sock,bufferSocket);
+	                SocketWriter.writing(sock,bufferSocket);
 	                bufferSocket.close();
 	                CloseSQL.close(RSdatos);
-//	                AdminLog.setMessage(Language.getWord("OK_CREATING_XML"),
+//	                LogAdmin.setMessage(Language.getWord("OK_CREATING_XML"),
 //	                        ServerConst.MESSAGE);
 	
 	            }
 	            catch (SQLException SQLEe) {
 	                String err =
 	                    Language.getWord("ERR_RS") + " " + SQLEe.getMessage();
-	                AdminLog.setMessage(err, ServerConst.ERROR);
+	                LogAdmin.setMessage(err, ServerConst.ERROR);
 	                ErrorXML error = new ErrorXML();
-	                WriteSocket.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
+	                SocketWriter.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
 	                SQLEe.printStackTrace();
 	            }
 	            catch (IOException e) {
@@ -160,24 +160,24 @@ public class SelectXML extends Document {
 	        }
 	        catch (SQLNotFoundException QNFEe) {
 	            String err = QNFEe.getMessage();
-	            AdminLog.setMessage(err, ServerConst.ERROR);
+	            LogAdmin.setMessage(err, ServerConst.ERROR);
 	            ErrorXML error = new ErrorXML();
-	            WriteSocket.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
+	            SocketWriter.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
 	            QNFEe.printStackTrace();
 	
 	        } 
 	        catch (SQLException SQLEe) {
 	            String err = Language.getWord("ERR_ST") + " " + SQLEe.getMessage();
-	            AdminLog.setMessage(err, ServerConst.ERROR);
+	            LogAdmin.setMessage(err, ServerConst.ERROR);
 	            ErrorXML error = new ErrorXML();
-	            WriteSocket.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
+	            SocketWriter.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
 	            SQLEe.printStackTrace();
 	        }
 	        catch (SQLBadArgumentsException QBAEe) {
 	            String err = QBAEe.getMessage();
-	            AdminLog.setMessage(err, ServerConst.ERROR);
+	            LogAdmin.setMessage(err, ServerConst.ERROR);
 	            ErrorXML error = new ErrorXML();
-	            WriteSocket.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
+	            SocketWriter.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
 	            QBAEe.printStackTrace();
 	        }
         }
@@ -193,7 +193,7 @@ public class SelectXML extends Document {
                 bufferSocket.write(bytes[i]);
             }
             else {
-                WriteSocket.writing(sock,bufferSocket);
+                SocketWriter.writing(sock,bufferSocket);
                 bufferSocket = new ByteArrayOutputStream();
                 i--;
             }

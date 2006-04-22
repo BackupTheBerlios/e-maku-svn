@@ -13,7 +13,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 /**
- * PackageToXML2.java Creado el 05-oct-2004
+ * PackageToXML.java Creado el 05-oct-2004
  * 
  * Este archivo es parte de E-Maku <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
@@ -33,7 +33,7 @@ import org.jdom.input.SAXBuilder;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David
  *         Cepeda </A>
  */
-public class PackageToXML2 {
+public class PackageToXML {
 
     private static ByteArrayOutputStream bufferTmp;
     private static Document doc;
@@ -41,7 +41,7 @@ public class PackageToXML2 {
     private SAXBuilder builder;
     private Vector <ArrivePackageListener>arrivePackageListener = new Vector<ArrivePackageListener>();
     
-    public PackageToXML2() {
+    public PackageToXML() {
         //this.setPriority(Thread.MIN_PRIORITY);
         bufferTmp = new ByteArrayOutputStream();
     }

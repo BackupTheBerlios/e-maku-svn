@@ -32,7 +32,7 @@ import server.database.sql.RunQuery;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
 
-import common.comunications.WriteSocket;
+import common.comunications.SocketWriter;
 import common.misc.ZipHandler;
 
 public class MakeReport extends Thread {
@@ -123,7 +123,7 @@ public class MakeReport extends Thread {
 			root.addContent(titleReport);
 			root.addContent(zip.getElementDataEncode("data"));
 	    	docZip.setRootElement(root);
-	        WriteSocket.writing(this.socket,docZip);
+	        SocketWriter.writing(this.socket,docZip);
 	        rs.close();
 
 		} catch (SQLException e) {

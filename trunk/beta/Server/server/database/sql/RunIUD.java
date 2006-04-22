@@ -6,7 +6,7 @@ import java.sql.Statement;
 import server.database.connection.PoolConexiones;
 import server.misc.ServerConst;
 import common.misc.language.Language;
-import common.misc.log.AdminLog;
+import common.misc.log.LogAdmin;
 
 
 /**
@@ -58,17 +58,17 @@ public class RunIUD {
                 st.execute(sql);
             } 
             catch(SQLException SQLEe) {
-                AdminLog.setMessage(
+                LogAdmin.setMessage(
                 		Language.getWord("EXECUTE_IUD_ERR") + " " + SQLEe.getMessage(),
 						ServerConst.ERROR);
                 return Language.getWord("EXECUTE_IUD_ERR");
             }
             CloseSQL.close(st);
-            AdminLog.setMessage(Language.getWord("EXECUTE_IUD_OK"), ServerConst.MESSAGE);
+            LogAdmin.setMessage(Language.getWord("EXECUTE_IUD_OK"), ServerConst.MESSAGE);
             return Language.getWord("EXECUTE_IUD_OK");
         } 
         catch(SQLException SQLEe) {
-            AdminLog.setMessage(
+            LogAdmin.setMessage(
             		Language.getWord("ERR_ST") + " " + SQLEe.getMessage(),
 					ServerConst.ERROR);
             return Language.getWord("ERR_ST");

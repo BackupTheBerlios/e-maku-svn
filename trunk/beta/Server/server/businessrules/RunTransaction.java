@@ -7,9 +7,9 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.List;
 
-import common.comunications.WriteSocket;
+import common.comunications.SocketWriter;
 import common.misc.language.Language;
-import common.misc.log.AdminLog;
+import common.misc.log.LogAdmin;
 import server.comunications.ErrorXML;
 import server.comunications.SocketServer;
 import server.comunications.SuccessXML;
@@ -197,8 +197,8 @@ public class RunTransaction {
             					     String id_transaction,
             					     String message) {
         ErrorXML error = new ErrorXML();
-        AdminLog.setMessage(message, ServerConst.ERROR);
-        WriteSocket.writing(sock, 
+        LogAdmin.setMessage(message, ServerConst.ERROR);
+        SocketWriter.writing(sock, 
                 		    error.returnError(ServerConst.ERROR,
                 		            	      SocketServer.getBd(sock),
                 		            	      id_transaction,
@@ -210,8 +210,8 @@ public class RunTransaction {
 									  String id_transaction,
 									  String message) {
 		SuccessXML success = new SuccessXML();
-		AdminLog.setMessage(message, ServerConst.MESSAGE);
-		WriteSocket.writing(sock, 
+		LogAdmin.setMessage(message, ServerConst.MESSAGE);
+		SocketWriter.writing(sock, 
 			    		    success.returnSuccess(id_transaction,message));
     }
 

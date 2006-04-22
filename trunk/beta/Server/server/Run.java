@@ -3,7 +3,7 @@ package server;
 import java.io.IOException;
 
 import common.misc.language.Language;
-import common.misc.log.AdminLog;
+import common.misc.log.LogAdmin;
 import server.comunications.SocketServer;
 import server.control.ReportsStore;
 import server.database.connection.PoolConexiones;
@@ -58,7 +58,7 @@ public class Run {
 			
 		} catch (IOException IOEe) {
 		    
-            AdminLog.setMessage(Language.getWord("UNLOADING_ST") + " "
+            LogAdmin.setMessage(Language.getWord("UNLOADING_ST") + " "
                     + IOEe.getMessage(), ServerConst.MESSAGE);
             
         } catch (ConfigFileNotLoadException e) {
@@ -67,7 +67,7 @@ public class Run {
 							+ "en el servidor de transacciones");
 			
 		} catch (PoolNotLoadException e) {
-			AdminLog.setMessage(e.getMessage(),ServerConst.ERROR);
+			LogAdmin.setMessage(e.getMessage(),ServerConst.ERROR);
 		} 
 	}
 
@@ -111,7 +111,7 @@ public class Run {
     private void escribirMensaje(SocketChannel channel) {
         try {
 
-            SelectXML test = new SelectXML("001-as", "DBMidas4", "SEL0001");
+            ResultSetToXML test = new ResultSetToXML("001-as", "DBMidas4", "SEL0001");
 
             XMLOutputter out = new XMLOutputter();
             

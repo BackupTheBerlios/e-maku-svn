@@ -13,7 +13,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 
 /**
- * QueryData.java Creado el 27-ene-2005
+ * GenericDataFiller.java Creado el 27-ene-2005
  * 
  * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
@@ -33,7 +33,7 @@ import org.jdom.Element;
  * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  */
-public class QueryData extends Thread {
+public class GenericDataFiller extends Thread {
 
     private GenericForm GFforma;
     private boolean ok_search;
@@ -49,7 +49,7 @@ public class QueryData extends Thread {
     private Class[] clase;
     private String[] method;
     
-    public QueryData(GenericForm GFforma,String namebutton,boolean ok_search,
+    public GenericDataFiller(GenericForm GFforma,String namebutton,boolean ok_search,
             		 String sql,String[] args,String arg,Vector Vfields) {
 		this.GFforma=GFforma;
 		this.namebutton=namebutton;
@@ -60,14 +60,14 @@ public class QueryData extends Thread {
 		this.Vfields=Vfields;
     }
     
-    public QueryData(GenericForm GFforma,String sql,String arg,XMLTextField[] XMLTFout) {
+    public GenericDataFiller(GenericForm GFforma,String sql,String arg,XMLTextField[] XMLTFout) {
 		this.GFforma=GFforma;
 		this.sql=sql;
 		this.arg=arg;
         this.XMLTFout=XMLTFout;
     }
     
-    public QueryData(GenericForm GFforma,String namebutton,boolean ok_search,
+    public GenericDataFiller(GenericForm GFforma,String namebutton,boolean ok_search,
             		 String sql,String[] args,String arg,XMLTextField[] XMLTFout) {
         this.GFforma=GFforma;
         this.namebutton=namebutton;
@@ -80,7 +80,7 @@ public class QueryData extends Thread {
         
     }
     
-    public QueryData(GenericForm GFforma,String namebutton,boolean ok_search,
+    public GenericDataFiller(GenericForm GFforma,String namebutton,boolean ok_search,
    		 String sql,String[] args,String arg,Object[] obj,Class[] clase,String[] method) {
 		this.GFforma=GFforma;
 		this.namebutton=namebutton;

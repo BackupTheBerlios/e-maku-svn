@@ -16,7 +16,7 @@ import common.gui.components.AnswerEvent;
 import common.gui.components.AnswerListener;
 import common.gui.components.ChangeValueEvent;
 import common.gui.components.ChangeValueListener;
-import common.gui.components.QueryData;
+import common.gui.components.GenericDataFiller;
 import common.gui.components.VoidPackageException;
 import common.gui.components.XMLTextField;
 import common.gui.forms.GenericForm;
@@ -177,7 +177,7 @@ public class AdminProdServ extends JPanel implements FocusListener {
      * Este metodo se encarga de consultar un producto
      */
     private void searchQuery() {
-        QueryData QDsearch = new QueryData( 
+        GenericDataFiller QDsearch = new GenericDataFiller( 
                 						   GFforma,
                 						   namebutton, 
                 						   enablebutton, 

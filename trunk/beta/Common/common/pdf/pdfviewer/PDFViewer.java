@@ -38,7 +38,7 @@ import java.util.ResourceBundle;
 
 import common.control.ReportEvent;
 import common.control.ReportListener;
-import common.control.ValidHeadersClient;
+import common.control.ClientHeaderValidator;
 import common.gui.forms.GenericForm;
 import common.misc.ZipHandler;
 import common.misc.language.Language;
@@ -89,7 +89,7 @@ public class PDFViewer implements ReportListener {
 				Language.getWord("AUVISTA"), Commands.SCALING);
 		createButtons();
 		currentGUI.initStatus();
-		ValidHeadersClient.addReportListener(this);
+		ClientHeaderValidator.addReportListener(this);
 	}
 	
 	

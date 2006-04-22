@@ -12,7 +12,7 @@ import client.gui.forms.Connection;
 import client.misc.ClientConst;
 import client.misc.settings.ConfigFile;
 import client.misc.settings.ConfigFileNotLoadException;
-import common.comunications.SocketConnect;
+import common.comunications.SocketConnector;
 import common.gui.forms.FirstDialog;
 import common.misc.language.Language;
 
@@ -101,7 +101,7 @@ public class Run {
         			Language.getWord("CLOSE_CURRENT_APP"),
         			"",JOptionPane.YES_NO_OPTION);
     		if(confirm==JOptionPane.YES_OPTION){
-    			SocketConnect.getSock().close();
+    			SocketConnector.getSock().close();
     		}
         }
         catch (NullPointerException e) {}

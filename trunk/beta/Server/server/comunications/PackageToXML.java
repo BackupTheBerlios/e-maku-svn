@@ -8,9 +8,9 @@ import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SocketChannel;
 import java.util.Vector;
 
-import common.comunications.WriteSocket;
+import common.comunications.SocketWriter;
 import common.misc.language.Language;
-import common.misc.log.AdminLog;
+import common.misc.log.LogAdmin;
 
 import server.control.ValidHeaders;
 import server.misc.ServerConst;
@@ -21,7 +21,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 /**
- * PackageToXML2.java Creado el 05-oct-2004
+ * PackageToXML.java Creado el 05-oct-2004
  * 
  * Este archivo es parte de E-Maku <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
@@ -41,7 +41,7 @@ import org.jdom.input.SAXBuilder;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David
  *         Cepeda </A>
  */
-public class PackageToXML2 extends Thread {
+public class PackageToXML extends Thread {
 
     private ByteBuffer buf;
     private SAXBuilder builder;
@@ -50,7 +50,7 @@ public class PackageToXML2 extends Thread {
 
     private SocketChannel channel;
 
-    public PackageToXML2(SocketChannel channel) {
+    public PackageToXML(SocketChannel channel) {
         this.channel = channel;
         this.setPriority(Thread.MIN_PRIORITY);
     }
@@ -122,8 +122,8 @@ public class PackageToXML2 extends Thread {
                         ErrorXML error = new ErrorXML();
                         String tmp = Language.getWord("ERR_FORMAT_PROTOCOL")
                                 + " " + channel.socket();
-                        AdminLog.setMessage(tmp, ServerConst.ERROR);
-                        WriteSocket.writing(channel, error.returnError(
+                        LogAdmin.setMessage(tmp, ServerConst.ERROR);
+                        SocketWriter.writing(channel, error.returnError(
                                 ServerConst.ERROR, "", tmp));
                     }
                 }

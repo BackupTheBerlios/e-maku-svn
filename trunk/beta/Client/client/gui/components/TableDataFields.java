@@ -11,7 +11,7 @@ import common.gui.forms.FinishEvent;
 import common.gui.forms.GenericForm;
 import common.gui.forms.InitiateFinishListener;
 import common.gui.forms.NotFoundComponentException;
-import common.misc.formulas.CalculateFormula;
+import common.misc.formulas.FormulaCalculator;
 
 import org.jdom.Document;
 
@@ -104,8 +104,8 @@ public class TableDataFields extends GenericData implements InitiateFinishListen
         DecimalFormat form = (DecimalFormat)nf;
         form.applyPattern("###,###,##0.00");
         
-        //return form.format(((Double)CalculateFormula.operar(newVar)).doubleValue());
-        return ((Double)(CalculateFormula.operar(newVar))).doubleValue();
+        //return form.format(((Double)FormulaCalculator.operar(newVar)).doubleValue());
+        return ((Double)(FormulaCalculator.operar(newVar))).doubleValue();
     }
 
 

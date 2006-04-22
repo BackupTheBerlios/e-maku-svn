@@ -3,7 +3,7 @@ package common.misc.formulas;
 import java.math.BigDecimal;
 import java.util.Vector;
 /**
- * CalculateFormula.java Creado el 20-jun-2005
+ * FormulaCalculator.java Creado el 20-jun-2005
  * 
  * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
@@ -23,7 +23,7 @@ import java.util.Vector;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  */
 
-public class CalculateFormula {
+public class FormulaCalculator {
 
     public static synchronized Object operar(String formula) throws NumberFormatException,ArrayIndexOutOfBoundsException {
     	

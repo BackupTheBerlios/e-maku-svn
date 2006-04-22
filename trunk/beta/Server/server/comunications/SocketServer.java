@@ -14,7 +14,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 
 import common.misc.language.Language;
-import common.misc.log.AdminLog;
+import common.misc.log.LogAdmin;
 import server.misc.ServerConst;
 import server.misc.settings.ConfigFile;
 /**
@@ -77,9 +77,9 @@ public class SocketServer {
             SSCcanal1.register(selector, SelectionKey.OP_ACCEPT);
             SSCcanal2.register(selector, SelectionKey.OP_ACCEPT);
 
-            AdminLog.setMessage(Language.getWord("SOCKET_SERVER_OPEN") + " "
+            LogAdmin.setMessage(Language.getWord("SOCKET_SERVER_OPEN") + " "
                     + ConfigFile.getSocketJClient(), ServerConst.MESSAGE);
-            AdminLog.setMessage(Language.getWord("SOCKET_SERVER_OPEN") + " "
+            LogAdmin.setMessage(Language.getWord("SOCKET_SERVER_OPEN") + " "
                     + ConfigFile.getSocketJAdmin(), ServerConst.MESSAGE);
 
             while (true) {
@@ -104,7 +104,7 @@ public class SocketServer {
                                     Hchannelclients.put(
                                             canalsocket, new InfoSocket(canalsocket.socket()));
 
-                                    AdminLog.setMessage(Language
+                                    LogAdmin.setMessage(Language
                                             .getWord("NEW_SOCKET_CLIENT")
                                             + " "
                                             + canalsocket.socket()
@@ -116,7 +116,7 @@ public class SocketServer {
 
                             } else if (clave.isReadable()) {
                                 SocketChannel canalsocket = (SocketChannel) clave.channel();
-                                PackageToXML2 packageXML2 = new PackageToXML2(canalsocket);
+                                PackageToXML packageXML2 = new PackageToXML(canalsocket);
                                 packageXML2.start();
                                 Thread.sleep(70);
                             }

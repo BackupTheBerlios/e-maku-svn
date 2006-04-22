@@ -755,7 +755,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 	public void cathSuccesEvent(SuccessEvent SEe) {
 		try {
 			String id = (String) GFforma.invokeMethod(
-					"common.gui.components.PanelButtons", "getIdTransaction");
+					"common.gui.components.ButtonsPanel", "getIdTransaction");
 			if (id.equals(SEe.getIdPackage())) {
 				loadingTablePUC();
 			}

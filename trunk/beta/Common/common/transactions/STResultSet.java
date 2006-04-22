@@ -5,8 +5,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
-import common.comunications.SocketConnect;
-import common.comunications.WriteSocket;
+import common.comunications.SocketConnector;
+import common.comunications.SocketWriter;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -85,8 +85,8 @@ public class STResultSet {
         String id = "Q"+getId();
         doc.getRootElement().addContent(new Element("id").setText(id));
         
-        SocketChannel socket = SocketConnect.getSock();
-        WriteSocket.writing(socket,doc);
+        SocketChannel socket = SocketConnector.getSock();
+        SocketWriter.writing(socket,doc);
         int i=0;
         while (!HspoolTransactions.containsKey(id)) {
             try {
@@ -99,7 +99,7 @@ public class STResultSet {
             catch(InterruptedException e) {
                 doc = new Document();
                 doc.setRootElement(new Element("ERROR"));
-                WriteSocket.writing(socket,doc);
+                SocketWriter.writing(socket,doc);
                 throw new STException();
             }
         }

@@ -27,14 +27,14 @@ import javax.swing.SwingConstants;
 
 import common.control.DateEvent;
 import common.control.DateListener;
-import common.control.ValidHeadersClient;
+import common.control.ClientHeaderValidator;
 import common.gui.forms.ChangeExternalValueEvent;
 import common.gui.forms.ChangeExternalValueListener;
 import common.gui.forms.FinishEvent;
 import common.gui.forms.GenericForm;
 import common.gui.forms.InitiateFinishListener;
 import common.gui.forms.NotFoundComponentException;
-import common.misc.formulas.CalculateFormula;
+import common.misc.formulas.FormulaCalculator;
 import common.misc.language.Language;
 import common.transactions.STException;
 import common.transactions.STResultSet;
@@ -368,12 +368,12 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
 
 	            if (systemDate) {
 	            	XMLText.setFormatDate(formatDate);
-	            	ValidHeadersClient.addDateListener(this);
+	            	ClientHeaderValidator.addDateListener(this);
 	            }
 	            
 	            if (!systemDate && formatDate!=null) {
 	            	XMLText.setFormatDate(formatDate);
-	            	ValidHeadersClient.addDateListener(this);
+	            	ClientHeaderValidator.addDateListener(this);
 	            }
 	            if (calculateDate!=null) {
 	            	XMLText.setCalculateDate(calculateDate);
@@ -466,7 +466,7 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
 				            			}
 				            			GFforma.cleanExternalValues();
 				            			if (!"".equals(XMLRefText.getText())) {
-								            new QueryData(
+								            new GenericDataFiller(
 								                    	  GFforma,
 								                    	  namebutton,
 								                    	  enablebutton,
@@ -908,7 +908,7 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
 	    			}
 	    		}
 	    		if (sqlLocal!=null) {
-	    			new QueryData(
+	    			new GenericDataFiller(
 	                    	  GFforma,
 	                    	  namebutton,
 	                    	  enablebutton,
@@ -944,7 +944,7 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
 		if (acumText.length() > 0) {
 			formulaFinal += GFforma.getExteralValues(acumText);
 		}
-		return ((Double)CalculateFormula.operar(formulaFinal)).doubleValue();
+		return ((Double)FormulaCalculator.operar(formulaFinal)).doubleValue();
 	}
 
 	public void cathDateEvent(DateEvent e) {

@@ -14,7 +14,7 @@
  *
  * @author  Luis Felipe Hernandez Z.
  * @see e-mail felipe@qhatu.net
- * ValidarFechas.java
+ * DateValidator.java
  *
  * Created on 9 de abril de 2004, 13:31
  */
@@ -25,11 +25,11 @@ package common.misc.text;
  *
  * @author  felipe
  */
-public class ValidarFechas {
+public class DateValidator {
     
     private String fecha;
-    /** Creates a new instance of ValidarFechas */
-    public ValidarFechas(String fecha) {
+    /** Creates a new instance of DateValidator */
+    public DateValidator(String fecha) {
         this.fecha=fecha;
     }
 

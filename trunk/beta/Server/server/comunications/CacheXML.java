@@ -13,8 +13,8 @@ import server.database.sql.SQLNotFoundException;
 import server.misc.ServerConst;
 
 import common.misc.language.Language;
-import common.misc.log.AdminLog;
-import common.comunications.WriteSocket;
+import common.misc.log.LogAdmin;
+import common.comunications.SocketWriter;
 
 import org.jdom.Document;
 
@@ -114,7 +114,7 @@ public class CacheXML extends Document {
                  */
                 
                 
-                WriteSocket.writing(sock,
+                SocketWriter.writing(sock,
                         ServerConst.CONTEN_TYPE+
                         ServerConst.TAGS_CACHE_ANSWER[0]+
                         ServerConst.TAGS_SQL[0]+ SQL +
@@ -129,7 +129,7 @@ public class CacheXML extends Document {
                      */
                     
                     if (!keys.containsKey(RSMDinfo.getColumnName(i)))
-	                    WriteSocket.writing(sock,
+	                    SocketWriter.writing(sock,
 	                            ServerConst.TAGS_COL_HEAD[0]+
 	                            RSMDinfo.getColumnTypeName(i)+
 	                            ServerConst.TAGS_COL_HEAD[1]+
@@ -142,7 +142,7 @@ public class CacheXML extends Document {
                  * 		</header>
                  * 		<value>
                  */
-                WriteSocket.writing(sock,ServerConst.TAGS_HEAD[1]);
+                SocketWriter.writing(sock,ServerConst.TAGS_HEAD[1]);
                         	                
                 /*
                  * Se recorre el resulset para a�adir los datos que contenga, y
@@ -162,7 +162,7 @@ public class CacheXML extends Document {
                     
                     
                     if (!new_key_data.equals(old_key_data)) {
-                        WriteSocket.writing(sock,ServerConst.TAGS_VALUE[0]+
+                        SocketWriter.writing(sock,ServerConst.TAGS_VALUE[0]+
                                 			ServerConst.TAGS_KEY[0]+
                                 			new_key_data+
                                 			ServerConst.TAGS_KEY[1]+
@@ -173,20 +173,20 @@ public class CacheXML extends Document {
                      * <row>
                      * 	<col>value</col>
                      */
-                    WriteSocket.writing(sock,ServerConst.TAGS_ROW[0]);
+                    SocketWriter.writing(sock,ServerConst.TAGS_ROW[0]);
                     for (int j = num_col_keys+1; j <= columnas; j++) {
-                        WriteSocket.writing(sock,ServerConst.TAGS_COL[0] + 
+                        SocketWriter.writing(sock,ServerConst.TAGS_COL[0] + 
                                 RSdatos.getString(j).trim()+
                                 ServerConst.TAGS_COL[1]
                             );
                     }
-                    WriteSocket.writing(sock,ServerConst.TAGS_ROW[1]);
+                    SocketWriter.writing(sock,ServerConst.TAGS_ROW[1]);
                     /*
                      * </row>
                      */
                     
                     if (!new_key_data.equals(old_key_data) && !old_key_data.equals("")) {
-                        WriteSocket.writing(sock,ServerConst.TAGS_ANSWER[1]+
+                        SocketWriter.writing(sock,ServerConst.TAGS_ANSWER[1]+
                                 			ServerConst.TAGS_VALUE[1]
                                 			);
                         close_tags=false;
@@ -198,44 +198,44 @@ public class CacheXML extends Document {
                 }
                 
                 if (close_tags)
-                    WriteSocket.writing(sock,ServerConst.TAGS_ANSWER[1]+
+                    SocketWriter.writing(sock,ServerConst.TAGS_ANSWER[1]+
                 			ServerConst.TAGS_VALUE[1]);
                 			
                         
-                WriteSocket.writing(sock,ServerConst.TAGS_CACHE_ANSWER[1]);
+                SocketWriter.writing(sock,ServerConst.TAGS_CACHE_ANSWER[1]);
                 
                 CloseSQL.close(RSdatos);
-                AdminLog.setMessage(Language.getWord("OK_CREATING_XML"),
+                LogAdmin.setMessage(Language.getWord("OK_CREATING_XML"),
                         ServerConst.MESSAGE);
 
             }
             catch (SQLException SQLEe) {
                 String err =
                     Language.getWord("ERR_RS") + " " + SQLEe.getMessage();
-                AdminLog.setMessage(err, ServerConst.ERROR);
+                LogAdmin.setMessage(err, ServerConst.ERROR);
                 ErrorXML error = new ErrorXML();
-                WriteSocket.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
+                SocketWriter.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
             }
             rselect.closeStatement();
         }
         catch (SQLNotFoundException QNFEe) {
             String err = QNFEe.getMessage();
-            AdminLog.setMessage(err, ServerConst.ERROR);
+            LogAdmin.setMessage(err, ServerConst.ERROR);
             ErrorXML error = new ErrorXML();
-            WriteSocket.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
+            SocketWriter.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
 
         } 
         catch (SQLException SQLEe) {
             String err = Language.getWord("ERR_ST") + " " + SQLEe.getMessage();
-            AdminLog.setMessage(err, ServerConst.ERROR);
+            LogAdmin.setMessage(err, ServerConst.ERROR);
             ErrorXML error = new ErrorXML();
-            WriteSocket.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
+            SocketWriter.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
         }
         catch (SQLBadArgumentsException QBAEe) {
             String err = QBAEe.getMessage();
-            AdminLog.setMessage(err, ServerConst.ERROR);
+            LogAdmin.setMessage(err, ServerConst.ERROR);
             ErrorXML error = new ErrorXML();
-            WriteSocket.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
+            SocketWriter.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
         }
     }
 }
