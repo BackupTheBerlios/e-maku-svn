@@ -24,7 +24,7 @@
  * E-Maku o JMServer, dependiendo de la informaci?n obtenida de un archivo XML
  */
 
-package client.gui.toolbarXML;
+package client.gui.xmltoolbar;
 
 import java.io.IOException;
 import java.net.URL;
@@ -43,7 +43,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
-public class LoadToolbar extends JPanel {
+public class ToolbarLoader extends JPanel {
 
 
     /**
@@ -57,11 +57,11 @@ public class LoadToolbar extends JPanel {
 
     private Vector<JButtonXML> Items;
 
-    public LoadToolbar() {
+    public ToolbarLoader() {
 
     }
 
-    public LoadToolbar(URL FileXML) {
+    public ToolbarLoader(URL FileXML) {
         this.FileXML = FileXML;
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         //this.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -88,7 +88,7 @@ public class LoadToolbar extends JPanel {
                 Iterator j = Lsubdatos.iterator();
                 /**
                  * Se adicionara todos los menus principales a la clase
-                 * LoadToolbar
+                 * ToolbarLoader
                  */
                 this.add(CargarJToolbar(j));
             }

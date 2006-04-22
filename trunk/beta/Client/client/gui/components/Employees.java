@@ -28,7 +28,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 
 /**
- * Empleados.java Creado el 07-jul-2005
+ * Employees.java Creado el 07-jul-2005
  * 
  * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
@@ -49,7 +49,7 @@ import org.jdom.Element;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  */
 
-public class Empleados extends JPanel {
+public class Employees extends JPanel {
 
     /**
 	 * 
@@ -88,7 +88,7 @@ public class Empleados extends JPanel {
      * @param doc Parametros del componente
      */
     
-    public Empleados(GenericForm GFforma, Document doc) {
+    public Employees(GenericForm GFforma, Document doc) {
         this.GFforma=GFforma;
         
         Iterator i = doc.getRootElement().getChildren().iterator();

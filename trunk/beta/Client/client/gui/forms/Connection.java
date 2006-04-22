@@ -30,7 +30,7 @@ import javax.swing.JPanel;
 
 import client.Run;
 import client.comunications.SendCNX;
-import client.control.ValidHeaders;
+import client.control.HeadersValidator;
 import client.gui.components.panels.PAutentication;
 import client.misc.ClientConst;
 import client.misc.settings.ConfigFile;
@@ -42,7 +42,7 @@ import common.misc.language.Language;
 import common.misc.parameters.GenericParameters;
 
 /**
- * Conexion.java Creado el 03-ago-2004
+ * Connection.java Creado el 03-ago-2004
  * 
  * Este archivo es parte de JMClient <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
@@ -64,13 +64,13 @@ import common.misc.parameters.GenericParameters;
  *         Cepeda </A>
  */
 
-public class Conexion {
+public class Connection {
 
     private static JFrame JFConexion;
     private PAutentication JPAutenticacion;
     private static JButton JBconectar;
     
-    public Conexion() {
+    public Connection() {
                 
         JFConexion = new JFrame(Language.getWord("TITLE-CONEC"));
         JFConexion.setResizable(false);
@@ -155,7 +155,7 @@ public class Conexion {
             JFConexion.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			try {
 				PackageToXML2 packageXML = new PackageToXML2();
-				ValidHeaders valid = new ValidHeaders();
+				HeadersValidator valid = new HeadersValidator();
 				packageXML.addArrivePackageistener(valid);
 				connect = new SocketConnect(ConfigFile.getHost(),
 						  ConfigFile.getServerport(),packageXML);

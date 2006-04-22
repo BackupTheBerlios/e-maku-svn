@@ -1,4 +1,4 @@
-package client.gui.menuXML;
+package client.gui.xmlmenu;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -35,7 +35,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 /**
  * 
- * LoadMenu.java Creado el 35-mar-2004
+ * MenuLoader.java Creado el 35-mar-2004
  * 
  * Este archivo es parte de JMClient <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
@@ -55,7 +55,7 @@ import org.jdom.input.SAXBuilder;
  * 
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez </A>
  */
-public class LoadMenu extends JMenuBar {
+public class MenuLoader extends JMenuBar {
 
 	private static final long serialVersionUID = 1526271282346654939L;
 
@@ -68,7 +68,7 @@ public class LoadMenu extends JMenuBar {
     /**
      * Constructor con parametro relacionado al archivo XML del menu
      */
-    public LoadMenu(URL FileXML) {
+    public MenuLoader(URL FileXML) {
         this.FileXML = FileXML;
     }
 
@@ -95,7 +95,7 @@ public class LoadMenu extends JMenuBar {
                 java.util.List Lsubdatos = datos.getChildren();
                 Iterator j = Lsubdatos.iterator();
                 /**
-                 * Se adicionara todos los menus principales a la clase LoadMenu
+                 * Se adicionara todos los menus principales a la clase MenuLoader
                  */
                 this.add(CargarJMenu(j));
             }

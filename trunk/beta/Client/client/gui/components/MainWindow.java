@@ -15,9 +15,9 @@ import javax.swing.JPanel;
 
 import client.Run;
 import client.gui.forms.Splash;
-import client.gui.menuXML.LoadMenu;
-import client.gui.toolbarXML.JButtonXML;
-import client.gui.toolbarXML.LoadToolbar;
+import client.gui.xmlmenu.MenuLoader;
+import client.gui.xmltoolbar.JButtonXML;
+import client.gui.xmltoolbar.ToolbarLoader;
 import client.misc.ClientConst;
 import common.misc.language.Language;
 
@@ -77,13 +77,13 @@ public class MainWindow extends JFrame {
          * Creando e Instanciando del Menu y la Barras de herramientas 
          */
 
-        LoadMenu menu = 
-            new LoadMenu(this.getClass().getResource("/client/xml-midas/menu.xml"));
+        MenuLoader menu = 
+            new MenuLoader(this.getClass().getResource("/client/xml-midas/menu.xml"));
         
         menu.Loading();
         menu.setDisabledAll();
 
-        LoadToolbar toolbar1 = new LoadToolbar(this.getClass().getResource(
+        ToolbarLoader toolbar1 = new ToolbarLoader(this.getClass().getResource(
                 "/client/xml-midas/toolbar.xml"));
 
         Vtoolbar1 = toolbar1.Loading();

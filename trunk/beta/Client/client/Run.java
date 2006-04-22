@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import client.gui.components.MainWindow;
-import client.gui.forms.Conexion;
+import client.gui.forms.Connection;
 import client.misc.ClientConst;
 import client.misc.settings.ConfigFile;
 import client.misc.settings.ConfigFileNotLoadException;
@@ -79,7 +79,7 @@ public class Run {
             UIManager.put("TabbedPane.font",	f);
 
             ConfigFile.Cargar();
-            new Conexion();
+            new Connection();
 
         }
 

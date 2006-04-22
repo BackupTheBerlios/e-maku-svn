@@ -27,7 +27,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 
 /**
- * Terceros.java Creado el 11-oct-2004
+ * Third.java Creado el 11-oct-2004
  * 
  * Este archivo es parte de E-Maku <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
@@ -46,7 +46,7 @@ import org.jdom.Element;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez </A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda </A>
  */
-public class Terceros extends JPanel {
+public class Third extends JPanel {
 
 	private static final long serialVersionUID = 8563377749593766736L;
 	private GenericForm GFforma;
@@ -65,12 +65,12 @@ public class Terceros extends JPanel {
     private Vector<AnswerListener> AnswerListener = new Vector<AnswerListener>();
 	private XMLComboBox XMLCBcatalogo;
 	private String mode = "NEW";
-    public Terceros(GenericForm GFforma) {
+    public Third(GenericForm GFforma) {
         this.GFforma = GFforma;
         Generar();
     }
 
-    public Terceros(GenericForm GFforma, Document doc) {
+    public Third(GenericForm GFforma, Document doc) {
         this.GFforma = GFforma;
         Iterator i = doc.getRootElement().getChildren().iterator();
         namebutton = "SAVE";

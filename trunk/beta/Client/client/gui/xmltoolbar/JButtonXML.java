@@ -21,7 +21,7 @@
  * Created on 4 de abril de 2004, 17:24
  */
 
-package client.gui.toolbarXML;
+package client.gui.xmltoolbar;
 
 
 import java.awt.Dimension;

@@ -34,7 +34,7 @@ import javax.swing.table.TableCellRenderer;
 
 import client.control.SuccessEvent;
 import client.control.SuccessListener;
-import client.control.ValidHeaders;
+import client.control.HeadersValidator;
 import common.gui.components.VoidPackageException;
 import common.gui.components.XMLTextField;
 import common.gui.forms.GenericForm;
@@ -66,7 +66,7 @@ import org.jdom.Element;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez </A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda </A>
  */
-public class AdminCtas extends JPanel implements ActionListener,
+public class AccountsAdmin extends JPanel implements ActionListener,
 		SuccessListener {
 
 	private static final long serialVersionUID = -8164365878390790722L;
@@ -98,7 +98,7 @@ public class AdminCtas extends JPanel implements ActionListener,
 	 * 
 	 * @param GFforma
 	 */
-	public AdminCtas(GenericForm GFforma) {
+	public AccountsAdmin(GenericForm GFforma) {
 		this.GFforma = GFforma;
 		loading();
 	}
@@ -110,7 +110,7 @@ public class AdminCtas extends JPanel implements ActionListener,
 	 * @param GFforma
 	 * @param doc
 	 */
-	public AdminCtas(GenericForm GFforma, Document doc) {
+	public AccountsAdmin(GenericForm GFforma, Document doc) {
 
 		super(new BorderLayout(10, 10));
 
@@ -144,7 +144,7 @@ public class AdminCtas extends JPanel implements ActionListener,
 
 		JPanel JPconten = new JPanel(new BorderLayout());
 
-		ValidHeaders.addSuccessListener(this);
+		HeadersValidator.addSuccessListener(this);
 
 		JTpuc = new JTable() {
 			private static final long serialVersionUID = -6734025632190628817L;

@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 
 import client.gui.components.MainWindow;
 import client.gui.components.StatusBar;
-import client.gui.forms.Conexion;
+import client.gui.forms.Connection;
 import client.gui.forms.Splash;
 import common.comunications.ArrivePackageEvent;
 import common.comunications.ArrivePackageListener;
@@ -45,7 +45,7 @@ import org.jdom.output.XMLOutputter;
  *         Cepeda </A>
  */
 
-public class ValidHeaders implements ArrivePackageListener {
+public class HeadersValidator implements ArrivePackageListener {
 
     private static Element raiz;
     private static Vector<SuccessListener> successListener = new Vector<SuccessListener>();
@@ -58,7 +58,7 @@ public class ValidHeaders implements ArrivePackageListener {
      *            Documento a validar
      */
 
-    public ValidHeaders(){
+    public HeadersValidator(){
     	
     }
     
@@ -82,7 +82,7 @@ public class ValidHeaders implements ArrivePackageListener {
 	         *  Validacion paquete ACP
 	         */
 	        if(nombre.equals("ACPBegin")) {
-	            Conexion.dispose();
+	            Connection.dispose();
 	            Splash.ShowSplash();
 	            ACPHandler.ACPBegin(doc);
 	            new MainWindow();
@@ -94,8 +94,8 @@ public class ValidHeaders implements ArrivePackageListener {
 	        else if(nombre.equals("ACPFAILURE")) {
 	            String message = raiz.getChildText("message");
 	            JOptionPane.showMessageDialog(null,message);
-	            Conexion.setEnabled();
-	            Conexion.setCursorState(Cursor.DEFAULT_CURSOR);
+	            Connection.setEnabled();
+	            Connection.setCursorState(Cursor.DEFAULT_CURSOR);
 	            try {
 					SocketConnect.getSock().close();
 				} catch (IOException e) {
@@ -154,7 +154,7 @@ public class ValidHeaders implements ArrivePackageListener {
 	                }
 	        	}
 	            
-	            SuccessEvent event = new SuccessEvent(new ValidHeaders(),id);
+	            SuccessEvent event = new SuccessEvent(new HeadersValidator(),id);
 	            notifySuccess(event);
 	        }
 	        
