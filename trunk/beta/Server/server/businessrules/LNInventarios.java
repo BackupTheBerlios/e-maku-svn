@@ -463,7 +463,7 @@ public class LNInventarios {
     public void traslados(Element pack) throws LNErrorProcecuteException, 
     SQLBadArgumentsException,SQLBadArgumentsException, SQLNotFoundException, SQLException {
         try {
-            
+            System.out.println("Generando traslados ");
             RunQuery RQentradas = new RunQuery(bd,"INS0052");
             RunQuery RQsalidas = new RunQuery(bd,"INS0038");
  
@@ -503,14 +503,20 @@ public class LNInventarios {
     
     private void makeRecord(RunQuery RQentradas,RunQuery RQsalidas,Element pack) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+    	System.out.println("Generando movimientos ...");
     	String[] records = salidaBodega(pack);
     	RQsalidas.ejecutarSQL(records);
     	String valorEntrada = records[6];
-    	RQentradas.ejecutarSQL(entradaBodega(pack,valorEntrada));
+    	String[] ventradas = entradaBodega(pack,valorEntrada);
+    	System.out.println("recorriendo vector de entradas");
+    	for (int i=0;i<ventradas.length;i++)
+    		System.out.println("entradas pos "+i+" valor: "+ventradas[i]);
+    	
+    	RQentradas.ejecutarSQL(ventradas);
     }
     
 	private String[] salidaBodega(Element pack) {
-         
+		System.out.println("salida de bodega");
     	/*
          * REGISTRO DE UNA SALIDA
          * 
@@ -525,7 +531,7 @@ public class LNInventarios {
          * record[8] = valor_saldo
          */
     	
-        String[] record = new String[8];
+        String[] record = new String[9];
         
         /*
          * El primer registro es la fecha;
@@ -541,8 +547,11 @@ public class LNInventarios {
          */
         while (i.hasNext()) {
         	Element field = (Element)i.next();
-        	String nameField = field.getAttributeValue("nameField");
-        	if ("idProdServ".equals(nameField)) {
+        	String nameField = field.getAttributeValue("name");
+        	if ("bodegaSaliente".equals(nameField)) {
+        		record[2] = field.getValue();
+        	}
+        	else if ("idProducto".equals(nameField)) {
         		record[3] = field.getValue();
         	}
         	else if ("cantidad".equals(nameField)) {
@@ -577,12 +586,18 @@ public class LNInventarios {
         record[6]   = String.valueOf(pcosto);
         record[7] = String.valueOf(saldo);
         record[8] = String.valueOf(vsaldo);
+        
+        CacheEnlace.setSaldoInventario(bd, record[2], record[3],saldo);
+        CacheEnlace.setVSaldoInventario(bd, record[2], record[3],vsaldo);
+
         return record;
         
     }
     
 	private String[] entradaBodega(Element pack,String valorEntrada) {
-    	/* 
+		System.out.println("entrada de bodega");
+		
+		/* 
          * REGISTROS DE UNA ENTRADA
          * 
          * record[0] = fecha
@@ -596,12 +611,12 @@ public class LNInventarios {
          * record[8] = valor_saldo
          */
 
-    	String[] record = new String[8];
+    	String[] record = new String[9];
     	
         record[0] = CacheKeys.getDate();
         record[1] = CacheKeys.getKey("ndocumento");
         record[2] = CacheKeys.getKey("bodegaEntrante");
-
+        
         Iterator i = pack.getChildren().iterator();
         /*
          * Este ciclo se encarga de sacar la informacion necesaria para generar
@@ -609,8 +624,11 @@ public class LNInventarios {
          */
         while (i.hasNext()) {
         	Element field = (Element)i.next();
-        	String nameField = field.getAttributeValue("nameField");
-        	if ("idProdServ".equals(nameField)) {
+        	String nameField = field.getAttributeValue("name");
+        	if ("bodegaEntrante".equals(nameField)) {
+        		record[2] = field.getValue();
+        	}
+        	else if ("idProducto".equals(nameField)) {
         		record[3] = field.getValue();
         	}
         	else if ("cantidad".equals(nameField)) {
@@ -628,6 +646,7 @@ public class LNInventarios {
          */
 
         LNUndoSaldos.setSaldoAntInv(bd, record[2], record[3],saldo);
+        
         double entrada = Double.parseDouble(record[4]);
         vsaldo+= (entrada*ventrada);
         saldo+= entrada;
@@ -642,6 +661,9 @@ public class LNInventarios {
 	    record[8] = String.valueOf(vsaldo);
 	    CacheEnlace.setPCosto(bd, record[2], record[3],pcosto);
 
+        CacheEnlace.setSaldoInventario(bd, record[2], record[3],saldo);
+        CacheEnlace.setVSaldoInventario(bd, record[2], record[3],vsaldo);
+        
         return record;
     }
 }

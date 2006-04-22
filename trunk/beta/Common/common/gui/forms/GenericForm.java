@@ -1373,7 +1373,6 @@ public class GenericForm extends JInternalFrame{
 		Iterator it = elm.getChildren().iterator();
 		while (it.hasNext()) {
 			Element element = (Element) it.next();
-			System.out.println("Field {"+element.getValue()+"}");
 			if ("".equals(element.getValue().trim())) {
 				return false;
 			}
