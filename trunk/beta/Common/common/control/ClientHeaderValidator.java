@@ -100,11 +100,13 @@ public class ClientHeaderValidator {
         }
         else if(nombre.equals("REPORT")) {
 			// Aqui se debe notificar que llego el reporte
+        	Element element = null;
+        	element = raiz.getChild("data");
 			ReportEvent report = new ReportEvent(
 										new ClientHeaderValidator(),
 										raiz.getChildText("idReport"),
 										raiz.getChildText("titleReport"),
-										raiz.getChild("data"));
+										element);
 			notifyReport(report);
 			return true;
         }

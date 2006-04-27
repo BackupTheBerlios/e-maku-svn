@@ -3987,5 +3987,11 @@
     <es_ES></es_ES>
     <en_US>Report of store in by date and value</en_US>
   </palabra>
-  
+  <palabra>
+    <clave>REPORT_DONT_EXIST</clave>
+    <es_CO>El reporte {0} no existe</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>The report {0} don't exist</en_US>
+  </palabra>  
 </idioma>

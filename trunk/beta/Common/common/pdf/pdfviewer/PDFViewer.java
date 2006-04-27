@@ -34,21 +34,24 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
+import javax.swing.JOptionPane;
+
+import org.jdom.Element;
+import org.jpedal.PdfDecoder;
+import org.jpedal.exception.PdfFontException;
+
+import common.control.ClientHeaderValidator;
 import common.control.ReportEvent;
 import common.control.ReportListener;
-import common.control.ClientHeaderValidator;
 import common.gui.forms.GenericForm;
 import common.misc.ZipHandler;
 import common.misc.language.Language;
 import common.pdf.pdfviewer.gui.GUIFactory;
 import common.pdf.pdfviewer.gui.SwingGUI;
 import common.pdf.pdfviewer.utils.Printer;
-
-import org.jdom.Element;
-import org.jpedal.PdfDecoder;
-import org.jpedal.exception.PdfFontException;
 
 public class PDFViewer implements ReportListener {
 
@@ -214,10 +217,16 @@ public class PDFViewer implements ReportListener {
 		if (e.getIdReport().equals(idReport)) {
 			try {
 				data = e.getData();
-				byte [] bytesReport = zip.getDataDecode(data.getValue());
-				openReport(e.getTitleReport(), bytesReport);
 				Cursor cursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 				currentGUI.getFrame().setCursor(cursor);
+				if (data!=null) {
+					byte [] bytesReport = zip.getDataDecode(data.getValue());
+					openReport(e.getTitleReport(), bytesReport);
+				}
+				else {
+					String txt = MessageFormat.format(Language.getWord("REPORT_DONT_EXIST"),idReport);
+					JOptionPane.showInternalMessageDialog(currentGUI.getFrame(),txt);
+				}
 			}
 			catch (IOException IOEe) {
 				IOEe.printStackTrace();

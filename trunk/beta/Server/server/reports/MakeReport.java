@@ -56,74 +56,73 @@ public class MakeReport extends Thread {
 					SocketServer.getBd(socket),
 					"SEL0208",
 					new String[] { codigo }).ejecutarSELECT();
-			rs.next();
-			XMLOutputter xmout = new XMLOutputter();
-			xmout.setFormat(Format.getPrettyFormat());
-			xmout.output(element,System.out);
-			//System.out.println("Generando reporte No. " + codigo);
-			//InputStream iosTemplate = rs.getAsciiStream(1);
-			String title = rs.getString(1);
-			String sql = rs.getString(2);
-			this.id = element.getChildText("id");
-			List list = element.getChild("package").getChildren();
-			Iterator it = list.iterator();
-			args = new String[list.size()];
-			rs.close();
-			rs = null;
-			if (list.size() > 0) {
-				for (int i = 0; it.hasNext(); i++) {
-					Element arg = (Element) it.next();
-					args[i] = arg.getValue();
-				}
-				rs = new RunQuery(SocketServer.getBd(socket), sql, args).ejecutarSELECT();
-			} else {
-				rs = new RunQuery(SocketServer.getBd(socket), sql).ejecutarSELECT();
-			}
-			JRResultSetDataSource jrRS = new JRResultSetDataSource(rs);
+			boolean next = rs.next();
+			String title = null;
+			String sql = null;
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
-			Map <String,String>parameters = new HashMap<String,String>();
-			parameters.put("Title", title);
-			parameters.put("Empresa", SocketServer.getBd(socket));
-			parameters.put("Nit", "");
-			parameters.put("Fecha", new Date().toString());
-
-			//System.out.println(" * Cargando entrada XML...");
-			//JasperDesign jasperDesign = JRXmlLoader.load(iosTemplate);
-			//ObjectInputStream obj = new ObjectInputStream(new FileInputStream("/home/midas/report.jasper"));
-			//JasperReport jasperReport = null;
-			/*try {
-				jasperReport = (JasperReport)obj.readObject();
-				System.out.println(" * jasperReport = (JasperReport)obj.readObject();");
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}*/
-			//JasperCompileManager.compileReportToStream(jasperDesign,new FileOutputStream("/home/pastuxso/report.jasper"));
-			
-			
-			//JasperPrint jasperPrint = FillManager.fillReport(jasperReport, parameters, jrRS);
-			
-			//JRBaseFiller filler = createFiller(jasperReport);
-			JRBaseFiller filler = createFiller(ReportsStore.getReportClass(codigo));
-			System.out.println(" * createFiller(jasperReport)");
-			JasperPrint jasperPrint = filler.fill(parameters,jrRS);
-			System.out.println(" * filler.fill(parameters,jrRS)");
-			JasperExportManager.exportReportToPdfStream(jasperPrint,os);
-			System.out.println(" * exportado a pdf");
-			os.close();
-			
 			Document docZip = new Document();
-			Element root = new Element("REPORT");
-			Element id = new Element("id").setText(this.id);
-			Element idReport = new Element("idReport").setText(codigo);
-			Element titleReport = new Element("titleReport").setText(parameters.get("Title"));
+			if (next) {
+				XMLOutputter xmout = new XMLOutputter();
+				xmout.setFormat(Format.getPrettyFormat());
+				xmout.output(element,System.out);
+				//System.out.println("Generando reporte No. " + codigo);
+				//InputStream iosTemplate = rs.getAsciiStream(1);
+				title = rs.getString(1);
+				sql = rs.getString(2);
 			
-			ZipHandler zip = new ZipHandler(os,"report.pdf");
-			root.addContent(id);
-			root.addContent(idReport);
-			root.addContent(titleReport);
-			root.addContent(zip.getElementDataEncode("data"));
-	    	docZip.setRootElement(root);
-	        SocketWriter.writing(this.socket,docZip);
+				this.id = element.getChildText("id");
+				List list = element.getChild("package").getChildren();
+				Iterator it = list.iterator();
+				args = new String[list.size()];
+				rs.close();
+				rs = null;
+				if (list.size() > 0) {
+					for (int i = 0; it.hasNext(); i++) {
+						Element arg = (Element) it.next();
+						args[i] = arg.getValue();
+					}
+					rs = new RunQuery(SocketServer.getBd(socket), sql, args).ejecutarSELECT();
+				} else {
+					rs = new RunQuery(SocketServer.getBd(socket), sql).ejecutarSELECT();
+				}
+				JRResultSetDataSource jrRS = new JRResultSetDataSource(rs);
+				
+				Map <String,String>parameters = new HashMap<String,String>();
+				parameters.put("Title", title);
+				parameters.put("Empresa", SocketServer.getBd(socket));
+				parameters.put("Nit", "");
+				parameters.put("Fecha", new Date().toString());
+	
+				JRBaseFiller filler = createFiller(ReportsStore.getReportClass(codigo));
+				System.out.println(" * createFiller(jasperReport)");
+				JasperPrint jasperPrint = filler.fill(parameters,jrRS);
+				System.out.println(" * filler.fill(parameters,jrRS)");
+				JasperExportManager.exportReportToPdfStream(jasperPrint,os);
+				System.out.println(" * exportado a pdf");
+				os.close();
+		
+				Element root = new Element("REPORT");
+				Element id = new Element("id").setText(this.id);
+				Element idReport = new Element("idReport").setText(codigo);
+				Element titleReport = new Element("titleReport").setText(parameters.get("Title"));
+				ZipHandler zip = new ZipHandler(os,"report.pdf");
+				root.addContent(id);
+				root.addContent(idReport);
+				root.addContent(titleReport);
+				root.addContent(zip.getElementDataEncode("data"));
+		    	docZip.setRootElement(root);
+		        
+			}
+			else {
+				Element root = new Element("REPORT");
+				Element id = new Element("id").setText(this.id);
+				Element idReport = new Element("idReport").setText(codigo);
+				root.addContent(id);
+				root.addContent(idReport);
+		    	docZip.setRootElement(root);
+			}
+			
+			SocketWriter.writing(this.socket,docZip);
 	        rs.close();
 
 		} catch (SQLException e) {
