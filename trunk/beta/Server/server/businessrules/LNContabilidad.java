@@ -239,6 +239,7 @@ public class LNContabilidad {
 		 * Este ciclo recorrera todos los elementos del vector ValidFields y generara su respectivo
 		 * registro en el libro axiliar.
 		 */
+		
 		for (int i=0;i<accountFields.size();i++) {
 			
 			String account = accountFields.get(i);
@@ -454,14 +455,14 @@ public class LNContabilidad {
 		/*
 		 * Recorriendo las filas ....
 		 */
-		Iterator i = pack.getChildren().iterator();
+	//	Iterator i = pack.getChildren().iterator();
 		String idCta ="";
 		String value="";
 		double valueAccount = 0;
 		
-		while (i.hasNext()) {
-			Element e = (Element)i.next();
-			List lpack = e.getChildren();
+		//while (i.hasNext()) {
+		//	Element e = (Element)i.next();
+			List lpack = pack.getChildren();
 			naturaleza.booleanValue();
 			
 			if (accountKey!=-1) {
@@ -542,7 +543,7 @@ public class LNContabilidad {
 				throw new LNErrorProcecuteException("");
 			}
 		
-		}
+//		}
 
 		return partidaDoble;
 
@@ -582,7 +583,7 @@ public class LNContabilidad {
 		 *    un asiento contable.
 		 */
 		
-		Iterator i = pack.getChildren().iterator();
+	//	Iterator i = pack.getChildren().iterator();
 		
 		double partidaDoble = 0.0;
 		/*
@@ -590,10 +591,10 @@ public class LNContabilidad {
 		 */
 
 
-		while (i.hasNext()) {
-			Element e = (Element)i.next();
-			List colElement = e.getChildren();
-			
+//		while (i.hasNext()) {
+//			Element e = (Element)i.next();
+//			List colElement = e.getChildren();
+			List colElement = pack.getChildren();
 			/*
 			 * Se recorre las columnas validas para generar
 			 * transacciones y se obtiene los datos de las columnas ...
@@ -729,7 +730,7 @@ public class LNContabilidad {
 				}
 			}
 		
-		}
+		//}
 
 		return partidaDoble;
 		

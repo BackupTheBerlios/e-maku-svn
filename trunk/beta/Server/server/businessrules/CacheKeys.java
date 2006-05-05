@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public class CacheKeys {
 
-    private static Map keys = new LinkedHashMap();
+    private static Map<Object,String> keys = new LinkedHashMap<Object,String>();
     private static String date = "";
     
     /*
@@ -36,7 +36,8 @@ public class CacheKeys {
         return keys;
     }
     */
-    public static void setKeys(Map keys) {
+    @SuppressWarnings("unchecked")
+	public static void setKeys(Map keys) {
         CacheKeys.keys = keys;
     }
     
@@ -51,6 +52,11 @@ public class CacheKeys {
     public static String getKey(String idKey) {
     	return (String)keys.get(idKey);
     }
+    
+    public static void setKey(String key,String value) {
+    	keys.put(key,value);
+    }
+    
     /*
     public static String getKey(int index) {
     	Vector vector = new Vector(keys.values());

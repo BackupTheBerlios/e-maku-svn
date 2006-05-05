@@ -1,5 +1,6 @@
 package server.businessrules;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -22,6 +23,8 @@ import server.database.sql.SQLNotFoundException;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
 /**
  * LNDocuments.java Creado el 29-jun-2005
@@ -386,7 +389,16 @@ public class LNDocuments {
 	    			            }
 	                        }
 	                        else if (subargs.getName().equals("LNData")) {
-	    	                    validLNData(subargs,subpackage);
+	                            if (((Element)subpackage.getChildren().iterator().next()).getName().equals("field")) {
+		    	                    validLNData(subargs,subpackage);
+	                            }
+	                            else {
+	                    	        Iterator ipack = subpackage.getChildren().iterator();
+	                                while (ipack.hasNext()) {
+	                                    Element epack = (Element)ipack.next();
+	    	    	                    validLNData(subargs,epack);
+	                                }
+	                            }
 	                        }
 	                        else {
 	    	                    undoTransaction(Language.getWord("ERR_PACKAGE_NOT_FOUND")+" "+subargs.getValue());
@@ -395,7 +407,16 @@ public class LNDocuments {
 	                    }
 	                }
 	                else if (sql.getName().equals("LNData")) {
-	                    validLNData(sql,subpackage);
+                        if (((Element)subpackage.getChildren().iterator().next()).getName().equals("field")) {
+    	                    validLNData(sql,subpackage);
+                        }
+                        else {
+                	        Iterator ipack = subpackage.getChildren().iterator();
+                            while (ipack.hasNext()) {
+                                Element epack = (Element)ipack.next();
+	    	                    validLNData(sql,epack);
+                            }
+                        }
 	                }
 	                else {
 	                    undoTransaction(Language.getWord("ERR_PACKAGE_NOT_FOUND")+" "+sql.getName());
@@ -498,6 +519,7 @@ public class LNDocuments {
 
     }
 
+    
     private static String getPrimaryKey(String numero) throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
         String primaryKey=null;
         RunQuery RQkey = new RunQuery(bd,"SEL0073",new String[]{idDocument,numero});
@@ -554,7 +576,18 @@ public class LNDocuments {
                 parameters = e;
             }
         }
-        
+        System.out.println("paquete a procesar:");
+		Document doc = new Document();
+		doc.setRootElement((Element)pack.clone());
+		 XMLOutputter out = new XMLOutputter();
+		 out.setFormat(Format.getPrettyFormat());
+		 try {
+			out.output(doc,System.out);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
         /*
          * Hagamos una trampa: resulta que en este paquete se parametriza tanto el driver o clase como
          * el metodo que se va a ejecutar, esto se instanciara en tiempo de ejecucion. La trampa es la
@@ -577,7 +610,7 @@ public class LNDocuments {
         if ("LNInventarios".equals(driver)) {
             LNInventarios LNIprocesar = new LNInventarios(parameters,SocketServer.getBd(sock));
             if (method.equals("movimientos")) {
-                LNIprocesar.movimientos(pack);
+            	LNIprocesar.movimientos(pack);
             }
             else if(method.equals("traslados")) {
             	LNIprocesar.traslados(pack);
@@ -607,9 +640,10 @@ public class LNDocuments {
         }
         else if("LNSelectedField".equals(driver)) {
         	LNSelectedField LNSprocesar = new LNSelectedField(parameters,SocketServer.getBd(sock));
-        	if ("getSubpackage".equals(method)) {
-        		LNSprocesar.getSubpackage(pack);
-        	}
+        	//if ("getSubpackage".equals(method)) {
+        		LNSprocesar.getFields(pack);
+        		
+        	//}
         }
         else {
             validExternalClass(driver,method,parameters,pack);
