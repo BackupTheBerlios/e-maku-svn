@@ -664,6 +664,7 @@ public class SwingGUI extends GUI implements GUIFactory {
 	
 	//<start-forms>
 	/**this method adds listeners to GUI widgets to track changes*/
+	@SuppressWarnings("deprecation")
 	private void addFormsListeners(){
 		
 		//rest forms changed flag to show no changes

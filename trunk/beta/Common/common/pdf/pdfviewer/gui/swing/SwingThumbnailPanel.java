@@ -60,14 +60,14 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import common.pdf.pdfviewer.Values;
-import common.pdf.pdfviewer.gui.generic.GUIThumbnailPanel;
-import common.pdf.pdfviewer.utils.SwingWorker;
-
 import org.jpedal.PdfDecoder;
 import org.jpedal.objects.PdfPageData;
 import org.jpedal.utils.LogWriter;
 import org.jpedal.utils.repositories.Vector_Object;
+
+import common.pdf.pdfviewer.Values;
+import common.pdf.pdfviewer.gui.generic.GUIThumbnailPanel;
+import common.pdf.pdfviewer.utils.SwingWorker;
 
 /**
  * Used in GUI example code Scope:<b>(All)</b>
@@ -194,6 +194,7 @@ public class SwingThumbnailPanel extends JPanel implements GUIThumbnailPanel {
 	 * create thumbnails of pages
 	 * @throws InterruptedException
 	 */
+	@SuppressWarnings("deprecation")
 	public void createThumbnailsOnDecode(int currentPage,PdfDecoder decode_pdf){
 		
 		drawing=true;
@@ -344,6 +345,7 @@ public class SwingThumbnailPanel extends JPanel implements GUIThumbnailPanel {
 		SwingWorker worker = new SwingWorker() {
 			
 			
+			@SuppressWarnings("deprecation")
 			public Object construct() {
 				
 				drawing=true;
@@ -370,9 +372,7 @@ public class SwingThumbnailPanel extends JPanel implements GUIThumbnailPanel {
 							//float scaleFactor = (float) h
 							/// (float) pageHeight[i];
 							
-							BufferedImage page = decode_pdf
-							.getPageAsThumbnail(
-									i + 1, h);
+							BufferedImage page = decode_pdf.getPageAsThumbnail(i + 1, h);
 							
 							createThumbnail(page, i + 1, false);
 						}

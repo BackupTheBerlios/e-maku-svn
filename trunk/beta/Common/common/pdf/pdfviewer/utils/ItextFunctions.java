@@ -50,10 +50,6 @@ import javax.swing.JRadioButton;
 import javax.swing.ProgressMonitor;
 import javax.swing.text.JTextComponent;
 
-import common.pdf.pdfviewer.gui.GUIFactory;
-import common.pdf.pdfviewer.gui.SwingGUI;
-import common.pdf.pdfviewer.gui.popups.SavePDF;
-
 import org.jpedal.PdfDecoder;
 
 import com.lowagie.text.Document;
@@ -71,6 +67,9 @@ import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.pdf.SimpleBookmark;
+import common.pdf.pdfviewer.gui.GUIFactory;
+import common.pdf.pdfviewer.gui.SwingGUI;
+import common.pdf.pdfviewer.gui.popups.SavePDF;
 
 /**central location to place external code using itext library*/
 public class ItextFunctions {
@@ -95,6 +94,7 @@ public class ItextFunctions {
 	
 	//<start-forms>
 	/**uses itext to save out form data with any changes user has made*/
+	@SuppressWarnings("deprecation")
 	public void saveFormsData(String file) {
 		try {
 			org.jpedal.objects.acroforms.AcroRenderer formRenderer=dPDF.getCurrentFormRenderer();

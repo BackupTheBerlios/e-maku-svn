@@ -60,7 +60,7 @@ public class SilentPrint {
 
 	/** number of pages in the document */
 	// private int pageCount;
-	/** choosen printer - if not set, program will exit with list */
+	/** choosen common.printer - if not set, program will exit with list */
 	private String printer = "FinePrint";
 
 	/** used to set tray (null has no effect */
@@ -177,7 +177,7 @@ public class SilentPrint {
 
 	/**
 	 * PRINTING CODE if you put this into a thread you will need to synchronize
-	 * and ensure terminated if program exits Checks printer is present and sets
+	 * and ensure terminated if program exits Checks common.printer is present and sets
 	 * tray if supported.
 	 * 
 	 * Uses pageable interface so does not work under 1.3
@@ -196,7 +196,7 @@ public class SilentPrint {
 			PrintRequestAttributeSet attributeSet = new HashPrintRequestAttributeSet();
 
 			/**
-			 * choose the printer, testing if printer in list
+			 * choose the common.printer, testing if common.printer in list
 			 */
 			PrintService[] service = PrinterJob.lookupPrintServices(); // list
 																		// of
@@ -213,7 +213,7 @@ public class SilentPrint {
 			}
 
 			/**
-			 * if printer is not on list, report otherwise continue.
+			 * if common.printer is not on list, report otherwise continue.
 			 */
 			if (!matchFound) {
 				String list = "";
@@ -235,7 +235,7 @@ public class SilentPrint {
 
 					/**
 					 * get tray values supported (has to be done each time as
-					 * printer can change)
+					 * common.printer can change)
 					 */
 					if (hasTrayValues) {
 

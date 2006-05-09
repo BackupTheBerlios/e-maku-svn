@@ -40,16 +40,15 @@ import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import org.jpedal.PdfDecoder;
+import org.jpedal.objects.PdfFileInformation;
+
 import common.misc.language.Language;
 import common.pdf.pdfviewer.gui.SwingGUI;
 import common.pdf.pdfviewer.gui.popups.ErrorDialog;
 import common.pdf.pdfviewer.utils.FileFilterer;
 import common.pdf.pdfviewer.utils.Printer;
 import common.pdf.pdfviewer.utils.SwingWorker;
-
-import org.jpedal.PdfDecoder;
-import org.jpedal.exception.PdfException;
-import org.jpedal.objects.PdfFileInformation;
 
 /**code to execute the actual commands*/
 public class Commands {
@@ -105,7 +104,7 @@ public class Commands {
 						currentGUI.showMessageDialog(Language.getWord("IMPRIERR"));
 					}
 					else{
-						currentPrinter.printPDF(decode_pdf,currentGUI);
+						currentPrinter.printPDF(decode_pdf);
 					}
 				}
 				else {
@@ -413,11 +412,10 @@ public class Commands {
 		}
 		
 		//values extraction mode,dpi of images, dpi of page as a factor of 72
-		try{
+		//try{
 			decode_pdf.setExtractionMode(0, 72, currentGUI.getScaling());
 			/***/
-		}catch(PdfException e){
-		}
+		//}
 		//resize (ensure at least certain size)
 		currentGUI.zoom();
 		
