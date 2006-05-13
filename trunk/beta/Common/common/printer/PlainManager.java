@@ -99,7 +99,7 @@ public class PlainManager extends IManager {
 					int row = el_template.getAttribute("row").getIntValue();
 					int col = el_template.getAttribute("col").getIntValue();
 					String value = el_transaction.getValue();
-					value = !"NULL".equals(value) && !"".equals(value) ?value:"";
+					value = !"NULL".equals(value) && !"".equals(value) ? value: "";
 					textGenerator.addString(value,row,col,null);
 				}
 			} catch (DataConversionException e) {
