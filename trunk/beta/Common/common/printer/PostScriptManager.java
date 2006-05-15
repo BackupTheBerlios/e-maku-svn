@@ -19,7 +19,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 
-public class PostScriptManager extends IManager {
+public class PostScriptManager extends AbstractManager {
 	
 	private BufferedImage bufferedImage;
 	private Graphics2D g2d;

@@ -3,7 +3,7 @@ import java.io.ByteArrayInputStream;
 
 import org.jdom.Document;
 
-public abstract class IManager {
+public abstract class AbstractManager {
 	
 	protected Document document_template;
 	protected Document document_transaction;

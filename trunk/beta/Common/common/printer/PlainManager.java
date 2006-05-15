@@ -8,7 +8,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
-public class PlainManager extends IManager {
+public class PlainManager extends AbstractManager {
 	
 	private TextGenerator textGenerator;
 	private int rowInit;
