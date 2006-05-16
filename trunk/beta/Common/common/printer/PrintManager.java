@@ -1,4 +1,5 @@
 package common.printer;
+
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 
