@@ -1,5 +1,6 @@
 package common.gui.components;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -21,14 +22,14 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
+import org.jdom.Element;
+
+import common.control.ClientHeaderValidator;
 import common.control.DateEvent;
 import common.control.UpdateCodeEvent;
 import common.control.UpdateCodeListener;
-import common.control.ClientHeaderValidator;
 import common.misc.language.Language;
 import common.misc.text.TextDataValidator;
-
-import org.jdom.Element;
 
 /**
  * XMLTextField.java Creado el 27-sep-2004
@@ -526,7 +527,12 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
                             RenderingHints.VALUE_ANTIALIAS_ON);
         super.paintComponent(g);
     }
-
+	
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		super.setDisabledTextColor(Color.BLACK);
+	}
+	
 	public boolean isTyped() {
 		return typed;
 	}

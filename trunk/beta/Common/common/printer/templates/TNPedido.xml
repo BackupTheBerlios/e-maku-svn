@@ -1,5 +1,5 @@
 <emaku_template>
-	<settings width="300" height="400" />
+	<settings width="300" height="400" type="PLAIN"/>
 	<package />
 	<package>
 		<labels>

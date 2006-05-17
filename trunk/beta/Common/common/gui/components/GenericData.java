@@ -391,6 +391,7 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
 	                if (XMLText.getBackground().equals(Color.BLACK)) {
 	                	XMLText.setCaretColor(Color.WHITE);
 	                }
+	                XMLText.setDisabledTextColor(Color.WHITE);
 	            }
 	            
 	            if (foreground!=null) {
