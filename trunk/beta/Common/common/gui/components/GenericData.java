@@ -81,7 +81,6 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
     private boolean disableAll;
     private boolean havePanel = true;
     private boolean search;
-
     private ChangeValueEvent CVEevent;
     private Vector <ChangeValueListener>changeValueListener = new Vector<ChangeValueListener>();
     private String returnValue;
@@ -195,6 +194,7 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
  	            XMLTextField XMLText = null;
  	            String exportValue = null;
  	            Vector <String>importValue = null;
+ 	            Vector <String>constantValue = null;
  	            String calculateExportValue = null;
  	            String maxValue = null;
  	            String formatDate = null;
@@ -247,7 +247,13 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
  	            		if (importValue==null) {
  	            			importValue = new Vector<String>();
  	            		}
- 	            		importValue.add(elm.getValue());
+ 	            		importValue.addElement(elm.getValue());
+ 	            	}
+ 	            	else if ("constantValue".equals(elm.getAttributeValue("attribute"))) {
+ 	            		if (constantValue==null) {
+ 	            			constantValue = new Vector<String>();
+ 	            		}
+ 	            		constantValue.addElement(elm.getValue());
  	            	}
  	            	else if ("calculateExportValue".equals(elm.getAttributeValue("attribute"))) {
  	            		calculateExportValue=elm.getValue();
@@ -348,6 +354,9 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
 	            }
 	            if (importValue!=null) {
 	            	XMLText.setImportValue(importValue);	            	
+	            }
+	            if (constantValue!=null) {
+	            	XMLText.setConstantValue(constantValue);	            	
 	            }
 	            if (maxValue!=null) {
 	            	XMLText.setMaxValue(maxValue);	            	
@@ -460,11 +469,16 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
 				            	if (search) {
 				            		String [] impValues = null;
 				            		if (sqlLocal!=null){
-				            			
-				            			impValues = new String[XMLRefText.getImportValue().length];
-				            			for (int i = 0 ; i < XMLRefText.getImportValue().length ; i++) {
+				            			int argumentos = XMLRefText.getImportValue().length+XMLRefText.getConstantSize();
+				            			impValues = new String[argumentos];
+				            			int i=0;
+				            			for (; i < XMLRefText.getConstantSize(); i++) {
+				            				impValues[i] =  XMLRefText.getConstantValue(i);
+				            			}
+				            			for (; i < XMLRefText.getImportValue().length ; i++) {
 				            				impValues[i] =  GFforma.getExteralValuesString(XMLRefText.getImportValue()[i]);
 				            			}
+				            			
 				            			GFforma.cleanExternalValues();
 				            			if (!"".equals(XMLRefText.getText())) {
 								            new GenericDataFiller(
@@ -575,15 +589,19 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
             }
         }
         /*-----------------------------------------------------------*/
+        String[] argumentos = new String[xmltf.getImportValue().length+xmltf.getConstantSize()+1];
         String [] XMLimpValues = xmltf.getImportValue();
-		String [] impValues = new String[XMLimpValues.length+1];
 		
 		int i = 0;
-		for ( i = 0; i < impValues.length -1 ; i++) {
-			impValues[i] =  GFforma.getExteralValuesString(XMLimpValues[i]);
+		for ( i = 0; i < xmltf.getConstantSize(); i++) {
+			argumentos[i] =  xmltf.getConstantValue(i);
 		}
-		impValues[i] =  xmltf.getText();
-        new SearchingSQL(impValues).start();
+		 
+		for (; i < xmltf.getImportValue().length ; i++) {
+			argumentos[i] =  GFforma.getExteralValuesString(XMLimpValues[i]);
+		}
+		argumentos[i] =  xmltf.getText();
+        new SearchingSQL(argumentos).start();
     
     }
     

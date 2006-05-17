@@ -66,8 +66,9 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	private String idDocument;
 	private boolean clean = true;
 	private double numberValue = 0;
-	private String ExportValue = null;
-	private Vector ImportValue = null;
+	private String exportValue = null;
+	private Vector<String> importValue = null;
+	private Vector<String> constantValue = null;
 	private String callExternalClass;
 	private String callExternalMethod;
 	private String calculateExportValue = null;
@@ -328,7 +329,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	}
 
 	public boolean isExportvalue() {
-		if (ExportValue != null) {
+		if (exportValue != null) {
 			return true;
 		} else {
 			return false;
@@ -337,11 +338,11 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	}
 
 	public void setExportvalue(String exportvalue) {
-		this.ExportValue = exportvalue;
+		this.exportValue = exportvalue;
 	}
 
 	public String getExportvalue() {
-		return this.ExportValue;
+		return this.exportValue;
 	}
 
 	public boolean isCalculateExportvalue() {
@@ -361,7 +362,16 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	}
 
 	public boolean isImportvalue() {
-		if (ImportValue != null) {
+		if (importValue != null) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	public boolean isConstantValue() {
+		if (constantValue != null) {
 			return true;
 		} else {
 			return false;
@@ -371,18 +381,34 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 
 	public String[] getImportValue() {
 		try {
-			String[] retorno = new String[ImportValue.size()];
-			for (int i = 0; i < ImportValue.size(); i++) {
-				retorno[i] = (String) ImportValue.get(i);
-			}
-			return retorno;
+			return importValue.toArray(new String[importValue.size()]);
 		} catch (NullPointerException NPEe) {
 			return new String[] {};
 		}
 	}
 
-	public void setImportValue(Vector inportValue) {
-		ImportValue = inportValue;
+	public String getConstantValue(int index) {
+		try {
+			return constantValue.get(index);
+		} catch (NullPointerException NPEe) {
+			return "";
+		}
+	}
+
+	public int getConstantSize() {
+		try {
+			return constantValue.size();
+		} catch (NullPointerException NPEe) {
+			return 0;
+		}
+	}
+
+	public void setImportValue(Vector<String> importValue) {
+		this.importValue = importValue;
+	}
+
+	public void setConstantValue(Vector<String> constantValue) {
+		this.constantValue = constantValue;
 	}
 
 	public boolean isMaxValue() {
