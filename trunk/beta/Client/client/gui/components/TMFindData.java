@@ -1503,6 +1503,29 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
         return pack;
     }
     
+    public Element getPrintPackage() {
+        Element pack = new Element("package");
+        
+        for (int i=0;i<VdataRows.size(); i++) {
+            Element subpack = new Element("subpackage");
+            for (int j=0;j<getColumnCount();j++) {
+            	Object valueAt = getValueAt(i,j);
+            	if (ATFDargs[j].isPrintable()) {
+            		if (valueAt.toString().equals("")) {
+                		i=rows;
+                		break;
+                	}
+            		Element field = new Element("field");
+            		field.setText(valueAt.toString());
+            		subpack.addContent(field);
+            	}
+            }
+            if (subpack.getContentSize()>0) {
+            	pack.addContent(subpack);
+            }
+        }
+        return pack;
+    }
     
     public void setQuery(Document doc) {
         class LoadQuery extends Thread{

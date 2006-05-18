@@ -594,7 +594,10 @@ public class FindThird extends JTabbedPane implements AnswerListener, InitiateFi
     }
     
     private void asignExternalQuery(){
-    		String keyFind = Vkeys.get(JCBfined.getSelectedIndex()>=0?JCBfined.getSelectedIndex():0);
+    	if (Vkeys.size() ==0 ) {
+    		return;
+    	}
+    	String keyFind = Vkeys.get(JCBfined.getSelectedIndex()>=0?JCBfined.getSelectedIndex():0);
         DataThird DTdata = Hthird.get(keyFind);
         String caso = null;
 

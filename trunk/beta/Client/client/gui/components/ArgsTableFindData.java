@@ -48,6 +48,7 @@ public class ArgsTableFindData {
     private String nameField;
     private boolean returnBlankCol;
     private boolean returnNullCol;
+    private boolean printable = false;
     
     /**
      * Este constructor recibe un StringTokenizer como parametro
@@ -117,6 +118,9 @@ public class ArgsTableFindData {
 	    		}
 	    		else if (attrib.equals("enabled")) {
 	    			editable = Boolean.parseBoolean(value);
+	    		}
+	    		else if (attrib.equals("printable")) {
+	    			printable = Boolean.parseBoolean(value);
 	    		}
 	    		else if (attrib.equals("queryCol")) {
 	    			try {
@@ -306,6 +310,14 @@ public class ArgsTableFindData {
 
 	public boolean isReturnNullCol() {
 		return returnNullCol;
+	}
+
+	public boolean isPrintable() {
+		return printable;
+	}
+
+	public void setPrintable(boolean printable) {
+		this.printable = printable;
 	}
 
 }

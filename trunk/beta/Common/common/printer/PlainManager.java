@@ -5,6 +5,7 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.jdom.Attribute;
 import org.jdom.DataConversionException;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -62,10 +63,13 @@ public class PlainManager extends AbstractManager {
 					int i=0;
 					while (it.hasNext()) {
 						Element element = (Element) it.next();
-						args.put("width"+i,element.getAttribute("width").getValue());
-						args.put("col"+i,element.getAttribute("col").getValue());
-						args.put("type"+i,element.getAttribute("type").getValue());
-						args.put("mask"+i,element.getAttribute("mask").getValue());
+
+						Iterator attribs = element.getAttributes().iterator();
+						while(attribs.hasNext()) {
+							Attribute attrib = (Attribute) attribs.next();
+							String attribName =attrib.getName();
+							args.put(attribName+i,attrib.getValue());
+						}
 						i++;
 					}
 					
@@ -80,15 +84,18 @@ public class PlainManager extends AbstractManager {
 								NumberFormat formatter = new DecimalFormat(args.get("mask"+i));
 								value = !"NULL".equals(value) && !"".equals(value) ?
 										formatter.format(Double.parseDouble(value)):"";
+								textGenerator.addString(
+										value,
+										rowInit,
+										Integer.parseInt(args.get("col"+i)),
+										Integer.parseInt(args.get("width"+i)));
 							} else if ("STRING".equals(args.get("type"+i))) {
 								value = !"NULL".equals(value) && !"".equals(value) ?value:"";
+								textGenerator.addString(
+										value,
+										rowInit,
+										Integer.parseInt(args.get("col"+i)),null);
 							}
-							
-							textGenerator.addString(
-											value,
-											rowInit,
-											Integer.parseInt(args.get("col"+i)),
-											Integer.parseInt(args.get("width"+i)));
 							i++;
 						}
 						i=0;

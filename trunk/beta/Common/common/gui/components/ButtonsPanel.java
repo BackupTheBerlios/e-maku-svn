@@ -27,6 +27,8 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
 import common.gui.forms.GenericForm;
 import common.gui.forms.NotFoundComponentException;
@@ -313,6 +315,9 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 						Document template = null;
 						URL url = this.getClass().getResource(GFforma.getPrinterTemplate());
 						template = sax.build(url);
+						XMLOutputter xmlout = new XMLOutputter();
+						xmlout.setFormat(Format.getPrettyFormat());
+						xmlout.output(doc,System.out);
 						PlainManager plain = new PlainManager(template,doc);
 						new PrintManager(ImpresionType.PLAIN,plain.getStream(),true);
 					} catch (FileNotFoundException e) {

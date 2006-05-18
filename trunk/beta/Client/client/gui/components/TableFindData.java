@@ -537,6 +537,14 @@ public class TableFindData extends JPanel implements AnswerListener,ChangeExtern
     	return pack;
     }
 
+    public Element getPrintPackage() throws VoidPackageException {
+    	Element pack = TMFDtabla.getPrintPackage();
+    	if (pack.getChildren().size()==0 && !returnNullValue) {
+    		throw new VoidPackageException("Tabla Data");
+    	}
+    	return pack;
+    }
+    
     /**
      * Metodo utilizado solo para la forma de creacion de Grupos de Asientos
      * 
