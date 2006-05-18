@@ -21,6 +21,7 @@
 
 package server.businessrules;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
@@ -883,4 +884,129 @@ public class LNContabilidad {
         RQsalidas.ejecutarSQL();
 		
 	}
+	
+	/**
+	 * Este metodo se encarga de anular un asiento contable de un documento
+	 * @throws SQLBadArgumentsException 
+	 * @throws SQLNotFoundException 
+	 * @throws SQLException 
+	 *
+	 */
+	
+	public void anular() 
+	throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
+
+    	String idDocumento = CacheKeys.getKey("ndocumento");
+        RunQuery RQdocumento = new RunQuery(bd,"SEL0238",new String[]{idDocumento});
+        ResultSet RSdatos = RQdocumento.ejecutarSELECT();
+		/*
+		 * La siguiente consulta trae los siguientes campos  
+		 * id_cta       
+		 * centro       
+		 * id_tercero   
+		 * id_prod_serv 
+		 * ndocumento   
+	 	 * debe         
+		 * haber        
+		 */
+		
+        while (RSdatos.next()) {
+        	Vector<String> record = new Vector<String>();
+        	String[] ponderado = null;
+        	RunQuery RQanular = null;
+        	
+        	record.addElement(CacheKeys.getDate());
+        	record.addElement(idDocumento);
+        	record.addElement(RSdatos.getString(2));
+        	record.addElement(RSdatos.getString(1));
+            /*
+             * Se captura los saldos antes del movimiento
+             *
+            saldo = CacheEnlace.getSaldoInventario(bd, RSdatos.getString(2),RSdatos.getString(1));
+            vsaldo = CacheEnlace.getVSaldoInventario(bd, RSdatos.getString(2),RSdatos.getString(1));
+
+            /*
+             * Se almacena primer saldo de la transaccion
+             *
+
+            LNUndoSaldos.setSaldoAntInv(bd, RSdatos.getString(2),RSdatos.getString(1),saldo);
+        	
+    		/* 
+             * REGISTROS DE UNA ENTRADA
+             * 
+             * record[0] = fecha
+             * record[1] = ndocumento
+             * record[2] = id_bodega
+             * record[3] = id_prod_serv
+             * record[4] = entrada
+             * record[5] = valor_ent
+             * record[6] = pinventario
+             * record[7] = saldo
+             * record[8] = valor_saldo
+             * 
+             * REGISTRO DE UNA SALIDA
+             * 
+             * record[0] = fecha
+             * record[1] = ndocumento
+             * record[2] = id_bodega
+             * record[3] = id_prod_serv
+             * record[4] = salida
+             * record[5] = valor_sal
+             * record[6] = pinventario
+             * record[7] = saldo
+             * record[8] = valor_saldo
+             */
+        	
+        	/*
+        	 * Si la columna 4 retorna un valor diferente de 0 entonces el movimiento a anular
+        	 * es una entrada
+        	 */
+        	if (RSdatos.getDouble(4)!= 0) {
+            	RQanular = new RunQuery(bd,"INS0038");
+
+            	record.addElement(RSdatos.getString(4));
+            	record.addElement(RSdatos.getString(5));
+
+            	/*
+            	 * Se multiplica el 3 registro por -1 para indicar que el movimiento generado
+            	 * sea una salida.
+            	 *
+            	
+            	ponderado = ponderar(RSdatos.getString(2),
+											  RSdatos.getString(1),
+											  RSdatos.getDouble(4)*-1,
+											  RSdatos.getDouble(5));*/
+        	}
+        	/*
+        	 * si no, si la columna 6 retorna un valor diferente de 0 entonces el movimiento a 
+        	 * anular es una salida 
+        	 *
+        	else if (RSdatos.getDouble(6)!=0) {
+            	RQanular = new RunQuery(bd,"INS0052");
+            	record.addElement(RSdatos.getString(6));
+            	record.addElement(RSdatos.getString(7));
+            	ponderado = ponderar(RSdatos.getString(2),
+            								  RSdatos.getString(1),
+            								  RSdatos.getDouble(6),
+            								  RSdatos.getDouble(7));
+        	}
+        	*
+        	 * si no, es por que el movimiento a anular es gasto o un descuento
+        	 */
+        	else {
+            	record.addElement(RSdatos.getString(4));
+        	}
+        	
+        	if (ponderado!=null) {
+	    	    record.addElement(ponderado[0]);
+	    	    record.addElement(ponderado[1]);
+	    	    record.addElement(ponderado[2]);
+	        	RQanular.ejecutarSQL(record.toArray(new String[record.size()]));
+	        	RQanular.closeStatement();
+        	}
+        }
+        RSdatos.close();
+        RQdocumento.closeStatement();
+    }
+	
 }

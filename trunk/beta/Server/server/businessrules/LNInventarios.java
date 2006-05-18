@@ -401,7 +401,6 @@ public class LNInventarios {
 	
     private void anular() 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
-    	System.out.println("Anulando documento...");
     	String idDocumento = CacheKeys.getKey("ndocumento");
         RunQuery RQdocumento = new RunQuery(bd,"SEL0238",new String[]{idDocumento});
         ResultSet RSdatos = RQdocumento.ejecutarSELECT();
@@ -418,8 +417,8 @@ public class LNInventarios {
          * del anterior registro se analiza los campos entrada y salida;
          * con ellos se sabe el tipo de movimiento a anular.
          */
+
         while (RSdatos.next()) {
-        	System.out.println("anulando registro ...");
         	Vector<String> record = new Vector<String>();
         	String[] ponderado = null;
         	RunQuery RQanular = null;
