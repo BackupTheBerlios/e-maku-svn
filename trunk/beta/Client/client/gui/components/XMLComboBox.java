@@ -157,6 +157,14 @@ public class XMLComboBox extends SQLComboBox {
         pack.addContent(getElementCombo());
     	return pack;
     }
+    
+    public Element getPrintPackage() throws VoidPackageException {
+        Element pack = new Element("package");
+        Element field = new Element("field");
+        field.setText(getSelectedItem().toString());
+        pack.addContent(field);
+    	return pack;
+    }
 
     /**
      * Metodo encargado de limpiar el combo

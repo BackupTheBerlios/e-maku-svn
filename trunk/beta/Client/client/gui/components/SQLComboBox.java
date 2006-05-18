@@ -39,6 +39,9 @@ import javax.swing.JComboBox;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+import org.jdom.Document;
+import org.jdom.Element;
+
 import common.gui.components.AnswerEvent;
 import common.gui.components.AnswerListener;
 import common.gui.forms.ChangeExternalValueEvent;
@@ -50,9 +53,6 @@ import common.gui.forms.NotFoundComponentException;
 import common.misc.language.Language;
 import common.transactions.STException;
 import common.transactions.STResultSet;
-
-import org.jdom.Document;
-import org.jdom.Element;
 
 public class SQLComboBox extends JComboBox implements
 		ChangeExternalValueListener,PopupMenuListener, AnswerListener , InitiateFinishListener{
@@ -106,6 +106,7 @@ public class SQLComboBox extends JComboBox implements
 	
 	public SQLComboBox(GenericForm GFforma,String sqlCombo) {
 		super();
+		
 		this.sqlCombo = sqlCombo;
 		this.GFforma = GFforma;
         this.GFforma.addChangeExternalValueListener(this);
@@ -271,6 +272,7 @@ public class SQLComboBox extends JComboBox implements
 	 *
 	 */
 	private void generar() {
+		
 		class buildCombo extends Thread {
 			public void run() {
 				try {
@@ -467,6 +469,12 @@ public class SQLComboBox extends JComboBox implements
 	        new SearchingSQL(impValues).start();
 		}
 	}
+	
+	/*public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		comboBoxRender.setDisabledTextColor(Color.BLACK);
+	}*/
+	
 	public void popupMenuCanceled(PopupMenuEvent e) {}
 
 	/**

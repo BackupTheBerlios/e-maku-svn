@@ -64,7 +64,7 @@ public class SocketConnector extends Thread {
         int k=0;
         while(!socket.finishConnect()){
         		try {
-        			System.out.print(".");
+        			//System.out.print(".");
         			Thread.sleep(100);
         			k++;
         			if (k==50) {

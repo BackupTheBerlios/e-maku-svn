@@ -813,6 +813,37 @@ public class FindThird extends JTabbedPane implements AnswerListener, InitiateFi
         return pack;
     }
     
+    public Element getPrintPackage() throws VoidPackageException {
+
+        Element pack = new Element("package");
+        int index = JCBfined.getSelectedIndex();
+        if (index==-1) {
+        	return pack;
+        }
+        String keyFind = Vkeys.get(index);
+        DataThird DTdata = Hthird.get(keyFind);
+        
+        Element id = new Element("field");
+        id.setText(DTdata.getNombre());
+        pack.addContent(id);
+        id = new Element("field");
+        id.setText(DTdata.getNitcc());
+        pack.addContent(id);
+        id = new Element("field");
+        id.setText(DTdata.getDireccion());
+        pack.addContent(id);
+        id = new Element("field");
+        id.setText(DTdata.getTelefono());
+        pack.addContent(id);
+        id = new Element("field");
+        id.setText(DTdata.getCiudad());
+        pack.addContent(id);
+        id = new Element("field");
+        id.setText(DTdata.getDescRegimen());
+        pack.addContent(id);
+        
+        return pack;
+    }
     public boolean containData() {
     		try {
     			Element elm = getPackage();

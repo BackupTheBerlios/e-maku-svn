@@ -47,7 +47,6 @@ public class PrintManager {
 			das.add(OrientationRequested.PORTRAIT);
 			Doc doc = new SimpleDoc(is, docFlavor, das);
 			job.print(doc, pras);
-			System.out.println("Finish print");
 		}
 	}
 }

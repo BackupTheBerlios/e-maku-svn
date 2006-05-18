@@ -80,6 +80,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	private String nameField = null;
 	private boolean cleaning = false;
 	private boolean systemDate = false;
+	private boolean printable = true;
 	private String calculateDate = null;
 	private String addAttribute = null;
 	
@@ -561,6 +562,14 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	
 	public boolean isTyped() {
 		return typed;
+	}
+
+	public boolean isPrintable() {
+		return printable;
+	}
+
+	public void setPrintable(boolean printable) {
+		this.printable = printable;
 	}
 
 }

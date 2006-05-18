@@ -1,38 +1,59 @@
 <emaku_template>
-	<settings width="300" height="400" type="PLAIN"/>
-	<package />
-	<package>
-		<labels>
-			<field row="1" col="1" type="STRING">Nombre</field>
-			<field row="2" col="1" type="STRING">NIT/CC</field>
-			<field row="3" col="1" type="STRING">Dirección</field>
-			<field row="4" col="1" type="STRING">Telefono</field>
-			<field row="5" col="1" type="STRING">Ciudad</field>
-		</labels>
-		<field row="1" col="20" type="STRING" />
-		<field row="2" col="20" type="STRING" />
-		<field row="3" col="20" type="STRING" />
-		<field row="4" col="20" type="STRING" />
-		<field row="5" col="20" type="STRING" />
-	</package>
-	<package>
-		<labels>
-			<field row="1" col="69" type="STRING">No</field>
-		</labels>
-		<field row="1" col="72" type="STRING" />
-	</package>
-	<package>
-		<labels>
-			<field row="7" col="8" type="STRING">Descripcion</field>
-			<field row="7" col="25" type="STRING">COL 2</field>
-			<field row="7" col="45" type="STRING">COL 3</field>
-			<field row="7" col="65" type="STRING">COL 4</field>
-		</labels>
-		<subpackage rowInit="8">
-			<field col="1" width="14" type="STRING" mask="#,###,###.00" />
-			<field col="20" width="14" type="NUMERIC" mask="#,###,###.00" />
-			<field col="40" width="14" type="NUMERIC" mask="#,###,###.00" />
-			<field col="60" width="14" type="NUMERIC" mask="#,###,###.00" />
-		</subpackage>
-	</package>
+ <settings width="300" height="400" type="PLAIN" />
+ <package>
+  <labels>
+   <field row="1" col="1" type="STRING">Nombre</field>
+   <field row="2" col="1" type="STRING">NIT/CC</field>
+   <field row="3" col="1" type="STRING">Dirección</field>
+   <field row="4" col="1" type="STRING">Telefono</field>
+   <field row="5" col="1" type="STRING">Ciudad</field>
+   <field row="6" col="1" type="STRING">Regimen</field>
+  </labels>
+  <field row="1" col="20" type="STRING" />
+  <field row="2" col="20" type="STRING" />
+  <field row="3" col="20" type="STRING" />
+  <field row="4" col="20" type="STRING" />
+  <field row="5" col="20" type="STRING" />
+  <field row="6" col="20" type="STRING" />
+ </package>
+ <package>
+  <labels>
+   <field row="1" col="1" type="STRING">Nombre</field>
+   <field row="2" col="1" type="STRING">NIT/CC</field>
+   <field row="3" col="1" type="STRING">Dirección</field>
+   <field row="4" col="1" type="STRING">Telefono</field>
+   <field row="5" col="1" type="STRING">Ciudad</field>
+  </labels>
+  <field row="1" col="20" type="STRING" />
+  <field row="2" col="20" type="STRING" />
+  <field row="3" col="20" type="STRING" />
+  <field row="4" col="20" type="STRING" />
+  <field row="5" col="20" type="STRING" />
+ </package>
+ <package>
+  <labels>
+   <field row="1" col="50" type="STRING">Fecha</field>
+  </labels>
+  <field row="1" col="65" type="STRING" />
+ </package>
+ <package>
+  <labels>
+   <field row="2" col="50" type="STRING">Vendedor</field>
+  </labels>
+  <field row="2" col="65" type="STRING" />
+ </package>
+ <!--  <package>
+  <labels>
+  <field row="7" col="8" type="STRING">Descripcion</field>
+  <field row="7" col="25" type="STRING">COL 2</field>
+  <field row="7" col="45" type="STRING">COL 3</field>
+  <field row="7" col="65" type="STRING">COL 4</field>
+  </labels>
+  <subpackage rowInit="8">
+  <field col="1" width="14" type="STRING" mask="#,###,###.00" />
+  <field col="20" width="14" type="NUMERIC" mask="#,###,###.00" />
+  <field col="40" width="14" type="NUMERIC" mask="#,###,###.00" />
+  <field col="60" width="14" type="NUMERIC" mask="#,###,###.00" />
+  </subpackage>
+  </package>-->
 </emaku_template>

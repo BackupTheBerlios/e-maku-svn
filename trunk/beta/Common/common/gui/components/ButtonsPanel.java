@@ -5,11 +5,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.print.PrintException;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,15 +23,20 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+
 import common.gui.forms.GenericForm;
 import common.gui.forms.NotFoundComponentException;
 import common.misc.Icons;
 import common.misc.language.Language;
 import common.pdf.pdfviewer.PDFViewer;
+import common.printer.PlainManager;
+import common.printer.PrintManager;
+import common.printer.PrintManager.ImpresionType;
 import common.transactions.STResultSet;
-
-import org.jdom.Document;
-import org.jdom.Element;
 
 /**
  * ButtonsPanel.java Creado el 22-sep-2004
@@ -55,7 +64,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
     private static final long serialVersionUID = 8883108186183650115L;
 
     private GenericForm GFforma;
-    private Hashtable <String,Vector>Heventos;
+    private Hashtable <String,Vector<?>>Heventos;
     private Hashtable <String,Vector>Hform;
     private Hashtable <String,JButton>Hbuttons;
     private String idTransaction;
@@ -68,7 +77,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
         this.GFforma = GFforma;
         this.setLayout(new FlowLayout());
 
-        Heventos = new Hashtable<String,Vector>();
+        Heventos = new Hashtable<String,Vector<?>>();
         Hbuttons = new Hashtable<String,JButton>();
         Hform = new Hashtable<String,Vector>();
         
@@ -192,7 +201,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
         	/*if (!bool) {
                 KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
             }*/
-            ((JButton)(Hbuttons.get(name))).setEnabled(bool);
+            Hbuttons.get(name).setEnabled(bool);
         }
     }
     
@@ -213,28 +222,34 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
         Iterator i = elm.getChildren().iterator();
 
         String key = "";
-        Vector <Componentes>componentes = new Vector<Componentes>();
-        Vector <Element>formularios = new Vector<Element>();
-
+        Vector<Componentes> componentes = new Vector<Componentes>();
+        Vector<Element> actions = new Vector<Element>();
+        Vector<Element> formularios = new Vector<Element>();
         while (i.hasNext()) {
             Element e = (Element) i.next();
             String name = e.getName();
             if (name.equals("name")) {
                 key = e.getValue();
-            } else if (name.equals("component")) {
-                componentes.addElement(loadComponent(e));
-            } else if (name.equals("FORM")) {
-            	formularios.addElement(e);
+            }
+            else if (name.equals("component")) {
+                componentes.add(loadComponent(e));
+            }
+            else if (name.equals("FORM")) {
+            	formularios.add(e);
+            }
+            else if (name.equals("action")) {
+            	actions.add(e);
             }
         }
         if (componentes.size()>0) {
         	Heventos.put(key, componentes);
         }
-        
+        if (actions.size()>0) {
+        	Heventos.put(key, actions);
+        }
         if (formularios.size()>0) {
         	Hform.put(key,formularios);
         }
-        
     }
 
     private Componentes loadComponent(Element elm) {
@@ -267,18 +282,60 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
         GFforma.close();
     }
 
-    private void callEvent(String action) 
+    @SuppressWarnings("unchecked")
+	private void callEvent(String action) 
     throws InvocationTargetException,NotFoundComponentException {
-
+    	
     	Vector vec = Heventos.get(action);
+        Object obj = vec.get(0);
+        if (obj instanceof Componentes) {
+        	builTransaction(vec,action,null);
+        }
+        else if (obj instanceof Element) {
+        	for (Object object : vec) {
+	        	Element element= (Element) object;
+	    		String type = element.getChildText("type");
+	    		Iterator it = element.getChildren("component").iterator();
+    			Vector<Componentes> vector = new Vector<Componentes>();
+    			while (it.hasNext()) {
+        			Componentes comp = loadComponent((Element) it.next());
+            		vector.add(comp);
+    			}
+	    		if ("transaction".equals(type)) {
+            		builTransaction(vector,action,null);
+	    		}
+	    		else if ("printer".equals(type)) {
+	    			Document doc = new Document();
+	    			doc.setRootElement(new Element("printjob"));
+	    			builTransaction(vector,action,doc.getRootElement());
+	    			try {
+						SAXBuilder sax = new SAXBuilder(false);
+						Document template = null;
+						URL url = this.getClass().getResource(GFforma.getPrinterTemplate());
+						template = sax.build(url);
+						PlainManager plain = new PlainManager(template,doc);
+						new PrintManager(ImpresionType.PLAIN,plain.getStream(),true);
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					} catch (PrintException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					} catch (JDOMException e) {
+						e.printStackTrace();
+					}
+	    		}
+        	}
+        }
+    }
+    
+    private void builTransaction(Vector<Componentes> vec,String action,Element ret) throws InvocationTargetException, NotFoundComponentException {
         Vector <Element>pack = new Vector<Element>();
+    	Element multielementos[] = null;
         Element elementos = null;
-        Element multielementos[] = null;
-        
-        for (int i = 0; i < vec.size(); i++) {
-            Componentes comp = (Componentes) vec.elementAt(i);
-            
-            if ("getMultiPackage".equals(comp.getMethod())) {
+    	for (int i = 0; i < vec.size(); i++) {
+    		Componentes comp = vec.get(i);
+    		if ("getMultiPackage".equals(comp.getMethod())) {
             	if (comp.isContainsArgs()) {
             		multielementos = (Element[]) GFforma.invokeMethod(comp.getDriver(), 
             														  comp.getMethod(),
@@ -305,18 +362,26 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
             	}
 	            if (elementos != null)
 	                pack.addElement(elementos);
-	            }
+            }
         }
-		String namePackage = !"REPORT".equals(action)?"TRANSACTION":typePackage;
-        if (pack.size() > 0 || !namePackage.equals("TRANSACTION")) {
-       		try {
-       			formatPackageStructure(pack,typePackage);
-			} catch (MalformedProfileException e) {
-				e.printStackTrace();
-			}
-        }
+    	if (ret==null) {
+			String namePackage = !"REPORT".equals(action)?"TRANSACTION":typePackage;
+		    if (pack.size() > 0 || !namePackage.equals("TRANSACTION")) {
+		   		try {
+		   			formatPackageStructure(pack,typePackage);
+				} catch (MalformedProfileException e) {
+					e.printStackTrace();
+				}
+		    }
+    	}
+    	else {
+    		for (int i = 0; i < pack.size(); i++) {
+                ret.addContent((Element) pack.elementAt(i));
+            }
+    	}
+    	
     }
-
+    
     public void actionPerformed(ActionEvent e) {
         actionEvent(e.getActionCommand());
     }
@@ -478,15 +543,16 @@ class Componentes {
     private String driver;
     private String method;
     private Element args;
-    private boolean report;
+ 
+    //private boolean report;
 
-    public boolean isReport() {
+    /*public boolean isReport() {
 		return report;
-	}
+	}*/
 
-	public void setReport(boolean report) {
+	/*public void setReport(boolean report) {
 		this.report = report;
-	}
+	}*/
 
 	public String getDriver() {
         return driver;
@@ -519,5 +585,3 @@ class Componentes {
 		return false;
 	}
 }
-
-

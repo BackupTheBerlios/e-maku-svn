@@ -25,9 +25,12 @@ import java.util.Vector;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import org.jdom.Document;
+import org.jdom.Element;
+
+import common.control.ClientHeaderValidator;
 import common.control.DateEvent;
 import common.control.DateListener;
-import common.control.ClientHeaderValidator;
 import common.gui.forms.ChangeExternalValueEvent;
 import common.gui.forms.ChangeExternalValueListener;
 import common.gui.forms.FinishEvent;
@@ -38,9 +41,6 @@ import common.misc.formulas.FormulaCalculator;
 import common.misc.language.Language;
 import common.transactions.STException;
 import common.transactions.STResultSet;
-
-import org.jdom.Document;
-import org.jdom.Element;
 
 /**
  * GenericData.java Creado el 15-oct-2004
@@ -199,6 +199,7 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
  	            String maxValue = null;
  	            String formatDate = null;
  	            boolean searchQuery = false;
+ 	            boolean printable = true;
  	            String calculateDate = null;
  	            String nameField = null;
  	            String addAttribute = null;
@@ -329,7 +330,10 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
    	            	}
  	            	else if ("addAttribute".equals(elm.getAttributeValue("attribute"))) {
  	                   addAttribute = elm.getValue();
- 	               }
+ 	            	}
+ 	            	else if ("printable".equals(elm.getAttributeValue("attribute"))) {
+  	                   printable = Boolean.parseBoolean(elm.getValue());
+  	            	}
  	            }
 
  	            if (mask==null) {
@@ -348,6 +352,7 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
 	            XMLText.setReturnValue(returnValueXTF);
 	            XMLText.setNullValue(nullValue);
 	            XMLText.setClean(clean);
+	            XMLText.setPrintable(printable);
 
 	            if (exportValue!=null) {
 	            	XMLText.setExportvalue(exportValue);
@@ -725,6 +730,26 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
             }
         }
 
+        return pack;
+    }
+
+    public Element getPrintPackage() {
+        
+        Element pack = new Element("package");
+        int cont = 0 ;
+        int max = VFields.size();
+        for (XMLTextField xmltf:VFields) {
+        	if (xmltf.isPrintable()) {
+        		String text = xmltf.getText();
+        		if("".equals(text)) {
+        			cont++;
+        		}
+        		pack.addContent(new Element("field").setText(text));
+        	}
+        }
+        if (cont == max) {
+        	return new Element("package");
+        }
         return pack;
     }
 

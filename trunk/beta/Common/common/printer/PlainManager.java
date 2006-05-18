@@ -39,7 +39,7 @@ public class PlainManager extends AbstractManager {
 	public void processElement(Element pack_template, Element pack_transaction) {
 		Iterator it_template = pack_template.getChildren().iterator();
 		Iterator it_transaction = pack_transaction.getChildren().iterator();
-		while(it_template.hasNext()) {
+		while(it_template.hasNext() && it_transaction.hasNext()) {
 			try {
 				Element el_template = (Element)it_template.next();
 				if (el_template.getName().equals("labels")) {
