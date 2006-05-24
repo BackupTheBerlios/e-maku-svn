@@ -23,8 +23,8 @@ public class PlainManager extends AbstractManager {
 		Element settings = root_template.getChild("settings");
 		Iterator elements = root_template.getChildren().iterator();
 		
-		width = Integer.parseInt(settings.getAttributeValue("width"));
-		height = Integer.parseInt(settings.getAttributeValue("height"));
+		super.width = Integer.parseInt(settings.getAttributeValue("width"));
+		super.height = Integer.parseInt(settings.getAttributeValue("height"));
 		elements.next();
 		Iterator it = root_transaction.getChildren("package").iterator();
 		
@@ -33,10 +33,9 @@ public class PlainManager extends AbstractManager {
 			Element pack_transaction = (Element) it.next();
 			processElement(pack_template,pack_transaction);
 		}
-		in = textGenerator.getStream();
+		super.in = textGenerator.getStream();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void processElement(Element pack_template, Element pack_transaction) {
 		Iterator it_template = pack_template.getChildren().iterator();
 		Iterator it_transaction = pack_transaction.getChildren().iterator();
@@ -106,9 +105,17 @@ public class PlainManager extends AbstractManager {
 					Element el_transaction = (Element)it_transaction.next();
 					int row = el_template.getAttribute("row").getIntValue();
 					int col = el_template.getAttribute("col").getIntValue();
+					String type = el_template.getAttributeValue("type");
 					String value = el_transaction.getValue();
 					value = !"NULL".equals(value) && !"".equals(value) ?value:"";
-					textGenerator.addString(value,row,col,null);
+					if ("TEXT".equals(type)) {
+						int width = el_template.getAttribute("width").getIntValue();
+						int height = el_template.getAttribute("height").getIntValue();
+						textGenerator.addTextArea(value,row,col,width,height);
+					}
+					else if ("STRING".equals(type)) {
+						textGenerator.addString(value,row,col,null);
+					}
 				}
 			} catch (DataConversionException e) {
 				e.printStackTrace();

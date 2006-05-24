@@ -13,7 +13,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
-import javax.print.PrintException;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -27,8 +26,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
 
 import common.gui.forms.GenericForm;
 import common.gui.forms.NotFoundComponentException;
@@ -36,8 +33,6 @@ import common.misc.Icons;
 import common.misc.language.Language;
 import common.pdf.pdfviewer.PDFViewer;
 import common.printer.PlainManager;
-import common.printer.PrintManager;
-import common.printer.PrintManager.ImpresionType;
 import common.transactions.STResultSet;
 
 /**
@@ -284,7 +279,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
         GFforma.close();
     }
 
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	private void callEvent(String action) 
     throws InvocationTargetException,NotFoundComponentException {
     	
@@ -315,16 +310,14 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 						Document template = null;
 						URL url = this.getClass().getResource(GFforma.getPrinterTemplate());
 						template = sax.build(url);
-						XMLOutputter xmlout = new XMLOutputter();
-						xmlout.setFormat(Format.getPrettyFormat());
-						xmlout.output(doc,System.out);
 						PlainManager plain = new PlainManager(template,doc);
-						new PrintManager(ImpresionType.PLAIN,plain.getStream(),true);
+						System.out.println(plain.getBufferString());
+						//new PrintManager(ImpresionType.PLAIN,plain.getStream(),true);
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
-					} catch (PrintException e) {
+					}/* catch (PrintException e) {
 						e.printStackTrace();
-					} catch (IOException e) {
+					}*/catch (IOException e) {
 						e.printStackTrace();
 					} catch (JDOMException e) {
 						e.printStackTrace();

@@ -57,7 +57,6 @@ public class XMLTextArea extends JTextArea implements AnswerListener, InitiateFi
         JSPpanel = new JScrollPane(this);
         JSPpanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         JSPpanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        
         driverEvent = new Vector<String>();
         keySQL = new Vector<String>();
         
@@ -119,6 +118,10 @@ public class XMLTextArea extends JTextArea implements AnswerListener, InitiateFi
             pack.addContent(field);
         }
         return pack;
+    }
+    
+    public Element getPrintPackage() {
+        return getPackage();
     }
 
 	public void arriveAnswerEvent(AnswerEvent AEe) {

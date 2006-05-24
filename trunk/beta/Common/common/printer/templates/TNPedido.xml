@@ -1,5 +1,5 @@
 <emaku_template>
- <settings width="300" height="400" type="PLAIN" />
+ <settings width="300" height="100" type="PLAIN" />
  <package>
   <labels>
    <field row="1" col="1" type="STRING">Nombre</field>
@@ -53,5 +53,8 @@
    <field col="15" type="STRING" />
    <field col="65" width="3" type="NUMERIC" mask="#" />
   </subpackage>
+ </package>
+ <package>
+  <field row="85" col="1" type="TEXT" width="30" height="3" />
  </package>
 </emaku_template>
