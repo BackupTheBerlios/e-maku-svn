@@ -13,7 +13,7 @@ public class TextGenerator {
 	
 	public void addTextArea(String text,int row, int col, int width, int height) {
 		
-		text = text.replaceAll("\n", "");
+		text = text.replaceAll("\n", " ");
 		StringBuffer buf = new StringBuffer(text.trim());
 		int lastspace = -1;
 		int linestart = 0;
@@ -43,7 +43,7 @@ public class TextGenerator {
 			i++;
 		}
 		StringTokenizer st = new StringTokenizer(buf.toString(),"\n");
-		for (int j=0; j < height ; j++) {
+		for (int j=0; j < height && st.hasMoreTokens(); j++) {
 			addString(st.nextToken(),row++,col,null);
 		}
 	}

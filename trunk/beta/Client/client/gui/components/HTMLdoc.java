@@ -1,5 +1,8 @@
 package client.gui.components;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.io.IOException;
 import java.net.URL;
 
@@ -43,7 +46,15 @@ public class HTMLdoc extends JScrollPane implements HyperlinkListener  {
      */
     public HTMLdoc(URL URLtext) {
         
-        JEPhtml = new JEditorPane();
+        JEPhtml = new JEditorPane(){
+			private static final long serialVersionUID = 7074280906269929326L;
+			public void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D)g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                                    RenderingHints.VALUE_ANTIALIAS_ON);
+                super.paintComponent(g);
+            }
+        };
         try {
             JEPhtml.setPage(URLtext);
         }

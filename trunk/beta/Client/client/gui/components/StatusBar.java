@@ -22,6 +22,7 @@
 
 package client.gui.components;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -71,7 +72,7 @@ public class StatusBar extends JToolBar {
 
     /** Creates new StatusBar */
     public StatusBar() {
-        
+    	super();
         this.setFloatable(false);
         JLetiqueta1.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
         JLetiqueta2.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
@@ -80,6 +81,7 @@ public class StatusBar extends JToolBar {
         this.add(JLetiqueta2);
         this.add(JLetiqueta3);
         this.add(JPBbarra);
+        JPBbarra.setFont(new Font("Monospace",Font.PLAIN,10));
     }
     
     public static void setLabel1(String label) {
@@ -102,7 +104,7 @@ public class StatusBar extends JToolBar {
     	JPBbarra.setStringPainted(true);
     }
     
-    public static synchronized void  incrementProgresValue() {
+    public static void  incrementProgresValue() {
     	JPBbarra.setValue(JPBbarra.getValue()+1);
     	if (JPBbarra.getValue() == JPBbarra.getMaximum()) {
     		resetProgresValue();
