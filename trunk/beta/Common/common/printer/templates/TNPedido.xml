@@ -55,6 +55,9 @@
   </subpackage>
  </package>
  <package>
-  <field row="85" col="1" type="TEXT" width="30" height="3" />
+  <labels>
+   <field row="35" col="1" type="STRING">Observaciones</field>
+  </labels>
+  <field row="36" col="1" type="TEXT" width="30" height="3" />
  </package>
 </emaku_template>
