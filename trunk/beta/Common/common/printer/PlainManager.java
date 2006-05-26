@@ -7,19 +7,15 @@ import java.util.Iterator;
 
 import org.jdom.Attribute;
 import org.jdom.DataConversionException;
-import org.jdom.Document;
 import org.jdom.Element;
 
 public class PlainManager extends AbstractManager {
 	
 	private TextGenerator textGenerator = new TextGenerator();
 	
-	public PlainManager(Document template,Document transact) {
+	public PlainManager(Element rootTemplate,Element rootTransact) {
 		try {
  
-			Element rootTemplate = template.getRootElement();
-			Element rootTransact = transact.getRootElement();
-			
 			Element settings = rootTemplate.getChild("settings");
 			
 			super.width  = settings.getAttribute("width").getIntValue();
@@ -166,6 +162,10 @@ public class PlainManager extends AbstractManager {
 	}
 	
 	public String getBufferString() {
+		return textGenerator.getBufferString();
+	}
+	
+	public String toString() {
 		return textGenerator.getBufferString();
 	}
 }

@@ -32,6 +32,7 @@ import common.gui.forms.NotFoundComponentException;
 import common.misc.Icons;
 import common.misc.language.Language;
 import common.pdf.pdfviewer.PDFViewer;
+import common.printer.AbstractManager;
 import common.printer.PlainManager;
 import common.transactions.STResultSet;
 
@@ -310,8 +311,13 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 						Document template = null;
 						URL url = this.getClass().getResource(GFforma.getPrinterTemplate());
 						template = sax.build(url);
-						PlainManager plain = new PlainManager(template,doc);
-						System.out.println(plain.getBufferString());
+						AbstractManager print = null;
+						
+						if ("PLAIN".equals(template.getRootElement().getAttributeValue("type")) ) {
+							print = new PlainManager(template.getRootElement(),doc.getRootElement());
+						}
+						
+						System.out.println(print.toString());
 						//new PrintManager(ImpresionType.PLAIN,plain.getStream(),true);
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
