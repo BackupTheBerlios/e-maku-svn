@@ -1,3 +1,4 @@
+
 package server.businessrules;
 
 import java.sql.SQLException;
@@ -149,14 +150,15 @@ public class LNSelectedField {
 		 * Luego se adicionan los valores del paquete 
 		 */
 		
-		System.out.println("Numero de registros: "+pack.getChildren().size()+" numero de columnas: "+cols.length+" nombre de la cabecera "+pack.getName());
+	//	System.out.println("Numero de registros: "+pack.getChildren().size()+" numero de columnas: "+cols.length+" nombre de la cabecera "+pack.getName());
        for (int j=0;j<cols.length;j++,i++) {
             List lpack = pack.getChildren();
-            System.out.println("registro: "+j);
-            System.out.println("columna: "+cols[j]);
-            System.out.println("valor: "+((Element)lpack.get(cols[j])).getValue());
+    //        System.out.println("registro: "+j);
+    //        System.out.println("columna: "+cols[j]);
+    //        System.out.println("valor: "+((Element)lpack.get(cols[j])).getValue());
             fieldSQL[i] = ((Element)lpack.get(cols[j])).getValue();
         }
+        
        RQfields.ejecutarSQL(fieldSQL);
 	}
 }

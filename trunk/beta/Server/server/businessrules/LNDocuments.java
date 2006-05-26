@@ -1,9 +1,9 @@
 package server.businessrules;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.nio.channels.SocketChannel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +13,9 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import common.misc.language.Language;
+import org.jdom.Document;
+import org.jdom.Element;
+
 import server.comunications.SocketServer;
 import server.database.sql.CacheEnlace;
 import server.database.sql.DontHaveKeyException;
@@ -21,10 +23,7 @@ import server.database.sql.RunQuery;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
 
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
+import common.misc.language.Language;
 
 /**
  * LNDocuments.java Creado el 29-jun-2005
@@ -56,7 +55,7 @@ public class LNDocuments {
     private static Document doc;
     private static Element pack;
     private static LNGenericSQL LNGtransaccion;
-    private static int partidaDoble = 0;
+    private static double partidaDoble = 0;
     /*
      * Estos cuatro objetos son necesarios para poder generar un 
      * documento, ellos pueden venir con la transaccion, o 
@@ -139,7 +138,7 @@ public class LNDocuments {
 	                 * paquete de la transaccion
 	                 */
 	                
-	                System.out.println("accion del documento: "+actionDocument);
+	               
 	                
 	                if (actionDocument.equals(CREATE_DOCUMENT)) {
 
@@ -234,7 +233,7 @@ public class LNDocuments {
     	                String primaryKey = getPrimaryKey(numero);
 
                     if (primaryKey==null) {
-                    		System.out.println("la llave es nula");
+                    	
                     		undoTransaction(Language.getWord("ERR_ANNUL_DOCUMENT_NOT_FOUND"));
                     		break;
                     }
@@ -287,9 +286,9 @@ public class LNDocuments {
 		                	 */
 		                	String numero = subpackage.getValue();
 	    	                String key = getPrimaryKey(numero);
-	    	                System.out.println("llave primaria: "+key);
+	    	             
                         if (key==null) {
-                        		System.out.println("la llave es nula");
+                        	
                         		undoTransaction(Language.getWord("ERR_DELETE_DOCUMENT_NOT_FOUND"));
                         		break;
                         }
@@ -576,7 +575,7 @@ public class LNDocuments {
                 parameters = e;
             }
         }
-        System.out.println("paquete a procesar:");
+/*        System.out.println("paquete a procesar:");
 		Document doc = new Document();
 		doc.setRootElement((Element)pack.clone());
 		 XMLOutputter out = new XMLOutputter();
@@ -587,7 +586,7 @@ public class LNDocuments {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+*/
         /*
          * Hagamos una trampa: resulta que en este paquete se parametriza tanto el driver o clase como
          * el metodo que se va a ejecutar, esto se instanciara en tiempo de ejecucion. La trampa es la
@@ -634,9 +633,18 @@ public class LNDocuments {
             else if ("rowDataAccount".equals(method)) {
             	partidaDoble += LNCprocesar.rowDataAccount(pack);
             }
+            else if ("anular".equals(method)) {
+            	LNCprocesar.anular();
+            }
             else {
                 throw new NoSuchMethodException(Language.getWord("NO_SUCH_METHOD")+method);
             }
+		    try {
+			    BigDecimal bigDecimal = new BigDecimal(partidaDoble);
+			    bigDecimal = bigDecimal.setScale(2,BigDecimal.ROUND_HALF_UP);
+			    partidaDoble = bigDecimal.doubleValue();
+		    }
+		    catch(NumberFormatException NFEe) {}
         }
         else if("LNSelectedField".equals(driver)) {
         	LNSelectedField LNSprocesar = new LNSelectedField(parameters,SocketServer.getBd(sock));
