@@ -70,7 +70,7 @@ public class TextGenerator {
 		}
 		str = fill+str;
 		if ( row < buffer.size()  && col -1 < buffer.get(row-1).length()) {
-			buffer.get(row-1).replace(col-1,str.length(),str);
+			buffer.get(row-1).replace(col-1,str.length()+(col-1),str);
 		}
 		else {
 			buffer.get(row-1).insert(col-1,str);

@@ -12,31 +12,73 @@ import org.jdom.Element;
 
 public class PlainManager extends AbstractManager {
 	
-	private TextGenerator textGenerator;
+	private TextGenerator textGenerator = new TextGenerator();
 	
-	public PlainManager(Document template,Document transaction) {
-
-		textGenerator = new TextGenerator();
-		Element root_template = template.getRootElement();
-		Element root_transaction = transaction.getRootElement();
-		
-		Element settings = root_template.getChild("settings");
-		Iterator elements = root_template.getChildren().iterator();
-		
-		super.width = Integer.parseInt(settings.getAttributeValue("width"));
-		super.height = Integer.parseInt(settings.getAttributeValue("height"));
-		elements.next();
-		Iterator it = root_transaction.getChildren("package").iterator();
-		
-		while(elements.hasNext()) {
-			Element pack_template = (Element) elements.next();
-			Element pack_transaction = (Element) it.next();
-			processElement(pack_template,pack_transaction);
+	public PlainManager(Document template,Document transact) {
+		try {
+ 
+			Element rootTemplate = template.getRootElement();
+			Element rootTransact = transact.getRootElement();
+			
+			Element settings = rootTemplate.getChild("settings");
+			
+			super.width  = settings.getAttribute("width").getIntValue();
+			super.height = settings.getAttribute("height").getIntValue();
+			
+			processElement(rootTemplate.getChild("metadata"));
+			
+			Iterator itTemplate = rootTemplate.getChildren("package").iterator();
+			Iterator itTransact = rootTransact.getChildren("package").iterator();
+			
+			while(itTemplate.hasNext() && itTransact.hasNext()) {
+				processElement((Element)itTemplate.next(),(Element)itTransact.next());
+			}
+			super.in = textGenerator.getStream();
+			
 		}
-		super.in = textGenerator.getStream();
+		catch (DataConversionException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public void processElement(Element pack_template, Element pack_transaction) {
+	private void processElement(Element element) throws DataConversionException {
+
+		Iterator it = element.getChildren().iterator();
+		while (it.hasNext()) {
+			
+			Element e = (Element) it.next();
+			String name = e.getName();
+			Iterator itAttribs = e.getAttributes().iterator();
+			HashMap<String,Attribute> attribs = new HashMap<String,Attribute>();
+			
+			while(itAttribs.hasNext()) {
+				Attribute attribute = (Attribute) itAttribs.next();
+				attribs.put(attribute.getName(),attribute);
+			}
+			
+			int row =  attribs.get("row").getIntValue();
+			int col =  attribs.get("col").getIntValue();
+			
+			if ("line".equals(name)) {
+				int length		= attribs.get("length"  ).getIntValue();
+				String charfill = attribs.get("charfill").getValue();
+				String align	= attribs.get("align"   ).getValue();
+				for (int i=0;i < length ; i++) {
+					if ("horizontal".equals(align)) {
+						textGenerator.addString(charfill,row,col++,null);
+					}
+					else if ("vertical".equals(align)) {
+						textGenerator.addString(charfill,row++,col,null);
+					}
+				}
+			}
+			if ("field".equals(name)) {
+				textGenerator.addString(e.getTextTrim(),row,col,null);
+			}
+		}
+	}
+	
+	private void processElement(Element pack_template, Element pack_transaction) {
 		Iterator it_template = pack_template.getChildren().iterator();
 		Iterator it_transaction = pack_transaction.getChildren().iterator();
 		while(it_template.hasNext() && it_transaction.hasNext()) {
@@ -114,7 +156,7 @@ public class PlainManager extends AbstractManager {
 						textGenerator.addTextArea(value,row,col,width,height);
 					}
 					else if ("STRING".equals(type)) {
-						textGenerator.addString(value,row,col,null);
+						textGenerator.addString(value.trim(),row,col,null);
 					}
 				}
 			} catch (DataConversionException e) {

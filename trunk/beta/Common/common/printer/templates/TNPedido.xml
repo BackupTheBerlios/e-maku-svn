@@ -1,5 +1,14 @@
-<emaku_template>
- <settings width="300" height="100" type="PLAIN" />
+<emaku_template type="PLAIN">
+ <settings width="300" height="100" />
+ <metadata>
+  <line row="7" col="1" length="80" charfill="-" align="horizontal" />
+  <line row="19" col="1" length="80" charfill="-" align="horizontal" />
+  <line row="9" col="1" length="80" charfill="-" align="horizontal" />
+  <line row="1" col="47" length="6" charfill="|" align="vertical" />
+  <line row="7" col="13" length="12" charfill="|" align="vertical" />
+  <line row="7" col="72" length="12" charfill="|" align="vertical" />
+  <field row="1" col="50" type="STRING">Orden de Pedido</field>
+ </metadata>
  <package>
   <labels>
    <field row="1" col="1" type="STRING">Nombre</field>
@@ -32,32 +41,44 @@
  </package>
  <package>
   <labels>
-   <field row="1" col="50" type="STRING">Fecha</field>
+   <field row="3" col="50" type="STRING">Fecha</field>
   </labels>
-  <field row="1" col="65" type="STRING" />
+  <field row="3" col="60" type="STRING" />
  </package>
  <package>
   <labels>
-   <field row="2" col="50" type="STRING">Vendedor</field>
+   <field row="4" col="50" type="STRING">Vendedor</field>
   </labels>
-  <field row="2" col="65" type="STRING" />
+  <field row="4" col="60" type="STRING" />
+ </package>
+ <package>
+  <labels>
+   <field row="5" col="50" type="STRING">Bodega</field>
+  </labels>
+  <field row="5" col="60" type="STRING" />
+ </package>
+ <package>
+  <labels>
+   <field row="6" col="50" type="STRING">Nro</field>
+  </labels>
+  <field row="6" col="60" type="STRING" />
  </package>
  <package>
   <labels>
    <field row="8" col="1" type="STRING">Referencia</field>
    <field row="8" col="15" type="STRING">Descripcion</field>
-   <field row="8" col="60" type="STRING">Cantidad</field>
+   <field row="8" col="73" type="STRING">Cantidad</field>
   </labels>
-  <subpackage rowInit="9">
+  <subpackage rowInit="10">
    <field col="1" type="STRING" />
    <field col="15" type="STRING" />
-   <field col="65" width="3" type="NUMERIC" mask="#" />
+   <field col="77" width="3" type="NUMERIC" mask="#" />
   </subpackage>
  </package>
  <package>
   <labels>
-   <field row="35" col="1" type="STRING">Observaciones</field>
+   <field row="20" col="1" type="STRING">Observaciones</field>
   </labels>
-  <field row="36" col="1" type="TEXT" width="30" height="3" />
+  <field row="21" col="1" type="TEXT" width="30" height="3" />
  </package>
 </emaku_template>
