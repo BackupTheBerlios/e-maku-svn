@@ -111,11 +111,11 @@ public class TableFindData extends JPanel implements AnswerListener,ChangeExtern
 
     public TableFindData(GenericForm GFforma, Document doc)
             throws InvocationTargetException,NotFoundComponentException {
-        this.GFforma = GFforma;
-        formulas			= new ArrayList<Formula>();
-        exportTotalCols = new HashMap<String,String>();
+        this.GFforma 	= GFforma;
+        formulas		= new ArrayList<Formula>();
+        exportTotalCols	= new HashMap<String,String>();
         keySQL			= new ArrayList<String>();
-        driverEvent 		= new ArrayList<String>();
+        driverEvent 	= new ArrayList<String>();
         externalValues 	= new Hashtable<String,String>();
         importTotalCol 	= new HashMap<String,String>();
         
@@ -604,22 +604,22 @@ public class TableFindData extends JPanel implements AnswerListener,ChangeExtern
     public void ValidPackage(Element args) throws VoidPackageException {
     		TMFDtabla.ValidPackage(args);
     }
-    /*
-     * (non-Javadoc)
-     * 
-     * @see common.gui.components.AnswerListener#arriveAnswerEvent(common.gui.components.AnswerEvent)
-     */
+    
     public void arriveAnswerEvent(AnswerEvent e) {
-    		boolean isKey = false;
-    		
-    		for (int i=0;i<keySQL.size();i++) {
-    			if (e.getSqlCode().equals(keySQL.get(i))) {
+    	
+    		/*boolean isKey = false;
+    		//System.out.println("AnswerEvent" + e.getSqlCode());
+    		int max = keySQL.size();
+    		String code = e.getSqlCode();
+    		for (int i=0;i<max;i++) {
+    			if (code.equals(keySQL.get(i))) {
     				isKey = true;
     				break;
     			}
-    		}
-    	
-	    	if (isKey) {
+    		}*/
+    		
+    		if (keySQL.contains(e.getSqlCode())) {
+	    	//if (isKey) {
 	            Document doc = e.getDocument();
 	            int size = doc.getRootElement().getChildren("row").size();
 	            if ("NEW".equals(mode)) {

@@ -91,7 +91,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     private Interpreter shellScript;
     private boolean updateQuery;
     private HashMap importTotalCol;
-    
+    private boolean loadingQuery = false;
     public TMFindData(GenericForm GFforma,
             		  String sqlCode,
             		  int rows,
@@ -897,107 +897,112 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
         	        }*/
         	        fireTableCellUpdated(rowIndex, colIndex);
         		
-		        /* Aqui vamos a realizar las consultas para quien lo necesite*/
-		        if(ATFDargs[colIndex].isExporValue() && value!=null) {
-		        		GFforma.setExternalValues((Object)ATFDargs[colIndex].getExportValue(),value.toString());	
-			        	for (int col=0;col < ATFDargs.length ; col++) {
-			        		if (ATFDargs[col].isImportValues()) {
-			        			
-			        			String [] impVals =ATFDargs[col].getImports();
-			        			String [] argsQuery = new String[impVals.length];
-			        			boolean search = true;
-			        			
-			        			for (int args=0; args <impVals.length;args++) {
-			        				
-			        				int indice = ((Integer)keysExports.get(impVals[args])).intValue();
-			        				String valueArg = null; 
-			        				valueArg =	String.valueOf(getValueAt(rowIndex,indice));
-			        				
-			        				if(valueArg!=null && !"".equals(valueArg)) {
-			        					
-			        					if (ATFDargs[indice].getType().equals("COMBOSQL")) {
-							    			StringTokenizer stk = new StringTokenizer(valueArg," ");
-							    			String tok = "";
-							    			while(true) {
-							    				try {
-							    					tok=stk.nextToken();
-							    				}
-							    				catch(NoSuchElementException NSEe) {
-							    					break;
-							    				}
-							    			}
-							    			argsQuery[args] = tok;
-			        					}
-			        					else {
-			        						argsQuery[args] = valueArg;
-			        					}
-			        				}
-			        				else {
-			        					search = false;
-			        					break;
-			        				}
-			        			}
-			        			if (search) {
-			        				Object obj = ATFDargs[col].getTypeDate();
-			        				String argConstructor = null;
-									try {
-										Document Dquery = STResultSet.getResultSetST(ATFDargs[col].getSqlCombo(),
-																		argsQuery);
-										Element element = Dquery.getRootElement().getChild("row");
-					                    Constructor cons = ATFDargs[col].getTypeDate().getClass().getConstructor(new Class[]{String.class});
-					                    argConstructor = element.getChildText("col");
-				                        obj = cons.newInstance(new Object[]{argConstructor});
-				                    	
-									} 
-									catch (STException STEe) {
-										//STEe.printStackTrace();
-									} 
-									catch (NullPointerException NPEe) {
-										//NPEe.printStackTrace();
-									} 
-									catch (InvocationTargetException ITEe) {
-				                			//ITEe.printStackTrace();
-				                		} 
-									catch (SecurityException SEe) {
-				                			//SEe.printStackTrace();
-									} 
-									catch (NoSuchMethodException NSMEe) {
-										//NSMEe.printStackTrace();
-									} 
-									catch (IllegalArgumentException IAEe) {
-										//IAEe.printStackTrace();
-									} 
-									catch (InstantiationException IEe) {
-										//IEe.printStackTrace();
-									} 
-									catch (IllegalAccessException IAEe) {
-										//IAEe.printStackTrace();
-									}
-									
-									if (argConstructor!=null) {
-										VdataRows.get(rowIndex).set(col,obj);
-										fireTableCellUpdated(rowIndex,col);
-										/* Este codigo analiza las columnas por beanshell antes de insertarlas */
-										if (formulas!=null) {
-								        		for (int i=0;i<formulas.size();i++) {
-								        			
-								                    Formula formula = (Formula)formulas.get(i);
-								                    String var = formula.getFormula();
-								                    switch(formula.getType()) {
-											            case BEANSHELL:
-											            		procesarFormulas(var,rowIndex,false);
-											            		break;
-								                    }
-								        		}
+			        /* Aqui vamos a realizar las consultas para quien lo necesite*/
+			        if(ATFDargs[colIndex].isExporValue() && value!=null) {
+			        		GFforma.setExternalValues((Object)ATFDargs[colIndex].getExportValue(),value.toString());	
+				        	for (int col=0;col < ATFDargs.length ; col++) {
+				        		if (ATFDargs[col].isImportValues()) {
+				        			
+				        			String [] impVals =ATFDargs[col].getImports();
+				        			String [] argsQuery = new String[impVals.length];
+				        			boolean search = true;
+				        			
+				        			for (int args=0; args <impVals.length;args++) {
+				        				
+				        				int indice = ((Integer)keysExports.get(impVals[args])).intValue();
+				        				String valueArg = null; 
+				        				valueArg =	String.valueOf(getValueAt(rowIndex,indice));
+				        				
+				        				if(valueArg!=null && !"".equals(valueArg)) {
+				        					
+				        					if (ATFDargs[indice].getType().equals("COMBOSQL")) {
+								    			StringTokenizer stk = new StringTokenizer(valueArg," ");
+								    			String tok = "";
+								    			while(true) {
+								    				try {
+								    					tok=stk.nextToken();
+								    				}
+								    				catch(NoSuchElementException NSEe) {
+								    					break;
+								    				}
+								    			}
+								    			argsQuery[args] = tok;
+				        					}
+				        					else {
+				        						argsQuery[args] = valueArg;
+				        					}
+				        				}
+				        				else {
+				        					search = false;
+				        					break;
+				        				}
+				        			}
+				        			if (search) {
+				        				Object obj = ATFDargs[col].getTypeDate();
+				        				String argConstructor = null;
+										try {
+											Document Dquery = STResultSet.getResultSetST(ATFDargs[col].getSqlCombo(),
+																			argsQuery);
+											Element element = Dquery.getRootElement().getChild("row");
+						                    Constructor cons = ATFDargs[col].getTypeDate().getClass().getConstructor(new Class[]{String.class});
+						                    argConstructor = element.getChildText("col");
+					                        obj = cons.newInstance(new Object[]{argConstructor});
+					                    	
+										} 
+										catch (STException STEe) {
+											//STEe.printStackTrace();
+										} 
+										catch (NullPointerException NPEe) {
+											//NPEe.printStackTrace();
+										} 
+										catch (InvocationTargetException ITEe) {
+					                			//ITEe.printStackTrace();
+					                		} 
+										catch (SecurityException SEe) {
+					                			//SEe.printStackTrace();
+										} 
+										catch (NoSuchMethodException NSMEe) {
+											//NSMEe.printStackTrace();
+										} 
+										catch (IllegalArgumentException IAEe) {
+											//IAEe.printStackTrace();
+										} 
+										catch (InstantiationException IEe) {
+											//IEe.printStackTrace();
+										} 
+										catch (IllegalAccessException IAEe) {
+											//IAEe.printStackTrace();
 										}
-									}
-			        			}
-			        		}
-			        	}
-		        }
+										
+										if (argConstructor!=null) {
+											VdataRows.get(rowIndex).set(col,obj);
+											fireTableCellUpdated(rowIndex,col);
+											/* Este codigo analiza las columnas por beanshell antes de insertarlas */
+											if (formulas!=null) {
+									        		for (int i=0;i<formulas.size();i++) {
+									        			
+									                    Formula formula = (Formula)formulas.get(i);
+									                    String var = formula.getFormula();
+									                    switch(formula.getType()) {
+												            case BEANSHELL:
+												            		procesarFormulas(var,rowIndex,false);
+												            		break;
+									                    }
+									        		}
+											}
+										}
+				        			}
+				        		}
+				        	}
+			        }
         		}
         }
-        new RunInternalQuery(rowIndex,colIndex,value).start();
+        if (loadingQuery) {
+        	fireTableCellUpdated(rowIndex, colIndex);
+        } else {
+        	new RunInternalQuery(rowIndex,colIndex,value).start();
+        }
+        
     }
 
     
@@ -1528,6 +1533,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     }
     
     public void setQuery(Document doc) {
+    	loadingQuery = true;
         class LoadQuery extends Thread{
             private Document doc;
             
@@ -1558,6 +1564,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 	                }
                 }
                 totalizar();
+                loadingQuery = false;
             }
         }
         new LoadQuery(doc).start();
