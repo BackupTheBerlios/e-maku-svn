@@ -499,6 +499,7 @@ public class SQLComboBox extends JComboBox implements
 				Document doc = AEe.getDocument();
 		        String select = doc.getRootElement().getChild("row").getChildText("col");
 		        this.setSelectedItem(select);
+		        exportar();
 	        }
 			catch (NullPointerException NPEe) {
 				//this.removeAllItems();
