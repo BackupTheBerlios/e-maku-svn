@@ -938,6 +938,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 				        				}
 				        			}
 				        			if (search) {
+				        				System.out.println("Consultado " + getValueAt(rowIndex,colIndex));
 				        				Object obj = ATFDargs[col].getTypeDate();
 				        				String argConstructor = null;
 										try {
@@ -947,34 +948,33 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 						                    Constructor cons = ATFDargs[col].getTypeDate().getClass().getConstructor(new Class[]{String.class});
 						                    argConstructor = element.getChildText("col");
 					                        obj = cons.newInstance(new Object[]{argConstructor});
-					                    	
 										} 
 										catch (STException STEe) {
-											//STEe.printStackTrace();
+											STEe.printStackTrace();
 										} 
 										catch (NullPointerException NPEe) {
 											//NPEe.printStackTrace();
 										} 
 										catch (InvocationTargetException ITEe) {
-					                			//ITEe.printStackTrace();
-					                		} 
+											ITEe.printStackTrace();
+										} 
 										catch (SecurityException SEe) {
-					                			//SEe.printStackTrace();
+					                		SEe.printStackTrace();
 										} 
 										catch (NoSuchMethodException NSMEe) {
-											//NSMEe.printStackTrace();
+											NSMEe.printStackTrace();
 										} 
 										catch (IllegalArgumentException IAEe) {
-											//IAEe.printStackTrace();
+											IAEe.printStackTrace();
 										} 
 										catch (InstantiationException IEe) {
-											//IEe.printStackTrace();
+											IEe.printStackTrace();
 										} 
 										catch (IllegalAccessException IAEe) {
-											//IAEe.printStackTrace();
+											IAEe.printStackTrace();
 										}
 										
-										if (argConstructor!=null) {
+										//if (argConstructor!=null) {
 											VdataRows.get(rowIndex).set(col,obj);
 											fireTableCellUpdated(rowIndex,col);
 											/* Este codigo analiza las columnas por beanshell antes de insertarlas */
@@ -990,7 +990,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 									                    }
 									        		}
 											}
-										}
+										//}
 				        			}
 				        		}
 				        	}
@@ -1011,8 +1011,9 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
      */
     
     public void clean() {
-        for (int i=0;i<rows;i++) {
-            for (int j=0;j<getColumnCount();j++) {
+    	int i=0;
+    	for (Vector<Object> vrow : VdataRows) {
+    		for (int j=0;j<ATFDargs.length;j++) {
                 /* 
                  * Esta validacion es con el fin de solo inicializar los
                  * valores que no son retornados por una consulta, cuando
@@ -1020,12 +1021,14 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
                  */
                 
                 //if (!initSQL || ATFDargs[j].getOrderQuery()==-1 || ATFDargs[j].isClean()) {
-	            	if (!initSQL || ATFDargs[j].isClean()) {
-	                        		updateCells(ATFDargs[j].getTypeDate(),i,j);
-	                }
-	            }
-        }
-        
+            	if (!initSQL || ATFDargs[j].isClean()) {
+            		//updateCells(ATFDargs[j].getTypeDate(),i,j);
+            		vrow.set(j,ATFDargs[j].getTypeDate());
+            		fireTableCellUpdated(i,j);
+                }
+    		}
+    		i++;
+    	}
     }
     
     /**
@@ -1040,20 +1043,17 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     private void message(String keyError) {
     	final String error = keyError;
 		try {
-			SwingUtilities.invokeAndWait(new Runnable()
-			        {
-			          public void run() {
-			        	  JLabel label = new JLabel(Language.getWord(error));
-			              JOptionPane.showInternalMessageDialog(GFforma.getDesktopPane(),
-			                      label,
-			                      "Error", JOptionPane.ERROR_MESSAGE);	
-			          }
-			        });
+			SwingUtilities.invokeAndWait(new Runnable() {
+		          public void run() {
+		        	  JLabel label = new JLabel(Language.getWord(error));
+		              JOptionPane.showInternalMessageDialog(GFforma.getDesktopPane(),
+		                      label,
+		                      "Error", JOptionPane.ERROR_MESSAGE);	
+		          }
+			});
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			//e.printStackTrace();
 		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
 			//e.printStackTrace();
 		}
         
