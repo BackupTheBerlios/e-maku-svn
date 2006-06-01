@@ -46,7 +46,7 @@ public class ConfigFile {
     private static int SocketJClient;
     private static int SocketJAdmin;
     private static int MaxClients;
-    
+    private static String local;
     /**
      * Este metodo se encarga de cargar el archivo de configuracion
      * @throws ConfigFileNotLoadException
@@ -77,7 +77,8 @@ public class ConfigFile {
                 if (datos.getName().equals("PoolConnection")) {
                     CargarPoolConexiones(datos.getChildren());
                 } else if (datos.getName().equals("Lenguaje")) {
-                    idioma.CargarLenguaje(datos.getValue());
+                	local = datos.getValue();
+                    idioma.CargarLenguaje(local);
                 } else if (datos.getName().equals("Log")) {
                     new LogAdmin(datos.getValue(),ServerConst.KeyServer);
                 } else if (datos.getName().equals("SocketJClient")) {
@@ -223,6 +224,10 @@ public class ConfigFile {
     public static int getMaxClients() {
         return MaxClients;
     }
+
+	public static String getLocal() {
+		return local;
+	}
 }
     
 /**

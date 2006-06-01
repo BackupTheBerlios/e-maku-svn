@@ -34,10 +34,7 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.ResourceBundle;
-
-import javax.swing.JOptionPane;
 
 import org.jdom.Element;
 import org.jpedal.PdfDecoder;
@@ -223,10 +220,10 @@ public class PDFViewer implements ReportListener {
 					byte [] bytesReport = zip.getDataDecode(data.getValue());
 					openReport(e.getTitleReport(), bytesReport);
 				}
-				else {
+				/*else {
 					String txt = MessageFormat.format(Language.getWord("REPORT_DONT_EXIST"),idReport);
 					JOptionPane.showInternalMessageDialog(currentGUI.getFrame(),txt);
-				}
+				}*/
 			}
 			catch (IOException IOEe) {
 				IOEe.printStackTrace();

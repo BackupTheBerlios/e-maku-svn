@@ -1,13 +1,12 @@
 package common.control;
 
-import java.util.ArrayList;
 import java.util.Vector;
-
-import common.transactions.Cache;
-import common.transactions.STResultSet;
 
 import org.jdom.Document;
 import org.jdom.Element;
+
+import common.transactions.Cache;
+import common.transactions.STResultSet;
 
 /**
  * ClientHeaderValidator.java Creado el 22-jul-2004
@@ -37,7 +36,7 @@ public class ClientHeaderValidator {
     private static Element raiz;
     private static Vector <DateListener>dateListener = new Vector<DateListener>();
     private static Vector <UpdateCodeListener>updateCodeListener = new Vector<UpdateCodeListener>();
-    private static ArrayList<ReportListener> reportListener = new ArrayList<ReportListener>();
+    private static Vector <ReportListener> reportListener = new Vector<ReportListener>();
     
     /**
      * Este metodo se encarga de revisar toda las raices de los documentos que
@@ -123,13 +122,15 @@ public class ClientHeaderValidator {
     }
     
     private static synchronized void notifyReport(ReportEvent event) {
-        for (int i=0; i<reportListener.size();i++) {
-            ReportListener listener = reportListener.get(i);
+    	Vector lista;
+        lista = (Vector)reportListener.clone();
+        for (int i=0; i<lista.size();i++) {
+        	ReportListener listener = reportListener.get(i);
             listener.arriveReport(event);
         }
     }
     
-    public synchronized static void addReportListener(ReportListener listener ) {
+    public static void addReportListener(ReportListener listener ) {
         reportListener.add(listener);
     }
 

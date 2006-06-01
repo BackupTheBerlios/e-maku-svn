@@ -31,7 +31,16 @@ import server.control.ReportsStore;
 import server.database.sql.RunQuery;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
+import server.misc.ServerConst;
+import server.misc.settings.ConfigFile;
 
+import com.lowagie.text.Chunk;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Font;
+import com.lowagie.text.Image;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.PdfWriter;
 import common.comunications.SocketWriter;
 import common.misc.ZipHandler;
 
@@ -61,6 +70,7 @@ public class MakeReport extends Thread {
 			String sql = null;
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			Document docZip = new Document();
+			Element titleReport;
 			if (next) {
 				XMLOutputter xmout = new XMLOutputter();
 				xmout.setFormat(Format.getPrettyFormat());
@@ -100,28 +110,43 @@ public class MakeReport extends Thread {
 				JasperExportManager.exportReportToPdfStream(jasperPrint,os);
 				System.out.println(" * exportado a pdf");
 				os.close();
-		
-				Element root = new Element("REPORT");
-				Element id = new Element("id").setText(this.id);
-				Element idReport = new Element("idReport").setText(codigo);
-				Element titleReport = new Element("titleReport").setText(parameters.get("Title"));
-				ZipHandler zip = new ZipHandler(os,"report.pdf");
-				root.addContent(id);
-				root.addContent(idReport);
-				root.addContent(titleReport);
-				root.addContent(zip.getElementDataEncode("data"));
-		    	docZip.setRootElement(root);
-		        
+				titleReport = new Element("titleReport").setText(title);
 			}
 			else {
-				Element root = new Element("REPORT");
-				Element id = new Element("id").setText(this.id);
-				Element idReport = new Element("idReport").setText(codigo);
-				root.addContent(id);
-				root.addContent(idReport);
-		    	docZip.setRootElement(root);
+				com.lowagie.text.Document document = new com.lowagie.text.Document(new Rectangle(400,200),10,10,10,10);
+				try {
+					PdfWriter.getInstance(document,os);
+					document.open();
+					String text = codigo;
+
+					Chunk chunck = new Chunk(text);
+					chunck.setFont(new Font(Font.HELVETICA, 12));
+					Paragraph p = new Paragraph();
+					p.setAlignment(Paragraph.ALIGN_CENTER);
+					p.add(chunck);
+					Image png = Image.getInstance(
+							ServerConst.JM_HOME+"/reports/images/report_nf_"+ConfigFile.getLocal()+".png");
+					png.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+					document.add(png);
+					document.add(p);
+					
+				} catch (DocumentException de) {
+					System.err.println(de.getMessage());
+				}
+				document.close();
+				os.close();
+				titleReport = new Element("titleReport").setText("Error");
 			}
-			
+			Element root = new Element("REPORT");
+			Element id = new Element("id").setText(this.id);
+			Element idReport = new Element("idReport").setText(codigo);
+			ZipHandler zip = new ZipHandler(os,"report.pdf");
+			root.addContent(id);
+			root.addContent(idReport);
+			root.addContent(titleReport);
+			root.addContent(zip.getElementDataEncode("data"));
+	    	docZip.setRootElement(root);
+	    	
 			SocketWriter.writing(this.socket,docZip);
 	        rs.close();
 
