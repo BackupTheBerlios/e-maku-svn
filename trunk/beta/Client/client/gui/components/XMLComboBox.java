@@ -10,12 +10,12 @@ import java.awt.RenderingHints;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.jdom.Document;
+import org.jdom.Element;
+
 import common.gui.components.VoidPackageException;
 import common.gui.forms.GenericForm;
 import common.misc.language.Language;
-
-import org.jdom.Document;
-import org.jdom.Element;
 
 /**
  * XMLComboBox.java Creado el 18-sep-2004
@@ -173,8 +173,10 @@ public class XMLComboBox extends SQLComboBox {
     public void clean() {
     	if (isClean())
     		removeAllItems();
-    	else
-    		setSelectedIndex(0);
+    	else {
+    		setSelectedIndex(getSelectedIndex());
+    		exportar();
+    	}
     }
 
     /**

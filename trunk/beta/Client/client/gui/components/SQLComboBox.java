@@ -411,7 +411,7 @@ public class SQLComboBox extends JComboBox implements
        	exportar();
 	}
 	
-	private void exportar() {
+	protected void exportar() {
 		if (exportValue!=null) {
        		if (!saveKey) {
 				StringTokenizer stk = new StringTokenizer((String) getSelectedItem()," ");

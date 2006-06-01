@@ -28,6 +28,7 @@ import javax.swing.SwingConstants;
 import org.jdom.Document;
 import org.jdom.Element;
 
+import common.comunications.DateSender;
 import common.control.ClientHeaderValidator;
 import common.control.DateEvent;
 import common.control.DateListener;
@@ -626,10 +627,14 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
         for (int i=0; i < max ; i++) {
         		XMLTextField xmltemp = (XMLTextField)VFields.get(i);
             if (xmltemp.isClean()) {
-            		xmltemp.setText("");
+            	xmltemp.setText("");
                 if (xmltemp.getType().equals("NUMERIC")) {
                 		xmltemp.setNumberValue(0);
                 }
+            }
+            if (xmltemp.isSystemDate()) {
+            	System.out.println("Solicitando actulizacion de fecha");
+            	GFforma.sendTransaction(DateSender.getPackage());
             }
         }
     }
