@@ -57,7 +57,6 @@ public class MakeReport extends Thread {
 		this.socket = sock;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void run() {
 		try {
 			ResultSet rs;
@@ -83,13 +82,13 @@ public class MakeReport extends Thread {
 			
 				this.id = element.getChildText("id");
 				List list = element.getChild("package").getChildren();
-				Iterator<Element> it = list.iterator();
+				Iterator it = list.iterator();
 				args = new String[list.size()];
 				rs.close();
 				rs = null;
 				if (list.size() > 0) {
 					for (int i = 0; it.hasNext(); i++) {
-						Element arg = it.next();
+						Element arg = (Element) it.next();
 						args[i] = arg.getValue();
 					}
 					rs = new RunQuery(SocketServer.getBd(socket), sql, args).ejecutarSELECT();
