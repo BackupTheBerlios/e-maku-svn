@@ -465,7 +465,6 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
         	if (idReport!=null) { 
         		driver.setText(idReport);
         		PDFViewer pdf = new PDFViewer(GFforma,idReport);
-        		System.out.println("Nuevo pdfViewer");
             	JInternalFrame jiframe = pdf.getGUI().getFrame();
 				GFforma.getJDPpanel().add(jiframe);
 				try {

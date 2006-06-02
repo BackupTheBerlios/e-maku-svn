@@ -57,6 +57,7 @@ public class MakeReport extends Thread {
 		this.socket = sock;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void run() {
 		try {
 			ResultSet rs;
@@ -82,13 +83,13 @@ public class MakeReport extends Thread {
 			
 				this.id = element.getChildText("id");
 				List list = element.getChild("package").getChildren();
-				Iterator it = list.iterator();
+				Iterator<Element> it = list.iterator();
 				args = new String[list.size()];
 				rs.close();
 				rs = null;
 				if (list.size() > 0) {
 					for (int i = 0; it.hasNext(); i++) {
-						Element arg = (Element) it.next();
+						Element arg = it.next();
 						args[i] = arg.getValue();
 					}
 					rs = new RunQuery(SocketServer.getBd(socket), sql, args).ejecutarSELECT();
@@ -109,34 +110,29 @@ public class MakeReport extends Thread {
 				System.out.println(" * filler.fill(parameters,jrRS)");
 				JasperExportManager.exportReportToPdfStream(jasperPrint,os);
 				System.out.println(" * exportado a pdf");
-				os.close();
 				titleReport = new Element("titleReport").setText(title);
 			}
 			else {
-				com.lowagie.text.Document document = new com.lowagie.text.Document(new Rectangle(400,200),10,10,10,10);
-				try {
-					PdfWriter.getInstance(document,os);
-					document.open();
-					String text = codigo;
+				com.lowagie.text.Document pdfDoc;
+				pdfDoc = new com.lowagie.text.Document(new Rectangle(400,200),10,10,10,10);
 
-					Chunk chunck = new Chunk(text);
-					chunck.setFont(new Font(Font.HELVETICA, 12));
-					Paragraph p = new Paragraph();
-					p.setAlignment(Paragraph.ALIGN_CENTER);
-					p.add(chunck);
-					Image png = Image.getInstance(
-							ServerConst.JM_HOME+"/reports/images/report_nf_"+ConfigFile.getLocal()+".png");
-					png.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
-					document.add(png);
-					document.add(p);
-					
-				} catch (DocumentException de) {
-					System.err.println(de.getMessage());
-				}
-				document.close();
-				os.close();
+				PdfWriter.getInstance(pdfDoc,os);
+				pdfDoc.open();
+				Chunk chunck = new Chunk(codigo);
+				chunck.setFont(new Font(Font.HELVETICA, 12));
+				Paragraph p = new Paragraph();
+				p.setAlignment(Paragraph.ALIGN_CENTER);
+				p.add(chunck);
+				Image png = Image.getInstance(
+						ServerConst.JM_HOME+"/reports/images/report_nf_"+
+						ConfigFile.getLocal()+".png");
+				png.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+				pdfDoc.add(png);
+				pdfDoc.add(p);
+				pdfDoc.close();
 				titleReport = new Element("titleReport").setText("Error");
 			}
+			os.close();
 			Element root = new Element("REPORT");
 			Element id = new Element("id").setText(this.id);
 			Element idReport = new Element("idReport").setText(codigo);
@@ -146,7 +142,6 @@ public class MakeReport extends Thread {
 			root.addContent(titleReport);
 			root.addContent(zip.getElementDataEncode("data"));
 	    	docZip.setRootElement(root);
-	    	
 			SocketWriter.writing(this.socket,docZip);
 	        rs.close();
 
@@ -159,6 +154,8 @@ public class MakeReport extends Thread {
 		} catch (JRException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (DocumentException e) {
 			e.printStackTrace();
 		}
 	}
