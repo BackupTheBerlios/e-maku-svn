@@ -146,7 +146,7 @@ public class ResultSetToXML extends Document {
 	            }
 	            catch (SQLException SQLEe) {
 	                String err =
-	                    Language.getWord("ERR_RS") + " " + SQLEe.getMessage();
+	                    Language.getWord("ERR_RS") + " " +sql+" "+SQLEe.getMessage();
 	                LogAdmin.setMessage(err, ServerConst.ERROR);
 	                ErrorXML error = new ErrorXML();
 	                SocketWriter.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
@@ -167,7 +167,7 @@ public class ResultSetToXML extends Document {
 	
 	        } 
 	        catch (SQLException SQLEe) {
-	            String err = Language.getWord("ERR_ST") + " " + SQLEe.getMessage();
+	            String err = Language.getWord("ERR_ST") + " "+sql+" "+ SQLEe.getMessage();
 	            LogAdmin.setMessage(err, ServerConst.ERROR);
 	            ErrorXML error = new ErrorXML();
 	            SocketWriter.writing(sock,error.returnError(ServerConst.ERROR, bd, err));

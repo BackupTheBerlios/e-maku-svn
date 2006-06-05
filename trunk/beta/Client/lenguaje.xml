@@ -653,7 +653,14 @@
   </palabra>
   <palabra>
     <clave>PCOSTO</clave>
-    <es_CO>Precio de Costo</es_CO>
+    <es_CO>P. Costo</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Cost Value</en_US>
+  </palabra>
+  <palabra>
+    <clave>PVENTA</clave>
+    <es_CO>P. Venta</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Cost Value</en_US>

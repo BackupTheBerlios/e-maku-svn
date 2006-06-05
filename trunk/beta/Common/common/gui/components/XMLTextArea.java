@@ -77,7 +77,7 @@ public class XMLTextArea extends JTextArea implements AnswerListener, InitiateFi
             	if (subargs.getAttributeValue("id")!= null) {
             		id=subargs.getAttributeValue("id");
             	}
-            	if (!driverEvent.contains(value))
+            	if (!driverEvent.contains(value+id))
             		driverEvent.addElement(value+id);
             }
             if ("rows".equals(subargs.getAttributeValue("attribute"))) {
