@@ -575,13 +575,13 @@ public class LNDocuments {
                 parameters = e;
             }
         }
-/*        System.out.println("paquete a procesar:");
+  /*      System.out.println("paquete a procesar:");
 		Document doc = new Document();
-		doc.setRootElement((Element)pack.clone());
-		 XMLOutputter out = new XMLOutputter();
-		 out.setFormat(Format.getPrettyFormat());
-		 try {
-			out.output(doc,System.out);
+		doc.setRootElement((Element) pack.clone());
+		XMLOutputter out = new XMLOutputter();
+		out.setFormat(Format.getPrettyFormat());
+		try {
+			out.output(doc, System.out);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -4001,4 +4001,11 @@
     <es_ES></es_ES>
     <en_US>The report {0} don't exist</en_US>
   </palabra>  
+  <palabra>
+    <clave>CTASXCOBRAR</clave>
+    <es_CO>Cuentas x cobrar</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>accounts to receive</en_US>
+  </palabra>  
 </idioma>
