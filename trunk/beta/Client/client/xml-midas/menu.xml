@@ -15,8 +15,8 @@
         </JMenuItem>
     </JMenu>
     <JMenu>
-        <Text>OPCIONES</Text>
-        <Mnemonic>NEMO-OPCIONES</Mnemonic>
+        <Text>CONFIGURACION</Text>
+        <Mnemonic>NEMO-CONFIGURACION</Mnemonic>
         <JMenu>
             <Text>LOCAL</Text>
             <Mnemonic>NEMO-LOCAL</Mnemonic>
@@ -171,6 +171,126 @@
                 <Activo />
                 <Transaction>TR00072</Transaction>
             </JMenuItem>
+        </JMenu>
+        <JMenu>
+            <Mnemonic>NEMO-ASIENTOS-PREDEFINIDOS</Mnemonic>
+            <Text>ACTIVIDADES-ECONOMICAS</Text>
+            <Icon>/icons/ico_asientos.png</Icon>
+            <Activo />
+            <JMenu>
+                <Mnemonic>NEMO-ASIENTOS-PREDEFINIDOS</Mnemonic>
+                <Text>ADMIN</Text>
+                <Icon>/icons/ico_asientos.png</Icon>
+                <Activo />
+                <JMenuItem>
+                    <Text>NUEVO</Text>
+                    <Icon>/icons/ico_nuevo.png</Icon>
+                    <Mnemonic>NEMO-NUEVO</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00121</Transaction>
+                </JMenuItem>
+                <JMenuItem>
+                    <Text>EDITAR</Text>
+                    <Icon>/icons/ico_editar.png</Icon>
+                    <Mnemonic>NEMO-EDITAR</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00122</Transaction>
+                </JMenuItem>
+                <JMenuItem>
+                    <Text>BORRAR</Text>
+                    <Icon>/icons/ico_eliminar.png</Icon>
+                    <Mnemonic>NEMO-BORRAR</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00123</Transaction>
+                </JMenuItem>
+            </JMenu>
+            <JMenu>
+                <Mnemonic>NEMO-ASIENTOS-PREDEFINIDOS</Mnemonic>
+                <Text>TARIFAS</Text>
+                <Icon>/icons/ico_asientos.png</Icon>
+                <Activo />
+                <JMenuItem>
+                    <Text>NUEVO</Text>
+                    <Icon>/icons/ico_nuevo.png</Icon>
+                    <Mnemonic>NEMO-NUEVO</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00124</Transaction>
+                </JMenuItem>
+                <JMenuItem>
+                    <Text>EDITAR</Text>
+                    <Icon>/icons/ico_editar.png</Icon>
+                    <Mnemonic>NEMO-EDITAR</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00125</Transaction>
+                </JMenuItem>
+                <JMenuItem>
+                    <Text>BORRAR</Text>
+                    <Icon>/icons/ico_eliminar.png</Icon>
+                    <Mnemonic>NEMO-BORRAR</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00126</Transaction>
+                </JMenuItem>
+            </JMenu>
+        </JMenu>
+        <JMenu>
+            <Mnemonic>NEMO-ASIENTOS-PREDEFINIDOS</Mnemonic>
+            <Text>REGIMENES</Text>
+            <Icon>/icons/ico_asientos.png</Icon>
+            <Activo />
+            <JMenu>
+                <Mnemonic>NEMO-ASIENTOS-PREDEFINIDOS</Mnemonic>
+                <Text>ADMIN</Text>
+                <Icon>/icons/ico_asientos.png</Icon>
+                <Activo />
+                <JMenuItem>
+                    <Text>NUEVO</Text>
+                    <Icon>/icons/ico_nuevo.png</Icon>
+                    <Mnemonic>NEMO-NUEVO</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00118</Transaction>
+                </JMenuItem>
+                <JMenuItem>
+                    <Text>EDITAR</Text>
+                    <Icon>/icons/ico_editar.png</Icon>
+                    <Mnemonic>NEMO-EDITAR</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00119</Transaction>
+                </JMenuItem>
+                <JMenuItem>
+                    <Text>BORRAR</Text>
+                    <Icon>/icons/ico_eliminar.png</Icon>
+                    <Mnemonic>NEMO-BORRAR</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00120</Transaction>
+                </JMenuItem>
+            </JMenu>
+            <JMenu>
+                <Mnemonic>NEMO-ASIENTOS-PREDEFINIDOS</Mnemonic>
+                <Text>RETENCIONES</Text>
+                <Icon>/icons/ico_asientos.png</Icon>
+                <Activo />
+                <JMenuItem>
+                    <Text>NUEVO</Text>
+                    <Icon>/icons/ico_nuevo.png</Icon>
+                    <Mnemonic>NEMO-NUEVO</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00115</Transaction>
+                </JMenuItem>
+                <JMenuItem>
+                    <Text>EDITAR</Text>
+                    <Icon>/icons/ico_editar.png</Icon>
+                    <Mnemonic>NEMO-EDITAR</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00116</Transaction>
+                </JMenuItem>
+                <JMenuItem>
+                    <Text>BORRAR</Text>
+                    <Icon>/icons/ico_eliminar.png</Icon>
+                    <Mnemonic>NEMO-BORRAR</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00117</Transaction>
+                </JMenuItem>
+            </JMenu>
         </JMenu>
         <JMenu>
             <Mnemonic>NEMO-BANCO</Mnemonic>
@@ -404,33 +524,72 @@
     <JMenu>
         <Text>PRODUCTOS</Text>
         <Mnemonic>NEMO-PRODUCTOS</Mnemonic>
-        <JMenuItem>
-            <Acelerator></Acelerator>
-            <ActionCommand>nuevo_tr</ActionCommand>
-            <Icon>/icons/ico_nuevo.png</Icon>
-            <Mnemonic>NEMO-NUEVO</Mnemonic>
-            <Text>NUEVO</Text>
+        <JMenu>
+            <Mnemonic>NEMO-ARTICULOS</Mnemonic>
+            <Icon>/icons/ico_nprod.png</Icon>
+            <Text>ARTICULOS</Text>
             <Activo />
-            <Transaction>TR00038</Transaction>
-        </JMenuItem>
-        <JMenuItem>
-            <Acelerator></Acelerator>
-            <ActionCommand>editar_tr</ActionCommand>
-            <Icon>/icons/ico_editar.png</Icon>
-            <Mnemonic>NEMO-EDITAR</Mnemonic>
-            <Text>EDITAR</Text>
+	        <JMenuItem>
+	            <Acelerator></Acelerator>
+	            <ActionCommand>nuevo_tr</ActionCommand>
+	            <Icon>/icons/ico_nuevo.png</Icon>
+	            <Mnemonic>NEMO-NUEVO</Mnemonic>
+	            <Text>NUEVO</Text>
+	            <Activo />
+	            <Transaction>TR00038</Transaction>
+	        </JMenuItem>
+	        <JMenuItem>
+	            <Acelerator></Acelerator>
+	            <ActionCommand>editar_tr</ActionCommand>
+	            <Icon>/icons/ico_editar.png</Icon>
+	            <Mnemonic>NEMO-EDITAR</Mnemonic>
+	            <Text>EDITAR</Text>
+	            <Activo />
+	            <Transaction>TR00039</Transaction>
+	        </JMenuItem>
+	        <JMenuItem>
+	            <Acelerator></Acelerator>
+	            <ActionCommand>borrar_tr</ActionCommand>
+	            <Icon>/icons/ico_eliminar.png</Icon>
+	            <Mnemonic>NEMO-BORRAR</Mnemonic>
+	            <Text>BORRAR</Text>
+	            <Activo />
+	            <Transaction>TR00040</Transaction>
+	        </JMenuItem>
+        </JMenu>
+        <JMenu>
+            <Mnemonic>NEMO-SERVICIOS</Mnemonic>
+            <Icon>/icons/ico_catalogo.png</Icon>
+            <Text>SERVICIOS</Text>
             <Activo />
-            <Transaction>TR00039</Transaction>
-        </JMenuItem>
-        <JMenuItem>
-            <Acelerator></Acelerator>
-            <ActionCommand>borrar_tr</ActionCommand>
-            <Icon>/icons/ico_eliminar.png</Icon>
-            <Mnemonic>NEMO-BORRAR</Mnemonic>
-            <Text>BORRAR</Text>
-            <Activo />
-            <Transaction>TR00040</Transaction>
-        </JMenuItem>
+	        <JMenuItem>
+	            <Acelerator></Acelerator>
+	            <ActionCommand>nuevo_tr</ActionCommand>
+	            <Icon>/icons/ico_nuevo.png</Icon>
+	            <Mnemonic>NEMO-NUEVO</Mnemonic>
+	            <Text>NUEVO</Text>
+	            <Activo />
+	            <Transaction>TR00166</Transaction>
+	        </JMenuItem>
+	        <JMenuItem>
+	            <Acelerator></Acelerator>
+	            <ActionCommand>editar_tr</ActionCommand>
+	            <Icon>/icons/ico_editar.png</Icon>
+	            <Mnemonic>NEMO-EDITAR</Mnemonic>
+	            <Text>EDITAR</Text>
+	            <Activo />
+	            <Transaction>TR00167</Transaction>
+	        </JMenuItem>
+	        <JMenuItem>
+	            <Acelerator></Acelerator>
+	            <ActionCommand>borrar_tr</ActionCommand>
+	            <Icon>/icons/ico_eliminar.png</Icon>
+	            <Mnemonic>NEMO-BORRAR</Mnemonic>
+	            <Text>BORRAR</Text>
+	            <Activo />
+	            <Transaction>TR00168</Transaction>
+	        </JMenuItem>
+        </JMenu>
         <JSeparator />
         <JMenu>
             <Mnemonic>NEMO-CATALOGOPVENTA</Mnemonic>
@@ -1684,126 +1843,6 @@
                 <Activo />
                 <Transaction>TR00049</Transaction>
             </JMenuItem>
-        </JMenu>
-        <JMenu>
-            <Mnemonic>NEMO-ASIENTOS-PREDEFINIDOS</Mnemonic>
-            <Text>REGIMENES</Text>
-            <Icon>/icons/ico_asientos.png</Icon>
-            <Activo />
-            <JMenu>
-                <Mnemonic>NEMO-ASIENTOS-PREDEFINIDOS</Mnemonic>
-                <Text>ADMIN</Text>
-                <Icon>/icons/ico_asientos.png</Icon>
-                <Activo />
-                <JMenuItem>
-                    <Text>NUEVO</Text>
-                    <Icon>/icons/ico_nuevo.png</Icon>
-                    <Mnemonic>NEMO-NUEVO</Mnemonic>
-                    <Activo />
-                    <Transaction>TR00118</Transaction>
-                </JMenuItem>
-                <JMenuItem>
-                    <Text>EDITAR</Text>
-                    <Icon>/icons/ico_editar.png</Icon>
-                    <Mnemonic>NEMO-EDITAR</Mnemonic>
-                    <Activo />
-                    <Transaction>TR00119</Transaction>
-                </JMenuItem>
-                <JMenuItem>
-                    <Text>BORRAR</Text>
-                    <Icon>/icons/ico_eliminar.png</Icon>
-                    <Mnemonic>NEMO-BORRAR</Mnemonic>
-                    <Activo />
-                    <Transaction>TR00120</Transaction>
-                </JMenuItem>
-            </JMenu>
-            <JMenu>
-                <Mnemonic>NEMO-ASIENTOS-PREDEFINIDOS</Mnemonic>
-                <Text>RETENCIONES</Text>
-                <Icon>/icons/ico_asientos.png</Icon>
-                <Activo />
-                <JMenuItem>
-                    <Text>NUEVO</Text>
-                    <Icon>/icons/ico_nuevo.png</Icon>
-                    <Mnemonic>NEMO-NUEVO</Mnemonic>
-                    <Activo />
-                    <Transaction>TR00115</Transaction>
-                </JMenuItem>
-                <JMenuItem>
-                    <Text>EDITAR</Text>
-                    <Icon>/icons/ico_editar.png</Icon>
-                    <Mnemonic>NEMO-EDITAR</Mnemonic>
-                    <Activo />
-                    <Transaction>TR00116</Transaction>
-                </JMenuItem>
-                <JMenuItem>
-                    <Text>BORRAR</Text>
-                    <Icon>/icons/ico_eliminar.png</Icon>
-                    <Mnemonic>NEMO-BORRAR</Mnemonic>
-                    <Activo />
-                    <Transaction>TR00117</Transaction>
-                </JMenuItem>
-            </JMenu>
-        </JMenu>
-        <JMenu>
-            <Mnemonic>NEMO-ASIENTOS-PREDEFINIDOS</Mnemonic>
-            <Text>ACTIVIDADES-ECONOMICAS</Text>
-            <Icon>/icons/ico_asientos.png</Icon>
-            <Activo />
-            <JMenu>
-                <Mnemonic>NEMO-ASIENTOS-PREDEFINIDOS</Mnemonic>
-                <Text>ADMIN</Text>
-                <Icon>/icons/ico_asientos.png</Icon>
-                <Activo />
-                <JMenuItem>
-                    <Text>NUEVO</Text>
-                    <Icon>/icons/ico_nuevo.png</Icon>
-                    <Mnemonic>NEMO-NUEVO</Mnemonic>
-                    <Activo />
-                    <Transaction>TR00121</Transaction>
-                </JMenuItem>
-                <JMenuItem>
-                    <Text>EDITAR</Text>
-                    <Icon>/icons/ico_editar.png</Icon>
-                    <Mnemonic>NEMO-EDITAR</Mnemonic>
-                    <Activo />
-                    <Transaction>TR00122</Transaction>
-                </JMenuItem>
-                <JMenuItem>
-                    <Text>BORRAR</Text>
-                    <Icon>/icons/ico_eliminar.png</Icon>
-                    <Mnemonic>NEMO-BORRAR</Mnemonic>
-                    <Activo />
-                    <Transaction>TR00123</Transaction>
-                </JMenuItem>
-            </JMenu>
-            <JMenu>
-                <Mnemonic>NEMO-ASIENTOS-PREDEFINIDOS</Mnemonic>
-                <Text>TARIFAS</Text>
-                <Icon>/icons/ico_asientos.png</Icon>
-                <Activo />
-                <JMenuItem>
-                    <Text>NUEVO</Text>
-                    <Icon>/icons/ico_nuevo.png</Icon>
-                    <Mnemonic>NEMO-NUEVO</Mnemonic>
-                    <Activo />
-                    <Transaction>TR00124</Transaction>
-                </JMenuItem>
-                <JMenuItem>
-                    <Text>EDITAR</Text>
-                    <Icon>/icons/ico_editar.png</Icon>
-                    <Mnemonic>NEMO-EDITAR</Mnemonic>
-                    <Activo />
-                    <Transaction>TR00125</Transaction>
-                </JMenuItem>
-                <JMenuItem>
-                    <Text>BORRAR</Text>
-                    <Icon>/icons/ico_eliminar.png</Icon>
-                    <Mnemonic>NEMO-BORRAR</Mnemonic>
-                    <Activo />
-                    <Transaction>TR00126</Transaction>
-                </JMenuItem>
-            </JMenu>
         </JMenu>
         <JMSeparator/>
         <JMenu>

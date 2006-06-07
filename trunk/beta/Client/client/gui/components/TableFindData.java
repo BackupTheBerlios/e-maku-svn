@@ -673,7 +673,7 @@ public class TableFindData extends JPanel implements AnswerListener,ChangeExtern
     }
     
 	public void changeExternalValue(ChangeExternalValueEvent e) {
-		if (TMFDtabla.getImpValues().size()>0) {
+		if (TMFDtabla.impValuesSize()>0) {
 			reloadData();
 		}
 		

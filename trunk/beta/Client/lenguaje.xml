@@ -330,6 +330,48 @@
     <en_US>Options</en_US>
   </palabra>
   <palabra>
+    <clave>CONFIGURACION</clave>
+    <es_CO>Configuración</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Setup</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-CONFIGURACION</clave>
+    <es_CO>C</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>S</en_US>
+  </palabra>
+  <palabra>
+    <clave>ARTICULOS</clave>
+    <es_CO>Artículos</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Articles</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-ARTICULOS</clave>
+    <es_CO>A</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>A</en_US>
+  </palabra>
+  <palabra>
+    <clave>NEMO-SERVICIOS</clave>
+    <es_CO>S</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>S</en_US>
+  </palabra>
+  <palabra>
+    <clave>SERVICIOS</clave>
+    <es_CO>Servicios</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Services</en_US>
+  </palabra>
+  <palabra>
     <clave>PRODUCTO</clave>
     <es_CO>Producto</es_CO>
     <es_EC></es_EC>
@@ -344,25 +386,53 @@
     <en_US>Products</en_US>
   </palabra>
   <palabra>
-    <clave>NPROD</clave>
-    <es_CO>Nuevo Producto</es_CO>
+    <clave>NART</clave>
+    <es_CO>Nuevo Artículo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>New Product</en_US>
+    <en_US>New Article</en_US>
   </palabra>
   <palabra>
-    <clave>EPROD</clave>
-    <es_CO>Editar Producto</es_CO>
+    <clave>EART</clave>
+    <es_CO>Editar Artículo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Edit Product</en_US>
+    <en_US>Edit Article</en_US>
   </palabra>
   <palabra>
-    <clave>DPROD</clave>
-    <es_CO>Borrar Producto</es_CO>
+    <clave>DART</clave>
+    <es_CO>Borrar Artículo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Delete Product</en_US>
+    <en_US>Delete Article</en_US>
+  </palabra>
+  <palabra>
+    <clave>NSERVICIO</clave>
+    <es_CO>Nuevo Servicio</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Service</en_US>
+  </palabra>
+  <palabra>
+    <clave>ESERVICO</clave>
+    <es_CO>Editar Servicio</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Edit Service</en_US>
+  </palabra>
+  <palabra>
+    <clave>DSERVICO</clave>
+    <es_CO>Borrar Servicio</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Delete Service</en_US>
+  </palabra>
+  <palabra>
+    <clave>CATALOGOP</clave>
+    <es_CO>Catalogo de Precios</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Price Catalog</en_US>
   </palabra>
   <palabra>
     <clave>STOCK</clave>

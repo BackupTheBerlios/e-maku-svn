@@ -68,15 +68,27 @@
     <path>/icons/ico_nprod.png</path>
   </icon>
   <icon>
-    <key>NPROD</key>
+    <key>NART</key>
     <path>/icons/ico_nuevo.png</path>
   </icon>
   <icon>
-    <key>EPROD</key>
+    <key>EART</key>
     <path>/icons/ico_editar.png</path>
   </icon>
   <icon>
-    <key>DPROD</key>
+    <key>DART</key>
+    <path>/icons/ico_eliminar.png</path>
+  </icon>
+  <icon>
+    <key>NSERVICIO</key>
+    <path>/icons/ico_nuevo.png</path>
+  </icon>
+  <icon>
+    <key>ESERVICIO</key>
+    <path>/icons/ico_editar.png</path>
+  </icon>
+  <icon>
+    <key>DSERVICIO</key>
     <path>/icons/ico_eliminar.png</path>
   </icon>
   <icon>

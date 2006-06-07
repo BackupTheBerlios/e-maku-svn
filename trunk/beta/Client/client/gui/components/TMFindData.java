@@ -123,6 +123,8 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 		this.ATFDargs=ATFDargs;
 		this.initSQL=true;
 		VdataRows = new Vector<Vector<Object>>();
+        importTotalCol 	= new HashMap<String,String>();
+
 		new InitShell(this).start();
 		List Lrows = doc.getRootElement().getChildren("row");
         Iterator Irows = Lrows.iterator();
@@ -173,8 +175,8 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 		  Hashtable externalValues,
 		  ArgsTableFindData[] ATFDargs) {
     	
-    		new InitShell(this).start();
-    		this.GFforma=GFforma;
+		new InitShell(this).start();
+		this.GFforma=GFforma;
         this.sqlCode=sqlCode;
         this.rows=rows;
         this.formulas=formulas;
@@ -1669,6 +1671,15 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 
 	public Vector getImpValues() {
 		return impValues;
+	}
+	
+	public int impValuesSize() {
+		if (impValues!=null) {
+			return impValues.size();
+		}
+		else {
+			return 0;
+		}
 	}
 	
 	public void setQuery(String sqlCode) {
