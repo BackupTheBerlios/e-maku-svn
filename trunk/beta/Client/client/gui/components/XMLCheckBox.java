@@ -5,13 +5,24 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Iterator;
+import java.util.Vector;
 
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
-import common.misc.language.Language;
-
+import org.jdom.Document;
 import org.jdom.Element;
+
+import common.gui.components.AnswerEvent;
+import common.gui.components.AnswerListener;
+import common.gui.components.VoidPackageException;
+import common.gui.forms.FinishEvent;
+import common.gui.forms.GenericForm;
+import common.gui.forms.InitiateFinishListener;
+import common.misc.language.Language;
 
 /**
  * XMLCheckBox.java Creado el 13-oct-2004
@@ -34,27 +45,91 @@ import org.jdom.Element;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
-public class XMLCheckBox {
+public class XMLCheckBox extends JCheckBox implements ActionListener, AnswerListener, InitiateFinishListener {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2513833821051059850L;
+	/**
      * 
      */
-    private JCheckBox JCBcheck;
+    private GenericForm GFforma;
     private JPanel JPcheck;
+    private Vector <String>driverEvent;
+    private Vector <String>keySQL;
+	private String exportValue = null;
+
+    public XMLCheckBox(GenericForm GFforma, Document doc) {
+    	this.GFforma = GFforma;
+        driverEvent = new Vector<String>();
+        keySQL = new Vector<String>();
+        int orden = -1;
+        
+        Element parameters = doc.getRootElement();
+        Iterator i = parameters.getChildren().iterator();
+        
+        while (i.hasNext()) {
+        	
+            Element args = (Element) i.next();
+            String name = args.getName();
+            if (name.equals("subarg")) {
+            	Iterator j = args.getChildren().iterator();
+            	while (j.hasNext()) {
+            		Element subargs = (Element)j.next();
+            		String value = subargs.getValue(); 
+		            if ("enabled".equals(subargs.getAttributeValue("attribute"))) {
+		            	this.setEnabled(Boolean.parseBoolean(value));
+		            }
+		            else if ("label".equals(subargs.getAttributeValue("attribute"))) {
+		            	if (!Language.getWord(value).equals("")) {
+		            		this.setText(Language.getWord(value));
+		            	}
+		            	else {
+		            		this.setText(value);
+		            	}
+		            }
+		            else if ("keySQL".equals(subargs.getAttributeValue("attribute"))) {
+		            	keySQL.addElement(value); 
+		            }
+		            else if ("driverEvent".equals(subargs.getAttributeValue("attribute"))) {
+		            	String id="";
+		            	if (subargs.getAttributeValue("id")!= null) {
+		            		id=subargs.getAttributeValue("id");
+		            	}
+		            	if (!driverEvent.contains(value+id))
+		            		driverEvent.addElement(value+id);
+		            }
+					else if ("exportValue".equals(subargs.getAttributeValue("attribute"))) {
+						exportValue = value;
+					}
+		         	else if ("exportField".equals(subargs.getAttributeValue("attribute"))) {
+		         		try {
+		         			orden = Integer.parseInt(value);
+		         		}
+		         		catch (NumberFormatException NFEe) {
+		         		}
+		         	}
+		            
+            	}
+            }
+        }
+		if (orden > -1 && exportValue!=null) {
+			GFforma.addExportField(orden,exportValue);
+			GFforma.setExternalValues(exportValue,"0");
+		}
+
+		JPcheck = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPcheck.add(this);
+        this.addActionListener(this);
+        this.GFforma.addInitiateFinishListener(this);
+    }
 
     public XMLCheckBox(String label) {
 
+        super(Language.getWord(label));
         JPcheck = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JCBcheck=new JCheckBox(Language.getWord(label)) {
-			private static final long serialVersionUID = 4280920151276796683L;
-			public void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D)g;
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                                    RenderingHints.VALUE_ANTIALIAS_ON);
-                super.paintComponent(g);
-            }
-        };
-        JPcheck.add(JCBcheck);
+        JPcheck.add(this);
 
 /*        JCBcheck.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -77,27 +152,77 @@ public class XMLCheckBox {
             return "0";
     }
 
+    public Component getPanel() {
+        return JPcheck;
+    }
+    
     public JPanel getJPcheck() {
         return JPcheck;
     }
     
     public JCheckBox getJCBcheck() {
-        return JCBcheck;
+        return this;
     }
     
-    public boolean isSelected() {
-        return JCBcheck.isSelected();
-    }
-
-    public void setSelected(boolean b) {
-        JCBcheck.setSelected(b);
-    }
-
     public void addJPanel(Component comp) {
         JPcheck.add(comp);
     }
     
-    public void setEnabled(boolean b) {
-        JCBcheck.setEnabled(b);
+	public void arriveAnswerEvent(AnswerEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void initiateFinishEvent(FinishEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                            RenderingHints.VALUE_ANTIALIAS_ON);
+        super.paintComponent(g);
     }
+
+	public void actionPerformed(ActionEvent e) {
+		if (exportValue!=null) {
+			GFforma.setExternalValues(exportValue,getTextCheck());
+		}
+		
+	}
+	
+	public boolean containData() {
+		try {
+			Element elm = getPackage();
+			if (elm.getChildren().size() > 0) {
+				return true;
+			}
+		} catch (VoidPackageException e) {
+			return false;
+		}
+		return false;
+	}
+	
+    public void clean() {
+    	this.setSelected(false);
+    }
+    
+    /**
+     * Metodo encargado de retornar un <package/>
+     * @return
+     * @throws VoidPackageException
+     */
+    public Element getPackage() throws VoidPackageException {
+        Element pack = new Element("package");
+        if (isSelected()) {
+        	pack.addContent(new Element("field").setText("1"));
+        }
+        else {
+        	pack.addContent(new Element("field").setText("0"));
+        }
+    	return pack;
+    }
+
+	
 }

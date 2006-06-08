@@ -226,4 +226,16 @@ public class XMLComboBox extends SQLComboBox {
 	public void addPanel(Component component) {
 		
 	}
+	
+	public boolean containData() {
+		try {
+			Element elm = getPackage();
+			if (elm.getChildren().size() > 0) {
+				return true;
+			}
+		} catch (VoidPackageException e) {
+			return false;
+		}
+		return false;
+	}
 }
