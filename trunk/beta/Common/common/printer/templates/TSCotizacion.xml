@@ -117,11 +117,11 @@
  </package>
  <package>
   <labels>
-   <field row="56" col="112" type="STRING">Sub Total $</field>
-   <field row="57" col="112" type="STRING"> -% Dto   $</field>
-   <field row="58" col="112" type="STRING">Descuento $</field>
-   <field row="59" col="112" type="STRING">IVA       $</field>
-   <field row="60" col="112" type="STRING">Total     $</field>
+   <field row="56" col="112" type="STRING"><![CDATA[Sub Total $]]></field>
+   <field row="57" col="112" type="STRING"><![CDATA[ -% Dto   $]]></field>
+   <field row="58" col="112" type="STRING"><![CDATA[Descuento $]]></field>
+   <field row="59" col="112" type="STRING"><![CDATA[IVA       $]]></field>
+   <field row="60" col="112" type="STRING"><![CDATA[Total     $]]></field>
   </labels>
   <field row="56" col="129" width="16" type="NUMERIC" mask="#,###,###,##0.00" />
   <field row="57" col="129" width="16" type="NUMERIC" mask="#,###,###,##0.00" />
