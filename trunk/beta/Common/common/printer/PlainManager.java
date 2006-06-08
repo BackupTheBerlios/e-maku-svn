@@ -69,7 +69,14 @@ public class PlainManager extends AbstractManager {
 				}
 			}
 			if ("field".equals(name)) {
-				textGenerator.addString(e.getTextTrim(),row,col,null);
+				String value = e.getTextTrim();
+				value = " ".equals(value) || "".equals(value) ? "  " : value;
+				textGenerator.addString(value,row,col,null);
+			}
+			if ("abstract".equals(name)) {
+				String  value = e.getText();
+				int height = attribs.get("height").getIntValue();
+				textGenerator.addTextArea(value,row,col,null,height,false);
 			}
 		}
 	}
@@ -140,19 +147,43 @@ public class PlainManager extends AbstractManager {
 					}
 				}
 				else {
+					
 					Element el_transaction = (Element)it_transaction.next();
-					int row = el_template.getAttribute("row").getIntValue();
-					int col = el_template.getAttribute("col").getIntValue();
-					String type = el_template.getAttributeValue("type");
+
+					Iterator itAttribs = el_template.getAttributes().iterator();
+					HashMap<String,Attribute> attribs = new HashMap<String,Attribute>();
+					
+					while(itAttribs.hasNext()) {
+						Attribute attribute = (Attribute) itAttribs.next();
+						attribs.put(attribute.getName(),attribute);
+					}
+					
+					int row =  attribs.get("row").getIntValue();
+					int col =  attribs.get("col").getIntValue();
+					
+					String type = attribs.get("type").getValue();
 					String value = el_transaction.getValue();
+					
 					value = !"NULL".equals(value) && !"".equals(value) ?value:"";
 					if ("TEXT".equals(type)) {
 						int width = el_template.getAttribute("width").getIntValue();
 						int height = el_template.getAttribute("height").getIntValue();
-						textGenerator.addTextArea(value,row,col,width,height);
+						textGenerator.addTextArea(value,row,col,width,height,true);
 					}
 					else if ("STRING".equals(type)) {
-						textGenerator.addString(value.trim(),row,col,null);
+						value = " ".equals(value) || "".equals(value) ? "   " : value.trim();
+						textGenerator.addString(value,row,col,null);
+					}
+					else if ("NUMERIC".equals(type)) {
+						String mask = attribs.get("mask").getValue();
+						NumberFormat formatter = new DecimalFormat(mask);
+						value = !"NULL".equals(value) && !"".equals(value) ? 
+								formatter.format(Double.parseDouble(value)):"";
+						textGenerator.addString(
+								value,
+								row,
+								col,
+								attribs.get("width").getIntValue());
 					}
 				}
 			} catch (DataConversionException e) {

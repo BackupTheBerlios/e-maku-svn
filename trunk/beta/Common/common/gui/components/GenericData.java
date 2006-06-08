@@ -745,7 +745,10 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
         int max = VFields.size();
         for (XMLTextField xmltf:VFields) {
         	if (xmltf.isPrintable()) {
-        		String text = xmltf.getText();
+        		String text = 
+        					xmltf.getType().equals("NUMERIC") ? 
+        					String.valueOf(xmltf.getNumberValue()):
+        					xmltf.getText();
         		if("".equals(text)) {
         			cont++;
         		}

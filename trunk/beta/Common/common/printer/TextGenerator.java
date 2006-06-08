@@ -11,15 +11,16 @@ public class TextGenerator {
 		buffer = new ArrayList<StringBuilder>();
 	}
 	
-	public void addTextArea(String text,int row, int col, int width, int height) {
-		
-		text = text.replaceAll("\n", " ");
-		StringBuffer buf = new StringBuffer(text.trim());
+	public void addTextArea(String text,int row, int col, Integer width, Integer height, boolean trim) {
+		if (trim) {
+			text = text.replaceAll("\n", " ");
+		}
+		StringBuffer buf = new StringBuffer( trim ? text.trim() : text);
 		int lastspace = -1;
 		int linestart = 0;
 		int i = 0;
 		
-		while (i < buf.length()) {
+		while (i < buf.length() && trim) {
 			if (buf.charAt(i) == ' ') {
 				lastspace = i;
 			}
