@@ -7,8 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
-import java.util.Vector;
 
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
@@ -22,6 +22,7 @@ import common.gui.components.VoidPackageException;
 import common.gui.forms.FinishEvent;
 import common.gui.forms.GenericForm;
 import common.gui.forms.InitiateFinishListener;
+import common.gui.forms.NotFoundComponentException;
 import common.misc.language.Language;
 
 /**
@@ -56,14 +57,13 @@ public class XMLCheckBox extends JCheckBox implements ActionListener, AnswerList
      */
     private GenericForm GFforma;
     private JPanel JPcheck;
-    private Vector <String>driverEvent;
-    private Vector <String>keySQL;
+    private String driverEvent;
+    private String keySQL;
 	private String exportValue = null;
 
     public XMLCheckBox(GenericForm GFforma, Document doc) {
     	this.GFforma = GFforma;
-        driverEvent = new Vector<String>();
-        keySQL = new Vector<String>();
+        keySQL = new String();
         int orden = -1;
         
         Element parameters = doc.getRootElement();
@@ -90,15 +90,14 @@ public class XMLCheckBox extends JCheckBox implements ActionListener, AnswerList
 		            	}
 		            }
 		            else if ("keySQL".equals(subargs.getAttributeValue("attribute"))) {
-		            	keySQL.addElement(value); 
+		            	keySQL = value; 
 		            }
 		            else if ("driverEvent".equals(subargs.getAttributeValue("attribute"))) {
-		            	String id="";
-		            	if (subargs.getAttributeValue("id")!= null) {
-		            		id=subargs.getAttributeValue("id");
-		            	}
-		            	if (!driverEvent.contains(value+id))
-		            		driverEvent.addElement(value+id);
+		         		String id="";
+		         		if (subargs.getAttributeValue("id")!= null) {
+		         			id=subargs.getAttributeValue("id");
+		            		}
+		                driverEvent = value+id;
 		            }
 					else if ("exportValue".equals(subargs.getAttributeValue("attribute"))) {
 						exportValue = value;
@@ -168,13 +167,39 @@ public class XMLCheckBox extends JCheckBox implements ActionListener, AnswerList
         JPcheck.add(comp);
     }
     
-	public void arriveAnswerEvent(AnswerEvent e) {
-		// TODO Auto-generated method stub
+	public void arriveAnswerEvent(AnswerEvent AEe) {
+		if (AEe.getSqlCode().equals(keySQL)) {
+			try {
+				Document doc = AEe.getDocument();
+		        String selected = doc.getRootElement().getChild("row").getChildText("col");
+		        if (selected.toLowerCase().equals("true") || 
+	        		selected.toLowerCase().equals("t") ||
+	        		selected.equals("1")) {
+		        	this.setSelected(true);
+		        }
+		        else {
+		        	this.setSelected(false);
+		        }
+	        }
+			catch (NullPointerException NPEe) {
+				this.setSelected(false);
+			}
+		}
 		
 	}
 
 	public void initiateFinishEvent(FinishEvent e) {
-		// TODO Auto-generated method stub
+		try {
+			if (driverEvent!=null) {
+			   GFforma.invokeMethod(driverEvent,"addAnswerListener",new Class[]{AnswerListener.class},new Object[]{this});
+			}
+		}
+		catch(NotFoundComponentException NFCEe) {
+			NFCEe.printStackTrace();
+		} 
+		catch (InvocationTargetException ITEe) {
+			ITEe.printStackTrace();
+		}
 		
 	}
 	
