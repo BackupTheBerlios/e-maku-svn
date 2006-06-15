@@ -70,6 +70,7 @@ public class PlainManager extends AbstractManager {
 			}
 			if ("field".equals(name)) {
 				String value = e.getTextTrim();
+				System.out.println("field value = {"+value+"}");
 				value = " ".equals(value) || "".equals(value) ? "  " : value;
 				textGenerator.addString(value,row,col,null);
 			}
@@ -87,20 +88,7 @@ public class PlainManager extends AbstractManager {
 		while(it_template.hasNext() && it_transaction.hasNext()) {
 			try {
 				Element el_template = (Element)it_template.next();
-				if (el_template.getName().equals("labels")) {
-					
-					Iterator it = el_template.getChildren().iterator();
-					while (it.hasNext()) {
-						Element el = (Element) it.next();
-						
-						int row = el.getAttribute("row").getIntValue();
-						int col = el.getAttribute("col").getIntValue();
-						String value = el.getValue();
-						value = !"NULL".equals(value) && !"".equals(value) ?value:"";
-						textGenerator.addString(value,row,col,null);
-					}
-				}
-				else if (el_template.getName().equals("subpackage")) {
+				if (el_template.getName().equals("subpackage")) {
 					int rowInit = el_template.getAttribute("rowInit").getIntValue();
 					Iterator it = el_template.getChildren().iterator();
 					HashMap<String,String> args = new HashMap<String,String>();
@@ -147,7 +135,6 @@ public class PlainManager extends AbstractManager {
 					}
 				}
 				else {
-					
 					Element el_transaction = (Element)it_transaction.next();
 
 					Iterator itAttribs = el_template.getAttributes().iterator();

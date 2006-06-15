@@ -319,14 +319,14 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 						if ("PLAIN".equals(template.getRootElement().getAttributeValue("type")) ) {
 							print = new PlainManager(template.getRootElement(),doc.getRootElement());
 						}
-						//System.out.println("================================");
-						//System.out.println(print.toString());
-						//System.out.println("================================");
-						new PrintManager(ImpresionType.PLAIN,print.getStream(),true);
+						System.out.println("================================");
+						System.out.println(print.toString());
+						System.out.println("================================");
+						//new PrintManager(ImpresionType.PLAIN,print.getStream(),true);
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
-					} catch (PrintException e) {
-						e.printStackTrace();
+					/*} catch (PrintException e) {
+						e.printStackTrace();*/
 					} catch (IOException e) {
 						e.printStackTrace();
 					} catch (JDOMException e) {
