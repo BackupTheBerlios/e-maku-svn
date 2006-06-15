@@ -2,6 +2,7 @@ package server;
 
 import java.io.IOException;
 
+import common.misc.formulas.BeanShell;
 import common.misc.language.Language;
 import common.misc.log.LogAdmin;
 import server.comunications.SocketServer;
@@ -54,6 +55,7 @@ public class Run {
 			PoolConexiones.CargarBD();
 			ReportsStore.Load(this.getClass().getResource("/reports"));
 			CacheEnlace.cargar();
+			new BeanShell();
 			new SocketServer();
 			
 		} catch (IOException IOEe) {

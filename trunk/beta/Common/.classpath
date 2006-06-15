@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/itext.jar"/>
 	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/jpedal.jar"/>
 	<classpathentry kind="lib" path="/home/emaku/beta/lib/emaku/reports.jar"/>
+	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/bsh-core.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

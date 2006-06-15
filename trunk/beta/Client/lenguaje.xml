@@ -729,6 +729,13 @@
     <en_US>Cost Value</en_US>
   </palabra>
   <palabra>
+    <clave>PCOMPRA</clave>
+    <es_CO>P. Compra</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Purchase Value</en_US>
+  </palabra>
+  <palabra>
     <clave>PVENTA</clave>
     <es_CO>P. Venta</es_CO>
     <es_EC></es_EC>
