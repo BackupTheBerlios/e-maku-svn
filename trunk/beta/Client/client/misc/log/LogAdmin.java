@@ -5,7 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.zip.GZIPOutputStream;
 
 import client.misc.ClientConst;
@@ -78,7 +79,6 @@ public class LogAdmin {
                 System.out.println(mensaje);
             EscribirArchivo(mensaje);
         }
-
     }
 
     /**
@@ -89,14 +89,14 @@ public class LogAdmin {
     private synchronized static void EscribirArchivo(String mensaje) {
         try {
             long max = Flog.length();
-
+            Date now = new Date();
+            SimpleDateFormat format = null;
             if (max >= ClientConst.MAX_SIZE_FILE_LOG) {
                 byte[] Blog = new byte[(int) max];
-                File Ffile = new File(ClientConst.TMP, "JMClient-"
-                        + Calendar.getInstance().get(Calendar.YEAR) + "-"
-                        + Calendar.getInstance().get(Calendar.MONTH) + "-"
-                        + Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-                        + ".gz");
+                
+                format = new SimpleDateFormat("yyyy-MM-dd");
+                
+                File Ffile = new File(ClientConst.TMP, "emaku-client-"+format.format(now)+".gz");
                 FileOutputStream FOSfile = new FileOutputStream(Ffile);
                 GZIPOutputStream gzipfile = new GZIPOutputStream(FOSfile);
                 RAFlog.seek(0);
@@ -107,8 +107,8 @@ public class LogAdmin {
                 Flog.delete();
                 newFile();
             }
-
-            RAFlog.writeBytes(Calendar.getInstance().getTime() + " " + mensaje + "\n");
+            format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            RAFlog.writeBytes(format.format(now) + " " + mensaje + "\n");
         } catch (IOException IOEe) {
             IOEe.getMessage();
         }
@@ -118,7 +118,7 @@ public class LogAdmin {
     
     private static void newFile() {
         try {
-            Flog = new File(ClientConst.TMP, "JMClient.log");
+            Flog = new File(ClientConst.TMP, "emaku-client.log");
             RAFlog = new RandomAccessFile(Flog, "rw");
             RAFlog.seek(RAFlog.length());
         } catch (FileNotFoundException FNFEe) {

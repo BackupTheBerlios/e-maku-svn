@@ -92,7 +92,7 @@ public class PackageToXML {
  //                   String sbuff = "";
                     ByteArrayOutputStream docStream = new ByteArrayOutputStream();
                     try {
-                        builder = new SAXBuilder();
+                        builder = new SAXBuilder(false);
                         docStream = (ByteArrayOutputStream) vbuffer.get(i);
                         ByteArrayInputStream bufferIn = new ByteArrayInputStream(
                                 docStream.toByteArray());
