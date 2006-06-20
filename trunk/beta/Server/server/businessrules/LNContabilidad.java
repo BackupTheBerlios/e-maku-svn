@@ -684,10 +684,10 @@ public class LNContabilidad {
 						 * Se verifica si en una de las columnas de la tabla
 						 * viene especificado el codigo del producto.
 						 */
+						
 						if (colCost == col) {
 							valueAccount = valueAccount
-									* CacheEnlace.getPCosto(bd, CacheKeys
-											.getKey("idBodega"), idProdServ);
+									* CacheEnlace.getPCosto(bd, CacheKeys.getKey("idBodega"), idProdServ);
 						    try {
 							    BigDecimal bigDecimal = new BigDecimal(valueAccount);
 							    bigDecimal = bigDecimal.setScale(2,BigDecimal.ROUND_HALF_UP);

@@ -1,5 +1,6 @@
 package server.businessrules;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -15,6 +16,8 @@ import java.util.NoSuchElementException;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
 import server.comunications.SocketServer;
 import server.database.sql.CacheEnlace;
@@ -575,7 +578,7 @@ public class LNDocuments {
                 parameters = e;
             }
         }
-  /*      System.out.println("paquete a procesar:");
+        System.out.println("paquete a procesar:");
 		Document doc = new Document();
 		doc.setRootElement((Element) pack.clone());
 		XMLOutputter out = new XMLOutputter();
@@ -586,7 +589,7 @@ public class LNDocuments {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-*/
+
         /*
          * Hagamos una trampa: resulta que en este paquete se parametriza tanto el driver o clase como
          * el metodo que se va a ejecutar, esto se instanciara en tiempo de ejecucion. La trampa es la

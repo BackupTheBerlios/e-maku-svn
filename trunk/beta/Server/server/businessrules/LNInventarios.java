@@ -159,9 +159,9 @@ public class LNInventarios {
     }
 
     /**
-     * Este metodo analiza la información del paquete pack y aplica la logica
+     * Este metodo analiza la informaciï¿½n del paquete pack y aplica la logica
      * de negocios correspondiente para generar una entrada de inventarios
-     * @param pack Este objeto contiene la información necesaria para generar
+     * @param pack Este objeto contiene la informaciï¿½n necesaria para generar
      * 		  el movimiento
      * @return Retorna un objeto String listo para ser almacenado en la base 
      * 		   de datos.
@@ -360,6 +360,7 @@ public class LNInventarios {
         		nameField = nameField.toLowerCase();
 	        	if (bodega!= null && bodega.toLowerCase().equals(nameField)) {
 	        		record[2] = field.getValue();
+	        		CacheKeys.setKey("idBodega",field.getValue());
 	        	}
 	        	else if ("idproducto".equals(nameField)) {
 	        		record[3] = field.getValue();
