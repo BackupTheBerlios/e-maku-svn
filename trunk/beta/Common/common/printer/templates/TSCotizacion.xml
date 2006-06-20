@@ -3,15 +3,14 @@
 		<metadata>
 				<!-- Encabezado -->
 				<abstract row="1" col="1" height="6"><![CDATA[
-										 F.A URIBE & CIA. LTDA.                                 FABRICANTES DE VELAS
-								NIT. 891.200.520-1 - REGIMEN COMUN                           VELADORAS, VELONES
-										 CLL. 22B No. 24-216                                       LUZ DE AMERICA
-				 Telefonos: 7215949 - 7211067 - Fax: (092) 7211630                    VELAS DECORATIVAS
-						 Apartado Arereo No. 412 - PASTO - NARINO                             ELEGANCE
-								 e-mail: fauribe@telecom.com.co]]>
+            F.A URIBE & CIA. LTDA.                                 FABRICANTES DE VELAS
+       NIT. 891.200.520-1 - REGIMEN COMUN                           VELADORAS, VELONES
+            CLL. 22B No. 24-216                                       LUZ DE AMERICA
+Telefonos: 7215949 - 7211067 - Fax: (092) 7211630                    VELAS DECORATIVAS
+    Apartado Arereo No. 412 - PASTO - NARINO                             ELEGANCE
+      e-mail: fauribe@telecom.com.co]]>
 				</abstract>
-				<field row="65" col="1" type="STRING"/>
-				<field row="66" col="1" type="STRING"/>
+				<field row="64" col="1" type="STRING"/>
 				<!-- Datod personales -->
 				<field row="9" col="1" type="STRING">Nombre:</field>
 				<field row="10" col="1" type="STRING">NIT/CC:</field>
@@ -44,12 +43,12 @@
 				<field row="59" col="112" type="STRING"><![CDATA[IVA       $]]></field>
 				<field row="60" col="112" type="STRING"><![CDATA[Total     $]]></field>
 				<!-- Pie de pagina -->
-				<field row="64" col="11" type="STRING">ACEPTADA</field>
+				<field row="63" col="11" type="STRING">ACEPTADA</field>
 				<!-- Dibujo de lineas -->
 				<line row="16" col="1" length="144" charfill="=" align="horizontal" />
 				<line row="18" col="1" length="144" charfill="=" align="horizontal" />
 				<line row="55" col="1" length="144" charfill="=" align="horizontal" />
-				<line row="63" col="2" length="31" charfill="_" align="horizontal" />
+				<line row="62" col="2" length="31" charfill="_" align="horizontal" />
 				<line row="19" col="14" length="36" charfill="|" align="vertical" />
 				<line row="19" col="61" length="36" charfill="|" align="vertical" />
 				<line row="19" col="72" length="36" charfill="|" align="vertical" />
