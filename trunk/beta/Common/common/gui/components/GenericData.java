@@ -821,6 +821,20 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
 				        }   
 			        }
 		        }else {
+		        	for (int j=0;j<VFields.size();j++) {
+		                XMLTextField XMLRefText = ((XMLTextField)VFields.get(j));
+			        	if (XMLTextField.NUMERIC.equals(XMLRefText.getType())) {
+							try {
+								XMLRefText.setNumberValue(0);
+							}
+							catch (NumberFormatException NFEe) {
+							}
+			                if (XMLRefText.isExportvalue()) {
+			        			  exportar(XMLRefText);
+			                }
+
+						}
+		        	}
 		        	if (Sargs!=null) {
 				        if ("NEW".equals(Sargs)) {
 				        	GFforma.setEnabledButton(namebutton, true);
