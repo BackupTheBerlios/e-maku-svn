@@ -633,7 +633,6 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
                 }
             }
             if (xmltemp.isSystemDate()) {
-            	System.out.println("Solicitando actulizacion de fecha");
             	GFforma.sendTransaction(DateSender.getPackage());
             }
         }
