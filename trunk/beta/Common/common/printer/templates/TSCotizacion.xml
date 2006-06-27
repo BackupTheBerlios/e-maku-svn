@@ -2,13 +2,13 @@
 		<metadata>
 				<scp row="1" col="1">ESC</scp>
 				<scp row="1" col="2">C</scp>
-				<scp row="1" col="3">65</scp>
-				<scp row="1" col="4">ETB</scp>
-				<scp row="1" col="5">SI</scp>
+				<scp row="1" col="3">66</scp>
 				<scp row="1" col="5">ETB</scp>
-				<scp row="65" col="1">DC2</scp>
-				<scp row="65" col="2">FF</scp>
-				<scp row="65" col="2">EOT</scp>
+				<scp row="1" col="6">SI</scp>
+				<scp row="1" col="7">ETB</scp>
+				<scp row="66" col="1">DC2</scp>
+				<scp row="66" col="2">FF</scp>
+				<scp row="66" col="2">EOT</scp>
 				<!-- Encabezado -->
 				<abstract row="1" col="1" height="6"><![CDATA[
             F.A URIBE & CIA. LTDA.                                 FABRICANTES DE VELAS

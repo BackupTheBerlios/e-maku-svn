@@ -6,11 +6,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 public class TextGenerator {
 	
 	private ArrayList<StringBuilder> buffer;
 	private Properties codes = new Properties();
+	private Vector<Object[]> ScpCodes  = new Vector<Object[]>(); 
 	public TextGenerator() {
 		buffer = new ArrayList<StringBuilder>();
 		try {
@@ -21,6 +23,10 @@ public class TextGenerator {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+	}
+	
+	public void addScpCode(Object[] scpCode) {
+		ScpCodes.add(scpCode);
 	}
 	
 	public void addTextArea(String text,int row, int col, Integer width, Integer height, boolean trim) {
@@ -91,23 +97,39 @@ public class TextGenerator {
 	}
 	
 	public String getBufferString() {
-		String string = "";
-		for (Object character : buffer) {
-			string +=character+"\n";
+		StringBuilder string = new StringBuilder();
+		int i=0;
+		for (; i< buffer.size()-1;i++) {
+			string.append(buffer.get(i)+"\n");
 		}
-		return string;
+		string.append(buffer.get(i));
+		return string.toString();
 	}
 	
 	public ByteArrayInputStream getStream() {
+		for (Object[] scpCode :ScpCodes) {
+			int row = (Integer)scpCode[0];
+			int col = (Integer)scpCode[1];
+			String val = (String)scpCode[2];
+			if (row > buffer.size() ) {
+				while (row > buffer.size()) {
+					buffer.add(new StringBuilder());
+				}
+			}
+			buffer.get(row-1).insert(col-1,val);
+		}
+
 		return new ByteArrayInputStream(getBufferString().getBytes()); 
 	}
 	
 	public String Convert(String key) {
 		try {
-			int Int = Integer.parseInt(codes.getProperty(key));
+			int Int = Integer.parseInt(codes.containsKey(key)?codes.getProperty(key):key);
 			return String.valueOf((char)Int);
 		} catch (NumberFormatException NFEe) {
-			return key; 
+			NFEe.printStackTrace();
+			return null;
 		}
+		
 	}
 }

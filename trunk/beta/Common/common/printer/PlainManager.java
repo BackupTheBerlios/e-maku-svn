@@ -88,7 +88,11 @@ public class PlainManager extends AbstractManager {
 			}
 			else if ("scp".equals(name)) {
 				String  value = e.getValue();
-				System.out.println( value +":" + textGenerator.Convert(value));
+				Object[] scpCode = new Object[3];
+				scpCode[0] = row;
+				scpCode[1] = col;
+				scpCode[2] = textGenerator.Convert(value);
+				textGenerator.addScpCode(scpCode);
 			}
 		}
 	}
