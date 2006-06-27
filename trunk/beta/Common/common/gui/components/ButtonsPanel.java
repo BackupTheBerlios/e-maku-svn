@@ -13,7 +13,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
-//import javax.print.PrintException;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -35,8 +34,6 @@ import common.misc.language.Language;
 import common.pdf.pdfviewer.PDFViewer;
 import common.printer.AbstractManager;
 import common.printer.PlainManager;
-//import common.printer.PrintManager;
-//import common.printer.PrintManager.ImpresionType;
 import common.transactions.STResultSet;
 
 /**

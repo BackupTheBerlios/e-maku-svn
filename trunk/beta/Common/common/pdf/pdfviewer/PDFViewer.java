@@ -220,10 +220,6 @@ public class PDFViewer implements ReportListener {
 					byte [] bytesReport = zip.getDataDecode(data.getValue());
 					openReport(e.getTitleReport(), bytesReport);
 				}
-				/*else {
-					String txt = MessageFormat.format(Language.getWord("REPORT_DONT_EXIST"),idReport);
-					JOptionPane.showInternalMessageDialog(currentGUI.getFrame(),txt);
-				}*/
 			}
 			catch (IOException IOEe) {
 				IOEe.printStackTrace();

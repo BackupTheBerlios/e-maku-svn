@@ -1,14 +1,26 @@
 package common.printer;
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.StringTokenizer;
 
 public class TextGenerator {
 	
-	ArrayList<StringBuilder> buffer;
-	
+	private ArrayList<StringBuilder> buffer;
+	private Properties codes = new Properties();
 	public TextGenerator() {
 		buffer = new ArrayList<StringBuilder>();
+		try {
+			String file = this.getClass().getResource("/common/printer/escp_codes.prop").getFile();
+			codes.load(new FileInputStream(file));
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 	
 	public void addTextArea(String text,int row, int col, Integer width, Integer height, boolean trim) {
@@ -82,11 +94,20 @@ public class TextGenerator {
 		String string = "";
 		for (Object character : buffer) {
 			string +=character+"\n";
-		} 
+		}
 		return string;
 	}
 	
 	public ByteArrayInputStream getStream() {
 		return new ByteArrayInputStream(getBufferString().getBytes()); 
+	}
+	
+	public String Convert(String key) {
+		try {
+			int Int = Integer.parseInt(codes.getProperty(key));
+			return String.valueOf((char)Int);
+		} catch (NumberFormatException NFEe) {
+			return key; 
+		}
 	}
 }

@@ -199,7 +199,7 @@ public class FirstDialog extends JDialog {
         
         Object[] args = { serverAddress, serverPort, language, logType, pos };
 
-        Class cls = Class.forName(key + ".miscelanea.configuracion.ConfigFile");
+        Class cls = Class.forName(key + ".misc.settings.ConfigFile");
         Method meth = cls.getMethod("New", typeargs);
         meth.invoke(cls.newInstance(), args);
     }
@@ -211,7 +211,7 @@ public class FirstDialog extends JDialog {
         
         Class[] typeargs = {};
         Object[] args = {};
-        Class cls = Class.forName(key + ".gui.formas.Conexion");
+        Class cls = Class.forName(key + ".gui.forms.Connection");
         Constructor cons = cls.getConstructor(typeargs);
         cons.newInstance(args);
     }

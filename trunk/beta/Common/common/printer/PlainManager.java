@@ -20,10 +20,10 @@ public class PlainManager extends AbstractManager {
 			Calendar calendar = Calendar.getInstance();
 			long init = calendar.getTimeInMillis();
 			
-			Element settings = rootTemplate.getChild("settings");
+			/*Element settings = rootTemplate.getChild("settings");
 			
 			super.width  = settings.getAttribute("width").getIntValue();
-			super.height = settings.getAttribute("height").getIntValue();
+			super.height = settings.getAttribute("height").getIntValue();*/
 			
 			processMetadata(rootTemplate.getChild("metadata"));
 			
@@ -76,16 +76,20 @@ public class PlainManager extends AbstractManager {
 					}
 				}
 			}
-			if ("field".equals(name)) {
+			else if ("field".equals(name)) {
 				String value = e.getTextTrim();
 				value = " ".equals(value) || "".equals(value) ? "  " : value;
 				textGenerator.addString(value,row,col,null);
 			}
-			if ("abstract".equals(name)) {
+			else if ("abstract".equals(name)) {
 				String  value = e.getText();
 				int height = attribs.get("height").getIntValue();
 				textGenerator.addTextArea(value,row,col,null,height,false);
-			}	
+			}
+			else if ("scp".equals(name)) {
+				String  value = e.getValue();
+				System.out.println( value +":" + textGenerator.Convert(value));
+			}
 		}
 	}
 	
