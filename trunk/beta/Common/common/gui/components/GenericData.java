@@ -200,7 +200,7 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
  	            String maxValue = null;
  	            String formatDate = null;
  	            boolean searchQuery = false;
- 	            boolean printable = true;
+ 	            boolean printable = false;
  	            String calculateDate = null;
  	            String nameField = null;
  	            String addAttribute = null;

@@ -1384,6 +1384,9 @@ public class GenericForm extends JInternalFrame{
 	}
 
 	public String getPrinterTemplate() {
+		if (child) {
+			return GFforma.getPrinterTemplate();
+		}
 		return printerTemplate;
 	}
 
