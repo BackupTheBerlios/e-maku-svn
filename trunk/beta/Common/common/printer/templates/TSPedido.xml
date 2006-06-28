@@ -1,7 +1,7 @@
 <emaku_template type="PLAIN">
 		<settings width="144" height="64" />
 		<metadata>
-				<scp row="1" col="1">ESC</scp>
+   			<scp row="1" col="1">ESC</scp>
 				<scp row="1" col="2">C</scp>
 				<scp row="1" col="3">66</scp>
 				<scp row="1" col="5">ETB</scp>
