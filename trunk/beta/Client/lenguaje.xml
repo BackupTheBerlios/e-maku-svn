@@ -4085,4 +4085,25 @@
     <es_ES></es_ES>
     <en_US>accounts to receive</en_US>
   </palabra>  
+  <palabra>
+    <clave>CONTABILIZACION</clave>
+    <es_CO>Contabilización</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Accounting</en_US>
+  </palabra>  
+  <palabra>
+    <clave>DEBITO</clave>
+    <es_CO>Débito</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Debit</en_US>
+  </palabra>  
+  <palabra>
+    <clave>CREDITO</clave>
+    <es_CO>Crédito</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Credito</en_US>
+  </palabra>  
 </idioma>

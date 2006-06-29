@@ -145,7 +145,8 @@ public class TableDataFields extends GenericData implements InitiateFinishListen
             ITEe.printStackTrace();
         }
         catch (NotFoundComponentException NFCEe) {
-            NFCEe.printStackTrace();
+        	if (!"".equals(getEnlaceTabla()))
+    			NFCEe.printStackTrace();
         }
 
     }

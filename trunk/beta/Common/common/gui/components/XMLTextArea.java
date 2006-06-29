@@ -1,11 +1,14 @@
 package common.gui.components;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.swing.JScrollPane;
@@ -69,10 +72,10 @@ public class XMLTextArea extends JTextArea implements AnswerListener, InitiateFi
             if ("enabled".equals(subargs.getAttributeValue("attribute"))) {
             	this.setEditable(Boolean.parseBoolean(value));
             }
-            if ("keySQL".equals(subargs.getAttributeValue("attribute"))) {
+            else if ("keySQL".equals(subargs.getAttributeValue("attribute"))) {
             	keySQL.addElement(value); 
             }
-            if ("driverEvent".equals(subargs.getAttributeValue("attribute"))) {
+            else if ("driverEvent".equals(subargs.getAttributeValue("attribute"))) {
             	String id="";
             	if (subargs.getAttributeValue("id")!= null) {
             		id=subargs.getAttributeValue("id");
@@ -80,16 +83,38 @@ public class XMLTextArea extends JTextArea implements AnswerListener, InitiateFi
             	if (!driverEvent.contains(value+id))
             		driverEvent.addElement(value+id);
             }
-            if ("rows".equals(subargs.getAttributeValue("attribute"))) {
+            else if ("rows".equals(subargs.getAttributeValue("attribute"))) {
             	this.setRows(Integer.parseInt(value));
             }
-            if ("cols".equals(subargs.getAttributeValue("attribute"))) {
+            else if ("cols".equals(subargs.getAttributeValue("attribute"))) {
             	this.setColumns(Integer.parseInt(value));
+            }
+            else if ("colorBackground".equals(subargs.getAttributeValue("attribute"))) {
+            	this.setBackground(getColor(subargs.getValue()));
             }
         }
         this.GFforma.addInitiateFinishListener(this);
     }
     
+    /**
+     * Este metodo retorna un objeto color, apartir de los argumentos recibidos
+     * @param color argumetos de colores
+     * @return objeto Color
+     */
+    private Color getColor(String color) {
+        try {
+	        StringTokenizer STcolor = new StringTokenizer(color,",");
+	        return new Color(Integer.parseInt(STcolor.nextToken()),
+			                 Integer.parseInt(STcolor.nextToken()),
+			                 Integer.parseInt(STcolor.nextToken()));
+        }
+        catch (NumberFormatException NFEe) {
+            return null;
+        }
+        catch(NoSuchElementException NSEEe) {
+            return null;
+        }
+    }
     public String getTextPane() {
         return this.getText();
     }
