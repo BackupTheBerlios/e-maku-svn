@@ -174,6 +174,10 @@ public class PlainManager extends AbstractManager {
 			value = !"NULL".equals(value) && !"".equals(value) ? formatter.format(Double.parseDouble(value)):"";
 			textGenerator.addString(value,row,col,attribs.get("width").getIntValue());
 		}
+		else if ("ABSTRACT".equals(type)) {
+			int height = attribs.get("height").getIntValue();
+			textGenerator.addTextArea(value,row,col,null,height,false);
+		}
 	}
 	
 	public String getBufferString() {
