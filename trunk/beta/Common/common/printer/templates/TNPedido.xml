@@ -10,68 +10,80 @@
 				<scp row="66" col="1">DC2</scp>
 				<scp row="66" col="2">FF</scp>
 				<scp row="66" col="2">EOT</scp>
-				<!-- Datod personales -->
-				<field row="1" col="1" type="STRING">Nombre</field>
-				<field row="2" col="1" type="STRING">NIT/CC</field>
-				<field row="3" col="1" type="STRING">Dirección</field>
-				<field row="4" col="1" type="STRING">Telefono</field>
-				<field row="5" col="1" type="STRING">Ciudad</field>
-				<field row="6" col="1" type="STRING">Regimen</field>
+				<!-- Encabezado -->
+				<abstract row="1" col="1" height="6"><![CDATA[
+            F.A URIBE & CIA. LTDA.                                 FABRICANTES DE VELAS
+       NIT. 891.200.520-1 - REGIMEN COMUN                           VELADORAS, VELONES
+            CLL. 22B No. 24-216                                       LUZ DE AMERICA
+Telefonos: 7215949 - 7211067 - Fax: (092) 7211630                    VELAS DECORATIVAS
+    Apartado Arereo No. 412 - PASTO - NARINO                             ELEGANCE
+      e-mail: fauribe@telecom.com.co]]>
+				</abstract>
+				<!-- Datos personales -->
+				<field row="9" col="1" type="STRING">Nombre</field>
+				<field row="10" col="1" type="STRING">NIT/CC</field>
+				<field row="11" col="1" type="STRING">Dirección</field>
+				<field row="12" col="1" type="STRING">Telefono</field>
+				<field row="13" col="1" type="STRING">Ciudad</field>
+				<field row="14" col="1" type="STRING">Regimen</field>
 				<!-- Info Documento -->
-				<field row="1" col="50" type="STRING">Orden de Pedido</field>
-				<field row="3" col="50" type="STRING">Fecha</field>
-				<field row="4" col="50" type="STRING">Vendedor</field>
-				<field row="5" col="50" type="STRING">Bodega</field>
-				<field row="6" col="50" type="STRING">Nro</field>
+				<field row="9" col="107" type="STRING">Orden de Pedido</field>
+				<field row="10" col="107" type="STRING">Fecha</field>
+				<field row="11" col="107" type="STRING">Vendedor</field>
+				<field row="12" col="107" type="STRING">Bodega</field>
+				<field row="13" col="107" type="STRING">Nro</field>
 				<!-- Informacion detallada de productos -->
-				<field row="8" col="1" type="STRING">Referencia</field>
-				<field row="8" col="15" type="STRING">Descripcion</field>
-				<field row="8" col="73" type="STRING">Cantidad</field>
-				<field row="20" col="1" type="STRING">Observaciones</field>
+				<field row="17" col="1" type="STRING">Referencia</field>
+				<field row="17" col="70" type="STRING">Descripcion</field>
+				<field row="17" col="137" type="STRING">Cantidad</field>
+				<field row="56" col="1" type="STRING">Observaciones</field>
+				<!-- Pie de pagina -->
+				<field row="63" col="11" type="STRING">ACEPTADA</field>
 				<!-- Dibujo de lineas -->
-				<line row="7" col="1" length="80" charfill="-" align="horizontal" />
-				<line row="19" col="1" length="80" charfill="-" align="horizontal" />
-				<line row="9" col="1" length="80" charfill="-" align="horizontal" />
-				<line row="10" col="13" length="9" charfill="|" align="vertical" />
-				<line row="10" col="72" length="9" charfill="|" align="vertical" />
-				<field row="8" col="13" type="STRING">|</field>
-				<field row="8" col="72" type="STRING">|</field>
+				<line row="16" col="1" length="144" charfill="=" align="horizontal" />
+				<line row="18" col="1" length="144" charfill="=" align="horizontal" />
+				<line row="55" col="1" length="144" charfill="=" align="horizontal" />
+				<line row="62" col="2" length="31" charfill="_" align="horizontal" />
+				<line row="19" col="14" length="36" charfill="|" align="vertical" />
+				<line row="19" col="136" length="36" charfill="|" align="vertical" />
+				<field row="17" col="14" type="STRING">|</field>
+				<field row="17" col="136" type="STRING">|</field>
 		</metadata>
 		<package>
-				<field row="1" col="12" type="STRING" />
-				<field row="2" col="12" type="STRING" />
-				<field row="3" col="12" type="STRING" />
-				<field row="4" col="12" type="STRING" />
-				<field row="5" col="12" type="STRING" />
-				<field row="6" col="12" type="STRING" />
+				<field row="9" col="12" type="STRING" />
+				<field row="10" col="12" type="STRING" />
+				<field row="11" col="12" type="STRING" />
+				<field row="12" col="12" type="STRING" />
+				<field row="13" col="12" type="STRING" />
+				<field row="14" col="12" type="STRING" />
 		</package>
 		<package>
-				<field row="1" col="12" type="STRING" />
-				<field row="2" col="12" type="STRING" />
-				<field row="3" col="12" type="STRING" />
-				<field row="4" col="12" type="STRING" />
-				<field row="5" col="12" type="STRING" />
+				<field row="9" col="12" type="STRING" />
+				<field row="10" col="12" type="STRING" />
+				<field row="11" col="12" type="STRING" />
+				<field row="12" col="12" type="STRING" />
+				<field row="13" col="12" type="STRING" />
 		</package>
 		<package>
-				<field row="3" col="60" type="STRING" />
+				<field row="10" col="123" type="STRING" />
 		</package>
 		<package>
-				<field row="4" col="60" type="STRING" />
+				<field row="11" col="123" type="STRING" />
 		</package>
 		<package>
-				<field row="5" col="60" type="STRING" />
+				<field row="12" col="123" type="STRING" />
 		</package>
 		<package>
-				<field row="6" col="60" type="STRING" />
+				<field row="13" col="123" type="STRING" />
 		</package>
 		<package>
-				<subpackage rowInit="10">
+				<subpackage rowInit="19">
 						<field col="1" type="STRING" />
 						<field col="15" type="STRING" />
-						<field col="77" width="3" type="NUMERIC" mask="#" />
+						<field col="141" width="3" type="NUMERIC" mask="#" />
 				</subpackage>
 		</package>
 		<package>
-				<field row="21" col="1" type="TEXT" width="30" height="3" />
+				<field row="57" col="1" type="TEXT" width="90" height="3" />
 		</package>
 </emaku_template>

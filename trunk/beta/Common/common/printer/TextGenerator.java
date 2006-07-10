@@ -37,33 +37,37 @@ public class TextGenerator {
 		int lastspace = -1;
 		int linestart = 0;
 		int i = 0;
-		
-		while (i < buf.length() && trim) {
-			if (buf.charAt(i) == ' ') {
-				lastspace = i;
-			}
-			if (buf.charAt(i) == '\n') {
-				lastspace = -1;
-				linestart = i + 1;
-			}
-			if (i > linestart + width) {
-				//if (i > linestart + width -1) {
-				if (lastspace != -1) {
-					buf.delete(lastspace,lastspace+1);
-					buf.insert(lastspace,"\n");
-					linestart = lastspace;
+		if (trim) {
+			while ( i < buf.length()) {
+				if (buf.charAt(i) == ' ') {
+					lastspace = i;
+				}
+				if (buf.charAt(i) == '\n') {
 					lastspace = -1;
-					
-				} else {
-					buf.insert(i, '\n');
 					linestart = i + 1;
 				}
+				if (i > linestart + width) {
+					//if (i > linestart + width -1) {
+					if (lastspace != -1) {
+						buf.delete(lastspace,lastspace+1);
+						buf.insert(lastspace,"\n");
+						linestart = lastspace;
+						lastspace = -1;
+						
+					} else {
+						buf.insert(i, '\n');
+						linestart = i + 1;
+					}
+				}
+				i++;
 			}
-			i++;
 		}
 		StringTokenizer st = new StringTokenizer(buf.toString(),"\n");
-		for (int j=0; j < height && st.hasMoreTokens(); j++) {
-			addString(st.nextToken(),row++,col,null);
+		for (int j=0; j < height && st.hasMoreElements(); j++) {
+			String tok = st.nextToken();
+			//tok = "".equals(tok) ? " " : tok;
+			//System.out.println(":-) {" + tok+ "}= " +height );
+			addString(tok,row++,col,null);
 		}
 	}
 	

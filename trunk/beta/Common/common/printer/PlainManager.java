@@ -98,6 +98,7 @@ public class PlainManager extends AbstractManager {
 	}
 	
 	private void processElement(Element pack_template, Element pack_transaction) throws DataConversionException {
+
 		Iterator it_template = pack_template.getChildren().iterator();
 		Iterator it_transaction = pack_transaction.getChildren().iterator();
 		while(it_template.hasNext() && it_transaction.hasNext()) {

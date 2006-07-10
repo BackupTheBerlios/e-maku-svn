@@ -163,8 +163,8 @@ public class XMLTextArea extends JTextArea implements AnswerListener, InitiateFi
 			        	Iterator it = e.getChildren().iterator();
 			        	while(it.hasNext()) {
 			        		String val = ((Element)it.next()).getValue().trim();
-			        		if (!"".equals(val))
-			        			this.append(val+"\n");
+			        		/*if (!"".equals(val))*/
+			        		this.append(val+"\n");
 			        	}
 			        }
 				}
