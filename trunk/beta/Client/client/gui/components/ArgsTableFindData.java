@@ -226,6 +226,7 @@ public class ArgsTableFindData {
 	public String getSqlCombo() {
 		return sqlCombo;
 	}
+	
 	public boolean isExporValue() {
 		if (exportValue!=null) {
 			return true;

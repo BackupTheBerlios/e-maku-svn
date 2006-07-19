@@ -1,6 +1,12 @@
 package client.gui.components;
 
-import static client.gui.components.Formula.*;
+import static client.gui.components.Formula.BEANSHELL;
+import static client.gui.components.Formula.BEANSHELLNQ;
+import static client.gui.components.Formula.SIMPLE;
+import static client.gui.components.Formula.SIMPLENQ;
+import static client.gui.components.Formula.SUPER;
+import static client.gui.components.Formula.SUPERBEANNQ;
+import static client.gui.components.Formula.SUPERNQ;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -24,6 +30,12 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
+import org.jdom.Document;
+import org.jdom.Element;
+
+import bsh.EvalError;
+import bsh.Interpreter;
+
 import common.gui.components.ChangeValueEvent;
 import common.gui.components.ChangeValueListener;
 import common.gui.components.ErrorDataException;
@@ -38,12 +50,6 @@ import common.misc.formulas.FormulaCalculator;
 import common.misc.language.Language;
 import common.transactions.STException;
 import common.transactions.STResultSet;
-
-import org.jdom.Document;
-import org.jdom.Element;
-
-import bsh.EvalError;
-import bsh.Interpreter;
 
 /**
  * TMFindData.java Creado el 06-abr-2005
@@ -92,6 +98,9 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     private boolean updateQuery;
     private HashMap importTotalCol;
     private boolean loadingQuery = false;
+    private int tagDataColumn = -1;
+    private int currentIndex = 0;
+    
     public TMFindData(GenericForm GFforma,
             		  String sqlCode,
             		  int rows,
@@ -293,9 +302,9 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     			if (ATFDargs[colIndex].isEditable() && val==0) {
     	            return true;
     	        }
-    	        else {
-    	            return false;
-    	        }
+    	        //else {
+    	        return false;
+    	        //}
     		} 
     		else {
     			//if (getValueAt(rowIndex-1,colIndex).equals("") && val==0) {
@@ -306,17 +315,15 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     				if (ATFDargs[colIndex].isEditable()  && val==0) {
         	            return true;
         	        }
-        	        else {
-        	            return false;
-        	        }
+        	        //else {
+        	        return false;
+        	        //}
     			}
-    			
     		}
-	        
     	}
-    	else {
-    		return false;
-    	}
+    	//else {
+   		return false;
+   		//}
     }
 
     /**
@@ -487,6 +494,8 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 	        	}
            	updateCells(value,rowIndex,colIndex);
         }
+        
+        System.out.println("currentIndex " +  currentIndex);
     }
     
     private void calcular(int rowIndex) {
@@ -880,6 +889,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
      */
     public synchronized void updateCells(Object value,int rowIndex,int colIndex) {
 		VdataRows.get(rowIndex).set(colIndex,value);
+		currentIndex += (rowIndex < currentIndex) ? 0: 1;
         class RunInternalQuery extends Thread {
         	
         		int rowIndex;
@@ -1004,7 +1014,6 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
         } else {
         	new RunInternalQuery(rowIndex,colIndex,value).start();
         }
-        
     }
 
     
@@ -1031,15 +1040,14 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     		}
     		i++;
     	}
+    	currentIndex = 0;
     }
     
     /**
      * Este metodo retorna el tipo de dato de una celda
      */
-    @SuppressWarnings("unchecked")
-	public Class getColumnClass(int colIndex) {
-        //return getValueAt(0,colIndex).getClass();
-        return ATFDargs[colIndex].getTypeDate().getClass(); 
+	public Class<?> getColumnClass(int colIndex) {
+		return ATFDargs[colIndex].getTypeDate().getClass(); 
     }
     
     private void message(String keyError) {
@@ -1075,10 +1083,8 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 			          }
 			        });
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
@@ -1535,41 +1541,73 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     }
     
     public void setQuery(Document doc) {
+    	setQuery(doc,false);
+    }
+    
+    public synchronized void setQuery(Document doc,boolean search) {
     	loadingQuery = true;
-        class LoadQuery extends Thread{
-            private Document doc;
+        List Lrows = doc.getRootElement().getChildren("row");
+        Iterator Irows = Lrows.iterator();
+        
+        if (tagDataColumn==-1) {
+            /*
+             * Se limpia la tabla antes de desplegar la consulta nueva
+             */
+            clean();
+            /*
+             * Cargando informacion
+             */
             
-            LoadQuery(Document doc) {
-                this.doc=doc;
-            }
-            
-            public void run() {
-                List Lrows = doc.getRootElement().getChildren("row");
-                Iterator Irows = Lrows.iterator();
-                /*
-                 * Se limpia la tabla antes de desplegar la consulta nueva
-                 */
-                clean();
-                /*
-                 * Cargando informacion
-                 */
-                
-                for (int i=0;Irows.hasNext() && i<rows;i++) {
-                    Element Erow = (Element) Irows.next();
-                    List Lcol = Erow.getChildren();
+            for (int i=0;Irows.hasNext() && i<rows;i++) {
+                Element Erow = (Element) Irows.next();
+                List Lcol = Erow.getChildren();
 
-		            for (int j=0;j<ATFDargs.length;j++) {
-		                updateCells(addCols(j,Lcol),i,j);
-		            }
-		            if (formulas!=null) {
-                        calcular(i,false);
-	                }
+	            for (int j=0;j<ATFDargs.length;j++) {
+	                updateCells(addCols(j,Lcol),i,j);
+	            }
+	            if (formulas!=null) {
+                    calcular(i,false);
                 }
-                totalizar();
-                loadingQuery = false;
             }
         }
-        new LoadQuery(doc).start();
+        else if (tagDataColumn>-1) {
+        	int max = Lrows.size();
+        	Element Erow = null;
+        	String tagDataValue = null;
+        	if (max > 0) {
+        		 Erow = (Element) Lrows.get(0);
+        		 Element element = (Element) Erow.getChildren().get(tagDataColumn);
+        		 tagDataValue = element.getValue().trim();
+        	}
+        	
+        	for(int i=0; i < VdataRows.size(); i++) {
+        		String strData = getValueAt(i,tagDataColumn).toString().trim();
+        		if (strData.equals(tagDataValue)){
+        			deleteRow(i);
+       				i --;
+        		}
+        	}
+        	/*Aqui va la llenada de datos.*/
+        	int currentRow = currentIndex;
+        	for (int i=0;  i< max ; i++) {
+        		Element RowQuery = (Element) Lrows.get(i);
+        		List Lcol = RowQuery.getChildren();
+        		for (int j=0;j<ATFDargs.length;j++) {
+        			if (search && j==0){
+        				setValueAt(addCols(j,Lcol), currentRow,0);
+        			}
+        			else {
+        				updateCells(addCols(j,Lcol),currentRow,j);
+        			}
+	            }
+        		currentRow++;
+	            if (formulas!=null) {
+                    calcular(i,false);
+                }
+        	}
+        }
+        totalizar();
+        loadingQuery = false;
     }
 
     private Object addCols(int j,List Lcol) {
@@ -1636,8 +1674,9 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
         		vptype.add(ATFDargs[j].getTypeDate());
         }
         VdataRows.add(vptype);
-    		VdataRows.remove(index);
-    		VdataRows.add(vptype);
+        VdataRows.remove(index);
+        currentIndex --;
+        fireTableDataChanged();
     }
     /**
      * Metodo encargado de recalcular la informacion de la tabla cuando sucede un evento.
@@ -1677,9 +1716,9 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 		if (impValues!=null) {
 			return impValues.size();
 		}
-		else {
-			return 0;
-		}
+		//else {
+		return 0;
+		//}
 	}
 	
 	public void setQuery(String sqlCode) {
@@ -1717,5 +1756,13 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 		    }
 		    totalizar();
 		}
+	}
+
+	public void setTagDataColumn(int tagDataColumn) {
+		this.tagDataColumn = tagDataColumn;
+	}
+
+	public int getCurrentIndex() {
+		return currentIndex;
 	}
 }

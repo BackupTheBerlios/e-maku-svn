@@ -134,7 +134,7 @@ public class SwingThumbnailPanel extends JPanel implements GUIThumbnailPanel {
 	private class ThumbPainter extends ComponentAdapter {
 		
 		/** used to track user stopping movement */
-		Timer trapMultipleMoves = trapMultipleMoves = new Timer(250,
+		Timer trapMultipleMoves = new Timer(250,
 				new ActionListener() {
 			
 			public void actionPerformed(ActionEvent event) {
