@@ -83,6 +83,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	private boolean printable = true;
 	private String calculateDate = null;
 	private String addAttribute = null;
+	private String sendRecord;
 	
 	public XMLTextField(String label, int length, int chars) {
 		super(length);
@@ -570,6 +571,21 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 
 	public void setPrintable(boolean printable) {
 		this.printable = printable;
+	}
+
+	public String getSendRecord() {
+		return sendRecord;
+	}
+	
+	public boolean isSendRecord() {
+		if (sendRecord!=null) {
+			return true;
+		}
+		return false;
+	}
+
+	public void setSendRecord(String sendRecord) {
+		this.sendRecord = sendRecord;
 	}
 
 }

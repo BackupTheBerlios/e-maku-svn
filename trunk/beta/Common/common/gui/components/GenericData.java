@@ -86,7 +86,8 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
     private Vector <ChangeValueListener>changeValueListener = new Vector<ChangeValueListener>();
     private String returnValue;
 	private boolean returnBlankPackage = false;
-
+	private Vector<RecordListener> recordListener = new Vector<RecordListener>();
+		
     public GenericData() {
     	
     }
@@ -204,6 +205,7 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
  	            String calculateDate = null;
  	            String nameField = null;
  	            String addAttribute = null;
+ 	            String sendRecord = null;
  	            
  	           /******************        Validacion de atributos     PSTSO *****************************/
  	            while(j.hasNext()) {
@@ -335,6 +337,9 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
  	            	else if ("printable".equals(elm.getAttributeValue("attribute"))) {
   	                   printable = Boolean.parseBoolean(elm.getValue());
   	            	}
+ 	            	else if ("sendRecord".equals(elm.getAttributeValue("attribute"))) {
+   	                   sendRecord = elm.getValue();
+   	            	}
  	            }
 
  	            if (mask==null) {
@@ -354,7 +359,7 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
 	            XMLText.setNullValue(nullValue);
 	            XMLText.setClean(clean);
 	            XMLText.setPrintable(printable);
-
+	            XMLText.setSendRecord(sendRecord);
 	            if (exportValue!=null) {
 	            	XMLText.setExportvalue(exportValue);
 	            }
@@ -466,7 +471,41 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
 			        		  /*if (XMLText.isExportvalue() || XMLText.getKeyExternalValue()!=null) {
 			        			  exportar(XMLText);
 			        		  } Comentado por que se lo envio al primer focusLost de XMLTextField*/
+			        		  		        		  
 			        		  XMLTextField XMLRefText = (XMLTextField) e.getSource();
+			        		  if (XMLRefText.isSendRecord()) {
+			        			  String value = null;
+				        		  if ("NUMERIC".equals(XMLRefText.getType())) {
+				        			  value = String.valueOf(XMLRefText.getNumberValue());
+				        		  }
+				        		  else  {
+				        			  value = XMLRefText.getText();  
+				        		  }
+				        		  Element element = new Element("table");
+				        		  Element row = new Element("row");
+				        		  element.addContent(row);
+				        		  StringTokenizer stk = new StringTokenizer(XMLRefText.getSendRecord(),",");
+				        		  
+				        		  while (true) {
+				        			  try {
+				        				  String tok = stk.nextToken();
+				        				  Element col = new Element("col");
+				        				  if ("value".equals(tok)) {
+				        					  col.setText(value);
+				        				  }
+				        				  else {
+				        					  col.setText(tok.substring(1,tok.length() - 1));
+				        				  }
+				        				  row.addContent(col);
+				        			  } catch (NoSuchElementException NSEe) {
+				        				  break;
+				        			  }
+				        		  }
+				        		  
+				        		  RecordEvent event = new RecordEvent(this, element);
+				        		  notificando(event);
+			        		  }
+			        				  
 			        		  if (sqlCode.size() > 0 || sqlLocal!=null) {
 				                /*
 				                 * El primer elemento del vector sql siempre sera la consulta que almacenara
@@ -1035,5 +1074,22 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
 			return false;
 		}
 		return false;
+	}
+	
+	public synchronized void addRecordListener(RecordListener listener) {
+		recordListener.addElement(listener);
+	}
+
+	public synchronized void removeRecordListener(RecordListener listener) {
+		recordListener.removeElement(listener);
+	}
+
+	private synchronized void notificando(RecordEvent event) {
+		Vector lista;
+		lista = (Vector) recordListener.clone();
+		for (int i = 0; i < lista.size(); i++) {
+			RecordListener listener = (RecordListener) lista.elementAt(i);
+			listener.arriveRecordEvent(event);
+		}
 	}
 }

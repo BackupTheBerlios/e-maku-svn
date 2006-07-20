@@ -8,7 +8,6 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -42,8 +41,6 @@ import javax.swing.table.TableColumn;
 
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
 
 import common.gui.components.AnswerEvent;
 import common.gui.components.AnswerListener;
@@ -832,8 +829,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 									col.setText(cellVal);
 									row.addContent(col);
 								} catch (NumberFormatException NFEe) {
-									col.setText(tok.substring(1,
-											tok.length() - 1));
+									col.setText(tok.substring(1,tok.length() - 1));
 									row.addContent(col);
 								}
 							} catch (NoSuchElementException NSEe) {
