@@ -56,13 +56,13 @@ public class Language  {
         Language.glossary = new Hashtable<String,String>();
         try {
             SAXBuilder builder = new SAXBuilder(false);
-            Document doc = builder.build(this.getClass().getResource("/lenguaje.xml"));
+            Document doc = builder.build(this.getClass().getResource("/language.xml"));
             Element raiz = doc.getRootElement();
-            List palabras = raiz.getChildren("palabra");
+            List palabras = raiz.getChildren("sentence");
             Iterator i = palabras.iterator();
             while (i.hasNext()) {
                 Element campos = (Element)i.next();
-        		glossary.put(campos.getChildText("clave"),campos.getChildText(lenguaje));
+        		glossary.put(campos.getChildText("key"),campos.getChildText(lenguaje));
             }
         }
         catch (JDOMException JDOMEe) {

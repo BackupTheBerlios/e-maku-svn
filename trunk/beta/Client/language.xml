@@ -1,4109 +1,4081 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<idioma>
-  <palabra>
-    <clave>ERROR_MESSAGE</clave>
+<language>
+  <sentence>
+    <key>ERROR_MESSAGE</key>
     <es_CO>Mensaje de Error</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Error Message</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_FORMULA</clave>
-    <es_CO>Error, una de las formulas de la tabla no pudo ser procesada</es_CO>
+  </sentence>
+  <sentence>
+    <key>ERR_FORMULA</key>
+    <es_CO>Error 201: Una de las formulas de la tabla no pudo ser procesada</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, the formula can't process</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_LOCAL_PARAMETERS</clave>
-    <es_CO>Error, La forma no puede desplegarse por inconsistencia en la parametrización</es_CO>
+    <en_US>Error 201: The formula can not be processed</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_LOCAL_PARAMETERS</key>
+    <es_CO>Error 202: La forma no puede desplegarse por inconsistencia en la parametrización</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, the form can't display for problems in parameters</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_TOTAL</clave>
-    <es_CO>Error, la generación de totales no se pudo realizar</es_CO>
+    <en_US>Error 202: The form can not be displayed because it contains incorrect parameters</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_TOTAL</key>
+    <es_CO>Error 203: La generación de totales no se pudo realizar</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, the total generation can't make</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_DATA_PACKAGE</clave>
-    <es_CO>Error en la estructura de paquetes</es_CO>
+    <en_US>Error 203: The generation of total values can not be done</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_DATA_PACKAGE</key>
+    <es_CO>Error 204: Hay inconsistencias en la estructura de los paquetes</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error of struct the package</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_PARTIDA</clave>
-    <es_CO>Las cuentas seleccionadas no hacen partida doble</es_CO>
+    <en_US>Error 204: The package structure is incorrect</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_PARTIDA</key>
+    <es_CO>Error 205: Las cuentas seleccionadas no hacen partida doble</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>The selection accouns don't make departure double</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_DEFAULT</clave>
-    <es_CO>Error, debe existir al menos un valor por defecto</es_CO>
+    <en_US>Error 205: The selected accounts can not be computed</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_DEFAULT</key>
+    <es_CO>Error 206: Debe existir al menos un valor por defecto</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, only should a default value</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_FACTOR</clave>
-    <es_CO>Error, debe haber por lo menos un registro de unidad de venta</es_CO>
+    <en_US>Error 207: Must to be at least a default value</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_FACTOR</key>
+    <es_CO>Error 208: Debe haber por lo menos un registro de unidad de venta</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, there aren't sale unit</en_US>
-  </palabra>
-  <palabra>
-    <clave>ARCHIVO</clave>
+    <en_US>Error 208: Must to be at least a sale unit</en_US>
+  </sentence>
+  <sentence>
+    <key>ARCHIVO</key>
     <es_CO>Archivo</es_CO>
     <es_EC></es_EC>
-    <es_ES></es_ES>
+    <es_ES>Fichero</es_ES>
     <en_US>File</en_US>
-  </palabra>
-  <palabra>
-    <clave>TITLE-CONEC</clave>
-    <es_CO>Conexión Base de Datos</es_CO>
+  </sentence>
+  <sentence>
+    <key>TITLE-CONEC</key>
+    <es_CO>Conexión a Base de Datos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Connection DataBase</en_US>
-  </palabra>
-  <palabra>
-    <clave>CONECTAR</clave>
+    <en_US>Database Connection</en_US>
+  </sentence>
+  <sentence>
+    <key>CONECTAR</key>
     <es_CO>Conectar</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Connect</en_US>
-  </palabra>
-  <palabra>
-    <clave>DESCONECTAR</clave>
+  </sentence>
+  <sentence>
+    <key>DESCONECTAR</key>
     <es_CO>Desconectar de la Base de Datos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Disconnect</en_US>
-  </palabra>
-  <palabra>
-    <clave>SALIR</clave>
+  </sentence>
+  <sentence>
+    <key>SALIR</key>
     <es_CO>Salir</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Exit</en_US>
-  </palabra>
-  <palabra>
-    <clave>CONTABILIDAD</clave>
+  </sentence>
+  <sentence>
+    <key>CONTABILIDAD</key>
     <es_CO>Contabilidad</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Accounting</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-CONTABILIDAD</clave>
+    <en_US>Bookkeeping</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-CONTABILIDAD</key>
     <es_CO>C</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>A</en_US>
-  </palabra>
-  <palabra>
-    <clave>NCONTABILIDAD</clave>
+  </sentence>
+  <sentence>
+    <key>NCONTABILIDAD</key>
     <es_CO>Nota de Contabilidad</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Accounting Note</en_US>
-  </palabra>
-  <palabra>
-    <clave>NNOTA-CONTABILIDAD</clave>
+    <en_US>Bookkeeping Note</en_US>
+  </sentence>
+  <sentence>
+    <key>NNOTA-CONTABILIDAD</key>
     <es_CO>Nueva Nota de Contabilidad</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>New Accounting Note</en_US>
-  </palabra>
-  <palabra>
-    <clave>ANOTA-CONTABILIDAD</clave>
+    <en_US>New Bookkeeping Note</en_US>
+  </sentence>
+  <sentence>
+    <key>ANOTA-CONTABILIDAD</key>
     <es_CO>Anular Nota de Contabilidad</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>anull Accounting Note</en_US>
-  </palabra>
-  <palabra>
-    <clave>SNOTA-CONTABILIDAD</clave>
+    <en_US>To Annull Bookkeeping Note</en_US>
+  </sentence>
+  <sentence>
+    <key>SNOTA-CONTABILIDAD</key>
     <es_CO>Consultar Nota de Contabilidad</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Query Accounting Note</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-NCONTABILIDAD</clave>
+    <en_US>Query Bookkeeping Note</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-NCONTABILIDAD</key>
     <es_CO>C</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>A</en_US>
-  </palabra>
-  <palabra>
-    <clave>NDEBITO</clave>
+  </sentence>
+  <sentence>
+    <key>NDEBITO</key>
     <es_CO>Nota Débito</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Debit Note</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-NDEBITO</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-NDEBITO</key>
     <es_CO>D</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>D</en_US>
-  </palabra>
-  <palabra>
-    <clave>NCREDITO</clave>
+  </sentence>
+  <sentence>
+    <key>NCREDITO</key>
     <es_CO>Nota Crédito</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Crédit Note</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-NCREDITO</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-NCREDITO</key>
     <es_CO>r</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>r</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-CAJAM</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-CAJAM</key>
     <es_CO>M</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>M</en_US>
-  </palabra>
-  <palabra>
-    <clave>CAJAM</clave>
+  </sentence>
+  <sentence>
+    <key>CAJAM</key>
     <es_CO>Caja Menor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Minor Cash</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-RECIBOS</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-RECIBOS</key>
     <es_CO>R</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>R</en_US>
-  </palabra>
-  <palabra>
-    <clave>RECIBOS</clave>
+  </sentence>
+  <sentence>
+    <key>RECIBOS</key>
     <es_CO>Recibos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Receipt</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-REINTEGROS</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-REINTEGROS</key>
     <es_CO>g</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>t</en_US>
-  </palabra>
-  <palabra>
-    <clave>REINTEGROS</clave>
+  </sentence>
+  <sentence>
+    <key>REINTEGROS</key>
     <es_CO>Reintegros</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Refund</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-ASIENTOS-PREDEFINIDOS</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-ASIENTOS-PREDEFINIDOS</key>
     <es_CO>P</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>R</en_US>
-  </palabra>
-  <palabra>
-    <clave>ASIENTOS_PREDEFINIDOS</clave>
+  </sentence>
+  <sentence>
+    <key>ASIENTOS_PREDEFINIDOS</key>
     <es_CO>Asientos Predefinidos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>predefined seats</en_US>
-  </palabra>
-  <palabra>
-    <clave>BD</clave>
+    <en_US>Predefined Values</en_US>
+  </sentence>
+  <sentence>
+    <key>BD</key>
     <es_CO>Empresa:</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Company:</en_US>
-  </palabra>
-  <palabra>
-    <clave>USER</clave>
+  </sentence>
+  <sentence>
+    <key>USER</key>
     <es_CO>Usuario:</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>User:</en_US>
-  </palabra>
-  <palabra>
-    <clave>PASS</clave>
+  </sentence>
+  <sentence>
+    <key>PASS</key>
     <es_CO>Contraseña:</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Password:</en_US>
-  </palabra>
-  <palabra>
-    <clave>ESTADO</clave>
+  </sentence>
+  <sentence>
+    <key>ESTADO</key>
     <es_CO>Estado</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Status</en_US>
-  </palabra>
-  <palabra>
-    <clave>OFF_LINE</clave>
+  </sentence>
+  <sentence>
+    <key>OFF_LINE</key>
     <es_CO>Desconectado</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Off Line</en_US>
-  </palabra>
-  <palabra>
-    <clave>ON_LINE</clave>
+  </sentence>
+  <sentence>
+    <key>ON_LINE</key>
     <es_CO>Conectado</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Connected</en_US>
-  </palabra>
-  <palabra>
-    <clave>CANCEL</clave>
+  </sentence>
+  <sentence>
+    <key>CANCEL</key>
     <es_CO>Cancelar</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Cancel</en_US>
-  </palabra>
-  <palabra>
-    <clave>CONFIG</clave>
+  </sentence>
+  <sentence>
+    <key>CONFIG</key>
     <es_CO>Configurar</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Configure</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-ARCHIVO</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-ARCHIVO</key>
     <es_CO>A</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>F</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-CONECTAR</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-CONECTAR</key>
     <es_CO>n</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>n</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-DESCONECTAR</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-DESCONECTAR</key>
     <es_CO>D</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>s</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-SALIR</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-SALIR</key>
     <es_CO>S</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>x</en_US>
-  </palabra>
-  <palabra>
-    <clave>TIP-CONECTAR</clave>
+  </sentence>
+  <sentence>
+    <key>TIP-CONECTAR</key>
     <es_CO>Conectar a la Base de Datos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Connect to Data Base</en_US>
-  </palabra>
-  <palabra>
-    <clave>TIP-SALIR</clave>
+  </sentence>
+  <sentence>
+    <key>TIP-SALIR</key>
     <es_CO>Salir de E-Maku</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Exit of E-Maku</en_US>
-  </palabra>
-  <palabra>
-    <clave>OPCIONES</clave>
+    <en_US>Exit E-Maku</en_US>
+  </sentence>
+  <sentence>
+    <key>OPCIONES</key>
     <es_CO>Opciones</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Options</en_US>
-  </palabra>
-  <palabra>
-    <clave>CONFIGURACION</clave>
+  </sentence>
+  <sentence>
+    <key>CONFIGURACION</key>
     <es_CO>Configuración</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Setup</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-CONFIGURACION</clave>
+    <en_US>Settings</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-CONFIGURACION</key>
     <es_CO>C</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>S</en_US>
-  </palabra>
-  <palabra>
-    <clave>ARTICULOS</clave>
+  </sentence>
+  <sentence>
+    <key>ARTICULOS</key>
     <es_CO>Artículos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Articles</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-ARTICULOS</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-ARTICULOS</key>
     <es_CO>A</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>A</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-SERVICIOS</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-SERVICIOS</key>
     <es_CO>S</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>S</en_US>
-  </palabra>
-  <palabra>
-    <clave>SERVICIOS</clave>
+  </sentence>
+  <sentence>
+    <key>SERVICIOS</key>
     <es_CO>Servicios</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Services</en_US>
-  </palabra>
-  <palabra>
-    <clave>PRODUCTO</clave>
+  </sentence>
+  <sentence>
+    <key>PRODUCTO</key>
     <es_CO>Producto</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Product</en_US>
-  </palabra>
-  <palabra>
-    <clave>PRODUCTOS</clave>
+  </sentence>
+  <sentence>
+    <key>PRODUCTOS</key>
     <es_CO>Productos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Products</en_US>
-  </palabra>
-  <palabra>
-    <clave>NART</clave>
+  </sentence>
+  <sentence>
+    <key>NART</key>
     <es_CO>Nuevo Artículo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New Article</en_US>
-  </palabra>
-  <palabra>
-    <clave>EART</clave>
+  </sentence>
+  <sentence>
+    <key>EART</key>
     <es_CO>Editar Artículo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Edit Article</en_US>
-  </palabra>
-  <palabra>
-    <clave>DART</clave>
+  </sentence>
+  <sentence>
+    <key>DART</key>
     <es_CO>Borrar Artículo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Delete Article</en_US>
-  </palabra>
-  <palabra>
-    <clave>NSERVICIO</clave>
+  </sentence>
+  <sentence>
+    <key>NSERVICIO</key>
     <es_CO>Nuevo Servicio</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New Service</en_US>
-  </palabra>
-  <palabra>
-    <clave>ESERVICIO</clave>
+  </sentence>
+  <sentence>
+    <key>ESERVICIO</key>
     <es_CO>Editar Servicio</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Edit Service</en_US>
-  </palabra>
-  <palabra>
-    <clave>DSERVICIO</clave>
+  </sentence>
+  <sentence>
+    <key>DSERVICIO</key>
     <es_CO>Borrar Servicio</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Delete Service</en_US>
-  </palabra>
-  <palabra>
-    <clave>CATALOGOP</clave>
+  </sentence>
+  <sentence>
+    <key>CATALOGOP</key>
     <es_CO>Catalogo de Precios</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Price Catalog</en_US>
-  </palabra>
-  <palabra>
-    <clave>STOCK</clave>
+  </sentence>
+  <sentence>
+    <key>STOCK</key>
     <es_CO>Stock</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Stock</en_US>
-  </palabra>
-  <palabra>
-    <clave>STOCKMAX</clave>
+  </sentence>
+  <sentence>
+    <key>STOCKMAX</key>
     <es_CO>Stock Máximo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Stock</en_US>
-  </palabra>
-  <palabra>
-    <clave>STOCKMIN</clave>
+    <en_US>Stock Maximum</en_US>
+  </sentence>
+  <sentence>
+    <key>STOCKMIN</key>
     <es_CO>Stock Mínimo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Stock Minimum</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-OPCIONES</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-OPCIONES</key>
     <es_CO>O</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>O</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-PRODUCTOS</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-PRODUCTOS</key>
     <es_CO>P</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>P</en_US>
-  </palabra>
-  <palabra>
-    <clave>DEPTO</clave>
+  </sentence>
+  <sentence>
+    <key>DEPTO</key>
     <es_CO>Departamento</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Department</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-DEPTO</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-DEPTO</key>
     <es_CO>D</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>D</en_US>
-  </palabra>
-  <palabra>
-    <clave>LOCAL</clave>
+  </sentence>
+  <sentence>
+    <key>LOCAL</key>
     <es_CO>Localidad</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Location</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-LOCAL</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-LOCAL</key>
     <es_CO>L</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>L</en_US>
-  </palabra>
-  <palabra>
-    <clave>PAIS</clave>
+  </sentence>
+  <sentence>
+    <key>PAIS</key>
     <es_CO>País</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Country</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-PAIS</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-PAIS</key>
     <es_CO>P</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>C</en_US>
-  </palabra>
-  <palabra>
-    <clave>NUEVO</clave>
+  </sentence>
+  <sentence>
+    <key>NUEVO</key>
     <es_CO>Nuevo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-NUEVO</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-NUEVO</key>
     <es_CO>N</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>N</en_US>
-  </palabra>
-  <palabra>
-    <clave>EDITAR</clave>
+  </sentence>
+  <sentence>
+    <key>EDITAR</key>
     <es_CO>Editar</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Edit</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-EDITAR</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-EDITAR</key>
     <es_CO>E</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>E</en_US>
-  </palabra>
-  <palabra>
-    <clave>ANULAR</clave>
+  </sentence>
+  <sentence>
+    <key>ANULAR</key>
     <es_CO>Anular</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Annul</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-ANULAR</clave>
+    <en_US>Annull</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-ANULAR</key>
     <es_CO>A</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>A</en_US>
-  </palabra>
-  <palabra>
-    <clave>BORRAR</clave>
+  </sentence>
+  <sentence>
+    <key>BORRAR</key>
     <es_CO>Borrar</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Erase</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-BORRAR</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-BORRAR</key>
     <es_CO>B</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>E</en_US>
-  </palabra>
-  <palabra>
-    <clave>CODE</clave>
+  </sentence>
+  <sentence>
+    <key>CODE</key>
     <es_CO>Código</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Code</en_US>
-  </palabra>
-  <palabra>
-    <clave>BARRAS</clave>
+  </sentence>
+  <sentence>
+    <key>BARRAS</key>
     <es_CO>Código de Barras</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Bar Code</en_US>
-  </palabra>
-  <palabra>
-    <clave>BARRAS</clave>
-    <es_CO>Código de Barras</es_CO>
-    <es_EC></es_EC>
-    <es_ES></es_ES>
-    <en_US>Bar Code</en_US>
-  </palabra>
-  <palabra>
-    <clave>NAME</clave>
+  </sentence>
+  <sentence>
+    <key>NAME</key>
     <es_CO>Nombre</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Name</en_US>
-  </palabra>
-  <palabra>
-    <clave>NATURALEZA_DC</clave>
+  </sentence>
+  <sentence>
+    <key>NATURALEZA_DC</key>
     <es_CO>1 Débito 0 Crédito</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>1 Debit 0 Credit</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEW_PAIS</clave>
+  </sentence>
+  <sentence>
+    <key>NEW_PAIS</key>
     <es_CO>Nuevo País</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New Country</en_US>
-  </palabra>
-  <palabra>
-    <clave>EDIT_PAIS</clave>
+  </sentence>
+  <sentence>
+    <key>EDIT_PAIS</key>
     <es_CO>Editar País</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Edit Country</en_US>
-  </palabra>
-  <palabra>
-    <clave>DELETE_PAIS</clave>
+  </sentence>
+  <sentence>
+    <key>DELETE_PAIS</key>
+    <es_CO>Borrar País</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <es_CO>Borrar País</es_CO>
     <en_US>Delete Country</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEW_DEPTO</clave>
+  </sentence>
+  <sentence>
+    <key>NEW_DEPTO</key>
     <es_CO>Nuevo Departamento</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New State</en_US>
-  </palabra>
-  <palabra>
-    <clave>EDIT_DEPTO</clave>
+  </sentence>
+  <sentence>
+    <key>EDIT_DEPTO</key>
     <es_CO>Editar Departamento</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Edit State</en_US>
-  </palabra>
-  <palabra>
-    <clave>DELETE_DEPTO</clave>
+  </sentence>
+  <sentence>
+    <key>DELETE_DEPTO</key>
     <es_CO>Borrar Departamento</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Delete State</en_US>
-  </palabra>
-  <palabra>
-    <clave>MUN</clave>
+  </sentence>
+  <sentence>
+    <key>MUN</key>
     <es_CO>Municipio</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>City</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-MUN</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-MUN</key>
     <es_CO>M</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>C</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEW_MUN</clave>
+  </sentence>
+  <sentence>
+    <key>NEW_MUN</key>
     <es_CO>Nuevo Municipio</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New City</en_US>
-  </palabra>
-  <palabra>
-    <clave>EDIT_MUN</clave>
+  </sentence>
+  <sentence>
+    <key>EDIT_MUN</key>
     <es_CO>Editar Municipio</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Edit City</en_US>
-  </palabra>
-  <palabra>
-    <clave>DELETE_MUN</clave>
+  </sentence>
+  <sentence>
+    <key>DELETE_MUN</key>
     <es_CO>Borrar Municipio</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Delete City</en_US>
-  </palabra>
-  <palabra>
-    <clave>VOID_PACKAGE</clave>
-    <es_CO>Error, Información incompleta en el campo:</es_CO>
+  </sentence>
+  <sentence>
+    <key>VOID_PACKAGE</key>
+    <es_CO>Error 209: Información incompleta en el campo </es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, Iformation inconplet in the field:</en_US>
-  </palabra>
-  <palabra>
-    <clave>DESCRIPCION</clave>
+    <en_US>Error 209: Incomplete information in the field </en_US>
+  </sentence>
+  <sentence>
+    <key>DESCRIPCION</key>
     <es_CO>Descripción</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Description</en_US>
-  </palabra>
-  <palabra>
-    <clave>VUNITARIO</clave>
+  </sentence>
+  <sentence>
+    <key>VUNITARIO</key>
     <es_CO>V. Unitario</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Unit Value</en_US>
-  </palabra>
-  <palabra>
-    <clave>CANTIDAD</clave>
+  </sentence>
+  <sentence>
+    <key>CANTIDAD</key>
     <es_CO>Cantidad</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Quantity</en_US>
-  </palabra>
-  <palabra>
-    <clave>TOTAL</clave>
+  </sentence>
+  <sentence>
+    <key>TOTAL</key>
     <es_CO>Total</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Total</en_US>
-  </palabra>
-  <palabra>
-    <clave>GTOTAL</clave>
+  </sentence>
+  <sentence>
+    <key>GTOTAL</key>
     <es_CO>GTotal</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>GTotal</en_US>
-  </palabra>
-  <palabra>
-    <clave>PCOSTO</clave>
+  </sentence>
+  <sentence>
+    <key>PCOSTO</key>
     <es_CO>P. Costo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Cost Value</en_US>
-  </palabra>
-  <palabra>
-    <clave>PCOMPRA</clave>
+  </sentence>
+  <sentence>
+    <key>PCOMPRA</key>
     <es_CO>P. Compra</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Purchase Value</en_US>
-  </palabra>
-  <palabra>
-    <clave>PVENTA</clave>
+  </sentence>
+  <sentence>
+    <key>PVENTA</key>
     <es_CO>P. Venta</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Cost Value</en_US>
-  </palabra>
-  <palabra>
-    <clave>IVA</clave>
+  </sentence>
+  <sentence>
+    <key>IVA</key>
     <es_CO>IVA</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Tax</en_US>
-  </palabra>
-  <palabra>
-    <clave>PIVA</clave>
+  </sentence>
+  <sentence>
+    <key>PIVA</key>
     <es_CO>% IVA</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>% Tax</en_US>
-  </palabra>
-  <palabra>
-    <clave>TIVA</clave>
+  </sentence>
+  <sentence>
+    <key>TIVA</key>
     <es_CO>T. IVA</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Tax</en_US>
-  </palabra>
-  <palabra>
-    <clave>OCULTO</clave>
-    <es_CO></es_CO>
+  </sentence>
+  <sentence>
+    <key>OCULTO</key>
+    <es_CO>Oculto</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US></en_US>
-  </palabra>
-  <palabra>
-    <clave>GRUPOIMP</clave>
+    <en_US>Hidden</en_US>
+  </sentence>
+  <sentence>
+    <key>GRUPOIMP</key>
     <es_CO>Grupo Impuesto</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Tax Group</en_US>
-  </palabra>
-  <palabra>
-    <clave>MAIL</clave>
+  </sentence>
+  <sentence>
+    <key>MAIL</key>
     <es_CO>e-mail</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>e-mail</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_DESCRIP</clave>
-    <es_CO>Error, El campo descripción no tiene valor</es_CO>
+  </sentence>
+  <sentence>
+    <key>ERR_DESCRIP</key>
+    <es_CO>Error 210: El campo descripción no tiene valor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, The Field description don't have value</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_EMAIL</clave>
-    <es_CO>Error, El campo e-mail no tiene valor</es_CO>
+    <en_US>Error 210: The field description is unset</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_EMAIL</key>
+    <es_CO>Error 211: El campo e-mail no tiene valor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, The Field e-mail don't have value</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_MAXRECORD</clave>
-    <es_CO>Error, el máximo número de registros soportados es 10</es_CO>
+    <en_US>Error 211: The field e-mail is unset</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_MAXRECORD</key>
+    <es_CO>Error 212: El máximo número de registros soportados es 10</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, you only can put with max 10 records</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_INVALID_CODE</clave>
-    <es_CO>Error, código inválido para una cuenta contable, la cantidad de digitos debe ser par</es_CO>
+    <en_US>Error 212: The maximum number of records supported is 10</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_INVALID_CODE</key>
+    <es_CO>Error 213: Código inválido para una cuenta contable, la cantidad de digitos debe ser par</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, invalid number for account, the digit number debe se par</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_NOCODE</clave>
-    <es_CO>Error, No existe el código digitado</es_CO>
+    <en_US>Error 213: Invalid number for bookkeeping account, the number should be pair</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_NOCODE</key>
+    <es_CO>Error 214: No existe el código digitado</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, The digic code no found</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_QUERY</clave>
-    <es_CO>Error generando la consulta</es_CO>
+    <en_US>Error 214: The code does not exist</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_QUERY</key>
+    <es_CO>Error 215: Ocurrio un problema generando la consulta</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error in the generic of query</en_US>
-  </palabra>
-  <palabra>
-    <clave>ADD</clave>
+    <en_US>Error 215: There was a problem generating the query</en_US>
+  </sentence>
+  <sentence>
+    <key>ADD</key>
     <es_CO>Adicionar</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Add</en_US>
-  </palabra>
-  <palabra>
-    <clave>REMOVE</clave>
+  </sentence>
+  <sentence>
+    <key>REMOVE</key>
     <es_CO>Remover</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Remove</en_US>
-  </palabra>
-  <palabra>
-    <clave>TERCEROS</clave>
+  </sentence>
+  <sentence>
+    <key>TERCEROS</key>
     <es_CO>Terceros</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Thirds</en_US>
-  </palabra>
-  <palabra>
-    <clave>TIPOS-TERCEROS</clave>
+  </sentence>
+  <sentence>
+    <key>TIPOS-TERCEROS</key>
     <es_CO>Tipos Terceros</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Type Thirds</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-TERCEROS</clave>
+    <en_US>Thirds Types</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-TERCEROS</key>
     <es_CO>T</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>T</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-TIPO-TERCEROS</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-TIPO-TERCEROS</key>
     <es_CO>e</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>h</en_US>
-  </palabra>
-  <palabra>
-    <clave>TERCERO</clave>
+  </sentence>
+  <sentence>
+    <key>TERCERO</key>
     <es_CO>Tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Third</en_US>
-  </palabra>
-  <palabra>
-    <clave>NTERCERO</clave>
+  </sentence>
+  <sentence>
+    <key>NTERCERO</key>
     <es_CO>Nuevo Tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New Third</en_US>
-  </palabra>
-  <palabra>
-    <clave>NTIPO_TERCERO</clave>
-    <es_CO>Nuevo tipo Tercero</es_CO>
+  </sentence>
+  <sentence>
+    <key>NTIPO_TERCERO</key>
+    <es_CO>Nuevo Tipo Tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>New type Third</en_US>
-  </palabra>
-  <palabra>
-    <clave>ETIPO_TERCERO</clave>
-    <es_CO>Editar tipo Tercero</es_CO>
+    <en_US>New Third Type</en_US>
+  </sentence>
+  <sentence>
+    <key>ETIPO_TERCERO</key>
+    <es_CO>Editar Tipo Tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Edit type Third</en_US>
-  </palabra>
-  <palabra>
-    <clave>DTIPO_TERCERO</clave>
+    <en_US>Edit Third Type</en_US>
+  </sentence>
+  <sentence>
+    <key>DTIPO_TERCERO</key>
     <es_CO>Borrar tipo Tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Delete type Third</en_US>
-  </palabra>
-  <palabra>
-    <clave>ETERCERO</clave>
+    <en_US>Delete Third Type</en_US>
+  </sentence>
+  <sentence>
+    <key>ETERCERO</key>
     <es_CO>Editar Tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Edit Third</en_US>
-  </palabra>
-  <palabra>
-    <clave>DTERCERO</clave>
+  </sentence>
+  <sentence>
+    <key>DTERCERO</key>
     <es_CO>Borrar Tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Delete Third</en_US>
-  </palabra>
-  <palabra>
-    <clave>FINDTHIRD</clave>
+  </sentence>
+  <sentence>
+    <key>FINDTHIRD</key>
     <es_CO>Consultar Tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Find Third</en_US>
-  </palabra>
-  <palabra>
-    <clave>CONSULTAR</clave>
+  </sentence>
+  <sentence>
+    <key>CONSULTAR</key>
     <es_CO>Consultar</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Query</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-CONSULTAR</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-CONSULTAR</key>
     <es_CO>C</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Q</en_US>
-  </palabra>
-  <palabra>
-    <clave>PHONE</clave>
+  </sentence>
+  <sentence>
+    <key>PHONE</key>
     <es_CO>Teléfono</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Phone</en_US>
-  </palabra>
-  <palabra>
-    <clave>ADDRESS</clave>
+  </sentence>
+  <sentence>
+    <key>ADDRESS</key>
     <es_CO>Dirección</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Address</en_US>
-  </palabra>
-  <palabra>
-    <clave>TIPO</clave>
+  </sentence>
+  <sentence>
+    <key>TIPO</key>
     <es_CO>Tipo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Type</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_PHONE</clave>
-    <es_CO>Error, El campo teléfono no tiene valor</es_CO>
+  </sentence>
+  <sentence>
+    <key>ERR_PHONE</key>
+    <es_CO>Error 216: El campo teléfono no tiene valor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, The Field phone don't have value</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_TPHONE</clave>
-    <es_CO>Error, El campo tipo teléfono no tiene valor</es_CO>
+    <en_US>Error 216: The field phone is unset</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_TPHONE</key>
+    <es_CO>Error 217: El campo tipo teléfono no tiene valor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, The Field type phone don't have value</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_MUN</clave>
-    <es_CO>Error, El campo municipio no tiene valor</es_CO>
+    <en_US>Error 217: The field phone type is unset</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_MUN</key>
+    <es_CO>Error 218: El campo municipio no tiene valor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, The Field city don't have value</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_DEPTO</clave>
-    <es_CO>Error, El campo departamento no tiene valor</es_CO>
+    <en_US>Error 218: The field city is unset</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_DEPTO</key>
+    <es_CO>Error 219: El campo departamento no tiene valor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, The Field state don't have value</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_PAIS</clave>
-    <es_CO>Error, El campo país no tiene valor</es_CO>
+    <en_US>Error 219: The field state is unset</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_PAIS</key>
+    <es_CO>Error 220: El campo país no tiene valor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, The Field country don't have value</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_ADDRESS</clave>
-    <es_CO>Error, El campo dirección no tiene valor</es_CO>
+    <en_US>Error 220: The field country is unset</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_ADDRESS</key>
+    <es_CO>Error 221: El campo dirección no tiene valor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, The Field address don't have value</en_US>
-  </palabra>
-  <palabra>
-    <clave>CLASE</clave>
+    <en_US>Error 221: The field address is unset</en_US>
+  </sentence>
+  <sentence>
+    <key>CLASE</key>
     <es_CO>Clase</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Class</en_US>
-  </palabra>
-  <palabra>
-    <clave>CLASIFICACION</clave>
+  </sentence>
+  <sentence>
+    <key>CLASIFICACION</key>
     <es_CO>Clasificación</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Clas</en_US>
-  </palabra>
-  <palabra>
-    <clave>NITCC</clave>
+    <en_US>Classification</en_US>
+  </sentence>
+  <sentence>
+    <key>NITCC</key>
     <es_CO>Nit/CC</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Nit/CC</en_US>
-  </palabra>
-  <palabra>
-    <clave>ESTABLECIMIENTO</clave>
+  </sentence>
+  <sentence>
+    <key>ESTABLECIMIENTO</key>
     <es_CO>Establecimiento</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Establishment</en_US>
-  </palabra>
-  <palabra>
-    <clave>ESTABLECIMIENTO</clave>
-    <es_CO>Establecimiento</es_CO>
-    <es_EC></es_EC>
-    <es_ES></es_ES>
-    <en_US>Establishment</en_US>
-  </palabra>
-  <palabra>
-    <clave>ESTADOA</clave>
+  </sentence>
+  <sentence>
+    <key>ESTADOA</key>
     <es_CO>Estado: 1 Activo/0 Inactivo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Status: 1 Enabled/0 disabled</en_US>
-  </palabra>
-  <palabra>
-    <clave>PORCENTAJE</clave>
+  </sentence>
+  <sentence>
+    <key>PORCENTAJE</key>
     <es_CO>Porcentaje</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Percentage</en_US>
-  </palabra>
-  <palabra>
-    <clave>GENERAL</clave>
+  </sentence>
+  <sentence>
+    <key>GENERAL</key>
     <es_CO>General</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>General</en_US>
-  </palabra>
-  <palabra>
-    <clave>NOMBRE</clave>
+  </sentence>
+  <sentence>
+    <key>NOMBRE</key>
     <es_CO>Nombre:</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Name:</en_US>
-  </palabra>
-  <palabra>
-    <clave>MONEDA</clave>
+  </sentence>
+  <sentence>
+    <key>MONEDA</key>
     <es_CO>Moneda</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Money</en_US>
-  </palabra>
-  <palabra>
-    <clave>NMONEDA</clave>
-    <es_CO>Nueva moneda</es_CO>
+  </sentence>
+  <sentence>
+    <key>NMONEDA</key>
+    <es_CO>Nueva Moneda</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New Money</en_US>
-  </palabra>
-  <palabra>
-    <clave>EMONEDA</clave>
-    <es_CO>Editar moneda</es_CO>
+  </sentence>
+  <sentence>
+    <key>EMONEDA</key>
+    <es_CO>Editar Moneda</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Edit Money</en_US>
-  </palabra>
-  <palabra>
-    <clave>DMONEDA</clave>
-    <es_CO>Borrar moneda</es_CO>
+  </sentence>
+  <sentence>
+    <key>DMONEDA</key>
+    <es_CO>Borrar Moneda</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Delete Money</en_US>
-  </palabra>
-  <palabra>
-    <clave>BANCO</clave>
+  </sentence>
+  <sentence>
+    <key>BANCO</key>
     <es_CO>Banco</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Bank</en_US>
-  </palabra>
-  <palabra>
-    <clave>NBANCO</clave>
-    <es_CO>Nuevo banco</es_CO>
+  </sentence>
+  <sentence>
+    <key>NBANCO</key>
+    <es_CO>Nuevo Banco</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>New bank</en_US>
-  </palabra>
-  <palabra>
-    <clave>EBANCO</clave>
-    <es_CO>Editar banco</es_CO>
+    <en_US>New Bank</en_US>
+  </sentence>
+  <sentence>
+    <key>EBANCO</key>
+    <es_CO>Editar Banco</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Edit bank</en_US>
-  </palabra>
-  <palabra>
-    <clave>DBANCO</clave>
-    <es_CO>Borrar banco</es_CO>
+    <en_US>Edit Bank</en_US>
+  </sentence>
+  <sentence>
+    <key>DBANCO</key>
+    <es_CO>Borrar Banco</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Delete bank</en_US>
-  </palabra>
-  <palabra>
-    <clave>FLAG</clave>
+    <en_US>Delete Bank</en_US>
+  </sentence>
+  <sentence>
+    <key>FLAG</key>
     <es_CO>Bandera:</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Flag:</en_US>
-  </palabra>
-  <palabra>
-    <clave>GRUPOIMPUESTOS</clave>
-    <es_CO>Grupo impuestos</es_CO>
+  </sentence>
+  <sentence>
+    <key>GRUPOIMPUESTOS</key>
+    <es_CO>Grupo Impuestos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Group tax</en_US>
-  </palabra>
-  <palabra>
-    <clave>NGRUPOIMPUESTOS</clave>
-    <es_CO>Nuevo grupo impuestos</es_CO>
+    <en_US>Group Tax</en_US>
+  </sentence>
+  <sentence>
+    <key>NGRUPOIMPUESTOS</key>
+    <es_CO>Nuevo Grupo Impuestos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>New group tax</en_US>
-  </palabra>
-  <palabra>
-    <clave>EGRUPOIMPUESTOS</clave>
-    <es_CO>Editar grupo impuestos</es_CO>
+    <en_US>New Group Tax</en_US>
+  </sentence>
+  <sentence>
+    <key>EGRUPOIMPUESTOS</key>
+    <es_CO>Editar Grupo Impuestos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Edit group tax</en_US>
-  </palabra>
-  <palabra>
-    <clave>DGRUPOIMPUESTOS</clave>
-    <es_CO>Borrar grupo impuestos</es_CO>
+    <en_US>Edit Group Tax</en_US>
+  </sentence>
+  <sentence>
+    <key>DGRUPOIMPUESTOS</key>
+    <es_CO>Borrar Grupo Impuestos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Delete group tax</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-GRUPOIMPUESTOS</clave>
+    <en_US>Delete Group Tax</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-GRUPOIMPUESTOS</key>
     <es_CO>G</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>G</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-MONEDA</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-MONEDA</key>
     <es_CO>M</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>M</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-BANCO</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-BANCO</key>
     <es_CO>B</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>B</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-EMPLEADOS</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-EMPLEADOS</key>
     <es_CO>M</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>M</en_US>
-  </palabra>
-  <palabra>
-    <clave>EMPLEADOS</clave>
+  </sentence>
+  <sentence>
+    <key>EMPLEADOS</key>
     <es_CO>Empleados</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Employees</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-CARGO-EMPLEADO</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-CARGO-EMPLEADO</key>
     <es_CO>C</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>O</en_US>
-  </palabra>
-  <palabra>
-    <clave>CARGO-EMPLEADO</clave>
+  </sentence>
+  <sentence>
+    <key>CARGO-EMPLEADO</key>
     <es_CO>Cargo Empleados</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Occupation Employees</en_US>
-  </palabra>
-  <palabra>
-    <clave>NCARGO-EMPLEADO</clave>
+    <en_US>Employees Occupation</en_US>
+  </sentence>
+  <sentence>
+    <key>NCARGO-EMPLEADO</key>
     <es_CO>Nuevo Cargo Empleados</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>New Occupation Employees</en_US>
-  </palabra>
-  <palabra>
-    <clave>ECARGO-EMPLEADO</clave>
+    <en_US>New Employees Occupation</en_US>
+  </sentence>
+  <sentence>
+    <key>ECARGO-EMPLEADO</key>
     <es_CO>Editar Cargo Empleados</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Edit Occupation Employees</en_US>
-  </palabra>
-  <palabra>
-    <clave>DCARGO-EMPLEADO</clave>
+    <en_US>Edit Employees Occupation</en_US>
+  </sentence>
+  <sentence>
+    <key>DCARGO-EMPLEADO</key>
     <es_CO>Borrar Cargo Empleados</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Delete Occupation Employees</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMPLEADO</clave>
+    <en_US>Delete Employees Occupation</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMPLEADO</key>
     <es_CO>Nuevo Empleado</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New Employee</en_US>
-  </palabra>
-  <palabra>
-    <clave>EEMPLEADO</clave>
+  </sentence>
+  <sentence>
+    <key>EEMPLEADO</key>
     <es_CO>Editar Empleado</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Edit Employee</en_US>
-  </palabra>
-  <palabra>
-    <clave>DEMPLEADO</clave>
+  </sentence>
+  <sentence>
+    <key>DEMPLEADO</key>
     <es_CO>Borrar Empleado</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Delete Employee</en_US>
-  </palabra>
-  <palabra>
-    <clave>CATALOGOPVENTA</clave>
-    <es_CO>Catálogo precios venta</es_CO>
+  </sentence>
+  <sentence>
+    <key>CATALOGOPVENTA</key>
+    <es_CO>Catálogo Precios Venta</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Catalogue price sale</en_US>
-  </palabra>
-  <palabra>
-    <clave>SCATALOGOP</clave>
+    <en_US>Sale Prices Catalogue</en_US>
+  </sentence>
+  <sentence>
+    <key>SCATALOGOP</key>
     <es_CO>Stocks y Catálogo precios</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Stocks y Catalogue price</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-CATALOGOPVENTA</clave>
+    <en_US>Stocks and Price Catalogue</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-CATALOGOPVENTA</key>
     <es_CO>C</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>C</en_US>
-  </palabra>
-  <palabra>
-    <clave>NCATALOGOPVENTA</clave>
+  </sentence>
+  <sentence>
+    <key>NCATALOGOPVENTA</key>
     <es_CO>Nuevo Catálogo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>New Catalgue</en_US>
-  </palabra>
-  <palabra>
-    <clave>ECATALOGOPVENTA</clave>
+    <en_US>New Catalogue</en_US>
+  </sentence>
+  <sentence>
+    <key>ECATALOGOPVENTA</key>
     <es_CO>Editar Catálogo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Edit Catalgue</en_US>
-  </palabra>
-  <palabra>
-    <clave>DCATALOGOPVENTA</clave>
+    <en_US>Edit Catalogue</en_US>
+  </sentence>
+  <sentence>
+    <key>DCATALOGOPVENTA</key>
     <es_CO>Borrar Catálogo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Delete Catalgue</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_CLASE</clave>
-    <es_CO>Error, El campo clase no tiene valor</es_CO>
+    <en_US>Delete Catalogue</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_CLASE</key>
+    <es_CO>Error 222: El campo clase no tiene valor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, The Field class don't have value</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_NOMBRE</clave>
-    <es_CO>Error, El campo nombre no tiene valor</es_CO>
+    <en_US>Error 222: The field class is unset</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_NOMBRE</key>
+    <es_CO>Error 223: El campo nombre no tiene valor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, The Field name don't have value</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_NITCC</clave>
-    <es_CO>Error, El campo Nit/CC no tiene valor</es_CO>
+    <en_US>Error 223: The field name is unset</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_NITCC</key>
+    <es_CO>Error 224: El campo Nit/CC no tiene valor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, The Field Nit/CC don't have value</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_NOT_FOUND_COMPONENT_EXCEPTION</clave>
-    <es_CO>Error, El siguiente componente no fue encontrado en la tabla de referencias</es_CO>
+    <en_US>Error 224: The field Nit/ID is unset</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_NOT_FOUND_COMPONENT_EXCEPTION</key>
+    <es_CO>Error 225: El siguiente componente no fue encontrado en la tabla de referencias</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, The next component not found in the references table</en_US>
-  </palabra>
-  <palabra>
-    <clave>REGIMEN</clave>
+    <en_US>Error 225: Can not find the component </en_US>
+  </sentence>
+  <sentence>
+    <key>REGIMEN</key>
     <es_CO>Régimen</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Catalogo</en_US>
-  </palabra>
-  <palabra>
-    <clave>CATALOGO</clave>
+    <en_US>State</en_US>
+  </sentence>
+  <sentence>
+    <key>CATALOGO</key>
     <es_CO>Catálogo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Catalogue</en_US>
-  </palabra>
-  <palabra>
-    <clave>RETIENE</clave>
+  </sentence>
+  <sentence>
+    <key>RETIENE</key>
     <es_CO>1 Retiene / 0 No Retiene</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>1 Retain / 0 No Retain</en_US>
-  </palabra>
-  <palabra>
-    <clave>PERFIL</clave>
+  </sentence>
+  <sentence>
+    <key>PERFIL</key>
     <es_CO>Perfíl</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Profile</en_US>
-  </palabra>
-  <palabra>
-    <clave>NUM_CTA</clave>
+  </sentence>
+  <sentence>
+    <key>NUM_CTA</key>
     <es_CO>Número Cta.</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Account Number:</en_US>
-  </palabra>
-  <palabra>
-    <clave>CUENTAB</clave>
+  </sentence>
+  <sentence>
+    <key>CUENTAB</key>
     <es_CO>Ctas Bancarias</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Account Bank</en_US>
-  </palabra>
-  <palabra>
-    <clave>TIPO_CTA_B</clave>
+    <en_US>Bank Account</en_US>
+  </sentence>
+  <sentence>
+    <key>TIPO_CTA_B</key>
     <es_CO>Tipo Cuenta Bancaria</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Account Type</en_US>
-  </palabra>
-  <palabra>
-    <clave>BANCO</clave>
+    <en_US>Bank Account Type</en_US>
+  </sentence>
+  <sentence>
+    <key>BANCO</key>
     <es_CO>Banco</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Bank</en_US>
-  </palabra>
-  <palabra>
-    <clave>TIPO_CTA_B</clave>
+  </sentence>
+  <sentence>
+    <key>TIPO_CTA_B</key>
     <es_CO>Tipo Cuenta Bancaria</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Account Type</en_US>
-  </palabra>
-  <palabra>
-    <clave>CUENTA</clave>
-    <es_CO>Cuenta</es_CO>
-    <es_EC></es_EC>
-    <es_ES></es_ES>
-    <en_US>Account</en_US>
-  </palabra>
-  <palabra>
-    <clave>CUENTA</clave>
+    <en_US>Bank Account Type</en_US>
+  </sentence>
+  <sentence>
+    <key>CUENTA</key>
     <es_CO>Cuenta:</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Account:</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_CTA</clave>
-    <es_CO>Error, El campo número cuenta no tiene valor</es_CO>
+  </sentence>
+  <sentence>
+    <key>ERR_CTA</key>
+    <es_CO>Error 226: El campo número cuenta no tiene valor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, The Field account number don't have value</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_BANK</clave>
-    <es_CO>Error, El campo banco no tiene valor</es_CO>
+    <en_US>Error 226: The field account is unset</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_BANK</key>
+    <es_CO>Error 227: El campo banco no tiene valor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, The field bank number don't have value</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_VALUE</clave>
-    <es_CO>Error, El campo valor esta vacío</es_CO>
+    <en_US>Error 227: The field bank number is unset</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_VALUE</key>
+    <es_CO>Error 228: El campo valor esta vacío</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, The Field value number don't have value</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_NUM</clave>
-    <es_CO>Error, El campo número esta vacío</es_CO>
+    <en_US>Error 228: The field value is unset</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_NUM</key>
+    <es_CO>Error 229: El campo número esta vacío</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, The Field number number don't have value</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_TCTA</clave>
-    <es_CO>Error, El campo tipo cuenta no tiene valor</es_CO>
+    <en_US>Error 229: The field number is unset</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_TCTA</key>
+    <es_CO>Error 230: El campo tipo cuenta no tiene valor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, The Field account type don't have value</en_US>
-  </palabra>
-  <palabra>
-    <clave>BODEGA</clave>
+    <en_US>Error 230: The field account is unset</en_US>
+  </sentence>
+  <sentence>
+    <key>BODEGA</key>
     <es_CO>Bodega</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Cellar</en_US>
-  </palabra>
-  <palabra>
-    <clave>NBODEGA</clave>
+  </sentence>
+  <sentence>
+    <key>NBODEGA</key>
     <es_CO>Nueva Bodega</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New Cellar</en_US>
-  </palabra>
-  <palabra>
-    <clave>EBODEGA</clave>
+  </sentence>
+  <sentence>
+    <key>EBODEGA</key>
     <es_CO>Editar Bodega</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Edit Cellar</en_US>
-  </palabra>
-  <palabra>
-    <clave>DBODEGA</clave>
+  </sentence>
+  <sentence>
+    <key>DBODEGA</key>
     <es_CO>Borrar Bodega</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Delete Cellar</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-BODEGA</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-BODEGA</key>
     <es_CO>B</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>C</en_US>
-  </palabra>
-  <palabra>
-    <clave>GRUPOSPROD</clave>
-    <es_CO>Grupo productos</es_CO>
+  </sentence>
+  <sentence>
+    <key>GRUPOSPROD</key>
+    <es_CO>Grupo Productos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Product Group</en_US>
-  </palabra>
-  <palabra>
-    <clave>NGRUPOSPROD</clave>
-    <es_CO>Nuevo grupo de productos</es_CO>
+    <en_US>Products Group</en_US>
+  </sentence>
+  <sentence>
+    <key>NGRUPOSPROD</key>
+    <es_CO>Nuevo Grupo de Productos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>New product group</en_US>
-  </palabra>
-  <palabra>
-    <clave>EGRUPOSPROD</clave>
-    <es_CO>Editar grupo de productos</es_CO>
+    <en_US>New Products Group</en_US>
+  </sentence>
+  <sentence>
+    <key>EGRUPOSPROD</key>
+    <es_CO>Editar Grupo de Productos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Edit group product</en_US>
-  </palabra>
-  <palabra>
-    <clave>DGRUPOSPROD</clave>
-    <es_CO>Borrar grupo de productos</es_CO>
+    <en_US>Edit Products Group</en_US>
+  </sentence>
+  <sentence>
+    <key>DGRUPOSPROD</key>
+    <es_CO>Borrar Grupo de Productos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Delete group product</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-UNDVENTA</clave>
+    <en_US>Delete Products Group</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-UNDVENTA</key>
     <es_CO>U</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>U</en_US>
-  </palabra>
-  <palabra>
-    <clave>UNDVENTA</clave>
-    <es_CO>Unidades venta</es_CO>
+  </sentence>
+  <sentence>
+    <key>UNDVENTA</key>
+    <es_CO>Unidades Venta</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Unit sale</en_US>
-  </palabra>
-  <palabra>
-    <clave>NUNDVENTA</clave>
-    <es_CO>Nuevo unidades venta</es_CO>
+    <en_US>Sale Unit</en_US>
+  </sentence>
+  <sentence>
+    <key>NUNDVENTA</key>
+    <es_CO>Nuevo Unidades Venta</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>New units sale</en_US>
-  </palabra>
-  <palabra>
-    <clave>EUNDVENTA</clave>
-    <es_CO>Editar unidades venta</es_CO>
+    <en_US>New Sale Unit</en_US>
+  </sentence>
+  <sentence>
+    <key>EUNDVENTA</key>
+    <es_CO>Editar Unidades Venta</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Edit units sale</en_US>
-  </palabra>
-  <palabra>
-    <clave>DUNDVENTA</clave>
-    <es_CO>Borrar unidades venta</es_CO>
+    <en_US>Edit Units Sale</en_US>
+  </sentence>
+  <sentence>
+    <key>DUNDVENTA</key>
+    <es_CO>Borrar Unidades Venta</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Delete units sale</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-GRUPOSPROD</clave>
+    <en_US>Delete Sale Unit</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-GRUPOSPROD</key>
     <es_CO>G</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>G</en_US>
-  </palabra>
-  <palabra>
-    <clave>FACTORC</clave>
+  </sentence>
+  <sentence>
+    <key>FACTORC</key>
     <es_CO>F. Conversión</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Change Factor</en_US>
-  </palabra>
-  <palabra>
-    <clave>ADMCTAS</clave>
+  </sentence>
+  <sentence>
+    <key>ADMCTAS</key>
     <es_CO>Administración de cuentas</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Acounts Management</en_US>
-  </palabra>
-  <palabra>
-    <clave>NADMCTAS</clave>
-    <es_CO>Nueva cuenta</es_CO>
+    <en_US>Accounts Management</en_US>
+  </sentence>
+  <sentence>
+    <key>NADMCTAS</key>
+    <es_CO>Nueva Cuenta</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>New acount</en_US>
-  </palabra>
-  <palabra>
-    <clave>EADMCTAS</clave>
-    <es_CO>Editar cuentas</es_CO>
+    <en_US>New Account</en_US>
+  </sentence>
+  <sentence>
+    <key>EADMCTAS</key>
+    <es_CO>Editar Cuentas</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Edit acounts</en_US>
-  </palabra>
-  <palabra>
-    <clave>DADMCTAS</clave>
-    <es_CO>Borrar cuentas</es_CO>
+    <en_US>Edit Accounts</en_US>
+  </sentence>
+  <sentence>
+    <key>DADMCTAS</key>
+    <es_CO>Borrar Cuentas</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Delete acounts</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-ADMCTAS</clave>
+    <en_US>Delete Accounts</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-ADMCTAS</key>
     <es_CO>A</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>A</en_US>
-  </palabra>
-  <palabra>
-    <clave>MAYOR</clave>
+  </sentence>
+  <sentence>
+    <key>MAYOR</key>
     <es_CO>Mayor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Major</en_US>
-  </palabra>
-  <palabra>
-    <clave>DETALLE</clave>
+  </sentence>
+  <sentence>
+    <key>DETALLE</key>
     <es_CO>Detalle</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Detail</en_US>
-  </palabra>
-  <palabra>
-    <clave>NATURALEZA</clave>
+  </sentence>
+  <sentence>
+    <key>NATURALEZA</key>
     <es_CO>Naturaleza (1 Débito/0 Crédito)</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Nature (1 Debit/0 Credit)</en_US>
-  </palabra>
-  <palabra>
-    <clave>CENTRO</clave>
+    <en_US>Type (1 Debit/0 Credit)</en_US>
+  </sentence>
+  <sentence>
+    <key>CENTRO</key>
     <es_CO>Centro (1 si/ 0 no)</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Center (1 yes/ 0 no)</en_US>
-  </palabra>
-  <palabra>
-    <clave>CENTROCOSTO</clave>
+  </sentence>
+  <sentence>
+    <key>CENTROCOSTO</key>
     <es_CO>Centro Costo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Center Cost</en_US>
-  </palabra>
-  <palabra>
-    <clave>AJUSTE</clave>
+  </sentence>
+  <sentence>
+    <key>AJUSTE</key>
     <es_CO>Ajuste (1 si/ 0 no)</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Ajust (1 yes/ 0 no)</en_US>
-  </palabra>
-  <palabra>
-    <clave>RETENCION</clave>
+    <en_US>Adjust (1 yes/ 0 no)</en_US>
+  </sentence>
+  <sentence>
+    <key>RETENCION</key>
     <es_CO>Retención (1 si/ 0 no)</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Retention (1 yes/ 0 no)</en_US>
-  </palabra>
-  <palabra>
-    <clave>TERCEROS_CTA</clave>
+  </sentence>
+  <sentence>
+    <key>TERCEROS_CTA</key>
     <es_CO>Terceros (1 si/ 0 no)</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Terceros (1 yes/ 0 no)</en_US>
-  </palabra>
-  <palabra>
-    <clave>INVENTARIOS_CTA</clave>
+    <en_US>Thirds (1 yes/ 0 no)</en_US>
+  </sentence>
+  <sentence>
+    <key>INVENTARIOS_CTA</key>
     <es_CO>Inventarios (1 si/ 0 no)</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Inventory (1 yes/ 0 no)</en_US>
-  </palabra>
-  <palabra>
-    <clave>BASE</clave>
+  </sentence>
+  <sentence>
+    <key>BASE</key>
     <es_CO>Base</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Base</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERROR-CTA</clave>
-    <es_CO>Error en la nomenclatura de la cuenta</es_CO>
+  </sentence>
+  <sentence>
+    <key>ERROR-CTA</key>
+    <es_CO>Error 231: La nomenclatura de la cuenta es incorrecta</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error ?????????????</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERROR_NOTFATHER</clave>
-    <es_CO>Error, la cuenta no tiene cuenta padre, o la cuenta padre es una cuenta de detalle</es_CO>
+    <en_US>Error 231: The account number is invalid</en_US>
+  </sentence>
+  <sentence>
+    <key>ERROR_NOTFATHER</key>
+    <es_CO>Error 232: La cuenta no tiene cuenta padre, o la cuenta padre es una cuenta de detalle</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error not father or the father account is detail account</en_US>
-  </palabra>
-  <palabra>
-    <clave>AUTENTICATION</clave>
+    <en_US>Error 232: The account has not parent or the partent account is a detail account</en_US>
+  </sentence>
+  <sentence>
+    <key>AUTENTICATION</key>
     <es_CO>Autenticación</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Autentication</en_US>
-  </palabra>
-  <palabra>
-    <clave>NASIENTOSPRED</clave>
-    <es_CO>Crear asientos predefinidos</es_CO>
+    <en_US>Authentication</en_US>
+  </sentence>
+  <sentence>
+    <key>NASIENTOSPRED</key>
+    <es_CO>Crear Asientos Predefinidos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>New default accounts</en_US>
-  </palabra>
-  <palabra>
-    <clave>EASIENTOSPRED</clave>
-    <es_CO>Editar asientos predefinidos</es_CO>
+    <en_US>Create Predefined Values</en_US>
+  </sentence>
+  <sentence>
+    <key>EASIENTOSPRED</key>
+    <es_CO>Editar Asientos Predefinidos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Edit default accounts</en_US>
-  </palabra>
-  <palabra>
-    <clave>DASIENTOSPRED</clave>
-    <es_CO>Borrar asientos predefinidos</es_CO>
+    <en_US>Edit Predefined Values</en_US>
+  </sentence>
+  <sentence>
+    <key>DASIENTOSPRED</key>
+    <es_CO>Borrar Asientos Predefinidos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Delete default accounts</en_US>
-  </palabra>
-  <palabra>
-    <clave>SELECTION</clave>
+    <en_US>Delete Predefined Values</en_US>
+  </sentence>
+  <sentence>
+    <key>SELECTION</key>
     <es_CO>Selección</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Selection</en_US>
-  </palabra>
-  <palabra>
-    <clave>UVENTAS</clave>
+  </sentence>
+  <sentence>
+    <key>UVENTAS</key>
     <es_CO>Unidades de Venta</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Units for Sale</en_US>
-  </palabra>
-  <palabra>
-    <clave>VALUE</clave>
+    <en_US>Sale Units</en_US>
+  </sentence>
+  <sentence>
+    <key>VALUE</key>
     <es_CO>Valor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Value</en_US>
-  </palabra>
-  <palabra>
-    <clave>ARGS_EXCEPTION</clave>
-    <es_CO>Error en los argumentos del componente, posiblemente están incompletos</es_CO>
+  </sentence>
+  <sentence>
+    <key>ARGS_EXCEPTION</key>
+    <es_CO>Error 233: Los argumentos del componente están incompletos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error in the args the component</en_US>
-  </palabra>
-  <palabra>
-    <clave>MARCA</clave>
+    <en_US>Error 233: The component arguments are incomplete</en_US>
+  </sentence>
+  <sentence>
+    <key>MARCA</key>
     <es_CO>Marca</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Trademark</en_US>
-  </palabra>
-  <palabra>
-    <clave>HELP</clave>
+  </sentence>
+  <sentence>
+    <key>HELP</key>
     <es_CO>Ayuda</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Help</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-HELP</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-HELP</key>
     <es_CO>A</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>H</en_US>
-  </palabra>
-  <palabra>
-    <clave>ABOUT</clave>
+  </sentence>
+  <sentence>
+    <key>ABOUT</key>
     <es_CO>Acerca de ...</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>About</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-ABOUT</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-ABOUT</key>
     <es_CO>d</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>b</en_US>
-  </palabra>
-  <palabra>
-    <clave>CONTENIDO</clave>
+  </sentence>
+  <sentence>
+    <key>CONTENIDO</key>
     <es_CO>Contenido.</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Container</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-CONTENIDO</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-CONTENIDO</key>
     <es_CO>C</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>C</en_US>
-  </palabra>
-  <palabra>
-    <clave>LICENSE</clave>
+  </sentence>
+  <sentence>
+    <key>LICENSE</key>
     <es_CO>Licencia</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>License</en_US>
-  </palabra>
-  <palabra>
-    <clave>CREDITS</clave>
+  </sentence>
+  <sentence>
+    <key>CREDITS</key>
     <es_CO>Créditos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Credits</en_US>
-  </palabra>
-  <palabra>
-    <clave>FIND</clave>
+  </sentence>
+  <sentence>
+    <key>FIND</key>
     <es_CO>Buscar</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Find</en_US>
-  </palabra>
-  <palabra>
-    <clave>PESO</clave>
+  </sentence>
+  <sentence>
+    <key>PESO</key>
     <es_CO>Peso</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Weight</en_US>
-  </palabra>
-  <palabra>
-    <clave>DEFAULT</clave>
+  </sentence>
+  <sentence>
+    <key>DEFAULT</key>
     <es_CO>Por Defecto</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Default</en_US>
-  </palabra>
-  <palabra>
-    <clave>OPERACION</clave>
+  </sentence>
+  <sentence>
+    <key>OPERACION</key>
     <es_CO>0 Div/1 Mul</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>0 Div/1 Mul</en_US>
-  </palabra>
-  <palabra>
-    <clave>FACTOR</clave>
+  </sentence>
+  <sentence>
+    <key>FACTOR</key>
     <es_CO>Factor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Factor</en_US>
-  </palabra>
-  <palabra>
-    <clave>CIUDAD</clave>
+  </sentence>
+  <sentence>
+    <key>CIUDAD</key>
     <es_CO>Ciudad</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>City</en_US>
-  </palabra>
-  <palabra>
-    <clave>SELECT</clave>
+  </sentence>
+  <sentence>
+    <key>SELECT</key>
     <es_CO>Seleccionar</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Select</en_US>
-  </palabra>
-  <palabra>
-    <clave>MODIFICAR</clave>
+  </sentence>
+  <sentence>
+    <key>MODIFICAR</key>
     <es_CO>Modificar</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Config</en_US>
-  </palabra>
-  <palabra>
-    <clave>VER</clave>
+  </sentence>
+  <sentence>
+    <key>VER</key>
     <es_CO>Ver</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>View</en_US>
-  </palabra>
-  <palabra>
-    <clave>VENTAS</clave>
+  </sentence>
+  <sentence>
+    <key>VENTAS</key>
     <es_CO>Ventas</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>For sale</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-VENTAS</clave>
+    <en_US>For Sale</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-VENTAS</key>
     <es_CO>V</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>F</en_US>
-  </palabra>
-  <palabra>
-    <clave>FCONTADO</clave>
+  </sentence>
+  <sentence>
+    <key>FCONTADO</key>
     <es_CO>Factura de Contado</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Counted Invoice</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-FCONTADO</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-FCONTADO</key>
     <es_CO>C</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>C</en_US>
-  </palabra>
-  <palabra>
-    <clave>PEDIDOS</clave>
+  </sentence>
+  <sentence>
+    <key>PEDIDOS</key>
     <es_CO>Pedidos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Demand</en_US>
-  </palabra>
-  <palabra>
-    <clave>NPEDIDOS</clave>
+    <en_US>Request</en_US>
+  </sentence>
+  <sentence>
+    <key>NPEDIDOS</key>
     <es_CO>Nuevo Pedido</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>New Demand</en_US>
-  </palabra>
-  <palabra>
-    <clave>EPEDIDOS</clave>
+    <en_US>New Request</en_US>
+  </sentence>
+  <sentence>
+    <key>EPEDIDOS</key>
     <es_CO>Editar Pedido</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Edit Demand</en_US>
-  </palabra>
-  <palabra>
-    <clave>APEDIDOS</clave>
+    <en_US>Edit Request</en_US>
+  </sentence>
+  <sentence>
+    <key>APEDIDOS</key>
     <es_CO>Anular Pedido</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Anull Demand</en_US>
-  </palabra>
-  <palabra>
-    <clave>DPEDIDOS</clave>
+    <en_US>Annull Request</en_US>
+  </sentence>
+  <sentence>
+    <key>DPEDIDOS</key>
     <es_CO>Borrar Pedido</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Delete Demand</en_US>
-  </palabra>
-  <palabra>
-    <clave>SPEDIDOS</clave>
+    <en_US>Delete Request</en_US>
+  </sentence>
+  <sentence>
+    <key>SPEDIDOS</key>
     <es_CO>Consultar Pedido</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Consultar Demand</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-PEDIDOS</clave>
+    <en_US>Query Request</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-PEDIDOS</key>
     <es_CO>P</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>D</en_US>
-  </palabra>
-  <palabra>
-    <clave>FCREDITO</clave>
+  </sentence>
+  <sentence>
+    <key>FCREDITO</key>
     <es_CO>Factura de Crédito</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Credit Invoice</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-FCREDITO</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-FCREDITO</key>
     <es_CO>r</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>r</en_US>
-  </palabra>
-  <palabra>
-    <clave>REMISIONES</clave>
+  </sentence>
+  <sentence>
+    <key>REMISIONES</key>
     <es_CO>Remisiones</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Remissness</en_US>
-  </palabra>
-  <palabra>
-    <clave>NREMISIONES</clave>
+  </sentence>
+  <sentence>
+    <key>NREMISIONES</key>
     <es_CO>Nueva Remision</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New Remissness</en_US>
-  </palabra>
-  <palabra>
-    <clave>EREMISIONES</clave>
+  </sentence>
+  <sentence>
+    <key>EREMISIONES</key>
     <es_CO>Editar Remision</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Edit Remissness</en_US>
-  </palabra>
-  <palabra>
-    <clave>DREMISIONES</clave>
+  </sentence>
+  <sentence>
+    <key>DREMISIONES</key>
     <es_CO>Borrar Remision</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Delete Remissness</en_US>
-  </palabra>
-  <palabra>
-    <clave>AREMISIONES</clave>
+  </sentence>
+  <sentence>
+    <key>AREMISIONES</key>
     <es_CO>Anular Remision</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Anull Remissness</en_US>
-  </palabra>
-  <palabra>
-    <clave>SREMISIONES</clave>
+    <en_US>Annull Remissness</en_US>
+  </sentence>
+  <sentence>
+    <key>SREMISIONES</key>
     <es_CO>Consultar Remision</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Query Remissness</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-REMISIONES</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-REMISIONES</key>
     <es_CO>e</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>e</en_US>
-  </palabra>
-  <palabra>
-    <clave>GUIAS</clave>
+  </sentence>
+  <sentence>
+    <key>GUIAS</key>
     <es_CO>Guías</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Guides</en_US>
-  </palabra>
-  <palabra>
-    <clave>NGUIAS</clave>
+  </sentence>
+  <sentence>
+    <key>NGUIAS</key>
     <es_CO>Nueva Guía</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New Guide</en_US>
-  </palabra>
-  <palabra>
-    <clave>EGUIAS</clave>
+  </sentence>
+  <sentence>
+    <key>EGUIAS</key>
     <es_CO>Editar Guía</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Editar Guide</en_US>
-  </palabra>
-  <palabra>
-    <clave>DGUIAS</clave>
+  </sentence>
+  <sentence>
+    <key>DGUIAS</key>
     <es_CO>Borrar Guía</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Delete Guide</en_US>
-  </palabra>
-  <palabra>
-    <clave>SGUIAS</clave>
+  </sentence>
+  <sentence>
+    <key>SGUIAS</key>
     <es_CO>Consultar Guía</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Query Guide</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-GUIAS</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-GUIAS</key>
     <es_CO>G</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>G</en_US>
-  </palabra>
-  <palabra>
-    <clave>DEVOLUCIONES</clave>
+  </sentence>
+  <sentence>
+    <key>DEVOLUCIONES</key>
     <es_CO>Devoluciones</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Returns</en_US>
-  </palabra>
-  <palabra>
-    <clave>DEVOLUCION</clave>
+  </sentence>
+  <sentence>
+    <key>DEVOLUCION</key>
     <es_CO>Devolución</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Return</en_US>
-  </palabra>
-  <palabra>
-    <clave>NDEVOLUCION</clave>
+  </sentence>
+  <sentence>
+    <key>NDEVOLUCION</key>
     <es_CO>Nueva Devolución en Ventas</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New Return in Sales</en_US>
-  </palabra>
-  <palabra>
-    <clave>ADEVOLUCION</clave>
+  </sentence>
+  <sentence>
+    <key>ADEVOLUCION</key>
     <es_CO>Anular Devolución en Ventas</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Anull Return in Sales</en_US>
-  </palabra>
-  <palabra>
-    <clave>DDEVOLUCION</clave>
+    <en_US>Annull Return in Sales</en_US>
+  </sentence>
+  <sentence>
+    <key>DDEVOLUCION</key>
     <es_CO>Editar Devolución en Ventas</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Edit Return in Sales</en_US>
-  </palabra>
-  <palabra>
-    <clave>SDEVOLUCION</clave>
+  </sentence>
+  <sentence>
+    <key>SDEVOLUCION</key>
     <es_CO>Consultar Devolución en Ventas</es_CO>
     <en_US>Query Return in Sales</en_US>
-  </palabra>
-  <palabra>
-    <clave>NDEVOLUCION-COMPRAS</clave>
+  </sentence>
+  <sentence>
+    <key>NDEVOLUCION-COMPRAS</key>
     <es_CO>Nueva Devolución en Compras</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New Return in Purchases</en_US>
-  </palabra>
-  <palabra>
-    <clave>ADEVOLUCION-COMPRAS</clave>
+  </sentence>
+  <sentence>
+    <key>ADEVOLUCION-COMPRAS</key>
     <es_CO>Anular Devolución en Compras</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Anull Return in Purchases</en_US>
-  </palabra>
-  <palabra>
-    <clave>DDEVOLUCION-COMPRAS</clave>
+  </sentence>
+  <sentence>
+    <key>DDEVOLUCION-COMPRAS</key>
     <es_CO>Editar Devolución en Compras</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Edit Return in Purchases</en_US>
-  </palabra>
-  <palabra>
-    <clave>SDEVOLUCION-COMPRAS</clave>
+  </sentence>
+  <sentence>
+    <key>SDEVOLUCION-COMPRAS</key>
     <es_CO>Consultar Devolución en Compras</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Query Return in Purchases</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-DEVOLUCIONES</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-DEVOLUCIONES</key>
     <es_CO>D</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>t</en_US>
-  </palabra>
-  <palabra>
-    <clave>CAMBIOS</clave>
+  </sentence>
+  <sentence>
+    <key>CAMBIOS</key>
     <es_CO>Cambios</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Changes</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-CAMBIOS</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-CAMBIOS</key>
     <es_CO>m</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>h</en_US>
-  </palabra>
-  <palabra>
-    <clave>NFCONTADO</clave>
+  </sentence>
+  <sentence>
+    <key>NFCONTADO</key>
     <es_CO>Nueva Factura de Contado</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New Counted Invoice</en_US>
-  </palabra>
-  <palabra>
-    <clave>NFCREDITO</clave>
+  </sentence>
+  <sentence>
+    <key>NFCREDITO</key>
     <es_CO>Nueva Factura de Crédito</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>New Counted Credit</en_US>
-  </palabra>
-  <palabra>
-    <clave>DESCUENTO</clave>
+    <en_US>New Credit Invoice</en_US>
+  </sentence>
+  <sentence>
+    <key>DESCUENTO</key>
     <es_CO>Descuento</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Discount</en_US>
-  </palabra>
-  <palabra>
-    <clave>DATE</clave>
+  </sentence>
+  <sentence>
+    <key>DATE</key>
     <es_CO>Fecha</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Date</en_US>
-  </palabra>
-  <palabra>
-    <clave>NUMBER</clave>
+  </sentence>
+  <sentence>
+    <key>NUMBER</key>
     <es_CO>Número</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Number</en_US>
-  </palabra>
-  <palabra>
-    <clave>STOTAL</clave>
+  </sentence>
+  <sentence>
+    <key>STOTAL</key>
     <es_CO>Sub-Total</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Subtotal</en_US>
-  </palabra>
-  <palabra>
-    <clave>TDCTO</clave>
+  </sentence>
+  <sentence>
+    <key>TDCTO</key>
     <es_CO>Tot. Descuento</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Tot. Descuento</en_US>
-  </palabra>
-  <palabra>
-    <clave>PDCTO</clave>
+    <en_US>Discount Tot.</en_US>
+  </sentence>
+  <sentence>
+    <key>PDCTO</key>
     <es_CO>- % Descuento</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>- % Descuento</en_US>
-  </palabra>
-  <palabra>
-    <clave>SIGLA</clave>
+    <en_US>- % Discount</en_US>
+  </sentence>
+  <sentence>
+    <key>SIGLA</key>
     <es_CO>Sigla</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Abbreviation</en_US>
-  </palabra>
-  <palabra>
-    <clave>FECHA_NAC</clave>
+  </sentence>
+  <sentence>
+    <key>FECHA_NAC</key>
     <es_CO>Fecha Nacimiento</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Birth Date</en_US>
-  </palabra>
-  <palabra>
-    <clave>NACIONALIDAD</clave>
+  </sentence>
+  <sentence>
+    <key>NACIONALIDAD</key>
     <es_CO>Nacionalidad</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Nacionalidad</en_US>
-  </palabra>
-  <palabra>
-    <clave>PROCEDENCIA</clave>
+    <en_US>Nationality</en_US>
+  </sentence>
+  <sentence>
+    <key>PROCEDENCIA</key>
     <es_CO>Procedencia</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Procedencia</en_US>
-  </palabra>
-  <palabra>
-    <clave>ESTADO_CIVIL</clave>
+    <en_US>Origin</en_US>
+  </sentence>
+  <sentence>
+    <key>ESTADO_CIVIL</key>
     <es_CO>Estado Civil</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Estado Civil</en_US>
-  </palabra>
-  <palabra>
-    <clave>TIPO_CONTRATO</clave>
+    <en_US>Marital Status</en_US>
+  </sentence>
+  <sentence>
+    <key>TIPO_CONTRATO</key>
     <es_CO>Tipo contrato</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Tipo contrato</en_US>
-  </palabra>
-  <palabra>
-    <clave>FECHA_INICIACION</clave>
+    <en_US>Contract Type</en_US>
+  </sentence>
+  <sentence>
+    <key>FECHA_INICIACION</key>
     <es_CO>Fecha Iniciación</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Begin Date</en_US>
-  </palabra>
-  <palabra>
-    <clave>FECHA_TERMINACION</clave>
+    <en_US>Begining Date</en_US>
+  </sentence>
+  <sentence>
+    <key>FECHA_TERMINACION</key>
     <es_CO>Fecha Terminación</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>End Date</en_US>
-  </palabra>
-  <palabra>
-    <clave>ESTADO_EMPLEADO</clave>
+  </sentence>
+  <sentence>
+    <key>ESTADO_EMPLEADO</key>
     <es_CO>Estado</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Status</en_US>
-  </palabra>
-  <palabra>
-    <clave>SEXO</clave>
+  </sentence>
+  <sentence>
+    <key>SEXO</key>
     <es_CO>Sexo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Sex</en_US>
-  </palabra>
-  <palabra>
-    <clave>IDENTIFICACION</clave>
+  </sentence>
+  <sentence>
+    <key>IDENTIFICACION</key>
     <es_CO>Identificación</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Identification</en_US>
-  </palabra>
-  <palabra>
-    <clave>MASCULINO</clave>
+  </sentence>
+  <sentence>
+    <key>MASCULINO</key>
     <es_CO>Masculino</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Male</en_US>
-  </palabra>
-  <palabra>
-    <clave>FEMENINO</clave>
+  </sentence>
+  <sentence>
+    <key>FEMENINO</key>
     <es_CO>Femenino</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Fame</en_US>
-  </palabra>
-  <palabra>
-    <clave>VENDEDOR</clave>
+    <en_US>Female</en_US>
+  </sentence>
+  <sentence>
+    <key>VENDEDOR</key>
     <es_CO>Vendedor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Salesman</en_US>
-  </palabra>
-  <palabra>
-    <clave>ID</clave>
+  </sentence>
+  <sentence>
+    <key>ID</key>
     <es_CO>Id</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Id</en_US>
-  </palabra>
-  <palabra>
-    <clave>DASIENTOS</clave>
+  </sentence>
+  <sentence>
+    <key>DASIENTOS</key>
     <es_CO>Definición</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Define</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-DASIENTOS</clave>
+    <en_US>Definition</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-DASIENTOS</key>
     <es_CO>D</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>D</en_US>
-  </palabra>
-  <palabra>
-    <clave>AASIENTOS</clave>
+  </sentence>
+  <sentence>
+    <key>AASIENTOS</key>
     <es_CO>Asignación</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Assignation</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-AASIENTOS</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-AASIENTOS</key>
     <es_CO>A</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>A</en_US>
-  </palabra>
-  <palabra>
-    <clave>ASIENTOSCG</clave>
+  </sentence>
+  <sentence>
+    <key>ASIENTOSCG</key>
     <es_CO>Asientos Contables Genéricos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Seats Generics Accountants</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-ASIENTOSCG</clave>
+    <en_US>Generics Bookkeeping Movements</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-ASIENTOSCG</key>
     <es_CO>o</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>o</en_US>
-  </palabra>
-  <palabra>
-    <clave>NDASIENTOS</clave>
+  </sentence>
+  <sentence>
+    <key>NDASIENTOS</key>
     <es_CO>Nueva Definición Asientos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>New Registry Define</en_US>
-  </palabra>
-  <palabra>
-    <clave>EDASIENTOS</clave>
+    <en_US>New Definition...</en_US>
+  </sentence>
+  <sentence>
+    <key>EDASIENTOS</key>
     <es_CO>Editar Definición de Asientos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Edit Registry Define</en_US>
-  </palabra>
-  <palabra>
-    <clave>DDASIENTOS</clave>
+    <en_US>Edit Definition...</en_US>
+  </sentence>
+  <sentence>
+    <key>DDASIENTOS</key>
     <es_CO>Borrar Definición de Asientos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Delete Registry Define</en_US>
-  </palabra>
-  <palabra>
-    <clave>AFCONTADO</clave>
+    <en_US>Delete Definition...</en_US>
+  </sentence>
+  <sentence>
+    <key>AFCONTADO</key>
     <es_CO>Anular Factura de Contado</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Annul Invoice of Counted</en_US>
-  </palabra>
-  <palabra>
-    <clave>SFCONTADO</clave>
+    <en_US>Annull Counted Invoice</en_US>
+  </sentence>
+  <sentence>
+    <key>SFCONTADO</key>
     <es_CO>Consultar Factura de Contado</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Query Invoice of Counted</en_US>
-  </palabra>
-  <palabra>
-    <clave>AFCREDITO</clave>
+    <en_US>Query Counted Invoice</en_US>
+  </sentence>
+  <sentence>
+    <key>AFCREDITO</key>
     <es_CO>Anular Factura de Crédito</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Annul Invoice of Credit</en_US>
-  </palabra>
-  <palabra>
-    <clave>SFCREDITO</clave>
+    <en_US>Annull Credit Invoice</en_US>
+  </sentence>
+  <sentence>
+    <key>SFCREDITO</key>
     <es_CO>Consultar Factura de Crédito</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Query Invoice of Credit</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_NOT_FOUND_COMPONENT</clave>
-    <es_CO>Error, el siguiente componente no fue encontrado:</es_CO>
+    <en_US>Query Credit Invoice</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_NOT_FOUND_COMPONENT</key>
+    <es_CO>Error 234: El siguiente componente no fue encontrado:</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, the next component not found:</en_US>
-  </palabra>
-  <palabra>
-    <clave>PAGO</clave>
+    <en_US>Error 234: Can not found the component </en_US>
+  </sentence>
+  <sentence>
+    <key>PAGO</key>
     <es_CO>Pago</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Pay</en_US>
-  </palabra>
-  <palabra>
-    <clave>CAMBIO</clave>
+    <en_US>Payment</en_US>
+  </sentence>
+  <sentence>
+    <key>CAMBIO</key>
     <es_CO>Cambio</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Change</en_US>
-  </palabra>
-  <palabra>
-    <clave>EFECTIVO</clave>
+  </sentence>
+  <sentence>
+    <key>EFECTIVO</key>
     <es_CO>Efectivo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Money</en_US>
-  </palabra>
-  <palabra>
-    <clave>CREDITCARD</clave>
+    <en_US>Cash</en_US>
+  </sentence>
+  <sentence>
+    <key>CREDITCARD</key>
     <es_CO>T. Crédito</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Credit Card</en_US>
-  </palabra>
-  <palabra>
-    <clave>DEBITCARD</clave>
+  </sentence>
+  <sentence>
+    <key>DEBITCARD</key>
     <es_CO>T. Débito</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Debit Card</en_US>
-  </palabra>
-  <palabra>
-    <clave>CHEQUE</clave>
+  </sentence>
+  <sentence>
+    <key>CHEQUE</key>
     <es_CO>Cheque</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Check</en_US>
-  </palabra>
-  <palabra>
-    <clave>BONO</clave>
+  </sentence>
+  <sentence>
+    <key>BONO</key>
     <es_CO>Bono</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Voucher</en_US>
-  </palabra>
-  <palabra>
-    <clave>PAYMENTFORM</clave>
+  </sentence>
+  <sentence>
+    <key>PAYMENTFORM</key>
     <es_CO>Forma de Pago</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>PaymentForm</en_US>
-  </palabra>
-  <palabra>
-    <clave>LOADING</clave>
+    <en_US>Payment Form</en_US>
+  </sentence>
+  <sentence>
+    <key>LOADING</key>
     <es_CO>Cargando...</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Loading...</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-TCREDITO</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-TCREDITO</key>
     <es_CO>C</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>C</en_US>
-  </palabra>
-  <palabra>
-    <clave>TCREDITO</clave>
+  </sentence>
+  <sentence>
+    <key>TCREDITO</key>
     <es_CO>Tarjeta Crédito</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Credit Card</en_US>
-  </palabra>
-  <palabra>
-    <clave>NTCREDITO</clave>
+  </sentence>
+  <sentence>
+    <key>NTCREDITO</key>
     <es_CO>Nueva Tarjeta Crédito</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New Credit Card</en_US>
-  </palabra>
-  <palabra>
-    <clave>ETCREDITO</clave>
+  </sentence>
+  <sentence>
+    <key>ETCREDITO</key>
     <es_CO>Editar Tarjeta Crédito</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Edit Credit Card</en_US>
-  </palabra>
-  <palabra>
-    <clave>DTCREDITO</clave>
+  </sentence>
+  <sentence>
+    <key>DTCREDITO</key>
     <es_CO>Borrar Tarjeta Crédito</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Delete Credit Card</en_US>
-  </palabra>
-  <palabra>
-    <clave>COMISION</clave>
+  </sentence>
+  <sentence>
+    <key>COMISION</key>
     <es_CO>Comisión</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Commission</en_US>
-  </palabra>
-  <palabra>
-    <clave>CREDIT</clave>
+  </sentence>
+  <sentence>
+    <key>CREDIT</key>
     <es_CO>Crédito</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Credit</en_US>
-  </palabra>
-  <palabra>
-    <clave>CONSIGNACION</clave>
+  </sentence>
+  <sentence>
+    <key>CONSIGNACION</key>
     <es_CO>Consignación</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Consignation</en_US>
-  </palabra>
-  <palabra>
-    <clave>DEFEAT</clave>
+  </sentence>
+  <sentence>
+    <key>DEFEAT</key>
     <es_CO>Vence</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Defeat</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_CONNECT</clave>
-    <es_CO>Error, No se pudo establecer comunicación con el host</es_CO>
+  </sentence>
+  <sentence>
+    <key>ERR_CONNECT</key>
+    <es_CO>Error 235: No se pudo establecer comunicación con el servidor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, Connection refuted</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_TITLE_CONNECT</clave>
+    <en_US>Error 235: Can not establish communication with the server</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_TITLE_CONNECT</key>
     <es_CO>Error de Conexión</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Connect Error</en_US>
-  </palabra>
-  <palabra>
-    <clave>PORT</clave>
+    <en_US>Connection Error</en_US>
+  </sentence>
+  <sentence>
+    <key>PORT</key>
     <es_CO>Puerto</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Port</en_US>
-  </palabra>
-  <palabra>
-    <clave>HOST</clave>
+  </sentence>
+  <sentence>
+    <key>HOST</key>
     <es_CO>Host</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Host</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_UNRESOLVED_ADDRESS</clave>
-    <es_CO>Error, No se pudo resolver la dirección del servidor de transacciones.</es_CO>
+  </sentence>
+  <sentence>
+    <key>ERR_UNRESOLVED_ADDRESS</key>
+    <es_CO>Error 236: No se pudo resolver la dirección del servidor de transacciones.</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, can't resolved server address</en_US>
-  </palabra>
-  <palabra>
-    <clave>ADMINAG</clave>
+    <en_US>Error 236: Can not resolve the transaction server address</en_US>
+  </sentence>
+  <sentence>
+    <key>ADMINAG</key>
     <es_CO>Administracion de Asientos Genéricos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Generic Accounting Management</en_US>
-  </palabra>
-  <palabra>
-    <clave>NADMINAG</clave>
+  </sentence>
+  <sentence>
+    <key>NADMINAG</key>
     <es_CO>Nuevo Asiento Genérico</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New Generic Accounting</en_US>
-  </palabra>
-  <palabra>
-    <clave>EADMINAG</clave>
+  </sentence>
+  <sentence>
+    <key>EADMINAG</key>
     <es_CO>Editar Asiento Genérico</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Edit Generic Accounting</en_US>
-  </palabra>
-  <palabra>
-    <clave>DADMINAG</clave>
+  </sentence>
+  <sentence>
+    <key>DADMINAG</key>
     <es_CO>Borrar Asiento Genérico</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Delete Generic Accounting</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-ADMINAG</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-ADMINAG</key>
     <es_CO>G</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>G</en_US>
-  </palabra>
-  <palabra>
-    <clave>ADMINLINK</clave>
+  </sentence>
+  <sentence>
+    <key>ADMINLINK</key>
     <es_CO>Administración de Enlaces Genéricos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Generic Links Management</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-ADMINLINK</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-ADMINLINK</key>
     <es_CO>E</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>L</en_US>
-  </palabra>
-  <palabra>
-    <clave>NADMINLINK</clave>
+  </sentence>
+  <sentence>
+    <key>NADMINLINK</key>
     <es_CO>Nuevo Enlace Genérico</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New Generic Link</en_US>
-  </palabra>
-  <palabra>
-    <clave>EADMINLINK</clave>
+  </sentence>
+  <sentence>
+    <key>EADMINLINK</key>
     <es_CO>Editar Enlace Genérico</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Edit Generic Link</en_US>
-  </palabra>
-  <palabra>
-    <clave>DADMINLINK</clave>
+  </sentence>
+  <sentence>
+    <key>DADMINLINK</key>
     <es_CO>Borrar Enlace Genérico</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Delete Generic Link</en_US>
-  </palabra>
-  <palabra>
-    <clave>THIRD</clave>
+  </sentence>
+  <sentence>
+    <key>THIRD</key>
     <es_CO>Terceros</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Thirds</en_US>
-  </palabra>
-  <palabra>
-    <clave>OTHERDS</clave>
+  </sentence>
+  <sentence>
+    <key>OTHERDS</key>
     <es_CO>Clientes Varios</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Several Clients</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_EXCESS_RECORDS</clave>
-    <es_CO>Especifique mejor la palabra clave para repetir la busqueda, la actual excede el máximo de registros</es_CO>
+    <en_US>Other Clients</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_EXCESS_RECORDS</key>
+    <es_CO>Error 237: Máximo número de resultados alcanzado. Por favor, utilice un patron de búsqueda más especifico</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Specify better the key word to repeat the search, the present one exceeds maximo registries</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_NOT_SELECTED_THIRD</clave>
-    <es_CO>Error, ningún tercero ha sido seleccionado</es_CO>
+    <en_US>Error 237: Query result too large. Please, use a search pattern more specific</en_US>
+  </sentence>
+  <sentence>
+    <key>ERR_NOT_SELECTED_THIRD</key>
+    <es_CO>Error 238: Ningún tercero ha sido seleccionado</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Error, there is't selected third</en_US>
-  </palabra>
-  <palabra>
-    <clave>ZONA</clave>
+    <en_US>Error 238: There is not any third selected</en_US>
+  </sentence>
+  <sentence>
+    <key>ZONA</key>
     <es_CO>Zona distribución</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Distribution Zone</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-ZONA</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-ZONA</key>
     <es_CO>Z</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Z</en_US>
-  </palabra>
-  <palabra>
-    <clave>NZONA</clave>
+  </sentence>
+  <sentence>
+    <key>NZONA</key>
     <es_CO>Nueva Zona</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New Zone</en_US>
-  </palabra>
-  <palabra>
-    <clave>EZONA</clave>
+  </sentence>
+  <sentence>
+    <key>EZONA</key>
     <es_CO>Editar Zona</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Edit Zone</en_US>
-  </palabra>
-  <palabra>
-    <clave>DZONA</clave>
+  </sentence>
+  <sentence>
+    <key>DZONA</key>
     <es_CO>Borrar Zona</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Delte Zone</en_US>
-  </palabra>
-  <palabra>
-    <clave>COMPRAS</clave>
+    <en_US>Delete Zone</en_US>
+  </sentence>
+  <sentence>
+    <key>COMPRAS</key>
     <es_CO>Compras</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Buy</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-COMPRAS</clave>
+    <en_US>Purchase</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-COMPRAS</key>
     <es_CO>o</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>B</en_US>
-  </palabra>
-  <palabra>
-    <clave>ORDEN</clave>
+  </sentence>
+  <sentence>
+    <key>ORDEN</key>
     <es_CO>Ordenes</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Order</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-ORDEN</clave>
+    <en_US>Orders</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-ORDEN</key>
     <es_CO>O</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>O</en_US>
-  </palabra>
-  <palabra>
-    <clave>ENTRADAS-ALMACEN</clave>
+  </sentence>
+  <sentence>
+    <key>ENTRADAS-ALMACEN</key>
     <es_CO>Entradas Almacén</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Admission Store</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-ENTRADAS</clave>
+    <en_US>Store Entries</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-ENTRADAS</key>
     <es_CO>E</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>S</en_US>
-  </palabra>
-  <palabra>
-    <clave>COMPROBANTES</clave>
+  </sentence>
+  <sentence>
+    <key>COMPROBANTES</key>
     <es_CO>Comprobantes</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Boucher</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-COMPROBANTES</clave>
+    <en_US>Bouchers</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-COMPROBANTES</key>
     <es_CO>p</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>S</en_US>
-  </palabra>
-  <palabra>
-    <clave>INGRESO</clave>
+  </sentence>
+  <sentence>
+    <key>INGRESO</key>
     <es_CO>Ingreso</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Entrance</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-INGRESO</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-INGRESO</key>
     <es_CO>I</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>E</en_US>
-  </palabra>
-  <palabra>
-    <clave>EGRESO</clave>
+  </sentence>
+  <sentence>
+    <key>EGRESO</key>
     <es_CO>Egreso</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Debit</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-EGRESO</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-EGRESO</key>
     <es_CO>E</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>D</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-VEHICULO</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-VEHICULO</key>
     <es_CO>V</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>T</en_US>
-  </palabra>
-  <palabra>
-    <clave>VEHICULO</clave>
+  </sentence>
+  <sentence>
+    <key>VEHICULO</key>
     <es_CO>Vehículo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Truck</en_US>
-  </palabra>
-  <palabra>
-    <clave>NVEHICULO</clave>
+  </sentence>
+  <sentence>
+    <key>NVEHICULO</key>
     <es_CO>Nuevo Vehículo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New Truck</en_US>
-  </palabra>
-  <palabra>
-    <clave>EVEHICULO</clave>
+  </sentence>
+  <sentence>
+    <key>EVEHICULO</key>
     <es_CO>Editar Vehículo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Edit Truck</en_US>
-  </palabra>
-  <palabra>
-    <clave>DVEHICULO</clave>
+  </sentence>
+  <sentence>
+    <key>DVEHICULO</key>
     <es_CO>Borrar Vehículo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Delete Truck</en_US>
-  </palabra>
-  <palabra>
-    <clave>PROPIETARIO</clave>
+  </sentence>
+  <sentence>
+    <key>PROPIETARIO</key>
     <es_CO>Propietario</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>property</en_US>
-  </palabra>
-  <palabra>
-    <clave>COLOR</clave>
+    <en_US>Proprietary</en_US>
+  </sentence>
+  <sentence>
+    <key>COLOR</key>
     <es_CO>Color</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Color</en_US>
-  </palabra>
-  <palabra>
-    <clave>PLACA</clave>
+  </sentence>
+  <sentence>
+    <key>PLACA</key>
     <es_CO>Placa</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>register</en_US>
-  </palabra>
-  <palabra>
-    <clave>MODELO</clave>
+    <en_US>Record</en_US>
+  </sentence>
+  <sentence>
+    <key>MODELO</key>
     <es_CO>Modelo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Model</en_US>
-  </palabra>
-  <palabra>
-    <clave>TRANSLOCAL</clave>
+  </sentence>
+  <sentence>
+    <key>TRANSLOCAL</key>
     <es_CO>Trans. Local</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Local Transport</en_US>
-  </palabra>
-  <palabra>
-    <clave>TRANSEXT</clave>
+  </sentence>
+  <sentence>
+    <key>TRANSEXT</key>
     <es_CO>Trans. Externo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>External Transport</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERR_MAX_VALUE</clave>
-    <es_CO>Inconsistencia en el total a pagar</es_CO>
+  </sentence>
+  <sentence>
+    <key>ERR_MAX_VALUE</key>
+    <es_CO>Error 239: Inconsistencia en el total a pagar</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>inconsistency in the total to pay</en_US>
-  </palabra>
-  <palabra>
-    <clave>COTIZACIONES</clave>
+    <en_US>Error 239: Inconsistency in the total to pay</en_US>
+  </sentence>
+  <sentence>
+    <key>COTIZACIONES</key>
     <es_CO>Cotizaciones</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Quotations</en_US>
-  </palabra>
-  <palabra>
-    <clave>NCOTIZACIONES</clave>
+  </sentence>
+  <sentence>
+    <key>NCOTIZACIONES</key>
     <es_CO>Nueva Cotización</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>New Quotations</en_US>
-  </palabra>
-  <palabra>
-    <clave>ECOTIZACIONES</clave>
+    <en_US>New Quotation</en_US>
+  </sentence>
+  <sentence>
+    <key>ECOTIZACIONES</key>
     <es_CO>Editar Cotización</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Edit Quotations</en_US>
-  </palabra>
-  <palabra>
-    <clave>DCOTIZACIONES</clave>
+    <en_US>Edit Quotation</en_US>
+  </sentence>
+  <sentence>
+    <key>DCOTIZACIONES</key>
     <es_CO>Borrar Cotización</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Delete Quotations</en_US>
-  </palabra>
-  <palabra>
-    <clave>ACOTIZACIONES</clave>
+    <en_US>Delete Quotation</en_US>
+  </sentence>
+  <sentence>
+    <key>ACOTIZACIONES</key>
     <es_CO>Anular Cotización</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Anull Quotations</en_US>
-  </palabra>
-  <palabra>
-    <clave>SCOTIZACIONES</clave>
+    <en_US>Anull Quotation</en_US>
+  </sentence>
+  <sentence>
+    <key>SCOTIZACIONES</key>
     <es_CO>Consultar Cotización</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Query Quotations</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-COTIZACIONES</clave>
+    <en_US>Query Quotation</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-COTIZACIONES</key>
     <es_CO>C</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Q</en_US>
-  </palabra>
-  <palabra>
-    <clave>NORDENCOMPRA</clave>
+  </sentence>
+  <sentence>
+    <key>NORDENCOMPRA</key>
     <es_CO>Nueva Orden de Compra</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New Buy Order</en_US>
-  </palabra>
-  <palabra>
-    <clave>EORDENCOMPRA</clave>
+  </sentence>
+  <sentence>
+    <key>EORDENCOMPRA</key>
     <es_CO>Editar Orden de Compra</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Edit Buy Order</en_US>
-  </palabra>
-  <palabra>
-    <clave>DORDENCOMPRA</clave>
+  </sentence>
+  <sentence>
+    <key>DORDENCOMPRA</key>
     <es_CO>Borrar Orden de Compra</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Delete Buy Order</en_US>
-  </palabra>
-  <palabra>
-    <clave>AORDENCOMPRA</clave>
+  </sentence>
+  <sentence>
+    <key>AORDENCOMPRA</key>
     <es_CO>Anular Orden de Compra</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Anular Buy Order</en_US>
-  </palabra>
-  <palabra>
-    <clave>SORDENCOMPRA</clave>
+    <en_US>Annull Buy Order</en_US>
+  </sentence>
+  <sentence>
+    <key>SORDENCOMPRA</key>
     <es_CO>Consultar Orden de Compra</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Query Buy Order</en_US>
-  </palabra>
-  <palabra>
-    <clave>VIGENCIA</clave>
+  </sentence>
+  <sentence>
+    <key>VIGENCIA</key>
     <es_CO>Vigencia</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Use</en_US>
-  </palabra>
-  <palabra>
-    <clave>NENTRADAS-ALMACEN</clave>
+  </sentence>
+  <sentence>
+    <key>NENTRADAS-ALMACEN</key>
     <es_CO>Nuevas Entradas a Almacén</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New Store In</en_US>
-  </palabra>
-  <palabra>
-    <clave>AENTRADAS-ALMACEN</clave>
+  </sentence>
+  <sentence>
+    <key>AENTRADAS-ALMACEN</key>
     <es_CO>Anular Entradas a Almacén</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Anull Store In</en_US>
-  </palabra>
-  <palabra>
-    <clave>SENTRADAS-ALMACEN</clave>
+    <en_US>Annull Store Entries</en_US>
+  </sentence>
+  <sentence>
+    <key>SENTRADAS-ALMACEN</key>
     <es_CO>Consultar Entradas a Almacén</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Query Store In</en_US>
-  </palabra>
-  <palabra>
-    <clave>KARDEX</clave>
+    <en_US>Query Store Entries</en_US>
+  </sentence>
+  <sentence>
+    <key>KARDEX</key>
     <es_CO>Kardex</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Kardex</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-KARDEX</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-KARDEX</key>
     <es_CO>K</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>K</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-TRASLADOS</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-TRASLADOS</key>
     <es_CO>T</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>T</en_US>
-  </palabra>
-  <palabra>
-    <clave>TRASLADOS</clave>
+  </sentence>
+  <sentence>
+    <key>TRASLADOS</key>
     <es_CO>Traslados</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Transfers</en_US>
-  </palabra>
-  <palabra>
-    <clave>BANCOS</clave>
+  </sentence>
+  <sentence>
+    <key>BANCOS</key>
     <es_CO>Bancos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Banks</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-BANCOS</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-BANCOS</key>
     <es_CO>B</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>B</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-AJUSTES</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-AJUSTES</key>
     <es_CO>A</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>A</en_US>
-  </palabra>
-  <palabra>
-    <clave>AJUSTES</clave>
+  </sentence>
+  <sentence>
+    <key>AJUSTES</key>
     <es_CO>Ajustes</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Adjustments</en_US>
-  </palabra>
-  <palabra>
-    <clave>CONCILIACIONES</clave>
+  </sentence>
+  <sentence>
+    <key>CONCILIACIONES</key>
     <es_CO>Conciliaciones</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Conciliations</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-CONCILIACIONES</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-CONCILIACIONES</key>
     <es_CO>C</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>C</en_US>
-  </palabra>
-  <palabra>
-    <clave>GASTOS-ADICIONALES</clave>
+  </sentence>
+  <sentence>
+    <key>GASTOS-ADICIONALES</key>
     <es_CO>Gastos Adicionales</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Additional Expenses</en_US>
-  </palabra>
-  <palabra>
-    <clave>PROVEEDOR</clave>
+  </sentence>
+  <sentence>
+    <key>PROVEEDOR</key>
     <es_CO>Proveedor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Supplier</en_US>
-  </palabra>
-  <palabra>
-    <clave>RETENCIONES</clave>
+  </sentence>
+  <sentence>
+    <key>RETENCIONES</key>
     <es_CO>Retenciones</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Retentions</en_US>
-  </palabra>
-  <palabra>
-    <clave>REGIMENES</clave>
+  </sentence>
+  <sentence>
+    <key>REGIMENES</key>
     <es_CO>Regímenes</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Regimes</en_US>
-  </palabra>
-  <palabra>
-    <clave>NRETENCIONES-REGIMEN</clave>
-    <es_CO>Nueva Retenciones regímen</es_CO>
+    <en_US>States</en_US>
+  </sentence>
+  <sentence>
+    <key>NRETENCIONES-REGIMEN</key>
+    <es_CO>Nueva Retenciones Regímen</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>New Retentions regime</en_US>
-  </palabra>
-  <palabra>
-    <clave>ERETENCIONES-REGIMEN</clave>
-    <es_CO>Editar Retenciones regímen</es_CO>
+    <en_US>New Retentions State</en_US>
+  </sentence>
+  <sentence>
+    <key>ERETENCIONES-REGIMEN</key>
+    <es_CO>Editar Retenciones Regímen</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Edit Retentions regime</en_US>
-  </palabra>
-  <palabra>
-    <clave>DRETENCIONES-REGIMEN</clave>
-    <es_CO>Borrar Retenciones regímen</es_CO>
+    <en_US>Edit Retentions State</en_US>
+  </sentence>
+  <sentence>
+    <key>DRETENCIONES-REGIMEN</key>
+    <es_CO>Borrar Retenciones Regímen</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Delete Retentions regime</en_US>
-  </palabra>
-  <palabra>
-    <clave>TIPO-DOCUMENTO</clave>
+    <en_US>Delete Retentions State</en_US>
+  </sentence>
+  <sentence>
+    <key>TIPO-DOCUMENTO</key>
     <es_CO>Tipo Documento</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Type Document</en_US>
-  </palabra>
-  <palabra>
-    <clave>ADMIN</clave>
+    <en_US>Document Type</en_US>
+  </sentence>
+  <sentence>
+    <key>ADMIN</key>
     <es_CO>Administración</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Administration</en_US>
-  </palabra>
-  <palabra>
-    <clave>TARIFAS</clave>
+  </sentence>
+  <sentence>
+    <key>TARIFAS</key>
     <es_CO>Tarifas</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Rate</en_US>
-  </palabra>
-  <palabra>
-    <clave>ACTIVIDADES-ECONOMICAS</clave>
+  </sentence>
+  <sentence>
+    <key>ACTIVIDADES-ECONOMICAS</key>
     <es_CO>Actividades Económicas</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Economic Activities</en_US>
-  </palabra>
-  <palabra>
-    <clave>NREGIMEN</clave>
+  </sentence>
+  <sentence>
+    <key>NREGIMEN</key>
     <es_CO>Nuevo Regímen</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>New Regime</en_US>
-  </palabra>
-  <palabra>
-    <clave>NREGIMEN</clave>
-    <es_CO>Nuevo Regímen</es_CO>
-    <es_EC></es_EC>
-    <es_ES></es_ES>
-    <en_US>New Regime</en_US>
-  </palabra>
-  <palabra>
-    <clave>EREGIMEN</clave>
+    <en_US>New State</en_US>
+  </sentence>
+  <sentence>
+    <key>EREGIMEN</key>
     <es_CO>Editar Regímen</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Edit Regime</en_US>
-  </palabra>
-  <palabra>
-    <clave>DREGIMEN</clave>
+    <en_US>Edit State</en_US>
+  </sentence>
+  <sentence>
+    <key>DREGIMEN</key>
     <es_CO>Borrar Regímen</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Delete Regime</en_US>
-  </palabra>
-  <palabra>
-    <clave>NACTIVIDAD-ECONOMICA</clave>
+    <en_US>Delete State</en_US>
+  </sentence>
+  <sentence>
+    <key>NACTIVIDAD-ECONOMICA</key>
     <es_CO>Nueva Actividad Económica</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>New Economic Activities</en_US>
-  </palabra>
-  <palabra>
-    <clave>EACTIVIDAD-ECONOMICA</clave>
+    <en_US>New Economic Activity</en_US>
+  </sentence>
+  <sentence>
+    <key>EACTIVIDAD-ECONOMICA</key>
     <es_CO>Editar Actividad Económica</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Edit Economic Activities</en_US>
-  </palabra>
-  <palabra>
-    <clave>DACTIVIDAD-ECONOMICA</clave>
+    <en_US>Edit Economic Activity</en_US>
+  </sentence>
+  <sentence>
+    <key>DACTIVIDAD-ECONOMICA</key>
     <es_CO>Borrar Actividad Económica</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Delete Economic Activities</en_US>
-  </palabra>
-  <palabra>
-    <clave>TARIFA</clave>
+    <en_US>Delete Economic Activity</en_US>
+  </sentence>
+  <sentence>
+    <key>TARIFA</key>
     <es_CO>Tarifa</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Rate</en_US>
-  </palabra>
-  <palabra>
-    <clave>CTARETENSION</clave>
-    <es_CO>Cuenta de retención</es_CO>
+  </sentence>
+  <sentence>
+    <key>CTARETENSION</key>
+    <es_CO>Cuenta de Retención</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Account of retention</en_US>
-  </palabra>
-  <palabra>
-    <clave>ACTIVIDAD</clave>
+    <en_US>Retention Account</en_US>
+  </sentence>
+  <sentence>
+    <key>ACTIVIDAD</key>
     <es_CO>Actividad</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Activity</en_US>
-  </palabra>
-  <palabra>
-    <clave>MALFORMED_PROFILE</clave>
-    <es_CO>Perfil mal formado en la transacción:</es_CO>
+  </sentence>
+  <sentence>
+    <key>MALFORMED_PROFILE</key>
+    <es_CO>Error 240: Perfil Malformado en la transacción:</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Malformed profile in the transaction:</en_US>
-  </palabra>
-  <palabra>
-    <clave>VISOR</clave>
+    <en_US>Error 240: Malformed profile in transaction:</en_US>
+  </sentence>
+  <sentence>
+    <key>VISOR</key>
     <es_CO>Visor de Reportes</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report Viewer</en_US>
-  </palabra>
-  <palabra>
-    <clave>PAGE</clave>
+  </sentence>
+  <sentence>
+    <key>PAGE</key>
     <es_CO>Página</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Page</en_US>
-  </palabra>
-  <palabra>
-    <clave>OF</clave>
+  </sentence>
+  <sentence>
+    <key>OF</key>
     <es_CO>de</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>of</en_US>
-  </palabra>
-  <palabra>
-    <clave>REWIND_START</clave>
-    <es_CO>Regresar a la primera página</es_CO>
+  </sentence>
+  <sentence>
+    <key>REWIND_START</key>
+    <es_CO>Regresar a la Primera Página</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Rewind to start</en_US>
-  </palabra>
-  <palabra>
-    <clave>REWIND_1</clave>
-    <es_CO>Regresar una página</es_CO>
+    <en_US>Rewind to Start</en_US>
+  </sentence>
+  <sentence>
+    <key>REWIND_1</key>
+    <es_CO>Regresar una Página</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Rewind one page</en_US>
-  </palabra>
-  <palabra>
-    <clave>REWIND_10</clave>
-    <es_CO>Regresar diez páginas</es_CO>
+    <en_US>Rewind One Page</en_US>
+  </sentence>
+  <sentence>
+    <key>REWIND_10</key>
+    <es_CO>Regresar Diez Páginas</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Rewind ten pages</en_US>
-  </palabra>
-  <palabra>
-    <clave>FORWARD_LAST</clave>
-    <es_CO>Avanzar a la última página</es_CO>
+    <en_US>Rewind Ten Pages</en_US>
+  </sentence>
+  <sentence>
+    <key>FORWARD_LAST</key>
+    <es_CO>Avanzar a la Última Página</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Forward to last page</en_US>
-  </palabra>
-  <palabra>
-    <clave>FORWARD_1</clave>
+    <en_US>Forward to Last Page</en_US>
+  </sentence>
+  <sentence>
+    <key>FORWARD_1</key>
     <es_CO>Avanzar una página</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Forward one page</en_US>
-  </palabra>
-  <palabra>
-    <clave>FORWARD_10</clave>
-    <es_CO>Avanzar diez páginas</es_CO>
+    <en_US>Forward One Page</en_US>
+  </sentence>
+  <sentence>
+    <key>FORWARD_10</key>
+    <es_CO>Avanzar Diez Páginas</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Forward ten pages</en_US>
-  </palabra>
-  <palabra>
-    <clave>CTASXPAGAR</clave>
-    <es_CO>Cuentas por pagar</es_CO>
+    <en_US>Forward Ten Pages</en_US>
+  </sentence>
+  <sentence>
+    <key>CTASXPAGAR</key>
+    <es_CO>Cuentas por Pagar</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Accounts to pay</en_US>
-  </palabra>
-  <palabra>
-    <clave>VR_PAGAR</clave>
-    <es_CO>Valor a pagar</es_CO>
+    <en_US>Accounts to Pay</en_US>
+  </sentence>
+  <sentence>
+    <key>VR_PAGAR</key>
+    <es_CO>Valor a Pagar</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Value to pay</en_US>
-  </palabra>
-  <palabra>
-    <clave>TOT_PAGAR</clave>
+    <en_US>Value to Pay</en_US>
+  </sentence>
+  <sentence>
+    <key>TOT_PAGAR</key>
     <es_CO>Total a pagar</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Total to pay</en_US>
-  </palabra>
-  <palabra>
-    <clave>BALANCE</clave>
+    <en_US>Total to Pay</en_US>
+  </sentence>
+  <sentence>
+    <key>BALANCE</key>
     <es_CO>Balance</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Balance</en_US>
-  </palabra>
-  <palabra>
-    <clave>BASEU</clave>
+  </sentence>
+  <sentence>
+    <key>BASEU</key>
     <es_CO>Base Unificada</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Base Unified</en_US>
-  </palabra>
-  <palabra>
-    <clave>TARIFAU</clave>
+    <en_US>Unified Base</en_US>
+  </sentence>
+  <sentence>
+    <key>TARIFAU</key>
     <es_CO>Tarifa Unificada</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Tariff Unified</en_US>
-  </palabra>
-  <palabra>
-    <clave>NCOMPROBANTE-INGRESO</clave>
+    <en_US>Unified Rate</en_US>
+  </sentence>
+  <sentence>
+    <key>NCOMPROBANTE-INGRESO</key>
     <es_CO>Nuevo Comprobante de Ingreso</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>New Entrance Voucher</en_US>
-  </palabra>
-  <palabra>
-    <clave>CTRANSPORTE</clave>
+    <en_US>New Entrance...</en_US>
+  </sentence>
+  <sentence>
+    <key>CTRANSPORTE</key>
     <es_CO>C. Transporte</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Transport Cost</en_US>
-  </palabra>
-  <palabra>
-    <clave>OTROSC</clave>
+  </sentence>
+  <sentence>
+    <key>OTROSC</key>
     <es_CO>Otros Costos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Another Cost</en_US>
-  </palabra>
-  <palabra>
-    <clave>OTROSG</clave>
+    <en_US>Another Costs</en_US>
+  </sentence>
+  <sentence>
+    <key>OTROSG</key>
     <es_CO>Otros Gastos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Another Cost</en_US>
-  </palabra>
-  <palabra>
-    <clave>TRANSFERENCIA</clave>
+    <en_US>Another Costs</en_US>
+  </sentence>
+  <sentence>
+    <key>TRANSFERENCIA</key>
     <es_CO>Transferencia</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Transference</en_US>
-  </palabra>
-  <palabra>
-    <clave>ADMCENTROCOSTOS</clave>
+  </sentence>
+  <sentence>
+    <key>ADMCENTROCOSTOS</key>
     <es_CO>Administración Centro Costo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Administration Center Cost</en_US>
-  </palabra>
-  <palabra>
-    <clave>NCENTROCOSTO</clave>
+    <en_US>Cost Center Management</en_US>
+  </sentence>
+  <sentence>
+    <key>NCENTROCOSTO</key>
     <es_CO>Nuevo Centro Costo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>new Center Cost</en_US>
-  </palabra>
-  <palabra>
-    <clave>ECENTROCOSTO</clave>
+    <en_US>New Cost Center</en_US>
+  </sentence>
+  <sentence>
+    <key>ECENTROCOSTO</key>
     <es_CO>Editar Centro Costo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Edit Center Cost</en_US>
-  </palabra>
-  <palabra>
-    <clave>DCENTROCOSTO</clave>
+    <en_US>Edit Cost Center</en_US>
+  </sentence>
+  <sentence>
+    <key>DCENTROCOSTO</key>
     <es_CO>Borrar Centro Costo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Delete Center Cost</en_US>
-  </palabra>
-  <palabra>
-    <clave>SCENTROCOSTO</clave>
+    <en_US>Delete Cost Center</en_US>
+  </sentence>
+  <sentence>
+    <key>SCENTROCOSTO</key>
     <es_CO>Consultar Centro Costo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Query Center Cost</en_US>
-  </palabra>
-  <palabra>
-    <clave>DEBE</clave>
+    <en_US>Query Cost Center</en_US>
+  </sentence>
+  <sentence>
+    <key>DEBE</key>
     <es_CO>Debe</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Must</en_US>
-  </palabra>
-  <palabra>
-    <clave>HABER</clave>
+    <en_US>Owe</en_US>
+  </sentence>
+  <sentence>
+    <key>HABER</key>
     <es_CO>Haber</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Have</en_US>
-  </palabra>
-  <palabra>
-    <clave>NETO</clave>
+    <en_US>Paid</en_US>
+  </sentence>
+  <sentence>
+    <key>NETO</key>
     <es_CO>Neto</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Neto</en_US>
-  </palabra>
-  <palabra>
-    <clave>GASTOSGEN</clave>
+  </sentence>
+  <sentence>
+    <key>GASTOSGEN</key>
     <es_CO>G. Generados</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>G. Generados</en_US>
-  </palabra>
-  <palabra>
-    <clave>TOTALCOMP</clave>
+  </sentence>
+  <sentence>
+    <key>TOTALCOMP</key>
     <es_CO>T. Compra</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>T. Compra</en_US>
-  </palabra>
-  <palabra>
-    <clave>ANCHO</clave>
+    <en_US>Buy T.</en_US>
+  </sentence>
+  <sentence>
+    <key>ANCHO</key>
     <es_CO>Ancho</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Width</en_US>
-  </palabra>
-  <palabra>
-    <clave>ESCANCHO</clave>
-    <es_CO>Ajustar al ancho de la ventana</es_CO>
+  </sentence>
+  <sentence>
+    <key>ESCANCHO</key>
+    <es_CO>Ajustar al Ancho de la Ventana</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Fit to the window width</en_US>
-  </palabra>
-  <palabra>
-    <clave>LARGO</clave>
+    <en_US>Fit to the Window Width</en_US>
+  </sentence>
+  <sentence>
+    <key>LARGO</key>
     <es_CO>Largo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Height</en_US>
-  </palabra>
-  <palabra>
-    <clave>ESCALA</clave>
+  </sentence>
+  <sentence>
+    <key>ESCALA</key>
     <es_CO>Escala:</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Escale:</en_US>
-  </palabra>
-  <palabra>
-    <clave>POSTSCRIPT</clave>
+  </sentence>
+  <sentence>
+    <key>POSTSCRIPT</key>
     <es_CO>Postscript</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Postscript</en_US>
-  </palabra>
-  <palabra>
-    <clave>FUENTESDISP</clave>
-    <es_CO>Las fuentes disponibles son</es_CO>
+  </sentence>
+  <sentence>
+    <key>FUENTESDISP</key>
+    <es_CO>Las Fuentes Disponibles son</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Fonts available are</en_US>
-  </palabra>
-  <palabra>
-    <clave>AUVISTA</clave>
+    <en_US>Available Fonts are</en_US>
+  </sentence>
+  <sentence>
+    <key>AUVISTA</key>
     <es_CO>Aumentar Vista</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Zoom In</en_US>
-  </palabra>
-  <palabra>
-    <clave>ROTACION</clave>
+  </sentence>
+  <sentence>
+    <key>ROTACION</key>
     <es_CO>Rotación:</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Rotation:</en_US>
-  </palabra>
-  <palabra>
-    <clave>ROTAGRAD</clave>
+  </sentence>
+  <sentence>
+    <key>ROTAGRAD</key>
     <es_CO>Rotación en Grados</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Rotation in Degrees</en_US>
-  </palabra>
-  <palabra>
-    <clave>GUARDARCO</clave>
+  </sentence>
+  <sentence>
+    <key>GUARDARCO</key>
     <es_CO>Guardar Como</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Save As</en_US>
-  </palabra>
-  <palabra>
-    <clave>IMPRIREP</clave>
+  </sentence>
+  <sentence>
+    <key>IMPRIREP</key>
     <es_CO>Imprimir Reporte</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Print Report</en_US>
-  </palabra>
-  <palabra>
-    <clave>IMPRIERR</clave>
-    <es_CO>El servicio de impresión sobre imágenes no está disponible en el momento</es_CO>
+  </sentence>
+  <sentence>
+    <key>IMPRIERR</key>
+    <es_CO>Error 241: El Servicio de Impresión sobre imágenes no está disponible en el momento</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Printing is not available on images at this time</en_US>
-  </palabra>
-  <palabra>
-    <clave>IMPRIESP</clave>
+    <en_US>Error 241: Printing is not available on images at this moment</en_US>
+  </sentence>
+  <sentence>
+    <key>IMPRIESP</key>
     <es_CO>Por favor, espere a que el proceso de impresión termine</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Please wait for print to finish</en_US>
-  </palabra>
-  <palabra>
-    <clave>NOARCHIMP</clave>
+    <en_US>Please, wait for print to finish</en_US>
+  </sentence>
+  <sentence>
+    <key>NOARCHIMP</key>
     <es_CO>No hay archivo para imprimir</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>No file to print</en_US>
-  </palabra>
-  <palabra>
-    <clave>AUNIMP</clave>
+  </sentence>
+  <sentence>
+    <key>AUNIMP</key>
     <es_CO>Páginas aún en impresión</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Pages still printing</en_US>
-  </palabra>
-  <palabra>
-    <clave>ITEMNOSEL</clave>
+  </sentence>
+  <sentence>
+    <key>ITEMNOSEL</key>
     <es_CO>Ningún item seleccionado</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>No menu item set</en_US>
-  </palabra>
-  <palabra>
-    <clave>DECOPAG</clave>
+  </sentence>
+  <sentence>
+    <key>DECOPAG</key>
     <es_CO>Decodificando Página</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Decoding Page</en_US>
-  </palabra>
-  <palabra>
-    <clave>ABRIARCHIVO</clave>
+  </sentence>
+  <sentence>
+    <key>ABRIARCHIVO</key>
     <es_CO>Abriendo Archivo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Opening File</en_US>
-  </palabra>
-  <palabra>
-    <clave>CLAVEPDF</clave>
+  </sentence>
+  <sentence>
+    <key>keyPDF</key>
     <es_CO>Por favor, digite la clave del archivo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Please enter password</en_US>
-  </palabra>
-  <palabra>
-    <clave>CLAVEPDFREQ</clave>
-    <es_CO>Una clave válida es requerida para abrir el archivo</es_CO>
+    <en_US>Please enter file password</en_US>
+  </sentence>
+  <sentence>
+    <key>keyPDFREQ</key>
+    <es_CO>Una key válida es requerida para abrir el archivo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>A valid password is required to display encrypted files</en_US>
-  </palabra>
-  <palabra>
-    <clave>ABRIERROR</clave>
+  </sentence>
+  <sentence>
+    <key>ABRIERROR</key>
     <es_CO>Este archivo a generado una excepción y no se puede abrir. Por favor envie el mensaje de eror que recibio a Qhatu Ltda para corregirlo.</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>This file generated an exception and cannot continue. Please send file to Qhatu Co. for analysis</en_US>
-  </palabra>
-  <palabra>
-    <clave>PAGFUERANGO</clave>
+  </sentence>
+  <sentence>
+    <key>PAGFUERANGO</key>
     <es_CO>fuera de rango. Abriendo en la última página</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>out of range. Opening on last page</en_US>
-  </palabra>
-  <palabra>
-    <clave>CARGANDOPAG</clave>
+  </sentence>
+  <sentence>
+    <key>CARGANDOPAG</key>
     <es_CO>Cargando Página</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Loading Page</en_US>
-  </palabra>
-  <palabra>
-    <clave>ESPCARGANDOPAG</clave>
+  </sentence>
+  <sentence>
+    <key>ESPCARGANDOPAG</key>
     <es_CO>Por favor, espere mientras se carga la página</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Please wait for page to display</en_US>
-  </palabra>
-  <palabra>
-    <clave>RANGOFU</clave>
+  </sentence>
+  <sentence>
+    <key>RANGOFU</key>
     <es_CO>está fuera del rango. Número de páginas=</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>is not in range. Total pagecount=</en_US>
-  </palabra>
-  <palabra>
-    <clave>RANGOFU</clave>
+  </sentence>
+  <sentence>
+    <key>RANGOFU</key>
     <es_CO>no es válido. Por favor, ingrese un valor númerico</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>is not valid. Please use a number (ie 4)</en_US>
-  </palabra>
-  <palabra>
-    <clave>ARCHIVOEX</clave>
+  </sentence>
+  <sentence>
+    <key>ARCHIVOEX</key>
     <es_CO>El archivo ya existe.</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>The file already exists.</en_US>
-  </palabra>
-  <palabra>
-    <clave>ARCHIVORESC</clave>
+  </sentence>
+  <sentence>
+    <key>ARCHIVORESC</key>
     <es_CO>Reemplazar el archivo existente?</es_CO>
     <en_US>Replace the existing file?</en_US>
-  </palabra>
-  <palabra>
-    <clave>NAVTIP</clave>
+  </sentence>
+  <sentence>
+    <key>NAVTIP</key>
     <es_CO>Para ir a una página - Ingrese el número de la página y presione la tecla Enter</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>To go to a page - Type in page number and press return</en_US>
-  </palabra>
-  <palabra>
-    <clave>IMPFIN</clave>
+  </sentence>
+  <sentence>
+    <key>IMPFIN</key>
     <es_CO>Impresión Finalizada</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Printing order finished</en_US>
-  </palabra>
-  <palabra>
-    <clave>CERRAR</clave>
+  </sentence>
+  <sentence>
+    <key>CERRAR</key>
     <es_CO>Cerrar</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Close</en_US>
-  </palabra>
-  <palabra>
-    <clave>CLOSE_CURRENT_WINDOW</clave>
+  </sentence>
+  <sentence>
+    <key>CLOSE_CURRENT_WINDOW</key>
     <es_CO>Desea cerrar la ventana actual?</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Exit current window?</en_US>
-  </palabra>
-  <palabra>
-    <clave>CLOSE_CURRENT_APP</clave>
+  </sentence>
+  <sentence>
+    <key>CLOSE_CURRENT_APP</key>
     <es_CO>Desea cerrar la aplicación?</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Exit aplication?</en_US>
-  </palabra>
-  <palabra>
-    <clave>CURRENT_WINDOW_BUSY</clave>
+  </sentence>
+  <sentence>
+    <key>CURRENT_WINDOW_BUSY</key>
     <es_CO>La actual venta esta ocupada!</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Current windows is busy!</en_US>
-  </palabra>
-  <palabra>
-    <clave>TOTALFAC</clave>
+  </sentence>
+  <sentence>
+    <key>TOTALFAC</key>
     <es_CO>Total Fac.</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Total Fac.</en_US>
-  </palabra>
-  <palabra>
-    <clave>TOTALMRET</clave>
+  </sentence>
+  <sentence>
+    <key>TOTALMRET</key>
     <es_CO>Total Menos Ret.</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Total Menos Ret.</en_US>
-  </palabra>
-  <palabra>
-    <clave>GENERAR</clave>
+  </sentence>
+  <sentence>
+    <key>GENERAR</key>
     <es_CO>Generar</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Generar</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORT</clave>
+  </sentence>
+  <sentence>
+    <key>REPORT</key>
     <es_CO>Reporte</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Reporte</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTS</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTS</key>
     <es_CO>Reportes</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Reports</en_US>
-  </palabra>
-  <palabra>
-    <clave>KEYWORD</clave>
-    <es_CO>Palabra Clave</es_CO>
+  </sentence>
+  <sentence>
+    <key>KEYWORD</key>
+    <es_CO>sentence key</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Key Word</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-REPORTE</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE</key>
     <es_CO>R</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>R</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTES</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTES</key>
     <es_CO>Reportes</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>R</en_US>
-  </palabra>
-  <palabra>
-    <clave>INFORME-VENTAS</clave>
+  </sentence>
+  <sentence>
+    <key>INFORME-VENTAS</key>
     <es_CO>Informes de Ventas</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Say Report</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-INFORME-VENTAS</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-INFORME-VENTAS</key>
     <es_CO>I</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>I</en_US>
-  </palabra>
-  <palabra>
-    <clave>INFORME-COMPRAS</clave>
+  </sentence>
+  <sentence>
+    <key>INFORME-COMPRAS</key>
     <es_CO>Informes de Compras</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Buy Report</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-INFORME-COMPRAS</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-INFORME-COMPRAS</key>
     <es_CO>I</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>B</en_US>
-  </palabra>
-  <palabra>
-    <clave>INFORME-CONTABILIDAD</clave>
+  </sentence>
+  <sentence>
+    <key>INFORME-CONTABILIDAD</key>
     <es_CO>Informes de Contabilidad</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Bookkeeping Report</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-INFORME-CONTABILIDAD</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-INFORME-CONTABILIDAD</key>
     <es_CO>I</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>B</en_US>
-  </palabra>
-  <palabra>
-    <clave>INFORME-INVENTARIOS</clave>
+  </sentence>
+  <sentence>
+    <key>INFORME-INVENTARIOS</key>
     <es_CO>Informes de Inventarios</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Inventory Report</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-INFORME-INVENTARIOS</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-INFORME-INVENTARIOS</key>
     <es_CO>I</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>I</en_US>
-  </palabra>
-  <palabra>
-    <clave>INFORME-BANCOS</clave>
+  </sentence>
+  <sentence>
+    <key>INFORME-BANCOS</key>
     <es_CO>Informes de Bancos</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Bank Report</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-INFORME-BANCOS</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-INFORME-BANCOS</key>
     <es_CO>I</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>B</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-PEDIDOS-NUMERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-PEDIDOS-NUMERO</key>
     <es_CO>Reporte de pedidos por numero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of request by number</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-PEDIDOS-TERCERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-PEDIDOS-TERCERO</key>
     <es_CO>Reporte de pedidos por tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of request by third</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-PEDIDOS-FECHA-PRODUCTO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-PEDIDOS-FECHA-PRODUCTO</key>
     <es_CO>Reporte de pedidos por fecha y producto</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of request by date and product</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-PEDIDOS-FECHA-TERCERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-PEDIDOS-FECHA-TERCERO</key>
     <es_CO>Reporte de pedidos por fecha y tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of request by date and third</en_US>
-  </palabra>
-  <palabra>
-    <clave>FECHAI</clave>
+  </sentence>
+  <sentence>
+    <key>FECHAI</key>
     <es_CO>Fecha Inicial</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Init Date</en_US>
-  </palabra>
-  <palabra>
-    <clave>FECHAF</clave>
+  </sentence>
+  <sentence>
+    <key>FECHAF</key>
     <es_CO>Fecha Final</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Final Date</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-COTIZACION-NUMERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-COTIZACION-NUMERO</key>
     <es_CO>Reporte de cotización por numero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of market price by number</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-COTIZACION-TERCERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-COTIZACION-TERCERO</key>
     <es_CO>Reporte de cotización por tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of market price by third</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-COTIZACION-FECHA-PRODUCTO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-COTIZACION-FECHA-PRODUCTO</key>
     <es_CO>Reporte de cotización por fecha y producto</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of market price by date and product</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-COTIZACION-FECHA-TERCERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-COTIZACION-FECHA-TERCERO</key>
     <es_CO>Reporte de cotización por fecha y tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of market price by date and third</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-COTIZACION-FECHA-VALOR</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-COTIZACION-FECHA-VALOR</key>
     <es_CO>Reporte de cotización por fecha y valor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of market price by date and value</en_US>
-  </palabra>
-  <palabra>
-    <clave>VALOR_MIN</clave>
+  </sentence>
+  <sentence>
+    <key>VALOR_MIN</key>
     <es_CO>Valor Minimo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Min. Value</en_US>
-  </palabra>
-  <palabra>
-    <clave>VALOR_MAX</clave>
+  </sentence>
+  <sentence>
+    <key>VALOR_MAX</key>
     <es_CO>Valor Maximo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Max. Value</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-FCONTADO-NUMERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-FCONTADO-NUMERO</key>
     <es_CO>Reporte factura de contado por numero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of invoice by number</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-FCONTADO-TERCERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-FCONTADO-TERCERO</key>
     <es_CO>Reporte factura de contado por tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of invoice by third</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-FCONTADO-FECHA-PRODUCTO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-FCONTADO-FECHA-PRODUCTO</key>
     <es_CO>Reporte factura de contado por fecha y producto</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of invoice by date and product</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-FCONTADO-FECHA-TERCERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-FCONTADO-FECHA-TERCERO</key>
     <es_CO>Reporte factura de contado por fecha y tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of invoice by date and third</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-FCONTADO-FECHA-VALOR</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-FCONTADO-FECHA-VALOR</key>
     <es_CO>Reporte factura de contado por fecha y valor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of invoice by date and value</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-FCREDITO-NUMERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-FCREDITO-NUMERO</key>
     <es_CO>Reporte factura de credito por numero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of credit invoice by number</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-FCREDITO-TERCERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-FCREDITO-TERCERO</key>
     <es_CO>Reporte factura de credito por tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of credit invoice by third</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-FCREDITO-FECHA-PRODUCTO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-FCREDITO-FECHA-PRODUCTO</key>
     <es_CO>Reporte factura de contado por fecha y producto</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of credit invoice by date and product</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-FCREDITO-FECHA-TERCERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-FCREDITO-FECHA-TERCERO</key>
     <es_CO>Reporte factura de credito por fecha y tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of credit invoice by date and third</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-FCREDITO-FECHA-VALOR</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-FCREDITO-FECHA-VALOR</key>
     <es_CO>Reporte factura de credito por fecha y valor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of credit invoice by date and value</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-REMISION-NUMERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-REMISION-NUMERO</key>
     <es_CO>Reporte de remisiones por numero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of remissions by number</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-REMISION-TERCERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-REMISION-TERCERO</key>
     <es_CO>Reporte de remisiones por tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of remissions by third</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-REMISION-FECHA-PRODUCTO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-REMISION-FECHA-PRODUCTO</key>
     <es_CO>Reporte de remisiones por fecha y producto</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of remissions by date and product</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-REMISION-FECHA-TERCERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-REMISION-FECHA-TERCERO</key>
     <es_CO>Reporte de remisiones por fecha y tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of remissions by date and third</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-NUMERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-NUMERO</key>
     <es_CO>Reporte por numero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report by number</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-REPORTE-NUMERO</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-NUMERO</key>
     <es_CO>n</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>n</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-TERCERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-TERCERO</key>
     <es_CO>Reporte por tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report by third</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-REPORTE-TERCERO</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-TERCERO</key>
     <es_CO>t</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>t</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-FECHA-PRODUCTO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-FECHA-PRODUCTO</key>
     <es_CO>Reporte por fecha y producto</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report by date and product</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-REPORTE-FECHA-PRODUCTO</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-FECHA-PRODUCTO</key>
     <es_CO>p</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>p</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-FECHA-TERCERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-FECHA-TERCERO</key>
     <es_CO>Reporte por fecha y tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report by date and third</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-REPORTE-FECHA-TERCERO</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-FECHA-TERCERO</key>
     <es_CO>f</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>d</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-FECHA-VALOR</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-FECHA-VALOR</key>
     <es_CO>Reporte por fecha y valor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report by date and value</en_US>
-  </palabra>
-  <palabra>
-    <clave>NEMO-REPORTE-FECHA-VALOR</clave>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-FECHA-VALOR</key>
     <es_CO>v</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>v</en_US>
-  </palabra>
+  </sentence>
 
-  <palabra>
-    <clave>REPORTE-OCOMPRA-NUMERO</clave>
+  <sentence>
+    <key>REPORTE-OCOMPRA-NUMERO</key>
     <es_CO>Reporte orden de compra por numero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of buy order invoice by number</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-OCOMPRA-TERCERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-OCOMPRA-TERCERO</key>
     <es_CO>Reporte orden de compra por tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of buy order by third</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-OCOMPRA-FECHA-PRODUCTO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-OCOMPRA-FECHA-PRODUCTO</key>
     <es_CO>Reporte factura de contado por fecha y producto</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of buy order by date and product</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-OCOMPRA-FECHA-TERCERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-OCOMPRA-FECHA-TERCERO</key>
     <es_CO>Reporte orden de compra por fecha y tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of buy order by date and third</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-OCOMPRA-FECHA-VALOR</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-OCOMPRA-FECHA-VALOR</key>
     <es_CO>Reporte orden de compra por fecha y valor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of buy order by date and value</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-EALMACEN-NUMERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-EALMACEN-NUMERO</key>
     <es_CO>Reporte entrada a almacen por numero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of store in by number</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-EALMACEN-TERCERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-EALMACEN-TERCERO</key>
     <es_CO>Reporte entrada a almacen por tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of store in by third</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-EALMACEN-FECHA-PRODUCTO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-EALMACEN-FECHA-PRODUCTO</key>
     <es_CO>Reporte factura de contado por fecha y producto</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of store in by date and product</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-EALMACEN-FECHA-TERCERO</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-EALMACEN-FECHA-TERCERO</key>
     <es_CO>Reporte entrada a almacen por fecha y tercero</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of store in by date and third</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORTE-EALMACEN-FECHA-VALOR</clave>
+  </sentence>
+  <sentence>
+    <key>REPORTE-EALMACEN-FECHA-VALOR</key>
     <es_CO>Reporte entrada a almacen por fecha y valor</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of store in by date and value</en_US>
-  </palabra>
-  <palabra>
-    <clave>REPORT_DONT_EXIST</clave>
+  </sentence>
+  <sentence>
+    <key>REPORT_DONT_EXIST</key>
     <es_CO>El reporte {0} no existe</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>The report {0} don't exist</en_US>
-  </palabra>  
-  <palabra>
-    <clave>CTASXCOBRAR</clave>
+  </sentence>  
+  <sentence>
+    <key>CTASXCOBRAR</key>
     <es_CO>Cuentas x cobrar</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>accounts to receive</en_US>
-  </palabra>  
-  <palabra>
-    <clave>CONTABILIZACION</clave>
+    <en_US>Accounts to receive</en_US>
+  </sentence>  
+  <sentence>
+    <key>CONTABILIZACION</key>
     <es_CO>Contabilización</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Accounting</en_US>
-  </palabra>  
-  <palabra>
-    <clave>DEBITO</clave>
+  </sentence>  
+  <sentence>
+    <key>DEBITO</key>
     <es_CO>Débito</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Debit</en_US>
-  </palabra>  
-  <palabra>
-    <clave>CREDITO</clave>
+  </sentence>  
+  <sentence>
+    <key>CREDITO</key>
     <es_CO>Crédito</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Credito</en_US>
-  </palabra>  
-</idioma>
+  </sentence>  
+</language>

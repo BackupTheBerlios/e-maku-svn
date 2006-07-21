@@ -1353,7 +1353,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
         
         /*
          * Verificacion si las cuentas hacen una partida doble, o no
-         */
+         *
         
         boolean debito = false;
         boolean credito = false;
@@ -1374,6 +1374,8 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
         }
         else
             throw new ErrorDataException("\n"+Language.getWord("ERR_PARTIDA"));
+        */
+        return pack;
     }
  
     /**
