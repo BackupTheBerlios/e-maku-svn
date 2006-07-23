@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ROOT=/home/emaku/beta
+
 COMPILE=`which compile`
 
 if [ "$COMPILE" == "" ] ; then 
@@ -11,4 +13,4 @@ if [ "$COMPILE" == "" ] ; then
   exit
 fi
 
-compile instalador.xml -b . -o instalador-jmidas.jar -k standard
+compile $ROOT/instalador.xml -b . -o $ROOT/instalador-jmidas.jar -k standard
