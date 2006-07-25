@@ -494,8 +494,6 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 	        	}
            	updateCells(value,rowIndex,colIndex);
         }
-        
-        System.out.println("currentIndex " +  currentIndex);
     }
     
     private void calcular(int rowIndex) {
@@ -950,7 +948,6 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 				        				}
 				        			}
 				        			if (search) {
-				        				System.out.println("Consultado " + getValueAt(rowIndex,colIndex));
 				        				Object obj = ATFDargs[col].getTypeDate();
 				        				String argConstructor = null;
 										try {

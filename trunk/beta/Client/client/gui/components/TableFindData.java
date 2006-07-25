@@ -215,7 +215,6 @@ public class TableFindData extends JPanel implements AnswerListener,
 				tagDataColumn = Integer.parseInt(args.getValue());
 			} else if (args.getAttributeValue("attribute").equals("sendRecord")) {
 				this.sendRecord = args.getValue();
-				System.out.println("sendRecord " + sendRecord);
 			}
 			/*
 			 * Se captura las columnas que generaran totales
@@ -410,10 +409,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 						new Object[] { this });
 			}
 		}
-		System.out.println("Size of recordEvent " + recordEvent.size());
 
 		for (int n = 0; n < recordEvent.size(); n++) {
-			System.out.println("Size of recordEvent(n) " + recordEvent.get(n));
 			GFforma
 					.invokeMethod(recordEvent.get(n), "addRecordListener",
 							new Class[] { RecordListener.class },
