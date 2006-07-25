@@ -80,61 +80,33 @@ public class TableFindData extends JPanel implements AnswerListener,
 		ChangeExternalValueListener, RecordListener {
 
 	private static final long serialVersionUID = 3348132353954885841L;
-
 	private GenericForm GFforma;
-
 	private JTable JTtabla;
-
 	private TMFindData TMFDtabla;
-
 	private ArgsTableFindData[] ATFDargs;
-
 	private int rows;
-
 	private String sqlCode = "";
-
 	private ArrayList<Formula> formulas;
-
 	private HashMap<String, String> exportTotalCols;
-
 	private Hashtable<String, String> externalValues;
-
 	private int[] totales;
-
 	private ArrayList<String> driverEvent;
-
 	private ArrayList<String> recordEvent;
-
 	private ArrayList<String> keySQL = null;
-
 	private String initSQL;
-
 	private String[] initArgs;
-
 	private Color colorSelected;
-
 	private Color colorBackground;
-
 	private boolean enabled = true;
-
 	private boolean protectSelected;
-
 	private final boolean DOUBLEVALUE = true;
-
 	private final boolean INTVALUE = false;
-
 	private int valideLink = -1;
-
 	private int keyLink = -1;
-
 	private boolean returnNullValue;
-
 	private String mode;
-
 	private HashMap<String, String> importTotalCol;
-
 	private String sendRecord;
-
 	private Vector<RecordListener> recordListener = new Vector<RecordListener>();
 
 	/**
@@ -539,10 +511,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 			}
 		}
 
-		JTtabla.setDefaultRenderer(BigDecimal.class, new FormatTableNumber(
-				DOUBLEVALUE));
-		JTtabla.setDefaultRenderer(Integer.class, new FormatTableNumber(
-				INTVALUE));
+		JTtabla.setDefaultRenderer(BigDecimal.class, new FormatTableNumber(DOUBLEVALUE));
+		JTtabla.setDefaultRenderer(Integer.class, new FormatTableNumber(INTVALUE));
 		// JTtabla.setDefaultRenderer(Date.class,new FormatTableDate());
 
 		JTtabla.setDefaultEditor(BigDecimal.class, new CellEditor(DOUBLEVALUE));

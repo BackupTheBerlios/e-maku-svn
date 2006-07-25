@@ -286,10 +286,12 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
      * Se verifica si la columna es editable
      */
     
-    public boolean isCellEditable(int rowIndex, int colIndex) {
+    public synchronized boolean isCellEditable(int rowIndex, int colIndex) {
     	
-    	if (rowIndex >= 0) {
-    		
+    	if (rowIndex>=0) {
+    		if ((ATFDargs[colIndex].getType().equals("COMBOSQL")) && (rowIndex > currentIndex)) {
+    			return false;
+    		}
     		int val = 0;
     		if (valideLink > 0) {
     			try {
