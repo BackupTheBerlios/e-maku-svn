@@ -304,9 +304,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     			if (ATFDargs[colIndex].isEditable() && val==0) {
     	            return true;
     	        }
-    	        //else {
     	        return false;
-    	        //}
     		} 
     		else {
     			//if (getValueAt(rowIndex-1,colIndex).equals("") && val==0) {
@@ -317,15 +315,11 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     				if (ATFDargs[colIndex].isEditable()  && val==0) {
         	            return true;
         	        }
-        	        //else {
         	        return false;
-        	        //}
     			}
     		}
     	}
-    	//else {
    		return false;
-   		//}
     }
 
     /**
@@ -1717,9 +1711,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 		if (impValues!=null) {
 			return impValues.size();
 		}
-		//else {
 		return 0;
-		//}
 	}
 	
 	public void setQuery(String sqlCode) {

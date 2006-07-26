@@ -201,10 +201,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 					if (col.charAt(0) <= 74) {
 						tmpTotal = col.charAt(0) - 65;
 					}
-					/*
-					 * cuando es minuscula
-					 */
-					else {
+					else { /* cuando es minuscula */
 						tmpTotal = col.charAt(0) - 97;
 					}
 					totales[j] = tmpTotal;
@@ -383,8 +380,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 		}
 
 		for (int n = 0; n < recordEvent.size(); n++) {
-			GFforma
-					.invokeMethod(recordEvent.get(n), "addRecordListener",
+			GFforma.invokeMethod(recordEvent.get(n), "addRecordListener",
 							new Class[] { RecordListener.class },
 							new Object[] { this });
 		}
@@ -427,8 +423,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 							int sel = JTtabla.getSelectedRow();
 							if (sel > 0) {
 								if (TMFDtabla.getValueAt(sel - 1, 0).equals("")) {
-									JTtabla.changeSelection(sel - 1, 0, false,
-											false);
+									JTtabla.changeSelection(sel - 1, 0, false,false);
 								}
 							}
 						}
@@ -840,24 +835,8 @@ class CellEditorDate extends DefaultCellEditor {
 		return ((JFormattedTextField) super.getComponent()).getText();
 
 	}
-
 }
 
-class FormatTableDate extends DefaultTableCellRenderer {
-
-	private static final long serialVersionUID = 8153283827260136240L;
-
-	public FormatTableDate() {
-		super();
-	}
-	/*
-	 * public void setValue(Object value) { System.out.println("Formateando
-	 * Fechas"); DateFormat formato = new SimpleDateFormat("yyyy-MM-dd"); try {
-	 * super.setValue(formato.format(((Date)value).toString())); } catch
-	 * (IllegalArgumentException e) { System.out.println("no se pudo formatear
-	 * la fecha"); super.setValue(super.setf); } }
-	 */
-}
 
 /**
  * 
