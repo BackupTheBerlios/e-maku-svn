@@ -21,7 +21,7 @@ public class ReportsStore {
 		
 		reports = new Hashtable<String,JasperReport>();
 		try {
-			System.out.println("Reportes compilados: " + url);
+			System.out.println("Reportes compilados: " + url.openConnection());
 			JarURLConnection conn = (JarURLConnection)url.openConnection();
 			JarFile jarfile = conn.getJarFile();
 			Enumeration enumEntries = jarfile.entries();

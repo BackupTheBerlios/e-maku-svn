@@ -1,4 +1,4 @@
- /**
+/**
  * 
  * LNContabilidad.java Creado 3/10/2005 
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
@@ -30,33 +30,56 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import org.jdom.Element;
+
 import server.database.sql.CacheEnlace;
 import server.database.sql.DontHaveKeyException;
 import server.database.sql.RunQuery;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
 
-import org.jdom.Element;
-
 public class LNContabilidad {
 
 	private Vector<String> colData;
+
 	private Vector<String> colAccount;
+
 	private int colIdProdServ = -1;
+
 	private Vector<String> accountFields;
+
 	private Vector<String> typeRegister;
+
 	private int accountData;
+
 	private int accountKey = -1;
+
 	private int accountTh = -1;
+
 	private int accountPS = -1;
+
 	private Boolean naturaleza;
+
 	private String bd;
+
 	private String codeAPS;
+
 	private String concepto = "SOY UN LAMER QUE NO DEFINI EL CONCEPTO";
+
+	private String tercero;
+
+	private String inventario;
+
+	private String centroCosto;
+
 	private double base;
+
 	private int colCost = -1;
+
 	private boolean debug;
+
 	private final boolean LIBRO_AUX_INV = false;
+
 	private final boolean LIBRO_AUX_TER = true;
 
 	/**
@@ -103,7 +126,14 @@ public class LNContabilidad {
 				}
 			} else if ("debuging".equals(attribute)) {
 				debug = Boolean.parseBoolean(e.getValue());
+			} else if ("tercero".equals(attribute)) {
+				tercero = e.getValue().toLowerCase().trim();
+			} else if ("inventario".equals(attribute)) {
+				inventario = e.getValue().toLowerCase().trim();
+			} else if ("centrocosto".equals(attribute)) {
+				centroCosto = e.getValue().toLowerCase().trim();
 			}
+
 			/*
 			 * Se trae las columnas validas
 			 */
@@ -321,13 +351,13 @@ public class LNContabilidad {
 			}
 
 		}
-		
-	    try {
-		    BigDecimal bigDecimal = new BigDecimal(partidaDoble);
-		    bigDecimal = bigDecimal.setScale(2,BigDecimal.ROUND_HALF_UP);
-		    partidaDoble = bigDecimal.doubleValue();
-	    }
-	    catch(NumberFormatException NFEe) {}
+
+		try {
+			BigDecimal bigDecimal = new BigDecimal(partidaDoble);
+			bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+			partidaDoble = bigDecimal.doubleValue();
+		} catch (NumberFormatException NFEe) {
+		}
 
 		return partidaDoble;
 	}
@@ -358,40 +388,80 @@ public class LNContabilidad {
 
 		double partidaDoble = 0;
 		Iterator i = pack.getChildren().iterator();
-
 		/*
 		 * El orden de la informaci�n sera ingresada de la siguiente forma
 		 * 
 		 * Infomacion obtenida de llaves
 		 * 
-		 * asiento[0] Numero de documento asiento[1] Fecha asiento[2] Concepto
+		 * asiento[0] Numero de documento 
+		 * asiento[1] Fecha 
+		 * asiento[2] Concepto
 		 * 
 		 * Informacion obtenida del Elemento
 		 * 
-		 * asiento[3] centro costo asiento[4] cuenta contable asiento[5] tercero
-		 * asiento[6] inventarios asiento[7] debe asiento[8] haber asiento[9]
-		 * saldo
+		 * asiento[3] centro costo 
+		 * asiento[4] cuenta contable 
+		 * asiento[5] tercero
+		 * asiento[6] inventarios 
+		 * asiento[7] debe 
+		 * asiento[8] haber
+		 * 
+		 * Información calculada
+		 * 
+		 * asiento[9] saldo
 		 */
+
 		String[] asiento = new String[10];
 		asiento[0] = CacheKeys.getKey("ndocumento");
 		asiento[1] = CacheKeys.getDate();
 		asiento[2] = concepto;
 
-		while (i.hasNext()) {
-			Element elm = (Element) i.next();
-			Iterator j = elm.getChildren().iterator();
-			for (int k = 3; j.hasNext(); k++) {
-				Element elm2 = (Element) j.next();
+		for (int k = 3; i.hasNext(); k++) {
+			if (k == 3 && centroCosto != null) {
+				if (centroCosto.equals("getname") && CacheKeys.getKey("centrocosto")!=null) {
+					asiento[k] = CacheKeys.getKey("centrocosto");
+				} else if (centroCosto.equals("notdata")) {
+					asiento[k] = "NULL";
+				} else {
+					asiento[k] = "NULL";
+				}
+			} else if (k == 5 && tercero != null) {
+				if (tercero.equals("getname") && 
+				    CacheKeys.getKey("idTercero")!=null &&
+				    CacheEnlace.isPCTerceros(bd, asiento[4])) {
+					asiento[k] = CacheKeys.getKey("idTercero");
+				} else if (tercero.equals("notdata")) {
+					asiento[k] = "NULL";
+				} else {
+					asiento[k] = "NULL";
+				}
+			} else if (k == 6 && inventario != null) {
+				if (inventario.equals("getname") && 
+				    CacheKeys.getKey("inventario")!=null &&
+				    CacheEnlace.isPCInventarios(bd, asiento[4])) { 
+					asiento[k] = CacheKeys.getKey("inventario");
+				} else if (inventario.equals("notdata")) {
+					asiento[k] = "NULL";
+				} else {
+					asiento[k] = "NULL";
+				}
+			} else {
+				Element elm2 = (Element) i.next();
 				asiento[k] = elm2.getText().trim();
 			}
+			if (debug) {
+				System.out.println("asiento[" + k + "] = " + asiento[k]);
+			}
+		}
 
+		if (!asiento[7].equals("0") && !asiento[8].equals("0")) {
 			/*
 			 * Se reemplaza el numero de la cuenta contable por su id
 			 */
 			asiento[4] = CacheEnlace.getPCIdCta(bd, asiento[4]);
-
-			double saldo = CacheEnlace.getSaldoLibroAux(bd, asiento[3],
-					asiento[4], asiento[5], asiento[6]);
+	
+			double saldo = CacheEnlace.getSaldoLibroAux(bd, asiento[3], asiento[4],
+					asiento[5], asiento[6]);
 			double movimiento = 0;
 			if (Double.parseDouble(asiento[7]) != 0.0) {
 				movimiento = Double.parseDouble(asiento[7]);
@@ -407,34 +477,26 @@ public class LNContabilidad {
 				double nsaldo = saldo - movimiento;
 				asiento[9] = String.valueOf(nsaldo);
 				partidaDoble -= movimiento;
-			    try {
-				    BigDecimal bigDecimal = new BigDecimal(partidaDoble);
-				    bigDecimal = bigDecimal.setScale(2,BigDecimal.ROUND_HALF_UP);
-				    partidaDoble = bigDecimal.doubleValue();
-			    }
-			    catch(NumberFormatException NFEe) {}
+				try {
+					BigDecimal bigDecimal = new BigDecimal(partidaDoble);
+					bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+					partidaDoble = bigDecimal.doubleValue();
+				} catch (NumberFormatException NFEe) {
+				}
 				if (debug) {
-					System.out.println("Movimiento: "+movimiento+" Partida doble rowDataAccount: " + partidaDoble);
+					System.out.println("Movimiento: " + movimiento
+							+ " Partida doble rowDataAccount: " + partidaDoble);
 				}
 				LNUndoSaldos.setSaldoAntLibroAux(bd, asiento[3], asiento[4],
 						asiento[5], asiento[6], new Double(saldo));
 				CacheEnlace.setSaldoLibroAux(bd, asiento[3], asiento[4],
 						asiento[5], asiento[6], new Double(nsaldo));
 			}
-			/*
-			 * Validando si el centro costo esta vacio, entonces el campo debe
-			 * ser nulo
-			 */
-			if (asiento[3].equals("")) {
-				asiento[3] = "NULL";
-			}
+		
 			new RunQuery(bd, "INS0073", asiento).ejecutarSQL();
-
 		}
 
-
-
-	    return partidaDoble;
+		return partidaDoble;
 	}
 
 	/**
@@ -538,19 +600,20 @@ public class LNContabilidad {
 					partidaDoble -= valueAccount;
 				}
 				if (debug) {
-					System.out.println("partida doble columnDataAccount: " + partidaDoble);
+					System.out.println("partida doble columnDataAccount: "
+							+ partidaDoble);
 				}
 			}
 		} else {
 			throw new LNErrorProcecuteException("");
 		}
-		
-	    try {
-		    BigDecimal bigDecimal = new BigDecimal(partidaDoble);
-		    bigDecimal = bigDecimal.setScale(2,BigDecimal.ROUND_HALF_UP);
-		    partidaDoble = bigDecimal.doubleValue();
-	    }
-	    catch(NumberFormatException NFEe) {}
+
+		try {
+			BigDecimal bigDecimal = new BigDecimal(partidaDoble);
+			bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+			partidaDoble = bigDecimal.doubleValue();
+		} catch (NumberFormatException NFEe) {
+		}
 
 		return partidaDoble;
 
@@ -567,7 +630,7 @@ public class LNContabilidad {
 
 	public double columnData(Element pack) throws SQLNotFoundException,
 			SQLBadArgumentsException, SQLException, DontHaveKeyException {
-		
+
 		/*
 		 * Cada columna de una fila, puede generar un asiento contable, la
 		 * definicion de que asiento genera cada columna se parametriza como
@@ -584,8 +647,8 @@ public class LNContabilidad {
 		 */
 
 		/*
-		 * El proceso que se lleva para la generaci�n de un asiento contable
-		 * es el siguiente:
+		 * El proceso que se lleva para la generaci�n de un asiento contable es
+		 * el siguiente:
 		 */
 
 		double partidaDoble = 0.0;
@@ -684,17 +747,19 @@ public class LNContabilidad {
 						 * Se verifica si en una de las columnas de la tabla
 						 * viene especificado el codigo del producto.
 						 */
-						
+
 						if (colCost == col) {
 							valueAccount = valueAccount
-									* CacheEnlace.getPCosto(bd, CacheKeys.getKey("idBodega"), idProdServ);
-						    try {
-							    BigDecimal bigDecimal = new BigDecimal(valueAccount);
-							    bigDecimal = bigDecimal.setScale(2,BigDecimal.ROUND_HALF_UP);
-							    valueAccount = bigDecimal.doubleValue();
-						    }
-						    catch(NumberFormatException NFEe) {}
-
+									* CacheEnlace.getPCosto(bd, CacheKeys
+											.getKey("idBodega"), idProdServ);
+							try {
+								BigDecimal bigDecimal = new BigDecimal(
+										valueAccount);
+								bigDecimal = bigDecimal.setScale(2,
+										BigDecimal.ROUND_HALF_UP);
+								valueAccount = bigDecimal.doubleValue();
+							} catch (NumberFormatException NFEe) {
+							}
 
 						}
 
@@ -723,19 +788,21 @@ public class LNContabilidad {
 					} else {
 						partidaDoble -= valueAccount;
 					}
-					
-				    try {
-					    BigDecimal bigDecimal = new BigDecimal(partidaDoble);
-					    bigDecimal = bigDecimal.setScale(2,BigDecimal.ROUND_HALF_UP);
-					    partidaDoble = bigDecimal.doubleValue();
-				    }
-				    catch(NumberFormatException NFEe) {}
+
+					try {
+						BigDecimal bigDecimal = new BigDecimal(partidaDoble);
+						bigDecimal = bigDecimal.setScale(2,
+								BigDecimal.ROUND_HALF_UP);
+						partidaDoble = bigDecimal.doubleValue();
+					} catch (NumberFormatException NFEe) {
+					}
 
 					/*
 					 * Debuging
 					 */
 					if (debug) {
-						System.out.println("partida doble columnData:" + partidaDoble);
+						System.out.println("partida doble columnData:"
+								+ partidaDoble);
 					}
 
 				}
@@ -813,12 +880,12 @@ public class LNContabilidad {
 			asiento[5] = "0";
 			asiento[6] = String.valueOf(value);
 		}
-	    try {
-		    BigDecimal bigDecimal = new BigDecimal(nsaldo);
-		    bigDecimal = bigDecimal.setScale(2,BigDecimal.ROUND_HALF_UP);
-		    nsaldo = bigDecimal.doubleValue();
-	    }
-	    catch(NumberFormatException NFEe) {}
+		try {
+			BigDecimal bigDecimal = new BigDecimal(nsaldo);
+			bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+			nsaldo = bigDecimal.doubleValue();
+		} catch (NumberFormatException NFEe) {
+		}
 		asiento[7] = String.valueOf(nsaldo);
 
 		RunQuery RQsalidas;
@@ -884,12 +951,12 @@ public class LNContabilidad {
 			asiento[4] = "0";
 			asiento[5] = String.valueOf(value);
 		}
-	    try {
-		    BigDecimal bigDecimal = new BigDecimal(nsaldo);
-		    bigDecimal = bigDecimal.setScale(2,BigDecimal.ROUND_HALF_UP);
-		    nsaldo = bigDecimal.doubleValue();
-	    }
-	    catch(NumberFormatException NFEe) {}
+		try {
+			BigDecimal bigDecimal = new BigDecimal(nsaldo);
+			bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+			nsaldo = bigDecimal.doubleValue();
+		} catch (NumberFormatException NFEe) {
+		}
 
 		asiento[6] = String.valueOf(nsaldo);
 
@@ -923,70 +990,61 @@ public class LNContabilidad {
 				new String[] { idDocumento });
 		ResultSet RSdatos = RQdocumento.ejecutarSELECT();
 		/*
-		 * La siguiente consulta trae los siguientes campos 
-		 * id_cta 
-		 * centro
-		 * id_tercero 
-		 * id_prod_serv 
-		 * debe 
-		 * haber
+		 * La siguiente consulta trae los siguientes campos id_cta centro
+		 * id_tercero id_prod_serv debe haber
 		 */
 
-		RunQuery RQanular = new RunQuery(bd,"INS0076");
+		RunQuery RQanular = new RunQuery(bd, "INS0076");
 		double saldo = 0;
-		
+
 		while (RSdatos.next()) {
 			String[] record = new String[10];
 			record[0] = RSdatos.getString(1);
-			record[1] = RSdatos.getString(2)==null?"NULL":RSdatos.getString(2);
-			record[2] = RSdatos.getString(3)==null?"NULL":RSdatos.getString(3);
-			record[3] = RSdatos.getString(4)==null?"NULL":RSdatos.getString(4);
+			record[1] = RSdatos.getString(2) == null ? "NULL" : RSdatos
+					.getString(2);
+			record[2] = RSdatos.getString(3) == null ? "NULL" : RSdatos
+					.getString(3);
+			record[3] = RSdatos.getString(4) == null ? "NULL" : RSdatos
+					.getString(4);
 			record[4] = CacheKeys.getDate();
 			record[5] = concepto;
 			record[6] = idDocumento;
-			
-			saldo = CacheEnlace.getSaldoLibroAux(bd,
-												 record[1]=="NULL"?"":record[1], 
-										         record[0],
-										         record[2]=="NULL"?"":record[2], 
-										         record[3]=="NULL"?"":record[3]);
-			
-			LNUndoSaldos.setSaldoAntLibroAux(bd,
-					 						record[1]=="NULL"?"":record[1], 
-							 		        record[0],
-							 		        record[2]=="NULL"?"":record[2], 
-					                        record[3]=="NULL"?"":record[3],
-					                        saldo);
-			if (RSdatos.getDouble(5)>0) {
-				saldo-=RSdatos.getDouble(5);
-			    try {
-				    BigDecimal bigDecimal = new BigDecimal(saldo);
-				    bigDecimal = bigDecimal.setScale(2,BigDecimal.ROUND_HALF_UP);
-				    saldo = bigDecimal.doubleValue();
-			    }
-			    catch(NumberFormatException NFEe) {}
-				record[7]="0";
-				record[8]=RSdatos.getString(5);
-			}
-			else {
-				saldo+=RSdatos.getDouble(6);
-			    try {
-				    BigDecimal bigDecimal = new BigDecimal(saldo);
-				    bigDecimal = bigDecimal.setScale(2,BigDecimal.ROUND_HALF_UP);
-				    saldo = bigDecimal.doubleValue();
-			    }
-			    catch(NumberFormatException NFEe) {}
-				record[7]=RSdatos.getString(6);
-				record[8]="0";
+
+			saldo = CacheEnlace.getSaldoLibroAux(bd, record[1] == "NULL" ? ""
+					: record[1], record[0], record[2] == "NULL" ? ""
+					: record[2], record[3] == "NULL" ? "" : record[3]);
+
+			LNUndoSaldos.setSaldoAntLibroAux(bd, record[1] == "NULL" ? ""
+					: record[1], record[0], record[2] == "NULL" ? ""
+					: record[2], record[3] == "NULL" ? "" : record[3], saldo);
+			if (RSdatos.getDouble(5) > 0) {
+				saldo -= RSdatos.getDouble(5);
+				try {
+					BigDecimal bigDecimal = new BigDecimal(saldo);
+					bigDecimal = bigDecimal.setScale(2,
+							BigDecimal.ROUND_HALF_UP);
+					saldo = bigDecimal.doubleValue();
+				} catch (NumberFormatException NFEe) {
+				}
+				record[7] = "0";
+				record[8] = RSdatos.getString(5);
+			} else {
+				saldo += RSdatos.getDouble(6);
+				try {
+					BigDecimal bigDecimal = new BigDecimal(saldo);
+					bigDecimal = bigDecimal.setScale(2,
+							BigDecimal.ROUND_HALF_UP);
+					saldo = bigDecimal.doubleValue();
+				} catch (NumberFormatException NFEe) {
+				}
+				record[7] = RSdatos.getString(6);
+				record[8] = "0";
 			}
 			record[9] = String.valueOf(saldo);
 			RQanular.ejecutarSQL(record);
-			CacheEnlace.setSaldoLibroAux(bd,
-										record[1]=="NULL"?"":record[1], 
-						 		        record[0],
-						 		        record[2]=="NULL"?"":record[2], 
-					                    record[3]=="NULL"?"":record[3],
-					                    saldo);
+			CacheEnlace.setSaldoLibroAux(bd, record[1] == "NULL" ? ""
+					: record[1], record[0], record[2] == "NULL" ? ""
+					: record[2], record[3] == "NULL" ? "" : record[3], saldo);
 
 		}
 		RSdatos.close();
