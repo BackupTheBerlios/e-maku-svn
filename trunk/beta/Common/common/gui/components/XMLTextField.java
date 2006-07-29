@@ -72,6 +72,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	private String callExternalClass;
 	private String callExternalMethod;
 	private String calculateExportValue = null;
+	private String calculateBSExportValue = null;
 	private String maxValue = null;
 	private String type;
 	private String formatDate;
@@ -586,6 +587,19 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 
 	public void setSendRecord(String sendRecord) {
 		this.sendRecord = sendRecord;
+	}
+
+	public String getCalculateBSExportValue() {
+		return calculateBSExportValue;
+	}
+	public boolean isCalculateBSExportValue() {
+		if((calculateBSExportValue!=null) && (!"".equals(calculateBSExportValue))){
+			return true;
+		}
+		return false;
+	}
+	public void setCalculateBSExportValue(String calculateBSExportValue) {
+		this.calculateBSExportValue = calculateBSExportValue;
 	}
 
 }

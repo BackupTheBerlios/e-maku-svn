@@ -28,6 +28,9 @@ import javax.swing.SwingConstants;
 import org.jdom.Document;
 import org.jdom.Element;
 
+import bsh.EvalError;
+import bsh.Interpreter;
+
 import common.comunications.DateSender;
 import common.control.ClientHeaderValidator;
 import common.control.DateEvent;
@@ -87,14 +90,12 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
     private String returnValue;
 	private boolean returnBlankPackage = false;
 	private Vector<RecordListener> recordListener = new Vector<RecordListener>();
-		
-    public GenericData() {
-    	
-    }
+	private Interpreter shellScript;
+    public GenericData() {}
     
     public GenericData(GenericForm newGFforma, Document doc) 
     throws InvocationTargetException,NotFoundComponentException {
-        
+        new InitShell();
         this.GFforma = newGFforma;
         this.GFforma.addInitiateFinishListener(this);
         this.setLayout(new BorderLayout());
@@ -198,6 +199,7 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
  	            Vector <String>importValue = null;
  	            Vector <String>constantValue = null;
  	            String calculateExportValue = null;
+ 	            String calculateBSExportValue = null;
  	            String maxValue = null;
  	            String formatDate = null;
  	            boolean searchQuery = false;
@@ -261,6 +263,9 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
  	            	}
  	            	else if ("calculateExportValue".equals(elm.getAttributeValue("attribute"))) {
  	            		calculateExportValue=elm.getValue();
+ 	            	}
+ 	            	else if ("calculateBSExportValue".equals(elm.getAttributeValue("attribute"))) {
+ 	            		calculateBSExportValue=elm.getValue();
  	            	}
  	            	else if ("maxValue".equals(elm.getAttributeValue("attribute"))) {
  	            		maxValue=elm.getValue();
@@ -360,6 +365,8 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
 	            XMLText.setClean(clean);
 	            XMLText.setPrintable(printable);
 	            XMLText.setSendRecord(sendRecord);
+	            XMLText.setCalculateBSExportValue(calculateBSExportValue);
+	            
 	            if (exportValue!=null) {
 	            	XMLText.setExportvalue(exportValue);
 	            }
@@ -988,6 +995,14 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
 	    			xmltf.setText(formatear(valor));
 	    			xmltf.setNumberValue(valor);
 	    		}
+	    		if (xmltf.isCalculateBSExportValue()) {
+	    			String formula = xmltf.getCalculateBSExportValue();
+	    			System.out.println("Formula: " + formula);
+	    			double valor = formulaHandler(formula,true);
+	    			System.out.println("Valor  " + valor);
+	    			xmltf.setText(formatear(valor));
+	    			xmltf.setNumberValue(valor);
+	    		}
 	    		if (xmltf.isCalculateDate()) {
 	    			try {
 		    			StringTokenizer stk = new StringTokenizer(xmltf.getCalculateDate(),"+");
@@ -1026,6 +1041,14 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
 	}
 	
 	public double formulaHandler(String formula) {
+		return formulaHandler(formula, false);
+	}
+	/**
+	 * Este metodo calcula una formula
+	 * @param formula
+	 * @return Valor calculado
+	 */
+	public double formulaHandler(String formula, boolean beanshell) {
 		String formulaFinal = "";
 		int max = formula.length();
 		String acumText = "";
@@ -1048,6 +1071,16 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
 		if (acumText.length() > 0) {
 			formulaFinal += GFforma.getExteralValues(acumText);
 		}
+		if (beanshell) {
+			try {
+				System.out.println("Formula final : " +  formulaFinal);
+				Double val = (Double) shellScript.eval(formulaFinal);
+				return val.doubleValue();
+			} catch (EvalError e) {
+				e.printStackTrace();
+			}
+		}
+		
 		return ((Double)FormulaCalculator.operar(formulaFinal)).doubleValue();
 	}
 
@@ -1090,6 +1123,15 @@ public class GenericData extends JPanel implements DateListener, AnswerListener,
 		for (int i = 0; i < lista.size(); i++) {
 			RecordListener listener = (RecordListener) lista.elementAt(i);
 			listener.arriveRecordEvent(event);
+		}
+	}
+	
+	class InitShell extends Thread {
+		public InitShell() {
+			start();
+		}
+		public void run() {
+			shellScript = new Interpreter();
 		}
 	}
 }
