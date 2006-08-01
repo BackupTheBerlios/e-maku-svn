@@ -4078,4 +4078,11 @@
     <es_ES></es_ES>
     <en_US>Credito</en_US>
   </sentence>  
+  <sentence>
+    <key>DIFERENCIA_CONTABLE</key>
+    <es_CO>Diferencia Contable</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>countable difference </en_US>
+  </sentence>  
 </language>
