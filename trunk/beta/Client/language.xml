@@ -1415,6 +1415,13 @@
     <en_US>Cellar</en_US>
   </sentence>
   <sentence>
+    <key>BODEGA_TMP</key>
+    <es_CO>Bodega de traslado</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Cellar of transfer</en_US>
+  </sentence>
+  <sentence>
     <key>NBODEGA</key>
     <es_CO>Nueva Bodega</es_CO>
     <es_EC></es_EC>

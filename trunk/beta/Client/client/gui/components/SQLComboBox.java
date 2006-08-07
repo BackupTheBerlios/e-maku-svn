@@ -24,6 +24,7 @@ package client.gui.components;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda </A>
  */
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -36,6 +37,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.swing.JComboBox;
+import javax.swing.UIManager;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
@@ -231,6 +233,7 @@ public class SQLComboBox extends JComboBox implements
          	}
          	else if ("enabled".equals(element.getAttributeValue("attribute"))) {
                 this.setEnabled(Boolean.parseBoolean(value));
+         		UIManager.getDefaults().put("ComboBox.disabledForeground",Color.BLACK);
          	}
          	else if ("driverEvent".equals(element.getAttributeValue("attribute"))) {
          		String id="";
@@ -404,7 +407,7 @@ public class SQLComboBox extends JComboBox implements
 	/**
 	 * Este metodo se desprende de la implementacion de PopupMenuListener y se 
 	 * encarga de generar una logica despues de la seleccion del JComboBox, 
-	 * por ejemplo exportar un valor despues de la selecci�n.
+	 * por ejemplo exportar un valor despues de la selección.
 	 */
 	
 	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
