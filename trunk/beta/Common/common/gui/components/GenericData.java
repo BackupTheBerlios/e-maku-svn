@@ -691,8 +691,15 @@ public class GenericData extends JPanel implements DateListener,
 		}
 	}
 
+	public void validPackage(Element args) throws Exception {
+		getPackage(args);
+	}
+	
 	public Element getPackage(Element args) throws Exception {
 		Element pack = new Element("package");
+		String errorMessage = null;
+		boolean error = false;
+		
 		Iterator it = args.getChildren().iterator();
 		while (it.hasNext()) {
 
@@ -707,12 +714,39 @@ public class GenericData extends JPanel implements DateListener,
 							":");
 					double maximo = formulaHandler(stk.nextToken());
 					double checkValue = formulaHandler(stk.nextToken());
+					System.out.println("comparando maximo: "+maximo+" checkvalue: "+checkValue);
 					if (maximo < checkValue) {
-						throw new Exception(Language.getWord("ERR_MAX_VALUE"));
+						error=true;
 					}
 				} catch (NoSuchElementException NSEe) {
-					throw new Exception(Language.getWord("ERR_MAX_VALUE"));
+					error=true;
 				}
+			}
+			
+			if ("equalsValue".equals(arg.getAttributeValue("attribute"))) {
+				try {
+					StringTokenizer stk = new StringTokenizer(arg.getValue(),":");
+					double val1 = formulaHandler(stk.nextToken());
+					double val2 = formulaHandler(stk.nextToken());
+					
+					if (val1 != val2) {
+						error=true;
+					}
+				} catch (NoSuchElementException NSEe) {
+					error=true;
+				}
+			}
+			if ("errorMessage".equals(arg.getAttributeValue("attribute"))) {
+				errorMessage = arg.getValue();
+			}
+		}
+		
+		if (error) {
+			if (errorMessage!=null) {
+				throw new Exception(errorMessage);
+			}
+			else {
+				throw new Exception(Language.getWord("ERR_EQUALS_VALUE"));
 			}
 		}
 

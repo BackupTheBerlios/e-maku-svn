@@ -2820,6 +2820,13 @@
     <en_US>Error 239: Inconsistency in the total to pay</en_US>
   </sentence>
   <sentence>
+    <key>ERR_EQUALS_VALUE</key>
+    <es_CO>Error 239: Inconsistencia en el total a pagar</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Error 239: Inconsistency in the total to pay</en_US>
+  </sentence>
+  <sentence>
     <key>COTIZACIONES</key>
     <es_CO>Cotizaciones</es_CO>
     <es_EC></es_EC>
@@ -4092,4 +4099,19 @@
     <es_ES></es_ES>
     <en_US>countable difference </en_US>
   </sentence>  
+  <sentence>
+    <key>TRANSPORTADORA</key>
+    <es_CO>Transportadora</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Transporter</en_US>
+  </sentence>
+  <sentence>
+    <key>CONDUCTOR</key>
+    <es_CO>Conductor</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Conductor</en_US>
+  </sentence>
+</language>  
 </language>
