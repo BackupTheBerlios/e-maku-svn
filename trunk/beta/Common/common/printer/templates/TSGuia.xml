@@ -1,0 +1,67 @@
+<emaku_template type="PLAIN">
+		<settings width="144" height="64" />
+		<metadata>
+				<scp row="1" col="1">ESC</scp>
+				<scp row="1" col="2">C</scp>
+				<scp row="1" col="3">66</scp>
+				<scp row="1" col="5">ETB</scp>
+				<scp row="1" col="6">SI</scp>
+				<scp row="1" col="7">ETB</scp>
+				<scp row="66" col="1">DC2</scp>
+				<scp row="66" col="2">FF</scp>
+				<scp row="66" col="2">EOT</scp>
+				<!-- Datos personales -->
+				<field row="1" col="1" type="STRING">Guia Nro.</field>
+				<field row="1" col="23" type="STRING">Pasto</field>
+				<field row="2" col="1" type="STRING">F.A URIBE &amp; CIA. LTDA. de Pasto remiten, por conducto del camión marca</field>
+				<field row="2" col="132" type="STRING">,</field>
+				<field row="3" col="1" type="STRING">Placas Nro</field>
+				<field row="3" col="33" type="STRING">de propiedad del Señor</field>
+				<field row="3" col="116" type="STRING">Conducido por el señor</field>
+				<field row="4" col="60" type="STRING">Identificado con C.C.</field>
+				<field row="4" col="96" type="STRING">Para entregar en buen estado, dentro de</field>
+				<field row="4" col="139" type="STRING">dias</field>
+				<field row="5" col="1" type="STRING">en la zona</field>
+				<field row="5" col="71" type="STRING">por cuenta y riesgo de</field>
+				<!-- Informacion detallada de productos -->
+				<field row="8" col="3" type="STRING">Referencia</field>
+				<field row="8" col="47" type="STRING">Descripcion</field>
+				<field row="8" col="101" type="STRING">Unidad de venta</field>
+				<field row="8" col="131" type="STRING">Cantidad</field>
+				<!-- Pie de pagina -->
+				<field row="51" col="1" type="STRING">Observaciones</field>
+				<field row="51" col="119" type="STRING">Total:</field>
+				<field row="62" col="32" type="STRING">Recibi Conforme</field>
+				<field row="62" col="102" type="STRING">Conductor</field>
+				<!-- Dibujo de lineas -->
+				<line row="7" col="1" length="144" charfill="=" align="horizontal" />
+				<line row="9" col="1" length="144" charfill="=" align="horizontal" />
+				<line row="49" col="1" length="144" charfill="=" align="horizontal" />
+				<line row="61" col="24" length="33" charfill="_" align="horizontal" />
+				<line row="61" col="92" length="33" charfill="_" align="horizontal" />
+				<line row="10" col="15" length="43" charfill="|" align="vertical" />
+				<line row="10" col="90" length="43" charfill="|" align="vertical" />
+				<line row="10" col="124" length="43" charfill="|" align="vertical" />
+				<field row="8" col="15" type="STRING">|</field>
+				<field row="8" col="90" type="STRING">|</field>
+				<field row="8" col="124" type="STRING">|</field>
+		</metadata>
+		<package>
+				<field row="9" col="12" type="STRING" />
+				<field row="10" col="12" type="STRING" />
+				<field row="11" col="12" type="STRING" />
+				<field row="12" col="12" type="STRING" />
+				<field row="13" col="12" type="STRING" />
+		</package>
+		<package>
+				<subpackage rowInit="10">
+						<field col="1" type="STRING" />
+						<field col="17" type="STRING" />
+						<field col="92" type="STRING" />
+						<field col="139" width="4" type="NUMERIC" mask="####" />
+				</subpackage>
+		</package>
+		<!--  <package>
+				<field row="57" col="1" type="TEXT" width="90" height="3" />
+				</package> -->
+</emaku_template>
