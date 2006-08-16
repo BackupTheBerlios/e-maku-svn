@@ -11,7 +11,7 @@
 				<scp row="66" col="2">FF</scp>
 				<scp row="66" col="2">EOT</scp>
 				<!-- Datos personales -->
-				<field row="1" col="1" type="STRING">Guia Nro.</field>
+				<field row="1" col="2" type="STRING">Guia Nro.</field>
 				<field row="1" col="23" type="STRING">Pasto</field>
 				<field row="2" col="1" type="STRING">F.A URIBE &amp; CIA. LTDA. de Pasto remiten, por conducto del camión marca</field>
 				<field row="2" col="132" type="STRING">,</field>
@@ -39,19 +39,31 @@
 				<line row="49" col="1" length="144" charfill="=" align="horizontal" />
 				<line row="61" col="24" length="33" charfill="_" align="horizontal" />
 				<line row="61" col="92" length="33" charfill="_" align="horizontal" />
-				<line row="10" col="15" length="43" charfill="|" align="vertical" />
-				<line row="10" col="90" length="43" charfill="|" align="vertical" />
-				<line row="10" col="124" length="43" charfill="|" align="vertical" />
+				<line row="10" col="15" length="39" charfill="|" align="vertical" />
+				<line row="10" col="90" length="39" charfill="|" align="vertical" />
+				<line row="10" col="124" length="39" charfill="|" align="vertical" />
 				<field row="8" col="15" type="STRING">|</field>
 				<field row="8" col="90" type="STRING">|</field>
 				<field row="8" col="124" type="STRING">|</field>
 		</metadata>
 		<package>
-				<field row="9" col="12" type="STRING" />
-				<field row="10" col="12" type="STRING" />
-				<field row="11" col="12" type="STRING" />
-				<field row="12" col="12" type="STRING" />
-				<field row="13" col="12" type="STRING" />
+				<field row="3" col="56" type="STRING" />
+				<field row="4" col="1" type="STRING" />
+				<field row="4" col="82" type="STRING" />
+				<field row="2" col="72" type="STRING" />
+				<field row="3" col="13" type="STRING" />
+		</package>
+		<package>
+				<field row="1" col="11" type="STRING" />
+		</package>
+		<package>
+				<field row="1" col="29" type="STRING" />
+		</package>
+		<package>
+				<field row="5" col="12" type="STRING" />
+		</package>
+		<package>
+				<field row="5" col="94" type="STRING" />
 		</package>
 		<package>
 				<subpackage rowInit="10">
@@ -61,7 +73,10 @@
 						<field col="139" width="4" type="NUMERIC" mask="####" />
 				</subpackage>
 		</package>
-		<!--  <package>
-				<field row="57" col="1" type="TEXT" width="90" height="3" />
-				</package> -->
+		<package>
+				<field row="51" col="139" width="4" type="NUMERIC" mask="####" />
+		</package>
+		<package>
+				<field row="52" col="1" type="TEXT" width="90" height="3" />
+		</package>
 </emaku_template>

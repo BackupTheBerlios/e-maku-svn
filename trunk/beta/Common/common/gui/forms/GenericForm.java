@@ -1275,7 +1275,6 @@ public class GenericForm extends JInternalFrame{
 	
 	public Element getPackage(Element element) throws VoidPackageException {
 		
-
 		Element pack = new Element("package");
 		boolean blankPackage = false;
 		boolean nullField = false;
@@ -1330,6 +1329,10 @@ public class GenericForm extends JInternalFrame{
 		}
 		
 		return pack;
+	}
+	
+	public Element getPrintPackage(Element element) throws VoidPackageException {
+		return getPackage(element);
 	}
 	
 	public void validMultiPackage (Element elm) throws MultiPackageException {
