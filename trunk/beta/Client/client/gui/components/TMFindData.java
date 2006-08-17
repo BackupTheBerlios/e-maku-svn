@@ -95,7 +95,6 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     private int keyLink;
     private Vector impValues;
     private HashMap<String,Integer> keysExports;
-    
     private boolean updateQuery;
     private HashMap importTotalCol;
     private boolean loadingQuery = false;
@@ -1567,8 +1566,8 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
         	}
         	
         	for(int i=0; i < VdataRows.size(); i++) {
-        		String strData = getValueAt(i,tagDataColumn).toString().trim();
-        		if (strData.equals(tagDataValue)){
+        		Object strData = getValueAt(i,tagDataColumn); 
+        		if (strData!=null && strData.equals(tagDataValue)){
         			deleteRow(i);
        				i --;
         		}
