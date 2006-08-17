@@ -752,9 +752,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 				for (int i = 0; i < max && fullRow; i++) {
 
 					for (int j = 0; j < ATFDargs.length; j++) {
-						String cell = TMFDtabla.getValueAt(i, j).toString()
-								.trim();
-						if ("".equals(cell) && j > 0) {
+						Object cell = TMFDtabla.getValueAt(i, j);
+						if (cell!=null && "".equals(cell.toString().trim()) && j > 0) {
 							return;
 						} else if ("".equals(cell)) {
 							fullRow = false;
