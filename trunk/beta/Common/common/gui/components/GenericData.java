@@ -70,49 +70,27 @@ public class GenericData extends JPanel implements DateListener,
 		AnswerListener, InitiateFinishListener, ChangeExternalValueListener {
 
 	private static final long serialVersionUID = 3911530078319143164L;
-
 	private GenericForm GFforma;
-
 	private String Sargs;
-
 	private String sqlLocal = null;
-
 	private String enlaceTabla = "";
-
 	private String namebutton = "SAVE";
-
 	private String driverEvent;
-
 	private String returnValue;
-
 	private boolean disableAll;
-
 	private boolean havePanel = true;
-
 	private boolean search;
-
 	private boolean returnBlankPackage = false;
-
 	private boolean enablebutton = true;
-
 	private ChangeValueEvent CVEevent;
-
-	private Interpreter shellScript;
-
 	private Vector<XMLTextField> VFields;
-
 	private Vector<String> sql;
-
 	private Vector<String> sqlCode = null;
-
 	private Vector<String> keySQL;
-
 	private Vector<AnswerListener> AnswerListener = new Vector<AnswerListener>();
-
 	private Vector<ChangeValueListener> changeValueListener = new Vector<ChangeValueListener>();
-
 	private Vector<RecordListener> recordListener = new Vector<RecordListener>();
-
+	private Interpreter shellScript;
 	public GenericData() {
 	}
 

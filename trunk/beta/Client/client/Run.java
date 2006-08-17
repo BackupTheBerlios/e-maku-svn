@@ -7,11 +7,13 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+import bsh.Interpreter;
 import client.gui.components.MainWindow;
 import client.gui.forms.Connection;
 import client.misc.ClientConst;
 import client.misc.settings.ConfigFile;
 import client.misc.settings.ConfigFileNotLoadException;
+
 import common.comunications.SocketConnector;
 import common.gui.forms.FirstDialog;
 import common.misc.language.Language;
@@ -41,12 +43,10 @@ import common.misc.language.Language;
  *         Cepeda </A>
  */
 public class Run {
+	
+	public static final Interpreter shellScript = new Interpreter();;
 
-    /*
-     * Chambonadas que toca hacer cuando no sabes como se deben hacer las cosas ...
-     */
-
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 
         try {
         	//new Run();
@@ -59,7 +59,7 @@ public class Run {
             SkinLookAndFeel.setSkin(skin);
             UIManager.setLookAndFeel(new SkinLookAndFeel());*/
              
-            Font f = new Font("ARIAL", Font.PLAIN, 12);
+            Font f = new Font("Tahoma", Font.PLAIN, 12);
             UIManager.put("Menu.font",			f);
             UIManager.put("MenuItem.font",		f);
             UIManager.put("Button.font",		f);
@@ -76,7 +76,6 @@ public class Run {
             UIManager.put("InternalFrame.font",	f);
             UIManager.put("Table.font",			f);
             UIManager.put("TabbedPane.font",	f);
-
             ConfigFile.Cargar();
             new Connection();
 
@@ -96,9 +95,9 @@ public class Run {
     	int confirm = -1;
         try {
         	confirm=JOptionPane.showConfirmDialog(
-        			MainWindow.getRefWindow(),
-        			Language.getWord("CLOSE_CURRENT_APP"),
-        			"",JOptionPane.YES_NO_OPTION);
+        									MainWindow.getRefWindow(),
+        									Language.getWord("CLOSE_CURRENT_APP"),
+        									"",JOptionPane.YES_NO_OPTION);
     		if(confirm==JOptionPane.YES_OPTION){
     			SocketConnector.getSock().close();
     		}

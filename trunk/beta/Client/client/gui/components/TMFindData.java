@@ -33,8 +33,9 @@ import javax.swing.table.AbstractTableModel;
 import org.jdom.Document;
 import org.jdom.Element;
 
+import client.Run;
+
 import bsh.EvalError;
-import bsh.Interpreter;
 
 import common.gui.components.ChangeValueEvent;
 import common.gui.components.ChangeValueListener;
@@ -94,7 +95,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     private int keyLink;
     private Vector impValues;
     private HashMap<String,Integer> keysExports;
-    private Interpreter shellScript;
+    
     private boolean updateQuery;
     private HashMap importTotalCol;
     private boolean loadingQuery = false;
@@ -134,7 +135,6 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 		VdataRows = new Vector<Vector<Object>>();
         importTotalCol 	= new HashMap<String,String>();
 
-		new InitShell(this).start();
 		List Lrows = doc.getRootElement().getChildren("row");
         Iterator Irows = Lrows.iterator();
         GFforma.addInitiateFinishListener(this);
@@ -184,7 +184,6 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 		  Hashtable externalValues,
 		  ArgsTableFindData[] ATFDargs) {
     	
-		new InitShell(this).start();
 		this.GFforma=GFforma;
         this.sqlCode=sqlCode;
         this.rows=rows;
@@ -480,17 +479,6 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 	        calcular(rowIndex);
 	       	totalizar();
         }
-        /*if (ATFDargs[colIndex].getType().equals("DATE")) {
-	        	try {
-	        		java.sql.Date.valueOf((String)value);
-	        		/*Format formatter = new SimpleDateFormat("yyyy-mm-dd");
-	        		value = formatter.format(value);*/
-	        	/*}
-	        	catch (IllegalArgumentException IAEe) {
-	        		value = "";
-	        	}
-           	updateCells(value,rowIndex,colIndex);
-        }*/
     }
     
     private void calcular(int rowIndex) {
@@ -583,7 +571,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 	        		result = FormulaCalculator.operar(newVar);	
 	        }
 	        else {
-	        		result = shellScript.eval(newVar);
+	        		result = Run.shellScript.eval(newVar);
 	        }
 	        if ("INTEGER".equals(ATFDargs[col].getType())) {
 		        	Integer resultado;
@@ -635,10 +623,10 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     }
     
     private int getColIndex(String key) {
-    	 	int col=0;
-    	 	if ((key.charAt(0)>=65 && key.charAt(0)<=90) || (key.charAt(0)>=97 && key.charAt(0)<=122)) {
+    	int col=0;
+    	if ((key.charAt(0)>=65 && key.charAt(0)<=90) || (key.charAt(0)>=97 && key.charAt(0)<=122)) {
 			
-    	 		/* cuando la letra es mayuscula */
+    		/* cuando la letra es mayuscula */
              if (key.charAt(0)<=90) {
                  col = key.charAt(0)-65;
              }
@@ -1442,7 +1430,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 	    	for (int i=0; i < rows && !getValueAt(i,0).equals("") ; i++) {
 	    		try {
 	    			String script = reemplazarFormula(formula,i,null);
-					Integer result = (Integer)shellScript.eval(script);
+					Integer result = (Integer)Run.shellScript.eval(script);
 					if (result.intValue() == 0) {
 						count ++;
 					}
@@ -1551,13 +1539,9 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
         Iterator Irows = Lrows.iterator();
         
         if (tagDataColumn==-1) {
-            /*
-             * Se limpia la tabla antes de desplegar la consulta nueva
-             */
+            /* Se limpia la tabla antes de desplegar la consulta nueva */
             clean();
-            /*
-             * Cargando informacion
-             */
+            /* Cargando informacion */
             
             //for (int i=0;Irows.hasNext() && i<rows;i++) {
             for (int i=0;Irows.hasNext();i++) {
@@ -1731,21 +1715,6 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 		}
 	}
 	
-	class InitShell extends Thread {
-		Object ref;
-		public InitShell(Object ref) {
-			this.ref = ref;
-		}
-		public void run() {
-			try {
-				shellScript = new Interpreter();
-				shellScript.set("func",ref);
-			} catch (EvalError e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
 	public void changeExternalValue(ChangeExternalValueEvent e) {
 		if (importTotalCol.containsValue(e.getExternalValue())) {
 			for (int i=0;i<rows;i++) {
