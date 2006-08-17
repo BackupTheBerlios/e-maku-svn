@@ -14,6 +14,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -22,8 +23,8 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
-import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -42,6 +43,7 @@ import javax.swing.table.TableColumn;
 import org.jdom.Document;
 import org.jdom.Element;
 
+import com.toedter.calendar.JDateChooser;
 import common.gui.components.AnswerEvent;
 import common.gui.components.AnswerListener;
 import common.gui.components.ErrorDataException;
@@ -99,8 +101,6 @@ public class TableFindData extends JPanel implements AnswerListener,
 	private Color colorBackground;
 	private boolean enabled = true;
 	private boolean protectSelected;
-	private final boolean DOUBLEVALUE = true;
-	private final boolean INTVALUE = false;
 	private int valideLink = -1;
 	private int keyLink = -1;
 	private boolean returnNullValue;
@@ -506,13 +506,14 @@ public class TableFindData extends JPanel implements AnswerListener,
 			}
 		}
 
-		JTtabla.setDefaultRenderer(BigDecimal.class, new FormatTableNumber(DOUBLEVALUE));
-		JTtabla.setDefaultRenderer(Integer.class, new FormatTableNumber(INTVALUE));
-		// JTtabla.setDefaultRenderer(Date.class,new FormatTableDate());
+		JTtabla.setDefaultRenderer(BigDecimal.class, new FortmaCell(Double.class));
+		JTtabla.setDefaultRenderer(Integer.class, new FortmaCell(Integer.class));
+		JTtabla.setDefaultRenderer(Date.class, new FortmaCell(Date.class));
+		
+		JTtabla.setDefaultEditor(BigDecimal.class, new CellEditor(Double.class));
+		JTtabla.setDefaultEditor(Integer.class, new CellEditor(Integer.class));
+		JTtabla.setDefaultEditor(Date.class,new CellEditor(Date.class));
 
-		JTtabla.setDefaultEditor(BigDecimal.class, new CellEditor(DOUBLEVALUE));
-		JTtabla.setDefaultEditor(Integer.class, new CellEditor(INTVALUE));
-		// JTtabla.setDefaultEditor(Date.class, new CellEditorDate());
 		GFforma.addChangeExternalValueListener(this);
 		JTtabla.changeSelection(0, 0, false, false);
 		TMFDtabla.addTableModelListener(new TModelListener(JTtabla));
@@ -816,26 +817,10 @@ public class TableFindData extends JPanel implements AnswerListener,
 			TMFDtabla.setQuery(doc, true);
 		}
 	}
+	
+	
 }
 
-class CellEditorDate extends DefaultCellEditor {
-
-	private static final long serialVersionUID = -3858671856890438224L;
-
-	public CellEditorDate() {
-		super(new JFormattedTextField(new SimpleDateFormat("yyyy-MM-dd")));
-	}
-
-	public Component getTableCellEditorComponent(JTable table, Object value,
-			boolean isSelected, int row, int column) {
-		return super.getComponent();
-	}
-
-	public Object getCellEditorValue() {
-		return ((JFormattedTextField) super.getComponent()).getText();
-
-	}
-}
 
 
 /**
@@ -861,49 +846,58 @@ class CellEditorDate extends DefaultCellEditor {
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  */
 
-class CellEditor extends DefaultCellEditor {
+class CellEditor extends AbstractCellEditor implements TableCellEditor {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4269349473866585354L;
-
-	private boolean typeData;
-
-	public CellEditor(boolean typeData) {
-		super(new JTextField());
-		this.typeData = typeData;
+	private Class c;
+	private JTextField jtf;
+	private JDateChooser jtfd;
+	
+	public CellEditor(Class c) {
+		this.c = c;
+		jtf = new JTextField();
+		jtfd = new JDateChooser();
+		jtfd.setDateFormatString("yyyy-MM-dd");
 	}
 
-	public Component getTableCellEditorComponent(JTable table, Object value,
-			boolean isSelected, int row, int column) {
-		((JTextField) super.getComponent()).setText("");
-		return super.getComponent();
+	public Component getTableCellEditorComponent(JTable table, Object value,boolean isSelected, int row, int column) {
+		if (Date.class.equals(c)) {
+			if (value != null)
+				jtfd.setDate((Date) value);
+			return jtfd;
+		}
+		else {
+			jtf.setText("");
+			return jtf; 
+		}
 	}
 
 	public Object getCellEditorValue() {
-		Number value;
-		if (typeData) {
+		Object valueRet = null;
+		if (Double.class.equals(c)) {
 			try {
-				value = new Double(((JTextField) super.getComponent())
-						.getText());
-				BigDecimal bd = new BigDecimal(value.doubleValue());
-				value = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+				valueRet = new Double(jtf.getText());
+				BigDecimal bd = new BigDecimal(((Number)valueRet).doubleValue());
+				valueRet = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
 			} catch (NumberFormatException NFEe) {
 				BigDecimal bd = new BigDecimal(0.00);
-				value = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
-			}
-		} else {
-			try {
-				value = new Integer(((JTextField) super.getComponent())
-						.getText());
-			} catch (NumberFormatException NFEe) {
-				value = new Integer(0);
+				valueRet = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
 			}
 		}
-		return value;
+		else if (Integer.class.equals(c)){
+			try {
+				valueRet = new Integer(jtf.getText());
+			} catch (NumberFormatException NFEe) {
+				valueRet = new Integer(0);
+			}
+		}
+		else if (Date.class.equals(c)) {
+			valueRet = jtfd.getDate();
+		}
+		return valueRet;
 	}
 }
+
 
 /**
  * 
@@ -927,7 +921,7 @@ class CellEditor extends DefaultCellEditor {
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * 
  */
-class FormatTableNumber extends DefaultTableCellRenderer {
+class FortmaCell extends DefaultTableCellRenderer {
 
 	/**
 	 * 
@@ -935,22 +929,34 @@ class FormatTableNumber extends DefaultTableCellRenderer {
 	private static final long serialVersionUID = -1516957430275114235L;
 
 	String mascara;
-
-	public FormatTableNumber(boolean typeData) {
+	Class _class;
+	
+	public FortmaCell(Class c) {
 		super();
-		this.setHorizontalAlignment(SwingConstants.RIGHT);
-		if (typeData) {
+		this._class = c;
+		if (Double.class.equals(c)) {
+			this.setHorizontalAlignment(SwingConstants.RIGHT);
 			mascara = "###,###,##0.00";
-		} else {
+		}
+		else if (Integer.class.equals(c)){
+			this.setHorizontalAlignment(SwingConstants.RIGHT);
 			mascara = "###,###,##0";
+		}
+		else if (Date.class.equals(c)){
+			mascara = "yyyy-MM-dd";
 		}
 	}
 
 	public void setValue(Object value) {
-		NumberFormat nf = NumberFormat.getNumberInstance();
-		DecimalFormat form = (DecimalFormat) nf;
-		form.applyPattern(mascara);
-		value = form.format(value);
-		super.setValue(value);
+		if (Double.class.equals(_class) || Integer.class.equals(_class)) {
+			NumberFormat nf = NumberFormat.getNumberInstance();
+			DecimalFormat form = (DecimalFormat) nf;
+			form.applyPattern(mascara);
+			super.setValue(value!=null?form.format(value):null);
+		}
+		else if (Date.class.equals(_class)) {
+			SimpleDateFormat sdf = new SimpleDateFormat(mascara);
+			super.setValue(value!=null?sdf.format(value):null);
+		}
 	}
 }

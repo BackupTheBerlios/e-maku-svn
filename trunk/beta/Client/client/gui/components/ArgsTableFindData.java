@@ -49,7 +49,7 @@ public class ArgsTableFindData {
     private boolean returnBlankCol;
     private boolean returnNullCol;
     private boolean printable = false;
-    
+
     /**
      * Este constructor recibe un StringTokenizer como parametro
      * y de este genera todos los argumentos necesarios para 
@@ -97,7 +97,7 @@ public class ArgsTableFindData {
 	    	        if (value.equals("STRING")) 
 			            typeDate = new String();
 			        else if (value.equals("BOOLEAN"))
-			            typeDate = new Boolean(false);
+			           typeDate = new Boolean(false);
 			        else if (value.equals("INT") || type.equals("INTEGER"))
 			            typeDate = new Integer(0);
 			        else if (value.equals("DECIMAL"))
@@ -105,7 +105,7 @@ public class ArgsTableFindData {
 			        else if (value.equals("COMBOSQL"))
 			            typeDate = new String();
 			        else if (value.equals("DATE"))
-			            typeDate = new String();
+			            typeDate = null;
 	    		}
 	    		else if (attrib.equals("defaultValue")) {
 	    			tmpDefaultValue = value;
@@ -320,5 +320,4 @@ public class ArgsTableFindData {
 	public void setPrintable(boolean printable) {
 		this.printable = printable;
 	}
-
 }

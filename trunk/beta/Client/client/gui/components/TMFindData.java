@@ -206,7 +206,8 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
             for (int j=0;j<ATFDargs.length;j++) {
                 /* Se define los objetos deacuerdo a su definicion de los
                    argumentos */
-            		newRows.addElement(ATFDargs[j].getTypeDate());
+            		newRows.addElement(null);
+            		//newRows.addElement(ATFDargs[j].getTypeDate());
             }
             /* Se adiciona la nueva fila al vector de filas */
             VdataRows.addElement(newRows);
@@ -370,7 +371,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 		                    
 		                    /* Que mierdero todo esto */
 
-		                    if (ATFDargs[i].getTypeDate().getClass().equals(Boolean.class)) {
+		                    if (ATFDargs[i].getType().equals("BOOLEAN")) {
 		                        if (newValue.getValue().equals("t") ||
 		                            newValue.getValue().equals("T") ||    
 		                            newValue.getValue().equals("true") ||    
@@ -479,17 +480,17 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 	        calcular(rowIndex);
 	       	totalizar();
         }
-        if (ATFDargs[colIndex].getType().equals("DATE")) {
+        /*if (ATFDargs[colIndex].getType().equals("DATE")) {
 	        	try {
 	        		java.sql.Date.valueOf((String)value);
 	        		/*Format formatter = new SimpleDateFormat("yyyy-mm-dd");
 	        		value = formatter.format(value);*/
-	        	}
+	        	/*}
 	        	catch (IllegalArgumentException IAEe) {
 	        		value = "";
 	        	}
            	updateCells(value,rowIndex,colIndex);
-        }
+        }*/
     }
     
     private void calcular(int rowIndex) {
@@ -780,7 +781,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
             if (totales!=null) {
 		        for (int i=0;i<totales.length;i++) {
 		            double tmpTotal=0;
-		            for (int j=0;j<getRowCount() && !getValueAt(j,0).equals("");j++) {
+		            for (int j=0;j<getRowCount() && getValueAt(j,0)!=null && !getValueAt(j,0).equals("") && getValueAt(j,totales[i])!=null;j++) {
 		                tmpTotal+=Double.parseDouble(getValueAt(j,totales[i]).toString());
 		            }
 		            totalCol.remove(totales[i]+"");
@@ -809,6 +810,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
             }
         }
         catch(NullPointerException NPEe) {
+        	NPEe.printStackTrace();
             message("ERR_TOTAL");
             errFormula=true;
         }
@@ -1027,7 +1029,8 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
                 //if (!initSQL || ATFDargs[j].getOrderQuery()==-1 || ATFDargs[j].isClean()) {
             	if (!initSQL || ATFDargs[j].isClean()) {
             		//updateCells(ATFDargs[j].getTypeDate(),i,j);
-            		vrow.set(j,ATFDargs[j].getTypeDate());
+            		//vrow.set(j,ATFDargs[j].getTypeDate());
+            		vrow.set(j,null);
             		fireTableCellUpdated(i,j);
                 }
     		}
@@ -1040,13 +1043,16 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
      * Este metodo retorna el tipo de dato de una celda
      */
 	public Class<?> getColumnClass(int colIndex) {
+		if (ATFDargs[colIndex].getType().equals("DATE")) {
+			return Date.class;
+		}
 		return ATFDargs[colIndex].getTypeDate().getClass(); 
     }
     
     private void message(String keyError) {
     	final String error = keyError;
-		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
+		//try {
+			SwingUtilities.invokeLater(new Runnable() {
 		          public void run() {
 		        	  JLabel label = new JLabel(Language.getWord(error));
 		              JOptionPane.showInternalMessageDialog(GFforma.getDesktopPane(),
@@ -1054,11 +1060,11 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 		                      "Error", JOptionPane.ERROR_MESSAGE);	
 		          }
 			});
-		} catch (InterruptedException e) {
+		/*} catch (InterruptedException e) {
 			//e.printStackTrace();
 		} catch (InvocationTargetException e) {
 			//e.printStackTrace();
-		}
+		}*/
         
     }
 
@@ -1462,14 +1468,14 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
             for (int j=0;j<getColumnCount();j++) {
                 for (int k=0;k<getColumnCount();k++) {
 	                if (ATFDargs[k].getOrderReturn()==j) {
-	                    String value = getValueAt(i, k).toString();
-	                    if (value.equals("") && !(ATFDargs[k].isReturnBlankCol() || ATFDargs[k].isReturnNullCol())) {
+	                    Object value = getValueAt(i, k);
+	                    if (value==null && !(ATFDargs[k].isReturnBlankCol() || ATFDargs[k].isReturnNullCol())) {
 	                        valueBlank=true;
 	                        break;
 	                    }
 	                    Element field = new Element("field");
 	                    if (ATFDargs[k].getType().equals("COMBOSQL")) {
-	 	                   StringTokenizer values = new StringTokenizer(getValueAt(i, k).toString()," ");
+	 	                   StringTokenizer values = new StringTokenizer(value.toString()," ");
 		                   String tmp="";
 		                   while (true)
 		                       try {
@@ -1493,7 +1499,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 	                        		field.setText("NULL");
 	                        }
 	                        else {
-	                        		field.setText(getValueAt(i, k).toString());
+	                        		field.setText(value.toString());
 	                        }
 	                    }
 	                    subpack.addContent(field);
@@ -1553,7 +1559,8 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
              * Cargando informacion
              */
             
-            for (int i=0;Irows.hasNext() && i<rows;i++) {
+            //for (int i=0;Irows.hasNext() && i<rows;i++) {
+            for (int i=0;Irows.hasNext();i++) {
                 Element Erow = (Element) Irows.next();
                 List Lcol = Erow.getChildren();
 
@@ -1612,7 +1619,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
             String newValue = Ecol.getValue();
                 
             /*  Que mierdero todo esto */
-            if (ATFDargs[j].getTypeDate().getClass().equals(Boolean.class)) {
+            if (ATFDargs[j].getType().equals("BOOLEAN")) {
 		            	if (newValue.equals("t") ||
                         newValue.equals("T") ||    
                         newValue.equals("true") ||    
@@ -1648,7 +1655,8 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
                 }
                 catch (InvocationTargetException e) {
                     if (e.getCause().getClass().getName().equals("java.lang.NumberFormatException")) {
-                        obj = ATFDargs[j].getTypeDate();
+                        //obj = ATFDargs[j].getTypeDate();
+                    	obj = null;
                     }
                     else {
                         e.printStackTrace();
@@ -1657,7 +1665,8 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
             }
         }
         catch(IndexOutOfBoundsException e) {
-            obj = ATFDargs[j].getTypeDate();
+            //obj = ATFDargs[j].getTypeDate();
+        	obj = null;
         }
         
         return obj;
@@ -1666,7 +1675,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     public void deleteRow(int index) {
     	Vector<Object> vptype = new Vector<Object>();
         for (int j=0;j<ATFDargs.length;j++) {
-        		vptype.add(ATFDargs[j].getTypeDate());
+        		vptype.add(null);
         }
         VdataRows.add(vptype);
         VdataRows.remove(index);
@@ -1740,7 +1749,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 	public void changeExternalValue(ChangeExternalValueEvent e) {
 		if (importTotalCol.containsValue(e.getExternalValue())) {
 			for (int i=0;i<rows;i++) {
-		        if (!getValueAt(i,0).equals("")) {
+		        if (getValueAt(i,0)!=null && !getValueAt(i,0).equals("")) {
 		            calcular(i);
 		        }
 		        else {
