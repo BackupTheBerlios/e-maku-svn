@@ -8,7 +8,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -28,7 +27,6 @@ import javax.swing.SwingConstants;
 
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.output.XMLOutputter;
 
 import bsh.EvalError;
 import bsh.Interpreter;
@@ -93,6 +91,8 @@ public class GenericData extends JPanel implements DateListener,
 	private Vector<ChangeValueListener> changeValueListener = new Vector<ChangeValueListener>();
 	private Vector<RecordListener> recordListener = new Vector<RecordListener>();
 	private Interpreter shellScript;
+	private boolean done; 
+	
 	public GenericData() {
 	}
 
@@ -454,7 +454,7 @@ public class GenericData extends JPanel implements DateListener,
 					});
 
 					XMLText.addFocusListener(new FocusAdapter() {
-						public void focusLost(FocusEvent e) {
+						public void focusLost(final FocusEvent e) {
 
 							/*
 							 * if (XMLText.isExportvalue() ||
@@ -462,63 +462,74 @@ public class GenericData extends JPanel implements DateListener,
 							 * exportar(XMLText); } Comentado por que se lo
 							 * envio al primer focusLost de XMLTextField
 							 */
-
-							XMLTextField XMLRefText = (XMLTextField) e
-									.getSource();
-							if (XMLRefText.isSendRecord()) {
-								String value = null;
-								if ("NUMERIC".equals(XMLRefText.getType())) {
-									value = String.valueOf(XMLRefText
-											.getNumberValue());
-								} else {
-									value = XMLRefText.getText();
-								}
-								notificando(XMLRefText, value);
-							}
-
-							if (sqlCode.size() > 0 || sqlLocal != null) {
-								/*
-								 * El primer elemento del vector sql siempre
-								 * sera la consulta que almacenara la
-								 * informacion del objeto local
-								 */
-								if (search) {
-									String[] impValues = null;
-									if (sqlLocal != null) {
-										int argumentos = XMLRefText
-												.getImportValue().length
-												+ XMLRefText.getConstantSize();
-										impValues = new String[argumentos];
-										int i = 0;
-										for (; i < XMLRefText.getConstantSize(); i++) {
-											impValues[i] = XMLRefText
-													.getConstantValue(i);
+							Thread th = new Thread() {
+								
+								public void run() {
+									while(!done){
+	                                    try {
+											Thread.sleep(100);
 										}
-										for (; i < XMLRefText.getImportValue().length; i++) {
-											impValues[i] = GFforma
-													.getExteralValuesString(XMLRefText
-															.getImportValue()[i]);
+										catch (InterruptedException e1) {
+											e1.printStackTrace();
 										}
-
-										GFforma.cleanExternalValues();
-										if (!"".equals(XMLRefText.getText())) {
-											new GenericDataFiller(GFforma,
-													namebutton, enablebutton,
-													sqlLocal, impValues,
-													XMLRefText.getText(),
-													VFields).start();
-										}
-
 									}
-									/*
-									 * Las demas consultas seran para almacenar
-									 * la informacion de los demas objetos que
-									 * lo requieran
-									 */
-									searchOthersSqls(XMLRefText);
-									search = false;
+									XMLTextField XMLRefText = (XMLTextField) e.getSource();
+									if (XMLRefText.isSendRecord()) {
+										String value = null;
+										if ("NUMERIC".equals(XMLRefText.getType())) {
+											value = String.valueOf(XMLRefText.getNumberValue());
+										} else {
+											value = XMLRefText.getText();
+										}
+										notificando(XMLRefText, value);
+									}
+		
+									if (sqlCode.size() > 0 || sqlLocal != null) {
+										/*
+										 * El primer elemento del vector sql siempre
+										 * sera la consulta que almacenara la
+										 * informacion del objeto local
+										 */
+										if (search) {
+											String[] impValues = null;
+											if (sqlLocal != null) {
+												int argumentos = XMLRefText
+														.getImportValue().length
+														+ XMLRefText.getConstantSize();
+												impValues = new String[argumentos];
+												int i = 0;
+												for (; i < XMLRefText.getConstantSize(); i++) {
+													impValues[i] = XMLRefText
+															.getConstantValue(i);
+												}
+												for (; i < XMLRefText.getImportValue().length; i++) {
+													impValues[i] = GFforma
+															.getExteralValuesString(XMLRefText
+																	.getImportValue()[i]);
+												}
+		
+												GFforma.cleanExternalValues();
+												if (!"".equals(XMLRefText.getText())) {
+													new GenericDataFiller(GFforma,
+															namebutton, enablebutton,
+															sqlLocal, impValues,
+															XMLRefText.getText(),
+															VFields).start();
+												}
+		
+											}
+											/*
+											 * Las demas consultas seran para almacenar
+											 * la informacion de los demas objetos que
+											 * lo requieran
+											 */
+											searchOthersSqls(XMLRefText);
+											search = false;
+										}
+									}
 								}
-							}
+							};
+							th.start();
 						}
 					});
 				}
@@ -923,8 +934,7 @@ public class GenericData extends JPanel implements DateListener,
 	public void callAddAnswerListener() throws InvocationTargetException,
 			NotFoundComponentException {
 		if (driverEvent != null) {
-			GFforma
-					.invokeMethod(driverEvent, "addAnswerListener",
+			GFforma.invokeMethod(driverEvent, "addAnswerListener",
 							new Class[] { AnswerListener.class },
 							new Object[] { this });
 		}
@@ -941,7 +951,7 @@ public class GenericData extends JPanel implements DateListener,
 		} catch (InvocationTargetException ITEe) {
 			ITEe.printStackTrace();
 		}
-
+		done = true;
 	}
 
 	public String getDriverEvent() {

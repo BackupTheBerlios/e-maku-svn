@@ -1082,6 +1082,7 @@ public class GenericForm extends JInternalFrame{
     private synchronized void notificando(FinishEvent event) {
         Vector lista;
         lista = (Vector)initiateFinishListener.clone();
+        notifyAll();
         for (int i=0; i<lista.size();i++) {
             InitiateFinishListener listener = (InitiateFinishListener)lista.elementAt(i);
             listener.initiateFinishEvent(event);

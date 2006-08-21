@@ -156,31 +156,23 @@ public class TableFindData extends JPanel implements AnswerListener,
 					NFEe.printStackTrace();
 				}
 			}
-			/*
-			 * Se captura la formula aplicada en la tabla
-			 */
+			/* Se captura la formula aplicada en la tabla */
 			else if (args.getAttributeValue("attribute").equals("formula")) {
 				formulas.add(new Formula(args.getValue(), Formula.SIMPLE));
 			}
-
 			else if (args.getAttributeValue("attribute").equals("beanshell")) {
 				formulas.add(new Formula(args.getValue(), Formula.BEANSHELL));
-			} else if (args.getAttributeValue("attribute").equals(
-					"superformulas")) {
+			} else if (args.getAttributeValue("attribute").equals("superformulas")) {
 				formulas.add(new Formula(args.getValue(), Formula.SUPER));
 			} else if (args.getAttributeValue("attribute").equals("formulaNQ")) {
 				formulas.add(new Formula(args.getValue(), Formula.SIMPLENQ));
-			} else if (args.getAttributeValue("attribute")
-					.equals("beanshellNQ")) {
+			} else if (args.getAttributeValue("attribute").equals("beanshellNQ")) {
 				formulas.add(new Formula(args.getValue(), Formula.BEANSHELLNQ));
-			} else if (args.getAttributeValue("attribute").equals(
-					"superformulaNQ")) {
+			} else if (args.getAttributeValue("attribute").equals("superformulaNQ")) {
 				formulas.add(new Formula(args.getValue(), Formula.SUPERNQ));
-			} else if (args.getAttributeValue("attribute")
-					.equals("superBeanNQ")) {
+			} else if (args.getAttributeValue("attribute").equals("superBeanNQ")) {
 				formulas.add(new Formula(args.getValue(), Formula.SUPERBEANNQ));
-			} else if (args.getAttributeValue("attribute").equals(
-					"exportTotalCol")) {
+			} else if (args.getAttributeValue("attribute").equals("exportTotalCol")) {
 				StringTokenizer STexportTotalCols = new StringTokenizer(args.getValue(), ",");
 				exportTotalCols.put(new String(STexportTotalCols.nextToken()).toUpperCase(), STexportTotalCols.nextToken());
 			} else if (args.getAttributeValue("attribute").equals("tagData")) {
@@ -192,8 +184,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 			 * Se captura las columnas que generaran totales
 			 */
 			else if (args.getAttributeValue("attribute").equals("totales")) {
-				StringTokenizer STtotal = new StringTokenizer(args.getValue(),
-						",");
+				StringTokenizer STtotal = new StringTokenizer(args.getValue(),",");
 				totales = new int[STtotal.countTokens()];
 				for (int j = 0; j < totales.length; j++) {
 					int tmpTotal = 0;
@@ -214,8 +205,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 					id = args.getAttributeValue("id");
 				}
 				driverEvent.add(args.getValue() + id);
-			} else if (args.getAttributeValue("attribute").equals(
-					"driverEventRecord")) {
+			} else if (args.getAttributeValue("attribute").equals("driverEventRecord")) {
 				String id = "";
 				if (args.getAttributeValue("id") != null) {
 					id = args.getAttributeValue("id");
@@ -226,43 +216,32 @@ public class TableFindData extends JPanel implements AnswerListener,
 			} else if (args.getAttributeValue("attribute").equals("initSQL")) {
 				initSQL = args.getValue();
 			} else if (args.getAttributeValue("attribute").equals("initArgs")) {
-				StringTokenizer STargs = new StringTokenizer(args.getValue(),
-						":");
+				StringTokenizer STargs = new StringTokenizer(args.getValue(),":");
 				initArgs = new String[STargs.countTokens()];
 				for (int j = 0; j < initArgs.length; j++) {
 					initArgs[j] = STargs.nextToken();
 				}
-			} else if (args.getAttributeValue("attribute").equals(
-					"colorSelected")) {
+			} else if (args.getAttributeValue("attribute").equals("colorSelected")) {
 				colorSelected = getColor(args.getValue());
-			} else if (args.getAttributeValue("attribute").equals(
-					"colorBackground")) {
+			} else if (args.getAttributeValue("attribute").equals("colorBackground")) {
 				colorBackground = getColor(args.getValue());
 			} else if (args.getAttributeValue("attribute").equals("enabled")) {
 				enabled = Boolean.parseBoolean(args.getValue());
-			} else if (args.getAttributeValue("attribute").equals(
-					"protectSelected")) {
+			} else if (args.getAttributeValue("attribute").equals("protectSelected")) {
 				protectSelected = Boolean.parseBoolean(args.getValue());
 			} else if (args.getAttributeValue("attribute").equals("valideLink")) {
 				valideLink = Integer.parseInt(args.getValue());
 			} else if (args.getAttributeValue("attribute").equals("keyLink")) {
 				keyLink = Integer.parseInt(args.getValue());
-			} else if (args.getAttributeValue("attribute")
-					.equals("importValue")) {
+			} else if (args.getAttributeValue("attribute").equals("importValue")) {
 				impValues.add(args.getValue());
-			} else if (args.getAttributeValue("attribute").equals(
-					"importTotalCol")) {
-				StringTokenizer STexportTotalCols = new StringTokenizer(args
-						.getValue(), ",");
-				importTotalCol.put(STexportTotalCols.nextToken().toUpperCase(),
-						STexportTotalCols.nextToken());
-			} else if (args.getAttributeValue("attribute").equals(
-					"returnNullValue")) {
+			} else if (args.getAttributeValue("attribute").equals("importTotalCol")) {
+				StringTokenizer STexportTotalCols = new StringTokenizer(args.getValue(), ",");
+				importTotalCol.put(STexportTotalCols.nextToken().toUpperCase(),STexportTotalCols.nextToken());
+			} else if (args.getAttributeValue("attribute").equals("returnNullValue")) {
 				returnNullValue = Boolean.parseBoolean(args.getValue());
-			} else if (args.getAttributeValue("attribute").equals(
-					"externalValue")) {
-				StringTokenizer STexternalValue = new StringTokenizer(args
-						.getValue(), ",");
+			} else if (args.getAttributeValue("attribute").equals("externalValue")) {
+				StringTokenizer STexternalValue = new StringTokenizer(args.getValue(), ",");
 				try {
 					String idDriver = STexternalValue.nextToken();
 					String driver = STexternalValue.nextToken();
@@ -288,10 +267,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 
 				private static final long serialVersionUID = -9216942827014115821L;
 
-				public Component prepareRenderer(TableCellRenderer renderer,
-						int rowIndex, int vColIndex) {
-					Component c = super.prepareRenderer(renderer, rowIndex,
-							vColIndex);
+				public Component prepareRenderer(TableCellRenderer renderer,int rowIndex, int vColIndex) {
+					Component c = super.prepareRenderer(renderer, rowIndex,vColIndex);
 					if (rowIndex % 2 == 0
 							&& !isCellSelected(rowIndex, vColIndex)) {
 						if (colorBackground != null) {
@@ -331,9 +308,6 @@ public class TableFindData extends JPanel implements AnswerListener,
 			TMFDtabla.setTagDataColumn(tagDataColumn);
 			JTtabla = new JTable(TMFDtabla) {
 
-				/**
-				 * 
-				 */
 				private static final long serialVersionUID = -8579166961142646633L;
 
 				public Component prepareRenderer(TableCellRenderer renderer,
@@ -373,16 +347,20 @@ public class TableFindData extends JPanel implements AnswerListener,
 
 		if (driverEvent != null && keySQL != null) {
 			for (int n = 0; n < driverEvent.size(); n++) {
-				GFforma.invokeMethod(driverEvent.get(n), "addAnswerListener",
-						new Class[] { AnswerListener.class },
-						new Object[] { this });
+				GFforma.invokeMethod(
+				                     driverEvent.get(n),
+				                     "addAnswerListener",
+				                     new Class[] { AnswerListener.class },
+				                     new Object[] { this });
 			}
 		}
 
 		for (int n = 0; n < recordEvent.size(); n++) {
-			GFforma.invokeMethod(recordEvent.get(n), "addRecordListener",
-							new Class[] { RecordListener.class },
-							new Object[] { this });
+			GFforma.invokeMethod(
+			                     recordEvent.get(n),
+			                     "addRecordListener",
+			                     new Class[] { RecordListener.class },
+			                     new Object[] { this });
 		}
 
 		JScrollPane JSPtabla = new JScrollPane(JTtabla);
@@ -401,9 +379,10 @@ public class TableFindData extends JPanel implements AnswerListener,
 	private Color getColor(String color) {
 		try {
 			StringTokenizer STcolor = new StringTokenizer(color, ",");
-			return new Color(Integer.parseInt(STcolor.nextToken()), Integer
-					.parseInt(STcolor.nextToken()), Integer.parseInt(STcolor
-					.nextToken()));
+			return new Color(
+			                 Integer.parseInt(STcolor.nextToken()),
+			                 Integer.parseInt(STcolor.nextToken()),
+			                 Integer.parseInt(STcolor.nextToken()));
 		} catch (NumberFormatException NFEe) {
 			return null;
 		} catch (NoSuchElementException NSEEe) {
@@ -436,11 +415,10 @@ public class TableFindData extends JPanel implements AnswerListener,
 				if (e.getKeyCode() == KeyEvent.VK_DELETE
 						&& JTtabla.isCellEditable(JTtabla.getSelectedRow(),
 								JTtabla.getSelectedColumn())) {
-					if (valideLink >= 0
-							&& !"".equals(((String) JTtabla.getValueAt(JTtabla
-									.getSelectedRow(), keyLink)).trim())) {
-						TMFDtabla.addKeyLink((String) JTtabla.getValueAt(
-								JTtabla.getSelectedRow(), keyLink));
+					if (valideLink >= 0 && 
+						!"".equals(
+						           ((String)JTtabla.getValueAt(JTtabla.getSelectedRow(), keyLink)).trim())) {
+						TMFDtabla.addKeyLink((String) JTtabla.getValueAt(JTtabla.getSelectedRow(), keyLink));
 					}
 
 					int indice = JTtabla.getSelectedRow();
@@ -468,11 +446,9 @@ public class TableFindData extends JPanel implements AnswerListener,
 		for (int k = 0; k < ATFDargs.length; k++) {
 			try {
 				JTtabla.getColumn(JTtabla.getColumnName(k)).setMinWidth(0);
-				JTtabla.getColumn(JTtabla.getColumnName(k)).setPreferredWidth(
-						ATFDargs[k].getLengthCol());
+				JTtabla.getColumn(JTtabla.getColumnName(k)).setPreferredWidth(ATFDargs[k].getLengthCol());
 				if (ATFDargs[k].getType().equals("COMBOSQL")) {
-					TableColumn comboColumn = JTtabla.getColumn(JTtabla
-							.getColumnName(k));
+					TableColumn comboColumn = JTtabla.getColumn(JTtabla.getColumnName(k));
 					// Use the combo box as the editor in the "Favorite Color"
 					// column.
 					String exportValue = ATFDargs[k].getExportValueCombo();
@@ -485,19 +461,18 @@ public class TableFindData extends JPanel implements AnswerListener,
 											.getImportCombos(), exportValue)));
 						} else {
 							comboColumn.setCellEditor(new DefaultCellEditor(
-									new SQLComboBox(GFforma, ATFDargs[k]
-											.getSqlCombo(), ATFDargs[k]
-											.getImportCombos())));
+									new SQLComboBox(
+									                GFforma,
+									                ATFDargs[k].getSqlCombo(),
+									                ATFDargs[k].getImportCombos())));
 						}
 					} else {
 						if (ATFDargs[k].isExporValueCombo()) {
 							comboColumn.setCellEditor(new DefaultCellEditor(
-									new SQLComboBox(GFforma, ATFDargs[k]
-											.getSqlCombo(), exportValue)));
+									new SQLComboBox(GFforma, ATFDargs[k].getSqlCombo(), exportValue)));
 						} else {
 							comboColumn.setCellEditor(new DefaultCellEditor(
-									new SQLComboBox(GFforma, ATFDargs[k]
-											.getSqlCombo())));
+									new SQLComboBox(GFforma, ATFDargs[k].getSqlCombo())));
 						}
 					}
 				}
@@ -941,9 +916,7 @@ class CellEditor extends AbstractCellEditor implements TableCellEditor {
  */
 class FortmaCell extends DefaultTableCellRenderer {
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -1516957430275114235L;
 
 	String mascara;

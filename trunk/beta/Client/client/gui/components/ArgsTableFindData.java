@@ -258,7 +258,6 @@ public class ArgsTableFindData {
 		else {
 			return false;
 		}
-			
 	}
 	
 	public String getExportValue() {
