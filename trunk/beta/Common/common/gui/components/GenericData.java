@@ -216,18 +216,14 @@ public class GenericData extends JPanel implements DateListener,
 					if ("sqlCode".equals(elm.getAttributeValue("attribute"))) {
 						this.sqlCode.add(elm.getValue());
 						searchQuery = true;
-					} else if ("sqlLocal".equals(elm
-							.getAttributeValue("attribute"))) {
+					} else if ("sqlLocal".equals(elm.getAttributeValue("attribute"))) {
 						this.sqlLocal = elm.getValue();
 						searchQuery = true;
-					} else if ("label".equals(elm
-							.getAttributeValue("attribute"))) {
+					} else if ("label".equals(elm.getAttributeValue("attribute"))) {
 						lab = elm.getValue();
-					} else if ("format".equals(elm
-							.getAttributeValue("attribute"))) {
+					} else if ("format".equals(elm.getAttributeValue("attribute"))) {
 						format = elm.getValue();
-					} else if ("mask"
-							.equals(elm.getAttributeValue("attribute"))) {
+					} else if ("mask".equals(elm.getAttributeValue("attribute"))) {
 						mask = elm.getValue();
 					} else if ("size"
 							.equals(elm.getAttributeValue("attribute"))) {
@@ -248,14 +244,12 @@ public class GenericData extends JPanel implements DateListener,
 							.getAttributeValue("attribute"))) {
 						exportValue = elm.getValue();
 						searchQuery = true;
-					} else if ("importValue".equals(elm
-							.getAttributeValue("attribute"))) {
+					} else if ("importValue".equals(elm.getAttributeValue("attribute"))) {
 						if (importValue == null) {
 							importValue = new Vector<String>();
 						}
 						importValue.addElement(elm.getValue());
-					} else if ("constantValue".equals(elm
-							.getAttributeValue("attribute"))) {
+					} else if ("constantValue".equals(elm.getAttributeValue("attribute"))) {
 						if (constantValue == null) {
 							constantValue = new Vector<String>();
 						}
@@ -263,49 +257,42 @@ public class GenericData extends JPanel implements DateListener,
 					} else if ("calculateExportValue".equals(elm
 							.getAttributeValue("attribute"))) {
 						calculateExportValue = elm.getValue();
-					} else if ("calculateBSExportValue".equals(elm
-							.getAttributeValue("attribute"))) {
+					} else if ("calculateBSExportValue".equals(elm.getAttributeValue("attribute"))) {
 						calculateBSExportValue = elm.getValue();
-					} else if ("maxValue".equals(elm
-							.getAttributeValue("attribute"))) {
+					} else if ("maxValue".equals(elm.getAttributeValue("attribute"))) {
 						maxValue = elm.getValue();
-					} else if ("exportField".equals(elm
-							.getAttributeValue("attribute"))) {
+					} else if ("exportField".equals(elm.getAttributeValue("attribute"))) {
 						try {
 							orden = Integer.parseInt(elm.getValue());
 						} catch (NumberFormatException NFEe) {
 						}
-					} else if ("enabled".equals(elm
-							.getAttributeValue("attribute"))) {
+					} else if ("enabled".equals(elm.getAttributeValue("attribute"))) {
 						enabled = Boolean.parseBoolean(elm.getValue());
 					} else if ("font"
 							.equals(elm.getAttributeValue("attribute"))) {
 						try {
 							StringTokenizer STfont = new StringTokenizer(elm
 									.getValue(), ",");
-							font = new Font(STfont.nextToken(), Integer
-									.parseInt(STfont.nextToken()), Integer
-									.parseInt(STfont.nextToken()));
+							font = new Font(
+							                STfont.nextToken(),
+							                Integer.parseInt(STfont.nextToken()),
+							                Integer.parseInt(STfont.nextToken()));
 						} catch (NumberFormatException NFEe) {
 							font = null;
 						} catch (NoSuchElementException NSEEe) {
 							font = null;
 						}
-					} else if ("foreground".equals(elm
-							.getAttributeValue("attribute"))) {
+					} else if ("foreground".equals(elm.getAttributeValue("attribute"))) {
 						foreground = getColor(elm.getValue());
 					} else if ("background".equals(elm
 							.getAttributeValue("attribute"))) {
 						background = getColor(elm.getValue());
-					} else if ("totalCol".equals(elm
-							.getAttributeValue("attribute"))) {
+					} else if ("totalCol".equals(elm.getAttributeValue("attribute"))) {
 						totalCol = elm.getValue();
-					} else if ("alignment".equals(elm
-							.getAttributeValue("attribute"))) {
+					} else if ("alignment".equals(elm.getAttributeValue("attribute"))) {
 						alignment = elm.getValue();
 
-					} else if ("keyExternalValue".equals(elm
-							.getAttributeValue("attribute"))) {
+					} else if ("keyExternalValue".equals(elm.getAttributeValue("attribute"))) {
 						keyExternalValue = elm.getValue();
 						searchQuery = true;
 					} else if ("systemDate".equals(elm
@@ -348,8 +335,7 @@ public class GenericData extends JPanel implements DateListener,
 				if (mask == null) {
 					XMLText = new XMLTextField(lab, width, nroChars, format);
 				} else {
-					XMLText = new XMLTextField(lab, width, nroChars, format,
-							mask);
+					XMLText = new XMLTextField(lab, width, nroChars, format,mask);
 				}
 				if (key) {
 					XMLText.isKey(true);
@@ -451,8 +437,7 @@ public class GenericData extends JPanel implements DateListener,
 						XMLTextField XMLRefText = (XMLTextField) e.getSource();
 						if (XMLTextField.NUMERIC.equals(XMLRefText.getType())) {
 							try {
-								XMLRefText.setNumberValue(Double
-										.parseDouble(XMLRefText.getText()));
+								XMLRefText.setNumberValue(Double.parseDouble(XMLRefText.getText()));
 							} catch (NumberFormatException NFEe) {
 							}
 						}
@@ -538,6 +523,13 @@ public class GenericData extends JPanel implements DateListener,
 							}
 						}
 					});
+				}
+				if (XMLText.getType().equals("NUMERIC")) {
+					XMLText.setText("0,00");
+					XMLText.setNumberValue(0.00);
+					if (XMLText.isExportvalue()) {
+						GFforma.setExternalValues(XMLText.getExportvalue(),0.00);
+					}
 				}
 				VFields.add(XMLText);
 			}
@@ -683,13 +675,11 @@ public class GenericData extends JPanel implements DateListener,
 
 			Element arg = (Element) it.next();
 			if ("calculate".equals(arg.getAttributeValue("attribute"))) {
-				pack.addContent(new Element("field").setText(String
-						.valueOf(formulaHandler(arg.getValue()))));
+				pack.addContent(new Element("field").setText(String.valueOf(formulaHandler(arg.getValue()))));
 			}
 			if ("maxValue".equals(arg.getAttributeValue("attribute"))) {
 				try {
-					StringTokenizer stk = new StringTokenizer(arg.getValue(),
-							":");
+					StringTokenizer stk = new StringTokenizer(arg.getValue(),":");
 					double maximo = formulaHandler(stk.nextToken());
 					double checkValue = formulaHandler(stk.nextToken());
 					System.out.println("comparando maximo: "+maximo+" checkvalue: "+checkValue);
@@ -768,19 +758,16 @@ public class GenericData extends JPanel implements DateListener,
 						if (!text.equals("")) {
 							Element elm = Field.getElementText();
 							if (Field.getAddAttribute() != null) {
-								elm.setAttribute("attribute", Field
-										.getAddAttribute());
+								elm.setAttribute("attribute", Field.getAddAttribute());
 							}
 							pack.addContent(elm);
 						} else {
-							throw new VoidPackageException(Field.getLabel()
-									.getText());
+							throw new VoidPackageException(Field.getLabel().getText());
 						}
 					}
 
 					if (text.equals("") && "DELETE".equals(Sargs)) {
-						throw new VoidPackageException(Field.getLabel()
-								.getName());
+						throw new VoidPackageException(Field.getLabel().getName());
 					}
 				}
 			}
@@ -1021,7 +1008,9 @@ public class GenericData extends JPanel implements DateListener,
 					if (xmltf.isSendRecord() && !xmltf.getText().equals(oldValue)) {
 						notificando(xmltf, String.valueOf(valor));
 					}
-
+					if (xmltf.isExportvalue() && !xmltf.getText().equals(oldValue)) {
+						GFforma.setExternalValues(xmltf.getExportvalue(),valor);
+					}
 				}
 				if (xmltf.isCalculateBSExportValue()) {
 					String formula = xmltf.getCalculateBSExportValue();
@@ -1031,30 +1020,27 @@ public class GenericData extends JPanel implements DateListener,
 					if (xmltf.isSendRecord() && !xmltf.getText().equals(oldValue)) {
 						notificando(xmltf, String.valueOf(valor));
 					}
+					if (xmltf.isExportvalue() && !xmltf.getText().equals(oldValue)) {
+						GFforma.setExternalValues(xmltf.getExportvalue(),valor);
+					}
 				}
 				if (xmltf.isCalculateDate()) {
 					try {
 						StringTokenizer stk = new StringTokenizer(xmltf
 								.getCalculateDate(), "+");
 						if (stk.countTokens() < 2)
-							stk = new StringTokenizer(xmltf.getCalculateDate(),
-									"-");
-						String val1 = GFforma.getExteralValuesString(stk
-								.nextToken());
-						String val2 = GFforma.getExteralValuesString(stk
-								.nextToken());
+							stk = new StringTokenizer(xmltf.getCalculateDate(),"-");
+						String val1 = GFforma.getExteralValuesString(stk.nextToken());
+						String val2 = GFforma.getExteralValuesString(stk.nextToken());
 						if (val1 != null && val2 != null) {
 							Date date = Date.valueOf(val1);
 							Calendar cal = Calendar.getInstance();
 							cal.setTime(date);
-							cal.add(Calendar.DAY_OF_MONTH, Integer
-									.parseInt(val2));
-							Format formatter = new SimpleDateFormat(xmltf
-									.getFormatDate());
+							cal.add(Calendar.DAY_OF_MONTH, Integer.parseInt(val2));
+							Format formatter = new SimpleDateFormat(xmltf.getFormatDate());
 							xmltf.setText(formatter.format(cal.getTime()));
 							if (xmltf.isSendRecord() && !xmltf.getText().equals(oldValue)) {
-								notificando(xmltf, formatter.format(cal
-										.getTime()));
+								notificando(xmltf, formatter.format(cal.getTime()));
 							}
 						}
 					} catch (NoSuchElementException NSEe) {
@@ -1065,10 +1051,10 @@ public class GenericData extends JPanel implements DateListener,
 				}
 				if (sqlLocal != null) {
 					new GenericDataFiller(GFforma, namebutton, enablebutton,
-							sqlLocal, new String[] { GFforma
-									.getExteralValuesString(xmltf
-											.getImportValue()[0]) }, null,
-							VFields).start();
+							sqlLocal, new String[] {
+													GFforma.getExteralValuesString(
+							                                                        xmltf.getImportValue()[0]) }, null,
+							                                                        VFields).start();
 				}
 			}
 		}

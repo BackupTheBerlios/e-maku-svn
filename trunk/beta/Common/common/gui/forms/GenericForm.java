@@ -1129,17 +1129,15 @@ public class GenericForm extends JInternalFrame{
     			}
     			
     			public void run() {
-		       Vector lista;
-		        lista = (Vector)changeExternalValueListener.clone();
-		        for (int i=0; i<lista.size();i++) {
-		            ChangeExternalValueListener listener = (ChangeExternalValueListener)lista.elementAt(i);
-		            listener.changeExternalValue(event);
-		        }
-   				
+    				Vector lista;
+    				lista = (Vector)changeExternalValueListener.clone();
+			        for (int i=0; i<lista.size();i++) {
+			            ChangeExternalValueListener listener = (ChangeExternalValueListener)lista.elementAt(i);
+			            listener.changeExternalValue(event);
+			        }
     			}
     		}
     		new notificacionExterna(event).start();
- 
     }
 
     
