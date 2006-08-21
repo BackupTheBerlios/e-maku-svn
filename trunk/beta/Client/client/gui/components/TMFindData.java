@@ -8,6 +8,7 @@ import static client.gui.components.Formula.SUPER;
 import static client.gui.components.Formula.SUPERBEANNQ;
 import static client.gui.components.Formula.SUPERNQ;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
@@ -32,6 +33,8 @@ import javax.swing.table.AbstractTableModel;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
 import client.Run;
 
@@ -204,8 +207,8 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
             for (int j=0;j<ATFDargs.length;j++) {
                 /* Se define los objetos deacuerdo a su definicion de los
                    argumentos */
-            		newRows.addElement(null);
-            		//newRows.addElement(ATFDargs[j].getTypeDate());
+            		//newRows.addElement(null);
+            		newRows.addElement(ATFDargs[j].getTypeDate());
             }
             /* Se adiciona la nueva fila al vector de filas */
             VdataRows.addElement(newRows);
@@ -345,18 +348,18 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 		        try {
 		        	
 		            /* Generando la consulta  */
-			        	int NroImps = impValues.size();
-			        	String [] argsQuery = new String[NroImps+1];
-			        	int ind = 0;
-			        	argsQuery[ind] = (String)value;
-			        	ind++;
-			        	
-			        	for ( ; ind < argsQuery.length ; ind++) {
-			        		argsQuery[ind] = GFforma.getExteralValuesString(impValues.get(ind-1));
-			        	}
+		        	int NroImps = impValues.size();
+		        	String [] argsQuery = new String[NroImps+1];
+		        	int ind = 0;
+		        	argsQuery[ind] = (String)value;
+		        	ind++;
+		        	
+		        	for ( ; ind < argsQuery.length ; ind++) {
+		        		argsQuery[ind] = GFforma.getExteralValuesString(impValues.get(ind-1));
+		        	}
 		        	
 		            Document Dquery = STResultSet.getResultSetST(sqlCode,argsQuery);
-				            
+		            
 		            Iterator Irows = Dquery.getRootElement().getChildren("row").iterator();
 		            Element Ecol = (Element)Irows.next();
 		            List Lcol = Ecol.getChildren();
@@ -414,7 +417,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 		            }
 		            
                     calcular(rowIndex);	
-		            	totalizar();
+                    totalizar();
 		        }
 		        catch (STException STe) {
 		        		STe.printStackTrace();
@@ -478,6 +481,17 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 	        calcular(rowIndex);
 	       	totalizar();
         }
+        /*if (ATFDargs[colIndex].getType().equals("DATE")) {
+	        	try {
+	        		java.sql.Date.valueOf((String)value);
+	        		/*Format formatter = new SimpleDateFormat("yyyy-mm-dd");
+	        		value = formatter.format(value);*/
+	        	/*}
+	        	catch (IllegalArgumentException IAEe) {
+	        		value = "";
+	        	}
+           	updateCells(value,rowIndex,colIndex);
+        }*/
     }
     
     private void calcular(int rowIndex) {
@@ -622,10 +636,10 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     }
     
     private int getColIndex(String key) {
-    	int col=0;
-    	if ((key.charAt(0)>=65 && key.charAt(0)<=90) || (key.charAt(0)>=97 && key.charAt(0)<=122)) {
+    	 	int col=0;
+    	 	if ((key.charAt(0)>=65 && key.charAt(0)<=90) || (key.charAt(0)>=97 && key.charAt(0)<=122)) {
 			
-    		/* cuando la letra es mayuscula */
+    	 		/* cuando la letra es mayuscula */
              if (key.charAt(0)<=90) {
                  col = key.charAt(0)-65;
              }
@@ -908,7 +922,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 				        				String valueArg = null; 
 				        				valueArg =	String.valueOf(getValueAt(rowIndex,indice));
 				        				
-				        				if(valueArg!=null && !"".equals(valueArg)) {
+				        				if(!"".equals(valueArg)) {
 				        					
 				        					if (ATFDargs[indice].getType().equals("COMBOSQL")) {
 								    			StringTokenizer stk = new StringTokenizer(valueArg," ");
@@ -936,8 +950,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 				        				Object obj = ATFDargs[col].getTypeDate();
 				        				String argConstructor = null;
 										try {
-											Document Dquery = STResultSet.getResultSetST(ATFDargs[col].getSqlCombo(),
-																			argsQuery);
+											Document Dquery = STResultSet.getResultSetST(ATFDargs[col].getSqlCombo(),argsQuery);
 											Element element = Dquery.getRootElement().getChild("row");
 						                    Constructor cons = ATFDargs[col].getTypeDate().getClass().getConstructor(new Class[]{String.class});
 						                    argConstructor = element.getChildText("col");
@@ -1016,8 +1029,8 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
                 //if (!initSQL || ATFDargs[j].getOrderQuery()==-1 || ATFDargs[j].isClean()) {
             	if (!initSQL || ATFDargs[j].isClean()) {
             		//updateCells(ATFDargs[j].getTypeDate(),i,j);
-            		//vrow.set(j,ATFDargs[j].getTypeDate());
-            		vrow.set(j,null);
+            		vrow.set(j,ATFDargs[j].getTypeDate());
+            		//vrow.set(j,null);
             		fireTableCellUpdated(i,j);
                 }
     		}
@@ -1536,11 +1549,16 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     	loadingQuery = true;
         List Lrows = doc.getRootElement().getChildren("row");
         Iterator Irows = Lrows.iterator();
+        int max = Lrows.size();
         
-        if (tagDataColumn==-1) {
-            /* Se limpia la tabla antes de desplegar la consulta nueva */
+        if (tagDataColumn==-1 && max > 0) {
+            /*
+             * Se limpia la tabla antes de desplegar la consulta nueva
+             */
             clean();
-            /* Cargando informacion */
+            /*
+             * Cargando informacion
+             */
             
             //for (int i=0;Irows.hasNext() && i<rows;i++) {
             for (int i=0;Irows.hasNext();i++) {
@@ -1555,26 +1573,31 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
                 }
             }
         }
-        else if (tagDataColumn>-1) {
-        	int max = Lrows.size();
+        else if (tagDataColumn>-1 && max > 0) {
+        	XMLOutputter xmlout = new XMLOutputter();
+        	xmlout.setFormat(Format.getPrettyFormat());
+        	try {
+				xmlout.output(doc,System.out);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+        	
         	Element Erow = null;
         	String tagDataValue = null;
-        	if (max > 0) {
-        		 Erow = (Element) Lrows.get(0);
-        		 Element element = (Element) Erow.getChildren().get(tagDataColumn);
-        		 tagDataValue = element.getValue().trim();
-        	}
+        	Erow = (Element) Lrows.get(0);
+        	Element element = (Element) Erow.getChildren().get(tagDataColumn);
+        	tagDataValue = element.getValue().trim();
         	
         	for(int i=0; i < VdataRows.size(); i++) {
-        		Object strData = getValueAt(i,tagDataColumn); 
-        		if (strData!=null && strData.equals(tagDataValue)){
+        		Object strData = getValueAt(i,tagDataColumn);
+        		if (tagDataValue.equals(strData.toString().trim())){
         			deleteRow(i);
        				i --;
         		}
         	}
         	/*Aqui va la llenada de datos.*/
         	int currentRow = currentIndex;
-        	for (int i=0;  i< max ; i++) {
+        	for (int i=0;  i < max ; i++) {
         		Element RowQuery = (Element) Lrows.get(i);
         		List Lcol = RowQuery.getChildren();
         		for (int j=0;j<ATFDargs.length;j++) {
@@ -1638,8 +1661,8 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
                 }
                 catch (InvocationTargetException e) {
                     if (e.getCause().getClass().getName().equals("java.lang.NumberFormatException")) {
-                        //obj = ATFDargs[j].getTypeDate();
-                    	obj = null;
+                        obj = ATFDargs[j].getTypeDate();
+                    	//obj = null;
                     }
                     else {
                         e.printStackTrace();
@@ -1648,8 +1671,8 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
             }
         }
         catch(IndexOutOfBoundsException e) {
-            //obj = ATFDargs[j].getTypeDate();
-        	obj = null;
+            obj = ATFDargs[j].getTypeDate();
+        	//obj = null;
         }
         
         return obj;
@@ -1658,7 +1681,12 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     public void deleteRow(int index) {
     	Vector<Object> vptype = new Vector<Object>();
         for (int j=0;j<ATFDargs.length;j++) {
+        	if (ATFDargs[j].getType().equals("DATE")) {
         		vptype.add(null);
+        	}
+        	else {
+        		vptype.add(ATFDargs[j].getTypeDate());
+        	}
         }
         VdataRows.add(vptype);
         VdataRows.remove(index);
@@ -1717,7 +1745,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 	public void changeExternalValue(ChangeExternalValueEvent e) {
 		if (importTotalCol.containsValue(e.getExternalValue())) {
 			for (int i=0;i<rows;i++) {
-		        if (getValueAt(i,0)!=null && !getValueAt(i,0).equals("")) {
+		        if (!getValueAt(i,0).equals("")) {
 		            calcular(i);
 		        }
 		        else {

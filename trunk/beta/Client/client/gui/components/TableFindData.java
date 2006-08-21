@@ -179,10 +179,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 				formulas.add(new Formula(args.getValue(), Formula.SUPERBEANNQ));
 			} else if (args.getAttributeValue("attribute").equals(
 					"exportTotalCol")) {
-				StringTokenizer STexportTotalCols = new StringTokenizer(args
-						.getValue(), ",");
-				exportTotalCols.put(new String(STexportTotalCols.nextToken())
-						.toUpperCase(), STexportTotalCols.nextToken());
+				StringTokenizer STexportTotalCols = new StringTokenizer(args.getValue(), ",");
+				exportTotalCols.put(new String(STexportTotalCols.nextToken()).toUpperCase(), STexportTotalCols.nextToken());
 			} else if (args.getAttributeValue("attribute").equals("tagData")) {
 				tagDataColumn = Integer.parseInt(args.getValue());
 			} else if (args.getAttributeValue("attribute").equals("sendRecord")) {
@@ -422,7 +420,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 						if (protectSelected) {
 							int sel = JTtabla.getSelectedRow();
 							if (sel > 0) {
-								if (TMFDtabla.getValueAt(sel - 1, 0).equals("")) {
+								if (TMFDtabla.getValueAt(sel - 1, 0)==null || "".equals(TMFDtabla.getValueAt(sel - 1, 0))) {
 									JTtabla.changeSelection(sel - 1, 0, false,false);
 								}
 							}
@@ -513,6 +511,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 		JTtabla.setDefaultEditor(BigDecimal.class, new CellEditor(Double.class));
 		JTtabla.setDefaultEditor(Integer.class, new CellEditor(Integer.class));
 		JTtabla.setDefaultEditor(Date.class,new CellEditor(Date.class));
+		JTtabla.setDefaultEditor(String.class,new CellEditor(String.class));
 
 		GFforma.addChangeExternalValueListener(this);
 		JTtabla.changeSelection(0, 0, false, false);
@@ -750,18 +749,18 @@ public class TableFindData extends JPanel implements AnswerListener,
 				boolean fullRow = true;
 
 				for (int i = 0; i < max && fullRow; i++) {
-
-					for (int j = 0; j < ATFDargs.length; j++) {
+					int j=0;
+					int cont =0;
+					while ( j < ATFDargs.length) {
 						Object cell = TMFDtabla.getValueAt(i, j);
-						if (cell!=null && "".equals(cell.toString().trim()) && j > 0) {
-							return;
-						} else if ("".equals(cell)) {
-							fullRow = false;
-							break;
+						if (cell!=null && !"".equals(cell)) {
+							cont++;
 						}
+						j++;
 					}
+					fullRow = cont==ATFDargs.length ? true : false;
 					if (fullRow) {
-
+						
 						Element row = new Element("row");
 						StringTokenizer stk = new StringTokenizer(sendRecord,",");
 						boolean next = true;
@@ -772,13 +771,10 @@ public class TableFindData extends JPanel implements AnswerListener,
 								String tok = stk.nextToken();
 								try {
 									int column = Integer.parseInt(tok);
-									String cellVal = TMFDtabla.getValueAt(i,
-											column).toString();
-									if (ATFDargs[column].getType().equals(
-											"COMBOSQL")) {
+									String cellVal = TMFDtabla.getValueAt(i,column).toString();
+									if (ATFDargs[column].getType().equals("COMBOSQL")) {
 										String value = "";
-										StringTokenizer stkVal = new StringTokenizer(
-												cellVal, " ");
+										StringTokenizer stkVal = new StringTokenizer(cellVal, " ");
 										while (true) {
 											try {
 												value = stkVal.nextToken();
@@ -801,9 +797,9 @@ public class TableFindData extends JPanel implements AnswerListener,
 						element.addContent(row);
 					}
 				}
+
 				RecordEvent event = new RecordEvent(this, element);
 				notificando(event);
-
 			}
 		}
 	}
@@ -860,13 +856,25 @@ class CellEditor extends AbstractCellEditor implements TableCellEditor {
 	}
 
 	public Component getTableCellEditorComponent(JTable table, Object value,boolean isSelected, int row, int column) {
+		boolean enabled = true;
+		if (row > 0) {
+			Object obj= table.getValueAt(row-1,column);
+			enabled = obj!=null && !"".equals(obj) ? true : false; 
+		}
 		if (Date.class.equals(c)) {
 			if (value != null)
 				jtfd.setDate((Date) value);
+			jtfd.setEnabled(enabled);
 			return jtfd;
+		}
+		else if (String.class.equals(c)){
+			jtf.setText(value!=null ? value.toString() : "");
+			jtf.setEnabled(enabled);
+			return jtf; 
 		}
 		else {
 			jtf.setText("");
+			jtf.setEnabled(enabled);
 			return jtf; 
 		}
 	}
@@ -892,6 +900,9 @@ class CellEditor extends AbstractCellEditor implements TableCellEditor {
 		}
 		else if (Date.class.equals(c)) {
 			valueRet = jtfd.getDate();
+		}
+		else if (String.class.equals(c)) {
+			valueRet = jtf.getText();
 		}
 		return valueRet;
 	}
