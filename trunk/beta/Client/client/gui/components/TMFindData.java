@@ -504,7 +504,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 	    	boolean calc = false;
 	    	if (rowIndex>=0) {
 	    		if (rowIndex>0) {
-		    		if (!getValueAt(rowIndex-1,0).equals(""))
+		    		if (!"".equals(getValueAt(rowIndex-1,0)))
 		    			calc=true;
 	    		}
 	    		if (rowIndex==0)
@@ -1039,10 +1039,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
      * Este metodo retorna el tipo de dato de una celda
      */
 	public Class<?> getColumnClass(int colIndex) {
-		if (ATFDargs[colIndex].getType().equals("DATE")) {
-			return Date.class;
-		}
-		return ATFDargs[colIndex].getTypeDate().getClass(); 
+		return ATFDargs[colIndex].getColumnClass(); 
     }
     
     private void message(String keyError) {
@@ -1626,9 +1623,18 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
                         obj =new Boolean(false);
                     }
             }
+            else if (ATFDargs[j].getType().equals("DATE")) {
+            	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            	try {
+					obj = sdf.parse(newValue);
+				}
+				catch (ParseException e) {
+					e.printStackTrace();
+				}
+            }
             else {
                 try {
-                    Constructor cons = ATFDargs[j].getTypeDate().getClass().getConstructor(new Class[]{String.class});
+                    Constructor cons = ATFDargs[j].getColumnClass().getConstructor(new Class[]{String.class});
                     Object object = cons.newInstance(new Object[]{newValue});
                     obj = object;
                 }

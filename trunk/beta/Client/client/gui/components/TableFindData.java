@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.InvocationTargetException;
@@ -851,6 +853,12 @@ class CellEditor extends AbstractCellEditor implements TableCellEditor {
 	public CellEditor(Class c) {
 		this.c = c;
 		jtf = new JTextField();
+		jtf.addFocusListener(new FocusAdapter() {
+			public void focusLost(FocusEvent e) {
+				fireEditingStopped();
+				jtf.validate();
+			}
+		});
 		jtfd = new JDateChooser();
 		jtfd.setDateFormatString("yyyy-MM-dd");
 	}

@@ -1,6 +1,7 @@
 package client.gui.components;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -49,6 +50,7 @@ public class ArgsTableFindData {
     private boolean returnBlankCol;
     private boolean returnNullCol;
     private boolean printable = false;
+    private Class ColumnClass;
 
     /**
      * Este constructor recibe un StringTokenizer como parametro
@@ -94,18 +96,30 @@ public class ArgsTableFindData {
 	    		else if (attrib.equals("type")) {
 	    			type = value;
 	    	        defaultValue = new Double(0.00);
-	    	        if (value.equals("STRING")) 
+	    	        if (value.equals("STRING")) { 
 			            typeDate = new String();
-			        else if (value.equals("BOOLEAN"))
+			            ColumnClass = String.class;
+	    	        }
+			        else if (value.equals("BOOLEAN")) {
 			           typeDate = new Boolean(false);
-			        else if (value.equals("INT") || type.equals("INTEGER"))
+			           ColumnClass = Boolean.class;
+			        }
+			        else if (value.equals("INT") || type.equals("INTEGER")) {
 			            typeDate = new Integer(0);
-			        else if (value.equals("DECIMAL"))
+			            ColumnClass = Integer.class;
+			        }
+			        else if (value.equals("DECIMAL")) {
 			            typeDate = bd.setScale(2,BigDecimal.ROUND_HALF_UP);
-			        else if (value.equals("COMBOSQL"))
+			            ColumnClass = BigDecimal.class;
+			        }
+			        else if (value.equals("COMBOSQL")) {
 			            typeDate = new String();
-			        else if (value.equals("DATE"))
+			            ColumnClass = String.class;
+			        }
+			        else if (value.equals("DATE")) {
 			            typeDate = null;
+			            ColumnClass = Date.class;
+			        }
 	    		}
 	    		else if (attrib.equals("defaultValue")) {
 	    			tmpDefaultValue = value;
@@ -319,5 +333,9 @@ public class ArgsTableFindData {
 
 	public void setPrintable(boolean printable) {
 		this.printable = printable;
+	}
+
+	public Class getColumnClass() {
+		return ColumnClass;
 	}
 }
