@@ -1469,7 +1469,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
                 for (int k=0;k<getColumnCount();k++) {
 	                if (ATFDargs[k].getOrderReturn()==j) {
 	                    Object value = getValueAt(i, k);
-	                    if (value==null && !(ATFDargs[k].isReturnBlankCol() || ATFDargs[k].isReturnNullCol())) {
+	                    if ((value==null || "".equals(value)) && !(ATFDargs[k].isReturnBlankCol() || ATFDargs[k].isReturnNullCol())) {
 	                        valueBlank=true;
 	                        break;
 	                    }
