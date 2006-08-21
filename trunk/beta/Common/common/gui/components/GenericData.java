@@ -207,10 +207,6 @@ public class GenericData extends JPanel implements DateListener,
 				String addAttribute = null;
 				String sendRecord = null;
 
-				/**
-				 * **************** Validacion de atributos PSTSO
-				 * ****************************
-				 */
 				while (j.hasNext()) {
 					final Element elm = (Element) j.next();
 					if ("sqlCode".equals(elm.getAttributeValue("attribute"))) {

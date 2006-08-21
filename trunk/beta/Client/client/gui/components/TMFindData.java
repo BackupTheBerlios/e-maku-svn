@@ -8,7 +8,6 @@ import static client.gui.components.Formula.SUPER;
 import static client.gui.components.Formula.SUPERBEANNQ;
 import static client.gui.components.Formula.SUPERNQ;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
@@ -33,12 +32,9 @@ import javax.swing.table.AbstractTableModel;
 
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
-
-import client.Run;
 
 import bsh.EvalError;
+import client.Run;
 
 import common.gui.components.ChangeValueEvent;
 import common.gui.components.ChangeValueListener;
@@ -328,7 +324,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
      * Actualiza el valor de una celda especifica
      */
     
-    public void setValueAt(Object value, int rowIndex, int colIndex) {
+    public synchronized void setValueAt(Object value, int rowIndex, int colIndex) {
         /*
          * Esta clase se encarga de solicitar la busqueda al Servidor de transacciones
          * y cargarla a sus respectivos campos
@@ -453,7 +449,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
          * en la columna uno
          */
         updateCells(value,rowIndex,colIndex);
-        if (colIndex==0 && !"".equals(sqlCode) && !value.equals("")) {
+        if (colIndex==0 && !"".equals(sqlCode) && !"".equals(value)) {
         	
 	        	for (int j=0;j<ATFDargs.length;j++) {
 	            	if (ATFDargs[j].getDefaultValue().doubleValue() != 0.00 && !updateQuery) {
@@ -1574,14 +1570,6 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
             }
         }
         else if (tagDataColumn>-1 && max > 0) {
-        	XMLOutputter xmlout = new XMLOutputter();
-        	xmlout.setFormat(Format.getPrettyFormat());
-        	try {
-				xmlout.output(doc,System.out);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-        	
         	Element Erow = null;
         	String tagDataValue = null;
         	Erow = (Element) Lrows.get(0);
