@@ -1522,14 +1522,14 @@
                 <Icon>/icons/ico_nuevo.png</Icon>
                 <Mnemonic>NEMO-NUEVO</Mnemonic>
                 <Activo />
-                <Transaction>TR00089</Transaction>
+                <Transaction>TR00171</Transaction>
             </JMenuItem>
             <JMenuItem>
                 <Text>ANULAR</Text>
                 <Icon>/icons/ico_anular.png</Icon>
                 <Mnemonic>NEMO-ANULAR</Mnemonic>
                 <Activo />
-                <Transaction>TR00089</Transaction>
+                <Transaction>TR00172</Transaction>
             </JMenuItem>
             <JSeparator />
             <JMenuItem>
@@ -1537,7 +1537,7 @@
                 <Icon>/icons/ico_consultar.png</Icon>
                 <Mnemonic>NEMO-CONSULTAR</Mnemonic>
                 <Activo />
-                <Transaction>TR00089</Transaction>
+                <Transaction>TR00173</Transaction>
             </JMenuItem>
             <JMenu>
                 <Mnemonic>NEMO-REPORTE</Mnemonic>

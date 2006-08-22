@@ -400,6 +400,10 @@
     <path>/icons/ico_ingresos.png</path>
   </icon>
   <icon>
+    <key>COMPROBANTE-EGRESO</key>
+    <path>/icons/ico_egresos.png</path>
+  </icon>
+  <icon>
     <key>NOTA-CONTABILIDAD</key>
     <path>/icons/ico_notas.png</path>
   </icon>

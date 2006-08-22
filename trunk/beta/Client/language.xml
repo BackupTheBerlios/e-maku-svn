@@ -3282,6 +3282,27 @@
     <en_US>Query Entrance...</en_US>
   </sentence>
   <sentence>
+    <key>NCOMPROBANTE-EGRESO</key>
+    <es_CO>Nuevo Comprobante de Egreso</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Entrance...</en_US>
+  </sentence>
+  <sentence>
+    <key>ACOMPROBANTE-EGRESO</key>
+    <es_CO>Anular Comprobante de Egreso</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Annul Entrance...</en_US>
+  </sentence>
+  <sentence>
+    <key>CCOMPROBANTE-EGRESO</key>
+    <es_CO>Consultar Comprobante de Egreso</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Query Entrance...</en_US>
+  </sentence>
+  <sentence>
     <key>CTRANSPORTE</key>
     <es_CO>C. Transporte</es_CO>
     <es_EC></es_EC>
