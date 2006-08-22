@@ -91,10 +91,8 @@ public class GenericData extends JPanel implements DateListener,
 	private Vector<ChangeValueListener> changeValueListener = new Vector<ChangeValueListener>();
 	private Vector<RecordListener> recordListener = new Vector<RecordListener>();
 	private Interpreter shellScript;
-	private boolean done; 
 	
-	public GenericData() {
-	}
+	public GenericData() {}
 
 	public GenericData(GenericForm newGFforma, Document doc)
 			throws InvocationTargetException, NotFoundComponentException {
@@ -454,6 +452,7 @@ public class GenericData extends JPanel implements DateListener,
 					});
 
 					XMLText.addFocusListener(new FocusAdapter() {
+												
 						public void focusLost(final FocusEvent e) {
 
 							/*
@@ -462,27 +461,12 @@ public class GenericData extends JPanel implements DateListener,
 							 * exportar(XMLText); } Comentado por que se lo
 							 * envio al primer focusLost de XMLTextField
 							 */
-							Thread th = new Thread() {
+							class FocusThread extends Thread {
 								
 								public void run() {
-									while(!done){
-	                                    try {
-											Thread.sleep(100);
-										}
-										catch (InterruptedException e1) {
-											e1.printStackTrace();
-										}
-									}
+									
 									XMLTextField XMLRefText = (XMLTextField) e.getSource();
-									if (XMLRefText.isSendRecord()) {
-										String value = null;
-										if ("NUMERIC".equals(XMLRefText.getType())) {
-											value = String.valueOf(XMLRefText.getNumberValue());
-										} else {
-											value = XMLRefText.getText();
-										}
-										notificando(XMLRefText, value);
-									}
+									
 		
 									if (sqlCode.size() > 0 || sqlLocal != null) {
 										/*
@@ -527,9 +511,18 @@ public class GenericData extends JPanel implements DateListener,
 											search = false;
 										}
 									}
+									if (XMLRefText.isSendRecord()) {
+										String value = null;
+										if ("NUMERIC".equals(XMLRefText.getType())) {
+											value = String.valueOf(XMLRefText.getNumberValue());
+										} else {
+											value = XMLRefText.getText();
+										}
+										notificando(XMLRefText, value);
+									}
 								}
 							};
-							th.start();
+							new FocusThread().start();
 						}
 					});
 				}
@@ -639,7 +632,7 @@ public class GenericData extends JPanel implements DateListener,
 			argumentos[i] = GFforma.getExteralValuesString(XMLimpValues[i]);
 		}
 		argumentos[i] = xmltf.getText();
-		new SearchingSQL(argumentos).start();
+		new SearchingSQL(argumentos).run();
 
 	}
 
@@ -944,14 +937,12 @@ public class GenericData extends JPanel implements DateListener,
 	public void initiateFinishEvent(FinishEvent e) {
 		try {
 			callAddAnswerListener();
-			/* A�adido por pastuxso para el calculo de fechas */
 			GFforma.addChangeExternalValueListener(this);
 		} catch (NotFoundComponentException NFCEe) {
 			NFCEe.printStackTrace();
 		} catch (InvocationTargetException ITEe) {
 			ITEe.printStackTrace();
 		}
-		done = true;
 	}
 
 	public String getDriverEvent() {
@@ -1121,8 +1112,7 @@ public class GenericData extends JPanel implements DateListener,
 				// xmltf.setText(formatter.format(Timestamp.valueOf(e.getDate())));
 				xmltf.setText(e.getDate());
 				if (xmltf.isExportvalue())
-					GFforma.setExternalValues(xmltf.getExportvalue(), xmltf
-							.getText());
+					GFforma.setExternalValues(xmltf.getExportvalue(), xmltf.getText());
 			}
 		}
 	}
