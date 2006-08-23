@@ -3303,6 +3303,27 @@
     <en_US>Query Entrance...</en_US>
   </sentence>
   <sentence>
+    <key>NCOMPROBANTE-CARTERA</key>
+    <es_CO>Nuevo Comprobante de Cartera</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Entrance...</en_US>
+  </sentence>
+  <sentence>
+    <key>ACOMPROBANTE-CARTERA</key>
+    <es_CO>Anular Comprobante de Cartera</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Annul Entrance...</en_US>
+  </sentence>
+  <sentence>
+    <key>CCOMPROBANTE-Cartera</key>
+    <es_CO>Consultar Comprobante de Cartera</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Query Entrance...</en_US>
+  </sentence>
+  <sentence>
     <key>CTRANSPORTE</key>
     <es_CO>C. Transporte</es_CO>
     <es_EC></es_EC>
@@ -4147,5 +4168,54 @@
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Conductor</en_US>
+  </sentence>
+  <sentence>
+    <key>CARTERA</key>
+    <es_CO>Cartera</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Debt</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-CARTERA</key>
+    <es_CO>C</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>D</en_US>
+  </sentence>
+  <sentence>
+    <key>PAGOS</key>
+    <es_CO>Pagos</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Paymen</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-PAGOS</key>
+    <es_CO>P</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>P</en_US>
+  </sentence>
+  <sentence>
+    <key>DOCUMENTO</key>
+    <es_CO>Documento</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Document</en_US>
+  </sentence>
+  <sentence>
+    <key>ABONO</key>
+    <es_CO>Abono</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Abono</en_US>
+  </sentence>
+  <sentence>
+    <key>SALDO</key>
+    <es_CO>Saldo</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Balance</en_US>
   </sentence>
 </language>  

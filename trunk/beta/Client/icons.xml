@@ -404,6 +404,10 @@
     <path>/icons/ico_egresos.png</path>
   </icon>
   <icon>
+    <key>COMPROBANTE-CARTERA</key>
+    <path>/icons/ico_egresos.png</path>
+  </icon>
+  <icon>
     <key>NOTA-CONTABILIDAD</key>
     <path>/icons/ico_notas.png</path>
   </icon>

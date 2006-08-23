@@ -736,6 +736,41 @@
         <Text>VENTAS</Text>
         <Mnemonic>NEMO-VENTAS</Mnemonic>
         <JMenu>
+            <Mnemonic>NEMO-CARTERA</Mnemonic>
+            <Icon>/icons/ico_nuevo.png</Icon>
+            <Text>CARTERA</Text>
+            <Activo />
+            <JMenuItem>
+                <Text>NUEVO</Text>
+                <Icon>/icons/ico_nuevo.png</Icon>
+                <Mnemonic>NEMO-NUEVO</Mnemonic>
+                <Activo />
+                <Transaction>TR00174</Transaction>
+            </JMenuItem>
+            <JMenuItem>
+                <Text>ANULAR</Text>
+                <Icon>/icons/ico_anular.png</Icon>
+                <Mnemonic>NEMO-BORRAR</Mnemonic>
+                <Activo />
+                <Transaction>TR00175</Transaction>
+            </JMenuItem>
+            <JSeparator />
+            <JMenuItem>
+                <Text>CONSULTAR</Text>
+                <Icon>/icons/ico_consultar.png</Icon>
+                <Mnemonic>NEMO-CONSULTAR</Mnemonic>
+                <Activo />
+                <Transaction>TR00176</Transaction>
+            </JMenuItem>
+            <JMenu>
+                <Mnemonic>NEMO-REPORTE</Mnemonic>
+                <Icon>GREPORTS</Icon>
+                <Text>REPORTS</Text>
+                <Activo />
+            </JMenu>
+        </JMenu>
+        <JSeparator />
+        <JMenu>
             <Mnemonic>NEMO-PEDIDOS</Mnemonic>
             <Icon>/icons/ico_pedido.png</Icon>
             <Text>PEDIDOS</Text>
@@ -811,7 +846,6 @@
                 </JMenuItem>
             </JMenu>
         </JMenu>
-        <JSeparator />
         <JMenu>
             <Mnemonic>NEMO-COTIZACIONES</Mnemonic>
             <Icon>/icons/ico_cotizacion.png</Icon>
@@ -895,6 +929,7 @@
                 </JMenuItem>
             </JMenu>
         </JMenu>
+        <JSeparator />
         <JMenu>
             <Mnemonic>NEMO-FCONTADO</Mnemonic>
             <Icon>/icons/ico_factura.png</Icon>
@@ -1254,6 +1289,41 @@
         <Text>COMPRAS</Text>
         <Mnemonic>NEMO-COMPRAS</Mnemonic>
         <JMenu>
+            <Mnemonic>NEMO-PAGOS</Mnemonic>
+            <Icon>/icons/ico_nuevo.png</Icon>
+            <Text>PAGOS</Text>
+            <Activo />
+            <JMenuItem>
+                <Text>NUEVO</Text>
+                <Icon>/icons/ico_nuevo.png</Icon>
+                <Mnemonic>NEMO-NUEVO</Mnemonic>
+                <Activo />
+                <Transaction>TR00177</Transaction>
+            </JMenuItem>
+            <JMenuItem>
+                <Text>ANULAR</Text>
+                <Icon>/icons/ico_anular.png</Icon>
+                <Mnemonic>NEMO-BORRAR</Mnemonic>
+                <Activo />
+                <Transaction>TR00178</Transaction>
+            </JMenuItem>
+            <JSeparator />
+            <JMenuItem>
+                <Text>CONSULTAR</Text>
+                <Icon>/icons/ico_consultar.png</Icon>
+                <Mnemonic>NEMO-CONSULTAR</Mnemonic>
+                <Activo />
+                <Transaction>TR00179</Transaction>
+            </JMenuItem>
+            <JMenu>
+                <Mnemonic>NEMO-REPORTE</Mnemonic>
+                <Icon>GREPORTS</Icon>
+                <Text>REPORTS</Text>
+                <Activo />
+            </JMenu>
+        </JMenu>
+        <JSeparator />
+        <JMenu>
             <Mnemonic>NEMO-ORDEN</Mnemonic>
             <Icon>/icons/ico_ordenes.png</Icon>
             <Text>ORDEN</Text>
@@ -1405,6 +1475,7 @@
                 </JMenuItem>
             </JMenu>
         </JMenu>
+        <JSeparator />
         <JMenu>
             <Mnemonic>NEMO-DEVOLUCIONES</Mnemonic>
             <Icon>/icons/ico_devolucion.png</Icon>
