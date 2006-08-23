@@ -838,10 +838,36 @@ class CellEditor extends AbstractCellEditor implements TableCellEditor {
 		});
 		jtfd = new JDateChooser();
 		jtfd.setDateFormatString("yyyy-MM-dd");
+		jtfd.setFocusCycleRoot(true);
 		jtfd.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
-				jtfd.setFocusCycleRoot(true);
 				jtfd.getDateEditor().getUiComponent().requestFocusInWindow();
+			}
+		});
+		jtfd.getDateEditor().getUiComponent().addKeyListener(new KeyAdapter() {
+			
+			public void keyPressed(final KeyEvent e) {
+				Thread t = new Thread() {
+					public void run() {
+						try {
+							Thread.sleep(500);
+						}
+						catch (InterruptedException e1) {
+							e1.printStackTrace();
+						}
+						int keyCode = e.getKeyCode();
+						switch (keyCode) {
+							case KeyEvent.VK_TAB:
+							case KeyEvent.VK_LEFT:
+							case KeyEvent.VK_RIGHT:
+							case KeyEvent.VK_UP:
+							case KeyEvent.VK_DOWN:
+								refJTable.requestFocus(false);
+								break;
+						}						
+					}
+				};
+				t.start();
 			}
 		});
 	}
@@ -856,7 +882,6 @@ class CellEditor extends AbstractCellEditor implements TableCellEditor {
 			if (value != null)
 				jtfd.setDate((Date) value);
 			jtfd.setEnabled(enabled);
-			jtfd.getDateEditor().getUiComponent().requestFocus();
 			return jtfd;
 		}
 		else if (String.class.equals(c)){
