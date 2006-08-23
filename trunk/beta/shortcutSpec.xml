@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+
+<shortcuts>
+
+  <programGroup defaultName="Qhatu" location="applications"/>
+
+   <shortcut
+     name="Servidor E-Maku"
+     programGroup="yes"
+     desktop="yes"
+     applications="no"
+     startMenu="yes"
+     startup="no"
+     target="$INSTALL_PATH\bin\emaku-server.bat"
+     commandLine=""
+     iconFile="$INSTALL_PATH\bin\emaku-server.ico"
+     iconIndex="0"
+     description="Servidor / E-Maku">
+
+     <createForPack name="Servidor E-Maku" />
+   </shortcut>
+
+   <shortcut
+     name="Cliente E-Maku"
+     programGroup="yes"
+     desktop="yes"
+     applications="no"
+     startMenu="yes"
+     startup="no"
+     target="$INSTALL_PATH\bin\emaku-client.bat"
+     commandLine=""
+     iconFile="$INSTALL_PATH\bin\emaku-client.ico"
+     iconIndex="0"
+     description="Cliente / E-Maku">
+
+     <createForPack name="Cliente E-Maku" />
+   </shortcut>
+
+</shortcuts>

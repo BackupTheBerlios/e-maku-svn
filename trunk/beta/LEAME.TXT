@@ -90,7 +90,7 @@
 
     - Software:
       * jdk 1.5 o superior
-      * Postgres 7.4 o superior
+      * PostgreSQL 8.0 o superior
 
   - Para los programas cliente:
 
