@@ -78,7 +78,7 @@ set_vars() {
                PS=":"
              fi
 
-             LOCALCLASSPATH=${JAVA_HOME}/lib/tools.jar${PS}${JAVA_HOME}/lib/dev.jar${PS}../lib/contrib/ant.jar${PS}../lib/contrib/icons.jar${PS}../lib/contrib/jdom.jar${PS}../lib/contrib/jdbc-pgsql.jar${PS}../lib/emaku/common,jar${PS}../lib/contrib/bsh-core.jar${PS}../lib/contrib/ostermillerutils.jar${PS}../lib/contrib/jpedal.jar${PS}../lib/contrib/jai_codec.jar${PS}../lib/contrib/jai_core.jar${PS}../lib/contrib/itext.jar${PS}../lib/contrib/digester.jar${PS}../lib/contrib/jdt-compiler.jar${PS}../lib/contrib/bcprov.jar${PS}../lib/contrib/jasper.jar
+             LOCALCLASSPATH=${JAVA_HOME}/lib/tools.jar${PS}${JAVA_HOME}/lib/dev.jar${PS}../lib/contrib/ant.jar${PS}../lib/contrib/icons.jar${PS}../lib/contrib/jdom.jar${PS}../lib/contrib/jdbc-pgsql.jar${PS}../lib/emaku/common,jar${PS}../lib/contrib/bsh-core.jar${PS}../lib/contrib/ostermillerutils.jar${PS}../lib/contrib/jpedal.jar${PS}../lib/contrib/jai_codec.jar${PS}../lib/contrib/jai_core.jar${PS}../lib/contrib/itext.jar${PS}../lib/contrib/digester.jar${PS}../lib/contrib/jdt-compiler.jar${PS}../lib/contrib/bcprov.jar${PS}../lib/contrib/jasper.jar${PS}../lib/contrib/jcalendar.jar
 
              ANT_HOME=../lib
 
