@@ -28,7 +28,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JSeparator;
 
-import java.io.File;
+//import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -175,54 +175,54 @@ public class InstallPanel extends IzPanel implements AbstractUIProgressHandler
 			FOSClientBat.println("@echo off");
 			FOSServerBat.println("@echo off");
 			
-			FOSClientBat.println("set MIDAS_HOME=" + chosenPath);			
-			FOSServerBat.println("set MIDAS_HOME=" + chosenPath);
+			FOSClientBat.println("set EMAKU_HOME=" + chosenPath);			
+			FOSServerBat.println("set EMAKU_HOME=" + chosenPath);
 			
 			String emakuPath = separator + "lib" + separator + "emaku"
 					+ separator;
 			String contribPath = separator + "lib" + separator + "contrib"
 					+ separator;
 			
-			String clientClassPath = "set CLASSPATH=.;%MIDAS_HOME%" + emakuPath
-					+ "client.jar;%MIDAS_HOME%" + emakuPath
-					+ "icons.jar;%MIDAS_HOME%" + contribPath
-					+ "jdom.jar;%MIDAS_HOME%" + emakuPath
-					+ "common.jar;%MIDAS_HOME%" + emakuPath
-					+ "reports.jar;%MIDAS_HOME%" + contribPath
-					+ "jasper.jar;%MIDAS_HOME%" + contribPath
-					+ "commons.jar;%MIDAS_HOME%" + contribPath
-					+ "bsh-core.jar;%MIDAS_HOME%" + contribPath
-					+ "ostermillerutils.jar;%MIDAS_HOME%" + contribPath
-					+ "jpedal.jar;%MIDAS_HOME%" + contribPath
-					+ "jai_codec.jar;%MIDAS_HOME%" + contribPath
-					+ "jai_core.jar;%MIDAS_HOME%" + contribPath
-					+ "itext.jar;%MIDAS_HOME%" + contribPath
-					+ "digester.jar;%MIDAS_HOME%" + contribPath
-					+ "jdt-compiler.jar;%MIDAS_HOME%" + contribPath
-					+ "bcprov.jar;%MIDAS_HOME%" + contribPath
+			String clientClassPath = "set CLASSPATH=.;%EMAKU_HOME%" + emakuPath
+					+ "client.jar;%EMAKU_HOME%" + emakuPath
+					+ "icons.jar;%EMAKU_HOME%" + contribPath
+					+ "jdom.jar;%EMAKU_HOME%" + emakuPath
+					+ "common.jar;%EMAKU_HOME%" + emakuPath
+					+ "reports.jar;%EMAKU_HOME%" + contribPath
+					+ "jasper.jar;%EMAKU_HOME%" + contribPath
+					+ "commons.jar;%EMAKU_HOME%" + contribPath
+					+ "bsh-core.jar;%EMAKU_HOME%" + contribPath
+					+ "ostermillerutils.jar;%EMAKU_HOME%" + contribPath
+					+ "jpedal.jar;%EMAKU_HOME%" + contribPath
+					+ "jai_codec.jar;%EMAKU_HOME%" + contribPath
+					+ "jai_core.jar;%EMAKU_HOME%" + contribPath
+					+ "itext.jar;%EMAKU_HOME%" + contribPath
+					+ "digester.jar;%EMAKU_HOME%" + contribPath
+					+ "jdt-compiler.jar;%EMAKU_HOME%" + contribPath
+					+ "bcprov.jar;%EMAKU_HOME%" + contribPath
 					+ "jcalendar.jar";
 			
-			String serverClassPath = "set CLASSPATH=.;%MIDAS_HOME%" + emakuPath
-			+ "server.jar;%MIDAS_HOME%" + contribPath
-			+ "jdom.jar;%MIDAS_HOME%" + emakuPath
-			+ "common.jar;%MIDAS_HOME%" + contribPath
-			+ "jdbc-pgsql.jar;%MIDAS_HOME%" + emakuPath		
-			+ "reports.jar;%MIDAS_HOME%" + contribPath
-			+ "jasper.jar;%MIDAS_HOME%" + contribPath
-			+ "commons.jar;%MIDAS_HOME%" + contribPath
-			+ "commons-beanutils.jar;%MIDAS_HOME%" + contribPath
-			+ "commons-beanutils-bean-collections.jar;%MIDAS_HOME%" + contribPath
-			+ "commons-beanutils-core.jar;%MIDAS_HOME%" + contribPath
-			+ "bsh-core.jar;%MIDAS_HOME%" + contribPath
-			+ "ostermillerutils.jar;%MIDAS_HOME%" + contribPath
-			+ "jpedal.jar;%MIDAS_HOME%" + contribPath
-			+ "jai_codec.jar;%MIDAS_HOME%" + contribPath
-			+ "jai_core.jar;%MIDAS_HOME%" + contribPath
-			+ "itext.jar;%MIDAS_HOME%" + contribPath
-			+ "digester.jar;%MIDAS_HOME%" + contribPath
-			+ "jdt-compiler.jar;%MIDAS_HOME%" + contribPath
-			+ "bcprov.jar;%MIDAS_HOME%" + contribPath
-			+ "mysql.jar;%MIDAS_HOME%" + contribPath			
+			String serverClassPath = "set CLASSPATH=.;%EMAKU_HOME%" + emakuPath
+			+ "server.jar;%EMAKU_HOME%" + contribPath
+			+ "jdom.jar;%EMAKU_HOME%" + emakuPath
+			+ "common.jar;%EMAKU_HOME%" + contribPath
+			+ "jdbc-pgsql.jar;%EMAKU_HOME%" + emakuPath		
+			+ "reports.jar;%EMAKU_HOME%" + contribPath
+			+ "jasper.jar;%EMAKU_HOME%" + contribPath
+			+ "commons.jar;%EMAKU_HOME%" + contribPath
+			+ "commons-beanutils.jar;%EMAKU_HOME%" + contribPath
+			+ "commons-beanutils-bean-collections.jar;%EMAKU_HOME%" + contribPath
+			+ "commons-beanutils-core.jar;%EMAKU_HOME%" + contribPath
+			+ "bsh-core.jar;%EMAKU_HOME%" + contribPath
+			+ "ostermillerutils.jar;%EMAKU_HOME%" + contribPath
+			+ "jpedal.jar;%EMAKU_HOME%" + contribPath
+			+ "jai_codec.jar;%EMAKU_HOME%" + contribPath
+			+ "jai_core.jar;%EMAKU_HOME%" + contribPath
+			+ "itext.jar;%EMAKU_HOME%" + contribPath
+			+ "digester.jar;%EMAKU_HOME%" + contribPath
+			+ "jdt-compiler.jar;%EMAKU_HOME%" + contribPath
+			+ "bcprov.jar;%EMAKU_HOME%" + contribPath
+			+ "mysql.jar;%EMAKU_HOME%" + contribPath			
 			+ "logging.jar";			
 			
 			FOSClientBat.println(clientClassPath);
