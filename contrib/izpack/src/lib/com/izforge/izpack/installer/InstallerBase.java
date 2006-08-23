@@ -50,13 +50,13 @@ import com.izforge.izpack.util.VariableSubstitutor;
  */
 public class InstallerBase
 {
-
+	
     /**
      * The base name of the XML file that specifies the custom langpack. Searched is for the file
      * with the name expanded by _ISO3.
      */
     protected static final String LANG_FILE_NAME = "CustomLangpack.xml";
-    protected static final String INSTALLATION_DIR = "/usr/local/jmidas";
+    protected static final String INSTALLATION_DIR = "C:\\Archivos de programa\\Qhatu";
     /**
      * Loads the installation data. Also sets environment variables to <code>installdata</code>.
      * All system properties are available as $SYSTEM_<variable> where <variable> is the actual

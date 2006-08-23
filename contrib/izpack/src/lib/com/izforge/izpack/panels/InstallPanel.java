@@ -28,6 +28,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JSeparator;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+
+
 import com.izforge.izpack.gui.LabelFactory;
 import com.izforge.izpack.installer.InstallData;
 import com.izforge.izpack.installer.InstallerFrame;
@@ -148,9 +154,90 @@ public class InstallPanel extends IzPanel implements AbstractUIProgressHandler
      * @return The validation state.
      */
     public boolean isValidated()
-    {
+    {   
+    	createBatchFiles(idata.getInstallPath());
         return this.validated;
     }
+    
+    
+	private void createBatchFiles(String chosenPath) {
+		String separator = System.getProperty("file.separator");
+		String emakuClientPath= chosenPath + separator + "bin" + separator + "emaku-client.bat";
+		String emakuServerPath= chosenPath + separator + "bin" + separator + "emaku-server.bat";
+		
+		try {
+			FileOutputStream clientBatFile = new FileOutputStream(emakuClientPath);
+			FileOutputStream serverBatFile = new FileOutputStream(emakuServerPath);
+			
+			PrintStream FOSClientBat = new PrintStream(clientBatFile);
+			PrintStream FOSServerBat = new PrintStream(serverBatFile);
+			
+			FOSClientBat.println("@echo off");
+			FOSServerBat.println("@echo off");
+			
+			FOSClientBat.println("set MIDAS_HOME=" + chosenPath);			
+			FOSServerBat.println("set MIDAS_HOME=" + chosenPath);
+			
+			String emakuPath = separator + "lib" + separator + "emaku"
+					+ separator;
+			String contribPath = separator + "lib" + separator + "contrib"
+					+ separator;
+			
+			String clientClassPath = "set CLASSPATH=.;%MIDAS_HOME%" + emakuPath
+					+ "client.jar;%MIDAS_HOME%" + emakuPath
+					+ "icons.jar;%MIDAS_HOME%" + contribPath
+					+ "jdom.jar;%MIDAS_HOME%" + emakuPath
+					+ "common.jar;%MIDAS_HOME%" + emakuPath
+					+ "reports.jar;%MIDAS_HOME%" + contribPath
+					+ "jasper.jar;%MIDAS_HOME%" + contribPath
+					+ "commons.jar;%MIDAS_HOME%" + contribPath
+					+ "bsh-core.jar;%MIDAS_HOME%" + contribPath
+					+ "ostermillerutils.jar;%MIDAS_HOME%" + contribPath
+					+ "jpedal.jar;%MIDAS_HOME%" + contribPath
+					+ "jai_codec.jar;%MIDAS_HOME%" + contribPath
+					+ "jai_core.jar;%MIDAS_HOME%" + contribPath
+					+ "itext.jar;%MIDAS_HOME%" + contribPath
+					+ "digester.jar;%MIDAS_HOME%" + contribPath
+					+ "jdt-compiler.jar;%MIDAS_HOME%" + contribPath
+					+ "bcprov.jar";
+			
+			String serverClassPath = "set CLASSPATH=.;%MIDAS_HOME%" + emakuPath
+			+ "server.jar;%MIDAS_HOME%" + contribPath
+			+ "jdom.jar;%MIDAS_HOME%" + emakuPath
+			+ "common.jar;%MIDAS_HOME%" + contribPath
+			+ "jdbc-pgsql.jar;%MIDAS_HOME%" + emakuPath		
+			+ "reports.jar;%MIDAS_HOME%" + contribPath
+			+ "jasper.jar;%MIDAS_HOME%" + contribPath
+			+ "commons.jar;%MIDAS_HOME%" + contribPath
+			+ "commons-beanutils.jar;%MIDAS_HOME%" + contribPath
+			+ "commons-beanutils-bean-collections.jar;%MIDAS_HOME%" + contribPath
+			+ "commons-beanutils-core.jar;%MIDAS_HOME%" + contribPath
+			+ "bsh-core.jar;%MIDAS_HOME%" + contribPath
+			+ "ostermillerutils.jar;%MIDAS_HOME%" + contribPath
+			+ "jpedal.jar;%MIDAS_HOME%" + contribPath
+			+ "jai_codec.jar;%MIDAS_HOME%" + contribPath
+			+ "jai_core.jar;%MIDAS_HOME%" + contribPath
+			+ "itext.jar;%MIDAS_HOME%" + contribPath
+			+ "digester.jar;%MIDAS_HOME%" + contribPath
+			+ "jdt-compiler.jar;%MIDAS_HOME%" + contribPath
+			+ "bcprov.jar;%MIDAS_HOME%" + contribPath
+			+ "mysql.jar;%MIDAS_HOME%" + contribPath			
+			+ "logging.jar";			
+			
+			FOSClientBat.println(clientClassPath);
+			FOSServerBat.println(serverClassPath);	
+			
+			FOSClientBat.println("java client.Run");
+			FOSServerBat.println("java server.Run");
+			
+			FOSClientBat.close();			
+			FOSServerBat.close();
+		
+		} catch (IOException ex) {
+            ex.printStackTrace();
+		}
+	}
+       
 
     /** The unpacker starts. */
     public void startAction(String name, int noOfJobs)

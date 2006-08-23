@@ -9,7 +9,7 @@
     <str id="installer.next" txt="Next"/>
     <str id="installer.prev" txt="Previous"/>
     <str id="installer.quit" txt="Quit"/>
-    <str id="installer.madefor" txt="Silenus Ltda / http://www.silenus.com.co"/>
+    <str id="installer.madefor" txt="Qhatu Ltda / http://www.qhatu.net"/>
     <str id="installer.quit.title" txt="Are you sure you want to quit?"/>
     <str id="installer.quit.message" txt="This will cancel the installation!"/>
     <str id="installer.warning" txt="Warning!"/>

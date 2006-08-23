@@ -1229,7 +1229,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener, ListSelect
          
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.gridwidth = 3;
+        constraints.gridwidth = 8;
         constraints.gridheight = 1;
         constraints.weightx = 1.0;
         constraints.weighty = 1.0;        
@@ -1248,7 +1248,7 @@ public class ShortcutPanel extends IzPanel implements ActionListener, ListSelect
         createShortcuts.addActionListener(this);
         constraints.gridx = 0;
         constraints.gridy = 1;
-        constraints.gridwidth = 2;
+        constraints.gridwidth = 8;
         constraints.gridheight = 1;   
         constraints.weighty = 0.2;
         layout.addLayoutComponent(createShortcuts, constraints);

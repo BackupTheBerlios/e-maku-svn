@@ -54,6 +54,8 @@ public class InfoPanel extends IzPanel
 
     /** The text area. */
     private JTextArea textArea;
+    
+    
 
     /** The scrolling container. */
     private JScrollPane scroller;
@@ -93,6 +95,10 @@ public class InfoPanel extends IzPanel
         textArea = new JTextArea(info);
         textArea.setCaretPosition(0);
         textArea.setEditable(false);
+        
+        
+        
+        
         scroller = new JScrollPane(textArea);
         parent.buildConstraints(gbConstraints, 0, 1, 1, 1, 1.0, 0.9);
         gbConstraints.fill = GridBagConstraints.BOTH;

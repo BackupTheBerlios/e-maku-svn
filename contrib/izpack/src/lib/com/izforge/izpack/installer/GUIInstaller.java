@@ -471,7 +471,7 @@ public class GUIInstaller extends InstallerBase
             // We build the GUI
             addWindowListener(new WindowHandler());
             JPanel contentPane = (JPanel) getContentPane();
-            setTitle("Selección de Idioma");
+            setTitle("SelecciÃ³n de Idioma");
             GridBagLayout layout = new GridBagLayout();
             contentPane.setLayout(layout);
             GridBagConstraints gbConstraints = new GridBagConstraints();
@@ -498,7 +498,7 @@ public class GUIInstaller extends InstallerBase
             gbConstraints.insets = new Insets(5, 5, 0, 5);
             layout.addLayoutComponent(label1, gbConstraints);
             contentPane.add(label1);
-            JLabel label2 = new JLabel("para las instrucciones de instalación:", SwingConstants.CENTER);
+            JLabel label2 = new JLabel("para las instrucciones de instalaciÃ³n:", SwingConstants.CENTER);
             gbConstraints.gridy = 2;
             gbConstraints.insets = new Insets(0, 5, 5, 5);
             layout.addLayoutComponent(label2, gbConstraints);
@@ -748,7 +748,7 @@ public class GUIInstaller extends InstallerBase
             String iso3 = (String) value;
             //setText(iso3);
             if (iso3.equals("es_ES"))
-                setText("Español");
+                setText("EspaÃ±ol");
             else
                 setText("English");
 
