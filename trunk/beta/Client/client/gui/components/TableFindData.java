@@ -485,10 +485,10 @@ public class TableFindData extends JPanel implements AnswerListener,
 		JTtabla.setDefaultRenderer(Integer.class, new FortmaCell(Integer.class));
 		JTtabla.setDefaultRenderer(Date.class, new FortmaCell(Date.class));
 		
-		JTtabla.setDefaultEditor(BigDecimal.class, new CellEditor(Double.class));
-		JTtabla.setDefaultEditor(Integer.class, new CellEditor(Integer.class));
-		JTtabla.setDefaultEditor(Date.class,new CellEditor(Date.class));
-		JTtabla.setDefaultEditor(String.class,new CellEditor(String.class));
+		JTtabla.setDefaultEditor(BigDecimal.class, new CellEditor(Double.class,JTtabla));
+		JTtabla.setDefaultEditor(Integer.class, new CellEditor(Integer.class,JTtabla));
+		JTtabla.setDefaultEditor(Date.class,new CellEditor(Date.class,JTtabla));
+		JTtabla.setDefaultEditor(String.class,new CellEditor(String.class,JTtabla));
 
 		GFforma.addChangeExternalValueListener(this);
 		JTtabla.changeSelection(0, 0, false, false);
@@ -824,9 +824,11 @@ class CellEditor extends AbstractCellEditor implements TableCellEditor {
 	private Class c;
 	private JTextField jtf;
 	private JDateChooser jtfd;
+	private JTable refJTable;
 	
-	public CellEditor(Class c) {
+	public CellEditor(Class c,JTable table) {
 		this.c = c;
+		this.refJTable = table;
 		jtf = new JTextField();
 		jtf.addFocusListener(new FocusAdapter() {
 			public void focusLost(FocusEvent e) {
@@ -836,6 +838,12 @@ class CellEditor extends AbstractCellEditor implements TableCellEditor {
 		});
 		jtfd = new JDateChooser();
 		jtfd.setDateFormatString("yyyy-MM-dd");
+		jtfd.addFocusListener(new FocusAdapter() {
+			public void focusGained(FocusEvent e) {
+				jtfd.setFocusCycleRoot(true);
+				jtfd.getDateEditor().getUiComponent().requestFocusInWindow();
+			}
+		});
 	}
 
 	public Component getTableCellEditorComponent(JTable table, Object value,boolean isSelected, int row, int column) {
@@ -848,6 +856,7 @@ class CellEditor extends AbstractCellEditor implements TableCellEditor {
 			if (value != null)
 				jtfd.setDate((Date) value);
 			jtfd.setEnabled(enabled);
+			jtfd.getDateEditor().getUiComponent().requestFocus();
 			return jtfd;
 		}
 		else if (String.class.equals(c)){

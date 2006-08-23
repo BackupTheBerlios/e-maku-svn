@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -429,17 +430,26 @@ public class GenericData extends JPanel implements DateListener,
 				}
 				XMLText.addFocusListener(new FocusAdapter() {
 					public void focusLost(FocusEvent e) {
-						super.focusLost(e);
+						
 						XMLTextField XMLRefText = (XMLTextField) e.getSource();
+						String text = XMLRefText.getText();
+						
 						if (XMLTextField.NUMERIC.equals(XMLRefText.getType())) {
 							try {
-								XMLRefText.setNumberValue(Double.parseDouble(XMLRefText.getText()));
+								NumberFormat nf = NumberFormat.getNumberInstance();
+			        			DecimalFormat form = (DecimalFormat) nf;
+			        			form.applyPattern("###,###,##0.00");
+								XMLRefText.setText(nf.format(Double.parseDouble(text)));
+								XMLRefText.setNumberValue(nf.parse(text).doubleValue());
 							} catch (NumberFormatException NFEe) {
+								//NFEe.printStackTrace();
+							}
+							catch (ParseException Pe) {
+								Pe.printStackTrace();
 							}
 						}
-						if (!"".equals(XMLRefText.getText())
-								&& (XMLRefText.isExportvalue() || XMLRefText
-										.getKeyExternalValue() != null)) {
+						if (!"".equals(XMLRefText.getText()) &&
+							(XMLRefText.isExportvalue() || XMLRefText.getKeyExternalValue() != null)) {
 							exportar(XMLRefText);
 						}
 					}
@@ -461,9 +471,9 @@ public class GenericData extends JPanel implements DateListener,
 							 * exportar(XMLText); } Comentado por que se lo
 							 * envio al primer focusLost de XMLTextField
 							 */
-							class FocusThread extends Thread {
+							/*class FocusThread extends Thread {
 								
-								public void run() {
+								public void run() {*/
 									
 									XMLTextField XMLRefText = (XMLTextField) e.getSource();
 									
@@ -520,14 +530,14 @@ public class GenericData extends JPanel implements DateListener,
 										}
 										notificando(XMLRefText, value);
 									}
-								}
+								/*}
 							};
-							new FocusThread().start();
+							new FocusThread().start();*/
 						}
 					});
 				}
 				if (XMLText.getType().equals("NUMERIC")) {
-					XMLText.setText("0,00");
+					XMLText.setText("0.00");
 					XMLText.setNumberValue(0.00);
 					if (XMLText.isExportvalue()) {
 						GFforma.setExternalValues(XMLText.getExportvalue(),0.00);

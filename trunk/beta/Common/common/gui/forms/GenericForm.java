@@ -144,7 +144,6 @@ public class GenericForm extends JInternalFrame{
         generar(form);
         
         FinishEvent event = new FinishEvent(this);
-        System.out.println("Notificando final de forma hija");
         notificando(event);
     }
     

@@ -25,7 +25,6 @@ import javax.swing.text.PlainDocument;
 import org.jdom.Element;
 
 import common.control.ClientHeaderValidator;
-import common.control.DateEvent;
 import common.control.UpdateCodeEvent;
 import common.control.UpdateCodeListener;
 import common.misc.language.Language;
@@ -79,9 +78,9 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	private int chars;
 	private boolean typed;
 	private String nameField = null;
-	private boolean cleaning = false;
-	private boolean systemDate = false;
-	private boolean printable = true;
+	private boolean cleaning;
+	private boolean systemDate;
+	private boolean printable;
 	private String calculateDate = null;
 	private String addAttribute = null;
 	private String sendRecord;
@@ -112,8 +111,9 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 		if (TYPE.equals(NUMERIC)) {
 			this.setDocument(new LimitDocument(chars));
 		} else {
-			if (Mask.equals("NUMERIC"))
+			if (Mask.equals("NUMERIC")) {
 				this.setDocument(new LimitDocument(chars));
+			}
 			else {
 				this.setDocument(new TextDataValidator(chars));
 			}
@@ -141,13 +141,14 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 		
 		this.addKeyListener(new KeyAdapter() {
 			public void keyTyped(KeyEvent e) {
-				int keyCode = e.getKeyChar();
+				int keyCode = e.getKeyCode();
 				typed=true;
-				if (NUMERIC.equals(getType()) && keyCode>=48 && keyCode<=57) {
+				if (NUMERIC.equals(getType()) &&
+					((keyCode>=48 && keyCode<=57) ||( keyCode==0))) {
 					if (cleaning) {
 						setText("");
 						cleaning = false;
-					}
+					}					
 				}
 			}
 		});
@@ -157,9 +158,9 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 				transferFocus();
 			}
 		});
+		
 		this.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
-				super.focusGained(e);
 				cleaning = true;
 			}
 		});
@@ -256,22 +257,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 		ClientHeaderValidator.addUpdateCodeListener(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see common.control.DateListener#cathDateEvent(common.control.DateEvent)
-	 */
-	public void cathDateEvent(DateEvent e) {
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see common.control.UpdateCodeListener#cathUpdateCodeEvent(common.control.UpdateCodeEvent)
-	 */
 	public void cathUpdateCodeEvent(UpdateCodeEvent e) {
-		// TODO Auto-generated method stub
 		if (idDocument.equals(e.getIdDocument())) {
 			this.setText(e.getConsecutive());
 		}
@@ -326,18 +312,15 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	public boolean isCallExternalEvent() {
 		if (callExternalClass != null && callExternalMethod != null) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	public boolean isExportvalue() {
 		if (exportValue != null) {
 			return true;
-		} else {
-			return false;
 		}
-
+		return false;
 	}
 
 	public void setExportvalue(String exportvalue) {
@@ -367,19 +350,15 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	public boolean isImportvalue() {
 		if (importValue != null) {
 			return true;
-		} else {
-			return false;
 		}
-
+		return false;
 	}
 
 	public boolean isConstantValue() {
 		if (constantValue != null) {
 			return true;
-		} else {
-			return false;
 		}
-
+		return false;
 	}
 
 	public String[] getImportValue() {
@@ -417,10 +396,8 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	public boolean isMaxValue() {
 		if (maxValue != null) {
 			return true;
-		} else {
-			return false;
 		}
-
+		return false;
 	}
 
 	public void setMaxValue(String maxValue) {
@@ -451,21 +428,18 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	
 	class LimitDocument extends PlainDocument {
 
-	    /**
-		 * 
-		 */
 		private static final long serialVersionUID = 4060866073050927871L;
 		private int limit;
 	    public LimitDocument(int limit) {
 	        super();
-	        setLimit(limit); // store the limit����
+	        setLimit(limit);
 	    }
 	    
 	    public final int getLimit() {
 	        return limit;
 	    }
 	    
-	    public void insertString(int offset, String s, AttributeSet attributeSet) throws BadLocationException {
+	    public synchronized void insertString(int offset, String s, AttributeSet attributeSet) throws BadLocationException {
 	    	int longitud = s.length();
 	    	if (typed) {
 		        if (this.getLength() < limit) {
@@ -479,15 +453,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 			                        super.insertString(offset, s, attributeSet);
 			                    }
 			                    catch (NumberFormatException NFEe) {
-			                    	/*if (!s.substring(i, i + 1).equals(".") && !s.substring(i, i + 1).equals(",")) {
-			                    		Toolkit.getDefaultToolkit().beep();
-			                    	}*/
-			                    	if (super.getText(0,super.getLength()).indexOf(".")==-1) {
-		                    			super.insertString(offset, s, attributeSet);
-			                    	}
-			                    	else {
-			                    		Toolkit.getDefaultToolkit().beep();
-			                    	}
+		                    		Toolkit.getDefaultToolkit().beep();
 			                    }
 		                    }
 		                } else {
