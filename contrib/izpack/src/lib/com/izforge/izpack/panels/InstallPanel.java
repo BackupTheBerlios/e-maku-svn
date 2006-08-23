@@ -199,7 +199,8 @@ public class InstallPanel extends IzPanel implements AbstractUIProgressHandler
 					+ "itext.jar;%MIDAS_HOME%" + contribPath
 					+ "digester.jar;%MIDAS_HOME%" + contribPath
 					+ "jdt-compiler.jar;%MIDAS_HOME%" + contribPath
-					+ "bcprov.jar";
+					+ "bcprov.jar;%MIDAS_HOME%" + contribPath
+					+ "jcalendar.jar";
 			
 			String serverClassPath = "set CLASSPATH=.;%MIDAS_HOME%" + emakuPath
 			+ "server.jar;%MIDAS_HOME%" + contribPath
