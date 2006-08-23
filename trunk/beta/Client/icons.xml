@@ -405,7 +405,11 @@
   </icon>
   <icon>
     <key>COMPROBANTE-CARTERA</key>
-    <path>/icons/ico_egresos.png</path>
+    <path>/icons/ico_cartera.png</path>
+  </icon>
+  <icon>
+    <key>COMPROBANTE-PAGOS</key>
+    <path>/icons/ico_pagos.png</path>
   </icon>
   <icon>
     <key>NOTA-CONTABILIDAD</key>
@@ -418,5 +422,25 @@
   <icon>
     <key>GREPORTS</key>
     <path>/icons/ico_grupo_reportes.png</path>
+  </icon>
+  <icon>
+    <key>CREDITCARD</key>
+    <path>/icons/ico_tarjeta_credito.png</path>
+  </icon>
+  <icon>
+    <key>CHEQUE</key>
+    <path>/icons/ico_cheques.png</path>
+  </icon>
+  <icon>
+    <key>CONSIGNACION</key>
+    <path>/icons/ico_consignacion.png</path>
+  </icon>
+  <icon>
+    <key>TRANSFERENCIA</key>
+    <path>/icons/ico_traslados.png</path>
+  </icon>
+  <icon>
+    <key>CONTABILIZACION</key>
+    <path>/icons/ico_contabilizacion.png</path>
   </icon>
 </icons>

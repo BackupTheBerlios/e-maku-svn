@@ -737,7 +737,7 @@
         <Mnemonic>NEMO-VENTAS</Mnemonic>
         <JMenu>
             <Mnemonic>NEMO-CARTERA</Mnemonic>
-            <Icon>/icons/ico_nuevo.png</Icon>
+            <Icon>/icons/ico_cartera.png</Icon>
             <Text>CARTERA</Text>
             <Activo />
             <JMenuItem>
@@ -1290,7 +1290,7 @@
         <Mnemonic>NEMO-COMPRAS</Mnemonic>
         <JMenu>
             <Mnemonic>NEMO-PAGOS</Mnemonic>
-            <Icon>/icons/ico_nuevo.png</Icon>
+            <Icon>/icons/ico_pagos.png</Icon>
             <Text>PAGOS</Text>
             <Activo />
             <JMenuItem>
