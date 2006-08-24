@@ -25,13 +25,9 @@ Telefonos: 7215949 - 7211067 - Fax: (092) 7211630                    VELAS DECOR
 				<field row="12" col="1" type="STRING">Telefono:</field>
 				<field row="13" col="1" type="STRING">Ciudad:</field>
 				<!-- Informacion documento -->
-				<field row="9" col="107" type="STRING">Factura Crédito</field>
+				<field row="9" col="107" type="STRING">Orden de Compra</field>
 				<field row="10" col="107" type="STRING">Fecha</field>
-				<field row="11" col="107" type="STRING">Plazo Dias</field>
-				<field row="12" col="107" type="STRING">F. Vencimiento</field>
-				<field row="13" col="107" type="STRING">Vendedor</field>
-				<field row="14" col="107" type="STRING">Bodega</field>
-				<field row="15" col="107" type="STRING">Nro</field>
+				<field row="11" col="107" type="STRING">Numero</field>
 				<!-- Informacion detallada de productos -->
 				<field row="17" col="5" type="STRING">Codigo</field>
 				<field row="17" col="31" type="STRING">Descripcion</field>
@@ -74,25 +70,17 @@ Telefonos: 7215949 - 7211067 - Fax: (092) 7211630                    VELAS DECOR
 		<!-- Paquetes -->
 		<!-- Tercero -->
 		<package>
-				<field row="9" col="12" type="ABSTRACT" width="26" height="5" />
+				<field row="9" col="12" type="STRING" />
+				<field row="10" col="12" type="STRING" />
+				<field row="11" col="12" type="STRING" />
+				<field row="12" col="12" type="STRING" />
+				<field row="13" col="12" type="STRING" />
 		</package>
 		<package>
 				<field row="10" col="123" type="STRING" />
 		</package>
 		<package>
 				<field row="11" col="123" type="STRING" />
-		</package>
-		<package>
-				<field row="12" col="123" type="STRING" />
-		</package>
-		<package>
-				<field row="13" col="123" type="STRING" />
-		</package>
-		<package>
-				<field row="14" col="123" type="STRING" />
-		</package>
-    <package>
-				<field row="15" col="123" type="STRING" />
 		</package>
 		<package>
 				<subpackage rowInit="19">

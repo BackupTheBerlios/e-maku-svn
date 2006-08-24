@@ -120,11 +120,10 @@ public class PlainManager extends AbstractManager {
 					AttCols.add(attribs);
 				}
 				
-				int i=0;
 				while (it_transaction.hasNext()) {
 					Element element = (Element) it_transaction.next();
 					Iterator iterator = element.getChildren().iterator();
-					i=0;
+					int i=0;
 					while(iterator.hasNext()) {
 						Element elmt = (Element) iterator.next();
 						Attribute att = new Attribute("row",String.valueOf(rowInit));
@@ -132,7 +131,6 @@ public class PlainManager extends AbstractManager {
 						addValue(elmt.getValue(),AttCols.get(i));
 						i++;
 					}
-					i=0;
 					rowInit++;	
 				}
 			}
