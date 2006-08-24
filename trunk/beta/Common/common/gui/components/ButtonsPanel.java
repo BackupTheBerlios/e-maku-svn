@@ -313,16 +313,21 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 						SAXBuilder sax = new SAXBuilder(false);
 						Document template = null;
 						URL url = this.getClass().getResource(GFforma.getPrinterTemplate());
-						template = sax.build(url);
-						AbstractManager print = null;
-						
-						if ("PLAIN".equals(template.getRootElement().getAttributeValue("type")) ) {
-							print = new PlainManager(template.getRootElement(),doc.getRootElement());
+						if (url!=null){
+							template = sax.build(url);
+							AbstractManager print = null;
+							
+							if ("PLAIN".equals(template.getRootElement().getAttributeValue("type")) ) {
+								print = new PlainManager(template.getRootElement(),doc.getRootElement());
+							}
+							System.out.println("================================");
+							System.out.println(print.toString());
+							System.out.println("================================");
+							new PrintManager(ImpresionType.PLAIN,print.getStream(),true);
 						}
-						System.out.println("================================");
-						System.out.println(print.toString());
-						System.out.println("================================");
-						new PrintManager(ImpresionType.PLAIN,print.getStream(),true);
+						else {
+							JOptionPane.showInternalMessageDialog(GFforma,"NO SE ENCONTRO LA PLANTILLA DE IMPRESION");
+						}
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					} catch (PrintException e) {
