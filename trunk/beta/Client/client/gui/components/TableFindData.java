@@ -850,7 +850,7 @@ class CellEditor extends AbstractCellEditor implements TableCellEditor {
 				Thread t = new Thread() {
 					public void run() {
 						try {
-							Thread.sleep(500);
+							Thread.sleep(100);
 						}
 						catch (InterruptedException e1) {
 							e1.printStackTrace();

@@ -18,9 +18,6 @@ import common.comunications.SocketConnector;
 import common.gui.forms.FirstDialog;
 import common.misc.language.Language;
 
-//import com.l2fprod.gui.plaf.skin.Skin;
-//import com.l2fprod.gui.plaf.skin.SkinLookAndFeel;
-
 /**
  * Run.java Creado el 29-jul-2004
  * 
@@ -49,16 +46,7 @@ public class Run {
 	public static void main(String[] args) {
 
         try {
-        	//new Run();
-        	/*
-        	PlasticXPLookAndFeel.setTabStyle(PlasticXPLookAndFeel.TAB_STYLE_METAL_VALUE);
-            PlasticXPLookAndFeel.setMyCurrentTheme(new SkyBluer());
-            UIManager.setLookAndFeel(new PlasticXPLookAndFeel());
-        	/*Run run = new Run();
-            Skin skin = SkinLookAndFeel.loadThemePack(run.getClass().getResource("/coronaHthemepack.zip"));
-            SkinLookAndFeel.setSkin(skin);
-            UIManager.setLookAndFeel(new SkinLookAndFeel());*/
-             
+        	
             Font f = new Font("Tahoma", Font.PLAIN, 12);
             UIManager.put("Menu.font",			f);
             UIManager.put("MenuItem.font",		f);
