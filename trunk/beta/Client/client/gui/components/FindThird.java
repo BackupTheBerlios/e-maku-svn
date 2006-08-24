@@ -30,6 +30,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
@@ -218,7 +219,7 @@ public class FindThird extends JTabbedPane implements AnswerListener, InitiateFi
         }
         JPanel JPgeneral = new JPanel(new BorderLayout());
         JPanel JPnorth = new JPanel(new BorderLayout());
-        
+        UIManager.getDefaults().put("ComboBox.disabledForeground",Color.BLACK);
         XMLTFfind = new XMLTextField("FIND",20,50);
         XMLTFfind.setEnabled(enabled);
         JCBfined = new JComboBox();
