@@ -62,8 +62,8 @@ public class PoolConexiones {
 								ConfigFile.getPassword(i)));
             } 
             catch (ClassNotFoundException CNFEe) {
-                LogAdmin.setMessage(
-                		Language.getWord("ERR_CLASS") + " " + CNFEe.getMessage(),
+                LogAdmin.setMessage("ERR_CLASS",
+                		Language.getWord("ERR_CLASS"),CNFEe.getMessage(),
 						ServerConst.ERROR);
                 
                 throw new PoolNotLoadException(ConfigFile.getNombreBD(i));

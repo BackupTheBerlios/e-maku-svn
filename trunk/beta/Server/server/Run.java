@@ -72,7 +72,7 @@ public class Run {
 							+ "en el servidor de transacciones");
 			
 		} catch (PoolNotLoadException e) {
-			LogAdmin.setMessage(e.getMessage(),ServerConst.ERROR);
+			LogAdmin.setMessage(e.getErrorCode(),e.getMessage(),Language.getWord("NODEBUG"),ServerConst.ERROR);
 		} 
 	}
 

@@ -6,14 +6,15 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Vector;
 
-import common.misc.language.Language;
-import common.misc.log.LogAdmin;
-import server.misc.ServerConst;
-
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+
+import server.misc.ServerConst;
+
+import common.misc.language.Language;
+import common.misc.log.LogAdmin;
 
 /**
  * ConfigFile.java Creado el 25-jun-2004
@@ -54,9 +55,11 @@ public class ConfigFile {
     public static void Cargar() throws ConfigFileNotLoadException{
         try {
             builder = new SAXBuilder(false);
-            System.out.println("Configuracion: "+ServerConst.CONF+
+            
+            System.out.println("Config: "+ServerConst.CONF+
                     ServerConst.SEPARATOR+
                     "server.conf");
+            
             doc = builder.build(
                                 ServerConst.CONF+
                                 ServerConst.SEPARATOR+
@@ -68,7 +71,7 @@ public class ConfigFile {
                 
             /**
              * Ciclo encargado de leer las primeras etiquetas del archivo XML, en este
-             * caso Configuraci�n
+             * caso Configuración
              */
             
             while (i.hasNext()) {

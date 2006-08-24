@@ -91,6 +91,8 @@ public static void setMessage(String key,String mensaje,String debug, int priori
     	
     	if (os.startsWith("Windows") && (prioridad == CommonConst.ERROR)) {  
 
+    		printConsoleError(key,mensaje,debug);
+    		
     		JLabel mesg = new JLabel(mensaje);
     		
     		JTextArea mesg2 = new JTextArea(3,25);
@@ -124,7 +126,7 @@ public static void setMessage(String key,String mensaje,String debug, int priori
     		contentPane.add(panel2,BorderLayout.CENTER);
     		contentPane.setSize(400,600);
     		
-    		JOptionPane.showMessageDialog(new JFrame(),contentPane,Language.getWord("ERROR"),
+    		JOptionPane.showMessageDialog(new JFrame(),contentPane,Language.getWord("ERROR") + " #" + Language.getCodeError(key),
     				JOptionPane.ERROR_MESSAGE);
     		
     		if (Language.getCodeError(key).equals("002")) {
@@ -133,7 +135,8 @@ public static void setMessage(String key,String mensaje,String debug, int priori
     	}
     	
         if (ValueLog.equals("Default") && (prioridad == CommonConst.ERROR)) {
-            System.out.println(mensaje);
+            printConsoleError(key,mensaje,debug);
+            
         } else if (ValueLog.equals("Verbose")) {
             System.out.println(mensaje);
         } else if (ValueLog.equals("VerboseFile")) {
@@ -141,10 +144,18 @@ public static void setMessage(String key,String mensaje,String debug, int priori
             EscribirArchivo(mensaje);
         } else if (ValueLog.equals("LogFile")) {
             if (prioridad == CommonConst.ERROR)
-                System.out.println(mensaje);
+                printConsoleError(key,mensaje,debug);
             EscribirArchivo(mensaje);
         }
     }
+
+
+    private static void printConsoleError(String key,String mensaje,String debug) {
+  	 System.out.println(Language.getWord("ERROR") + " #" + Language.getCodeError(key));
+	 System.out.println(mensaje);
+	 System.out.println(debug);
+	}   
+
 	/**
 	 * Este metodo se encarga de escribir el fichero E-Maku.log
 	 * 
