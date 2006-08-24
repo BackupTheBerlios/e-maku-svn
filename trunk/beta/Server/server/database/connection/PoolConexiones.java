@@ -70,7 +70,7 @@ public class PoolConexiones {
             } 
             catch (SQLException SQLEe){
                 LogAdmin.setMessage("ERR_SQL",
-                		Language.getWord("ERR_SQL") + " / " + SQLEe.getMessage(),
+                		Language.getWord("ERR_SQL") , SQLEe.getMessage(),
 						ServerConst.ERROR);
                 throw new PoolNotLoadException(ConfigFile.getNombreBD(i));
             }

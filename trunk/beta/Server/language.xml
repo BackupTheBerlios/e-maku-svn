@@ -8,6 +8,16 @@
 -->
 <language>
     <sentence>
+        <key>ACCEPT</key>
+        <es_CO>Aceptar</es_CO>
+        <en_US>Accept</en_US>
+    </sentence>
+    <sentence>
+        <key>ERROR</key>
+        <es_CO>ERROR</es_CO>
+        <en_US>ERROR</en_US>
+    </sentence>    
+    <sentence>
         <key>LOADING_CF</key>
         <es_CO>INFO: Cargando archivo de configuracion...</es_CO>
         <en_US>INFO: Loading config file...</en_US>
@@ -28,7 +38,7 @@
         <en_US>INFO: Loading SQL sentences...</en_US>
     </sentence>
     <sentence>
-        <key>ERR_CLASS</key>
+        <key errorCode="001">ERR_CLASS</key>
         <es_CO>ERROR 001: No se pudo cargar el driver de la base de datos</es_CO>
         <en_US>ERROR 001: Can not load the data base driver</en_US>
     </sentence>
@@ -38,67 +48,67 @@
         <en_US>ERROR 002: Server can not connect to the data base</en_US>
     </sentence>
     <sentence>
-        <key>ERR_CONFIG</key>
+        <key errorCode="003">ERR_CONFIG</key>
         <es_CO>ERROR 003: No se pudo cargar el archivo de configuracion</es_CO>
         <en_US>ERROR 003: Can not load the settings file</en_US>
     </sentence>
     <sentence>
-        <key>ERR_PARAMETERS_DOCUMENT</key>
+        <key errorCode="004">ERR_PARAMETERS_DOCUMENT</key>
         <es_CO>ERROR 004: Parametros incorrectos en el archivo de configuracion</es_CO>
         <en_US>ERROR 004: Wrong parameters in the settings file</en_US>
     </sentence>
     <sentence>
-        <key>ERR_LOADING_ST</key>
+        <key errorCode="005">ERR_LOADING_ST</key>
         <es_CO>ERROR 005: No se pudieron cargar las sentencias SQL en cache</es_CO>
         <en_US>ERROR 005: Can not load SQL sentences in cache</en_US>
     </sentence>
     <sentence>
-        <key>ERR_HAVE_CHILDREN</key>
+        <key errorCode="101">ERR_HAVE_CHILDREN</key>
         <es_CO>ERROR 101: La cuenta no debe tener subcuentas para ser eliminada</es_CO>
         <en_US>ERROR 101: The account can not have sub-accounts if you want to delete it</en_US>
     </sentence>
     <sentence>
-        <key>ERR_HAVE_CHILDREN_EDIT</key>
+        <key errorCode="102">ERR_HAVE_CHILDREN_EDIT</key>
         <es_CO>ERROR 102: Si desea convertir una cuenta en subcuenta, esta no puede tener subcuentas previas asociadas</es_CO>
         <en_US>ERROR 102: If you wish to convert an account in sub-account, this can not have sub-accounts associated previously</en_US>
     </sentence>
     <sentence>
-        <key>ERR_HAVE_DATA</key>
+        <key errorCode="103">ERR_HAVE_DATA</key>
         <es_CO>ERROR 103: No se pudo eliminar la cuenta, posiblemente contiene registros contables</es_CO>
         <en_US>ERROR 103: Account can not be deleted, possibly it still have bookkeeping records</en_US>
     </sentence>
     <sentence>
-        <key>ERR_LOADING_LG</key>
+        <key errorCode="104">ERR_LOADING_LG</key>
         <es_CO>ERROR 104: No se pudieron cargar las sentencias de logica de negocios en cache</es_CO>
         <en_US>ERROR 104: Can not load bussines rules in cache</en_US>
     </sentence>
     <sentence>
-        <key>ERR_MODULE_LG</key>
+        <key errorCode="105">ERR_MODULE_LG</key>
         <es_CO>ERROR 105: No se pudo cargar el modulo de procesamiento de la transaccion</es_CO>
         <en_US>ERROR 105: Can not load the procesing module for the transaction</en_US>
     </sentence>
     <sentence>
-        <key>ERR_NOT_DRIVER_LG</key>
+        <key errorCode="106">ERR_NOT_DRIVER_LG</key>
         <es_CO>ERROR 106: No se ha definido modulo para procesar la transaccion</es_CO>
         <en_US>ERROR 106: There is not a defined module for procesing this transaction</en_US>
     </sentence>
     <sentence>
-        <key>ERR_INVALID_ARGS</key>
+        <key errorCode="107">ERR_INVALID_ARGS</key>
         <es_CO>ERROR 107: Argumentos invalidos para procesar la transaccion</es_CO>
         <en_US>ERROR 107: Invalid arguments for processing the transaction</en_US>
     </sentence>
     <sentence>
-        <key>ERR_FOUND_DRIVER_LG</key>
+        <key errorCode="108">ERR_FOUND_DRIVER_LG</key>
         <es_CO>ERROR 108: No se encontro el modulo para procesar la transaccion</es_CO>
         <en_US>ERROR 108: Can not found the module for procesing the transaction</en_US>
     </sentence>
     <sentence>
-        <key>ERR_COD_NOT_FOUND</key>
+        <key errorCode="109">ERR_COD_NOT_FOUND</key>
         <es_CO>ERROR 109: El siguiente codigo no fue encontrado</es_CO>
         <en_US>ERROR 109: The code was not found</en_US>
     </sentence>
     <sentence>
-        <key>ERR_COD_ARGS</key>
+        <key errorCode="110">ERR_COD_ARGS</key>
         <es_CO>ERROR 110: Argumentos invalidos para la sentencia</es_CO>
         <en_US>ERROR 110: Invalid arguments for the sentence</en_US>
     </sentence>
