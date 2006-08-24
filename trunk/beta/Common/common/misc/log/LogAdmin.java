@@ -9,7 +9,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.zip.GZIPOutputStream;
 
+//import javax.swing.JLabel;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import common.misc.CommonConst;
+import common.misc.language.Language;
+//import common.misc.language.Language;
 
 /**
  * LogAdmin.java Creado el 29-jun-2004
@@ -62,13 +68,27 @@ public class LogAdmin {
         newFile();
     }
     
+    public static void setMessage(String mensaje,int prioridad){
+    	setMessage("",mensaje,prioridad);
+    }
+    
     /**
      * 
      * @param mensaje
      * @param prioridad
      */
-    public static void setMessage(String mensaje, int prioridad) {
-   // 		System.out.println("prioridad del mensaje: "+prioridad+" mensaje "+mensaje+" valueLog: "+ValueLog);
+    public static void setMessage(String key,String mensaje, int prioridad) {
+    	String os = System.getProperty("os.name");
+    	
+    	if (os.startsWith("Windows") && (prioridad == CommonConst.ERROR)) {  
+    		  JOptionPane.showMessageDialog(new JFrame(),mensaje,"ERROR",
+              JOptionPane.ERROR_MESSAGE);
+    		  
+    		  if (Language.getCodeError(key).equals("002")) {
+    	        	System.exit(1);
+    	      } 
+    	}     	
+    	
         if (ValueLog.equals("Default") && (prioridad == CommonConst.ERROR)) {
             System.out.println(mensaje);
         } else if (ValueLog.equals("Verbose")) {

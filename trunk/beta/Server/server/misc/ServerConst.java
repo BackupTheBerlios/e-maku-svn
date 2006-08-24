@@ -25,7 +25,7 @@ public interface ServerConst {
     
 	public final String KeyServer = "E-Maku";
 
-	public final String JM_HOME       =  System.getenv("MIDAS_HOME");
+	public final String JM_HOME       =  System.getenv("EMAKU_HOME");
 	public final String HOME 		= System.getProperty("user.home");
     public final String SEPARATOR 	= System.getProperty("file.separator");
 	public final String CONF            = JM_HOME + SEPARATOR + "conf";

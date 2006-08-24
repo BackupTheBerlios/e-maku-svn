@@ -165,12 +165,12 @@ install_server() {
              echo "export EMAKU_HOME" >> $EMAKU_HOME/bin/emaku-server
              cat $ROOT/bin/emaku-server >> $EMAKU_HOME/bin/emaku-server
 
-             if [ ! -L /usr/sbin/emaku-server ] ; then
-               ln -s $EMAKU_HOME/bin/emaku-server /usr/sbin/emaku-server
+             if [ ! -L /usr/bin/emaku-server ] ; then
+               ln -s $EMAKU_HOME/bin/emaku-server /usr/bin/emaku-server
              fi
 
-             if [ ! -L /usr/sbin/emaku-server-daemon ] ; then
-               ln -s $EMAKU_HOME/bin/emaku-server-daemon /usr/sbin/emaku-server-daemon
+             if [ ! -L /usr/bin/emaku-server-daemon ] ; then
+               ln -s $EMAKU_HOME/bin/emaku-server-daemon /usr/bin/emaku-server-daemon
              fi
 
              echo " Instalando scripts de inicio..."
@@ -232,9 +232,9 @@ help(){
 remove(){
              find . -name '*.class' -exec rm {} \;
              \rm -rf build
-             \rm -f lib/emaku/common,jar
-             \rm -f lib/emaku/emaku-client.jar
-             \rm -f lib/emaku/emaku-server.jar 
+             \rm -f lib/emaku/common.jar
+             \rm -f lib/emaku/client.jar
+             \rm -f lib/emaku/server.jar 
 }
 
 case "$1" in

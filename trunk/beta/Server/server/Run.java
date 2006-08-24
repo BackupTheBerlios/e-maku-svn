@@ -48,7 +48,7 @@ public class Run {
 			if (os.equals("Linux")) {
 				String owner = System.getProperty("user.name");
 				if (owner.equals("root")) {
-					System.out.println("*** Excepción de Seguridad: El Servidor de Transacciones no puede ser ejecutado por el usuario root.");
+					System.out.println("*** ExcepciÃ³n de Seguridad: El Servidor de Transacciones no puede ser ejecutado por el usuario root.");
 					System.out.println("    El usuario indicado para iniciar este servicio es \"emaku\".");
 					System.exit(0);	
 				}

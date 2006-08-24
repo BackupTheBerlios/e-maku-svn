@@ -33,7 +33,7 @@
         <en_US>ERROR 001: Can not load the data base driver</en_US>
     </sentence>
     <sentence>
-        <key>ERR_SQL</key>
+        <key errorCode="002">ERR_SQL</key>
         <es_CO>ERROR 002: El servidor no pudo conectarse a la base de datos</es_CO>
         <en_US>ERROR 002: Server can not connect to the data base</en_US>
     </sentence>
@@ -100,7 +100,7 @@
     <sentence>
         <key>ERR_COD_ARGS</key>
         <es_CO>ERROR 110: Argumentos invalidos para la sentencia</es_CO>
-        <en_US>ERROR 111: Invalid arguments for the sentence</en_US>
+        <en_US>ERROR 110: Invalid arguments for the sentence</en_US>
     </sentence>
     <sentence>
         <key>ERR_CONSECUTIVE</key>

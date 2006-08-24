@@ -27,7 +27,7 @@ import org.jdom.input.SAXBuilder;
  *
  * Fecha: 2001/10/01
  *
- * Autores: Beatriz Flori�n  - bettyflor@kazak.ws
+ * Autores: Beatriz Florián  - bettyflor@kazak.ws
  *          Gustavo Gonzalez - xtingray@kazak.ws
  *
  * 2004/03/23
@@ -46,14 +46,14 @@ import org.jdom.input.SAXBuilder;
  */
 public class Language  {
     
-    private static Hashtable <String,String>glossary;
+    private static Hashtable <String,messageStructure>glossary;
     
     /**
      * Metodo que carga se encarga de llenar el glosario para el idioma del ST
      * @param lenguaje idioma para el ST, Ej. <code>SPANISH</code>
      */
     public void CargarLenguaje(String lenguaje) {
-        Language.glossary = new Hashtable<String,String>();
+        Language.glossary = new Hashtable<String,messageStructure>();
         try {
             SAXBuilder builder = new SAXBuilder(false);
             Document doc = builder.build(this.getClass().getResource("/language.xml"));
@@ -62,7 +62,16 @@ public class Language  {
             Iterator i = palabras.iterator();
             while (i.hasNext()) {
                 Element campos = (Element)i.next();
-        		glossary.put(campos.getChildText("key"),campos.getChildText(lenguaje));
+            	String message = campos.getChildText(lenguaje);
+            	
+                if (campos.getChild("key").getAttribute("errorCode")!=null) {
+                	String codeError = campos.getChild("key").getAttribute("errorCode").getValue();
+                	glossary.put(campos.getChildText("key"),new messageStructure(codeError,message));
+                }
+                else {
+                	glossary.put(campos.getChildText("key"),new messageStructure(null,message));
+                }
+        		
             }
         }
         catch (JDOMException JDOMEe) {
@@ -80,14 +89,37 @@ public class Language  {
      */
     public static String getWord(String key) {
     	if (glossary.containsKey(key))
-    		return glossary.get(key);
+    		return glossary.get(key).getMessage();
     	else
     		return "";
     }
     
     public static char getNemo(String key) {   
-        char nemo = glossary.get(key).charAt(0); 
+        char nemo = glossary.get(key).getMessage().charAt(0); 
         return nemo;
     }
     
+    public static String getCodeError(String key) {
+    	if (glossary.containsKey(key))
+    		return glossary.get(key).getCodeError();
+    	else
+    		return "";
+    }
+    
+    class messageStructure {
+    	private String message = null;
+    	private String codeError = null;
+    	
+    	private messageStructure(String codeError,String message){
+    		this.codeError=codeError;
+    		this.message=message;
+    	}
+    	
+		public String getCodeError() {
+			return codeError;
+		}
+		public String getMessage() {
+			return message;
+		}
+    }
 }

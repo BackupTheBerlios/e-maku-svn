@@ -27,7 +27,7 @@
         Preferencias de la interfaz grafica.
         Dimension de la ventana: 640x48 (Sin posibilidad de redimensionamiento)
     -->    
-    <guiprefs height="600" resizable="yes" width="800">
+    <guiprefs height="400" resizable="yes" width="600">
         <laf name="looks">
             <os family="windows" />
         </laf>
