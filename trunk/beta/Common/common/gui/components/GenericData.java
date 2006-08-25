@@ -662,9 +662,9 @@ public class GenericData extends JPanel implements DateListener,
 		for (int i = 0; i < max; i++) {
 			XMLTextField xmltemp = (XMLTextField) VFields.get(i);
 			if (xmltemp.isClean()) {
-				xmltemp.setText("");
+				xmltemp.setText("0,00");
 				if (xmltemp.getType().equals("NUMERIC")) {
-					xmltemp.setNumberValue(0);
+					xmltemp.setNumberValue(0.00);
 				}
 			}
 			if (xmltemp.isSystemDate()) {
