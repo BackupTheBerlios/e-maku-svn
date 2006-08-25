@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Document   : lenguaje.xml
+    Document   : languaje.xml
     Created at : 28 de junio de 2004, 16:48
     Author     : pastuxso / xtingray
     Description:
@@ -12,6 +12,11 @@
         <es_CO>Aceptar</es_CO>
         <en_US>Accept</en_US>
     </sentence>
+    <sentence>
+        <key>REPORTS</key>
+        <es_CO>Cargando Reportes</es_CO>
+        <en_US>Loading Reports</en_US>
+    </sentence>    
     <sentence>
         <key>CONFIGFILE</key>
         <es_CO>Cargando archivo de configuración desde</es_CO>
@@ -54,8 +59,8 @@
     </sentence>
     <sentence>
         <key errorCode="002">ERR_SQL</key>
-        <es_CO>El servidor no pudo conectarse a la base de datos</es_CO>
-        <en_US>Server can not connect to the database</en_US>
+        <es_CO>El servidor de transacciones no pudo conectarse a la base de datos</es_CO>
+        <en_US>The transactions server can not connect to the database</en_US>
     </sentence>
     <sentence>
         <key errorCode="003">ERR_CONFIG</key>

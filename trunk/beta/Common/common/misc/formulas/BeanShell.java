@@ -7,7 +7,6 @@ public class BeanShell {
 	
 	public static Interpreter shellScript;
 	public BeanShell() {
-		System.out.println("Cargando BeanShell");
 		shellScript = new Interpreter();
 	}
 	

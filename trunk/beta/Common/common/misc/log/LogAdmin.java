@@ -21,6 +21,7 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 import common.misc.CommonConst;
+import common.misc.exception.SuperException;
 import common.misc.language.Language;
 
 //import common.misc.language.Language;
@@ -40,20 +41,22 @@ import common.misc.language.Language;
  * GARANTIA; sin ninguna garantia aun por COMERCIALIZACION o por un PROPOSITO
  * PARTICULAR. Consulte la Licencia Publica General GNU GPL para mas detalles.
  * <br>
- * Informacion de la clase <br>
- * 
+ * Esta clase se encarga de realizar la administracion de logs del Servidor
+ * de Transacciones. 
+ * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
+
 public class LogAdmin {
 
-	private static File Flog;
+	private static File logFile;
 
 	private static RandomAccessFile RAFlog;
 
-	private static String ValueLog = "VerboseFile";
+	private static String logFlag = "VerboseFile";
 
-	private static String namefile = "Nonamelog";
+	private static String fileName = "Nonamelog";
 
 	/**
 	 * Este constructor inicializa el Administrador de logs con la prioridad
@@ -71,101 +74,147 @@ public class LogAdmin {
 	 */
 
 	public LogAdmin(String ValueLog, String namefile) {
-		LogAdmin.ValueLog = ValueLog;
-		LogAdmin.namefile = namefile;
+		LogAdmin.logFlag = ValueLog;
+		LogAdmin.fileName = namefile;
 		newFile();
 	}
 
-	public static void setMessage(String mensaje, int prioridad) {
-		setMessage("", mensaje, "", prioridad);
+
+	/**
+	 * Este método se encarga de administrar el tipo de salida que 
+	 * debe asignarse a un error
+	 * 
+	 * @param key
+	 *            Llave que identifica el tipo de error
+	 * @param message
+	 *            Titulo del error
+	 * @param debug
+	 *            Mensaje que especifica la causa técnica del error
+	 * @param priority
+	 *            Prioridad del mensaje
+	 */
+
+	public static void setMessage(String key,String message,String debug, int priority)  {
+	
+	    String os = System.getProperty("os.name");
+
+	    if (priority == CommonConst.ERROR) {
+    		
+    		printConsoleError(key,message,debug);	    	
+	    
+	    	if (os.startsWith("Windows") && (priority == CommonConst.ERROR)) {  
+	    
+	    		showWindowsMessage(key,message,debug);
+	    		
+	    		if (Language.getCodeError(key).equals("002")) {
+	    			new SuperException(SuperException.PANIC);
+	    		} 
+	    	}
+	    }
+	    else {
+	    	if (logFlag.equals("Verbose")) {	    		
+	    		System.out.println(message);
+	    		
+	    	} else if (logFlag.equals("VerboseFile")) {
+	    		System.out.println(message);
+	    		writeToFile(message);
+	    		
+	    	} else if (logFlag.equals("LogFile")) {
+	    		writeToFile(message);
+	    	}
+	    }
+    }
+
+	/**
+	 * Este método se encarga de redireccionar mensajes sencillos
+	 * del sistema a un método más complejo para procesarlos
+	 * 
+	 * @param message
+	 *            Titulo del error
+	 * @param priority
+	 *            Prioridad del mensaje
+	 */
+
+	public static void setMessage(String message, int priority) {
+		setMessage("", message, "", priority);
 	}
 
 	/**
+	 * Este método se encarga de visualizar una ventana con un mensaje 
+	 * de error cuando el sistema operativo es Windows
 	 * 
-	 * @param mensaje
-	 * @param prioridad
+	 * @param key
+	 *            Llave que identifica el tipo de error
+	 * @param message
+	 *            Titulo del error
+	 * @param debug
+	 *            Mensaje que especifica la causa técnica del error
 	 */
-public static void setMessage(String key,String mensaje,String debug, int prioridad) {
-	
-	    String os = System.getProperty("os.name");
-    	
-    	if (os.startsWith("Windows") && (prioridad == CommonConst.ERROR)) {  
-
-    		printConsoleError(key,mensaje,debug);
-    		
-    		JLabel mesg = new JLabel(mensaje);
-    		
-    		JTextArea mesg2 = new JTextArea(3,25);
-    		mesg2.setText(debug);
-    		mesg2.setWrapStyleWord(true);
-    		mesg2.setLineWrap(true);	
-    		mesg2.setEditable(false);
-    		
-    		JButton accept = new JButton(Language.getWord("ACCEPT"));
-    		
-    		Border etched1 = BorderFactory.createEtchedBorder();
-    		TitledBorder title1 = BorderFactory.createTitledBorder(etched1);
-    		
-    		JPanel contentPane = new JPanel();
-    		contentPane.setLayout(new BorderLayout());
-    		JPanel panel1 = new JPanel();
-    		panel1.setBorder(title1);
-    		panel1.setLayout(new BorderLayout());
-    		
-    		JPanel panel2 = new JPanel();
-    		panel2.setBorder(title1);
-    		panel2.setLayout(new BorderLayout());
-    		JPanel panel3 = new JPanel();
-    		panel3.setLayout(new BorderLayout());
-    		
-    		panel1.add(mesg, BorderLayout.CENTER);
-    		panel2.add(mesg2, BorderLayout.CENTER);
-    		panel3.add(accept, BorderLayout.CENTER);
-    		
-    		contentPane.add(panel1, BorderLayout.NORTH);
-    		contentPane.add(panel2,BorderLayout.CENTER);
-    		contentPane.setSize(400,600);
-    		
-    		JOptionPane.showMessageDialog(new JFrame(),contentPane,Language.getWord("ERROR") + " #" + Language.getCodeError(key),
-    				JOptionPane.ERROR_MESSAGE);
-    		
-    		if (Language.getCodeError(key).equals("002")) {
-    			System.exit(1);
-    		} 
-    	}
-    	
-        if (ValueLog.equals("Default") && (prioridad == CommonConst.ERROR)) {
-            printConsoleError(key,mensaje,debug);
-            
-        } else if (ValueLog.equals("Verbose")) {
-            System.out.println(mensaje);
-        } else if (ValueLog.equals("VerboseFile")) {
-            System.out.println(mensaje);
-            EscribirArchivo(mensaje);
-        } else if (ValueLog.equals("LogFile")) {
-            if (prioridad == CommonConst.ERROR)
-                printConsoleError(key,mensaje,debug);
-            EscribirArchivo(mensaje);
-        }
+    
+    private static void showWindowsMessage(String key, String message, String debug) {
+		JLabel mesg = new JLabel(message);
+		
+		JTextArea mesg2 = new JTextArea(3,25);
+		mesg2.setText(debug);
+		mesg2.setWrapStyleWord(true);
+		mesg2.setLineWrap(true);	
+		mesg2.setEditable(false);
+		
+		JButton accept = new JButton(Language.getWord("ACCEPT"));
+		
+		Border etched1 = BorderFactory.createEtchedBorder();
+		TitledBorder title1 = BorderFactory.createTitledBorder(etched1);
+		
+		JPanel contentPane = new JPanel();
+		contentPane.setLayout(new BorderLayout());
+		JPanel panel1 = new JPanel();
+		panel1.setBorder(title1);
+		panel1.setLayout(new BorderLayout());
+		
+		JPanel panel2 = new JPanel();
+		panel2.setBorder(title1);
+		panel2.setLayout(new BorderLayout());
+		JPanel panel3 = new JPanel();
+		panel3.setLayout(new BorderLayout());
+		
+		panel1.add(mesg, BorderLayout.CENTER);
+		panel2.add(mesg2, BorderLayout.CENTER);
+		panel3.add(accept, BorderLayout.CENTER);
+		
+		contentPane.add(panel1, BorderLayout.NORTH);
+		contentPane.add(panel2,BorderLayout.CENTER);
+		contentPane.setSize(400,600);
+		
+		JOptionPane.showMessageDialog(new JFrame(),contentPane,Language.getWord("ERROR") + " #" + Language.getCodeError(key),
+				JOptionPane.ERROR_MESSAGE);
     }
 
-
-    private static void printConsoleError(String key,String mensaje,String debug) {
+	/**
+	 * Este metodo se encarga de escribir un mensaje de error a consola
+	 * @param key
+	 *            Llave que identifica el tipo de error
+	 * @param message
+	 *            Titulo del error
+	 * @param debug
+	 *            Mensaje que especifica la causa tecnica del error
+	 */
+    
+    private static void printConsoleError(String key,String message,String debug) {
   	 System.out.println(Language.getWord("ERROR") + " #" + Language.getCodeError(key));
-	 System.out.println(mensaje);
+	 System.out.println(message);
 	 System.out.println(debug);
 	}   
 
 	/**
 	 * Este metodo se encarga de escribir el fichero E-Maku.log
 	 * 
-	 * @param mensaje
-	 *            Cadena de texto a a�adir al E-Maku.log
+	 * @param message
+	 *            Cadena de texto a añadir al E-Maku.log
 	 */
 
-	private synchronized static void EscribirArchivo(String mensaje) {
+	private synchronized static void writeToFile(String message) {
 		try {
-			long max = Flog.length();
+			long max = logFile.length();
 			Date now = new Date();
 			SimpleDateFormat format = null;
 			if (max >= CommonConst.MAX_SIZE_FILE_LOG) {
@@ -173,30 +222,36 @@ public static void setMessage(String key,String mensaje,String debug, int priori
 
 				format = new SimpleDateFormat("yyyy-MM-dd");
 
-				File Ffile = new File(CommonConst.TMP, namefile + "-"
+				File dateFile = new File(CommonConst.TMP, fileName + "-"
 						+ format.format(now) + ".gz");
-				FileOutputStream FOSfile = new FileOutputStream(Ffile);
+				FileOutputStream FOSfile = new FileOutputStream(dateFile);
 				GZIPOutputStream gzipfile = new GZIPOutputStream(FOSfile);
 				RAFlog.seek(0);
 				RAFlog.read(Blog);
 				gzipfile.write(Blog);
 				gzipfile.close();
 				FOSfile.close();
-				Flog.delete();
+				logFile.delete();
 				newFile();
 			}
 			format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			RAFlog.writeBytes(format.format(now) + " " + mensaje + "\n");
+			RAFlog.writeBytes(format.format(now) + " " + message + "\n");
 		} catch (IOException IOEe) {
 			IOEe.getMessage();
 		}
 
 	}
 
+	/**
+	 * Este método se encarga de inicializar el archivo en donde
+	 * se van a almacenar los logs del sistema
+	 * 
+	 */
+
 	private static void newFile() {
 		try {
-			Flog = new File(CommonConst.TMP, namefile + ".log");
-			RAFlog = new RandomAccessFile(Flog, "rw");
+			logFile = new File(CommonConst.TMP, fileName + ".log");
+			RAFlog = new RandomAccessFile(logFile, "rw");
 			RAFlog.seek(RAFlog.length());
 		} catch (FileNotFoundException FNFEe) {
 			FNFEe.printStackTrace();

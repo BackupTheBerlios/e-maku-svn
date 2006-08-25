@@ -12,6 +12,8 @@ import java.util.jar.JarFile;
 
 import net.sf.jasperreports.engine.JasperReport;
 
+import common.misc.language.Language;
+
 
 public class ReportsStore {
 	
@@ -21,7 +23,7 @@ public class ReportsStore {
 		
 		reports = new Hashtable<String,JasperReport>();
 		try {
-			System.out.println("Reportes compilados: " + url.openConnection());
+			System.out.println(Language.getWord("REPORTS") + ": " + url.openConnection());
 			JarURLConnection conn = (JarURLConnection)url.openConnection();
 			JarFile jarfile = conn.getJarFile();
 			Enumeration enumEntries = jarfile.entries();
