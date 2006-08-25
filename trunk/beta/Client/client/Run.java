@@ -71,8 +71,10 @@ public class Run {
         }
 
         catch (ConfigFileNotLoadException e) {
+        	System.out.println("Archivo de configuracion no encontrado...");
             FirstDialog dialogo = new FirstDialog(new JFrame(),ClientConst.KeyClient,FirstDialog.CREATE);
             dialogo.setLocationRelativeTo(dialogo.getParent());
+            dialogo.pack();
             dialogo.setVisible(true);
         }
         catch (Exception e) {
