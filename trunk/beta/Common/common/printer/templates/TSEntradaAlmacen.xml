@@ -25,25 +25,29 @@ Telefonos: 7215949 - 7211067 - Fax: (092) 7211630                    VELAS DECOR
 				<field row="12" col="1" type="STRING">Telefono:</field>
 				<field row="13" col="1" type="STRING">Ciudad:</field>
 				<!-- Informacion documento -->
-				<field row="9" col="107" type="STRING">Orden de Compra</field>
+				<field row="9" col="107" type="STRING">Entrada a Almacen</field>
 				<field row="10" col="107" type="STRING">Fecha</field>
-				<field row="11" col="107" type="STRING">Numero</field>
+				<field row="11" col="107" type="STRING">Orden de Compra Nro</field>
+				<field row="12" col="107" type="STRING">Fac. Proveedor Nro</field>
+				<field row="13" col="107" type="STRING">Entrada Nro</field>
 				<!-- Informacion detallada de productos -->
 				<field row="17" col="5" type="STRING">Codigo</field>
 				<field row="17" col="31" type="STRING">Descripcion</field>
 				<field row="17" col="63" type="STRING">Cantidad</field>
 				<field row="17" col="74" type="STRING">V. Unitario</field>
 				<field row="17" col="88" type="STRING">Sub. Total</field>
-				<field row="17" col="103" type="STRING">Descuento</field>
+				<field row="17" col="103" type="STRING">Descuuento</field>
 				<field row="17" col="117" type="STRING">Total IVA</field>
 				<field row="17" col="133" type="STRING">Total</field>
 				<!-- Observaciones -->
 				<field row="56" col="1" type="STRING">Observaciones</field>
 				<!-- Totales -->
-				<field row="56" col="112" type="STRING"><![CDATA[Sub Total $]]></field>
-				<field row="57" col="112" type="STRING"><![CDATA[Descuento $]]></field>
-				<field row="58" col="112" type="STRING"><![CDATA[IVA       $]]></field>
-				<field row="59" col="112" type="STRING"><![CDATA[Total     $]]></field>
+				<field row="56" col="112" type="STRING"><![CDATA[Sub Total        $]]></field>
+				<field row="57" col="112" type="STRING"><![CDATA[Descuento        $]]></field>
+				<field row="58" col="112" type="STRING"><![CDATA[IVA              $]]></field>
+				<field row="59" col="112" type="STRING"><![CDATA[Total            $]]></field>
+				<field row="60" col="112" type="STRING"><![CDATA[Gastos Generados $]]></field>
+				<field row="61" col="112" type="STRING"><![CDATA[Total Compra     $]]></field>
 				<!-- Pie de pagina -->
 				<field row="63" col="11" type="STRING">ACEPTADA</field>
 				<!-- Dibujo de lineas -->
@@ -77,10 +81,10 @@ Telefonos: 7215949 - 7211067 - Fax: (092) 7211630                    VELAS DECOR
 				<field row="13" col="12" type="STRING" />
 		</package>
 		<package>
-				<field row="10" col="123" type="STRING" />
-		</package>
-		<package>
-				<field row="11" col="123" type="STRING" />
+				<field row="10" col="128" type="STRING" />
+				<field row="11" col="128" type="STRING" />
+				<field row="12" col="128" type="STRING" />
+				<field row="13" col="128" type="STRING" />
 		</package>
 		<package>
 				<subpackage rowInit="19">
@@ -100,6 +104,8 @@ Telefonos: 7215949 - 7211067 - Fax: (092) 7211630                    VELAS DECOR
 				<field row="58" col="129" width="16" type="NUMERIC" mask="#,###,###,##0.00" />
 				<field row="59" col="129" width="16" type="NUMERIC" mask="#,###,###,##0.00" />
 				<field row="60" col="129" width="16" type="NUMERIC" mask="#,###,###,##0.00" />
+				<field row="61" col="129" width="16" type="NUMERIC" mask="#,###,###,##0.00" />
+				<field row="62" col="129" width="16" type="NUMERIC" mask="#,###,###,##0.00" />
 		</package>
 		<package>
 				<field row="57" col="1" type="TEXT" width="90" height="3" />
