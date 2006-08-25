@@ -118,10 +118,18 @@ public class PAutentication extends JPanel {
         JPclave.add(JPFclave);
         
         JPfields.add(JPclave);
-
-        this.add(JPetiquetas, BorderLayout.WEST);
-        this.add(JPfields, BorderLayout.CENTER);
-
+        
+        JPanel center = new JPanel();
+        JPanel centerAux = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        center.setLayout(new BorderLayout());
+        
+        center.add(JPetiquetas,BorderLayout.WEST);
+        center.add(JPfields,BorderLayout.CENTER);
+        centerAux.add(center);
+        
+        this.add(new JPanel(), BorderLayout.EAST);
+        this.add(new JPanel(), BorderLayout.WEST);
+        this.add(centerAux, BorderLayout.CENTER);
     }
 
     /**

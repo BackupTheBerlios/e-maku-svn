@@ -25,6 +25,7 @@ import java.util.Properties;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -74,8 +75,13 @@ public class Connection {
                 
         JFConexion = new JFrame(Language.getWord("TITLE-CONEC"));
         JFConexion.setResizable(false);
-        JFConexion.getContentPane().setLayout(new BorderLayout());
+        JFConexion.setLayout(new BorderLayout());
 
+        JLabel imgLabel = new JLabel(new ImageIcon(JFConexion.getClass().getResource("/icons/e-maku_splash.png")),JLabel.CENTER);
+        
+        JPanel imgPanel = new JPanel();
+        imgPanel.add(imgLabel);
+        
         JPAutenticacion = new PAutentication(PAutentication.ALL);
        
         JPanel JPsur = new JPanel();
@@ -137,7 +143,7 @@ public class Connection {
 			Phistory.load(FIShistory);
 			JPAutenticacion.setBaseDatos(Phistory.getProperty("database"));
 			JPAutenticacion.setUsuario(Phistory.getProperty("user"));
-			history =true;
+			history = true;
 			FIShistory.close();
 			FIShistory = null;
 			Phistory = null;
@@ -145,17 +151,22 @@ public class Connection {
 		} catch (FileNotFoundException e1) {}
 		catch (IOException e1) {}
         
-        JFConexion.getContentPane().add(new JPanel(), BorderLayout.WEST);
-        JFConexion.getContentPane().add(JPsur, BorderLayout.SOUTH);
-        JFConexion.getContentPane().add(JPAutenticacion, BorderLayout.CENTER);
-
-        JPAutenticacion.setVisible(true);
+		//JPanel center = new JPanel(new BorderLayout());
+		//center.add(JPAutenticacion,BorderLayout.CENTER);
+		
+		JFConexion.add(imgPanel, BorderLayout.NORTH);
+        JFConexion.add(new JPanel(), BorderLayout.EAST);
+        JFConexion.add(JPAutenticacion, BorderLayout.CENTER);
+        JFConexion.add(new JPanel(), BorderLayout.WEST);        
+        JFConexion.add(JPsur, BorderLayout.SOUTH);
+        
+        //JPAutenticacion.setVisible(true);
         
         JFConexion.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         JFConexion.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) { Run.exit(); }
         });
-
+       
         JFConexion.pack();
         JFConexion.setLocation(
                 (ClientConst.MAX_WIN_SIZE_WIDTH / 2) - JFConexion.getWidth() / 2,
