@@ -69,17 +69,12 @@ public class ConfigFile extends GenericParameters {
         doc = new Document();
         doc.setRootElement(new Element("Configuration"));
         
-        doc.getRootElement().addContent(
-                new Element("language").setText(Language));
-        doc.getRootElement().addContent(
-                new Element("host").setText(Host));
-        doc.getRootElement().addContent(
-                new Element("serverport").setText(Port));
-        doc.getRootElement().addContent(
-                new Element("log").setText(log));
-        doc.getRootElement().addContent(
-        		    new Element("cash").setText("CA001"));
-        GenericParameters.addParameter("cash","CA001");
+        doc.getRootElement().addContent(new Element("language").setText(Language));
+        doc.getRootElement().addContent(new Element("host").setText(Host));
+        doc.getRootElement().addContent(new Element("serverport").setText(Port));
+        doc.getRootElement().addContent(new Element("log").setText(log));
+        doc.getRootElement().addContent(new Element("cash").setText(cash));
+        
         icons.loadIcons();
 
         XMLOutputter out = new XMLOutputter();
@@ -146,9 +141,8 @@ public class ConfigFile extends GenericParameters {
                 	logMode = datos.getValue();
                 } else if (nombre.equals("cash")) {
                     boxID = datos.getValue();
-            } else {
-                    GenericParameters.addParameter(nombre,datos.getValue());
-                }
+	            }
+                GenericParameters.addParameter(nombre,datos.getValue());
             }
             
             icons.loadIcons();
