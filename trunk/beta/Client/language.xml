@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language>
   <sentence>
+    <key>SETTINGS</key>
+    <es_CO>Configuración</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Settings</en_US>
+  </sentence>
+  <sentence>
     <key>ERROR_MESSAGE</key>
     <es_CO>Mensaje de Error</es_CO>
     <es_EC></es_EC>

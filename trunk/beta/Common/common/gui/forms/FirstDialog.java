@@ -69,7 +69,12 @@ public class FirstDialog extends JDialog {
 
     private JPLog log;
 
-    private String key;
+    private String key;    
+    
+	private JTextField JTFHost;
+
+    private JTextField JTFPort;
+
 
     /**
      * Este constructor ensambla toda el cuadro de dialogo de configuracion
@@ -94,12 +99,57 @@ public class FirstDialog extends JDialog {
         idioma = new JPIdioma();
         server = new JPServer();
         log = new JPLog();
+        
+        Object[] items = { "es_CO", "es_ES", "en_US"};
+        
+        JPanel JPetiquetas = new JPanel();
+        JPanel JPfields = new JPanel();
+
+        JPetiquetas.setLayout(new GridLayout(4, 1));
+        JPfields.setLayout(new GridLayout(4, 1));
+
+        JLabel JLLang = new JLabel("Idioma: ");
+        JLabel JLHost = new JLabel("Host: ");
+        JLabel JLPort = new JLabel("Puerto: ");
+        JLabel 
+        JPetiquetas.add(JLLang);
+        JPetiquetas.add(JLHost);
+        JPetiquetas.add(JLPort);
+
+        JPanel JPHost = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JTFHost = new JTextField(10);
+        JTFHost.setText("localhost");
+        JTFHost.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JTFHost.transferFocus();
+            }
+        });
+        JPHost.add(JTFHost);
+
+        JPanel JPPort = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JTFPort = new JTextField(10);
+        JTFPort.setText("9117");
+        JPPort.add(JTFPort);
+        
+        JComboBox JCBLang = new JComboBox(items);
+        JCBLang.setRenderer(new FlagRenderer());
+        JCBLang.setSelectedIndex(0);  
+        
+        JPanel JPLang = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPLang.add(JCBLang);
+
+        JPfields.add(JPLang);
+        JPfields.add(JPHost);
+        JPfields.add(JPPort);  
 
         JPanel JBase = new JPanel();
-        JBase.setLayout(new GridLayout(3, 1));
-        JBase.add(idioma);
-        JBase.add(server);
-        JBase.add(log);
+        JBase.setLayout(new GridLayout(1, 2));
+        JBase.add(JPetiquetas);
+        JBase.add(JPfields);
+        
+        //JBase.add(idioma);
+        //JBase.add(server);
+        //JBase.add(log);
         
         JPanel JPsur = new JPanel();
         JPsur.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -161,7 +211,7 @@ public class FirstDialog extends JDialog {
 
         try {
     	     callConfigFile(serverAddress,serverPort,language,logType,pos);
-             callConexion();
+             callConnection();
              dispose();
          }
         catch (ClassNotFoundException CNFEe) {
@@ -204,7 +254,7 @@ public class FirstDialog extends JDialog {
         meth.invoke(cls.newInstance(), args);
     }
 
-    private void callConexion() throws ClassNotFoundException,
+    private void callConnection() throws ClassNotFoundException,
             SecurityException, NoSuchMethodException, IllegalArgumentException,
             InstantiationException, IllegalAccessException,
             InvocationTargetException {
@@ -248,20 +298,39 @@ class JPIdioma extends JPanel {
         super();
         Object[] items = { "es_CO", "es_ES", "en_US"};
         this.setLayout(new BorderLayout());
-        JPanel JPcentro = new JPanel();
-        JPanel JPCombo = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        
+        
+        //JPanel JPcentro = new JPanel();
+        JPanel JPlabel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel JPcombo = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        
         JCBLang = new JComboBox(items);
         JCBLang.setRenderer(new FlagRenderer());
         JCBLang.setSelectedIndex(0);     
         
-        JPCombo.add(JCBLang);
-        JPcentro.add(JPCombo);
+        JLabel JLlanguage = new JLabel("Idioma: ");
+        
+        
+        JPlabel.add(JLlanguage);
+        JPcombo.add(JCBLang);
+
+        //JPcentro.add(JLlanguage);
+        //JPcentro.add(JPCombo);
+        
+        JPanel JPcentro = new JPanel(new BorderLayout());
+        
+        JPcentro.add(JPlabel, BorderLayout.WEST);        
+        JPcentro.add(JPcombo, BorderLayout.CENTER);
+        
+        this.add(new JPanel(), BorderLayout.NORTH);
+        this.add(new JPanel(), BorderLayout.WEST);
+        this.add(new JPanel(), BorderLayout.SOUTH);
         this.add(JPcentro, BorderLayout.CENTER);
         
-        Border etched = BorderFactory.createEtchedBorder();
-        TitledBorder title = BorderFactory.createTitledBorder(etched,"Idioma");
-        title.setTitleJustification(TitledBorder.LEFT);
-        this.setBorder(title);
+        //Border etched = BorderFactory.createEtchedBorder();
+        //TitledBorder title = BorderFactory.createTitledBorder(etched,"Idioma");
+        //title.setTitleJustification(TitledBorder.LEFT);
+        //this.setBorder(title);
         
     }
 
@@ -296,20 +365,24 @@ class JPLog extends JPanel {
     public JPLog() {
         super();
         Object[] items = { "Default", "Verbose", "VerboseFile", "None" };
-        this.setLayout(new BorderLayout());
+        this.setLayout(new GridLayout(1, 2));
+        
         JPanel JPcentro = new JPanel();
-        JLabel JLTipo = new JLabel("Tipo: ");
+        JLabel JLTipo = new JLabel("Tipo de Log: ");
         JPcentro.add(JLTipo);
-        JPanel JPCombo = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        //JPanel JPCombo = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JCBLogs = new JComboBox(items);
-        JPCombo.add(JCBLogs);
-        JPcentro.add(JPCombo);
-        this.add(new JPanel(), BorderLayout.NORTH);
-        this.add(JPcentro, BorderLayout.CENTER);
-        Border etched = BorderFactory.createEtchedBorder();
+        //JPCombo.add(JCBLogs);
+        //JPcentro.add(JPCombo);
+        //this.add(new JPanel(), BorderLayout.NORTH);
+        this.add(JLTipo);
+        this.add(JCBLogs);
+        
+    /*    Border etched = BorderFactory.createEtchedBorder();
         TitledBorder title = BorderFactory.createTitledBorder(etched,"Log");
         title.setTitleJustification(TitledBorder.LEFT);
-        this.setBorder(title);
+        this.setBorder(title); */
+    
     }
 
     /**
@@ -383,10 +456,10 @@ class JPServer extends JPanel {
         this.add(new JPanel(), BorderLayout.SOUTH);
         this.add(JPdatos, BorderLayout.CENTER);
         
-        Border etched = BorderFactory.createEtchedBorder();
+        /* Border etched = BorderFactory.createEtchedBorder();
         TitledBorder title = BorderFactory.createTitledBorder(etched,"Servidor");
         title.setTitleJustification(TitledBorder.LEFT);
-        this.setBorder(title);
+        this.setBorder(title); */
 
     }
 

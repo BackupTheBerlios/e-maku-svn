@@ -38,6 +38,7 @@ import client.misc.settings.ConfigFile;
 import common.comunications.PackageToXML;
 import common.comunications.SocketConnector;
 import common.comunications.SocketWriter;
+import common.gui.forms.FirstDialog;
 import common.misc.language.Language;
 import common.misc.parameters.GenericParameters;
 
@@ -84,10 +85,15 @@ public class Connection {
                 "/icons/ico_conectar.png")));
         JBconectar.setToolTipText(Language.getWord("CONECTAR"));
 
+        JButton JBsettings = new JButton();
+        JBsettings.setIcon(new ImageIcon(this.getClass().getResource(
+                "/icons/ico_configuracion.png")));
+        JBsettings.setToolTipText(Language.getWord("SETTINGS"));
+        
         JButton JBcancelar = new JButton();
         JBcancelar.setIcon(new ImageIcon(this.getClass().getResource(
                 "/icons/ico_cancelar.png")));
-        JBcancelar.setToolTipText(Language.getWord("CANCEL"));
+        JBcancelar.setToolTipText(Language.getWord("CANCEL"));        
 
         JBconectar.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
@@ -96,9 +102,19 @@ public class Connection {
                     new Boolean(conexion()); }
             }
         });
+
         JBconectar.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if(e.getButton() == MouseEvent.BUTTON1) { new Boolean(conexion()); }
+            }
+        });
+
+        
+        JBsettings.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent AEe) { 
+                FirstDialog dialogo = new FirstDialog(new JFrame(),ClientConst.KeyClient);
+                dialogo.setLocationRelativeTo(dialogo.getParent());
+                dialogo.setVisible(true);
             }
         });
         
@@ -107,6 +123,7 @@ public class Connection {
         });
         
         JPsur.add(JBconectar);
+        JPsur.add(JBsettings);
         JPsur.add(JBcancelar);
 
         /*
