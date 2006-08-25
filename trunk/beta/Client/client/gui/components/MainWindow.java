@@ -124,7 +124,7 @@ public class MainWindow extends JFrame {
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                Run.salir();
+                Run.exit();
             }
         });
 

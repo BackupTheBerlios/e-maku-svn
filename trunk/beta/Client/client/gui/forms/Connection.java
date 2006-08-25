@@ -38,7 +38,6 @@ import client.misc.settings.ConfigFile;
 import common.comunications.PackageToXML;
 import common.comunications.SocketConnector;
 import common.comunications.SocketWriter;
-import common.gui.forms.FirstDialog;
 import common.misc.language.Language;
 import common.misc.parameters.GenericParameters;
 
@@ -99,27 +98,28 @@ public class Connection {
             public void keyPressed(KeyEvent e) {
                 if(e.getKeyCode() == KeyEvent.VK_ENTER ||
                    e.getKeyCode() == KeyEvent.VK_SPACE ) { 
-                    new Boolean(conexion()); }
+                    conexion(); }
             }
         });
 
         JBconectar.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if(e.getButton() == MouseEvent.BUTTON1) { new Boolean(conexion()); }
+                if(e.getButton() == MouseEvent.BUTTON1) { conexion(); }
             }
         });
 
         
         JBsettings.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent AEe) { 
-                FirstDialog dialogo = new FirstDialog(new JFrame(),ClientConst.KeyClient);
+                FirstDialog dialogo = new FirstDialog(new JFrame(),ClientConst.KeyClient, FirstDialog.EDIT);
                 dialogo.setLocationRelativeTo(dialogo.getParent());
+                dialogo.pack();
                 dialogo.setVisible(true);
             }
         });
         
         JBcancelar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent AEe) { Run.salir(); }
+            public void actionPerformed(ActionEvent AEe) { Run.exit(); }
         });
         
         JPsur.add(JBconectar);
@@ -153,7 +153,7 @@ public class Connection {
         
         JFConexion.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         JFConexion.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) { Run.salir(); }
+            public void windowClosing(WindowEvent e) { Run.exit(); }
         });
 
         JFConexion.pack();
@@ -175,7 +175,7 @@ public class Connection {
 				HeadersValidator valid = new HeadersValidator();
 				packageXML.addArrivePackageistener(valid);
 				connect = new SocketConnector(ConfigFile.getHost(),
-						  ConfigFile.getServerport(),packageXML);
+						  ConfigFile.getServerPort(),packageXML);
 				
 	            connect.start();
 	            
@@ -203,7 +203,7 @@ public class Connection {
 				JOptionPane.showMessageDialog(
 	                    JFConexion,Language.getWord("ERR_CONNECT")+"\n"+
 	                    Language.getWord("HOST")+" "+ConfigFile.getHost()+"\n"+
-	                    Language.getWord("PORT")+" "+ConfigFile.getServerport(),
+	                    Language.getWord("PORT")+" "+ConfigFile.getServerPort(),
 	                    Language.getWord("ERR_TITLE_CONNECT"),
 	                    JOptionPane.ERROR_MESSAGE,
 	                    new ImageIcon(this.getClass().getResource("/icons/ico_database.png")));
@@ -214,7 +214,7 @@ public class Connection {
 	                    JFConexion,
 	                    Language.getWord("ERR_UNRESOLVED_ADDRESS")+"\n"+
 	                    Language.getWord("HOST")+" "+ConfigFile.getHost()+ 
-	                    Language.getWord("PORT")+" "+ConfigFile.getServerport(),
+	                    Language.getWord("PORT")+" "+ConfigFile.getServerPort(),
 	                    Language.getWord("ERR_TITLE_CONNECT"),
 	                    JOptionPane.ERROR_MESSAGE,
 	                    new ImageIcon(this.getClass().getResource("/icons/ico_database.png")));

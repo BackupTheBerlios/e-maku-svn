@@ -48,6 +48,9 @@ public class ConfigFile extends GenericParameters {
     private static Icons icons = new Icons();
     private static int serverport;
     private static String host;
+    private static String language;
+    private static String logMode;
+    private static String boxID;
 
     /**
      * Este metodo sirve para crear un nuevo archivo de configuracion
@@ -113,7 +116,7 @@ public class ConfigFile extends GenericParameters {
      * 
      * @throws ConfigFileNotLoadException
      */
-    public static void Cargar() throws ConfigFileNotLoadException {
+    public static void loadSettings() throws ConfigFileNotLoadException {
         try {
             
             builder = new SAXBuilder(false);
@@ -132,23 +135,23 @@ public class ConfigFile extends GenericParameters {
                 Element datos = (Element) i.next();
                 String nombre = datos.getName(); 
                 if (nombre.equals("language")) {
-                    idioma.CargarLenguaje(datos.getValue());
-                } /*
-                   * else if (datos.getName().equals("Log")) { new
-                   * LogAdmin(datos.getValue()); }
-                   */
+                	language = datos.getValue();
+                    idioma.CargarLenguaje(language);
+                } 
                 else if (nombre.equals("host")) {
                     host = datos.getValue();
                 } else if (nombre.equals("serverport")) {
                     serverport = Integer.parseInt(datos.getValue());
-                } else {
+                } else if (nombre.equals("log")) {
+                	logMode = datos.getValue();
+                } else if (nombre.equals("cash")) {
+                    boxID = datos.getValue();
+            } else {
                     GenericParameters.addParameter(nombre,datos.getValue());
                 }
             }
             
             icons.loadIcons();
-            //LogAdmin.setMessage(Language.getWord("LOADING_CF"),
-            // ClientConst.MESSAGE);
         }
         catch (FileNotFoundException FNFEe) {
 
@@ -172,11 +175,23 @@ public class ConfigFile extends GenericParameters {
         return host;
     }
     
+    public static String getBoxID() {
+        return boxID;
+    }
+    
+    public static String getLanguage() {
+        return language;
+    }
+
+    public static String getLogMode() {
+        return logMode;
+    }
+   
     /**
      * 
      * @return algo
      */
-    public static int getServerport() {
+    public static int getServerPort() {
         return serverport;
     }
     

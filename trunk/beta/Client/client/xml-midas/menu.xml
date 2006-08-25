@@ -11,7 +11,7 @@
             <Mnemonic>NEMO-SALIR</Mnemonic>
             <Text>SALIR</Text>
             <Clase>client.Run</Clase>
-            <Metodo>salir</Metodo>
+            <Metodo>exit</Metodo>
         </JMenuItem>
     </JMenu>
     <JMenu>

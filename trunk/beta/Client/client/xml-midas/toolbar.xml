@@ -8,7 +8,7 @@
       <Icon>/icons/ico_salir.png</Icon>
       <ToolTipText>TIP-SALIR</ToolTipText>
       <Clase>client.Run</Clase>
-      <Metodo>salir</Metodo>
+      <Metodo>exit</Metodo>
     </JButtonBar>
   </JToolBar>
   <JToolBar>

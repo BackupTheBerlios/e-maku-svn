@@ -13,9 +13,9 @@ import client.gui.forms.Connection;
 import client.misc.ClientConst;
 import client.misc.settings.ConfigFile;
 import client.misc.settings.ConfigFileNotLoadException;
+import client.gui.forms.FirstDialog;
 
 import common.comunications.SocketConnector;
-import common.gui.forms.FirstDialog;
 import common.misc.language.Language;
 
 /**
@@ -64,13 +64,14 @@ public class Run {
             UIManager.put("InternalFrame.font",	f);
             UIManager.put("Table.font",			f);
             UIManager.put("TabbedPane.font",	f);
-            ConfigFile.Cargar();
+            ConfigFile.loadSettings();
+            
             new Connection();
 
         }
 
         catch (ConfigFileNotLoadException e) {
-            FirstDialog dialogo = new FirstDialog(new JFrame(),ClientConst.KeyClient);
+            FirstDialog dialogo = new FirstDialog(new JFrame(),ClientConst.KeyClient,FirstDialog.CREATE);
             dialogo.setLocationRelativeTo(dialogo.getParent());
             dialogo.setVisible(true);
         }
@@ -79,7 +80,7 @@ public class Run {
         }
     }
 
-    public static void salir() {
+    public static void exit() {
     	int confirm = -1;
         try {
         	confirm=JOptionPane.showConfirmDialog(
