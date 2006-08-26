@@ -309,7 +309,7 @@
   </icon>
   <icon>
     <key>PRINT</key>
-    <path>/icons/ico_imprimir.png</path>
+    <path>/icons/ico_printer.png</path>
   </icon>
   <icon>
     <key>CUENTAB</key>
@@ -442,5 +442,9 @@
   <icon>
     <key>CONTABILIZACION</key>
     <path>/icons/ico_contabilizacion.png</path>
+  </icon>
+  <icon>
+    <key>RETENCIONES</key>
+    <path>/icons/ico_retenciones.png</path>
   </icon>
 </icons>

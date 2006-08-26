@@ -21,7 +21,7 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 import common.misc.CommonConst;
-import common.misc.exception.SuperException;
+//import common.misc.exception.SuperException;
 import common.misc.language.Language;
 
 //import common.misc.language.Language;
@@ -107,7 +107,7 @@ public class LogAdmin {
 	    		showWindowsMessage(key,message,debug);
 	    		
 	    		if (Language.getCodeError(key).equals("002")) {
-	    			new SuperException(SuperException.PANIC);
+	//    			new SuperException(SuperException.PANIC);
 	    		} 
 	    	}
 	    }
