@@ -189,12 +189,15 @@ install_server() {
                  ln -s /etc/init.d/emaku /etc/rc6.d/K20emaku
                fi
              else
-               RC_PREV=`egrep emaku-server /etc/rc.d/rc.local`
-               if [ "$RC_PREV" = "" ] && [ -e /etc/rc.d/rc.local ] ; then
-                 echo "" >> /etc/rc.d/rc.local
-                 echo "# Iniciando servidor E-Maku..." >> /etc/rc.d/rc.local
-                 echo "/usr/sbin/emaku-server start >& /dev/null" >> /etc/rc.d/rc.local
+               if [ -e /etc/rc.d/rc.local ] ; then
+                  RC_PREV=`egrep emaku-server /etc/rc.d/rc.local`
+                  if [ "$RC_PREV" = "" ] ; then
+                     echo "" >> /etc/rc.d/rc.local
+                     echo "# Iniciando servidor E-Maku..." >> /etc/rc.d/rc.local
+                     echo "/usr/sbin/emaku-server start >& /dev/null" >> /etc/rc.d/rc.local
+                  fi
                fi
+ 
              fi
 }
 

@@ -123,7 +123,7 @@ public class MakeReport extends Thread {
 				p.setAlignment(Paragraph.ALIGN_CENTER);
 				p.add(chunck);
 				Image png = Image.getInstance(
-						ServerConst.JM_HOME+"/reports/images/report_nf_"+
+						ServerConst.EMAKU_HOME+"/reports/images/report_nf_"+
 						ConfigFile.getLocal()+".png");
 				png.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 				pdfDoc.add(png);

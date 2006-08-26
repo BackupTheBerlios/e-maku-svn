@@ -33,7 +33,8 @@ import common.misc.language.Language;
  * GARANTIA; sin ninguna garantia aun por COMERCIALIZACION o por un PROPOSITO
  * PARTICULAR. Consulte la Licencia Publica General GNU GPL para mas detalles.
  * <br>
- * Informacion de la clase <br>
+ * Esta clase se encarga de iniciar el cliente E-maku
+ * <br>
  * 
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez </A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David
@@ -71,7 +72,6 @@ public class Run {
         }
 
         catch (ConfigFileNotLoadException e) {
-        	System.out.println("Archivo de configuracion no encontrado...");
             FirstDialog dialogo = new FirstDialog(new JFrame(),ClientConst.KeyClient,FirstDialog.CREATE);
             dialogo.setLocationRelativeTo(dialogo.getParent());
             dialogo.pack();

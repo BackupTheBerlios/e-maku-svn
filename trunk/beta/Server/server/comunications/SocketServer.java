@@ -70,17 +70,17 @@ public class SocketServer {
             SSCcanal2.configureBlocking(false);
             ServerSocket SSadmin = SSCcanal2.socket();
 
-            SSclient.bind(new InetSocketAddress(ConfigFile.getSocketJClient()));
-            SSadmin.bind(new InetSocketAddress(ConfigFile.getSocketJAdmin()));
+            SSclient.bind(new InetSocketAddress(ConfigFile.getClientSocket()));
+            SSadmin.bind(new InetSocketAddress(ConfigFile.getAdminSocket()));
 
             Selector selector = Selector.open();
             SSCcanal1.register(selector, SelectionKey.OP_ACCEPT);
             SSCcanal2.register(selector, SelectionKey.OP_ACCEPT);
 
             LogAdmin.setMessage(Language.getWord("SOCKET_SERVER_OPEN") + " "
-                    + ConfigFile.getSocketJClient(), ServerConst.MESSAGE);
+                    + ConfigFile.getClientSocket(), ServerConst.MESSAGE);
             LogAdmin.setMessage(Language.getWord("SOCKET_SERVER_OPEN") + " "
-                    + ConfigFile.getSocketJAdmin(), ServerConst.MESSAGE);
+                    + ConfigFile.getAdminSocket(), ServerConst.MESSAGE);
 
             while (true) {
                 int n = selector.select();

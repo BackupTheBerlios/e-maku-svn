@@ -14,8 +14,8 @@
     </sentence>
     <sentence>
         <key>REPORTS</key>
-        <es_CO>Cargando Reportes</es_CO>
-        <en_US>Loading Reports</en_US>
+        <es_CO>INFO: Cargando Reportes</es_CO>
+        <en_US>INFO: Loading Reports</en_US>
     </sentence>    
     <sentence>
         <key>CONFIGFILE</key>

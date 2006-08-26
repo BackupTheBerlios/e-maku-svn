@@ -25,10 +25,10 @@ public interface ServerConst {
     
 	public final String KeyServer = "E-Maku";
 
-	public final String JM_HOME       =  System.getenv("EMAKU_HOME");
+	public final String EMAKU_HOME       =  System.getenv("EMAKU_HOME");
 	public final String HOME 		= System.getProperty("user.home");
     public final String SEPARATOR 	= System.getProperty("file.separator");
-	public final String CONF            = JM_HOME + SEPARATOR + "conf";
+	public final String CONF            = EMAKU_HOME + SEPARATOR + "conf";
     public final String TMP 		= System.getProperty("java.io.tmpdir");
     public final int ERROR 			= 0;
     public final int WARNING 		= 1;

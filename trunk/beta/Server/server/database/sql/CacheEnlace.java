@@ -67,7 +67,7 @@ public class CacheEnlace {
         Statement st = null;
         ResultSet rs = null;
         /** Obtengo el numero de conexiones que maneja el ST */
-        int max = ConfigFile.SizeDB();
+        int max = ConfigFile.getDBSize();
 
         LogAdmin.setMessage(Language.getWord("LOADING_SL"),
                 ServerConst.MESSAGE);
@@ -82,17 +82,17 @@ public class CacheEnlace {
             try {
 
                 LogAdmin.setMessage(Language.getWord("LOADING_CACHE") + " "
-                        + ConfigFile.getNombreBD(i), ServerConst.MESSAGE);
+                        + ConfigFile.getDBName(i), ServerConst.MESSAGE);
 
                 /**
                  * Establezco la conexion con la base de datos
                  */
 
-                cn = PoolConexiones.getConnection(ConfigFile.getNombreBD(i));
+                cn = PoolConexiones.getConnection(ConfigFile.getDBName(i));
                 st = cn.createStatement();
 
                 LogAdmin.setMessage(Language.getWord("INIT_BDS"), ServerConst.MESSAGE);
-                LogAdmin.setMessage(Language.getWord("LOADING_ST") + " " + ConfigFile.getNombreBD( i ) , ServerConst.MESSAGE);
+                LogAdmin.setMessage(Language.getWord("LOADING_ST") + " " + ConfigFile.getDBName( i ) , ServerConst.MESSAGE);
 
                 rs = st.executeQuery("SELECT codigo,sentencia FROM "+
                                      "sentencia_sql ORDER BY codigo desc");
@@ -102,7 +102,7 @@ public class CacheEnlace {
                  */
                 
                 while(rs.next()){
-                    Hinstrucciones.put("K-"+ConfigFile.getNombreBD(i)+"-"+
+                    Hinstrucciones.put("K-"+ConfigFile.getDBName(i)+"-"+
 			                           rs.getString("codigo"),
 				                       rs.getString("sentencia"));
                 }
@@ -111,7 +111,7 @@ public class CacheEnlace {
                  * Esta sentencia carga las transacciones a las que tienen permisos
                  * los usuarios
                  */
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getNombreBD(i),
+                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),
                         										   "SEL0001"));
                 while(rs.next()) {
 
@@ -120,7 +120,7 @@ public class CacheEnlace {
                     if (tmp_password!=null)
                         password=tmp_password;
                     
-                    Htransacciones.put("K-"+ConfigFile.getNombreBD(i)+"-"+
+                    Htransacciones.put("K-"+ConfigFile.getDBName(i)+"-"+
                             					  rs.getString("login").trim()+"-"+
                                                   rs.getString("codigo").trim()+"-"+
                                                   password,
@@ -131,10 +131,10 @@ public class CacheEnlace {
                  * Esta consulta carga las sentencias a las que tienen permisos
                  * los usuarios 
                  */
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getNombreBD(i),
+                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),
                         										   "SEL0002"));
                 while(rs.next()) {
-                    Hpermisos.put("K-"+ConfigFile.getNombreBD(i)+"-"+
+                    Hpermisos.put("K-"+ConfigFile.getDBName(i)+"-"+
                             					  rs.getString("login").trim()+"-"+
                                                   rs.getString("codigo").trim()+"-"+
                                                   rs.getString("password"),
@@ -145,7 +145,7 @@ public class CacheEnlace {
                  * transacciones
                  */
 
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getNombreBD(i),
+                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),
                 					 "SEL0026"));
 
                 /*
@@ -171,7 +171,7 @@ public class CacheEnlace {
 		                docMth = builder.build(bufferInMth);
 	                }
 	                catch(NullPointerException NPEe) {}
-	                Hlogica_drivers.put("K-" + ConfigFile.getNombreBD(i) + "-"
+	                Hlogica_drivers.put("K-" + ConfigFile.getDBName(i) + "-"
                             + rs.getString("codigo").trim(), 
                             new ClassLogicDriver(rs.getString("driver"),
                                     			  docDrv,
@@ -180,12 +180,12 @@ public class CacheEnlace {
                     }
                     catch(IOException IOEe) {
                         LogAdmin.setMessage(Language.getWord("ERR_LOADING_LG") + " "
-                                + ConfigFile.getNombreBD(i) + " "+rs.getString("codigo")+" "+IOEe.getMessage(),
+                                + ConfigFile.getDBName(i) + " "+rs.getString("codigo")+" "+IOEe.getMessage(),
                                 ServerConst.ERROR);
                     }
                     catch(JDOMException JDOMEe) {
                         LogAdmin.setMessage(Language.getWord("ERR_LOADING_LG") + " "
-                                + ConfigFile.getNombreBD(i) + " "+rs.getString("codigo")+" " + JDOMEe.getMessage(),
+                                + ConfigFile.getDBName(i) + " "+rs.getString("codigo")+" " + JDOMEe.getMessage(),
                                 ServerConst.ERROR);
                     }
                 }
@@ -198,11 +198,11 @@ public class CacheEnlace {
                  * a este se le suma un uno.
                  */
 
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getNombreBD(i),"SEL0072"));
+                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SEL0072"));
 
 				while (rs.next()) {
-                    Hconsecutive.put("K-" + ConfigFile.getNombreBD(i) + "-"
-                            + rs.getString("codigo_tipo").trim(), consecutive(ConfigFile.getNombreBD(i),
+                    Hconsecutive.put("K-" + ConfigFile.getDBName(i) + "-"
+                            + rs.getString("codigo_tipo").trim(), consecutive(ConfigFile.getDBName(i),
                                                                   rs.getString("max")));
 				}
                 
@@ -211,7 +211,7 @@ public class CacheEnlace {
                  * de la tabla inventarios
                  */
 
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getNombreBD(i),"SEL0089"));
+                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SEL0089"));
 
                 /*
                  * Se almacena la informaci�n en un objeto InfoInventario y luego en la
@@ -219,7 +219,7 @@ public class CacheEnlace {
                  */
 
                 while (rs.next()) {
-                    Hinventarios.put("K-" + ConfigFile.getNombreBD(i) + "-"
+                    Hinventarios.put("K-" + ConfigFile.getDBName(i) + "-"
                                           + rs.getInt("id_bodega")+ "-"
                                           + rs.getInt("id_prod_serv"),
                                           new InfoInventario(rs.getDouble("pinventario"),rs.getDouble("saldo"),rs.getDouble("valor_saldo")));
@@ -229,7 +229,7 @@ public class CacheEnlace {
                  * Esta consulta carga el perfil de todas las cuentas contables generadas.
                  */
 
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getNombreBD(i),"SEL0094"));
+                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SEL0094"));
 
                 /*
                  * Se almacena la informaci�n en un objeto PerfilCta y luego en la
@@ -237,7 +237,7 @@ public class CacheEnlace {
                  */
 
                 while (rs.next()) {
-                    Hperfil_cta.put("K-" + ConfigFile.getNombreBD(i) + "-"
+                    Hperfil_cta.put("K-" + ConfigFile.getDBName(i) + "-"
                                           + rs.getString("char_cta").trim(),
                                           new PerfilCta(rs.getString("id_cta"),
                                         		        rs.getBoolean("terceros"),
@@ -252,7 +252,7 @@ public class CacheEnlace {
                  * Esta consulta carga los id de todos los asientos predefinidos.
                  */
 
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getNombreBD(i),"SEL0095"));
+                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SEL0095"));
 
                 /*
                  * Se almacena la informaci�n en un objeto PerfilCta y luego en la
@@ -260,7 +260,7 @@ public class CacheEnlace {
                  */
 
                 while (rs.next()) {
-                    Hasientos_pr.put("K-" + ConfigFile.getNombreBD(i) + "-"
+                    Hasientos_pr.put("K-" + ConfigFile.getDBName(i) + "-"
                                           + rs.getString("id_prod_serv")+"-"
                                           + rs.getString("id_asientos_prod_serv"),
                                           String.valueOf(rs.getString("id_asientos_pr")));
@@ -270,7 +270,7 @@ public class CacheEnlace {
                  * Esta consulta carga las cuentas de los asientos predefinidos con su respectiva naturaleza
                  */
 
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getNombreBD(i),"SEL0096"));
+                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SEL0096"));
 
                 /*
                  * Se almacena la informaci�n en un objeto PerfilCta y luego en la
@@ -278,7 +278,7 @@ public class CacheEnlace {
                  */
 
                 while (rs.next()) {
-                    Hctas_asientos.put("K-" + ConfigFile.getNombreBD(i) + "-"
+                    Hctas_asientos.put("K-" + ConfigFile.getDBName(i) + "-"
                                           + rs.getString("id_asientos_pr")+"-"
                                           + rs.getString("char_cta").trim(),
                                           new Boolean(rs.getBoolean("naturaleza")));
@@ -289,14 +289,14 @@ public class CacheEnlace {
                  * libro_aux
                  */
 
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getNombreBD(i),"SEL0097"));
+                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SEL0097"));
 
                 /*
                  * Se almacena la informaci�n en la tabla hashtable Hlibro_aux
                  */
 
                 while (rs.next()) {
-                    Hlibro_aux.put("K-" + ConfigFile.getNombreBD(i) + "-"
+                    Hlibro_aux.put("K-" + ConfigFile.getDBName(i) + "-"
                             + getValue(rs.getString("centro")) + "-"
                             + getValue(rs.getString("id_cta")) + "-"
                             + getValue(rs.getString("id_tercero")) + "-"
@@ -309,13 +309,13 @@ public class CacheEnlace {
             catch (SQLException SQLEe) {
             	SQLEe.printStackTrace();
                 LogAdmin.setMessage(Language.getWord("ERROR_LOADING_SL") + " "
-                        + ConfigFile.getNombreBD(i) + SQLEe.getMessage(),
+                        + ConfigFile.getDBName(i) + SQLEe.getMessage(),
                         ServerConst.ERROR);
             }
             catch (SQLNotFoundException SQLNFEe) {
             	SQLNFEe.printStackTrace();
                 LogAdmin.setMessage(Language.getWord("ERROR_LOADING_SL") + " "
-                        + ConfigFile.getNombreBD(i) + SQLNFEe.getMessage(),
+                        + ConfigFile.getDBName(i) + SQLNFEe.getMessage(),
                         ServerConst.ERROR);
             }
             

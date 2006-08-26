@@ -45,20 +45,20 @@ public class PoolConexiones {
     public static void CargarBD() throws PoolNotLoadException {
         
         Hpoolbds = new Hashtable<String,Connection>();
-        int max = ConfigFile.SizeDB();
+        int max = ConfigFile.getDBSize();
         for (int i=0;i<max;i++)
             try {
                 LogAdmin.setMessage(
-                		Language.getWord("LOADING_DB") +" "+ConfigFile.getNombreBD(i),
+                		Language.getWord("LOADING_DB") +" "+ConfigFile.getDBName(i),
 						ServerConst.MESSAGE);
                 
                 Class.forName(ConfigFile.getDriver(i));
                 
                 Hpoolbds.put(
-                		ConfigFile.getNombreBD(i),
+                		ConfigFile.getDBName(i),
 						DriverManager.getConnection(
 								ConfigFile.getUrl(i),
-								ConfigFile.getUsuario(i),
+								ConfigFile.getUser(i),
 								ConfigFile.getPassword(i)));
             } 
             catch (ClassNotFoundException CNFEe) {
@@ -66,13 +66,13 @@ public class PoolConexiones {
                 		Language.getWord("ERR_CLASS"),CNFEe.getMessage(),
 						ServerConst.ERROR);
                 
-                throw new PoolNotLoadException(ConfigFile.getNombreBD(i));
+                throw new PoolNotLoadException(ConfigFile.getDBName(i));
             } 
             catch (SQLException SQLEe){
                 LogAdmin.setMessage("ERR_SQL",
                 		Language.getWord("ERR_SQL") , SQLEe.getMessage(),
 						ServerConst.ERROR);
-                throw new PoolNotLoadException(ConfigFile.getNombreBD(i));
+                throw new PoolNotLoadException(ConfigFile.getDBName(i));
             }
     }
     

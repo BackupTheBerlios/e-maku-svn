@@ -27,4 +27,6 @@ public class ConfigFileNotLoadException extends Exception {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6699701194901457973L;}
+	private static final long serialVersionUID = 6699701194901457973L;
+	
+}

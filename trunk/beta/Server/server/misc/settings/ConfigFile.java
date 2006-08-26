@@ -2,7 +2,9 @@
 package server.misc.settings;
 
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -32,7 +34,8 @@ import common.misc.log.LogAdmin;
  * o por un PROPOSITO PARTICULAR. Consulte la Licencia Publica General
  * GNU GPL para mas detalles.
  * <br>
- * Penndiente 
+ * Esta clase se encarga de administrar el archivo de configuración del
+ * Servidor de Transacciones.
  * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
@@ -41,22 +44,22 @@ public class ConfigFile {
     
     private static SAXBuilder builder;
     private static Document doc;
-    private static Element raiz;
-    private static Language idioma = new Language();
-    private static Vector <Conexiones>VPoolConexiones  = new Vector<Conexiones>();
-    private static int SocketJClient;
-    private static int SocketJAdmin;
+    private static Element root;
+    private static Language appLang = new Language();
+    private static Vector <Connections>VConnectionsPool  = new Vector<Connections>();
+    private static int clientSocket;
+    private static int adminSocket;
     private static int MaxClients;
     private static String local;
     /**
      * Este metodo se encarga de cargar el archivo de configuracion
      * @throws ConfigFileNotLoadException
      */
-    public static void Cargar() throws ConfigFileNotLoadException{
+    public static void loadConfigFile() throws ConfigFileNotLoadException{
         try {
             builder = new SAXBuilder(false);
             
-            System.out.println("Config: "+ServerConst.CONF+
+            System.out.println("INFO: Config -> "+ServerConst.CONF+
                     ServerConst.SEPARATOR+
                     "server.conf");
             
@@ -65,8 +68,8 @@ public class ConfigFile {
                                 ServerConst.SEPARATOR+
                                 "server.conf");
             
-            raiz = doc.getRootElement();
-            java.util.List Lconfig = raiz.getChildren();
+            root = doc.getRootElement();
+            java.util.List Lconfig = root.getChildren();
             Iterator i = Lconfig.iterator();
                 
             /**
@@ -76,26 +79,25 @@ public class ConfigFile {
             
             while (i.hasNext()) {
                 
-                Element datos = (Element)i.next();
-                if (datos.getName().equals("PoolConnection")) {
-                    CargarPoolConexiones(datos.getChildren());
-                } else if (datos.getName().equals("Lenguaje")) {
-                	local = datos.getValue();
-                    idioma.CargarLenguaje(local);
-                } else if (datos.getName().equals("Log")) {
-                    new LogAdmin(datos.getValue(),ServerConst.KeyServer);
-                } else if (datos.getName().equals("SocketJClient")) {
-                    SocketJClient = Integer.parseInt(datos.getValue());
-                } else if (datos.getName().equals("SocketJAdmin")) {
-                    SocketJAdmin = Integer.parseInt(datos.getValue());
-                } else if (datos.getName().equals("MaxClients")) {
-                    MaxClients = Integer.parseInt(datos.getValue());
+                Element records = (Element)i.next();
+                if (records.getName().equals("PoolConnection")) {
+                    loadConnectionsPool(records.getChildren());
+                } else if (records.getName().equals("Lenguaje")) {
+                	local = records.getValue();
+                    appLang.CargarLenguaje(local);
+                } else if (records.getName().equals("Log")) {
+                    new LogAdmin(records.getValue(),ServerConst.KeyServer);
+                } else if (records.getName().equals("SocketJClient")) {
+                    clientSocket = Integer.parseInt(records.getValue());
+                } else if (records.getName().equals("SocketJAdmin")) {
+                    adminSocket = Integer.parseInt(records.getValue());
+                } else if (records.getName().equals("MaxClients")) {
+                    MaxClients = Integer.parseInt(records.getValue());
                 }
             }
             LogAdmin.setMessage(Language.getWord("LOADING_CF"), ServerConst.MESSAGE);
         }
-        catch (FileNotFoundException FNFEe) {
-        	System.out.println("El archivo de configuracion no existe");
+        catch (FileNotFoundException FNFEe) {       	
         	throw new ConfigFileNotLoadException();
         }
         catch (JDOMException JDOMEe) {
@@ -113,12 +115,12 @@ public class ConfigFile {
      * las bases de datos existentes
      */
     
-    private static void CargarPoolConexiones(java.util.List LPoolConexiones) {
+    private static void loadConnectionsPool(java.util.List LPoolConexiones) {
         Iterator i = LPoolConexiones.iterator();
 
         while (i.hasNext()) {
-            Element datos = (Element)i.next();
-            VPoolConexiones.addElement(CargarBD(datos.getChildren()));
+            Element records = (Element)i.next();
+            VConnectionsPool.addElement(loadBD(records.getChildren()));
         }
     }
     
@@ -129,38 +131,86 @@ public class ConfigFile {
      * @return Valor tipo Conexiones.
      */
     
-    private static Conexiones CargarBD(java.util.List LBD) {
+    private static Connections loadBD(java.util.List LBD) {
         Iterator i = LBD.iterator();
-        Conexiones conect = new Conexiones();
+        Connections connection = new Connections();
         
         while (i.hasNext()) {
-            Element datos = (Element)i.next();
-            if (datos.getName().equals("name")) {
-                conect.setNombre(datos.getValue());
+            Element records = (Element)i.next();
+            if (records.getName().equals("name")) {
+                connection.setName(records.getValue());
             }
-            else if(datos.getName().equals("driver")) {
-                conect.setDriver(datos.getValue());
+            else if(records.getName().equals("driver")) {
+                connection.setDriver(records.getValue());
             }
-            else if(datos.getName().equals("url")) {
-                conect.setUrl(datos.getValue());
+            else if(records.getName().equals("url")) {
+                connection.setUrl(records.getValue());
             }
-            else if(datos.getName().equals("username")) {
-                conect.setUsuario(datos.getValue());
+            else if(records.getName().equals("username")) {
+                connection.setUser(records.getValue());
             }
-            else if(datos.getName().equals("password")) {
-                conect.setPassword(datos.getValue());
+            else if(records.getName().equals("password")) {
+                connection.setPassword(records.getValue());
             }
         }
-        return conect;
+        return connection;
     }
     
+    public static void newConfigFile() {
+    	
+    	String emakuServerConf = ServerConst.CONF + ServerConst.SEPARATOR + "server.conf";
+    	
+    	String config = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+    	+ "<!--\n"
+    	+ "    Document   : server.conf.xml\n"
+    	+ "    Created on : 29 de junio de 2004, 14:29\n"
+    	+ "    Author     : Luis Felipe Hernandes, Cristian David Cepeda\n"
+    	+ "-->\n"
+        + "\n"
+    	+ "<Config>\n"
+    	+ "    <Lenguaje>es_CO</Lenguaje>\n"
+    	+ "    <SocketJClient>9117</SocketJClient>\n"
+    	+ "    <SocketJAdmin>28124</SocketJAdmin>\n"
+    	+ "        <MaxClients>500</MaxClients>\n"
+    	+ "    <!-- Valores posibles:\n"
+    	+ "    Default:     Muestra solo mensajes de error\n"
+    	+ "    Verbose:     Muestra todos los mensajes\n"
+    	+ "    VerboseFile: Muestra todos los mensajes por la consola y genera un\n"
+    	+ "                 archivo log\n"
+    	+ "    LogFile:     Solo genera un archivo log con todos los mensajes\n"
+    	+ "    -->\n"
+    	+ "    <Log>Verbose</Log>\n"
+    	+ "    <PoolConnection>\n"
+    	+ "        <DataBase>\n"
+    	+ "            <name>mi_empresa</name>\n"
+    	+ "            <driver>org.postgresql.Driver</driver>\n"
+    	+ "            <url>jdbc:postgresql://localhost:5432/mi_empresa</url>\n"
+    	+ "            <username>emaku</username>\n"
+    	+ "            <password/>\n"
+    	+ "        </DataBase>\n"
+    	+ "    </PoolConnection>\n"
+    	+ "</Config>\n";
+    	
+    	try {
+    	 	 FileOutputStream serverConfFile = new FileOutputStream(emakuServerConf);
+    		 PrintStream FOSServerConf = new PrintStream(serverConfFile);
+    		 FOSServerConf.println(config);
+    		 FOSServerConf.close();
+        } catch (SecurityException ex) {
+        	System.out.println("ERROR: El usuario emaku no tiene permisos para crear el archivo de configuración.");
+    	}
+          catch (IOException e) {
+    		System.out.println("ERROR: No se pudo crear el archivo de configuración.");
+    	} 	
+     }
+       
     /**
      * Metodo encargado de retornar el Numero de conexiones a bases de 
      * datos configuradas
      */
     
-    public static int SizeDB() {
-        return VPoolConexiones.size();
+    public static int getDBSize() {
+        return VConnectionsPool.size();
     }
     
     /**
@@ -171,7 +221,7 @@ public class ConfigFile {
      */
     
     public static String getDriver(int index) {
-        return VPoolConexiones.get(index).getDriver();
+        return VConnectionsPool.get(index).getDriver();
     }
 
     /**
@@ -181,8 +231,8 @@ public class ConfigFile {
      * @return variable nombre tipo String
      */
     
-    public static String getNombreBD(int index) {
-        return VPoolConexiones.get(index).getNombre();
+    public static String getDBName(int index) {
+        return VConnectionsPool.get(index).getName();
     }
 
     /**
@@ -193,7 +243,7 @@ public class ConfigFile {
      */
     
     public static String getUrl(int index) {
-        return VPoolConexiones.get(index).getUrl();
+        return VConnectionsPool.get(index).getUrl();
     }
 
     /**
@@ -203,8 +253,8 @@ public class ConfigFile {
      * @return variable usuario tipo String
      */
     
-    public static String getUsuario(int index) {
-        return VPoolConexiones.get(index).getUsuario();
+    public static String getUser(int index) {
+        return VConnectionsPool.get(index).getUser();
     }
     
     /**
@@ -215,14 +265,14 @@ public class ConfigFile {
      */
     
     public static String getPassword(int index) {
-        return VPoolConexiones.get(index).getPassword();
+        return VConnectionsPool.get(index).getPassword();
     }
     
-    public static int getSocketJAdmin() {
-        return SocketJAdmin;
+    public static int getAdminSocket() {
+        return adminSocket;
     }
-    public static int getSocketJClient() {
-        return SocketJClient;
+    public static int getClientSocket() {
+        return clientSocket;
     }
     public static int getMaxClients() {
         return MaxClients;
@@ -238,28 +288,28 @@ public class ConfigFile {
  * para poder instanciar una base de datos
  */
     
-class Conexiones {
+class Connections {
     
-    private String nombre;
+    private String name;
     private String url;
     private String driver;
-    private String usuario;
+    private String user;
     private String password;
     
     /** Getter for property nombre.
      * @return Value of property nombre.
      *
      */
-    public java.lang.String getNombre() {
-        return nombre;
+    public java.lang.String getName() {
+        return name;
     }
     
     /** Setter for property nombre.
-     * @param nombre New value of property nombre.
+     * @param name New value of property nombre.
      *
      */
-    public void setNombre(java.lang.String nombre) {
-        this.nombre = nombre;
+    public void setName(java.lang.String nameVar) {
+        this.name = nameVar;
     }
     
     /** Getter for property url.
@@ -298,16 +348,16 @@ class Conexiones {
      * @return Value of property usuario.
      *
      */
-    public java.lang.String getUsuario() {
-        return usuario;
+    public java.lang.String getUser() {
+        return user;
     }
     
     /** Setter for property usuario.
      * @param usuario New value of property usuario.
      *
      */
-    public void setUsuario(java.lang.String usuario) {
-        this.usuario = usuario;
+    public void setUser(java.lang.String userVar) {
+        this.user = userVar;
     }
     
     /** Getter for property password.

@@ -30,7 +30,7 @@ import server.misc.settings.ConfigFileNotLoadException;
  * o por un PROPOSITO PARTICULAR. Consulte la Licencia Publica General
  * GNU GPL para mas detalles.
  * <br>
- * Informacion de la clase
+ * Esta clase se encarga de iniciar el Servidor de Transacciones
  * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
@@ -47,14 +47,14 @@ public class Run {
 			
 			if (os.equals("Linux")) {
 				String owner = System.getProperty("user.name");
-				if (owner.equals("root")) {
+				if (owner.equals("root")) {			
 					System.out.println("*** Excepción de Seguridad: El Servidor de Transacciones no puede ser ejecutado por el usuario root.");
 					System.out.println("    El usuario indicado para iniciar este servicio es \"emaku\".");
 					System.exit(0);	
 				}
 			}
 			
-			ConfigFile.Cargar();
+			ConfigFile.loadConfigFile();
 			PoolConexiones.CargarBD();
 			ReportsStore.Load(this.getClass().getResource("/reports"));
 			CacheEnlace.cargar();
@@ -67,12 +67,17 @@ public class Run {
                     + IOEe.getMessage(), ServerConst.MESSAGE);
             
         } catch (ConfigFileNotLoadException e) {
-			System.out
-					.println("Error al cargar el archivo de configuracion "
-							+ "en el servidor de transacciones");
-			
-		} catch (PoolNotLoadException e) {
+        	ConfigFile.newConfigFile();
+            System.out.println("ERROR #003: No se pudo cargar el archivo de configuracion\n"
+            		+ "por tanto el servidor de transacciones ha creado un nuevo\n"
+            		+ "archivo ("+ServerConst.CONF+ServerConst.SEPARATOR+"server.conf)\n"
+            		+ "para que sea editado por el admin del sistema.\n"
+            		+ "Por favor reviselo y reinicie el ST");
+        	
+        } catch (PoolNotLoadException e) {
+        	
 			LogAdmin.setMessage(e.getErrorCode(),e.getMessage(),Language.getWord("NODEBUG"),ServerConst.ERROR);
+			
 		} 
 	}
 

@@ -109,7 +109,7 @@ public class PackageToXML extends Thread {
                             doc = builder.build(bufferIn);
 
                             if (channel.socket().getLocalPort() == ConfigFile
-                                    .getSocketJAdmin())
+                                    .getAdminSocket())
                                 ValidHeaders.ValidAdmin(doc, channel);
                             else
                                 ValidHeaders.ValidClient(doc, channel);
