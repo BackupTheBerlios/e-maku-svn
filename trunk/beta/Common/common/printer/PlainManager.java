@@ -177,6 +177,16 @@ public class PlainManager extends AbstractManager {
 			int height = attribs.get("height").getIntValue();
 			textGenerator.addTextArea(value,row,col,null,height,false);
 		}
+        else if ("NUMTOLETTERS".equals(type)) {
+            try {
+                Double d = Double.parseDouble(value);
+                String letters = String.valueOf(d.intValue());
+                textGenerator.addString(letters,row,col,null);
+            } catch (NumberFormatException NFE) {
+                // Pendiente por traducir
+                System.out.printf("No se puede convertir %s  a letras\n%s",value,NFE.getMessage());
+            }
+        }
 	}
 	
 	public String getBufferString() {

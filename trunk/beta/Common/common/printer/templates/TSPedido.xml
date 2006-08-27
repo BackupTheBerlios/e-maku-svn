@@ -26,15 +26,15 @@ Telefonos: 7215949 - 7211067 - Fax: (092) 7211630                    VELAS DECOR
 				<field row="12" col="1" type="STRING">Telefono</field>
 				<field row="13" col="1" type="STRING">Ciudad</field>
 				<!-- Info Documento -->
-				<field row="9" col="107" type="STRING">Orden de Pedido</field>
+				<field row="9" col="107" type="STRING">Comprobante de ingreso</field>
 				<field row="10" col="107" type="STRING">Fecha</field>
 				<field row="11" col="107" type="STRING">Vendedor</field>
 				<field row="12" col="107" type="STRING">Numero</field>
 				<!-- Informacion detallada de productos -->
-				<field row="17" col="1" type="STRING">Referencia</field>
-				<field row="17" col="70" type="STRING">Descripcion</field>
-				<field row="17" col="137" type="STRING">Cantidad</field>
-				<field row="56" col="1" type="STRING">Observaciones</field>
+				<field row="17" col="1" type="STRING">Cuenta</field>
+				<field row="17" col="70" type="STRING">Nombre</field>
+				<field row="17" col="137" type="STRING">Debitos</field>
+				<field row="56" col="1" type="STRING">Creditos</field>
 				<!-- Pie de pagina -->
 				<field row="63" col="11" type="STRING">ACEPTADA</field>
 				<!-- Dibujo de lineas -->
