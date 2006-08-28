@@ -93,8 +93,8 @@
             <description>Binarios y archivos de configuración requeridos por el Servidor de Transacciones</description>
             <file src="lib/emaku/server.jar" targetdir="$INSTALL_PATH/lib/emaku"/>
             <file src="lib/emaku/reports.jar" targetdir="$INSTALL_PATH/lib/emaku"/>
-            <file src="conf/server.conf" targetdir="$INSTALL_PATH/conf"/>
             <file src="bin/emaku-server.ico" targetdir="$INSTALL_PATH/bin"/>
+            <file src="conf" targetdir="$INSTALL_PATH"/>
         </pack>
         <pack name="Cliente E-Maku" required="no">
             <description>Binarios y archivos de configuración requeridos por la aplicación Cliente</description>

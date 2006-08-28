@@ -1,10 +1,11 @@
 package server;
 
+import java.io.File;
 import java.io.IOException;
 
-import common.misc.formulas.BeanShell;
-import common.misc.language.Language;
-import common.misc.log.LogAdmin;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import server.comunications.SocketServer;
 import server.control.ReportsStore;
 import server.database.connection.PoolConexiones;
@@ -13,6 +14,10 @@ import server.database.sql.CacheEnlace;
 import server.misc.ServerConst;
 import server.misc.settings.ConfigFile;
 import server.misc.settings.ConfigFileNotLoadException;
+
+import common.misc.formulas.BeanShell;
+import common.misc.language.Language;
+import common.misc.log.LogAdmin;
 
 /**
  * Run.java Creado el 28-jun-2004
@@ -41,45 +46,64 @@ public class Run {
 	 * 
 	 */
 	public Run() {
-		try {		
-			
-			String os = System.getProperty("os.name");
-			
-			if (os.equals("Linux")) {
-				String owner = System.getProperty("user.name");
-				if (owner.equals("root")) {			
-					System.out.println("*** Excepción de Seguridad: El Servidor de Transacciones no puede ser ejecutado por el usuario root.");
-					System.out.println("    El usuario indicado para iniciar este servicio es \"emaku\".");
-					System.exit(0);	
-				}
+		
+		String os = System.getProperty("os.name");
+		
+		if (os.equals("Linux")) {
+			String owner = System.getProperty("user.name");
+			if (owner.equals("root")) {			
+				System.out.println("*** Excepción de Seguridad: El Servidor de Transacciones no puede ser");
+				System.out.println("    ejecutado por el usuario root.");
+				System.out.println("    El usuario indicado para iniciar este servicio es \"emaku\".");
+				System.exit(0);	
 			}
-			
-			ConfigFile.loadConfigFile();
+		}
+		
+		String emakuConfigFile = ServerConst.CONF + ServerConst.SEPARATOR + "server.conf";
+		boolean existsConfigFile = (new File(emakuConfigFile)).exists();
+		
+		if (!existsConfigFile) {
+        	ConfigFile.newConfigFile(emakuConfigFile);			
+        	System.out.println("INFO: Archivo de configuracion no encontrado... creando uno nuevo...");
+		}
+		
+		try {						
+			ConfigFile.loadConfigFile(emakuConfigFile);
 			PoolConexiones.CargarBD();
 			ReportsStore.Load(this.getClass().getResource("/reports"));
 			CacheEnlace.cargar();
 			new BeanShell();
 			new SocketServer();
-			
 		} catch (IOException IOEe) {
 		    
             LogAdmin.setMessage(Language.getWord("UNLOADING_ST") + " "
                     + IOEe.getMessage(), ServerConst.MESSAGE);
+            killServer();
             
         } catch (ConfigFileNotLoadException e) {
-        	ConfigFile.newConfigFile();
-            System.out.println("ERROR #003: No se pudo cargar el archivo de configuracion\n"
-            		+ "por tanto el servidor de transacciones ha creado un nuevo\n"
-            		+ "archivo ("+ServerConst.CONF+ServerConst.SEPARATOR+"server.conf)\n"
-            		+ "para que sea editado por el admin del sistema.\n"
-            		+ "Por favor reviselo y reinicie el ST");
+
+        	ConfigFile.newConfigFile(emakuConfigFile);
+        	
+        	if (os.startsWith("Windows")) {
+        		JOptionPane.showMessageDialog(new JFrame(),"El archivo de configuracion estaba corrupto y ha sido corregido. Por favor, revise el archivo server.conf y reinicie el servicio.","Error!",
+        				JOptionPane.ERROR_MESSAGE);
+        	} else {
+        		System.out.println("ERROR #003: El archivo de configuracion estaba corrupto y ha sido corregido. Por favor, revise el archivo server.conf y reinicie el servicio.\n"
+        		+ "("+ServerConst.CONF+ServerConst.SEPARATOR+"server.conf)\n");
+        	}
+        	killServer();
         	
         } catch (PoolNotLoadException e) {
         	
 			LogAdmin.setMessage(e.getErrorCode(),e.getMessage(),Language.getWord("NODEBUG"),ServerConst.ERROR);
-			
+			killServer();
 		} 
 	}
+	
+	public void killServer() {
+		System.exit(0);
+	}
+	
 
 	/**
 	 * @param args

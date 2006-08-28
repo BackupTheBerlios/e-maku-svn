@@ -1,5 +1,7 @@
 package server.misc;
 
+import java.awt.Toolkit;
+
 /**
  * ServerConst.java Creado el 29-jun-2004
  * 
@@ -46,4 +48,9 @@ public interface ServerConst {
             						   "            </row>\n"};
     public final String [] TAGS_COL_HEAD = {"       <col type=\"","\">"};
     public final String [] TAGS_COL = {"                <col>","</col>\n"};
+    
+    public static int MAX_WIN_SIZE_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+
+    public static int MAX_WIN_SIZE_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(); 
+    
 }

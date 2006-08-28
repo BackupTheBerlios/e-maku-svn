@@ -8,11 +8,14 @@ import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.swing.JFrame;
+
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
+import server.gui.ConfigDialog;
 import server.misc.ServerConst;
 
 import common.misc.language.Language;
@@ -55,7 +58,7 @@ public class ConfigFile {
      * Este metodo se encarga de cargar el archivo de configuracion
      * @throws ConfigFileNotLoadException
      */
-    public static void loadConfigFile() throws ConfigFileNotLoadException{
+    public static void loadConfigFile(String emakuConfigFile) throws ConfigFileNotLoadException{
         try {
             builder = new SAXBuilder(false);
             
@@ -63,10 +66,7 @@ public class ConfigFile {
                     ServerConst.SEPARATOR+
                     "server.conf");
             
-            doc = builder.build(
-                                ServerConst.CONF+
-                                ServerConst.SEPARATOR+
-                                "server.conf");
+            doc = builder.build(emakuConfigFile);
             
             root = doc.getRootElement();
             java.util.List Lconfig = root.getChildren();
@@ -156,46 +156,78 @@ public class ConfigFile {
         return connection;
     }
     
-    public static void newConfigFile() {
+    public static void newConfigFile(String emakuConfigFile) {
     	
-    	String emakuServerConf = ServerConst.CONF + ServerConst.SEPARATOR + "server.conf";
+    	String lang = "es_CO";
+    	String clientPort = "9117";
+    	String adminPort = "28124";
+    	String maxClients = "500";
+    	String logType = "Verbose";
+    	String company = "mi_empresa";
+    	String jdbcDriver = "org.postgresql.Driver";
+    	String url = "jdbc:postgresql://localhost:5432/mi_empresa";
+        String user = "emaku";
+    	String password = "";
     	
-    	String config = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-    	+ "<!--\n"
-    	+ "    Document   : server.conf.xml\n"
-    	+ "    Created on : 29 de junio de 2004, 14:29\n"
-    	+ "    Author     : Luis Felipe Hernandes, Cristian David Cepeda\n"
-    	+ "-->\n"
-        + "\n"
-    	+ "<Config>\n"
-    	+ "    <Lenguaje>es_CO</Lenguaje>\n"
-    	+ "    <SocketJClient>9117</SocketJClient>\n"
-    	+ "    <SocketJAdmin>28124</SocketJAdmin>\n"
-    	+ "        <MaxClients>500</MaxClients>\n"
-    	+ "    <!-- Valores posibles:\n"
-    	+ "    Default:     Muestra solo mensajes de error\n"
-    	+ "    Verbose:     Muestra todos los mensajes\n"
-    	+ "    VerboseFile: Muestra todos los mensajes por la consola y genera un\n"
-    	+ "                 archivo log\n"
-    	+ "    LogFile:     Solo genera un archivo log con todos los mensajes\n"
-    	+ "    -->\n"
-    	+ "    <Log>Verbose</Log>\n"
-    	+ "    <PoolConnection>\n"
-    	+ "        <DataBase>\n"
-    	+ "            <name>mi_empresa</name>\n"
-    	+ "            <driver>org.postgresql.Driver</driver>\n"
-    	+ "            <url>jdbc:postgresql://localhost:5432/mi_empresa</url>\n"
-    	+ "            <username>emaku</username>\n"
-    	+ "            <password/>\n"
-    	+ "        </DataBase>\n"
-    	+ "    </PoolConnection>\n"
-    	+ "</Config>\n";
+	    String os = System.getProperty("os.name");
+
+	    if (os.startsWith("Windows")) {
+	    	    System.out.println("Abriendo dialogo...");
+	    		ConfigDialog newConfigDialog = new ConfigDialog(new JFrame());
+	    		newConfigDialog.pack();
+	    		newConfigDialog.setLocation(
+	                    (ServerConst.MAX_WIN_SIZE_WIDTH / 2) - newConfigDialog.getWidth() / 2,
+	                    (ServerConst.MAX_WIN_SIZE_HEIGHT / 2) - newConfigDialog.getHeight() / 2);
+	    		newConfigDialog.setVisible(true);
+	    		
+	    	    System.out.println("Keep going...");
+	    		
+	    		lang       = newConfigDialog.getLanguage();
+	    		clientPort = newConfigDialog.getClientPort();
+	    		adminPort  = newConfigDialog.getAdminPort();
+	    		maxClients = newConfigDialog.getMaxClients();             
+	    		logType    = newConfigDialog.getLogType();
+	    		company    = newConfigDialog.getCompany();
+	    		jdbcDriver = newConfigDialog.getJDBCDriver();
+	    		url        = newConfigDialog.getUrl();
+	    		user       = newConfigDialog.getUser();
+	    		password   = newConfigDialog.getPasswd();
+	    }    	
     	
     	try {
-    	 	 FileOutputStream serverConfFile = new FileOutputStream(emakuServerConf);
-    		 PrintStream FOSServerConf = new PrintStream(serverConfFile);
-    		 FOSServerConf.println(config);
-    		 FOSServerConf.close();
+    		FileOutputStream serverConfFile = new FileOutputStream(emakuConfigFile);
+    		PrintStream FOSServerConf = new PrintStream(serverConfFile);
+    		FOSServerConf.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+    		FOSServerConf.println("<!--\n");
+    		FOSServerConf.println("    Document   : server.conf.xml");
+    		FOSServerConf.println("    Created on : 29 de junio de 2004, 14:29");
+    		FOSServerConf.println("    Author     : Luis Felipe Hernandes, Cristian David Cepeda");
+    		FOSServerConf.println("-->");
+    		FOSServerConf.println();
+    		FOSServerConf.println("<Config>");
+    		FOSServerConf.println("    <Lenguaje>"+lang+"</Lenguaje>");
+    		FOSServerConf.println("    <SocketJClient>"+clientPort+"</SocketJClient>");
+    		FOSServerConf.println("    <SocketJAdmin>"+adminPort+"</SocketJAdmin>");
+    		FOSServerConf.println("        <MaxClients>"+maxClients+"</MaxClients>");
+    		FOSServerConf.println("    <!-- Valores posibles:");
+    		FOSServerConf.println("    Default:     Muestra solo mensajes de error");
+    		FOSServerConf.println("    Verbose:     Muestra todos los mensajes");
+    		FOSServerConf.println("    VerboseFile: Muestra todos los mensajes por la consola y genera un");
+    		FOSServerConf.println("                 archivo log");
+    		FOSServerConf.println("    LogFile:     Solo genera un archivo log con todos los mensajes");
+    		FOSServerConf.println("    -->");
+    		FOSServerConf.println("    <Log>"+logType+"</Log>");
+    		FOSServerConf.println("    <PoolConnection>");
+    		FOSServerConf.println("        <DataBase>");
+    		FOSServerConf.println("            <name>"+company+"</name>");
+    		FOSServerConf.println("            <driver>"+jdbcDriver+"</driver>");
+    		FOSServerConf.println("            <url>"+url+"</url>");
+    		FOSServerConf.println("            <username>"+user+"</username>");
+    		FOSServerConf.println("            <password>"+password+"</password>");
+    		FOSServerConf.println("        </DataBase>");
+    		FOSServerConf.println("    </PoolConnection>");
+    		FOSServerConf.println("</Config>");    		 
+    		FOSServerConf.close();		 
         } catch (SecurityException ex) {
         	System.out.println("ERROR: El usuario emaku no tiene permisos para crear el archivo de configuración.");
     	}
