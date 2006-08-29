@@ -14,13 +14,13 @@ import java.util.Vector;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import org.jdom.Document;
+import org.jdom.Element;
+
 import common.gui.forms.FinishEvent;
 import common.gui.forms.GenericForm;
 import common.gui.forms.InitiateFinishListener;
 import common.gui.forms.NotFoundComponentException;
-
-import org.jdom.Document;
-import org.jdom.Element;
 
 /**
  * XMLTextArea.java Creado el 16-may-2005
@@ -49,6 +49,7 @@ public class XMLTextArea extends JTextArea implements AnswerListener, InitiateFi
     private GenericForm GFforma;
     private Vector <String>driverEvent;
     private Vector <String>keySQL;
+    private Element printPack;
     
     public XMLTextArea(GenericForm GFforma) {
     	this.GFforma = GFforma;
@@ -148,6 +149,10 @@ public class XMLTextArea extends JTextArea implements AnswerListener, InitiateFi
     public Element getPrintPackage() {
         return getPackage();
     }
+    
+    public Element getSeparatedPrintPackage() {
+        return printPack;
+    }
 
 	public void arriveAnswerEvent(AnswerEvent AEe) {
 		for (int i=0 ; i < keySQL.size() ; i++) {
@@ -160,10 +165,14 @@ public class XMLTextArea extends JTextArea implements AnswerListener, InitiateFi
 			        	clean();
 			        }
 			        if (row>0) {
+                        printPack = new Element("package");
 			        	Iterator it = e.getChildren().iterator();
 			        	while(it.hasNext()) {
 			        		String val = ((Element)it.next()).getValue().trim();
 			        		/*if (!"".equals(val))*/
+                            Element field = new Element("field");
+                            field.setText(val);
+                            printPack.addContent(field);
 			        		this.append(val+"\n");
 			        	}
 			        }

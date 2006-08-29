@@ -1,0 +1,98 @@
+<emaku_template type="PLAIN">
+		<settings width="144" height="64" />
+		<metadata>
+				<scp row="1" col="1">ESC</scp>
+				<scp row="1" col="2">C</scp>
+				<scp row="1" col="3">29</scp>
+				<scp row="1" col="5">ETB</scp>
+				<scp row="29" col="1">FF</scp>
+				<scp row="29" col="2">EOT</scp>
+				<!-- Encabezado -->
+				<line row="1" col="1" length="80" charfill="-" align="horizontal" />
+				<field row="2" col="2" type="STRING">F.A. Uribe &amp; Cia Ltda</field>
+				<field row="3" col="3" type="STRING">Nit.  891.200.250-1</field>
+				<field row="2" col="56" type="STRING">Comprobante de Ingreso</field>
+				<field row="3" col="56" type="STRING">Nro.</field>
+				<line row="4" col="1" length="80" charfill="-" align="horizontal" />
+				<!-- Ciudad y Fecha -->
+				<line row="6" col="1" length="80" charfill="-" align="horizontal" />
+				<!-- Tercero -->
+				<field row="7" col="1" type="STRING">Recibido de:</field>
+				<field row="7" col="53" type="STRING">Valor $:</field>
+				<line row="10" col="1" length="80" charfill="-" align="horizontal" />
+				<field row="11" col="1" type="STRING">La suma de:</field>
+				<line row="14" col="1" length="80" charfill="-" align="horizontal" />
+				<field row="15" col="1" type="STRING">Por concepto de :</field>
+				<line row="18" col="1" length="80" charfill="-" align="horizontal" />
+				<!-- Forma de pago -->
+				<field row="19" col="1" type="STRING">Forma de pago: Efectivo [ ]  Cheque [ ]  Transferencia [ ] T. Credito [ ]</field>
+				<line row="20" col="1" length="80" charfill="-" align="horizontal" />
+				<!-- Contabilizacion -->
+				<field row="21" col="5" type="STRING">Codigo</field>
+				<field row="21" col="19" type="STRING">Debitos</field>
+				<field row="21" col="35" type="STRING">Creditos</field>
+				<line row="21" col="14" length="7" charfill="|" align="vertical" />
+				<line row="21" col="31" length="7" charfill="|" align="vertical" />
+				<line row="21" col="48" length="7" charfill="|" align="vertical" />
+				<line row="28" col="1" length="47" charfill="-" align="horizontal" />
+				<line row="22" col="1" length="47" charfill="-" align="horizontal" />
+				<field row="22" col="14" type="STRING">+</field>
+				<field row="22" col="31" type="STRING">+</field>
+				<field row="28" col="48" type="STRING">+</field>
+				<!-- Firma y sello -->
+				<field row="21" col="50" type="STRING">Firma y sello</field>
+				<line row="27" col="50" length="30" charfill="-" align="horizontal" />
+				<field row="28" col="50" type="STRING">C.C. o Nit</field>
+		</metadata>
+		<package>
+			<field row="0" col="0"/>
+			<field row="8" col="1" type="STRING" />
+			<field row="0" col="0"/>
+			<field row="0" col="0"/>
+			<field row="0" col="0"/>
+			<field row="9" col="1" type="STRING" />
+		</package>
+		<package>
+			<field row="3" col="61" type="STRING" />
+		</package>
+		<package>
+			<field row="7" col="62" width="18" type="NUMERIC" mask="##,###,###,##0.00" />
+		</package>
+		<!-- <package>
+				<field row="9" col="12" type="STRING" />
+				<field row="10" col="12" type="STRING" />
+				<field row="11" col="12" type="STRING" />
+				<field row="12" col="12" type="STRING" />
+				<field row="13" col="12" type="STRING" />
+				<field row="14" col="12" type="STRING" />
+		</package>
+		<package>
+				<field row="9" col="12" type="STRING" />
+				<field row="10" col="12" type="STRING" />
+				<field row="11" col="12" type="STRING" />
+				<field row="12" col="12" type="STRING" />
+				<field row="13" col="12" type="STRING" />
+		</package>
+		<package>
+				<field row="10" col="123" type="STRING" />
+		</package>
+		<package>
+				<field row="11" col="123" type="STRING" />
+		</package>
+		<package>
+				<field row="12" col="123" type="STRING" />
+		</package>
+		<package>
+				<field row="13" col="123" type="STRING" />
+		</package> -->
+		<package>
+				<subpackage rowInit="23">
+						<field col="1" type="STRING" />
+						<field col="16" width="14" type="NUMERIC" mask="##,###,###,###" />
+						<field col="33" width="14" type="NUMERIC" mask="##,###,###,###" />
+				</subpackage>
+		</package>
+		<!--  <package>
+				<field row="57" col="1" type="TEXT" width="90" height="3" />
+		</package> -->
+</emaku_template>

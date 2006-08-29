@@ -155,8 +155,8 @@ public class PlainManager extends AbstractManager {
 		int row =  attribs.get("row").getIntValue();
 		int col =  attribs.get("col").getIntValue();
 		
-		String type = attribs.get("type").getValue();
-
+		Attribute attribute = attribs.get("type");
+		String type = attribute!=null ? attribute.getValue() : null ;
 		value = !"NULL".equals(value) && !"".equals(value) ?value:"";
 		if ("TEXT".equals(type)) {
 			int width = attribs.get("width").getIntValue();
