@@ -29,6 +29,8 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.TitledBorder;
 
+import bsh.EvalError;
+import bsh.Interpreter;
 import common.comunications.DateSender;
 import common.comunications.UpdateCodeSender;
 import common.comunications.SocketConnector;
@@ -123,7 +125,7 @@ public class GenericForm extends JInternalFrame{
     private Vector <ChangeExternalValueListener>changeExternalValueListener = new Vector<ChangeExternalValueListener>();
     private Hashtable <Integer,String>exportFields;
 	private boolean visible = true;
-    
+	private Interpreter shellScript; 
     /**
      * 
      * este construcor se instancia cuando se generara una forma hija
@@ -175,7 +177,7 @@ public class GenericForm extends JInternalFrame{
      * Este constructor se instancia, cuando la forma no recibe password
      * 
      * @param doc
-     *            Este parametro contiene la informaci�n para autogenerar la
+     *            Este parametro contiene la informaciÔøΩn para autogenerar la
      *            forma en tiempo de ejecucion
      * @param idTransaction
      *            Este parametro contiene el identificador de la transaccion que
@@ -188,6 +190,7 @@ public class GenericForm extends JInternalFrame{
         this.size = size;
         this.idTransaction = idTransaction;
         this.externalValues = new Hashtable<Object,Object>();
+        new InitShell();
         generar(doc);
         FinishEvent event = new FinishEvent(this);
         notificando(event);
@@ -198,7 +201,7 @@ public class GenericForm extends JInternalFrame{
      * recibido
      * 
      * @param doc
-     *            Este parametro contiene la informaci�n para autogenear la
+     *            Este parametro contiene la informaciÔøΩn para autogenear la
      *            forma en tiempo de ejecucion
      */
 
@@ -636,7 +639,7 @@ public class GenericForm extends JInternalFrame{
             }
 
             /*
-             * Este sub-elemento contiene informaci�n necesaria para ejecutar
+             * Este sub-elemento contiene informaciÔøΩn necesaria para ejecutar
              * eventos, que tienen relacion con otros componentes diferentes al
              * que se esta generando. En ella se definen las llaves necesarias
              * para luego poder llamar a dicho metodo del elemento en cuestion
@@ -653,7 +656,7 @@ public class GenericForm extends JInternalFrame{
         }
 
         /*
-         * Una vez cargada la anterior informaci�n, se procede a instanciar el
+         * Una vez cargada la anterior informaciÔøΩn, se procede a instanciar el
          * componente
          */
 
@@ -1320,6 +1323,20 @@ public class GenericForm extends JInternalFrame{
 				}
 				pack.addContent(e);
 			}
+			
+			else if ("beanshell".equals(elm.getAttributeValue("attribute"))) {
+				String formula = elm.getValue();
+    			String script = parseFormula(formula);
+    			System.out.println("Formula final " + script);
+    			try {
+					Object result = eval(script);
+					Element field = new Element("field");
+					field.setText(result.toString());
+					pack.addContent(field);
+				} catch (EvalError e) {
+					e.printStackTrace();
+				}
+    		}
 		}
 		
 		if (blankPackage && cont==0) {
@@ -1327,6 +1344,40 @@ public class GenericForm extends JInternalFrame{
 		}
 		
 		return pack;
+	}
+	
+	public String parseFormula(String formula) {
+		if (child) {
+			return GFforma.parseFormula(formula);
+		}
+		String formulaFinal = "";
+		int max = formula.length();
+		String acumText = "";
+		int j = 0;
+		boolean operador = true;
+		for (; j < max; j++) {
+			if (formula.charAt(j) > 96 && formula.charAt(j) < 123) {
+				acumText += formula.substring(j, j + 1);
+				operador = false;
+			} else {
+				if (!operador) {
+					boolean isKey = child ? GFforma.externalValues.containsKey(acumText) : externalValues.containsKey(acumText);
+					if (isKey) {
+						formulaFinal += getExteralValues(acumText);
+					}
+					else {
+						formulaFinal += acumText;
+					}
+				}
+				formulaFinal += formula.substring(j, j + 1);
+				acumText = "";
+				operador = true;
+			}
+		}
+		if (acumText.length() > 0) {
+			formulaFinal += getExteralValues(acumText);
+		}
+		return formulaFinal;
 	}
 	
 	public Element getPrintPackage(Element element) throws VoidPackageException {
@@ -1393,6 +1444,23 @@ public class GenericForm extends JInternalFrame{
 
 	public void setPrinterTemplate(String printerTemplate) {
 		this.printerTemplate = printerTemplate;
+	}
+	
+	public Object eval (String script) throws EvalError {
+		if (child) {
+			return GFforma.eval(script);
+		}
+		return shellScript.eval(script);
+	}
+	
+	class InitShell extends Thread {
+		public InitShell() {
+			start();
+		}
+
+		public void run() {
+			shellScript = new Interpreter();
+		}
 	}
 }
 

@@ -58,41 +58,23 @@
 		<package>
 			<field row="7" col="62" width="18" type="NUMERIC" mask="##,###,###,##0.00" />
 		</package>
-		<!-- <package>
-				<field row="9" col="12" type="STRING" />
-				<field row="10" col="12" type="STRING" />
-				<field row="11" col="12" type="STRING" />
-				<field row="12" col="12" type="STRING" />
-				<field row="13" col="12" type="STRING" />
-				<field row="14" col="12" type="STRING" />
+		<package>
+			<field row="12" col="1" width="80" height="2" type="NUMTOLETTERS" />
 		</package>
 		<package>
-				<field row="9" col="12" type="STRING" />
-				<field row="10" col="12" type="STRING" />
-				<field row="11" col="12" type="STRING" />
-				<field row="12" col="12" type="STRING" />
-				<field row="13" col="12" type="STRING" />
+			<field row="16" col="1" width="80" height="2" type="TEXT" />
 		</package>
 		<package>
-				<field row="10" col="123" type="STRING" />
+			<subpackage rowInit="23">
+				<field col="1" type="STRING" />
+				<field col="16" width="14" type="NUMERIC" mask="##,###,###,###" />
+				<field col="33" width="14" type="NUMERIC" mask="##,###,###,###" />
+			</subpackage>
 		</package>
 		<package>
-				<field row="11" col="123" type="STRING" />
+			<field row="19" col="26" type="STRING"/>
+			<field row="19" col="38" type="STRING" />
+			<field row="19" col="57" type="STRING"/>
+			<field row="19" col="72" type="STRING"/>
 		</package>
-		<package>
-				<field row="12" col="123" type="STRING" />
-		</package>
-		<package>
-				<field row="13" col="123" type="STRING" />
-		</package> -->
-		<package>
-				<subpackage rowInit="23">
-						<field col="1" type="STRING" />
-						<field col="16" width="14" type="NUMERIC" mask="##,###,###,###" />
-						<field col="33" width="14" type="NUMERIC" mask="##,###,###,###" />
-				</subpackage>
-		</package>
-		<!--  <package>
-				<field row="57" col="1" type="TEXT" width="90" height="3" />
-		</package> -->
 </emaku_template>

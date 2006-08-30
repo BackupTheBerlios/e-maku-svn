@@ -11,6 +11,8 @@ import org.jdom.Attribute;
 import org.jdom.DataConversionException;
 import org.jdom.Element;
 
+import common.misc.text.NumberToLetterConversor;
+
 public class PlainManager extends AbstractManager {
 	
 	private TextGenerator textGenerator = new TextGenerator();
@@ -164,8 +166,11 @@ public class PlainManager extends AbstractManager {
 			textGenerator.addTextArea(value,row,col,width,height,true);
 		}
 		else if ("STRING".equals(type)) {
-			value = " ".equals(value) || "".equals(value) ? "   " : value.trim();
-			textGenerator.addString(value,row,col,null);
+			/*value = " ".equals(value) || "".equals(value) ? "   " : value.trim();
+			textGenerator.addString(value,row,col,null);*/
+			if (!"".equals(value.trim())) {
+				textGenerator.addString(value,row,col,null);
+			}
 		}
 		else if ("NUMERIC".equals(type)) {
 			String mask = attribs.get("mask").getValue();
@@ -179,9 +184,14 @@ public class PlainManager extends AbstractManager {
 		}
         else if ("NUMTOLETTERS".equals(type)) {
             try {
+            	int width = attribs.get("width").getIntValue();
+    			int height = attribs.get("height").getIntValue();
+    			
                 Double d = Double.parseDouble(value);
                 String letters = String.valueOf(d.intValue());
-                textGenerator.addString(letters,row,col,null);
+                letters = NumberToLetterConversor.letters(letters, null);
+                
+                textGenerator.addTextArea(letters,row,col,width,height,true);
             } catch (NumberFormatException NFE) {
                 // Pendiente por traducir
                 System.out.printf("No se puede convertir %s  a letras\n%s",value,NFE.getMessage());

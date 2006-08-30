@@ -30,7 +30,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 
 import bsh.EvalError;
-import bsh.Interpreter;
 
 import common.comunications.DateSender;
 import common.control.ClientHeaderValidator;
@@ -91,13 +90,11 @@ public class GenericData extends JPanel implements DateListener,
 	private Vector<AnswerListener> AnswerListener = new Vector<AnswerListener>();
 	private Vector<ChangeValueListener> changeValueListener = new Vector<ChangeValueListener>();
 	private Vector<RecordListener> recordListener = new Vector<RecordListener>();
-	private Interpreter shellScript;
 	
 	public GenericData() {}
 
 	public GenericData(GenericForm newGFforma, Document doc)
 			throws InvocationTargetException, NotFoundComponentException {
-		new InitShell();
 		this.GFforma = newGFforma;
 		this.GFforma.addInitiateFinishListener(this);
 		this.setLayout(new BorderLayout());
@@ -822,7 +819,7 @@ public class GenericData extends JPanel implements DateListener,
 		}
 		return pack;
 	}
-
+	
 	public synchronized void addAnswerListener(AnswerListener listener) {
 		AnswerListener.addElement(listener);
 	}
@@ -1080,40 +1077,20 @@ public class GenericData extends JPanel implements DateListener,
 	 * @param formula
 	 * @return Valor calculado
 	 */
+	
 	public double formulaHandler(String formula, boolean beanshell) {
-		String formulaFinal = "";
-		int max = formula.length();
-		String acumText = "";
-		int j = 0;
-		boolean operador = true;
-		for (j = 0; j < max; j++) {
-			if (formula.charAt(j) > 96 && formula.charAt(j) < 123) {
-				acumText += formula.substring(j, j + 1);
-				operador = false;
-			} else {
-				if (!operador) {
-					formulaFinal += GFforma.getExteralValues(acumText);
-				}
-				formulaFinal += formula.substring(j, j + 1);
-				acumText = "";
-				operador = true;
-			}
-		}
-		if (acumText.length() > 0) {
-			formulaFinal += GFforma.getExteralValues(acumText);
-		}
+		String formulaFinal = GFforma.parseFormula(formula);
 		if (beanshell) {
 			try {
-				Double val = (Double) shellScript.eval(formulaFinal);
+				Double val = (Double) GFforma.eval(formulaFinal);
 				return val.doubleValue();
 			} catch (EvalError e) {
 				e.printStackTrace();
 			}
 		}
-
 		return ((Double) FormulaCalculator.operar(formulaFinal)).doubleValue();
 	}
-
+	
 	public void cathDateEvent(DateEvent e) {
 		for (int i = 0; i < VFields.size(); i++) {
 			XMLTextField xmltf = (XMLTextField) VFields.get(i);
@@ -1152,8 +1129,7 @@ public class GenericData extends JPanel implements DateListener,
 		Element element = new Element("table");
 		Element row = new Element("row");
 		element.addContent(row);
-		StringTokenizer stk = new StringTokenizer(XMLTFtext.getSendRecord(),
-				",");
+		StringTokenizer stk = new StringTokenizer(XMLTFtext.getSendRecord(),",");
 
 		while (true) {
 			try {
@@ -1177,16 +1153,6 @@ public class GenericData extends JPanel implements DateListener,
 		for (int i = 0; i < lista.size(); i++) {
 			RecordListener listener = (RecordListener) lista.elementAt(i);
 			listener.arriveRecordEvent(event);
-		}
-	}
-
-	class InitShell extends Thread {
-		public InitShell() {
-			start();
-		}
-
-		public void run() {
-			shellScript = new Interpreter();
 		}
 	}
 }
