@@ -165,15 +165,34 @@ public class LNDocuments {
 	                         * se hace la siguiente consulta
 	                         */
 	                        
-	                        String primaryKey=null;
-	                        RunQuery RQkey = new RunQuery(bd,"SEL0073",new String[]{idDocument,consecutive});
-	        	            ResultSet RSdatos = RQkey.ejecutarSELECT();
-	        	            while (RSdatos.next()) {
-	        	                primaryKey=RSdatos.getString(1);
-	        	            }
-	    	                LNGtransaccion.setKey("ndocumento",primaryKey);
-	    	                RSdatos.close();
-	    	                RQkey.closeStatement();
+	                        /*
+	                         * Si existe un documento link entonces se procede a generarlo.
+	                         */
+	                    	String keyDocument = getDocumentKey(idDocument,consecutive);
+	                    	
+	                        if (linkDocument!=null) {
+	                        	// Se obtiene su consecutivo
+	                        	String consecutiveLinkDocument = CacheEnlace.getConsecutive(bd,linkDocument);
+	                        	// Se crea el documento alterno
+		                    	createDocument(linkDocument.trim(),consecutiveLinkDocument);
+		    	                
+		    	                Element infoDocumentPack = new Element("package");
+		                        infoDocumentPack.addContent(new Element("field").setText(getDocumentKey(linkDocument,consecutiveLinkDocument)));
+		                        infoDocumentPack.addContent(new Element("field").setText(keyDocument));
+		                        infoDocumentPack.addContent(new Element("field").setText(SocketServer.getLoging(sock)));
+		                        
+		                        if (cash) {
+			                        infoDocumentPack.addContent(new Element("field").setText(SocketServer.getLoging(sock)));
+		                            getTransaction(LNGtransaccion,"INS0083",infoDocumentPack);
+		                        }
+		                        else {
+		                            getTransaction(LNGtransaccion,"INS0085",infoDocumentPack);
+		                        }
+		    	                
+		    	                
+	                        }
+	                        
+	    	                LNGtransaccion.setKey("ndocumento",getDocumentKey(idDocument,consecutive));
 	    	                
 	    	                /*
 	    	                 * Una vez almacenado el documento se procede a almacenar la informacion de control
@@ -205,12 +224,6 @@ public class LNDocuments {
 	                            getTransaction(LNGtransaccion,"INS0035",infoDocumentPack);
 	                        }
 	                        
-	                        /*
-	                         * Si existe un documento link entonces se procede a generarlo.
-	                         */
-	                        if (linkDocument!=null) {
-		                    	createDocument(linkDocument.trim(),CacheEnlace.getConsecutive(bd,linkDocument));
-	                        }
 
 	                    }
                         else {
@@ -449,8 +462,14 @@ public class LNDocuments {
 		         */
 		        if (CREATE_DOCUMENT.equals(LNDocuments.actionDocument)) {
 	        		CacheEnlace.incrementeConsecutive(bd,idDocument);
+	        		if (linkDocument!=null){
+	        			CacheEnlace.incrementeConsecutive(bd,linkDocument);
+	        		}
 	        	} else if (DELETE_DOCUMENT.equals(LNDocuments.actionDocument)) {
 	        		CacheEnlace.reloadConsecutive(bd,idDocument);
+	        		if (linkDocument!=null){
+	        			CacheEnlace.incrementeConsecutive(bd,linkDocument);
+	        		}
 	        	}
 	        }
 	        else {
@@ -702,6 +721,20 @@ public class LNDocuments {
             Element subpackage = (Element) k.next();
             getTransaction(LNGtransaccion,sql, subpackage);
         }
+    }
+    
+    private static String getDocumentKey(String idDocument,String consecutive) 
+    throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
+        String primaryKey=null;
+        RunQuery RQkey = new RunQuery(bd,"SEL0073",new String[]{idDocument,consecutive});
+        ResultSet RSdatos = RQkey.ejecutarSELECT();
+        while (RSdatos.next()) {
+            primaryKey=RSdatos.getString(1);
+        }
+        
+        RSdatos.close();
+        RQkey.closeStatement();
+        return primaryKey;
     }
     
     private static void createDocument(String idDocument,String consecutive) 
