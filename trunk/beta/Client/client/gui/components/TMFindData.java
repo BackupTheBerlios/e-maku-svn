@@ -1449,65 +1449,101 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     	}
     }
     
+    
     /**
-     * Metodo generico para retornar un <package/>
+     * Metodo generico para retornar un <package/> 
      * @return retorna un <package/>
      */
     public Element getPackage() {
         Element pack = new Element("package");
         for (int i=0;i<rows; i++) {
-            Element subpack = new Element("subpackage");
-            boolean valueBlank = false;
-            for (int j=0;j<getColumnCount();j++) {
-                for (int k=0;k<getColumnCount();k++) {
-	                if (ATFDargs[k].getOrderReturn()==j) {
-	                    Object value = getValueAt(i, k);
-	                    if ((value==null || "".equals(value)) && !(ATFDargs[k].isReturnBlankCol() || ATFDargs[k].isReturnNullCol())) {
-	                        valueBlank=true;
-	                        break;
-	                    }
-	                    Element field = new Element("field");
-	                    if (ATFDargs[k].getType().equals("COMBOSQL")) {
-	 	                   StringTokenizer values = new StringTokenizer(value.toString()," ");
-		                   String tmp="";
-		                   while (true)
-		                       try {
-		                           tmp = values.nextToken();
-		                       }
-		                   	   catch(NoSuchElementException e1) {
-		                   	       break;
-		                   	   }
-		                       if (ATFDargs[k].getNameField()!=null) {
-		                    	   field.setAttribute("name",ATFDargs[k].getNameField());
-		                       }
-		                   	   field.setText(tmp);
-
-	                    }
-	                    else {
-	                        if (ATFDargs[k].getNameField()!=null) {
-	                        	field.setAttribute("name",ATFDargs[k].getNameField());
-	                        }
-	                        Object valueAt = getValueAt(i,k);
-	                        if (ATFDargs[k].isReturnNullCol() && valueAt.equals("")) {
-	                        		field.setText("NULL");
-	                        }
-	                        else {
-	                        		field.setText(value.toString());
-	                        }
-	                    }
-	                    subpack.addContent(field);
-	                }
-                }
-                if (valueBlank) {
-                    break;
-                }
-            }
-            if (valueBlank) {
-                break;
-            }
-            pack.addContent(subpack);
+	            Element subpack = new Element("subpackage");
+	            StructureSubPackage subpackage = new StructureSubPackage();
+	            for (int j=0;j<getColumnCount();j++) {
+	            	subpackage = makeSubPackage(i,j,subpack);
+	                if (subpackage.isValidPackage()) {
+	                    break;
+	                }    	
+	            }
+	            if (subpackage.isValidPackage()) {
+	                break;
+	            }
+	            pack.addContent(subpackage.getSubPackage());
         }
         return pack;
+    }
+
+    /**
+     * Metodo generico para retornar un <package/> validando el contenido
+     * de una columna
+     * @return retorna un <package/>
+     */
+    public Element getPackage(boolean maxmin,int col,double validValue) {
+        Element pack = new Element("package");
+        for (int i=0;i<rows; i++) {
+        	if ((maxmin && ((Number)getValueAt(i,col)).intValue()<=validValue) ||
+        	    (!maxmin && ((Number)getValueAt(i,col)).intValue()>validValue))	{
+	            Element subpack = new Element("subpackage");
+	            StructureSubPackage subpackage = new StructureSubPackage();
+	            for (int j=0;j<getColumnCount();j++) {
+	            	subpackage = makeSubPackage(i,j,subpack);
+	                if (subpackage.isValidPackage()) {
+	                    break;
+	                }    	
+	            }
+	            if (subpackage.isValidPackage()) {
+	                break;
+	            }
+	            pack.addContent(subpackage.getSubPackage());
+        	}
+        }
+        return pack;
+    }
+    
+    public StructureSubPackage makeSubPackage(int i,int j,Element subpack) {
+    	StructureSubPackage subpackage = new StructureSubPackage();
+    	
+        for (int k=0;k<getColumnCount();k++) {
+            if (ATFDargs[k].getOrderReturn()==j) {
+                Object value = getValueAt(i, k);
+                if ((value==null || "".equals(value)) && !(ATFDargs[k].isReturnBlankCol() || ATFDargs[k].isReturnNullCol())) {
+                    subpackage.setValidPackage(true);
+                    break;
+                }
+                Element field = new Element("field");
+                if (ATFDargs[k].getType().equals("COMBOSQL")) {
+	                   StringTokenizer values = new StringTokenizer(value.toString()," ");
+                   String tmp="";
+                   while (true)
+                       try {
+                           tmp = values.nextToken();
+                       }
+                   	   catch(NoSuchElementException e1) {
+                   	       break;
+                   	   }
+                       if (ATFDargs[k].getNameField()!=null) {
+                    	   field.setAttribute("name",ATFDargs[k].getNameField());
+                       }
+                   	   field.setText(tmp);
+
+                }
+                else {
+                    if (ATFDargs[k].getNameField()!=null) {
+                    	field.setAttribute("name",ATFDargs[k].getNameField());
+                    }
+                    Object valueAt = getValueAt(i,k);
+                    if (ATFDargs[k].isReturnNullCol() && valueAt.equals("")) {
+                    		field.setText("NULL");
+                    }
+                    else {
+                    		field.setText(value.toString());
+                    }
+                }
+                subpack.addContent(field);
+            }
+        }
+        subpackage.setSubPackage(subpack);
+        return subpackage;
     }
     
     public Element getPrintPackage() {
@@ -1756,5 +1792,23 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 
 	public int getCurrentIndex() {
 		return currentIndex;
+	}
+}
+
+class StructureSubPackage {
+	boolean validPackage;
+	Element subPackage;
+	
+	public Element getSubPackage() {
+		return subPackage;
+	}
+	public void setSubPackage(Element subPackage) {
+		this.subPackage = subPackage;
+	}
+	public boolean isValidPackage() {
+		return validPackage;
+	}
+	public void setValidPackage(boolean validPackage) {
+		this.validPackage = validPackage;
 	}
 }

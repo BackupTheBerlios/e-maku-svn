@@ -67,6 +67,7 @@ public class LNDocuments {
      */
     
     private static String idDocument;
+    private static String linkDocument;
     private static String consecutive;
     private static boolean cash;
     
@@ -156,12 +157,7 @@ public class LNDocuments {
 	                         * el documento
 	                         */
 
-	    	                Element documentPack = new Element("package");
-	                        documentPack.addContent(new Element("field").setText(idDocument.trim()));
-	                        documentPack.addContent(new Element("field").setText(consecutive.trim()));
-	                        documentPack.addContent(new Element("field").setText(CacheKeys.getDate().trim()));
-	                        getTransaction(LNGtransaccion,"INS0029",documentPack);
-	                        
+	                    	createDocument(idDocument.trim(),consecutive.trim());
 	                        /*
 	                         * Una vez almacenado el documento, este genera automaticamente un campo
 	                         * consecutivo llamado ndocumento, el cual sera la llave primaria necesaria
@@ -207,6 +203,13 @@ public class LNDocuments {
 	                        }
 	                        else {
 	                            getTransaction(LNGtransaccion,"INS0035",infoDocumentPack);
+	                        }
+	                        
+	                        /*
+	                         * Si existe un documento link entonces se procede a generarlo.
+	                         */
+	                        if (linkDocument!=null) {
+		                    	createDocument(linkDocument.trim(),CacheEnlace.getConsecutive(bd,linkDocument));
 	                        }
 
 	                    }
@@ -700,6 +703,15 @@ public class LNDocuments {
             getTransaction(LNGtransaccion,sql, subpackage);
         }
     }
+    
+    private static void createDocument(String idDocument,String consecutive) 
+    throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+        Element documentPack = new Element("package");
+        documentPack.addContent(new Element("field").setText(idDocument));
+        documentPack.addContent(new Element("field").setText(consecutive));
+        documentPack.addContent(new Element("field").setText(CacheKeys.getDate().trim()));
+        getTransaction(LNGtransaccion,"INS0029",documentPack);
+    }
 
     /**
      * Este metodo es utilizado para obtener los parametros de configuracion que no fueron definidos 
@@ -754,7 +766,10 @@ public class LNDocuments {
             if (subpackage.getAttributeValue("attribute").equals("idDocument")) {
                 LNDocuments.idDocument=value;
             }
-            
+            // Link document
+            else if (subpackage.getAttributeValue("attribute").equals("linkDocument")) {
+            	LNDocuments.linkDocument=value;
+            }
             // consecutive
             
             else if (subpackage.getAttributeValue("attribute").equals("consecutive")) {

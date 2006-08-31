@@ -540,6 +540,105 @@ public class TableFindData extends JPanel implements AnswerListener,
 		return TMFDtabla.getMultiPackage();
 	}
 
+    public Element generateConcept(Element args) {
+    	
+    	Element pack = new Element("package");
+    	Element field = new Element("field");
+    	
+    	String concept = "";
+    	String conceptStart = "";
+    	String conceptEnd = "";
+    	boolean avoidFinalConnector = false;
+    	int validColumn = 0;
+    	
+		Iterator it = args.getChildren("arg").iterator();
+		while (it.hasNext()) { 
+			Element arg = (Element) it.next();
+			if ("conceptStart".equals(arg.getAttributeValue("attribute"))) {
+				conceptStart = arg.getValue();
+			}
+			else if ("conceptEnd".equals(arg.getAttributeValue("attribute"))) {
+				conceptEnd = arg.getValue();
+			}
+			else if ("avoidConnectorAtFinal".equals(arg.getAttributeValue("attribute"))) {
+					avoidFinalConnector = Boolean.parseBoolean(arg.getValue());
+			}
+			else if ("validColumn".equals(arg.getAttributeValue("attribute"))) {
+				try {	
+					validColumn = Integer.parseInt(arg.getValue());
+				}
+				catch (NumberFormatException NFEe) {}
+			}
+		}
+		
+		Element subargs = (Element)args.getChildren("subargs").iterator().next();
+		List dataCol = subargs.getChildren();
+		int lenghtFinalConnector=0;
+		for (int i=0;i<TMFDtabla.getRowCount();i++) {
+			if (((Number)TMFDtabla.getValueAt(i,validColumn)).intValue()>0) {
+				for (int j=0;j<dataCol.size();j++) {
+					String typeData = ((Element)dataCol.get(j)).getAttributeValue("attribute");
+					String value = ((Element)dataCol.get(j)).getValue();
+					if (typeData.equals("column")) {
+						try {
+							concept+= TMFDtabla.getValueAt(i,Integer.parseInt(value));
+						}
+						catch(NumberFormatException NFEe) {
+							
+						}
+					} 
+					else if (typeData.equals("connector")) {
+						concept+=value;
+						lenghtFinalConnector=value.length();
+					}
+				}
+			}
+		}
+		
+		if (avoidFinalConnector) {
+			concept = concept.substring(0,concept.length()-lenghtFinalConnector);
+		}
+		if (!concept.equals("")) {
+			concept=conceptStart+concept+conceptEnd;
+		}
+		field.setText(concept);
+		pack.addContent(field);
+		
+    	return pack;
+    	
+    }
+	
+    /**
+     * Metodo generico para retornar un <package/> 
+     * validando una condicion especial de una columna
+     */
+     
+    public Element getPackage(Element args) throws VoidPackageException {
+		Iterator it = args.getChildren("arg").iterator();
+		boolean maxmin = true; // Si maxmin es true entonces la condicion es mayor si no es menor
+		double validValue = 0;
+		int column = 0;
+		while (it.hasNext()) { 
+			Element arg = (Element) it.next();
+			if ("validMaxValue".equals(arg.getAttributeValue("attribute"))) {
+				maxmin = true;
+				column = Integer.parseInt(arg.getValue());
+			}
+			else if ("validMinValue".equals(arg.getAttributeValue("attribute"))) {
+				maxmin = false;
+				column = Integer.parseInt(arg.getValue());
+			}
+			else if ("validValue".equals(arg.getAttributeValue("attribute"))) {
+				validValue = Double.parseDouble(arg.getValue());
+			}
+		}
+		Element pack = TMFDtabla.getPackage(maxmin,column,validValue);
+		if (pack.getChildren().size() == 0 && !returnNullValue) {
+			throw new VoidPackageException("Tabla Data");
+		}
+		return pack;
+    } 
+    
 	/**
 	 * Metodo generico para retornar un <package/>
 	 * 
