@@ -13,10 +13,10 @@ public class NumberToLetterConversor {
 			{" DIECI", " VEINTI", " TREINTA", " CUARENTA", " CINCUENTA"," SESENTA", " SETENTA", " OCHENTA", " NOVENTA"},
 			{"CIENTO ", "DOSCIENTOS ", "TRESCIENTOS ", "CUATROCIENTOS ","QUINIENTOS ", "SEISCIENTOS ", "SETECIENTOS ", "OCHOCIENTOS ","NOVECIENTOS "}};
     
-	private static String notation = " PESOS M/L";
+	private static String notation = "";
 
 	public synchronized static String letters(String numberValue, String _notation) {
-        if (_notation!=null) { notation = _notation; }
+        notation = _notation!=null? _notation : " PESOS M/L";
 		StringTokenizer stk = new StringTokenizer(process(numberValue));
 		String lettersValue = "";
 		String tmp = "";

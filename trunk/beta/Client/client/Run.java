@@ -6,14 +6,15 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import bsh.Interpreter;
 import client.gui.components.MainWindow;
 import client.gui.forms.Connection;
+import client.gui.forms.FirstDialog;
 import client.misc.ClientConst;
 import client.misc.settings.ConfigFile;
 import client.misc.settings.ConfigFileNotLoadException;
-import client.gui.forms.FirstDialog;
 
 import common.comunications.SocketConnector;
 import common.misc.language.Language;
@@ -47,6 +48,7 @@ public class Run {
 	public static void main(String[] args) {
 
         try {
+        	UIManager.setLookAndFeel(new MetalLookAndFeel());
         	
             Font f = new Font("Tahoma", Font.PLAIN, 12);
             UIManager.put("Menu.font",			f);
