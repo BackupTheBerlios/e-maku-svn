@@ -1,5 +1,5 @@
 <emaku_template type="PLAIN">
-		<settings width="80" height="64" />
+		<settings width="80" height="30" />
 		<metadata>
 				<scp row="1" col="1">ESC</scp>
 				<scp row="1" col="2">C</scp>
@@ -44,9 +44,9 @@
 			<field row="0" col="0"/>
 			<field row="7" col="1" type="STRING" />
 			<field row="0" col="0"/>
+			<field row="8" col="1" type="STRINGCONCAT"/>
 			<field row="0" col="0"/>
-			<field row="0" col="0"/>
-			<field row="8" col="1" type="STRING" />
+			<field row="8" col="1" link="1" type="STRINGCONCAT" char=","/>
 		</package>
 		<package>
 			<field row="3" col="61" type="STRING" />
@@ -73,4 +73,35 @@
 			<field row="16" col="57" type="STRING"/>
 			<field row="16" col="72" type="STRING"/>
 		</package>
+		<subtemplate>
+			<metadata>
+				<scp row="1" col="1">ESC</scp>
+				<scp row="1" col="2">C</scp>
+				<scp row="1" col="3">29</scp>
+				<scp row="1" col="5">ETB</scp>
+				<scp row="29" col="1">FF</scp>
+				<scp row="29" col="2">EOT</scp>
+			</metadata>
+			<package>
+				<subpackage rowInit="2">
+					<field col="1" type="STRING" />
+					<field col="16" width="14" type="NUMERIC" mask="##,###,###,###" />
+					<field col="33" width="14" type="NUMERIC" mask="##,###,###,###" />
+				</subpackage>
+			</package>
+			<package>
+				<subpackage rowInit="last">
+					<field col="1" type="STRING" />
+					<field col="16" width="14" type="NUMERIC" mask="##,###,###,###" />
+					<field col="33" width="14" type="NUMERIC" mask="##,###,###,###" />
+				</subpackage>
+			</package>
+			<package>
+				<subpackage rowInit="last">
+					<field col="1" type="STRING" />
+					<field col="16" width="14" type="NUMERIC" mask="##,###,###,###" />
+					<field col="33" width="14" type="NUMERIC" mask="##,###,###,###" />
+				</subpackage>
+			</package>
+		</subtemplate>
 </emaku_template>

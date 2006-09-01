@@ -1327,7 +1327,6 @@ public class GenericForm extends JInternalFrame{
 			else if ("beanshell".equals(elm.getAttributeValue("attribute"))) {
 				String formula = elm.getValue();
     			String script = parseFormula(formula);
-    			System.out.println("Formula final " + script);
     			try {
 					Object result = eval(script);
 					Element field = new Element("field");
@@ -1366,7 +1365,7 @@ public class GenericForm extends JInternalFrame{
 						formulaFinal += getExteralValues(acumText);
 					}
 					else {
-						formulaFinal += acumText;
+						formulaFinal += formulaFinal.endsWith("\"") ? acumText : "0";
 					}
 				}
 				formulaFinal += formula.substring(j, j + 1);

@@ -692,7 +692,6 @@ public class GenericData extends JPanel implements DateListener,
 					StringTokenizer stk = new StringTokenizer(arg.getValue(),":");
 					double maximo = formulaHandler(stk.nextToken());
 					double checkValue = formulaHandler(stk.nextToken());
-					System.out.println("comparando maximo: "+maximo+" checkvalue: "+checkValue);
 					if (maximo < checkValue) {
 						error=true;
 					}

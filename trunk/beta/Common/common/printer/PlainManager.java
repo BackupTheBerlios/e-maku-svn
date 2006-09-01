@@ -16,7 +16,8 @@ import common.misc.text.NumberToLetterConversor;
 public class PlainManager extends AbstractManager {
 	
 	private TextGenerator textGenerator = new TextGenerator();
-	
+	private HashMap<Integer,String[]> concatData = new HashMap<Integer, String[]>(); 
+
 	public PlainManager(Element rootTemplate,Element rootTransact) {
 		try {
 			Calendar calendar = Calendar.getInstance();
@@ -39,6 +40,7 @@ public class PlainManager extends AbstractManager {
 			long end = calendar.getTimeInMillis();
 			
 			super.in = textGenerator.getStream();
+			sussceful = true;
 			System.out.println("Generador en " + (end-init) + " milisegundos ");
 			
 		}
@@ -133,7 +135,7 @@ public class PlainManager extends AbstractManager {
 						addValue(elmt.getValue(),AttCols.get(i));
 						i++;
 					}
-					rowInit++;	
+					rowInit++;
 				}
 			}
 			else {
@@ -147,7 +149,6 @@ public class PlainManager extends AbstractManager {
 					attribs.put(attribute.getName(),attribute);
 				}
 				addValue(el_transaction.getValue(),attribs);
-
 			}
 		}
 	}
@@ -170,6 +171,21 @@ public class PlainManager extends AbstractManager {
 			textGenerator.addString(value,row,col,null);*/
 			if (!"".equals(value.trim())) {
 				textGenerator.addString(value,row,col,null);
+			}
+		}
+		else if ("STRINGCONCAT".equals(type)) {
+			if (concatData.containsKey(row)) {
+				String[] acumString = concatData.get(row);
+				if (acumString[0].equals(attribs.get("link").getValue())) {
+					String addVal = attribs.get("char").getValue()+value;
+					textGenerator.addString(addVal,row,acumString[1].length()+2,null);
+					acumString[1] +=  addVal;
+					concatData.put(row,acumString);
+				}
+			}
+			else {
+				textGenerator.addString(value,row,col,null);
+				concatData.put(row, new String[]{String.valueOf(col),value});
 			}
 		}
 		else if ("NUMERIC".equals(type)) {

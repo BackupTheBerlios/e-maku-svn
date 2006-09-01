@@ -323,7 +323,9 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 							System.out.println("================================");
 							System.out.println(print.toString());
 							System.out.println("================================");
-							new PrintManager(ImpresionType.PLAIN,print.getStream(),true);
+							if (print.isSusseful()) {
+								new PrintManager(ImpresionType.PLAIN,print.getStream(),true);
+							}
 						}
 						else {
 							JOptionPane.showInternalMessageDialog(GFforma,"NO SE ENCONTRO LA PLANTILLA DE IMPRESION");
