@@ -62,9 +62,7 @@ public class ConfigFile {
         try {
             builder = new SAXBuilder(false);
             
-            System.out.println("INFO: Config -> "+ServerConst.CONF+
-                    ServerConst.SEPARATOR+
-                    "server.conf");
+            System.out.println("INFO: Config -> "+emakuConfigFile);
             
             doc = builder.build(emakuConfigFile);
             
@@ -171,16 +169,13 @@ public class ConfigFile {
     	
 	    String os = System.getProperty("os.name");
 
-	    if (os.startsWith("Windows")) {
-	    	    System.out.println("Abriendo dialogo...");
-	    		ConfigDialog newConfigDialog = new ConfigDialog(new JFrame());
+	    if (os.startsWith("Windows")) {	    		
+	    	    ConfigDialog newConfigDialog = new ConfigDialog(new JFrame());
 	    		newConfigDialog.pack();
 	    		newConfigDialog.setLocation(
 	                    (ServerConst.MAX_WIN_SIZE_WIDTH / 2) - newConfigDialog.getWidth() / 2,
 	                    (ServerConst.MAX_WIN_SIZE_HEIGHT / 2) - newConfigDialog.getHeight() / 2);
 	    		newConfigDialog.setVisible(true);
-	    		
-	    	    System.out.println("Keep going...");
 	    		
 	    		lang       = newConfigDialog.getLanguage();
 	    		clientPort = newConfigDialog.getClientPort();

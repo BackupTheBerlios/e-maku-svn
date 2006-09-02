@@ -28,7 +28,7 @@ import javax.swing.ListCellRenderer;
 
 
 /**
- * FirstDialog.java Creado el 04-ago-2004
+ * ConfigDialog.java Creado el 04-ago-2004
  * 
  * Este archivo es parte del cliente E-Maku <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
@@ -132,7 +132,7 @@ public class ConfigDialog extends JDialog {
         JPanel JPPortForAdmins = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPPortForAdmins.add(JLPortForAdmins);
         
-        JLabel JLMaxClients = new JLabel("Max Numero de Clientes: ");
+        JLabel JLMaxClients = new JLabel("Max Número de Clientes: ");
         JPanel JPMaxClients = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPMaxClients.add(JLMaxClients);        
         
@@ -363,30 +363,59 @@ public class ConfigDialog extends JDialog {
     	lang = JCBLang.getSelectedItem().toString();
 
     	clientPort = JTPortForClients.getText();
-    	if (!isNumber(clientPort)) {
-    		JOptionPane.showMessageDialog(this,"El puerto del cliente debe ser de tipo numerico!","Error!",
-    				JOptionPane.ERROR_MESSAGE);
-    		return false;
-    	}
+    	
+    	if (clientPort.length() > 0) {
+
+    		if (!isNumber(clientPort)) {
+    			JOptionPane.showMessageDialog(this,"El puerto del cliente debe ser de tipo numérico!","Error!",
+    					JOptionPane.ERROR_MESSAGE);
+    			return false;
+    		}
+
+    	} else {
+                 clientPort = "9117";
+    	}    	
+    	
     	
     	adminPort = JTPortForAdmin.getText();
-    	if (!isNumber(adminPort)) {
-    		JOptionPane.showMessageDialog(this,"El puerto del admin debe ser de tipo numerico!","Error!",
-    				JOptionPane.ERROR_MESSAGE);
-    		return false;
+    	
+    	if (adminPort.length() > 0) {	
+    		if (!isNumber(adminPort)) {
+    			JOptionPane.showMessageDialog(this,"El puerto del admin debe ser de tipo numérico!","Error!",
+    					JOptionPane.ERROR_MESSAGE);
+    			return false;
+    		}
+    	} else {
+                adminPort = "28124";
     	}
-
+    	
     	maxClients = JTMaxClients.getText();
 
-    	if (!isNumber(maxClients)) {
-    		JOptionPane.showMessageDialog(this,"El numero maximo de clientes debe ser de tipo numerico!","Error!",
-    				JOptionPane.ERROR_MESSAGE);
-    		return false;
+    	if (maxClients.length() > 0) {
+    		if (!isNumber(maxClients)) {
+    			JOptionPane.showMessageDialog(this,"El número máximo de clientes debe ser de tipo numérico!","Error!",
+    					JOptionPane.ERROR_MESSAGE);
+    			return false;
+    		}
+    	} else {
+                maxClients = "500";           
     	}
     	
     	logType = JCBLogs.getSelectedItem().toString();
     	
     	company = JTCompany.getText();
+    	
+    	if (company.length() > 0) {
+    		if (company.indexOf(" ") != -1) {
+    			JOptionPane.showMessageDialog(this,"El nombre de la empresa no puede incluir espacios","Error!",
+    					JOptionPane.ERROR_MESSAGE);
+    			return false;
+    		}
+    	} else {                           
+			    JOptionPane.showMessageDialog(this,"El campo del nombre de la empresa se encuentra vacio!","Error!",
+				  	    JOptionPane.ERROR_MESSAGE);
+			    return false;
+    	}  	
     	
     	String dbEngine = JTDriver.getSelectedItem().toString();
     	
@@ -394,7 +423,7 @@ public class ConfigDialog extends JDialog {
     	
     	if (dbEngine.equals("PostgreSQL")) {
     	    jdbcDriver = "org.postgresql.Driver";
-    	    urlEngine = "postgres";
+    	    urlEngine = "postgresql";
     	} else if (dbEngine.equals("Mysql")) {
     		     jdbcDriver = "com.mysql.jdbc.Driver";
     		     urlEngine = "mysql";
@@ -403,17 +432,21 @@ public class ConfigDialog extends JDialog {
     	String server = JTUrl.getText();
 
     	if (server.length()==0) {
-    		JOptionPane.showMessageDialog(this,"Ingrese el nombre o la direccion ip del servidor de bases de datos","Error!",
+    		JOptionPane.showMessageDialog(this,"Ingrese el nombre o la dirección ip del servidor de bases de datos","Error!",
     				JOptionPane.ERROR_MESSAGE);
     		return false;
     	}
     	
     	String enginePort = JTDBPort.getText();
 
-    	if (!isNumber(enginePort)) {
-    		JOptionPane.showMessageDialog(this,"El puerto del servidor de bases de datos debe ser numerico!","Error!",
-    				JOptionPane.ERROR_MESSAGE);    	
-    		return false;    	
+    	if (enginePort.length() > 0) {
+    	    if (!isNumber(enginePort)) {
+    		     JOptionPane.showMessageDialog(this,"El puerto del servidor de bases de datos debe ser numérico!","Error!",
+    			   	         JOptionPane.ERROR_MESSAGE);    	
+    		     return false;    	
+    	     }
+    	}else {
+                enginePort = "5432";           
     	}
     	
         url = "jdbc:" + urlEngine + "://" + server + ":" + enginePort + "/" + company;
