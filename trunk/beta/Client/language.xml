@@ -4232,4 +4232,123 @@
     <es_ES></es_ES>
     <en_US>Balance</en_US>
   </sentence>
+  <sentence>
+    <key>TIP-NPEDIDO</key>
+    <es_CO>Nuevo Pedido</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Request</en_US>
+  </sentence>
+  <sentence>
+    <key>TIP-NCOTIZACION</key>
+    <es_CO>Nueva Cotización</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Quotation</en_US>
+  </sentence>
+  <sentence>
+    <key>TIP-NFCONTADO</key>
+    <es_CO>Nueva Factura de Contado</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Invoice</en_US>
+  </sentence>
+  <sentence>
+    <key>TIP-NFCREDITO</key>
+    <es_CO>Nueva Factura de Credito</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Credit Invoice</en_US>
+  </sentence>
+  <sentence>
+    <key>TIP-NREMISION</key>
+    <es_CO>Nueva Remisión</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Remission</en_US>
+  </sentence>
+  <sentence>
+    <key>TIP-NGUIA</key>
+    <es_CO>Nueva Guia</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Guide</en_US>
+  </sentence>
+  <sentence>
+    <key>TIP-NDVENTA</key>
+    <es_CO>Nueva Devolución en Ventas</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Return in sales</en_US>
+  </sentence>
+  <sentence>
+    <key>TIP-NORDEN</key>
+    <es_CO>Nueva Orden de Compra</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Buy Order</en_US>
+  </sentence>
+  <sentence>
+    <key>TIP-NENTRADA</key>
+    <es_CO>Nueva Entrada a Almacen</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Store in by</en_US>
+  </sentence>
+  <sentence>
+    <key>TIP-NDCOMPRAS</key>
+    <es_CO>Nueva Devolución en Compras</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Return in Purchases</en_US>
+  </sentence>
+  <sentence>
+    <key>TIP-NCARTERA</key>
+    <es_CO>Nuevo Abono a Cartera</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Entrance ...</en_US>
+  </sentence>
+  <sentence>
+    <key>TIP-NPAGOS</key>
+    <es_CO>Nuevo Abono a Proveedores</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Entrance Provider</en_US>
+  </sentence>
+  <sentence>
+    <key>TIP-NCINGRESO</key>
+    <es_CO>Nuevo Comprobante de Ingreso</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Entrance ...</en_US>
+  </sentence>
+  <sentence>
+    <key>TIP-NCEGRESO</key>
+    <es_CO>Nuevo Comprobante de Egreso</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Entrance ...</en_US>
+  </sentence>
+  <sentence>
+    <key>TIP-NCCONTABILIDAD</key>
+    <es_CO>Nuevo Comprobante de Contabilidad</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Bookkeeping Note</en_US>
+  </sentence>
+  <sentence>
+    <key>TIP-NTERCERO</key>
+    <es_CO>Nuevo Tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Third</en_US>
+  </sentence>
+  <sentence>
+    <key>TIP-NPRODUCTO</key>
+    <es_CO>Nuevo Producto</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Product</en_US>
+  </sentence>
 </language>  
