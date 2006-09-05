@@ -158,6 +158,11 @@
         <en_US>Document not found, can not be annulled</en_US>
     </sentence>
     <sentence>
+        <key errorCode="116">ERR_ANNUL_RF_DOCUMENT_NOT_FOUND</key>
+        <es_CO>El documento referencia al documento a anular no existe</es_CO>
+        <en_US>Document reference not found, can not be annulled</en_US>
+    </sentence>
+    <sentence>
         <key errorCode="117">ERR_RS</key>
         <es_CO>Inconsistencia en el resultado de la consulta</es_CO>
         <en_US>Invalid resultset</en_US>

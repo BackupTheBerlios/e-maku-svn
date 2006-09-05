@@ -18,7 +18,7 @@ public class AnnulDocumentException extends Exception {
     }
 
     public String getMessage() {
-        return Language.getWord("ERR_ANNUL_DOC0") + 
+        return Language.getWord("ERR_ANNUL_DOC0") +" "+ 
         		this.tipoDocumento+" "+
         		this.numero+
         		Language.getWord("ERR_ANNUL_DOC1");

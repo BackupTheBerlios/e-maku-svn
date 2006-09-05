@@ -68,6 +68,7 @@ public class LNDocuments {
     
     private static String idDocument;
     private static String linkDocument;
+    private static String rfDocument;
     private static String consecutive;
     private static boolean cash;
     
@@ -252,31 +253,45 @@ public class LNDocuments {
     	                String primaryKey = getPrimaryKey(numero);
 
                     if (primaryKey==null) {
-                    	
                     		undoTransaction(Language.getWord("ERR_ANNUL_DOCUMENT_NOT_FOUND"));
                     		break;
                     }
-    	                /*
-    	                 * Se verifica que el documento no haya sido anulado anteriormente
-    	                 */
-    	                boolean annul = true;
-    	                RunQuery RQkey = new RunQuery(bd,"SEL0129",new String[]{primaryKey});
-        	            ResultSet RSdatos = RQkey.ejecutarSELECT();
-        	            while (RSdatos.next()) {
-        	                annul=RSdatos.getBoolean(1);
-        	            }
-    	                RSdatos.close();
-    	                RQkey.closeStatement();
     	                
         	            
         	            /*
         	             * Si el documento ya fue anulado entonces se aborta el proceso de 
         	             * anulacion
         	             */
-        	            if (!annul) {
+        	            if (!isAnnullDocument(primaryKey)) {
         	            	throw new AnnulDocumentException(idDocument,numero);
         	            }
         	            
+        	            /*
+        	             * Se verifica si se debe anular documentos de referencias, si es asi, se vuelve
+        	             * a hacer las verificaciones anteriores para este
+        	             */
+        	            
+        	            if (!rfDocument.equals("")) {
+        	            	RunQuery RQrfkey = new RunQuery(bd,"SEL0304",new String[]{primaryKey});
+            	            ResultSet RSrfkey = RQrfkey.ejecutarSELECT();
+        	            	String rfKey = "";
+            	            while (RSrfkey.next()) {
+            	                rfKey=RSrfkey.getString(1);
+            	            }
+            	            if (rfKey.equals("")) {
+                        		undoTransaction(Language.getWord("ERR_ANNUL_RF_DOCUMENT_NOT_FOUND"));
+                        		break;
+            	            }
+            	            
+            	            String tmpKey = LNGtransaccion.getKey(0);
+            	            LNGtransaccion.removeKey("ndocumento");
+        	                Element documentPack = new Element("package");
+                            documentPack.addContent(new Element("field").setText(rfKey));
+                            getTransaction(LNGtransaccion,"UPD0022",documentPack);
+            	            LNGtransaccion.setKey("ndocumento",tmpKey);
+            	            
+
+        	            }
                         /*
                          * Se genera un paquete para hacer una transaccion, en este caso se modificara
                          * el estado del documento campo estado igual a false, significa documento
@@ -543,6 +558,25 @@ public class LNDocuments {
 
     }
 
+    /**
+     * Este metodo se encarga de verifica si un documento ha sido anulado anteriormente
+     * @throws SQLBadArgumentsException 
+     * @throws SQLNotFoundException 
+     * @throws SQLException 
+     */
+
+    private static boolean isAnnullDocument(String keyDocument) 
+    throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
+        boolean annul = true;
+        RunQuery RQkey = new RunQuery(bd,"SEL0129",new String[]{keyDocument});
+        ResultSet RSdatos = RQkey.ejecutarSELECT();
+        while (RSdatos.next()) {
+            annul=RSdatos.getBoolean(1);
+        }
+        RSdatos.close();
+        RQkey.closeStatement();
+        return annul;
+    }
     
     private static String getPrimaryKey(String numero) throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
         String primaryKey=null;
@@ -802,6 +836,9 @@ public class LNDocuments {
             // Link document
             else if (subpackage.getAttributeValue("attribute").equals("linkDocument")) {
             	LNDocuments.linkDocument=value;
+            }
+            else if (subpackage.getAttributeValue("attribute").equals("rfDocument")) {
+            	LNDocuments.rfDocument=value;
             }
             // consecutive
             
