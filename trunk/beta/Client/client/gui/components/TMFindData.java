@@ -22,6 +22,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -1568,6 +1569,99 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
             }
         }
         return pack;
+    }
+    @SuppressWarnings("unchecked")
+	public Element getAgrupedPrintPackage(Element arguments) {
+    	
+    	Element pack = new Element("package");
+    	
+		int columnGroup =  Integer.parseInt(arguments.getChild("arg").getValue());
+		Iterator iterator = arguments.getChildren("subarg").iterator();
+		
+		HashMap<String, Vector> tuples = new HashMap<String, Vector>();
+		
+		
+		while (iterator.hasNext()) {
+			
+			Element subarg = (Element) iterator.next();
+			String operation = ((Element)subarg.getChildren().get(0)).getValue();
+			int column = Integer.parseInt(((Element)subarg.getChildren().get(1)).getValue());
+			Object cell = null;
+			HashMap<String, Integer> indexes = new HashMap<String, Integer>();
+			
+			for (int j=0; j < rows ; j++) {
+			
+				cell = VdataRows.get(j).get(columnGroup);
+				if ( cell==null || "".equals(cell)) { break; }
+				if (!indexes.containsKey(cell)) {
+					indexes.put(cell.toString(),1);
+				}
+				else {
+					int index = indexes.get(cell)+1;
+					indexes.put(cell.toString(),index);
+				}
+				if (!tuples.containsKey(cell)) {
+					Vector rowData = (Vector) VdataRows.get(j).clone();
+					for (int i=0 ; i < ATFDargs.length ; i++) {
+						if ((ATFDargs[i].getType().equals("INT") || 
+							ATFDargs[i].getType().equals("INTEGER") ||
+							ATFDargs[i].getType().equals("DECIMAL"))&&
+							i!=column) {
+							rowData.set(i,0);
+						}
+					}
+					tuples.put(cell.toString(),rowData);
+				}
+				else {
+					Vector rowCalculate = tuples.get(cell);
+					Object tableValue = VdataRows.get(j).get(column);
+					if (tableValue!=null) {
+						Object currentValue = rowCalculate.get(column);
+						Double newValue = null;
+						Double val1 = Double.valueOf(tableValue.toString());
+						Double val2 = Double.valueOf(currentValue.toString());
+						if ("SUM".equals(operation)) {
+							newValue = val1 + val2;
+						}
+						else if ("AVG".equals(operation)) {
+							newValue =  val1 + val2;
+						}
+						else if ("MAX".equals(operation)) {
+							newValue = 	val1 > val2 ? val1 : val2;
+						}
+						else if ("MIN".equals(operation)) {
+							newValue = 	val1 > val2 ? val1 : val2;
+						}
+						if (newValue!=null) {
+							rowCalculate.set(column,newValue);
+						}
+					}
+				}
+			}
+			if ("AVG".equals(operation)) {
+				Set<String> keys = tuples.keySet();
+				for (String key : keys) {
+					Double dCurrent = Double.valueOf(tuples.get(key).get(column).toString());
+					dCurrent = dCurrent / indexes.get(key);
+					tuples.get(key).set(column,dCurrent);
+				}
+			}
+		}
+		
+		Set<String> keys = tuples.keySet();
+		for (String key : keys) {
+			Element subpackage = new Element("subpackage");
+			Vector vector = tuples.get(key);
+			for (int i=0; i< ATFDargs.length ; i++) {
+				if (ATFDargs[i].isPrintable()) {
+					Element field = new Element("field");
+					field.setText(vector.get(i).toString());
+					subpackage.addContent(field);
+				}
+			}
+			pack.addContent(subpackage);
+		}
+		return pack;
     }
     
     public void setQuery(Document doc) {

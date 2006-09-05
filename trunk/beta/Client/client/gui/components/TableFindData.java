@@ -660,6 +660,13 @@ public class TableFindData extends JPanel implements AnswerListener,
 		return pack;
 	}
 
+	public Element getAgrupedPrintPackage(Element args) throws VoidPackageException {
+		Element _package = TMFDtabla.getAgrupedPrintPackage(args);
+		if (_package.getChildren().size() == 0 && !returnNullValue) {
+			throw new VoidPackageException("Tabla Data");
+		}
+		return _package;
+	}
 	/**
 	 * Metodo utilizado solo para la forma de creacion de Grupos de Asientos
 	 * 
