@@ -194,7 +194,8 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 					}
         });
 	}
-    public void setEnabled(String name, boolean bool) {
+	
+	public void setEnabled(String name, boolean bool) {
         if (Hbuttons.containsKey(name)) {
         	/* Comentada estas lineas funcionaban para el manejo del foco
         	 * en las subformas, ya que habia inconvenientes con el mismo
@@ -529,7 +530,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
     public synchronized String getIdTransaction() {
         return idTransaction;
     }
-    
+        
     public void setEnabled(Element args) {
     	Iterator it = args.getChildren().iterator();
     	String name = null;

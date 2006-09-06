@@ -468,68 +468,61 @@ public class GenericData extends JPanel implements DateListener,
 							 * exportar(XMLText); } Comentado por que se lo
 							 * envio al primer focusLost de XMLTextField
 							 */
-							/*class FocusThread extends Thread {
-								
-								public void run() {*/
-									
-									XMLTextField XMLRefText = (XMLTextField) e.getSource();
-									
-		
-									if (sqlCode.size() > 0 || sqlLocal != null) {
-										/*
-										 * El primer elemento del vector sql siempre
-										 * sera la consulta que almacenara la
-										 * informacion del objeto local
-										 */
-										if (search) {
-											String[] impValues = null;
-											if (sqlLocal != null) {
-												int argumentos = XMLRefText
-														.getImportValue().length
-														+ XMLRefText.getConstantSize();
-												impValues = new String[argumentos];
-												int i = 0;
-												for (; i < XMLRefText.getConstantSize(); i++) {
-													impValues[i] = XMLRefText
-															.getConstantValue(i);
-												}
-												for (; i < XMLRefText.getImportValue().length; i++) {
-													impValues[i] = GFforma
-															.getExteralValuesString(XMLRefText
-																	.getImportValue()[i]);
-												}
-		
-												GFforma.cleanExternalValues();
-												if (!"".equals(XMLRefText.getText())) {
-													new GenericDataFiller(GFforma,
-															namebutton, enablebutton,
-															sqlLocal, impValues,
-															XMLRefText.getText(),
-															VFields).start();
-												}
-		
-											}
-											/*
-											 * Las demas consultas seran para almacenar
-											 * la informacion de los demas objetos que
-											 * lo requieran
-											 */
-											searchOthersSqls(XMLRefText);
-											search = false;
+							
+							XMLTextField XMLRefText = (XMLTextField) e.getSource();
+
+							if (sqlCode.size() > 0 || sqlLocal != null) {
+								/*
+								 * El primer elemento del vector sql siempre
+								 * sera la consulta que almacenara la
+								 * informacion del objeto local
+								 */
+								if (search) {
+									String[] impValues = null;
+									if (sqlLocal != null) {
+										int argumentos = XMLRefText
+												.getImportValue().length
+												+ XMLRefText.getConstantSize();
+										impValues = new String[argumentos];
+										int i = 0;
+										for (; i < XMLRefText.getConstantSize(); i++) {
+											impValues[i] = XMLRefText
+													.getConstantValue(i);
 										}
-									}
-									if (XMLRefText.isSendRecord()) {
-										String value = null;
-										if ("NUMERIC".equals(XMLRefText.getType())) {
-											value = String.valueOf(XMLRefText.getNumberValue());
-										} else {
-											value = XMLRefText.getText();
+										for (; i < XMLRefText.getImportValue().length; i++) {
+											impValues[i] = GFforma
+													.getExteralValuesString(XMLRefText
+															.getImportValue()[i]);
 										}
-										notificando(XMLRefText, value);
+
+										GFforma.cleanExternalValues();
+										if (!"".equals(XMLRefText.getText())) {
+											new GenericDataFiller(GFforma,
+													namebutton, enablebutton,
+													sqlLocal, impValues,
+													XMLRefText.getText(),
+													VFields).start();
+										}
+
 									}
-								/*}
-							};
-							new FocusThread().start();*/
+									/*
+									 * Las demas consultas seran para almacenar
+									 * la informacion de los demas objetos que
+									 * lo requieran
+									 */
+									searchOthersSqls(XMLRefText);
+									search = false;
+								}
+							}
+							if (XMLRefText.isSendRecord()) {
+								String value = null;
+								if ("NUMERIC".equals(XMLRefText.getType())) {
+									value = String.valueOf(XMLRefText.getNumberValue());
+								} else {
+									value = XMLRefText.getText();
+								}
+								notificando(XMLRefText, value);
+							}
 						}
 					});
 				}
