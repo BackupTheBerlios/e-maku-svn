@@ -1074,8 +1074,13 @@ public class GenericData extends JPanel implements DateListener,
 		String formulaFinal = GFforma.parseFormula(formula);
 		if (beanshell) {
 			try {
-				Double val = (Double) GFforma.eval(formulaFinal);
-				return val.doubleValue();
+				Object val = GFforma.eval(formulaFinal);
+				if (val instanceof Double) {
+					return (Double) val;
+				}
+				if (val instanceof Integer) {
+					return new Double((Integer)val);
+				}
 			} catch (EvalError e) {
 				e.printStackTrace();
 			}
