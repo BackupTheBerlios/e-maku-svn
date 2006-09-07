@@ -1,6 +1,7 @@
 
 package server.misc.settings;
 
+import java.awt.Toolkit;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -169,12 +170,16 @@ public class ConfigFile {
     	
 	    String os = System.getProperty("os.name");
 
-	    if (os.startsWith("Windows")) {	    		
+	    if (os.startsWith("Windows")) {
+	    	
+	            final int MAX_WIN_SIZE_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+	            final int MAX_WIN_SIZE_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();    	
+	    	
 	    	    ConfigDialog newConfigDialog = new ConfigDialog(new JFrame());
 	    		newConfigDialog.pack();
 	    		newConfigDialog.setLocation(
-	                    (ServerConst.MAX_WIN_SIZE_WIDTH / 2) - newConfigDialog.getWidth() / 2,
-	                    (ServerConst.MAX_WIN_SIZE_HEIGHT / 2) - newConfigDialog.getHeight() / 2);
+	                    (MAX_WIN_SIZE_WIDTH / 2) - newConfigDialog.getWidth() / 2,
+	                    (MAX_WIN_SIZE_HEIGHT / 2) - newConfigDialog.getHeight() / 2);
 	    		newConfigDialog.setVisible(true);
 	    		
 	    		lang       = newConfigDialog.getLanguage();
