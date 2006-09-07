@@ -1560,6 +1560,10 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
                 		break;
                 	}
             		Element field = new Element("field");
+            		if (ATFDargs[j].getType().equals("DATE")) {
+            			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            			valueAt = sdf.format(valueAt);
+            		}
             		field.setText(valueAt.toString());
             		subpack.addContent(field);
             	}

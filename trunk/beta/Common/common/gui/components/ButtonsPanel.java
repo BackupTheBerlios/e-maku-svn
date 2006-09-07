@@ -393,7 +393,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
     	}
     	else {
     		for (int i = 0; i < pack.size(); i++) {
-                ret.addContent((Element) pack.elementAt(i));
+                ret.addContent((Element) pack.elementAt(i).clone());
             }
     	}
     	

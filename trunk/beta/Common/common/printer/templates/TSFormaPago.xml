@@ -26,34 +26,36 @@
 		</subpackage>
 	</package>
 	<package validate="true">
-		<metadata>
-			<line row="last" col="1" incrementRow="false" length="64" charfill="-" align="horizontal" />
-			<field row="last" col="1" type="STRING">Consignaciones</field>
-			<field row="last" col="13" incrementRow="false" type="STRING">Fecha</field>
-			<field row="last" col="34" incrementRow="false" type="STRING">|</field>
-			<field row="last" col="45" incrementRow="false" type="STRING">Cuenta</field>
-			<field row="last" col="63" incrementRow="false" type="STRING">|</field>
-			<field row="last" col="69" type="STRING">Valor</field>
-			<line row="last" col="1" length="80" charfill="-" align="horizontal" />
-		</metadata>
-		<field col="1" type="STRING" />
-		<field col="37" type="STRING" />
-		<field col="64" width="15" type="NUMERIC" mask="##,###,###,##0.00" />
+		<subpackage rowInit="last">
+			<metadata>
+				<line row="last" col="1" incrementRow="false" length="64" charfill="-" align="horizontal" />
+				<field row="last" col="1" type="STRING">Consignaciones</field>
+				<field row="last" col="13" incrementRow="false" type="STRING">Fecha</field>
+				<field row="last" col="34" incrementRow="false" type="STRING">|</field>
+				<field row="last" col="45" incrementRow="false" type="STRING">Cuenta</field>
+				<field row="last" col="63" incrementRow="false" type="STRING">|</field>
+				<field row="last" col="69" type="STRING">Valor</field>
+				<line row="last" col="1" length="80" charfill="-" align="horizontal" />
+			</metadata>
+			<field col="1" type="STRING" />
+			<field col="36" type="STRING" />
+			<field col="64" width="15" type="NUMERIC" mask="##,###,###,##0.00" />
+		</subpackage>
 	</package>
 	<package validate="true">
-		<metadata>
-			<line row="last" col="1" incrementRow="false" length="72" charfill="-" align="horizontal" />
-			<field row="last" col="1" type="STRING">Cheques</field>
-			<field row="last" col="11" incrementRow="false" type="STRING">Banco</field>
-			<field row="last" col="27" incrementRow="false" type="STRING">|</field>
-			<field row="last" col="35" incrementRow="false" type="STRING">Sucursal</field>
-			<field row="last" col="50" incrementRow="false" type="STRING">|</field>
-			<field row="last" col="54" incrementRow="false" type="STRING">Numero</field>
-			<field row="last" col="63" incrementRow="false" type="STRING">|</field>
-			<field row="last" col="70" type="STRING">Valor</field>
-			<line row="last" col="1" length="80" charfill="-" align="horizontal" />
-		</metadata>
 		<subpackage rowInit="last">
+			<metadata>
+				<line row="last" col="1" incrementRow="false" length="72" charfill="-" align="horizontal" />
+				<field row="last" col="1" type="STRING">Cheques</field>
+				<field row="last" col="11" incrementRow="false" type="STRING">Banco</field>
+				<field row="last" col="27" incrementRow="false" type="STRING">|</field>
+				<field row="last" col="35" incrementRow="false" type="STRING">Sucursal</field>
+				<field row="last" col="50" incrementRow="false" type="STRING">|</field>
+				<field row="last" col="54" incrementRow="false" type="STRING">Numero</field>
+				<field row="last" col="63" incrementRow="false" type="STRING">|</field>
+				<field row="last" col="70" type="STRING">Valor</field>
+				<line row="last" col="1" length="80" charfill="-" align="horizontal" />
+			</metadata>
 			<field col="1" type="STRING" />
 			<field col="28" type="STRING" />
 			<field col="52" type="STRING" />

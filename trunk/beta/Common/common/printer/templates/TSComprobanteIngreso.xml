@@ -41,6 +41,14 @@
 				<field row="30" col="50" type="STRING">C.C. o Nit</field>
 		</metadata>
 		<package>
+			<field row="5" col="1" type="STRINGCONCAT" />
+			<field row="0" col="0"/>
+			<field row="0" col="0"/>
+			<field row="0" col="0"/>
+			<field row="0" col="0"/>
+			<field row="5" col="1" link="1" type="STRINGCONCAT" char="- "/>
+		</package>
+		<package>
 			<field row="0" col="0"/>
 			<field row="7" col="1" type="STRING" />
 			<field row="0" col="0"/>
