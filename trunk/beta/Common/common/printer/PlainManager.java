@@ -17,6 +17,7 @@ public class PlainManager extends AbstractManager {
 	
 	private TextGenerator textGenerator = new TextGenerator();
 	private HashMap<Integer,String[]> concatData = new HashMap<Integer, String[]>(); 
+	private int currentRow = 1;
 	
 	public PlainManager(Element rootTemplate,Element rootTransact) {
 		try {
@@ -32,18 +33,29 @@ public class PlainManager extends AbstractManager {
 			
 			Iterator itTemplate = rootTemplate.getChildren("package").iterator();
 			Iterator itTransact = rootTransact.getChildren("package").iterator();
-			
+			int countPacks = 0;
 			while(itTemplate.hasNext() && itTransact.hasNext()) {
-				processElement((Element)itTemplate.next(),(Element)itTransact.next());
+				Element elmTemplate = (Element)itTemplate.next();
+				Element elmTransact = (Element)itTransact.next();
+				Attribute attr = elmTemplate.getAttribute("validate");
+				countPacks += elmTransact.getChildren().size();
+				boolean validate = attr != null ? attr.getBooleanValue() : false;
+				if (validate) {
+					if (elmTransact.getChildren().size() > 0) {
+						processElement(elmTemplate,elmTransact);
+					}
+				}
+				else {
+					processElement(elmTemplate,elmTransact);
+				}
 			}
-			calendar = Calendar.getInstance();
-			long end = calendar.getTimeInMillis();
-			
-			super.in = textGenerator.getStream();
-			if ((!itTemplate.hasNext()) && (!itTransact.hasNext())) {
+			if ( countPacks > 0 ) {
+				super.in = textGenerator.getStream();
 				sussceful = true;
+				calendar = Calendar.getInstance();
+				long end = calendar.getTimeInMillis();
+				System.out.println("Generador en " + (end-init) + " milisegundos ");
 			}
-			System.out.println("Generador en " + (end-init) + " milisegundos ");
 		}
 		catch (DataConversionException e) {
 			e.printStackTrace();
@@ -64,8 +76,17 @@ public class PlainManager extends AbstractManager {
 				Attribute attribute = (Attribute) itAttribs.next();
 				attribs.put(attribute.getName(),attribute);
 			}
-			
-			int row =  attribs.get("row").getIntValue();
+			Attribute attr = attribs.get("row");
+			int row = -1;
+			boolean isValidate = false;
+			boolean passed = false;
+			if (attr.getValue().equals("last")) {
+				row = currentRow;
+				isValidate = true;
+			}
+			else {
+				row = attr.getIntValue();
+			}
 			int col =  attribs.get("col").getIntValue();
 			
 			if ("line".equals(name)) {
@@ -80,16 +101,20 @@ public class PlainManager extends AbstractManager {
 						textGenerator.addString(charfill,row++,col,null);
 					}
 				}
+				passed = true;
 			}
 			else if ("field".equals(name)) {
 				String value = e.getTextTrim();
 				value = " ".equals(value) || "".equals(value) ? "  " : value;
 				textGenerator.addString(value,row,col,null);
+				passed = true;
+
 			}
 			else if ("abstract".equals(name)) {
 				String  value = e.getText();
 				int height = attribs.get("height").getIntValue();
 				textGenerator.addTextArea(value,row,col,null,height,false);
+				passed = true;
 			}
 			else if ("scp".equals(name)) {
 				String  value = e.getValue();
@@ -98,6 +123,13 @@ public class PlainManager extends AbstractManager {
 				scpCode[1] = col;
 				scpCode[2] = textGenerator.Convert(value);
 				textGenerator.addScpCode(scpCode);
+				passed = true;
+			}
+			if (isValidate && passed) {
+				Attribute incrementRow = attribs.get("incrementRow");
+				if (incrementRow== null || incrementRow.getBooleanValue()) {
+					currentRow++;
+				}
 			}
 		}
 	}
@@ -110,9 +142,25 @@ public class PlainManager extends AbstractManager {
 			
 			Element el_template = (Element)it_template.next();
 			if (el_template.getName().equals("subpackage")) {
-				int rowInit = el_template.getAttribute("rowInit").getIntValue();
-				Iterator it = el_template.getChildren().iterator();
+				Attribute attr = el_template.getAttribute("rowInit");
+				int rowInit = -1;
+				boolean isValidate = false;
+				if (attr.getValue().equals("last")) {
+					rowInit = currentRow;
+					isValidate = true;
+				}
+				else {
+					rowInit = attr.getIntValue();
+				}
 				
+				Iterator it = el_template.getChildren("metadata").iterator();
+				while (it.hasNext()) { 
+					Element element = (Element) it.next();
+					processMetadata(element);
+					rowInit = currentRow;
+				}
+				
+				it = el_template.getChildren("field").iterator();
 				ArrayList<HashMap<String,Attribute>> AttCols = new ArrayList<HashMap<String,Attribute>>(); 
 				while (it.hasNext()) {
 					HashMap<String,Attribute> attribs = new HashMap<String,Attribute>();
@@ -137,6 +185,9 @@ public class PlainManager extends AbstractManager {
 						i++;
 					}
 					rowInit++;
+				}
+				if (isValidate) {
+					currentRow = rowInit + 1;
 				}
 			}
 			else {

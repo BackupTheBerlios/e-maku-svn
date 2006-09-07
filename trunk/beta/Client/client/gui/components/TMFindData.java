@@ -1555,7 +1555,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
             for (int j=0;j<getColumnCount();j++) {
             	Object valueAt = getValueAt(i,j);
             	if (ATFDargs[j].isPrintable()) {
-            		if (valueAt.toString().equals("")) {
+            		if (valueAt==null || "".equals(valueAt.toString())) {
                 		i=rows;
                 		break;
                 	}

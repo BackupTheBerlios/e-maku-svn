@@ -73,5 +73,4 @@
 			<field row="17" col="56" type="STRING"/>
 			<field row="17" col="72" type="STRING"/>
 		</package>
-		<subtemplate/>
 </emaku_template>
