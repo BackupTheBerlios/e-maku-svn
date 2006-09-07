@@ -46,7 +46,8 @@ import org.jdom.input.SAXBuilder;
 
 public class CacheEnlace {
 
-    private static Hashtable <String,String>Hinstrucciones = new Hashtable<String,String>();
+    private static Hashtable <String,String>HcompanyData = new Hashtable<String,String>();
+	private static Hashtable <String,String>Hinstrucciones = new Hashtable<String,String>();
     private static Hashtable <String,Boolean>Htransacciones = new Hashtable<String,Boolean>();
     private static Hashtable <String,Boolean>Hpermisos      = new Hashtable<String,Boolean>();
     private static Hashtable <String,ClassLogicDriver>Hlogica_drivers = new Hashtable<String,ClassLogicDriver>();
@@ -98,7 +99,7 @@ public class CacheEnlace {
                                      "sentencia_sql ORDER BY codigo desc");
                 
                 /*
-                 * Se almacena la informaci�n en la hashtable Hinstrucciones 
+                 * Se almacena la información en la hashtable Hinstrucciones 
                  */
                 
                 while(rs.next()){
@@ -149,7 +150,7 @@ public class CacheEnlace {
                 					 "SEL0026"));
 
                 /*
-                 * Se almacena la informaci�n en la tabla hashtable Hlogica_drivers
+                 * Se almacena la información en la tabla hashtable Hlogica_drivers
                  */
 
                 SAXBuilder builder = new SAXBuilder(false);
@@ -190,6 +191,18 @@ public class CacheEnlace {
                     }
                 }
                 
+                /*
+                 * Esta consulta captura el nombre de la empresa y su Nit
+                 */
+                
+                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SEL0305"));
+
+                while (rs.next()) {                	
+                    HcompanyData.put("K-" + ConfigFile.getDBName(i) + "-company",
+                    		         String.valueOf(rs.getString("nombre")));
+                    HcompanyData.put("K-" + ConfigFile.getDBName(i) + "-companyID",
+                    		         String.valueOf(rs.getString("id_char")));
+                }
                 
                 /*
                  * Esta sentencia consulta la numeracion actual de todos los documentos
@@ -333,6 +346,17 @@ public class CacheEnlace {
     		return "";
     	}
     }
+    
+    /**
+     * Este metodo retorna el nombre o el NIT de una empresa
+     * @param key Codigo de la empresa
+     * @return retorna el nombre o el NIT de una empresa
+     */
+
+    public static String getCompanyData(String key) {
+        return HcompanyData.get(key);
+    }
+    
     
     private static String consecutive(String nombreBD,String value) {
         if (value!=null && !value.equals("")) {

@@ -225,6 +225,14 @@ public class SocketServer {
     public static Hashtable getHchannelclients() {
         return Hchannelclients;
     }
+
+    public static String getCompanyNameKey(SocketChannel sock) {
+        return "K-"+ getBd(sock) + "-company";
+    }
+    
+    public static String getCompanyIDKey(SocketChannel sock) {
+        return "K-"+ getBd(sock) + "-companyID";    
+    }
 }
 
 /**
@@ -328,4 +336,5 @@ class InfoSocket extends Thread {
     public void setBuffTmp(ByteArrayOutputStream buffTmp) {
         this.buffTmp = buffTmp;
     }
+
 }

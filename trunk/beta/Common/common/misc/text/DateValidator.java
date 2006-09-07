@@ -21,6 +21,10 @@
 
 package common.misc.text;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  *
  * @author  felipe
@@ -122,6 +126,15 @@ public class DateValidator {
                 return false;
         else
             return false;
+    }
+
+    
+    public static String getFormattedDate() {
+    	
+    	SimpleDateFormat now = new SimpleDateFormat("E, dd MMM yyyy");
+    	Date date = new Date();
+    	
+    	return now.format(date);
     }
     
 }

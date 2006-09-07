@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.channels.SocketChannel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -28,6 +27,7 @@ import org.jdom.output.XMLOutputter;
 
 import server.comunications.SocketServer;
 import server.control.ReportsStore;
+import server.database.sql.CacheEnlace;
 import server.database.sql.RunQuery;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
@@ -43,6 +43,7 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfWriter;
 import common.comunications.SocketWriter;
 import common.misc.ZipHandler;
+import common.misc.text.DateValidator;
 
 public class MakeReport extends Thread {
 
@@ -98,10 +99,19 @@ public class MakeReport extends Thread {
 				JRResultSetDataSource jrRS = new JRResultSetDataSource(rs);
 				
 				Map <String,String>parameters = new HashMap<String,String>();
-				parameters.put("Title", title);
-				parameters.put("Empresa", SocketServer.getBd(socket));
-				parameters.put("Nit", "");
-				parameters.put("Fecha", new Date().toString());
+				
+				String company = CacheEnlace.getCompanyData(SocketServer.getCompanyNameKey(socket));
+				String idCompany = CacheEnlace.getCompanyData(SocketServer.getCompanyIDKey(socket));
+				
+				if (company == null)
+					company = "Dato no encontrado";
+				
+				if (idCompany == null)
+					idCompany = "Dato no encontrado";
+				
+				parameters.put("Empresa", company);
+				parameters.put("Nit", idCompany);
+				parameters.put("Fecha", DateValidator.getFormattedDate());
 	
 				JRBaseFiller filler = createFiller(ReportsStore.getReportClass(codigo));
 				System.out.println(" * createFiller(jasperReport)");
