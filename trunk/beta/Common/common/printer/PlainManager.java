@@ -17,7 +17,7 @@ public class PlainManager extends AbstractManager {
 	
 	private TextGenerator textGenerator = new TextGenerator();
 	private HashMap<Integer,String[]> concatData = new HashMap<Integer, String[]>(); 
-
+	
 	public PlainManager(Element rootTemplate,Element rootTransact) {
 		try {
 			Calendar calendar = Calendar.getInstance();
@@ -40,9 +40,10 @@ public class PlainManager extends AbstractManager {
 			long end = calendar.getTimeInMillis();
 			
 			super.in = textGenerator.getStream();
-			sussceful = true;
+			if ((!itTemplate.hasNext()) && (!itTransact.hasNext())) {
+				sussceful = true;
+			}
 			System.out.println("Generador en " + (end-init) + " milisegundos ");
-			
 		}
 		catch (DataConversionException e) {
 			e.printStackTrace();

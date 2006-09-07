@@ -80,7 +80,6 @@ public class GenericForm extends JInternalFrame{
     private Dimension size;
     private boolean child;
     private Hashtable <Object,Object>externalValues;
-    private String printerTemplate;
     /*
      * En esta variable se almacena el id de la transaccion que genera la forma,
      * este parametro es recibido por referencia
@@ -467,9 +466,6 @@ public class GenericForm extends JInternalFrame{
                 this.keys.addElement(e.getValue());
             }
             
-            else if (nombre.equals("printerTemplate")) {
-                setPrinterTemplate(e.getValue());
-            }
             /*
              * Si esta etiqueta es encontrada se procede a evaluar que la configuracion local
              * coincida con la parametrizada en el Servidor de Transacciones, si no es asi,
@@ -1434,17 +1430,6 @@ public class GenericForm extends JInternalFrame{
 		return true;
 	}
 
-	public String getPrinterTemplate() {
-		if (child) {
-			return GFforma.getPrinterTemplate();
-		}
-		return printerTemplate;
-	}
-
-	public void setPrinterTemplate(String printerTemplate) {
-		this.printerTemplate = printerTemplate;
-	}
-	
 	public Object eval (String script) throws EvalError {
 		if (child) {
 			return GFforma.eval(script);

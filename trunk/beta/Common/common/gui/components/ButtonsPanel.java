@@ -310,10 +310,11 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 	    			Document doc = new Document();
 	    			doc.setRootElement(new Element("printjob"));
 	    			builTransaction(vector,action,doc.getRootElement());
+	    			String pathTemplate = element.getChildText("printerTemplate");
 	    			try {
 						SAXBuilder sax = new SAXBuilder(false);
 						Document template = null;
-						URL url = this.getClass().getResource(GFforma.getPrinterTemplate());
+						URL url = this.getClass().getResource(pathTemplate);
 						if (url!=null){
 							template = sax.build(url);
 							AbstractManager print = null;
