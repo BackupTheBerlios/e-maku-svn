@@ -3324,7 +3324,7 @@
     <en_US>Annul Entrance...</en_US>
   </sentence>
   <sentence>
-    <key>CCOMPROBANTE-Cartera</key>
+    <key>CCOMPROBANTE-CARTERA</key>
     <es_CO>Consultar Comprobante de Cartera</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
@@ -4350,5 +4350,75 @@
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New Product</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-DVENTAS-NUMERO</key>
+    <es_CO>Reporte de devolución en ventas por numero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Return in Sales by number</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-DVENTAS-TERCERO</key>
+    <es_CO>Reporte de devolución en ventas por tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Return in Sales by third</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-DVENTAS-FECHA-PRODUCTO</key>
+    <es_CO>Reporte de devolución en ventas por fecha y producto</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Return in Sales by date and product</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-DVENTAS-FECHA-TERCERO</key>
+    <es_CO>Reporte de devolución en ventas por fecha y tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Return in Sales by date and third</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-DVENTAS-FECHA-VALOR</key>
+    <es_CO>Reporte de devolución en ventas por fecha y valor</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Return in Sales by date and value</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-DCOMPRAS-NUMERO</key>
+    <es_CO>Reporte de devolución en compras por numero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Return in Purchases by number</en_US>
+    </sentence>
+  <sentence>
+    <key>REPORTE-DCOMPRAS-TERCERO</key>
+    <es_CO>Reporte de devolución en compras por tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Return in Purchases by third</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-DCOMPRAS-FECHA-PRODUCTO</key>
+    <es_CO>Reporte de devolución en compras por fecha y producto</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Return in Purchases by date and product</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-DCOMPRAS-FECHA-TERCERO</key>
+    <es_CO>Reporte de devolución en compras por fecha y tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Return in Purchases by date and third</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-DCOMPRAS-FECHA-VALOR</key>
+    <es_CO>Reporte de devolución en compras por fecha y valor</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Return in Purchases by date and value</en_US>
   </sentence>
 </language>  
