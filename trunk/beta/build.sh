@@ -148,7 +148,11 @@ install_server() {
              cp -rf $ROOT/reports $EMAKU_HOME/
 
              mkdir -p $EMAKU_HOME/conf
-             cp -f $ROOT/conf.unix/server.conf $EMAKU_HOME/conf
+
+             if [ ! -e $EMAKU_HOME/conf/server.conf ] ; then
+               cp -f $ROOT/conf.unix/server.conf $EMAKU_HOME/conf
+             fi
+             
              cp -f $ROOT/conf.unix/wrapper.conf $EMAKU_HOME/conf
 
              ARCH=32
