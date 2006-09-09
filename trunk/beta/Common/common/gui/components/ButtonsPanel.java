@@ -326,7 +326,6 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 							if ("PLAIN".equals(ATType.getValue()) ) {
 								print = new PlainManager();
 								((PlainManager)print).process(rootTemplate,printJob);
-								
 							}
 							if (print.isSusseful()) {
 								System.out.println("================================");
@@ -464,6 +463,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
                         ITEe.getCause().getMessage(), Language
                                 .getWord("ERROR_MESSAGE"),
                         JOptionPane.ERROR_MESSAGE);
+                Hbuttons.get(action).setEnabled(true);
             }
             catch (NotFoundComponentException NFCEe) {
                 NFCEe.printStackTrace();

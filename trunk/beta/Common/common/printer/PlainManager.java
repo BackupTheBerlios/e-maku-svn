@@ -32,7 +32,6 @@ public class PlainManager extends AbstractManager implements SuccessListener {
 		try {
 			Attribute ATTRequesNumeration = rootTemplate.getAttribute("requestNumeration");	
 			if (ATTRequesNumeration!=null && ATTRequesNumeration.getBooleanValue()) {
-				System.out.println("requestNumeration");
 				int times = 0;
 				while (!sucess) {
 					try {
@@ -132,13 +131,15 @@ public class PlainManager extends AbstractManager implements SuccessListener {
 			}
 			else if ("field".equals(name)) {
 				String value = e.getTextTrim();
-				if ("{$ndocument}".equals(value)) {
-					value = ndocument;
-				}
 				value = " ".equals(value) || "".equals(value) ? "  " : value;
 				textGenerator.addString(value,row,col,null);
 				passed = true;
 
+			}
+			else if ("ndocument".equals(name)) {
+				String value = ndocument;
+				textGenerator.addString(value,row,col,null);
+				passed = true;
 			}
 			else if ("abstract".equals(name)) {
 				String  value = e.getText();
@@ -310,7 +311,6 @@ public class PlainManager extends AbstractManager implements SuccessListener {
 		if (numeration!=null && !"".equals(numeration)) {
 			sucess = true;
 			ndocument = numeration;
-			System.out.println("Me llego el numero de documento: "+numeration);
 		}
 	}
 }

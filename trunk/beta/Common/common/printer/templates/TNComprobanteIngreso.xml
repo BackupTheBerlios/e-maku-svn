@@ -13,6 +13,7 @@
 				<field row="3" col="3" type="STRING">Nit.  891.200.250-1</field>
 				<field row="2" col="56" type="STRING">Comprobante de Ingreso</field>
 				<field row="3" col="56" type="STRING">Nro.</field>
+				<ndocument row="3" col="61"/>
 				<line row="4" col="1" length="80" charfill="-" align="horizontal" />
 				<!-- Ciudad y Fecha -->
 				<line row="6" col="1" length="80" charfill="-" align="horizontal" />
@@ -41,23 +42,15 @@
 				<field row="30" col="50" type="STRING">C.C. o Nit</field>
 		</metadata>
 		<package>
-			<field row="5" col="1" type="STRINGCONCAT" />
-			<field row="0" col="0"/>
-			<field row="0" col="0"/>
-			<field row="0" col="0"/>
-			<field row="0" col="0"/>
-			<field row="5" col="1" link="1" type="STRINGCONCAT" char="- "/>
+			<field row="5" col="1" type="STRING" />
 		</package>
 		<package>
-			<field row="0" col="0"/>
 			<field row="7" col="1" type="STRING" />
 			<field row="0" col="0"/>
 			<field row="8" col="1" type="STRINGCONCAT"/>
 			<field row="0" col="0"/>
 			<field row="8" col="1" link="1" type="STRINGCONCAT" char="- "/>
-		</package>
-		<package>
-			<field row="3" col="61" type="STRING" />
+			<field row="0" col="0"/>
 		</package>
 		<package>
 			<field row="7" col="62" width="18" type="NUMERIC" mask="##,###,###,##0.00" />
