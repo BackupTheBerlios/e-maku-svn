@@ -214,5 +214,15 @@ public class RunTransaction {
 		SocketWriter.writing(sock, 
 			    		    success.returnSuccess(id_transaction,message));
     }
+    
+    public static void successMessage(
+    							SocketChannel sock,
+    							String id_transaction,
+    							String message,
+    							Element element) {
+		SuccessXML success = new SuccessXML();
+		LogAdmin.setMessage(message,ServerConst.MESSAGE);
+		SocketWriter.writing(sock,success.returnSuccess(id_transaction,message,element));
+    }
 
 }

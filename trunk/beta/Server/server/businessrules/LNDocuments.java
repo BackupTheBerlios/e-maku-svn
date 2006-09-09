@@ -466,10 +466,12 @@ public class LNDocuments {
 	        
 	        if (partidaDoble==0) {
 		        LNGtransaccion.commit();
+		        Element ndocument = new Element("ndocument");
+		        ndocument.setText(consecutive);
 		        RunTransaction.successMessage(sock,
 								          	  idTransaction,
-								          	  Language.getWord("TRANSACTION_OK"));
-	
+								          	  Language.getWord("TRANSACTION_OK"),
+								          	  ndocument);
 		        /*
 		         * Se verifica si la accion generada es crear un documento nuevo
 		         * si es asi, entonces se incrementa el consecutivo del documento

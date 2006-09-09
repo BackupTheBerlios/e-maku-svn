@@ -1,4 +1,4 @@
-package client.control;
+package common.control;
 
 import java.util.EventObject;
 
@@ -33,7 +33,9 @@ public class SuccessEvent extends EventObject {
 	private static final long serialVersionUID = 4783712232952864800L;
 	// Este objeto almacenara el idPackage de cada trasaccion o de cada query
     private String idPackage;
-
+    private String ndocument;
+    private String message;
+    
     public SuccessEvent(Object source, String idPackage) {
         super(source);
         this.idPackage = idPackage;
@@ -56,4 +58,20 @@ public class SuccessEvent extends EventObject {
     public synchronized void setIdPackage(String idPackage) {
         this.idPackage = idPackage;
     }
-} 
+    
+    public synchronized void setNdocument(String ndocument){
+    	this.ndocument = ndocument;
+    }
+    
+    public synchronized String getNdocument() {
+		return ndocument;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+}

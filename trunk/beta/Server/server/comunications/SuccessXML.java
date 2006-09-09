@@ -41,4 +41,15 @@ public class SuccessXML extends Document {
         return this;
     }
 
+	public Document returnSuccess(String id_return,String message,Element element) {
+        this.setRootElement(new Element("SUCCESS"));
+		Element idreturn = new Element("id");
+		Element msg = new Element("successMessage");
+	    idreturn.setText(id_return);
+	    msg.setText(message);
+        this.getRootElement().addContent(idreturn);
+        this.getRootElement().addContent(msg);
+        this.getRootElement().addContent(element);
+        return this;
+    }
 }

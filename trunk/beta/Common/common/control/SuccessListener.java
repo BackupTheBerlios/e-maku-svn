@@ -1,4 +1,4 @@
-package client.control;
+package common.control;
 
 import java.util.EventListener;
 

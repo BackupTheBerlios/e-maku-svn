@@ -11,7 +11,7 @@ import common.transactions.STResultSet;
 /**
  * ClientHeaderValidator.java Creado el 22-jul-2004
  * 
- * Este archivo es parte de JMClient <A
+ * Este archivo es parte de E-Maku <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
  * 
  * JMClient es Software Libre; usted puede redistribuirlo y/o realizar
@@ -37,6 +37,7 @@ public class ClientHeaderValidator {
     private static Vector <DateListener>dateListener = new Vector<DateListener>();
     private static Vector <UpdateCodeListener>updateCodeListener = new Vector<UpdateCodeListener>();
     private static Vector <ReportListener> reportListener = new Vector<ReportListener>();
+    private static Vector<SuccessListener> successListener = new Vector<SuccessListener>();
     
     /**
      * Este metodo se encarga de revisar toda las raices de los documentos que
@@ -46,7 +47,7 @@ public class ClientHeaderValidator {
      *            Documento a validar
      */
 
-    
+    public ClientHeaderValidator() {}
     public static boolean validGeneral(Document doc) {
 
         /*
@@ -76,7 +77,7 @@ public class ClientHeaderValidator {
         }
         
         /*
-         *  Validaci�n paquetes UPDATECODE
+         *  Validación paquetes UPDATECODE
          */
         
         else if(nombre.equals("UPDATECODE")) {
@@ -88,7 +89,7 @@ public class ClientHeaderValidator {
         }
         
         /*
-         *  Validaci�n paquetes DATE
+         *  Validación paquetes DATE
          */
         
         else if(nombre.equals("DATE")) {
@@ -110,7 +111,39 @@ public class ClientHeaderValidator {
 			return true;
         }
         /*
-         *  Validaci�n paquetes CACHE-ANSWER
+         *  Validación paquetes SUCCESS
+         */
+        
+        else if(nombre.equals("SUCCESS")) {
+            String id = raiz.getChildText("id");
+            String ndocument = "";
+            String message  = "";
+            
+            if ("Q".equals(id.substring(0,1))) {
+                STResultSet.putSpoolQuery(id,doc);
+            }
+            
+            /*
+             * si por el contrario fue una transaccion entonces ...
+             */
+            else if ("T".equals(id.substring(0,1))){
+            	Element EsuccessMessage = raiz.getChild("successMessage");
+            	Element Endocument = raiz.getChild("ndocument");
+            	message = EsuccessMessage.getText();
+            	ndocument = Endocument!=null?Endocument.getValue():"";
+        	}
+            SuccessEvent event = new SuccessEvent(new ClientHeaderValidator(),id);
+            if (!"".equals(ndocument)) {
+            	event.setNdocument(ndocument);
+            }
+            if (!"".equals(message)) {
+            	event.setMessage(message);
+            }
+            notifySuccess(event);
+            return true;
+        }
+        /*
+         *  Validación paquetes CACHE-ANSWER
          */
         
         else if (nombre.equals("CACHE-ANSWER")) {
@@ -173,4 +206,20 @@ public class ClientHeaderValidator {
         }
     }
 
+    public static synchronized void addSuccessListener(SuccessListener listener ) {
+        successListener.addElement(listener);
+    }
+
+    public static synchronized void removeSuccessListener(SuccessListener listener ) {
+        successListener.removeElement(listener);
+    }
+
+    private static synchronized void notifySuccess(SuccessEvent event) {
+        /*Vector lista;
+        lista = (Vector)successListener.clone();*/
+        for (int i=0; i<successListener.size();i++) {
+            SuccessListener listener = successListener.elementAt(i);
+            listener.cathSuccesEvent(event);
+        }
+    }
 }

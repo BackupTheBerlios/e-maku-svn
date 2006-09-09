@@ -11,23 +11,50 @@ import org.jdom.Attribute;
 import org.jdom.DataConversionException;
 import org.jdom.Element;
 
+import common.control.ClientHeaderValidator;
+import common.control.SuccessEvent;
+import common.control.SuccessListener;
 import common.misc.text.NumberToLetterConversor;
 
-public class PlainManager extends AbstractManager {
+public class PlainManager extends AbstractManager implements SuccessListener {
 	
 	private TextGenerator textGenerator = new TextGenerator();
 	private HashMap<Integer,String[]> concatData = new HashMap<Integer, String[]>(); 
 	private int currentRow = 1;
+	private String ndocument = "";
+	private boolean sucess = false;
 	
-	public PlainManager(Element rootTemplate,Element rootTransact) {
+	public PlainManager() {
+		ClientHeaderValidator.addSuccessListener(this);
+	}
+	
+	public void process(Element rootTemplate,Element rootTransact) {
 		try {
+			Attribute ATTRequesNumeration = rootTemplate.getAttribute("requestNumeration");	
+			if (ATTRequesNumeration!=null && ATTRequesNumeration.getBooleanValue()) {
+				System.out.println("requestNumeration");
+				int times = 0;
+				while (!sucess) {
+					try {
+						if (times<=30) {
+							Thread.sleep(200);
+						}
+						else {
+							return;
+						}
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			
 			Calendar calendar = Calendar.getInstance();
 			long init = calendar.getTimeInMillis();
-			
 			/*Element settings = rootTemplate.getChild("settings");
 			
 			super.width  = settings.getAttribute("width").getIntValue();
 			super.height = settings.getAttribute("height").getIntValue();*/
+			
 			
 			processMetadata(rootTemplate.getChild("metadata"));
 			
@@ -105,6 +132,9 @@ public class PlainManager extends AbstractManager {
 			}
 			else if ("field".equals(name)) {
 				String value = e.getTextTrim();
+				if ("{$ndocument}".equals(value)) {
+					value = ndocument;
+				}
 				value = " ".equals(value) || "".equals(value) ? "  " : value;
 				textGenerator.addString(value,row,col,null);
 				passed = true;
@@ -273,5 +303,14 @@ public class PlainManager extends AbstractManager {
 	
 	public String toString() {
 		return textGenerator.getBufferString();
+	}
+
+	public synchronized void cathSuccesEvent(SuccessEvent e) {
+		String numeration = e.getNdocument();
+		if (numeration!=null && !"".equals(numeration)) {
+			sucess = true;
+			ndocument = numeration;
+			System.out.println("Me llego el numero de documento: "+numeration);
+		}
 	}
 }

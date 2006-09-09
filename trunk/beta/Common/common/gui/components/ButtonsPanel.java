@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
+import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -290,6 +291,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
     	
     	Vector vec = Heventos.get(action);
         Object obj = vec.get(0);
+        Hbuttons.get(action).setEnabled(false);
         if (obj instanceof Componentes) {
         	builTransaction(vec,action,null);
         }
@@ -308,8 +310,9 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 	    		}
 	    		else if ("printer".equals(type)) {
 	    			Document doc = new Document();
-	    			doc.setRootElement(new Element("printjob"));
-	    			builTransaction(vector,action,doc.getRootElement());
+	    			Element printJob = new Element("printjob"); 
+	    			doc.setRootElement(printJob);
+	    			builTransaction(vector,action,printJob);
 	    			String pathTemplate = element.getChildText("printerTemplate");
 	    			try {
 						SAXBuilder sax = new SAXBuilder(false);
@@ -318,9 +321,12 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 						if (url!=null){
 							template = sax.build(url);
 							AbstractManager print = null;
-							
-							if ("PLAIN".equals(template.getRootElement().getAttributeValue("type")) ) {
-								print = new PlainManager(template.getRootElement(),doc.getRootElement());
+							Element rootTemplate = template.getRootElement();
+							Attribute ATType = rootTemplate.getAttribute("type");							
+							if ("PLAIN".equals(ATType.getValue()) ) {
+								print = new PlainManager();
+								((PlainManager)print).process(rootTemplate,printJob);
+								
 							}
 							if (print.isSusseful()) {
 								System.out.println("================================");
@@ -344,6 +350,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 	    		}
         	}
         }
+        Hbuttons.get(action).setEnabled(true);
     }
     
     private void builTransaction(Vector<Componentes> vec,String action,Element ret) throws InvocationTargetException, NotFoundComponentException {
@@ -396,7 +403,6 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
                 ret.addContent((Element) pack.elementAt(i).clone());
             }
     	}
-    	
     }
     
     public void actionPerformed(ActionEvent e) {

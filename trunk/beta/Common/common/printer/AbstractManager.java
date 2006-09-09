@@ -7,7 +7,7 @@ public abstract class AbstractManager {
 	protected int height;
 	protected ByteArrayInputStream in;
 	protected boolean sussceful;
-		
+	
 	public ByteArrayInputStream getStream(){
 		return in;
 	}

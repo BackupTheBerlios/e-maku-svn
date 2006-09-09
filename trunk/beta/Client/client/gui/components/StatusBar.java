@@ -33,14 +33,16 @@ import javax.swing.JToolBar;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
+import common.control.ClientHeaderValidator;
+import common.control.SuccessEvent;
+import common.control.SuccessListener;
 import common.misc.language.Language;
 
-public class StatusBar extends JToolBar {
+public class StatusBar extends JToolBar implements SuccessListener {
 
-    /**
-	 * 
-	 */
+    
 	private static final long serialVersionUID = 5107890638919072678L;
+	
 	public static JLabel JLetiqueta1 = new JLabel("         ") {
 		private static final long serialVersionUID = 3440825260214310311L;
 		public void paintComponent(Graphics g) {
@@ -50,7 +52,8 @@ public class StatusBar extends JToolBar {
 	        super.paintComponent(g);
 	    }
 	};
-    public static JLabel JLetiqueta2 = new JLabel("         "){
+    
+	public static JLabel JLetiqueta2 = new JLabel("         "){
 		private static final long serialVersionUID = 3440825260214310311L;
 		public void paintComponent(Graphics g) {
 	        Graphics2D g2 = (Graphics2D)g;
@@ -59,7 +62,8 @@ public class StatusBar extends JToolBar {
 	        super.paintComponent(g);
 	    }
 	};
-    public static JLabel JLetiqueta3 = new JLabel("         "){
+    
+	public static JLabel JLetiqueta3 = new JLabel("         "){
 		private static final long serialVersionUID = 3440825260214310311L;
 		public void paintComponent(Graphics g) {
 	        Graphics2D g2 = (Graphics2D)g;
@@ -82,6 +86,7 @@ public class StatusBar extends JToolBar {
         this.add(JLetiqueta3);
         this.add(JPBbarra);
         JPBbarra.setFont(new Font("Monospace",Font.PLAIN,10));
+        ClientHeaderValidator.addSuccessListener(this);
     }
     
     public static void setLabel1(String label) {
@@ -116,4 +121,26 @@ public class StatusBar extends JToolBar {
     	JLetiqueta3.setText("         ");
     	JPBbarra.setValue(0);
     }
+
+	public void cathSuccesEvent(SuccessEvent e) {
+		new ThreadMessage(e.getMessage());
+	}
+	
+	class ThreadMessage extends Thread {
+		private String message;
+		public ThreadMessage(String message) {
+			this.message = message;
+			start();
+		}
+		
+		public void run() {
+			StatusBar.setLabel3(message);
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			StatusBar.setLabel3("");
+		}
+	}
 }

@@ -1,4 +1,4 @@
-<emaku_template type="PLAIN">
+<emaku_template type="PLAIN" requestNumeration="true">
 		<metadata>
 				<scp row="1" col="1">ESC</scp>
 				<scp row="1" col="2">C</scp>
@@ -30,6 +30,7 @@ Telefonos: 7215949 - 7211067 - Fax: (092) 7211630                    VELAS DECOR
 				<field row="10" col="107" type="STRING">Vendedor</field>
 				<field row="11" col="107" type="STRING">Bodega</field>
 				<field row="12" col="107" type="STRING">Numero</field>
+				<field row="12" col="123" type="STRING">{$ndocument}</field>
 				<!-- Informacion detallada de productos -->
 				<field row="17" col="5" type="STRING">Codigo</field>
 				<field row="17" col="31" type="STRING">Descripcion</field>
@@ -89,7 +90,7 @@ Telefonos: 7215949 - 7211067 - Fax: (092) 7211630                    VELAS DECOR
 		</package>
 		<!-- Nro Doc -->
 		<package>
-				<field row="12" col="123" type="STRING" />
+				<field row="0" col="0" type="STRING" />
 		</package>
 		<!-- Detalles -->
 		<package>

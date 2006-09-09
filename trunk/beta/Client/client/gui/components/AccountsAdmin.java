@@ -32,9 +32,12 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.table.TableCellRenderer;
 
-import client.control.SuccessEvent;
-import client.control.SuccessListener;
-import client.control.HeadersValidator;
+import org.jdom.Document;
+import org.jdom.Element;
+
+import common.control.ClientHeaderValidator;
+import common.control.SuccessEvent;
+import common.control.SuccessListener;
 import common.gui.components.VoidPackageException;
 import common.gui.components.XMLTextField;
 import common.gui.forms.GenericForm;
@@ -42,9 +45,6 @@ import common.gui.forms.NotFoundComponentException;
 import common.misc.language.Language;
 import common.transactions.STException;
 import common.transactions.STResultSet;
-
-import org.jdom.Document;
-import org.jdom.Element;
 
 /**
  * AdminCtas2.java Creado el 21-oct-2004
@@ -144,7 +144,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 
 		JPanel JPconten = new JPanel(new BorderLayout());
 
-		HeadersValidator.addSuccessListener(this);
+		ClientHeaderValidator.addSuccessListener(this);
 
 		JTpuc = new JTable() {
 			private static final long serialVersionUID = -6734025632190628817L;
@@ -755,7 +755,8 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 	public void cathSuccesEvent(SuccessEvent SEe) {
 		try {
 			String id = (String) GFforma.invokeMethod(
-					"common.gui.components.ButtonsPanel", "getIdTransaction");
+										"common.gui.components.ButtonsPanel",
+										"getIdTransaction");
 			if (id.equals(SEe.getIdPackage())) {
 				loadingTablePUC();
 			}

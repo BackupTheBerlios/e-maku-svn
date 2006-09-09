@@ -2,25 +2,24 @@ package client.control;
 
 import java.awt.Cursor;
 import java.io.IOException;
-import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
-import client.gui.components.MainWindow;
-import client.gui.components.StatusBar;
-import client.gui.forms.Connection;
-import client.gui.forms.Splash;
-import common.comunications.ArrivePackageEvent;
-import common.comunications.ArrivePackageListener;
-import common.comunications.SocketConnector;
-import common.control.ClientHeaderValidator;
-import common.transactions.STResultSet;
 
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+
+import client.gui.components.MainWindow;
+import client.gui.forms.Connection;
+import client.gui.forms.Splash;
+
+import common.comunications.ArrivePackageEvent;
+import common.comunications.ArrivePackageListener;
+import common.comunications.SocketConnector;
+import common.control.ClientHeaderValidator;
+import common.transactions.STResultSet;
 
 /**
  * ClientHeaderValidator.java Creado el 22-jul-2004
@@ -48,7 +47,6 @@ import org.jdom.output.XMLOutputter;
 public class HeadersValidator implements ArrivePackageListener {
 
     private static Element raiz;
-    private static Vector<SuccessListener> successListener = new Vector<SuccessListener>();
 
     /**
      * Este metodo se encarga de revisar toda las raices de los documentos que
@@ -132,31 +130,7 @@ public class HeadersValidator implements ArrivePackageListener {
 	        	}
 	        }
 	        
-	        /*
-	         *  Validaci�n paquetes SUCCESS
-	         */
 	        
-	        else if(nombre.equals("SUCCESS")) {
-	            String id = raiz.getChildText("id");
-	            if ("Q".equals(id.substring(0,1)))
-	                STResultSet.putSpoolQuery(id,doc);
-	            /*
-	             * si por el contrario fue una transaccion entonces ...
-	             */
-	            else if ("T".equals(id.substring(0,1))){
-	                try {
-	                    StatusBar.setLabel3(raiz.getChild("successMessage").getText());
-	                    Thread.sleep(300);
-	                    StatusBar.setLabel3("");
-	                }
-	                catch(InterruptedException IEe) {
-	                    StatusBar.setLabel3("");
-	                }
-	        	}
-	            
-	            SuccessEvent event = new SuccessEvent(new HeadersValidator(),id);
-	            notifySuccess(event);
-	        }
 	        
 	        
 	        /*
@@ -184,23 +158,4 @@ public class HeadersValidator implements ArrivePackageListener {
                 jf,raiz.getChild("errorMsg").getText(),
                 "",JOptionPane.ERROR_MESSAGE);
     }
-    
-    public static synchronized void addSuccessListener(SuccessListener listener ) {
-        successListener.addElement(listener);
-    }
-
-    public static synchronized void removeSuccessListener(SuccessListener listener ) {
-        successListener.removeElement(listener);
-    }
-
-    private static synchronized void notifySuccess(SuccessEvent event) {
-        /*Vector lista;
-        lista = (Vector)successListener.clone();*/
-        for (int i=0; i<successListener.size();i++) {
-            SuccessListener listener = successListener.elementAt(i);
-            listener.cathSuccesEvent(event);
-        }
-    }
-    
-    
 }
