@@ -460,18 +460,30 @@ public class LNContabilidad {
 			 */
 			asiento[4] = CacheEnlace.getPCIdCta(bd, asiento[4]);
 	
-			double saldo = CacheEnlace.getSaldoLibroAux(bd, asiento[3], asiento[4],
-					asiento[5], asiento[6]);
+			double saldo = CacheEnlace.getSaldoLibroAux(bd, 
+														asiento[3]=="NULL"?"":asiento[3],
+														asiento[4],
+														asiento[5]=="NULL"?"":asiento[5], 
+														asiento[6]=="NULL"?"":asiento[6]);
 			double movimiento = 0;
 			if (Double.parseDouble(asiento[7]) != 0.0) {
 				movimiento = Double.parseDouble(asiento[7]);
 				double nsaldo = saldo + movimiento;
 				asiento[9] = String.valueOf(nsaldo);
 				partidaDoble += movimiento;
-				LNUndoSaldos.setSaldoAntLibroAux(bd, asiento[3], asiento[4],
-						asiento[5], asiento[6], new Double(saldo));
-				CacheEnlace.setSaldoLibroAux(bd, asiento[3], asiento[4],
-						asiento[5], asiento[6], new Double(nsaldo));
+				LNUndoSaldos.setSaldoAntLibroAux(bd, 														
+												asiento[3]=="NULL"?"":asiento[3],
+												asiento[4],
+												asiento[5]=="NULL"?"":asiento[5], 
+												asiento[6]=="NULL"?"":asiento[6],
+												new Double(saldo));
+				
+				CacheEnlace.setSaldoLibroAux(bd,
+								asiento[3]=="NULL"?"":asiento[3],
+								asiento[4],
+								asiento[5]=="NULL"?"":asiento[5], 
+								asiento[6]=="NULL"?"":asiento[6],
+						        new Double(nsaldo));
 			} else {
 				movimiento = Double.parseDouble(asiento[8]);
 				double nsaldo = saldo - movimiento;
@@ -487,10 +499,19 @@ public class LNContabilidad {
 					System.out.println("Movimiento: " + movimiento
 							+ " Partida doble rowDataAccount: " + partidaDoble);
 				}
-				LNUndoSaldos.setSaldoAntLibroAux(bd, asiento[3], asiento[4],
-						asiento[5], asiento[6], new Double(saldo));
-				CacheEnlace.setSaldoLibroAux(bd, asiento[3], asiento[4],
-						asiento[5], asiento[6], new Double(nsaldo));
+				LNUndoSaldos.setSaldoAntLibroAux(bd,														
+											asiento[3]=="NULL"?"":asiento[3],
+											asiento[4],
+											asiento[5]=="NULL"?"":asiento[5], 
+											asiento[6]=="NULL"?"":asiento[6],
+											new Double(saldo));
+											
+				CacheEnlace.setSaldoLibroAux(bd,														
+											asiento[3]=="NULL"?"":asiento[3],
+											asiento[4],
+											asiento[5]=="NULL"?"":asiento[5], 
+											asiento[6]=="NULL"?"":asiento[6],
+											new Double(nsaldo));
 			}
 		
 			new RunQuery(bd, "INS0073", asiento).ejecutarSQL();
