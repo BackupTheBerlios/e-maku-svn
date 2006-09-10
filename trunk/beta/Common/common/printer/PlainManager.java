@@ -30,23 +30,24 @@ public class PlainManager extends AbstractManager implements SuccessListener {
 	
 	public void process(Element rootTemplate,Element rootTransact) {
 		try {
-			Attribute ATTRequesNumeration = rootTemplate.getAttribute("requestNumeration");	
+			Attribute ATTRequesNumeration = rootTemplate.getAttribute("requestNumeration");
 			if (ATTRequesNumeration!=null && ATTRequesNumeration.getBooleanValue()) {
 				int times = 0;
 				while (!sucess) {
 					try {
 						if (times<=30) {
-							Thread.sleep(200);
+							Thread.sleep(100);
 						}
 						else {
+							System.out.println("No se pudo obtner la numeracion de " + rootTemplate.getAttributeValue("name"));
 							return;
 						}
+						times++;
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 				}
 			}
-			
 			Calendar calendar = Calendar.getInstance();
 			long init = calendar.getTimeInMillis();
 			/*Element settings = rootTemplate.getChild("settings");

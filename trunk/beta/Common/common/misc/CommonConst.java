@@ -3,6 +3,7 @@ package common.misc;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 
+
 /**
  * commonCons.java Creado el 07-oct-2004
  * 
@@ -24,11 +25,15 @@ import javax.print.PrintServiceLookup;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
-public interface CommonConst {
-    public final int ERROR 			= 0;
-    public final int WARNING 		= 1;
-    public final int MESSAGE 		= 2;
-    public final long MAX_SIZE_FILE_LOG = 5242880;
-    public final String TMP 		= System.getProperty("java.io.tmpdir");
-    public final PrintService defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
+public class CommonConst {
+    public static final int ERROR 		= 0;
+    public static final int WARNING 		= 1;
+    public static final int MESSAGE 		= 2;
+    public static final long MAX_SIZE_FILE_LOG = 5242880;
+    public static final String TMP 		= System.getProperty("java.io.tmpdir");
+    public static PrintService defaultPrintService;
+    
+    public static void lookupDefaultPrintService() {
+    	defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
+    }
 }

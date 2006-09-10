@@ -19,6 +19,7 @@ import client.gui.xmlmenu.MenuLoader;
 import client.gui.xmltoolbar.JButtonXML;
 import client.gui.xmltoolbar.ToolbarLoader;
 import client.misc.ClientConst;
+import common.misc.CommonConst;
 import common.misc.language.Language;
 
 /**
@@ -127,7 +128,11 @@ public class MainWindow extends JFrame {
                 Run.exit();
             }
         });
-
+        /**
+         * Inicializando servicio de impresion
+         */
+        CommonConst.lookupDefaultPrintService();
+        
 	    /**
 	     * Ventana Visible
 	     */
