@@ -1,5 +1,8 @@
 package common.misc;
 
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+
 /**
  * commonCons.java Creado el 07-oct-2004
  * 
@@ -27,5 +30,5 @@ public interface CommonConst {
     public final int MESSAGE 		= 2;
     public final long MAX_SIZE_FILE_LOG = 5242880;
     public final String TMP 		= System.getProperty("java.io.tmpdir");
-
+    public final PrintService defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
 }

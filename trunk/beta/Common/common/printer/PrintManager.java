@@ -17,6 +17,8 @@ import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.OrientationRequested;
 
+import common.misc.CommonConst;
+
 public class PrintManager {
 	
 	public static enum ImpresionType {PLAIN,POSTSCRIPT,PDF};
@@ -35,11 +37,11 @@ public class PrintManager {
 		else {
 			this.docFlavor = DocFlavor.INPUT_STREAM.PNG;
 		}
-		PrintService defaultService = PrintServiceLookup.lookupDefaultPrintService();
+		PrintService defaultService = CommonConst.defaultPrintService;
 		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
 		if (!silent) {
-			PrintService printService[] = PrintServiceLookup.lookupPrintServices(this.docFlavor, pras);
-			defaultService = ServiceUI.printDialog(null, 200, 200,printService, defaultService, this.docFlavor, pras);	
+			PrintService printServices[] = PrintServiceLookup.lookupPrintServices(this.docFlavor, pras);
+			defaultService = ServiceUI.printDialog(null, 200, 200,printServices, defaultService, this.docFlavor, pras);	
 		}
 		if (defaultService != null) {
 			DocPrintJob job = defaultService.createPrintJob();
