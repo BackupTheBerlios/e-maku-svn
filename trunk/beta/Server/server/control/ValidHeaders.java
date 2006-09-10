@@ -204,7 +204,7 @@ public class ValidHeaders {
         	if (PoolConexiones.chekDataBase(raiz.getChild("db").getValue())) {
 	            LoginUser loguser = new LoginUser(raiz);
 	            
-	            if (loguser.valid()) {
+	        	if (loguser.valid()) {
 	                String bd = loguser.getBD();
 	                String login = loguser.getLogin();
 	                SocketServer.setLogin(sock, bd, login);
@@ -213,6 +213,7 @@ public class ValidHeaders {
 	            } else {
 	                SocketWriter.writing(sock, new AcpFailure(Language.getWord("ACPFAILURE")));
 	            }
+	        	
             } else {
             	LogAdmin.setMessage(Language.getWord("DBNFEX") + raiz.getChild("db").getValue(), ServerConst.ERROR);
             	SocketWriter.writing(sock, new AcpFailure(Language.getWord("ACPFAILURE")));
