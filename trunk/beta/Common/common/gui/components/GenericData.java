@@ -470,7 +470,7 @@ public class GenericData extends JPanel implements DateListener,
 							 */
 							
 							XMLTextField XMLRefText = (XMLTextField) e.getSource();
-
+							XMLRefText.setSendQuery(true);
 							if (sqlCode.size() > 0 || sqlLocal != null) {
 								/*
 								 * El primer elemento del vector sql siempre
@@ -651,6 +651,7 @@ public class GenericData extends JPanel implements DateListener,
 		int max = VFields.size();
 		for (int i = 0; i < max; i++) {
 			XMLTextField xmltemp = (XMLTextField) VFields.get(i);
+			xmltemp.setSendQuery(false);
 			if (xmltemp.isClean()) {
 				xmltemp.setText("");
 				if (xmltemp.getType().equals("NUMERIC")) {

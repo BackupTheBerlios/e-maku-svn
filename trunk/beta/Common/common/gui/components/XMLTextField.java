@@ -84,6 +84,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	private String calculateDate = null;
 	private String addAttribute = null;
 	private String sendRecord;
+	private boolean sendQuery;
 	
 	public XMLTextField(String label, int length, int chars) {
 		super(length);
@@ -248,7 +249,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 		this.systemDate = systemDate;
 	}
 	
-	public boolean  isSystemDate() {
+	public boolean isSystemDate() {
 		return this.systemDate;
 	}
 	
@@ -258,7 +259,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	}
 
 	public void cathUpdateCodeEvent(UpdateCodeEvent e) {
-		if (idDocument.equals(e.getIdDocument())) {
+		if (idDocument.equals(e.getIdDocument()) && !sendQuery) {
 			this.setText(e.getConsecutive());
 		}
 	}
@@ -566,6 +567,14 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	}
 	public void setCalculateBSExportValue(String calculateBSExportValue) {
 		this.calculateBSExportValue = calculateBSExportValue;
+	}
+
+	public boolean isSendQuery() {
+		return sendQuery;
+	}
+
+	public void setSendQuery(boolean sendQuery) {
+		this.sendQuery = sendQuery;
 	}
 
 }
