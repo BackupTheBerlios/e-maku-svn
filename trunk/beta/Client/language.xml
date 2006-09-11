@@ -4421,4 +4421,60 @@
     <es_ES></es_ES>
     <en_US>Report of Return in Purchases by date and value</en_US>
   </sentence>
+  <sentence>
+    <key>REPORTE-CCARTERA-NUMERO</key>
+    <es_CO>Reporte de comprobantes de cartera por numero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of --Comprobantes de cartera-- by number</en_US>
+    </sentence>
+  <sentence>
+    <key>REPORTE-CCARTERA-TERCERO</key>
+    <es_CO>Reporte de comprobantes de cartera por tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of --Comprobantes de cartera-- by third</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-CCARTERA-FECHA-TERCERO</key>
+    <es_CO>Reporte de comprobantes de cartara por fecha y tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of --comprobantes de cartera-- by date and third</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-CCARTERA-FECHA-VALOR</key>
+    <es_CO>Reporte de comprobantes de cartera por fecha y valor</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of --comprobantes de cartera-- by date and value</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-CPAGOS-NUMERO</key>
+    <es_CO>Reporte de comprobantes de pago a proveedores por numero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of --Comprobantes de pago a proveedores-- by number</en_US>
+    </sentence>
+  <sentence>
+    <key>REPORTE-CPAGOS-TERCERO</key>
+    <es_CO>Reporte de comprobantes de pago a proveedores por tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of --Comprobantes de pago a proveedores-- by third</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-CPAGOS-FECHA-TERCERO</key>
+    <es_CO>Reporte de comprobantes de pago a proveedores por fecha y tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of --comprobantes de pago a proveedores-- by date and third</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-CPAGOS-FECHA-VALOR</key>
+    <es_CO>Reporte de comprobantes de pago a proveedores por fecha y valor</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of --comprobantes de pago a proveedores-- by date and value</en_US>
+  </sentence>
 </language>  

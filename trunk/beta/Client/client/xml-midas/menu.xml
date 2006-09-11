@@ -767,6 +767,34 @@
                 <Icon>GREPORTS</Icon>
                 <Text>REPORTS</Text>
                 <Activo />
+                <JMenuItem>
+                    <Text>REPORTE-NUMERO</Text>
+                    <Icon>REPORT</Icon>
+                    <Mnemonic>NEMO-REPORTE-NUMERO</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00190</Transaction>
+                </JMenuItem>
+                <JMenuItem>
+                    <Text>REPORTE-TERCERO</Text>
+                    <Icon>REPORT</Icon>
+                    <Mnemonic>NEMO-REPORTE-TERCERO</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00191</Transaction>
+                </JMenuItem>
+                <JMenuItem>
+                    <Text>REPORTE-FECHA-TERCERO</Text>
+                    <Icon>REPORT</Icon>
+                    <Mnemonic>NEMO-REPORTE-FECHA-TERCERO</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00192</Transaction>
+                </JMenuItem>
+                <JMenuItem>
+                    <Text>REPORTE-FECHA-VALOR</Text>
+                    <Icon>REPORT</Icon>
+                    <Mnemonic>NEMO-REPORTE-FECHA-VALOR</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00193</Transaction>
+                </JMenuItem>
             </JMenu>
         </JMenu>
         <JSeparator />
@@ -1305,14 +1333,14 @@
                 <Icon>/icons/ico_nuevo.png</Icon>
                 <Mnemonic>NEMO-NUEVO</Mnemonic>
                 <Activo />
-                <Transaction>TR00177</Transaction>
+                <Transaction>TR00194</Transaction>
             </JMenuItem>
             <JMenuItem>
                 <Text>ANULAR</Text>
                 <Icon>/icons/ico_anular.png</Icon>
                 <Mnemonic>NEMO-BORRAR</Mnemonic>
                 <Activo />
-                <Transaction>TR00178</Transaction>
+                <Transaction>TR00195</Transaction>
             </JMenuItem>
             <JSeparator />
             <JMenuItem>
@@ -1320,13 +1348,41 @@
                 <Icon>/icons/ico_consultar.png</Icon>
                 <Mnemonic>NEMO-CONSULTAR</Mnemonic>
                 <Activo />
-                <Transaction>TR00179</Transaction>
+                <Transaction>TR00196</Transaction>
             </JMenuItem>
             <JMenu>
                 <Mnemonic>NEMO-REPORTE</Mnemonic>
                 <Icon>GREPORTS</Icon>
                 <Text>REPORTS</Text>
                 <Activo />
+                <JMenuItem>
+                    <Text>REPORTE-NUMERO</Text>
+                    <Icon>REPORT</Icon>
+                    <Mnemonic>NEMO-REPORTE-NUMERO</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00197</Transaction>
+                </JMenuItem>
+                <JMenuItem>
+                    <Text>REPORTE-TERCERO</Text>
+                    <Icon>REPORT</Icon>
+                    <Mnemonic>NEMO-REPORTE-TERCERO</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00198</Transaction>
+                </JMenuItem>
+                <JMenuItem>
+                    <Text>REPORTE-FECHA-TERCERO</Text>
+                    <Icon>REPORT</Icon>
+                    <Mnemonic>NEMO-REPORTE-FECHA-TERCERO</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00199</Transaction>
+                </JMenuItem>
+                <JMenuItem>
+                    <Text>REPORTE-FECHA-VALOR</Text>
+                    <Icon>REPORT</Icon>
+                    <Mnemonic>NEMO-REPORTE-FECHA-VALOR</Mnemonic>
+                    <Activo />
+                    <Transaction>TR00200</Transaction>
+                </JMenuItem>
             </JMenu>
         </JMenu>
         <JSeparator />
