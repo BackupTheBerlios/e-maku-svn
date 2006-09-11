@@ -271,14 +271,14 @@ public class LNDocuments {
         	             * a hacer las verificaciones anteriores para este
         	             */
         	            
-        	            if (!rfDocument.equals("")) {
+        	            if ((rfDocument != null) && !rfDocument.equals("")) {
         	            	RunQuery RQrfkey = new RunQuery(bd,"SEL0304",new String[]{primaryKey});
             	            ResultSet RSrfkey = RQrfkey.ejecutarSELECT();
         	            	String rfKey = "";
             	            while (RSrfkey.next()) {
             	                rfKey=RSrfkey.getString(1);
             	            }
-            	            if (rfKey.equals("")) {
+            	            if ("".equals(rfKey)) {
                         		undoTransaction(Language.getWord("ERR_ANNUL_RF_DOCUMENT_NOT_FOUND"));
                         		break;
             	            }
