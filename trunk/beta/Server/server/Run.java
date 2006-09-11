@@ -14,6 +14,7 @@ import server.database.sql.CacheEnlace;
 import server.misc.ServerConst;
 import server.misc.settings.ConfigFile;
 import server.misc.settings.ConfigFileNotLoadException;
+import server.reports.MakeReport;
 
 import common.misc.formulas.BeanShell;
 import common.misc.language.Language;
@@ -71,6 +72,7 @@ public class Run {
 			ConfigFile.loadConfigFile(emakuConfigFile);
 			PoolConexiones.CargarBD();
 			ReportsStore.Load(this.getClass().getResource("/reports"));
+			new MakeReport();
 			CacheEnlace.cargar();
 			new BeanShell();
 			new SocketServer();

@@ -10,7 +10,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRField;
 import net.sf.jasperreports.engine.JRReport;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -52,18 +54,42 @@ public class MakeReport extends Thread {
 	private String[] args;
 	private Element element;
 	private SocketChannel socket;
-
+	private String dataBase;
+	
 	public MakeReport(Element element, SocketChannel sock) {
 		this.element = element;
 		this.socket = sock;
+		this.dataBase = SocketServer.getBd(socket);
+		start();
 	}
 
+	public MakeReport() {
+		Thread thread = new Thread() {
+			public void run() {
+				try {
+					Map <String,String>parameters = new HashMap<String,String>();
+					JRBaseFiller filler = createFiller(ReportsStore.getReportClass("REP0000"));
+					JasperPrint jasperPrint = filler.fill(parameters,new PhantomDataSource());
+					ByteArrayOutputStream os = new ByteArrayOutputStream();
+					JasperExportManager.exportReportToPdfStream(jasperPrint,os);
+					os.close();
+				}
+				catch (JRException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		thread.start();
+	}
+	
 	public void run() {
 		try {
 			ResultSet rs;
 			codigo = element.getChildText("driver");
 			rs = new RunQuery(
-					SocketServer.getBd(socket),
+					dataBase,
 					"SEL0208",
 					new String[] { codigo }).ejecutarSELECT();
 			boolean next = rs.next();
@@ -196,5 +222,21 @@ class VerticalFiller extends JRVerticalFiller {
 
 	protected VerticalFiller(JasperReport arg0) throws JRException {
 		super(arg0);
+	}
+}
+
+
+class PhantomDataSource implements JRDataSource {
+	private Object[][] data = {{""}};
+	private int index = -1;
+	
+	public PhantomDataSource() {}
+	
+	public boolean next() throws JRException {
+		index++;
+		return (index < data.length);
+	}
+	public Object getFieldValue(JRField field) throws JRException {
+		return "";
 	}
 }

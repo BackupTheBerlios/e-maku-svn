@@ -172,7 +172,7 @@ public class ValidHeaders {
             /* Recepcion de un paquete de solicitud de un reporte */
             else if (nom_raiz.equals("REPORTREQUEST")) {
                 System.out.println("Nueva solicitud de un reporte");
-                new MakeReport(raiz, sock).start();
+                new MakeReport(raiz, sock);
             }
             else {
                 ErrorXML error = new ErrorXML();
