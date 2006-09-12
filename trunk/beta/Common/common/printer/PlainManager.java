@@ -256,6 +256,11 @@ public class PlainManager extends AbstractManager implements SuccessListener {
 			if (!"".equals(value.trim())) {
 				textGenerator.addString(value,row,col,null);
 			}
+			if (attribs.containsKey("separatorchar")){
+				Attribute att = attribs.get("separatorchar");
+				int colCharSeparator = attribs.get("separatorcol").getIntValue();
+				textGenerator.addString(att.getValue(),row,colCharSeparator,null);
+			}
 		}
 		else if ("STRINGCONCAT".equals(type)) {
 			if (concatData.containsKey(row)) {
@@ -277,6 +282,11 @@ public class PlainManager extends AbstractManager implements SuccessListener {
 			NumberFormat formatter = new DecimalFormat(mask);
 			value = !"NULL".equals(value) && !"".equals(value) ? formatter.format(Double.parseDouble(value)):"";
 			textGenerator.addString(value,row,col,attribs.get("width").getIntValue());
+			if (attribs.containsKey("separatorchar")){
+				Attribute att = attribs.get("separatorchar");
+				int colCharSeparator = attribs.get("separatorcol").getIntValue();
+				textGenerator.addString(att.getValue(),row,colCharSeparator,null);
+			}
 		}
 		else if ("ABSTRACT".equals(type)) {
 			int height = attribs.get("height").getIntValue();

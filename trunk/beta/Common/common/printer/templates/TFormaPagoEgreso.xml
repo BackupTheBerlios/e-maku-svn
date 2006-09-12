@@ -5,8 +5,11 @@
 		<scp row="1" col="2">C</scp>
 		<scp row="1" col="3">33</scp>
 		<scp row="1" col="5">ETB</scp>
-		<scp row="33" col="1">FF</scp>
-		<scp row="33" col="2">EOT</scp>
+		<scp row="1" col="6">SI</scp>
+		<scp row="1" col="7">ETB</scp>
+		<scp row="33" col="1">DC2</scp>
+		<scp row="33" col="2">FF</scp>
+		<scp row="33" col="3">EOT</scp>
 	</metadata>
 	<package validate="true">
 		<subpackage rowInit="last">
@@ -21,8 +24,8 @@
 				<line row="last" col="1" length="80" charfill="-" align="horizontal" />
 			</metadata>
 			<field col="1" type="STRING" />
-			<field col="37" type="STRING" />
-			<field col="64" width="15" type="NUMERIC" mask="##,###,###,##0.00" />
+			<field col="37" type="STRING" separatorchar="|" separatorcol="34"/>
+			<field col="64" width="15" type="NUMERIC" mask="##,###,###,##0.00" separatorchar="|" separatorcol="63"/>
 		</subpackage>
 	</package>
 	<package validate="true">
@@ -38,28 +41,28 @@
 				<line row="last" col="1" length="80" charfill="-" align="horizontal" />
 			</metadata>
 			<field col="1" type="STRING" />
-			<field col="36" type="STRING" />
-			<field col="64" width="15" type="NUMERIC" mask="##,###,###,##0.00" />
+			<field col="36" type="STRING" separatorchar="|" separatorcol="34"/>
+			<field col="64" width="15" type="NUMERIC" mask="##,###,###,##0.00" separatorchar="|" separatorcol="63"/>
 		</subpackage>
 	</package>
 	<package validate="true">
 		<subpackage rowInit="last">
 			<metadata>
-				<line row="last" col="1" incrementRow="false" length="72" charfill="-" align="horizontal" />
+				<line row="last" col="1" incrementRow="false" length="74" charfill="-" align="horizontal" />
 				<field row="last" col="1" type="STRING">Cheques</field>
-				<field row="last" col="11" incrementRow="false" type="STRING">Banco</field>
-				<field row="last" col="27" incrementRow="false" type="STRING">|</field>
-				<field row="last" col="35" incrementRow="false" type="STRING">Sucursal</field>
-				<field row="last" col="50" incrementRow="false" type="STRING">|</field>
-				<field row="last" col="54" incrementRow="false" type="STRING">Numero</field>
-				<field row="last" col="63" incrementRow="false" type="STRING">|</field>
-				<field row="last" col="70" type="STRING">Valor</field>
-				<line row="last" col="1" length="80" charfill="-" align="horizontal" />
+				<field row="last" col="5" incrementRow="false" type="STRING">Fecha</field>
+				<field row="last" col="15" incrementRow="false" type="STRING">|</field>
+				<field row="last" col="42" incrementRow="false" type="STRING">Cuenta</field>
+				<field row="last" col="48" incrementRow="false" type="STRING">|</field>
+				<field row="last" col="43" incrementRow="false" type="STRING">Numero</field>
+				<field row="last" col="64" incrementRow="false" type="STRING">|</field>
+				<field row="last" col="71" type="STRING">Valor</field>
+				<line row="last" col="1" length="82" charfill="-" align="horizontal" />
 			</metadata>
 			<field col="1" type="STRING" />
-			<field col="28" type="STRING" />
-			<field col="52" type="STRING" />
-			<field col="64" width="15" type="NUMERIC" mask="##,###,###,##0.00" />
+			<field col="16" type="STRING" separatorchar="|" separatorcol="15"/>
+			<field col="50" type="STRING" separatorchar="|" separatorcol="48"/>
+			<field col="66" width="15" type="NUMERIC" mask="##,###,###,##0.00" separatorchar="|" separatorcol="64"/>
 		</subpackage>
 	</package>
 </emaku_template>
