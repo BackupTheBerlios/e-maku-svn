@@ -1,4 +1,4 @@
-<emaku_template type="PLAIN">
+<emaku_template type="PLAIN" requestNumeration="true">
 		<metadata>
 				<scp row="1" col="1">ESC</scp>
 				<scp row="1" col="2">C</scp>
@@ -25,13 +25,14 @@ Telefonos: 7215949 - 7211067 - Fax: (092) 7211630                    VELAS DECOR
 				<field row="12" col="1" type="STRING">Telefono:</field>
 				<field row="13" col="1" type="STRING">Ciudad:</field>
 				<!-- Informacion documento -->
-				<field row="9" col="107" type="STRING">Factura Crédito</field>
+				<field row="9" col="107" type="STRING">Factura Credito</field>
 				<field row="10" col="107" type="STRING">Fecha</field>
 				<field row="11" col="107" type="STRING">Plazo Dias</field>
 				<field row="12" col="107" type="STRING">F. Vencimiento</field>
 				<field row="13" col="107" type="STRING">Vendedor</field>
 				<field row="14" col="107" type="STRING">Bodega</field>
 				<field row="15" col="107" type="STRING">Nro</field>
+				<ndocument row="15" col="123"/>
 				<!-- Informacion detallada de productos -->
 				<field row="17" col="5" type="STRING">Codigo</field>
 				<field row="17" col="31" type="STRING">Descripcion</field>
@@ -76,7 +77,11 @@ Telefonos: 7215949 - 7211067 - Fax: (092) 7211630                    VELAS DECOR
 		<!-- Paquetes -->
 		<!-- Tercero -->
 		<package>
-				<field row="9" col="12" type="ABSTRACT" width="26" height="5" />
+				<field row="9" col="12" type="STRING"/>
+				<field row="10" col="12" type="STRING"/>
+				<field row="11" col="12" type="STRING"/>
+				<field row="12" col="12" type="STRING"/>
+				<field row="13" col="12" type="STRING"/>
 		</package>
 		<package>
 				<field row="10" col="123" type="STRING" />
@@ -88,25 +93,22 @@ Telefonos: 7215949 - 7211067 - Fax: (092) 7211630                    VELAS DECOR
 				<field row="12" col="123" type="STRING" />
 		</package>
 		<package>
-				<field row="13" col="123" type="STRING" />
+			<field row="13" col="123" type="STRING" />
 		</package>
 		<package>
-				<field row="14" col="123" type="STRING" />
-		</package>
-    <package>
-				<field row="15" col="123" type="STRING" />
+			<field row="14" col="123" type="STRING" />
 		</package>
 		<package>
-				<subpackage rowInit="19">
-						<field col="1" type="STRING" />
-						<field col="15" type="STRING" />
-						<field col="68" width="4" type="NUMERIC" mask="#" />
-						<field col="73" width="13" type="NUMERIC" mask="##,###,##0.00" />
-						<field col="87" width="13" type="NUMERIC" mask="##,###,##0.00" />
-						<field col="101" width="13" type="NUMERIC" mask="##,###,##0.00" />
-						<field col="115" width="13" type="NUMERIC" mask="##,###,##0.00" />
-						<field col="129" width="16" type="NUMERIC" mask="#,###,###,##0.00" />
-				</subpackage>
+			<subpackage rowInit="19">
+				<field col="1" type="STRING" />
+				<field col="15" type="STRING" />
+				<field col="68" width="4" type="NUMERIC" mask="#" />
+				<field col="73" width="13" type="NUMERIC" mask="##,###,##0.00" />
+				<field col="87" width="13" type="NUMERIC" mask="##,###,##0.00" />
+				<field col="101" width="13" type="NUMERIC" mask="##,###,##0.00" />
+				<field col="115" width="13" type="NUMERIC" mask="##,###,##0.00" />
+				<field col="129" width="16" type="NUMERIC" mask="#,###,###,##0.00" />
+			</subpackage>
 		</package>
 		<package>
 			<field row="54" col="129" width="16" type="NUMERIC" mask="#,###,###,##0.00" />

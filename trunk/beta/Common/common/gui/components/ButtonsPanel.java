@@ -349,7 +349,6 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 	    		}
         	}
         }
-        Hbuttons.get(action).setEnabled(true);
     }
     
     private void builTransaction(Vector<Componentes> vec,String action,Element ret) throws InvocationTargetException, NotFoundComponentException {
