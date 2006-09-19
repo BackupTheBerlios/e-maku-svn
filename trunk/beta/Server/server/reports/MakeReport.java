@@ -127,16 +127,16 @@ public class MakeReport extends Thread {
 				Map <String,String>parameters = new HashMap<String,String>();
 				
 				String company = CacheEnlace.getCompanyData(SocketServer.getCompanyNameKey(socket));
-				String idCompany = CacheEnlace.getCompanyData(SocketServer.getCompanyIDKey(socket));
+				String companyID = CacheEnlace.getCompanyData(SocketServer.getCompanyIDKey(socket));
 				
 				if (company == null)
 					company = "Dato no encontrado";
 				
-				if (idCompany == null)
-					idCompany = "Dato no encontrado";
+				if (companyID == null)
+					companyID = "Dato no encontrado";
 				
 				parameters.put("Empresa", company);
-				parameters.put("Nit", idCompany);
+				parameters.put("Nit", companyID);
 				parameters.put("Fecha", DateValidator.getFormattedDate());
 	
 				JRBaseFiller filler = createFiller(ReportsStore.getReportClass(codigo));

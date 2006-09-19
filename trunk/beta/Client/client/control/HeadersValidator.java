@@ -83,7 +83,9 @@ public class HeadersValidator implements ArrivePackageListener {
 	            Connection.dispose();
 	            Splash.ShowSplash();
 	            ACPHandler.ACPBegin(doc);
-	            new MainWindow();
+	            String company = raiz.getChildText("companyName");
+	            String companyID = raiz.getChildText("companyID");
+	            new MainWindow(company + " - Nit: " + companyID);
 	        }
 	        
 	        else if(nombre.equals("ACPZip")) {

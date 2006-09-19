@@ -8,19 +8,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import common.comunications.SocketWriter;
-import common.misc.ZipHandler;
-import server.database.connection.PoolConexiones;
-import server.database.sql.CloseSQL;
-import server.database.sql.RunQuery;
-import server.database.sql.SQLBadArgumentsException;
-import server.database.sql.SQLNotFoundException;
-
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
+
+import server.comunications.SocketServer;
+import server.database.connection.PoolConexiones;
+import server.database.sql.CacheEnlace;
+import server.database.sql.CloseSQL;
+import server.database.sql.RunQuery;
+import server.database.sql.SQLBadArgumentsException;
+import server.database.sql.SQLNotFoundException;
+
+import common.comunications.SocketWriter;
+import common.misc.ZipHandler;
 
 /**
  * SendACP.java Creado el 10-ago-2004
@@ -85,10 +88,15 @@ public class SendACP extends Thread{
 	        runquery = new RunQuery(bd,"SEL0109",Arrlogin);
 	        rs = runquery.ejecutarSELECT();
 	        rs.next();
-	        
 	        String numQuerys = rs.getString(1);
+	        
+			String company = CacheEnlace.getCompanyData(SocketServer.getCompanyNameKey(sock));
+			String companyID = CacheEnlace.getCompanyData(SocketServer.getCompanyIDKey(sock));	        
+	        
 	        docACPBegin = new Document();
 	        docACPBegin.setRootElement(element);
+	        element.addContent(new Element("companyName").setText(company));
+	        element.addContent(new Element("companyID").setText(companyID));
 	        element.addContent(new Element("transactions").setText(numTrans));
 	        element.addContent(new Element("querys").setText(numQuerys));
 			SocketWriter.writing(sock,this.docACPBegin);

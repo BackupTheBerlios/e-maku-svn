@@ -59,9 +59,9 @@ public class MainWindow extends JFrame {
     private static Vector Vtoolbar1;
     private static JFrame refWindow = null;
     
-    public MainWindow() {
+    public MainWindow(String title) {
         
-        super("E-Maku - Cliente");
+        super(title);
 
         this.setBounds(0, 0, ClientConst.MAX_WIN_SIZE_WIDTH,
                 ClientConst.MAX_WIN_SIZE_HEIGHT);
