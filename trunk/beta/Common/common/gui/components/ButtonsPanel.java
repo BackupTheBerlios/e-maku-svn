@@ -291,7 +291,6 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
     	
     	Vector vec = Heventos.get(action);
         Object obj = vec.get(0);
-        Hbuttons.get(action).setEnabled(false);
         if (obj instanceof Componentes) {
         	builTransaction(vec,action,null);
         }

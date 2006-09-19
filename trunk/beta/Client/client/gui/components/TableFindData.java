@@ -54,7 +54,9 @@ import common.gui.components.RecordListener;
 import common.gui.components.VoidPackageException;
 import common.gui.forms.ChangeExternalValueEvent;
 import common.gui.forms.ChangeExternalValueListener;
+import common.gui.forms.FinishEvent;
 import common.gui.forms.GenericForm;
+import common.gui.forms.InitiateFinishListener;
 import common.gui.forms.NotFoundComponentException;
 import common.transactions.STException;
 import common.transactions.STResultSet;
@@ -81,7 +83,7 @@ import common.transactions.STResultSet;
  */
 
 public class TableFindData extends JPanel implements AnswerListener,
-		ChangeExternalValueListener, RecordListener {
+		ChangeExternalValueListener, RecordListener, InitiateFinishListener {
 
 	private static final long serialVersionUID = 3348132353954885841L;
 	private GenericForm GFforma;
@@ -117,9 +119,9 @@ public class TableFindData extends JPanel implements AnswerListener,
 	 * @throws InvocationTargetException
 	 */
 
-	public TableFindData(GenericForm GFforma, Document doc)
+	public TableFindData(GenericForm GFform, Document doc)
 			throws InvocationTargetException, NotFoundComponentException {
-		this.GFforma = GFforma;
+		this.GFforma = GFform;
 		formulas = new ArrayList<Formula>();
 		exportTotalCols = new HashMap<String, String>();
 		keySQL = new ArrayList<String>();
@@ -198,7 +200,6 @@ public class TableFindData extends JPanel implements AnswerListener,
 					totales[j] = tmpTotal;
 				}
 			}
-
 			else if (args.getAttributeValue("attribute").equals("driverEvent")) {
 				String id = "";
 				if (args.getAttributeValue("id") != null) {
@@ -345,24 +346,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 		 * Se adiciona el oyente que detectara llegada de paquetes
 		 */
 
-		if (driverEvent != null && keySQL != null) {
-			for (int n = 0; n < driverEvent.size(); n++) {
-				GFforma.invokeMethod(
-				                     driverEvent.get(n),
-				                     "addAnswerListener",
-				                     new Class[] { AnswerListener.class },
-				                     new Object[] { this });
-			}
-		}
-
-		for (int n = 0; n < recordEvent.size(); n++) {
-			GFforma.invokeMethod(
-			                     recordEvent.get(n),
-			                     "addRecordListener",
-			                     new Class[] { RecordListener.class },
-			                     new Object[] { this });
-		}
-
+		GFform.addInitiateFinishListener(this);
+		
 		JScrollPane JSPtabla = new JScrollPane(JTtabla);
 		this.setLayout(new BorderLayout());
 		this.add(JSPtabla, BorderLayout.CENTER);
@@ -893,6 +878,43 @@ public class TableFindData extends JPanel implements AnswerListener,
 		if (element.getChildren().size() > 0) {
 			doc.setRootElement(element);
 			TMFDtabla.setQuery(doc, true);
+		}
+	}
+
+	public void initiateFinishEvent(FinishEvent e) {
+
+		if (driverEvent != null && keySQL != null) {
+			for (int n = 0; n < driverEvent.size(); n++) {
+				try {
+					GFforma.invokeMethod(
+					                     driverEvent.get(n),
+					                     "addAnswerListener",
+					                     new Class[] { AnswerListener.class },
+					                     new Object[] { this });
+				} catch (InvocationTargetException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (NotFoundComponentException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		}
+		
+		for (int n = 0; n < recordEvent.size(); n++) {
+			try {
+				GFforma.invokeMethod(
+									recordEvent.get(n),
+				                    "addRecordListener",
+				                     new Class[] { RecordListener.class },
+				                     new Object[] { this});
+			} catch (InvocationTargetException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (NotFoundComponentException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 	
