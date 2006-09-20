@@ -60,8 +60,8 @@ public class MainWindow extends JFrame {
     private static JFrame refWindow = null;
     
     public MainWindow(String title) {
-        
-        super(title);
+    	
+        setTitle(title);
 
         this.setBounds(0, 0, ClientConst.MAX_WIN_SIZE_WIDTH,
                 ClientConst.MAX_WIN_SIZE_HEIGHT);
