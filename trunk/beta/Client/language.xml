@@ -1419,35 +1419,49 @@
     <es_CO>Bodega</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Cellar</en_US>
+    <en_US>Warehouse</en_US>
   </sentence>
   <sentence>
     <key>BODEGA_TMP</key>
     <es_CO>Bodega de traslado</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Cellar of transfer</en_US>
+    <en_US>Warehouse of transfer</en_US>
+  </sentence>
+  <sentence>
+    <key>BODEGA_SALIDA</key>
+    <es_CO>Bodega de Salida</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Warehouse out ...</en_US>
+  </sentence>
+  <sentence>
+    <key>BODEGA_ENTRADA</key>
+    <es_CO>Bodega de Entrada</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Warehouse in ...</en_US>
   </sentence>
   <sentence>
     <key>NBODEGA</key>
     <es_CO>Nueva Bodega</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>New Cellar</en_US>
+    <en_US>New Warehouse</en_US>
   </sentence>
   <sentence>
     <key>EBODEGA</key>
     <es_CO>Editar Bodega</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Edit Cellar</en_US>
+    <en_US>Edit Warehouse</en_US>
   </sentence>
   <sentence>
     <key>DBODEGA</key>
     <es_CO>Borrar Bodega</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Delete Cellar</en_US>
+    <en_US>Delete Warehouse</en_US>
   </sentence>
   <sentence>
     <key>NEMO-BODEGA</key>
@@ -3520,6 +3534,13 @@
     <en_US>Please, wait for print to finish</en_US>
   </sentence>
   <sentence>
+    <key>DISPONIBLE</key>
+    <es_CO>Disponible</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Available</en_US>
+  </sentence>
+  <sentence>
     <key>NOARCHIMP</key>
     <es_CO>No hay archivo para imprimir</es_CO>
     <es_EC></es_EC>
@@ -3701,7 +3722,7 @@
   </sentence>
   <sentence>
     <key>KEYWORD</key>
-    <es_CO>sentence key</es_CO>
+    <es_CO>Palabra Clave</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Key Word</en_US>
@@ -3733,6 +3754,20 @@
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>I</en_US>
+  </sentence>
+  <sentence>
+    <key>INFORME-CARTERA</key>
+    <es_CO>Informes de Cartera</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-INFORME-CARTERA</key>
+    <es_CO>t</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
   </sentence>
   <sentence>
     <key>INFORME-COMPRAS</key>
@@ -4476,5 +4511,208 @@
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of --comprobantes de pago a proveedores-- by date and value</en_US>
+  </sentence>
+  <sentence>
+    <key>NTRASLADO</key>
+    <es_CO>Nuevo traslado de productos entre bodegas</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New product transfer between warehouses</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-SALDOS-INVENTARIO</key>
+    <es_CO>Reporte de Saldos</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-SALDOS-INVENTARIO</key>
+    <es_CO>S</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-SALDOS-ROJO</key>
+    <es_CO>Reporte de saldos en rojo</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-SALDOS-ROJO</key>
+    <es_CO>r</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-ROTACION-PRODUCTOS</key>
+    <es_CO>Reporte de rotación de productos</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-ROTACION-PRODUCTOS</key>
+    <es_CO>p</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-EXTENDIDO-PRODUCTOS</key>
+    <es_CO>Reporte extendido de productos</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-EXTENDIDO-PRODUCTOS</key>
+    <es_CO>x</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-SALIDAS-TERCERO</key>
+    <es_CO>Reporte de salidas por tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-SALIDAS-TERCERO</key>
+    <es_CO>t</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-RESUMIDO-PRODUCTOS</key>
+    <es_CO>Reporte resumido de productos</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-RESUMIDO-PRODUCTOS</key>
+    <es_CO>i</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-CARTERA-PENDIENTE</key>
+    <es_CO>Reporte de cartera pendiente</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-CARTERA-PENDIENTE</key>
+    <es_CO>d</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-RESUMIDO-CARTERA-PENDIENTE</key>
+    <es_CO>Reporte resumido de cartera pendiente</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-RESUMIDO-CARTERA-PENDIENTE</key>
+    <es_CO>r</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-CARTERA-VENCIDA</key>
+    <es_CO>Reporte de cartera vencida</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-CARTERA-VENCIDA</key>
+    <es_CO>v</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-RESUMIDO-CARTERA-VENCIDA</key>
+    <es_CO>Reporte resumido de cartera vencida</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-RESUMIDO-CARTERA-VENCIDA</key>
+    <es_CO>m</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-VENTAS-TERCEROS</key>
+    <es_CO>Reporte de ventas a terceros</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-VENTAS-TERCEROS</key>
+    <es_CO>a</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-SALDO-BANCOS</key>
+    <es_CO>Reporte de saldo en Banos</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-SALDO-BANCOS</key>
+    <es_CO>B</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-DETALLADO-BANCOS</key>
+    <es_CO>Reporte detallado de Banos</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-DETALLADO-BANCOS</key>
+    <es_CO>d</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-DETALLADO-AUXILIARES</key>
+    <es_CO>Reporte detallado de libros auxiliares</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-DETALLADO-AUXILIARES</key>
+    <es_CO>a</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
   </sentence>
 </language>  

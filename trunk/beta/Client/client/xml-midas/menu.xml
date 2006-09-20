@@ -1318,6 +1318,47 @@
             <Icon>GREPORTS</Icon>
             <Text>INFORME-VENTAS</Text>
             <Activo />
+            <JMenuItem>
+                <Text>REPORTE-VENTAS-TERCEROS</Text>
+                <Icon>REPORT</Icon>
+                <Mnemonic>NEMO-REPORTE-VENTAS-TERCEROS</Mnemonic>
+                <Activo />
+                <Transaction>TR00214</Transaction>
+            </JMenuItem>
+        </JMenu>
+        <JMenu>
+            <Mnemonic>NEMO-INFORME-CARTERA</Mnemonic>
+            <Icon>GREPORTS</Icon>
+            <Text>INFORME-CARTERA</Text>
+            <Activo />
+            <JMenuItem>
+                <Text>REPORTE-CARTERA-PENDIENTE</Text>
+                <Icon>REPORT</Icon>
+                <Mnemonic>NEMO-REPORTE-CARTERA-PENDIENTE</Mnemonic>
+                <Activo />
+                <Transaction>TR00210</Transaction>
+            </JMenuItem>
+            <JMenuItem>
+                <Text>REPORTE-RESUMIDO-CARTERA-PENDIENTE</Text>
+                <Icon>REPORT</Icon>
+                <Mnemonic>NEMO-REPORTE-RESUMIDO-CARTERA-PENDIENTE</Mnemonic>
+                <Activo />
+                <Transaction>TR00211</Transaction>
+            </JMenuItem>
+            <JMenuItem>
+                <Text>REPORTE-CARTERA-VENCIDA</Text>
+                <Icon>REPORT</Icon>
+                <Mnemonic>NEMO-REPORTE-CARTERA-VENCIDA</Mnemonic>
+                <Activo />
+                <Transaction>TR00212</Transaction>
+            </JMenuItem>
+            <JMenuItem>
+                <Text>REPORTE-RESUMIDO-CARTERA-VENCIDA</Text>
+                <Icon>REPORT</Icon>
+                <Mnemonic>NEMO-REPORTE-RESUMIDO-CARTERA-VENCIDA</Mnemonic>
+                <Activo />
+                <Transaction>TR00213</Transaction>
+            </JMenuItem>
         </JMenu>
     </JMenu>
     <JMenu>
@@ -1985,21 +2026,46 @@
             <Icon>GREPORTS</Icon>
             <Text>INFORME-CONTABILIDAD</Text>
             <Activo />
+            <JMenuItem>
+                <Text>REPORTE-DETALLADO-AUXILIARES</Text>
+                <Icon>REPORT</Icon>
+                <Mnemonic>NEMO-REPORTE-DETALLADO-AUXILIARES</Mnemonic>
+                <Activo />
+                <Transaction>TR00217</Transaction>
+            </JMenuItem>
         </JMenu>
     </JMenu>
     <JMenu>
         <Text>KARDEX</Text>
         <Mnemonic>NEMO-KARDEX</Mnemonic>
-        <JMenuItem>
-            <Activo />
-            <Acelerator></Acelerator>
-            <ActionCommand>traslados</ActionCommand>
-            <Icon>/icons/ico_traslados.png</Icon>
+        <JMenu>
             <Mnemonic>NEMO-TRASLADOS</Mnemonic>
+            <Icon>/icons/ico_traslados.png</Icon>
             <Text>TRASLADOS</Text>
             <Activo />
-            <Transaction>TR00049</Transaction>
-        </JMenuItem>
+            <JMenuItem>
+                <Text>NUEVO</Text>
+                <Icon>/icons/ico_nuevo.png</Icon>
+                <Mnemonic>NEMO-NUEVO</Mnemonic>
+                <Activo />
+                <Transaction>TR00201</Transaction>
+            </JMenuItem>
+            <JMenuItem>
+                <Text>ANULAR</Text>
+                <Icon>/icons/ico_anular.png</Icon>
+                <Mnemonic>NEMO-ANULAR</Mnemonic>
+                <Activo />
+                <Transaction>TR00202</Transaction>
+            </JMenuItem>
+            <JSeparator />
+            <JMenuItem>
+                <Text>CONSULTAR</Text>
+                <Icon>/icons/ico_consultar.png</Icon>
+                <Mnemonic>NEMO-CONSULTAR</Mnemonic>
+                <Activo />
+                <Transaction>TR00203</Transaction>
+            </JMenuItem>
+		</JMenu>        
         <JMenuItem>
             <Activo />
             <Acelerator></Acelerator>
@@ -2016,6 +2082,48 @@
             <Icon>GREPORTS</Icon>
             <Text>INFORME-INVENTARIOS</Text>
             <Activo />
+               <JMenuItem>
+                   <Text>REPORTE-SALDOS-INVENTARIO</Text>
+                   <Icon>REPORT</Icon>
+                   <Mnemonic>NEMO-REPORTE-SALDOS-INVENTARIO</Mnemonic>
+                   <Activo />
+                   <Transaction>TR00204</Transaction>
+               </JMenuItem>
+               <JMenuItem>
+                   <Text>REPORTE-SALDOS-ROJO</Text>
+                   <Icon>REPORT</Icon>
+                   <Mnemonic>NEMO-REPORTE-SALDOS-ROJO</Mnemonic>
+                   <Activo />
+                   <Transaction>TR00205</Transaction>
+               </JMenuItem>
+               <JMenuItem>
+                   <Text>REPORTE-ROTACION-PRODUCTOS</Text>
+                   <Icon>REPORT</Icon>
+                   <Mnemonic>NEMO-REPORTE-ROTACION-PRODUCTOS</Mnemonic>
+                   <Activo />
+                   <Transaction>TR00206</Transaction>
+               </JMenuItem>
+               <JMenuItem>
+                   <Text>REPORTE-EXTENDIDO-PRODUCTOS</Text>
+                   <Icon>REPORT</Icon>
+                   <Mnemonic>NEMO-REPORTE-EXTENDIDO-PRODUCTOS</Mnemonic>
+                   <Activo />
+                   <Transaction>TR00207</Transaction>
+               </JMenuItem>
+               <JMenuItem>
+                   <Text>REPORTE-SALIDAS-TERCERO</Text>
+                   <Icon>REPORT</Icon>
+                   <Mnemonic>NEMO-REPORTE-SALIDAS-TERCERO</Mnemonic>
+                   <Activo />
+                   <Transaction>TR00208</Transaction>
+               </JMenuItem>
+               <JMenuItem>
+                   <Text>REPORTE-RESUMIDO-PRODUCTOS</Text>
+                   <Icon>REPORT</Icon>
+                   <Mnemonic>NEMO-REPORTE-RESUMIDO-PRODUCTOS</Mnemonic>
+                   <Activo />
+                   <Transaction>TR00209</Transaction>
+               </JMenuItem>
         </JMenu>
     </JMenu>
     <JMenu>
@@ -2046,6 +2154,20 @@
             <Icon>GREPORTS</Icon>
             <Text>INFORME-BANCOS</Text>
             <Activo />
+            <JMenuItem>
+                <Text>REPORTE-SALDO-BANCOS</Text>
+                <Icon>REPORT</Icon>
+                <Mnemonic>NEMO-REPORTE-SALDO-BANCOS</Mnemonic>
+                <Activo />
+                <Transaction>TR00215</Transaction>
+            </JMenuItem>
+            <JMenuItem>
+                <Text>REPORTE-DETALLADO-BANCOS</Text>
+                <Icon>REPORT</Icon>
+                <Mnemonic>NEMO-REPORTE-DETALLADO-BANCOS</Mnemonic>
+                <Activo />
+                <Transaction>TR00215</Transaction>
+            </JMenuItem>
         </JMenu>
     </JMenu>
     <JMenu>
