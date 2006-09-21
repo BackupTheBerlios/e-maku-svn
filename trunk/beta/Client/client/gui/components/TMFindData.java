@@ -574,6 +574,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
         /* Recorriendo cada formula */
         String key=var.substring(0,1);
         String newVar=reemplazarFormula(var,rowIndex,valueOld);
+        System.out.println("Formula Reemplazada: "+newVar);
 	    	try {
 	    		Object result = null;
 	    		int col= getColIndex(key);
@@ -608,7 +609,8 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 		            	valueOld.put(key,resultado);
 		        	}
 	        }
-	        else if ("STRING".equals(ATFDargs[col].getType())) {
+	        else if ("STRING".equals(ATFDargs[col].getType()) ||
+	        		 "COMBOSQL".equals(ATFDargs[col].getType())) {
 		        	Object resultado;
 		    		resultado =  result;
 		        	updateCells(resultado,rowIndex,col);
@@ -717,7 +719,8 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 			                
 			                /* Codigo pendiente para analizar */
 			                String txt = getValueAt(rowIndex,col).toString();
-			                if ("STRING".equals(ATFDargs[col].getType())) {
+			                if ("STRING".equals(ATFDargs[col].getType()) || 
+			                	"COMBOSQL".equals(ATFDargs[col].getType())) {
 			                	newVar+="".equals(txt)?"\"\"":"\""+txt+"\"";
 			                }
 			                else {
