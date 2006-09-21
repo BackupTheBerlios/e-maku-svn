@@ -258,6 +258,11 @@
         <en_US>Invalid arguments in component</en_US>
     </sentence>
     <sentence>
+        <key errorCode="126">ERR_DATA</key>
+        <es_CO>Error en los datos a trasladar, posiblemente las cantidades sean igual a 0</es_CO>
+        <en_US>There is a mistake in the data, this data could be equals to 0</en_US>
+    </sentence>
+    <sentence>
         <key errorCode="127">ERR_PACKAGE_NOT_FOUND</key>
         <es_CO>Etiqueta XML no encontrada</es_CO>
         <en_US>XML tag not found</en_US>

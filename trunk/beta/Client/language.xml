@@ -4520,6 +4520,20 @@
     <en_US>New product transfer between warehouses</en_US>
   </sentence>
   <sentence>
+    <key>ATRASLADO</key>
+    <es_CO>Anular traslado de productos entre bodegas</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Annull product transfer between warehouses</en_US>
+  </sentence>
+  <sentence>
+    <key>STRASLADO</key>
+    <es_CO>Consultar traslado de productos entre bodegas</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Search product transfer between warehouses</en_US>
+  </sentence>
+  <sentence>
     <key>REPORTE-SALDOS-INVENTARIO</key>
     <es_CO>Reporte de Saldos</es_CO>
     <es_EC></es_EC>

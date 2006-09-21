@@ -156,6 +156,10 @@ public class LNInventarios {
        	 	IOOBEe.printStackTrace();
             throw new LNErrorProcecuteException(Language.getWord("ERR_ARGS"));
         }
+        catch(NullPointerException NPEe) {
+       	 	RQsalida.closeStatement();
+            throw new LNErrorProcecuteException(Language.getWord("ERR_DATA"));
+        }
     }
 
     /**
