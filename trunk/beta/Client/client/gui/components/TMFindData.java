@@ -574,7 +574,6 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
         /* Recorriendo cada formula */
         String key=var.substring(0,1);
         String newVar=reemplazarFormula(var,rowIndex,valueOld);
-        System.out.println("Formula Reemplazada: "+newVar);
 	    	try {
 	    		Object result = null;
 	    		int col= getColIndex(key);
