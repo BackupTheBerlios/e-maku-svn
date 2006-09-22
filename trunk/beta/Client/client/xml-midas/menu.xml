@@ -1902,6 +1902,53 @@
         </JMenu>
     </JMenu>
     <JMenu>
+        <Text>ARQUEO</Text>
+        <Mnemonic>NEMO-ARQUEO</Mnemonic>
+        <Activo />
+          <JMenuItem>
+              <Text>NUEVO</Text>
+              <Icon>/icons/ico_nuevo.png</Icon>
+              <Mnemonic>NEMO-NUEVO</Mnemonic>
+              <Activo />
+              <Transaction>TR00218</Transaction>
+          </JMenuItem>
+          <JMenuItem>
+              <Text>ANULAR</Text>
+              <Icon>/icons/ico_anular.png</Icon>
+              <Mnemonic>NEMO-ANULAR</Mnemonic>
+              <Activo />
+              <Transaction>TR00219</Transaction>
+          </JMenuItem>
+          <JSeparator />
+          <JMenuItem>
+              <Text>CONSULTAR</Text>
+              <Icon>/icons/ico_consultar.png</Icon>
+              <Mnemonic>NEMO-CONSULTAR</Mnemonic>
+              <Activo />
+              <Transaction>TR00220</Transaction>
+          </JMenuItem>
+          <JMenu>
+              <Mnemonic>NEMO-REPORTE</Mnemonic>
+              <Icon>GREPORTS</Icon>
+              <Text>REPORTS</Text>
+              <Activo />
+              <JMenuItem>
+                  <Text>REPORTE-ARQUEO-NUMERO</Text>
+                  <Icon>REPORT</Icon>
+                  <Mnemonic>NEMO-REPORTE-ARQUEO-NUMERO</Mnemonic>
+                  <Activo />
+                  <Transaction>TR00221</Transaction>
+              </JMenuItem>
+              <JMenuItem>
+                  <Text>REPORTE-ARQUEO-FECHAS</Text>
+                  <Icon>REPORT</Icon>
+                  <Mnemonic>NEMO-REPORTE-ARQUEO-FECHAS</Mnemonic>
+                  <Activo />
+                  <Transaction>TR00222</Transaction>
+              </JMenuItem>
+        </JMenu>
+    </JMenu>
+    <JMenu>
         <Text>CONTABILIDAD</Text>
         <Mnemonic>NEMO-CONTABILIDAD</Mnemonic>
         <JMenu>

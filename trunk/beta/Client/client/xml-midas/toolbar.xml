@@ -121,4 +121,12 @@
 			<ToolTipText>TIP-NCCONTABILIDAD</ToolTipText>
 		</JButtonBar>
 	</JToolBar>
+	<JToolBar>
+		<JButtonBar>
+			<Activo />
+			<Transaction>TR00218</Transaction>
+			<Icon>/icons/ico_arqueo.png</Icon>
+			<ToolTipText>TIP-NARQUEO</ToolTipText>
+		</JButtonBar>
+	</JToolBar>
 </ToolBar>

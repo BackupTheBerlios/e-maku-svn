@@ -2757,6 +2757,27 @@
     <en_US>D</en_US>
   </sentence>
   <sentence>
+    <key>INGRESOS</key>
+    <es_CO>Ingresos</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Entrances</en_US>
+  </sentence>
+  <sentence>
+    <key>EGRESOS</key>
+    <es_CO>Egresos</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Debits</en_US>
+  </sentence>
+  <sentence>
+    <key>DOCUMENTOS-ANULADOS</key>
+    <es_CO>Documentos anulados</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Annull Documents</en_US>
+  </sentence>
+  <sentence>
     <key>NEMO-VEHICULO</key>
     <es_CO>V</es_CO>
     <es_EC></es_EC>
@@ -4534,6 +4555,76 @@
     <en_US>Search product transfer between warehouses</en_US>
   </sentence>
   <sentence>
+    <key>ARQUEO</key>
+    <es_CO>Arqueo</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Cash count</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-ARQUEO</key>
+    <es_CO>q</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>s</en_US>
+  </sentence>
+  <sentence>
+    <key>NARQUEO</key>
+    <es_CO>Nuevo Arqueo</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New cash count</en_US>
+  </sentence>
+  <sentence>
+    <key>AARQUEO</key>
+    <es_CO>Anular Arqueo</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Annull cash count</en_US>
+  </sentence>
+  <sentence>
+    <key>SARQUEO</key>
+    <es_CO>Consultar Arqueo</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Search cash count</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-ARQUEO-NUMERO</key>
+    <es_CO>Reporte de Arqueo por numero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Cash count report by number</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-ARQUEO-NUMERO</key>
+    <es_CO>n</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>n</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-ARQUEO-FECHAS</key>
+    <es_CO>Reporte de arqueos por rango de fechas</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>cash count report by date range</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-ARQUEO-FECHAS</key>
+    <es_CO>r</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>d</en_US>
+  </sentence>
+  <sentence>
+    <key>TIP-NARQUEO</key>
+    <es_CO>Nuevo Arqueo de Caja</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New cash count</en_US>
+  </sentence>
+  <sentence>
     <key>REPORTE-SALDOS-INVENTARIO</key>
     <es_CO>Reporte de Saldos</es_CO>
     <es_EC></es_EC>
@@ -4728,5 +4819,89 @@
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>SALDO_ANT</key>
+    <es_CO>SALDO ANTERIOR</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PREVIOUS BALANCE</en_US>
+  </sentence>
+  <sentence>
+    <key>TOTAL_INGRESOS</key>
+    <es_CO>TOTAL INGRESOS</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>INCOME TOTAL</en_US>
+  </sentence>
+  <sentence>
+    <key>VENTAS_CONTADO</key>
+    <es_CO>Ventas de Contado</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Cash Sale</en_US>
+  </sentence>
+  <sentence>
+    <key>COMPROBANTES_INGRESO</key>
+    <es_CO>Comprobantes de Ingreso</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Income Rouchers</en_US>
+  </sentence>
+  <sentence>
+    <key>DEVOLUCION_COMPRA</key>
+    <es_CO>Devoluciones en Compras</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Purchase Defunds</en_US>
+  </sentence>
+  <sentence>
+    <key>INGRESOS_MAS_SALDO</key>
+    <es_CO>INGRESOS MAS SALDO ANTERIOR</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>INCOMES PLUS PREVIOUS BALANCE</en_US>
+  </sentence>
+  <sentence>
+    <key>TOTAL_EGRESOS</key>
+    <es_CO>TOTAL EGRESOS</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>EXPENSES TOTAL</en_US>
+  </sentence>
+  <sentence>
+    <key>COMPRAS_CONTADO</key>
+    <es_CO>Compras de Contado</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>cash purchase</en_US>
+  </sentence>
+  <sentence>
+    <key>COMPROBANTES_EGRESO</key>
+    <es_CO>Comprobantes de Egreso</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Expense Roucher</en_US>
+  </sentence>
+  <sentence>
+    <key>DEVOLUCION_VENTAS</key>
+    <es_CO>Devoluciones en Ventas</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Sale Defund</en_US>
+  </sentence>
+  <sentence>
+    <key>CONSIGNACIONES</key>
+    <es_CO>Consignaciones</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>consignments</en_US>
+  </sentence>
+  <sentence>
+    <key>NUEVO_SALDO</key>
+    <es_CO>NUEVO SALDO</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>NEW BALANCE</en_US>
   </sentence>
 </language>  

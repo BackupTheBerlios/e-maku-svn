@@ -447,4 +447,8 @@
     <key>RETENCIONES</key>
     <path>/icons/ico_retenciones.png</path>
   </icon>
+  <icon>
+    <key>ARQUEO</key>
+    <path>/icons/ico_arqueo.png</path>
+  </icon>
 </icons>
