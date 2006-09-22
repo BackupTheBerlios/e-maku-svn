@@ -1,146 +1,313 @@
 package common.printer;
 
-import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontFormatException;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import javax.imageio.ImageIO;
-
+import org.jdom.Attribute;
 import org.jdom.DataConversionException;
-import org.jdom.Document;
 import org.jdom.Element;
 
+import common.control.ClientHeaderValidator;
+import common.control.SuccessEvent;
+import common.control.SuccessListener;
+import common.printer.PrintManager.ImpresionType;
 
-public class PostScriptManager extends AbstractManager {
+
+public class PostScriptManager implements AbstractManager, SuccessListener, Printable {
 	
-	private BufferedImage bufferedImage;
+	private static final long serialVersionUID = 3641816256967941893L;
 	private Graphics2D g2d;
 	
-	public PostScriptManager (Document template,Document transaction) {
-		Element root_template = template.getRootElement();
-		Element root_transaction = transaction.getRootElement();
-		
-		Element settings = root_template.getChild("settings");
-		Iterator elements = root_template.getChildren().iterator();
-		
-		width = Integer.parseInt(settings.getAttributeValue("width"));
-		height = Integer.parseInt(settings.getAttributeValue("height"));
-		bufferedImage = new BufferedImage(width,height,BufferedImage.TYPE_INT_BGR);
-		g2d = bufferedImage.createGraphics();
-		
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.setColor(Color.white);
-		g2d.fillRect(0,0,width,height);
-	    
-		Font font = null;
-		try {
-			font = Font.createFont(Font.TRUETYPE_FONT,new File("DejaVuSansMono.ttf"));
-			font = font.deriveFont(Font.PLAIN,10);
-		} catch (FontFormatException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-        g2d.setFont(font);
-        g2d.setColor(Color.black);
-        
-		elements.next();
-		Iterator it = root_transaction.getChildren("package").iterator();
-		while(elements.hasNext()) {
-			Element pack_template = (Element) elements.next();
-			Element pack_transaction = (Element) it.next();
-			processElement(pack_template,pack_transaction);
-		}
-		
-		g2d.dispose();
-		
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		try {
-			ImageIO.write(bufferedImage, "png", out);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		in = new ByteArrayInputStream(out.toByteArray());
-
+	private boolean sussceful;
+	private ImpresionType impresionType;
+	private String ndocument = "";
+	private boolean sucess = false;
+	private Element rootTemplate;
+	//private Element rootTransact;
+	public PostScriptManager (Element rootTemplate,Element rootTransact) {
+		ClientHeaderValidator.addSuccessListener(this);
+		impresionType = ImpresionType.POSTSCRIPT;
+		this.rootTemplate = rootTemplate;
+		//this.rootTransact = rootTransact;
 	}
-
-	public void processElement(Element pack_template, Element pack_transaction) {
-		Iterator it_template = pack_template.getChildren().iterator();
-		Iterator it_transaction = pack_transaction.getChildren().iterator();
-		while(it_template.hasNext()) {
-			try {
-				Element el_template = (Element)it_template.next();
-				if (el_template.getName().equals("labels")) {
-					
-					Iterator it = el_template.getChildren().iterator();
-					while (it.hasNext()) {
-						Element el = (Element) it.next();
-						int row = el.getAttribute("row").getIntValue();
-						int col = el.getAttribute("col").getIntValue();
-						String value = el.getValue();
-						value = !"NULL".equals(value) && !"".equals(value) ?value:"";
-						g2d.drawString(value,row,col);
+	 
+	public void process() {
+		try {
+			Attribute ATTRequesNumeration = rootTemplate.getAttribute("requestNumeration");
+			if (ATTRequesNumeration!=null && ATTRequesNumeration.getBooleanValue()) {
+				int times = 0;
+				while (!sucess) {
+					try {
+						if (times<=30) {
+							Thread.sleep(100);
+						}
+						else {
+							System.out.println("No se pudo obtner la numeracion de " + rootTemplate.getAttributeValue("name"));
+							return;
+						}
+						times++;
+					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
 				}
-				else if (el_template.getName().equals("subpackage")) {
-					int rowInit = el_template.getAttribute("rowInit").getIntValue();
-					Iterator it = el_template.getChildren().iterator();
-					HashMap<String,String> args = new HashMap<String,String>();
-					int i=0;
-					while (it.hasNext()) {
-						Element element = (Element) it.next();
-						args.put("width"+i,element.getAttribute("width").getValue());
-						args.put("col"+i,element.getAttribute("col").getValue());
-						args.put("type"+i,element.getAttribute("type").getValue());
-						args.put("mask"+i,element.getAttribute("mask").getValue());
-						i++;
-					}
-					
-					while (it_transaction.hasNext()) {
-						Element element = (Element) it_transaction.next();
-						Iterator iterator = element.getChildren().iterator();
-						i=0;
-						while(iterator.hasNext()) {
-							Element elmt = (Element) iterator.next();
-							String value = elmt.getValue();
-							if ("NUMERIC".equals(args.get("type"+i))) {
-								NumberFormat formatter = new DecimalFormat(args.get("mask"+i));
-								value = !"NULL".equals(value) && !"".equals(value) ?
-										formatter.format(Double.parseDouble(value)):"";
-							} else if ("STRING".equals(args.get("type"+i))) {
-								value = !"NULL".equals(value) && !"".equals(value) ?value:"";
-							}
-							g2d.drawString(value,rowInit,Integer.parseInt(args.get("col"+i)));
-							i++;
-						}
-						i=0;
-						/* Aqui que pendiente segun la plantilla habra un etiqueta
-						   con un factor de acumulacion. */
-						rowInit+=10;	
+			}
+			Calendar calendar = Calendar.getInstance();
+			long init = calendar.getTimeInMillis();
+			
+			g2d.setFont(new Font("Monospace",Font.PLAIN,12));
+			
+			processMetadata(rootTemplate.getChild("metadata"));
+			
+			//Iterator itTemplate = rootTemplate.getChildren("package").iterator();
+			//Iterator itTransact = rootTransact.getChildren("package").iterator();
+			//int countPacks = 0;
+			/*while(itTemplate.hasNext() && itTransact.hasNext()) {
+				Element elmTemplate = (Element)itTemplate.next();
+				Element elmTransact = (Element)itTransact.next();
+				Attribute attr = elmTemplate.getAttribute("validate");
+				countPacks += elmTransact.getChildren().size();
+				boolean validate = attr != null ? attr.getBooleanValue() : false;
+				if (validate) {
+					if (elmTransact.getChildren().size() > 0) {
+						processElement(elmTemplate,elmTransact);
 					}
 				}
 				else {
-					Element el_transaction = (Element)it_transaction.next();
-					int row = el_template.getAttribute("row").getIntValue();
-					int col = el_template.getAttribute("col").getIntValue();
-					String value = el_transaction.getValue();
-					value = !"NULL".equals(value) && !"".equals(value) ?value:"";
-					g2d.drawString(value,row,col);
+					processElement(elmTemplate,elmTransact);
 				}
-			} catch (DataConversionException e) {
-				e.printStackTrace();
+			}*/
+			//if ( countPacks > 0 ) {
+				this.sussceful = true;
+				calendar = Calendar.getInstance();
+				long end = calendar.getTimeInMillis();
+				System.out.println("Generador en " + (end-init) + " milisegundos ");
+			//}
+		}
+		catch (DataConversionException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void processMetadata(Element element) throws DataConversionException {
+
+		Iterator it = element.getChildren().iterator();
+		while (it.hasNext()) {
+			
+			Element e = (Element) it.next();
+			String name = e.getName();
+			Iterator itAttribs = e.getAttributes().iterator();
+			HashMap<String,Attribute> attribs = new HashMap<String,Attribute>();
+			
+			while(itAttribs.hasNext()) {
+				Attribute attribute = (Attribute) itAttribs.next();
+				attribs.put(attribute.getName(),attribute);
+			}
+			Attribute attr = attribs.get("row");
+			int row = attr.getIntValue();
+			int col =  attribs.get("col").getIntValue();
+			
+			if ("line".equals(name)) {
+				int row2 = attribs.get("row2").getIntValue();
+				int col2 = attribs.get("col2").getIntValue();
+				g2d.drawLine(col,row, col2,row2);
+			}
+			else if ("field".equals(name)) {
+				String value = e.getTextTrim();
+				value = " ".equals(value) || "".equals(value) ? "  " : value;
+				g2d.drawString(value,col,row);
+			}
+			else if ("ndocument".equals(name)) {
+				String value = ndocument;
+				g2d.drawString(value,col,row);
 			}
 		}
 	}
+	
+	/*private void processElement(Element pack_template, Element pack_transaction) throws DataConversionException {
+
+		Iterator it_template = pack_template.getChildren().iterator();
+		Iterator it_transaction = pack_transaction.getChildren().iterator();
+		while(it_template.hasNext() && it_transaction.hasNext()) {
+			
+			Element el_template = (Element)it_template.next();
+			if (el_template.getName().equals("subpackage")) {
+				Attribute attr = el_template.getAttribute("rowInit");
+				int rowInit = -1;
+				boolean isValidate = false;
+				if (attr.getValue().equals("last")) {
+					rowInit = currentRow;
+					isValidate = true;
+				}
+				else {
+					rowInit = attr.getIntValue();
+				}
+				
+				Iterator it = el_template.getChildren("metadata").iterator();
+				while (it.hasNext()) { 
+					Element element = (Element) it.next();
+					processMetadata(element);
+					rowInit = currentRow;
+				}
+				
+				it = el_template.getChildren("field").iterator();
+				ArrayList<HashMap<String,Attribute>> AttCols = new ArrayList<HashMap<String,Attribute>>(); 
+				while (it.hasNext()) {
+					HashMap<String,Attribute> attribs = new HashMap<String,Attribute>();
+					Element element = (Element) it.next();
+					Iterator itAttribs = element.getAttributes().iterator();
+					while(itAttribs.hasNext()) {
+						Attribute attribute = (Attribute) itAttribs.next();
+						attribs.put(attribute.getName(),attribute);
+					}
+					AttCols.add(attribs);
+				}
+				
+				while (it_transaction.hasNext()) {
+					Element element = (Element) it_transaction.next();
+					Iterator iterator = element.getChildren().iterator();
+					int i=0;
+					while(iterator.hasNext()) {
+						Element elmt = (Element) iterator.next();
+						Attribute att = new Attribute("row",String.valueOf(rowInit));
+						AttCols.get(i).put("row",att);
+						addValue(elmt.getValue(),AttCols.get(i));
+						i++;
+					}
+					rowInit++;
+				}
+				if (isValidate) {
+					currentRow = rowInit + 1;
+				}
+			}
+			else {
+				Element el_transaction = (Element)it_transaction.next();
+
+				Iterator itAttribs = el_template.getAttributes().iterator();
+				HashMap<String,Attribute> attribs = new HashMap<String,Attribute>();
+				
+				while(itAttribs.hasNext()) {
+					Attribute attribute = (Attribute) itAttribs.next();
+					attribs.put(attribute.getName(),attribute);
+				}
+				addValue(el_transaction.getValue(),attribs);
+			}
+		}
+	}
+	
+	private void addValue(String value,HashMap<String,Attribute> attribs) throws DataConversionException {
+		
+		int row =  attribs.get("row").getIntValue();
+		int col =  attribs.get("col").getIntValue();
+		
+		Attribute attribute = attribs.get("type");
+		String type = attribute!=null ? attribute.getValue() : null ;
+		value = !"NULL".equals(value) && !"".equals(value) ?value:"";
+		if ("TEXT".equals(type)) {
+			int width = attribs.get("width").getIntValue();
+			int height = attribs.get("height").getIntValue();
+			textGenerator.addTextArea(value,row,col,width,height,true);
+		}
+		else if ("STRING".equals(type)) {
+			//value = " ".equals(value) || "".equals(value) ? "   " : value.trim();
+			//textGenerator.addString(value,row,col,null);
+			if (!"".equals(value.trim())) {
+				textGenerator.addString(value,row,col,null);
+			}
+			if (attribs.containsKey("separatorchar")){
+				Attribute att = attribs.get("separatorchar");
+				int colCharSeparator = attribs.get("separatorcol").getIntValue();
+				textGenerator.addString(att.getValue(),row,colCharSeparator,null);
+			}
+		}
+		else if ("STRINGCONCAT".equals(type)) {
+			if (concatData.containsKey(row)) {
+				String[] acumString = concatData.get(row);
+				if (acumString[0].equals(attribs.get("link").getValue())) {
+					String addVal = attribs.get("char").getValue()+value;
+					textGenerator.addString(addVal,row,acumString[1].length()+2,null);
+					acumString[1] +=  addVal;
+					concatData.put(row,acumString);
+				}
+			}
+			else {
+				textGenerator.addString(value,row,col,null);
+				concatData.put(row, new String[]{String.valueOf(col),value});
+			}
+		}
+		else if ("NUMERIC".equals(type)) {
+			String mask = attribs.get("mask").getValue();
+			NumberFormat formatter = new DecimalFormat(mask);
+			value = !"NULL".equals(value) && !"".equals(value) ? formatter.format(Double.parseDouble(value)):"";
+			textGenerator.addString(value,row,col,attribs.get("width").getIntValue());
+			if (attribs.containsKey("separatorchar")){
+				Attribute att = attribs.get("separatorchar");
+				int colCharSeparator = attribs.get("separatorcol").getIntValue();
+				textGenerator.addString(att.getValue(),row,colCharSeparator,null);
+			}
+		}
+		else if ("ABSTRACT".equals(type)) {
+			int height = attribs.get("height").getIntValue();
+			textGenerator.addTextArea(value,row,col,null,height,false);
+		}
+        else if ("NUMTOLETTERS".equals(type)) {
+            try {
+            	int width = attribs.get("width").getIntValue();
+    			int height = attribs.get("height").getIntValue();
+    			
+                Double d = Double.parseDouble(value);
+                String letters = String.valueOf(d.intValue());
+                letters = NumberToLetterConversor.letters(letters, null);
+                
+                textGenerator.addTextArea(letters,row,col,width,height,true);
+            } catch (NumberFormatException NFE) {
+                // Pendiente por traducir
+                System.out.printf("No se puede convertir %s  a letras\n%s",value,NFE.getMessage());
+            }
+        }
+	}*/
+
+	public synchronized void cathSuccesEvent(SuccessEvent e) {
+		String numeration = e.getNdocument();
+		if (numeration!=null && !"".equals(numeration)) {
+			sucess = true;
+			ndocument = numeration;
+		}
+	}
+	
+	public ImpresionType getImpresionType() {
+		return this.impresionType;
+	}
+
+	public ByteArrayInputStream getStream() { return null; }
+
+	public boolean isSusseful() {
+		return this.sussceful;
+	}
+
+	public int print(Graphics graphics, PageFormat pf, int pageIndex) throws PrinterException {
+		Paper p = pf.getPaper();
+		p.setImageableArea( 0, 0, p.getWidth(),p.getHeight());
+		pf.setPaper(p);
+
+		g2d= (Graphics2D)graphics;
+		g2d.setClip(0, 0,(int) p.getWidth(), (int)p.getHeight());
+		switch (pageIndex) {
+			case 0:
+				process();
+				return PAGE_EXISTS;
+			default:
+				return NO_SUCH_PAGE;
+		}
+	}
+	
+	public void process(Element template, Element packages) {}
 }

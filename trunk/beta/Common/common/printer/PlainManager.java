@@ -1,5 +1,6 @@
 package common.printer;
 
+import java.io.ByteArrayInputStream;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -15,17 +16,24 @@ import common.control.ClientHeaderValidator;
 import common.control.SuccessEvent;
 import common.control.SuccessListener;
 import common.misc.text.NumberToLetterConversor;
+import common.printer.PrintManager.ImpresionType;
 
-public class PlainManager extends AbstractManager implements SuccessListener {
+public class PlainManager implements AbstractManager ,SuccessListener{
 	
 	private TextGenerator textGenerator = new TextGenerator();
 	private HashMap<Integer,String[]> concatData = new HashMap<Integer, String[]>(); 
 	private int currentRow = 1;
 	private String ndocument = "";
 	private boolean sucess = false;
+	/*private int width;
+	private int height;*/
+	private ByteArrayInputStream in;
+	private boolean sussceful;
+	private ImpresionType impresionType;
 	
 	public PlainManager() {
 		ClientHeaderValidator.addSuccessListener(this);
+		impresionType = ImpresionType.PLAIN; 
 	}
 	
 	public void process(Element rootTemplate,Element rootTransact) {
@@ -77,8 +85,8 @@ public class PlainManager extends AbstractManager implements SuccessListener {
 				}
 			}
 			if ( countPacks > 0 ) {
-				super.in = textGenerator.getStream();
-				sussceful = true;
+				this.in = textGenerator.getStream();
+				this.sussceful = true;
 				calendar = Calendar.getInstance();
 				long end = calendar.getTimeInMillis();
 				System.out.println("Generador en " + (end-init) + " milisegundos ");
@@ -323,5 +331,17 @@ public class PlainManager extends AbstractManager implements SuccessListener {
 			sucess = true;
 			ndocument = numeration;
 		}
+	}
+
+	public ImpresionType getImpresionType() {
+		return this.impresionType;
+	}
+
+	public ByteArrayInputStream getStream() {
+		return this.in;
+	}
+
+	public boolean isSusseful() {
+		return this.sussceful;
 	}
 }

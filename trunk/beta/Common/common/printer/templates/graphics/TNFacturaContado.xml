@@ -1,0 +1,83 @@
+<emaku_template type="GRAPHIC" requestNumeration="true">
+		<settings width="2550" height="3300"/>
+		<metadata>
+				<!-- Encabezado -->
+				<!-- Datod personales -->
+				<field row="50" col="50">Fecha:</field>
+				<field row="60" col="50">Nombre:</field>
+				<field row="70" col="50">Nit/CC:</field>
+				<field row="80" col="50">Direccion:</field>
+				<field row="90" col="50">Telefono:</field>
+				<field row="100" col="50">Ciudad:</field>
+				<!-- Informacion documento -->
+				<field row="10" col="107">Factura Contado</field>
+				<field row="20" col="107">Vendedor</field>
+				<field row="30" col="107">Bodega</field>
+				<field row="40" col="107">Numero</field>
+				<ndocument row="12" col="123"/>
+				<!-- Informacion detallada de productos -->
+				<field row="70" col="50">Codigo</field>
+				<field row="70" col="310">Descripcion</field>
+				<field row="70" col="630">Cantidad</field>
+				<field row="70" col="740">V. Unitario</field>
+				<field row="70" col="880">Sub. Total</field>
+				<field row="70" col="1030">Descuento</field>
+				<field row="70" col="1170">Total IVA</field>
+				<field row="70" col="1330">Total</field>
+				<!-- Observaciones -->
+				<field row="560" col="100">Observaciones</field>
+				<!-- Totales -->
+				<field row="560" col="1120"><![CDATA[Sub Total $]]></field>
+				<field row="570" col="1120"><![CDATA[Descuento $]]></field>
+				<field row="580" col="1120"><![CDATA[IVA       $]]></field>
+				<field row="590" col="1120"><![CDATA[Total     $]]></field>
+				<!-- Pie de pagina -->
+				<field row="63" col="11" type="STRING">ACEPTADA</field>
+		</metadata>
+		<!-- Paquetes -->
+		<!-- Datos Personales -->
+		<package>
+				<field row="9" col="12" type="STRING" />
+				<field row="10" col="12" type="STRING" />
+				<field row="11" col="12" type="STRING" />
+				<field row="12" col="12" type="STRING" />
+				<field row="13" col="12" type="STRING" />
+				<field row="14" col="12" type="STRING" />
+		</package>
+		<!-- Bodega -->
+		<package>
+				<field row="10" col="123" type="STRING" />
+		</package>
+		<!-- Vendedor -->
+		<package>
+				<field row="11" col="123" type="STRING" />
+		</package>
+		<!-- Nro Doc -->
+		<package>
+				<field row="0" col="0" type="STRING" />
+		</package>
+		<!-- Detalles -->
+		<package>
+				<subpackage rowInit="19">
+						<field col="1" type="STRING" />
+						<field col="15" type="STRING" />
+						<field col="68" width="4" type="NUMERIC" mask="#" />
+						<field col="73" width="13" type="NUMERIC" mask="##,###,##0.00" />
+						<field col="87" width="13" type="NUMERIC" mask="##,###,##0.00" />
+						<field col="101" width="13" type="NUMERIC" mask="##,###,##0.00" />
+						<field col="115" width="13" type="NUMERIC" mask="##,###,##0.00" />
+						<field col="129" width="16" type="NUMERIC" mask="#,###,###,##0.00" />
+				</subpackage>
+		</package>
+		<!-- SubTotales -->
+		<package>
+				<field row="56" col="129" width="16" type="NUMERIC" mask="#,###,###,##0.00" />
+				<field row="57" col="129" width="16" type="NUMERIC" mask="#,###,###,##0.00" />
+				<field row="58" col="129" width="16" type="NUMERIC" mask="#,###,###,##0.00" />
+				<field row="59" col="129" width="16" type="NUMERIC" mask="#,###,###,##0.00" />
+		</package>
+		<!-- Observaciones -->
+		<package>
+				<field row="57" col="1" type="TEXT" width="90" height="3" />
+		</package>
+</emaku_template>

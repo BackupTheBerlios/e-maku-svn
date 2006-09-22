@@ -11,11 +11,8 @@ import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.ServiceUI;
 import javax.print.SimpleDoc;
-import javax.print.attribute.DocAttributeSet;
-import javax.print.attribute.HashDocAttributeSet;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.OrientationRequested;
 
 import common.misc.CommonConst;
 
@@ -34,9 +31,6 @@ public class PrintManager {
 		else if (this.type.equals(ImpresionType.PDF)) {
 			this.docFlavor = DocFlavor.INPUT_STREAM.PDF;
 		}
-		else {
-			this.docFlavor = DocFlavor.INPUT_STREAM.PNG;
-		}
 		PrintService defaultService = CommonConst.defaultPrintService;
 		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
 		if (!silent) {
@@ -45,10 +39,23 @@ public class PrintManager {
 		}
 		if (defaultService != null) {
 			DocPrintJob job = defaultService.createPrintJob();
-			DocAttributeSet das = new HashDocAttributeSet();
-			das.add(OrientationRequested.PORTRAIT);
-			Doc doc = new SimpleDoc(is, docFlavor, das);
+			Doc doc = new SimpleDoc(is, docFlavor, null);
 			job.print(doc, pras);
+		}
+	}
+	
+	public PrintManager (PostScriptManager postScriptManager, boolean silent) throws PrintException {
+		PrintService defaultService = CommonConst.defaultPrintService;
+		this.docFlavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
+		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
+		if (!silent) {
+			PrintService printServices[] = PrintServiceLookup.lookupPrintServices(this.docFlavor, pras);
+			defaultService = ServiceUI.printDialog(null, 200, 200,printServices, defaultService, this.docFlavor,pras);	
+		}
+		if (defaultService != null) {
+			DocPrintJob job = defaultService.createPrintJob();
+			Doc doc = new SimpleDoc(postScriptManager, docFlavor, null);
+			job.print(doc, null);
 		}
 	}
 }

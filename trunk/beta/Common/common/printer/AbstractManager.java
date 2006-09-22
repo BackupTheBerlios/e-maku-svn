@@ -1,18 +1,13 @@
 package common.printer;
 import java.io.ByteArrayInputStream;
 
-public abstract class AbstractManager {
-	
-	protected int width;
-	protected int height;
-	protected ByteArrayInputStream in;
-	protected boolean sussceful;
-	
-	public ByteArrayInputStream getStream(){
-		return in;
-	}
+import org.jdom.Element;
 
-	public boolean isSusseful() {
-		return sussceful;
-	}
+import common.printer.PrintManager.ImpresionType;
+
+public interface AbstractManager {
+	public ByteArrayInputStream getStream();
+	public boolean isSusseful();
+	public ImpresionType getImpresionType();
+	public void process(Element template, Element packages);
 }

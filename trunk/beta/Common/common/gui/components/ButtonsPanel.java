@@ -36,8 +36,8 @@ import common.misc.language.Language;
 import common.pdf.pdfviewer.PDFViewer;
 import common.printer.AbstractManager;
 import common.printer.PlainManager;
+import common.printer.PostScriptManager;
 import common.printer.PrintManager;
-import common.printer.PrintManager.ImpresionType;
 import common.transactions.STResultSet;
 
 /**
@@ -324,13 +324,20 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 							Attribute ATType = rootTemplate.getAttribute("type");							
 							if ("PLAIN".equals(ATType.getValue()) ) {
 								print = new PlainManager();
-								((PlainManager)print).process(rootTemplate,printJob);
+								print.process(rootTemplate,printJob);
+								if (print.isSusseful()) {
+									System.out.println("================================");
+									System.out.println(print.toString());
+									System.out.println("================================");
+									new PrintManager(print.getImpresionType(),print.getStream(),true);
+								}
+								
 							}
-							if (print.isSusseful()) {
-								System.out.println("================================");
-								System.out.println(print.toString());
-								System.out.println("================================");
-								new PrintManager(ImpresionType.PLAIN,print.getStream(),true);
+							if ("GRAPHIC".equals(ATType.getValue()) ) {
+								print = new PostScriptManager(rootTemplate,printJob);
+								//if (print.isSusseful()) {
+									new PrintManager((PostScriptManager) print,false);
+								//}
 							}
 						}
 						else {
