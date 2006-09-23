@@ -1,6 +1,7 @@
 package common.printer;
 
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.print.PageFormat;
@@ -8,9 +9,14 @@ import java.awt.print.Paper;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.io.ByteArrayInputStream;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 
 import org.jdom.Attribute;
 import org.jdom.DataConversionException;
@@ -32,12 +38,14 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 	private String ndocument = "";
 	private boolean sucess = false;
 	private Element rootTemplate;
-	//private Element rootTransact;
+	private int width;
+	private int height;
+	private Element rootTransact;
 	public PostScriptManager (Element rootTemplate,Element rootTransact) {
 		ClientHeaderValidator.addSuccessListener(this);
 		impresionType = ImpresionType.POSTSCRIPT;
 		this.rootTemplate = rootTemplate;
-		//this.rootTransact = rootTransact;
+		this.rootTransact = rootTransact;
 	}
 	 
 	public void process() {
@@ -63,14 +71,15 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 			Calendar calendar = Calendar.getInstance();
 			long init = calendar.getTimeInMillis();
 			
-			g2d.setFont(new Font("Monospace",Font.PLAIN,12));
-			
 			processMetadata(rootTemplate.getChild("metadata"));
+			Element settings = rootTemplate.getChild("settings");
 			
-			//Iterator itTemplate = rootTemplate.getChildren("package").iterator();
-			//Iterator itTransact = rootTransact.getChildren("package").iterator();
-			//int countPacks = 0;
-			/*while(itTemplate.hasNext() && itTransact.hasNext()) {
+			width  = settings.getAttribute("width").getIntValue();
+			height = settings.getAttribute("height").getIntValue();
+			Iterator itTemplate = rootTemplate.getChildren("package").iterator();
+			Iterator itTransact = rootTransact.getChildren("package").iterator();
+			int countPacks = 0;
+			while(itTemplate.hasNext() && itTransact.hasNext()) {
 				Element elmTemplate = (Element)itTemplate.next();
 				Element elmTransact = (Element)itTransact.next();
 				Attribute attr = elmTemplate.getAttribute("validate");
@@ -84,13 +93,13 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 				else {
 					processElement(elmTemplate,elmTransact);
 				}
-			}*/
-			//if ( countPacks > 0 ) {
+			}
+			if ( countPacks > 0 ) {
 				this.sussceful = true;
 				calendar = Calendar.getInstance();
 				long end = calendar.getTimeInMillis();
 				System.out.println("Generador en " + (end-init) + " milisegundos ");
-			//}
+			}
 		}
 		catch (DataConversionException e) {
 			e.printStackTrace();
@@ -129,10 +138,14 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 				String value = ndocument;
 				g2d.drawString(value,col,row);
 			}
+			else if ("font".equals(name)) {
+				g2d.setFont(new Font(attribs.get("name").getValue(),Font.PLAIN,attribs.get("size").getIntValue()));
+			}
+			
 		}
 	}
 	
-	/*private void processElement(Element pack_template, Element pack_transaction) throws DataConversionException {
+	private void processElement(Element pack_template, Element pack_transaction) throws DataConversionException {
 
 		Iterator it_template = pack_template.getChildren().iterator();
 		Iterator it_transaction = pack_transaction.getChildren().iterator();
@@ -140,25 +153,11 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 			
 			Element el_template = (Element)it_template.next();
 			if (el_template.getName().equals("subpackage")) {
-				Attribute attr = el_template.getAttribute("rowInit");
-				int rowInit = -1;
-				boolean isValidate = false;
-				if (attr.getValue().equals("last")) {
-					rowInit = currentRow;
-					isValidate = true;
-				}
-				else {
-					rowInit = attr.getIntValue();
-				}
+
+				int rowInit = el_template.getAttribute("rowInit").getIntValue();
+				int rowAcum = el_template.getAttribute("rowAcum").getIntValue();
 				
-				Iterator it = el_template.getChildren("metadata").iterator();
-				while (it.hasNext()) { 
-					Element element = (Element) it.next();
-					processMetadata(element);
-					rowInit = currentRow;
-				}
-				
-				it = el_template.getChildren("field").iterator();
+				Iterator it = el_template.getChildren("field").iterator();
 				ArrayList<HashMap<String,Attribute>> AttCols = new ArrayList<HashMap<String,Attribute>>(); 
 				while (it.hasNext()) {
 					HashMap<String,Attribute> attribs = new HashMap<String,Attribute>();
@@ -182,10 +181,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 						addValue(elmt.getValue(),AttCols.get(i));
 						i++;
 					}
-					rowInit++;
-				}
-				if (isValidate) {
-					currentRow = rowInit + 1;
+					rowInit+=rowAcum;
 				}
 			}
 			else {
@@ -211,69 +207,71 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 		Attribute attribute = attribs.get("type");
 		String type = attribute!=null ? attribute.getValue() : null ;
 		value = !"NULL".equals(value) && !"".equals(value) ?value:"";
+		
 		if ("TEXT".equals(type)) {
 			int width = attribs.get("width").getIntValue();
 			int height = attribs.get("height").getIntValue();
-			textGenerator.addTextArea(value,row,col,width,height,true);
+			int rowAcum = attribs.get("rowAcum").getIntValue();
+			
+			value = value.replaceAll("\n", " ");
+			StringBuffer buf = new StringBuffer(value);
+			int lastspace = -1;
+			int linestart = 0;
+			int i = 0;
+			while ( i < buf.length()) {
+				if (buf.charAt(i) == ' ') {
+					lastspace = i;
+				}
+				if (buf.charAt(i) == '\n') {
+					lastspace = -1;
+					linestart = i + 1;
+				}
+				if (i > linestart + width) {
+					if (lastspace != -1) {
+						buf.delete(lastspace,lastspace+1);
+						buf.insert(lastspace,"\n");
+						linestart = lastspace;
+						lastspace = -1;
+						
+					} else {
+						buf.insert(i, '\n');
+						linestart = i + 1;
+					}
+				}
+				i++;
+			}
+			StringTokenizer st = new StringTokenizer(buf.toString(),"\n");
+			for (int j=0; j < height && st.hasMoreElements(); j++) {
+				String tok = st.nextToken();
+				g2d.drawString(tok,col,row);
+				row+=rowAcum;
+			}
 		}
 		else if ("STRING".equals(type)) {
-			//value = " ".equals(value) || "".equals(value) ? "   " : value.trim();
-			//textGenerator.addString(value,row,col,null);
-			if (!"".equals(value.trim())) {
-				textGenerator.addString(value,row,col,null);
-			}
-			if (attribs.containsKey("separatorchar")){
-				Attribute att = attribs.get("separatorchar");
-				int colCharSeparator = attribs.get("separatorcol").getIntValue();
-				textGenerator.addString(att.getValue(),row,colCharSeparator,null);
-			}
+			g2d.drawString(value,col,row);
 		}
-		else if ("STRINGCONCAT".equals(type)) {
-			if (concatData.containsKey(row)) {
-				String[] acumString = concatData.get(row);
-				if (acumString[0].equals(attribs.get("link").getValue())) {
-					String addVal = attribs.get("char").getValue()+value;
-					textGenerator.addString(addVal,row,acumString[1].length()+2,null);
-					acumString[1] +=  addVal;
-					concatData.put(row,acumString);
-				}
-			}
-			else {
-				textGenerator.addString(value,row,col,null);
-				concatData.put(row, new String[]{String.valueOf(col),value});
-			}
+		else if ("DATE".equals(type)) {
+			String mask = attribs.get("mask").getValue();
+			SimpleDateFormat sdf = new SimpleDateFormat(mask);
+			Calendar c = Calendar.getInstance();
+			int year  = Integer.valueOf(value.substring(0,4));
+			int month = Integer.valueOf(value.substring(5,7));
+			int day   = Integer.valueOf(value.substring(8,10));
+			c.set(Calendar.YEAR,year);
+			c.set(Calendar.MONTH, (month-1));
+			c.set(Calendar.DAY_OF_MONTH,day);
+			
+			value = sdf.format(c.getTime());
+			g2d.drawString(value,col,row);
 		}
 		else if ("NUMERIC".equals(type)) {
 			String mask = attribs.get("mask").getValue();
 			NumberFormat formatter = new DecimalFormat(mask);
 			value = !"NULL".equals(value) && !"".equals(value) ? formatter.format(Double.parseDouble(value)):"";
-			textGenerator.addString(value,row,col,attribs.get("width").getIntValue());
-			if (attribs.containsKey("separatorchar")){
-				Attribute att = attribs.get("separatorchar");
-				int colCharSeparator = attribs.get("separatorcol").getIntValue();
-				textGenerator.addString(att.getValue(),row,colCharSeparator,null);
-			}
+			FontMetrics m = g2d.getFontMetrics();
+			g2d.drawString(value, col-m.stringWidth(value),row);
 		}
-		else if ("ABSTRACT".equals(type)) {
-			int height = attribs.get("height").getIntValue();
-			textGenerator.addTextArea(value,row,col,null,height,false);
-		}
-        else if ("NUMTOLETTERS".equals(type)) {
-            try {
-            	int width = attribs.get("width").getIntValue();
-    			int height = attribs.get("height").getIntValue();
-    			
-                Double d = Double.parseDouble(value);
-                String letters = String.valueOf(d.intValue());
-                letters = NumberToLetterConversor.letters(letters, null);
-                
-                textGenerator.addTextArea(letters,row,col,width,height,true);
-            } catch (NumberFormatException NFE) {
-                // Pendiente por traducir
-                System.out.printf("No se puede convertir %s  a letras\n%s",value,NFE.getMessage());
-            }
-        }
-	}*/
+	}
 
 	public synchronized void cathSuccesEvent(SuccessEvent e) {
 		String numeration = e.getNdocument();
@@ -295,11 +293,10 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 
 	public int print(Graphics graphics, PageFormat pf, int pageIndex) throws PrinterException {
 		Paper p = pf.getPaper();
-		p.setImageableArea( 0, 0, p.getWidth(),p.getHeight());
+		p.setImageableArea( 0, 0, width,height);
 		pf.setPaper(p);
-
 		g2d= (Graphics2D)graphics;
-		g2d.setClip(0, 0,(int) p.getWidth(), (int)p.getHeight());
+		g2d.setClip(0, 0,width,height);
 		switch (pageIndex) {
 			case 0:
 				process();

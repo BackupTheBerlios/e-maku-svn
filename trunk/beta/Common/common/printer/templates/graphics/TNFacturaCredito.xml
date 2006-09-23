@@ -1,0 +1,42 @@
+<emaku_template type="GRAPHIC" requestNumeration="true">
+		<settings width="612" height="792"/>
+		<metadata>
+				<font row="0" col="0" name="Monospace" size="8"/>
+				<ndocument row="160" col="460"/>
+				<field row="210" col="260" type="STRING" >Vendedor</field>
+		</metadata>
+		<package>
+				<field row="130" col="80" type="STRING" />
+				<field row="170" col="40" type="STRING" />
+				<field row="180" col="40" type="STRING" />
+				<field row="190" col="40" type="STRING" />
+				<field row="200" col="40" type="STRING" />
+				<field row="210" col="40" type="STRING" />
+		</package>
+		<package>
+				<field row="140" col="90" type="STRING" />
+	    </package>
+	    <package>
+				<field row="140" col="330" type="STRING" />
+	    </package>
+	    <package>
+				<field row="140" col="120" type="STRING" />
+	    </package>
+	    <package>
+				<field row="210" col="310" type="STRING" />
+	    </package>
+		<package>
+				<subpackage rowInit="250" rowAcum="10">
+						<field col="40" type="STRING" />
+						<field col="380" type="NUMERIC" mask="#####" />
+						<field col="470" type="NUMERIC" mask="#,###,###,##0.00" />
+						<field col="570" type="NUMERIC" mask="#,###,###,##0.00" />
+				</subpackage>
+		</package>
+		<package>
+				<field row="650" col="570" type="NUMERIC" mask="#,###,###,##0.00" />
+				<field row="665" col="570" type="NUMERIC" mask="#,###,###,##0.00" />
+				<field row="680" col="570" type="NUMERIC" mask="#,###,###,##0.00" />
+				<field row="695" col="570" type="NUMERIC" mask="#,###,###,##0.00" />
+		</package>
+</emaku_template>
