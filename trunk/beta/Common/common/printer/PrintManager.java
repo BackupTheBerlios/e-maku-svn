@@ -14,7 +14,6 @@ import javax.print.SimpleDoc;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Copies;
-import javax.print.attribute.standard.MediaSize;
 
 import common.misc.CommonConst;
 
@@ -54,8 +53,6 @@ public class PrintManager {
 		this.docFlavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
 		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
 		pras.add(new Copies(copies));
-		pras.add(MediaSize.NA.LETTER);
-		
 		if (!silent) {
 			PrintService printServices[] = PrintServiceLookup.lookupPrintServices(this.docFlavor, pras);
 			defaultService = ServiceUI.printDialog(null, 200, 200,printServices, defaultService, this.docFlavor,pras);	
