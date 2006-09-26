@@ -330,7 +330,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 							
 							boolean silent = ATSilent!=null ? ATSilent.getBooleanValue() : false;
 							int copies     = ATCopies!=null ? ATCopies.getIntValue() : 1;
-							String _type = ATType.getValue();
+							String _type   = ATType.getValue();
 							
 							if ("PLAIN".equals(_type) ) {
 								print = new PlainManager();

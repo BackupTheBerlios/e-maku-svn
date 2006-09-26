@@ -27,17 +27,16 @@ public class PrintManager {
 	public PrintManager (ImpresionType type, ByteArrayInputStream is,boolean silent, int copies) throws FileNotFoundException, PrintException {
 		
 		this.type = type;
-		
+		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
+		pras.add(new Copies(copies));
+		PrintService defaultService = CommonConst.defaultPrintService;
 		if (this.type.equals(ImpresionType.PLAIN)) {
 			docFlavor = DocFlavor.INPUT_STREAM.TEXT_PLAIN_UTF_8;
 		}
 		else if (type.equals(ImpresionType.PDF)) {
 			docFlavor = DocFlavor.INPUT_STREAM.PDF;
+			pras.add(MediaSize.NA.LETTER);
 		}
-		PrintService defaultService = CommonConst.defaultPrintService;
-		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
-		pras.add(new Copies(copies));
-		pras.add(MediaSize.NA.LETTER);
 		
 		if (!silent) {
 			PrintService printServices[] = PrintServiceLookup.lookupPrintServices(this.docFlavor, pras);
