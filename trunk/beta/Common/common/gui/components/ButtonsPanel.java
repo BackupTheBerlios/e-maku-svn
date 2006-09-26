@@ -321,7 +321,9 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 							template = sax.build(url);
 							AbstractManager print = null;
 							Element rootTemplate = template.getRootElement();
-							Attribute ATType = rootTemplate.getAttribute("type");							
+							Attribute ATType = rootTemplate.getAttribute("type");
+							Attribute ATSilent = rootTemplate.getAttribute("silent");
+							boolean silent = ATSilent!=null ? ATSilent.getBooleanValue() : false;
 							if ("PLAIN".equals(ATType.getValue()) ) {
 								print = new PlainManager();
 								print.process(rootTemplate,printJob);
@@ -329,14 +331,13 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 									System.out.println("================================");
 									System.out.println(print.toString());
 									System.out.println("================================");
-									new PrintManager(print.getImpresionType(),print.getStream(),true);
+									new PrintManager(print.getImpresionType(),print.getStream(),silent);
 								}
-								
 							}
 							if ("GRAPHIC".equals(ATType.getValue()) ) {
 								print = new PostScriptManager(rootTemplate,printJob);
 								//if (print.isSusseful()) {
-									new PrintManager((PostScriptManager) print,false);
+									new PrintManager((PostScriptManager) print,silent);
 								//}
 							}
 						}
