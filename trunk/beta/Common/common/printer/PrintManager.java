@@ -55,7 +55,7 @@ public class PrintManager {
 		if (defaultService != null) {
 			DocPrintJob job = defaultService.createPrintJob();
 			Doc doc = new SimpleDoc(postScriptManager, docFlavor, null);
-			job.print(doc, null);
+			job.print(doc, pras);
 		}
 	}
 }
