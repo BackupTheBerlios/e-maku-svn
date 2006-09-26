@@ -1,5 +1,7 @@
 package common.misc;
 
+import java.util.HashMap;
+
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 
@@ -32,8 +34,18 @@ public class CommonConst {
     public static final long MAX_SIZE_FILE_LOG = 5242880;
     public static final String TMP 		= System.getProperty("java.io.tmpdir");
     public static PrintService defaultPrintService;
+    public static HashMap<String, Integer> ScpCodes;
     
     public static void lookupDefaultPrintService() {
     	defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
+    	ScpCodes = new HashMap<String, Integer>();
+    	
+    	ScpCodes.put("ESC",27);
+    	ScpCodes.put("FF",10);
+    	ScpCodes.put("EOT",7);
+    	ScpCodes.put("DC2",18);
+    	ScpCodes.put("ETB",23);
+    	ScpCodes.put("SI",15);
+    	ScpCodes.put("C",67);	
     }
 }

@@ -350,6 +350,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 							}
 						}
 						else {
+							System.out.println("Plantilla "+pathTemplate+" no encontrada");
 							JOptionPane.showInternalMessageDialog(GFforma,"NO SE ENCONTRO LA PLANTILLA DE IMPRESION");
 						}
 					} catch (FileNotFoundException e) {

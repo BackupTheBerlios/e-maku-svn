@@ -1,28 +1,17 @@
 package common.printer;
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.Vector;
+
+import common.misc.CommonConst;
 
 public class TextGenerator {
 	
 	private ArrayList<StringBuilder> buffer;
-	private Properties codes = new Properties();
 	private Vector<Object[]> ScpCodes  = new Vector<Object[]>(); 
 	public TextGenerator() {
 		buffer = new ArrayList<StringBuilder>();
-		try {
-			String file = this.getClass().getResource("/common/printer/escp_codes.prop").getFile();
-			codes.load(new FileInputStream(file));
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
 	}
 	
 	public void addScpCode(Object[] scpCode) {
@@ -128,7 +117,9 @@ public class TextGenerator {
 	
 	public String Convert(String key) {
 		try {
-			int Int = Integer.parseInt(codes.containsKey(key)?codes.getProperty(key):key);
+			int Int = 	CommonConst.ScpCodes.containsKey(key)?
+						CommonConst.ScpCodes.get(key):
+						Integer.parseInt(key);
 			return String.valueOf((char)Int);
 		} catch (NumberFormatException NFEe) {
 			NFEe.printStackTrace();
