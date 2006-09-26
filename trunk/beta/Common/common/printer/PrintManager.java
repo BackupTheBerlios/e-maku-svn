@@ -35,7 +35,6 @@ public class PrintManager {
 		}
 		else if (type.equals(ImpresionType.PDF)) {
 			docFlavor = DocFlavor.INPUT_STREAM.PDF;
-			pras.add(MediaSize.NA.LETTER);
 		}
 		
 		if (!silent) {
