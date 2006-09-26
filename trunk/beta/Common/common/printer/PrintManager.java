@@ -13,6 +13,8 @@ import javax.print.ServiceUI;
 import javax.print.SimpleDoc;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.standard.Copies;
+import javax.print.attribute.standard.MediaSize;
 
 import common.misc.CommonConst;
 
@@ -22,21 +24,26 @@ public class PrintManager {
 	private ImpresionType type;
 	private DocFlavor docFlavor;
 	
-	public PrintManager (ImpresionType type, ByteArrayInputStream is,boolean silent) throws FileNotFoundException, PrintException {
+	public PrintManager (ImpresionType type, ByteArrayInputStream is,boolean silent, int copies) throws FileNotFoundException, PrintException {
+		
 		this.type = type;
 		
 		if (this.type.equals(ImpresionType.PLAIN)) {
-			this.docFlavor = DocFlavor.INPUT_STREAM.TEXT_PLAIN_UTF_8;
+			docFlavor = DocFlavor.INPUT_STREAM.TEXT_PLAIN_UTF_8;
 		}
-		else if (this.type.equals(ImpresionType.PDF)) {
-			this.docFlavor = DocFlavor.INPUT_STREAM.PDF;
+		else if (type.equals(ImpresionType.PDF)) {
+			docFlavor = DocFlavor.INPUT_STREAM.PDF;
 		}
 		PrintService defaultService = CommonConst.defaultPrintService;
 		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
+		pras.add(new Copies(copies));
+		pras.add(MediaSize.NA.LETTER);
+		
 		if (!silent) {
 			PrintService printServices[] = PrintServiceLookup.lookupPrintServices(this.docFlavor, pras);
 			defaultService = ServiceUI.printDialog(null, 200, 200,printServices, defaultService, this.docFlavor, pras);	
 		}
+		
 		if (defaultService != null) {
 			DocPrintJob job = defaultService.createPrintJob();
 			Doc doc = new SimpleDoc(is, docFlavor, null);
@@ -44,10 +51,13 @@ public class PrintManager {
 		}
 	}
 	
-	public PrintManager (PostScriptManager postScriptManager, boolean silent) throws PrintException {
+	public PrintManager (PostScriptManager postScriptManager, boolean silent, int copies) throws PrintException {
 		PrintService defaultService = CommonConst.defaultPrintService;
 		this.docFlavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
 		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
+		pras.add(new Copies(copies));
+		pras.add(MediaSize.NA.LETTER);
+		
 		if (!silent) {
 			PrintService printServices[] = PrintServiceLookup.lookupPrintServices(this.docFlavor, pras);
 			defaultService = ServiceUI.printDialog(null, 200, 200,printServices, defaultService, this.docFlavor,pras);	

@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -38,6 +39,7 @@ import common.printer.AbstractManager;
 import common.printer.PlainManager;
 import common.printer.PostScriptManager;
 import common.printer.PrintManager;
+import common.printer.PrintManager.ImpresionType;
 import common.transactions.STResultSet;
 
 /**
@@ -320,25 +322,31 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 						if (url!=null){
 							template = sax.build(url);
 							AbstractManager print = null;
-							Element rootTemplate = template.getRootElement();
-							Attribute ATType = rootTemplate.getAttribute("type");
-							Attribute ATSilent = rootTemplate.getAttribute("silent");
+							
+							Element rootTemplate= template.getRootElement();
+							Attribute ATType    = rootTemplate.getAttribute("type");
+							Attribute ATSilent  = rootTemplate.getAttribute("silent");
+							Attribute ATCopies  = rootTemplate.getAttribute("copies");
+							
 							boolean silent = ATSilent!=null ? ATSilent.getBooleanValue() : false;
-							if ("PLAIN".equals(ATType.getValue()) ) {
+							int copies     = ATCopies!=null ? ATCopies.getIntValue() : 1;
+							String _type = ATType.getValue();
+							
+							if ("PLAIN".equals(_type) ) {
 								print = new PlainManager();
 								print.process(rootTemplate,printJob);
 								if (print.isSusseful()) {
 									System.out.println("================================");
 									System.out.println(print.toString());
 									System.out.println("================================");
-									new PrintManager(print.getImpresionType(),print.getStream(),silent);
+									ImpresionType        IType     = print.getImpresionType();
+									ByteArrayInputStream IStream   = print.getStream();
+									new PrintManager(IType,IStream, silent, copies);
 								}
 							}
-							if ("GRAPHIC".equals(ATType.getValue()) ) {
+							if ("GRAPHIC".equals(_type) ) {
 								print = new PostScriptManager(rootTemplate,printJob);
-								//if (print.isSusseful()) {
-									new PrintManager((PostScriptManager) print,silent);
-								//}
+								new PrintManager((PostScriptManager) print,silent, copies);	
 							}
 						}
 						else {
