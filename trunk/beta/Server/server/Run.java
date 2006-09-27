@@ -72,17 +72,24 @@ public class Run {
 			ConfigFile.loadConfigFile(emakuConfigFile);
 			PoolConexiones.CargarBD();
 			ReportsStore.Load(this.getClass().getResource("/reports"));
-			new MakeReport();
 			CacheEnlace.cargar();
 			new BeanShell();
-			new SocketServer();
-		} catch (IOException IOEe) {
-		    
-            LogAdmin.setMessage(Language.getWord("UNLOADING_ST") + " "
-                    + IOEe.getMessage(), ServerConst.MESSAGE);
-            killServer();
-            
-        } catch (ConfigFileNotLoadException e) {
+			Thread t = new Thread() {
+				public void run() {
+					try {
+						new SocketServer();
+					} catch (IOException IOEe) {
+					    
+			            LogAdmin.setMessage(Language.getWord("UNLOADING_ST") + " "
+			                    + IOEe.getMessage(), ServerConst.MESSAGE);
+			            killServer();
+			            
+			        }
+				}
+			};
+			t.start();
+			
+		} catch (ConfigFileNotLoadException e) {
 
         	ConfigFile.newConfigFile(emakuConfigFile);
         	
@@ -112,6 +119,7 @@ public class Run {
 	 */
 	public static void main(String[] args) {	    
 		new Run();
+		new MakeReport();
 	}
 /*	private void leerMensaje(SocketChannel SCcanal_lectura) {
         ByteBuffer buf = ByteBuffer.allocateDirect(36864);
