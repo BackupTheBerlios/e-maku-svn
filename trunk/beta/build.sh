@@ -245,8 +245,8 @@ help(){
              echo "  clean                    : Elimina archivos .class "
              echo "  -i                       : Instala E-Maku en /usr/local/emaku "
              echo "  install                  : Instala E-Maku en /usr/local/emaku "
-             echo "  -i -p /ruta/emaku       : Instala E-Maku en /ruta/emaku"
-             echo "  -i --prefix=/ruta/emaku : Instala E-Maku en /ruta/emaku"
+             echo "  -i -p /ruta/emaku        : Instala E-Maku en /ruta/emaku"
+             echo "  -i --prefix=/ruta/emaku  : Instala E-Maku en /ruta/emaku"
              echo "  uninstall                : Elimina la instalacion de E-Maku "
              echo "  -u                       : Elimina la instalacion de E-Maku "
              echo

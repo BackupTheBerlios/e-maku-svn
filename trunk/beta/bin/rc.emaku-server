@@ -5,8 +5,13 @@ EMAKU_DAEMON=/usr/local/emaku/bin/emaku-server
 case $1 in
   start)
 	echo -n "Iniciando Servidor de Transacciones [Emaku]: " 
-	su - $EMAKU_USER -c "$EMAKU_DAEMON start" >>/dev/null 2>&1
-	echo "ok"
+        SERVER=`ps aux | grep java | grep server.Run` 
+        if [ "$SERVER" = "" ] ; then
+	     su - $EMAKU_USER -c "$EMAKU_DAEMON start" >>/dev/null 2>&1
+             echo "ok"
+        else
+             echo "El servidor ya se encuentra en ejecucion..."
+        fi
 	;;
   stop)
 	echo -n "Cerrando Servidor de Transacciones [Emaku]: "
