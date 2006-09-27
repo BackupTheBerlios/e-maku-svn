@@ -167,6 +167,12 @@ install_server() {
              echo " " >> $EMAKU_HOME/bin/emaku-server
              echo "EMAKU_HOME=$EMAKU_HOME" >> $EMAKU_HOME/bin/emaku-server
              echo "export EMAKU_HOME" >> $EMAKU_HOME/bin/emaku-server
+             echo "JAVA_HOME=$JAVA_HOME" >> $EMAKU_HOME/bin/emaku-server
+             echo "export JAVA_HOME" >> $EMAKU_HOME/bin/emaku-server
+             echo "PATH=$PATH:$EMAKU_HOME/bin" >> $EMAKU_HOME/bin/emaku-server
+             echo "export PATH" >> $EMAKU_HOME/bin/emaku-server
+             echo " " >> $EMAKU_HOME/bin/emaku-server
+
              cat $ROOT/bin/emaku-server >> $EMAKU_HOME/bin/emaku-server
 
              if [ ! -L /usr/bin/emaku-server ] ; then
@@ -178,19 +184,29 @@ install_server() {
              fi
 
              echo " Instalando scripts de inicio..."
+
              if [ -d /etc/init.d ] ; then
-               cp -f $EMAKU_HOME/bin/emaku-server /etc/init.d/emaku
-               if [ -d /etc/rc3.d ] && [ ! -e /etc/rc3.d/S20emaku ] ; then
-                 ln -s /etc/init.d/emaku /etc/rc3.d/S20emaku
+               echo "#!/bin/sh" > /etc/init.d/emaku 
+               echo " " >> /etc/init.d/emaku 
+               echo "EMAKU_USER=emaku" >> /etc/init.d/emaku
+               echo "EMAKU_DAEMON=$EMAKU_HOME/bin/emaku-server" >> /etc/init.d/emaku
+               echo " " >> /etc/init.d/emaku 
+
+               cat $ROOT/bin/rc.emaku-server >> /etc/init.d/emaku
+
+               chmod 755 /etc/init.d/emaku
+
+               if [ -d /etc/rc3.d ] && [ ! -e /etc/rc3.d/S99emaku ] ; then
+                 ln -s /etc/init.d/emaku /etc/rc3.d/S99emaku
                fi
-               if [ -d /etc/rc5.d ] && [ ! -e /etc/rc3.d/S20emaku ] ; then
-                 ln -s /etc/init.d/emaku /etc/rc5.d/S20emaku
+               if [ -d /etc/rc5.d ] && [ ! -e /etc/rc5.d/S99emaku ] ; then
+                 ln -s /etc/init.d/emaku /etc/rc5.d/S99emaku
                fi
-               if [ -d /etc/rc0.d ] && [ ! -e /etc/rc0.d/K20emaku ] ; then
-                 ln -s /etc/init.d/emaku /etc/rc0.d/K20emaku
+               if [ -d /etc/rc0.d ] && [ ! -e /etc/rc0.d/K99emaku ] ; then
+                 ln -s /etc/init.d/emaku /etc/rc0.d/K99emaku
                fi
-               if [ -d /etc/rc6.d ] && [ ! -e /etc/rc0.d/K20emaku ] ; then
-                 ln -s /etc/init.d/emaku /etc/rc6.d/K20emaku
+               if [ -d /etc/rc6.d ] && [ ! -e /etc/rc6.d/K99emaku ] ; then
+                 ln -s /etc/init.d/emaku /etc/rc6.d/K99emaku
                fi
              else
                if [ -e /etc/rc.d/rc.local ] ; then
@@ -395,17 +411,17 @@ case "$1" in
              echo " Eliminando scripts de inicio..."
              if [ -d /etc/init.d ] && [ -e /etc/init.d/emaku ] ; then
                rm -f /etc/init.d/emaku
-               if [ -d /etc/rc3.d ] && [ -e /etc/rc3.d/S20emaku ] ; then
-                 rm -f /etc/rc3.d/S20emaku
+               if [ -d /etc/rc3.d ] && [ -e /etc/rc3.d/S99emaku ] ; then
+                 rm -f /etc/rc3.d/S99emaku
                fi
-               if [ -d /etc/rc5.d ] && [ -e /etc/rc3.d/S20emaku ] ; then
-                 rm -f /etc/rc5.d/S20emaku
+               if [ -d /etc/rc5.d ] && [ -e /etc/rc3.d/S99emaku ] ; then
+                 rm -f /etc/rc5.d/S99emaku
                fi
-              if [ -d /etc/rc0.d ] && [ -e /etc/rc0.d/K20emaku ] ; then
-                 rm -f /etc/rc0.d/K20emaku
+              if [ -d /etc/rc0.d ] && [ -e /etc/rc0.d/K99emaku ] ; then
+                 rm -f /etc/rc0.d/K99emaku
                fi
-              if [ -d /etc/rc6.d ] && [ -e /etc/rc0.d/K20emaku ] ; then
-                 rm -f /etc/rc6.d/K20emaku
+              if [ -d /etc/rc6.d ] && [ -e /etc/rc0.d/K99emaku ] ; then
+                 rm -f /etc/rc6.d/K99emaku
                fi
              else
                RC_PREV=`egrep emaku-server /etc/rc.d/rc.local`

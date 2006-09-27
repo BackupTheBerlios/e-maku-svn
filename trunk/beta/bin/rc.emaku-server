@@ -1,0 +1,35 @@
+#!/bin/sh
+EMAKU_USER=emaku
+EMAKU_DAEMON=/usr/local/emaku/bin/emaku-server
+
+case $1 in
+  start)
+	echo -n "Iniciando Servidor de Transacciones [Emaku]: " 
+	su - $EMAKU_USER -c "$EMAKU_DAEMON start" >>/dev/null 2>&1
+	echo "ok"
+	;;
+  stop)
+	echo -n "Cerrando Servidor de Transacciones [Emaku]: "
+        su - $EMAKU_USER -c "$EMAKU_DAEMON stop" >>/dev/null 2>&1
+	echo "ok"
+	;;
+  restart)
+	echo -n "Restarting PostgreSQL: "
+        su - $EMAKU_USER -c "$EMAKU_DAEMON stop" >>/dev/null 2>&1
+        su - $EMAKU_USER -c "$EMAKU_DAEMON start" >>/dev/null 2>&1
+	echo "ok"
+	;;
+  status)
+        su - $EMAKU_USER -c "$EMAKU_DAEMON status" >>/dev/null 2>&1
+	;;
+  dump)
+        su - $EMAKU_USER -c "$EMAKU_DAEMON dump" >>/dev/null 2>&1
+        ;;
+  *)
+	# Print help
+	echo "Usage: $0 {start|stop|restart|status|dump}" 1>&2
+	exit 1
+	;;
+esac
+
+exit 0
