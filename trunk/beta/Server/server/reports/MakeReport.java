@@ -227,16 +227,20 @@ class VerticalFiller extends JRVerticalFiller {
 
 
 class PhantomDataSource implements JRDataSource {
-	private Object[][] data = {{""}};
+	private Object[][] data = new Object[10000][1];
 	private int index = -1;
 	
-	public PhantomDataSource() {}
+	public PhantomDataSource() {
+		for (int i=0; i < data.length ; i++) {
+			data[i][0] = i;
+		}
+	}
 	
 	public boolean next() throws JRException {
 		index++;
 		return (index < data.length);
 	}
 	public Object getFieldValue(JRField field) throws JRException {
-		return "";
+		return data[index][0];
 	}
 }
