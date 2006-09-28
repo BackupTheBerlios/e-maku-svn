@@ -1,4 +1,4 @@
-<emaku_template type="GRAPHIC" requestNumeration="true">
+<emaku_template type="GRAPHIC" requestNumeration="true" copies="2">
 		<settings width="612" height="792"/>
 		<metadata>
 				<font row="0" col="0" name="Monospace" size="8"/>
@@ -23,15 +23,15 @@
 						<field col="40" type="STRING" />
 						<field col="380" type="NUMERIC" mask="#####" />
 						<field col="470" type="NUMERIC" mask="#,###,###,##0.00" />
-						<field col="570" type="NUMERIC" mask="#,###,###,##0.00" />
+						<field col="565" type="NUMERIC" mask="#,###,###,##0.00" />
 				</subpackage>
 		</package>
 		<!-- SubTotales -->
 		<package>
-				<field row="563" col="570" type="NUMERIC" mask="#,###,###,##0.00" />
-				<field row="581" col="570" type="NUMERIC" mask="#,###,###,##0.00" />
-				<field row="598" col="570" type="NUMERIC" mask="#,###,###,##0.00" />
-				<field row="613" col="570" type="NUMERIC" mask="#,###,###,##0.00" />
+				<field row="563" col="565" type="NUMERIC" mask="#,###,###,##0.00" />
+				<field row="581" col="565" type="NUMERIC" mask="#,###,###,##0.00" />
+				<field row="598" col="565" type="NUMERIC" mask="#,###,###,##0.00" />
+				<field row="613" col="565" type="NUMERIC" mask="#,###,###,##0.00" />
 		</package>
 		<!-- Observaciones -->
 		<package>
