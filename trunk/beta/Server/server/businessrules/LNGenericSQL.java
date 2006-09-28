@@ -51,6 +51,8 @@ public class LNGenericSQL {
 
 	private boolean generable = true;
 
+	private boolean discardBadArgument = true;
+	
 	private Map <String,String>keyvalue;
 
 	public LNGenericSQL(SocketChannel sock) {
@@ -75,6 +77,9 @@ public class LNGenericSQL {
 		try {
 			while (i.hasNext()) {
 				Element elm = (Element) i.next();
+				if ("discardBadArgument".equals(elm.getAttributeValue("attribute"))){
+					discardBadArgument=true;
+				}
 				generar(elm.getValue());
 			}
 			commit();
@@ -232,7 +237,14 @@ public class LNGenericSQL {
 	public void generar(String sql) throws SQLException, SQLNotFoundException,
 			SQLBadArgumentsException {
 		if (generable) {
-			RQtransaction.ejecutarSQL(sql, args);
+			try {
+				RQtransaction.ejecutarSQL(sql, args);
+			}
+			catch(SQLBadArgumentsException SQLBAEe) {
+				if (!discardBadArgument) {
+					throw new SQLBadArgumentsException(sql);
+				}
+			}
 		}
 	}
 

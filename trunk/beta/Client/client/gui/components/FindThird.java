@@ -550,6 +550,7 @@ public class FindThird extends JTabbedPane implements AnswerListener, InitiateFi
 		            Hthird.put(key, DTfind);
 		            loadData(key);
 		            JCBfined.addItem(DTfind.getItem());
+			        JCBfined.updateUI();
 		            
                 }
             }
