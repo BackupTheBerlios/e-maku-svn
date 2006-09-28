@@ -23,7 +23,7 @@ Telefonos: 7215949 - 7211067 - Fax: (092) 7211630                    VELAS DECOR
 				<field row="9" col="1" type="STRING">Fecha</field>
 				<field row="10" col="1" type="STRING">Nombre</field>
 				<field row="11" col="1" type="STRING">NIT/CC</field>
-				<field row="12" col="1" type="STRING">Dirección</field>
+				<field row="12" col="1" type="STRING">Direccion</field>
 				<field row="13" col="1" type="STRING">Telefono</field>
 				<field row="14" col="1" type="STRING">Ciudad</field>
 				<!-- Info Documento -->
@@ -58,11 +58,11 @@ Telefonos: 7215949 - 7211067 - Fax: (092) 7211630                    VELAS DECOR
 				<field row="14" col="12" type="STRING"/>
 		</package>
 		<package>
-				<field row="9" col="12" type="STRING"/>
 				<field row="10" col="12" type="STRING"/>
 				<field row="11" col="12" type="STRING"/>
 				<field row="12" col="12" type="STRING"/>
 				<field row="13" col="12" type="STRING"/>
+				<field row="14" col="12" type="STRING"/>
 		</package>
 		<package>
 				<subpackage rowInit="19">

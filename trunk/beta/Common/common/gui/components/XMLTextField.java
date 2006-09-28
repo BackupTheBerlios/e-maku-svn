@@ -7,8 +7,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
@@ -151,14 +149,22 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 						cleaning = false;
 					}					
 				}
+				
+			}
+			
+			public void keyReleased(KeyEvent e) {
+				int keyCode = e.getKeyCode();
+				if ( (keyCode==KeyEvent.VK_ENTER) || (keyCode==KeyEvent.VK_TAB)) {
+					transferFocus();
+				}
 			}
 		});
 		
-		this.addActionListener(new ActionListener() {
+		/*this.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				transferFocus();
 			}
-		});
+		});*/
 		
 		this.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
@@ -529,9 +535,9 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 		super.setDisabledTextColor(Color.BLACK);
 	}
 	
-	public boolean isTyped() {
+	/*public boolean isTyped() {
 		return typed;
-	}
+	}*/
 
 	public boolean isPrintable() {
 		return printable;

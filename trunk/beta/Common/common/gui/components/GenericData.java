@@ -454,7 +454,10 @@ public class GenericData extends JPanel implements DateListener,
 				if (searchQuery) {
 					XMLText.addKeyListener(new KeyAdapter() {
 						public void keyTyped(KeyEvent e) {
-							search = true;
+							XMLTextField XMLRefText = (XMLTextField) e.getSource();
+							if (!XMLRefText.getText().trim().equals("")) {
+								search = true;
+							}
 						}
 					});
 
