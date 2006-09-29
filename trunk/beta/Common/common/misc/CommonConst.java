@@ -46,6 +46,8 @@ public class CommonConst {
     	ScpCodes.put("DC2",18);
     	ScpCodes.put("ETB",23);
     	ScpCodes.put("SI",15);
-    	ScpCodes.put("C",67);	
+    	ScpCodes.put("C",67);
+    	ScpCodes.put("E",69);
+    	ScpCodes.put("F",70);
     }
 }

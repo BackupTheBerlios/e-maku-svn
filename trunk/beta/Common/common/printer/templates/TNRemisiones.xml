@@ -8,8 +8,16 @@
 				<scp row="1" col="6">SI</scp>
 				<scp row="1" col="7">ETB</scp>
 				<scp row="66" col="1">DC2</scp>
+				<scp row="1" col="7">ETB</scp>
+				<scp row="9" col="104">ESC</scp>
+				<scp row="9" col="105">E</scp>
+				<scp row="9" col="106">ETB</scp>
+				<scp row="9" col="115">ESC</scp>
+				<scp row="9" col="116">F</scp>
+				<scp row="9" col="117">ETB</scp>
 				<scp row="66" col="2">FF</scp>
 				<scp row="66" col="2">EOT</scp>
+				
 				<!-- Encabezado -->
 				<abstract row="1" col="1" height="6"><![CDATA[
             F.A URIBE & CIA. LTDA.                                 FABRICANTES DE VELAS
