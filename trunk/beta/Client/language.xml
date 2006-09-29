@@ -2723,7 +2723,7 @@
   </sentence>
   <sentence>
     <key>NEMO-COMPROBANTES</key>
-    <es_CO>p</es_CO>
+    <es_CO>m</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>S</en_US>
@@ -4903,5 +4903,61 @@
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>NEW BALANCE</en_US>
+  </sentence>
+  <sentence>
+    <key>PRODUCTION</key>
+    <es_CO>Producción</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Production</en_US>
+  </sentence>
+   <sentence>
+    <key>NEMO-PRODUCTION</key>
+    <es_CO>r</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>r</en_US>
+  </sentence>
+  <sentence>
+    <key>PRODUCTOS_TERMINADOS</key>
+    <es_CO>Productos Terminados</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Finished Products</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-PRODUCTOS-TERMINADOS</key>
+    <es_CO>P</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>F</en_US>
+  </sentence>
+  <sentence>
+    <key>CONSUMO_MATERIA_PRIMA</key>
+    <es_CO>Consumo de materia prima</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Commodity Consume</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-CONSUMO</key>
+    <es_CO>C</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>C</en_US>
+  </sentence>
+  <sentence>
+    <key>NPRODUCTOTERMINADO</key>
+    <es_CO>Nueva relacion de productos terminados</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New finished products relationship</en_US>
+  </sentence>
+  <sentence>
+    <key>NCONSUMOMATERIAPRIMA</key>
+    <es_CO>Nueva relacion para consumo de materia prima</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New relationship for commodity consume</en_US>
   </sentence>
 </language>  
