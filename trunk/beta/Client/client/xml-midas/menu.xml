@@ -737,7 +737,7 @@
 		<Mnemonic>NEMO-PRODUCTION</Mnemonic>
 		<JMenu>
 			<Mnemonic>NEMO-PRODUCTOS-TERMINADOS</Mnemonic>
-			<Icon>/icons/ico_nprod.png</Icon>
+			<Icon>/icons/ico_pro_terminados.png</Icon>
 			<Text>PRODUCTOS_TERMINADOS</Text>
 			<Activo />
 			<JMenuItem>
@@ -773,7 +773,7 @@
 		</JMenu>
 		<JMenu>
 			<Mnemonic>NEMO-CONSUMO</Mnemonic>
-			<Icon>/icons/ico_nprod.png</Icon>
+			<Icon>/icons/ico_con_materiap.png</Icon>
 			<Text>CONSUMO_MATERIA_PRIMA</Text>
 			<Activo />
 			<JMenuItem>

@@ -451,4 +451,13 @@
     <key>ARQUEO</key>
     <path>/icons/ico_arqueo.png</path>
   </icon>
+  <icon>
+    <key>CONSUMOMATERIA</key>
+    <path>/icons/ico_con_materiap.png</path>
+  </icon>
+  <icon>
+    <key>PRODUCTOTERMINADO</key>
+    <path>/icons/ico_pro_terminados.png</path>
+  </icon>
+
 </icons>
