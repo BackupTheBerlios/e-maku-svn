@@ -618,6 +618,13 @@
 				<Transaction>TR00022</Transaction>
 			</JMenuItem>
 		</JMenu>
+		<JMenuItem>
+			<Mnemonic>NEMO-LISTAPRECIOS</Mnemonic>
+			<Icon>/icons/ico_catalogo.png</Icon>
+			<Text>LISTAPRECIOS</Text>
+			<Activo />
+			<Transaction>TR00225</Transaction>
+		</JMenuItem>
 		<JMenu>
 			<Mnemonic>NEMO-UNDVENTA</Mnemonic>
 			<Icon>/icons/ico_unidadesv.png</Icon>

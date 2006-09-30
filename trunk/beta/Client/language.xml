@@ -4960,4 +4960,18 @@
     <es_ES></es_ES>
     <en_US>New relationship for commodity consume</en_US>
   </sentence>
+  <sentence>
+    <key>LISTAPRECIOS</key>
+    <es_CO>Lista de precios</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>List's prices</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-LISTAPRECIOS</key>
+    <es_CO>L</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>L</en_US>
+  </sentence>
 </language>  
