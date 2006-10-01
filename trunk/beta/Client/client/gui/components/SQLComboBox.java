@@ -338,8 +338,9 @@ public class SQLComboBox extends JComboBox implements
 	 * llama cuando un valor externo cambio.
 	 */
 	public void changeExternalValue(ChangeExternalValueEvent e) {
+		String ext = e.getExternalKey();
 		
-		if (keys!=null) {
+		if ( importValue.size() > 0 && importValue.contains(ext) ) {
 			if (!e.getExternalValue().equals(exportValue) && importValue==null) {
 				generar();
 			}
@@ -347,7 +348,7 @@ public class SQLComboBox extends JComboBox implements
 				generar();
 			}
 		}
-		if ( importValueCode.size() > 0) {
+		if ( importValueCode.size() > 0 && importValueCode.contains(ext)) {
 			exportar();
 		}
 	}
@@ -437,7 +438,7 @@ public class SQLComboBox extends JComboBox implements
        		}
        		
 		}
-		if (sqlCode!=null) {
+		if (sqlCode!=null && getSelectedIndex() >= 0) {
 			class SearchingSQL extends Thread {
 	            
 		        private String[] args;
