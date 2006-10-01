@@ -340,7 +340,7 @@ public class SQLComboBox extends JComboBox implements
 	public void changeExternalValue(ChangeExternalValueEvent e) {
 		String ext = e.getExternalKey();
 		
-		if ( importValue.size() > 0 && importValue.contains(ext) ) {
+		if (keys!=null) {
 			if (!e.getExternalValue().equals(exportValue) && importValue==null) {
 				generar();
 			}

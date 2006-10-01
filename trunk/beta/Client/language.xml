@@ -4961,6 +4961,13 @@
     <en_US>New relationship for commodity consume</en_US>
   </sentence>
   <sentence>
+    <key> ACONSUMOMATERIAPRIMA</key>
+    <es_CO>Anular relacion para consumo de materia prima</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Anull relationship for commodity consume</en_US>
+  </sentence>
+  <sentence>
     <key>TIP-NPRODUCCION</key>
     <es_CO>Nueva nota de produccion</es_CO>
     <es_EC></es_EC>
@@ -4974,6 +4981,7 @@
     <es_ES></es_ES>
     <en_US>PENDIENTE</en_US>
   </sentence>
+  
   <sentence>
     <key>LISTAPRECIOS</key>
     <es_CO>Lista de precios</es_CO>
@@ -4994,5 +5002,19 @@
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Note</en_US>
+  </sentence>
+  <sentence>
+    <key>ANOTAPRODUCCION</key>
+    <es_CO>Anular nota de producción</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Anull production note</en_US>
+  </sentence>
+  <sentence>
+    <key>UNIDAD</key>
+    <es_CO>Unidad</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Unit</en_US>
   </sentence>
 </language>  

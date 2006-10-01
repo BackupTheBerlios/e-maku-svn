@@ -761,14 +761,14 @@
 				<Icon>/icons/ico_anular.png</Icon>
 				<Mnemonic>NEMO-BORRAR</Mnemonic>
 				<Activo />
-				<Transaction>TR00175</Transaction>
+				<Transaction>TR00226</Transaction>
 			</JMenuItem>
 			<JMenuItem>
 				<Text>CONSULTAR</Text>
 				<Icon>/icons/ico_consultar.png</Icon>
 				<Mnemonic>NEMO-CONSULTAR</Mnemonic>
 				<Activo />
-				<Transaction>TR00176</Transaction>
+				<Transaction>TR00227</Transaction>
 			</JMenuItem>
 			<JSeparator />
 			<JMenu>
@@ -797,14 +797,14 @@
 				<Icon>/icons/ico_anular.png</Icon>
 				<Mnemonic>NEMO-BORRAR</Mnemonic>
 				<Activo />
-				<Transaction>TR00175</Transaction>
+				<Transaction>TR00228</Transaction>
 			</JMenuItem>
 			<JMenuItem>
 				<Text>CONSULTAR</Text>
 				<Icon>/icons/ico_consultar.png</Icon>
 				<Mnemonic>NEMO-CONSULTAR</Mnemonic>
 				<Activo />
-				<Transaction>TR00176</Transaction>
+				<Transaction>TR00229</Transaction>
 			</JMenuItem>
 			<JSeparator />
 			<JMenu>
