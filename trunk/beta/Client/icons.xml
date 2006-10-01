@@ -459,5 +459,8 @@
     <key>PRODUCTOTERMINADO</key>
     <path>/icons/ico_pro_terminados.png</path>
   </icon>
-
+  <icon>
+    <key>LISTAPRECIOS</key>
+    <path>/icons/ico_lista_pre_con.png</path>
+  </icon>
 </icons>

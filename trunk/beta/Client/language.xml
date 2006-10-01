@@ -4947,11 +4947,25 @@
     <en_US>C</en_US>
   </sentence>
   <sentence>
-    <key>NPRODUCTOTERMINADO</key>
-    <es_CO>Nueva relacion de productos terminados</es_CO>
+    <key>NNOTAPRODUCCION</key>
+    <es_CO>Nueva nota de produccion</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>New finished products relationship</en_US>
+    <en_US>New production note</en_US>
+  </sentence>
+  <sentence>
+    <key>ANOTAPRODUCCION</key>
+    <es_CO>Anular nota de produccion</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Anular production note</en_US>
+  </sentence>
+  <sentence>
+    <key>SNOTAPRODUCCION</key>
+    <es_CO>Buscar nota de produccion</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Search production note</en_US>
   </sentence>
   <sentence>
     <key>NCONSUMOMATERIAPRIMA</key>
@@ -4968,6 +4982,13 @@
     <en_US>Anull relationship for commodity consume</en_US>
   </sentence>
   <sentence>
+    <key> SCONSUMOMATERIAPRIMA</key>
+    <es_CO>Buscar relacion para consumo de materia prima</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Search relationship for commodity consume</en_US>
+  </sentence>
+  <sentence>
     <key>TIP-NPRODUCCION</key>
     <es_CO>Nueva nota de produccion</es_CO>
     <es_EC></es_EC>
@@ -4981,7 +5002,6 @@
     <es_ES></es_ES>
     <en_US>PENDIENTE</en_US>
   </sentence>
-  
   <sentence>
     <key>LISTAPRECIOS</key>
     <es_CO>Lista de precios</es_CO>

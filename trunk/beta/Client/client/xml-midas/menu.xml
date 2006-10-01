@@ -592,7 +592,7 @@
 		</JMenu>
 		<JMenuItem>
 			<Mnemonic>NEMO-LISTAPRECIOS</Mnemonic>
-			<Icon>/icons/ico_catalogo.png</Icon>
+			<Icon>/icons/ico_lista_pre_con.png</Icon>
 			<Text>LISTAPRECIOS</Text>
 			<Activo />
 			<Transaction>TR00225</Transaction>
