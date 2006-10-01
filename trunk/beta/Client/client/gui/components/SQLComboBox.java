@@ -265,8 +265,8 @@ public class SQLComboBox extends JComboBox implements
 			}
 		}
 			
-	    	this.addPopupMenuListener(this);
-	    	this.GFforma.addInitiateFinishListener(this);
+		this.addPopupMenuListener(this);
+		this.GFforma.addInitiateFinishListener(this);
 		generar();
 	}
 
@@ -346,6 +346,9 @@ public class SQLComboBox extends JComboBox implements
 			if (importValue!=null && importValue.contains(e.getExternalValue())) {
 				generar();
 			}
+		}
+		if ( importValueCode.size() > 0) {
+			exportar();
 		}
 	}
 
