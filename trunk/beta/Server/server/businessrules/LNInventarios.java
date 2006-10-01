@@ -218,7 +218,7 @@ public class LNInventarios {
     	
     	if (movimiento.equals(ENTRADA)) {
 	    	if (record[5]==null) {
-	    		record[5] = CacheKeys.getKey("valorEntrada");
+	    		record[5] = CacheKeys.getKey("valorEntrada")==null?"0.0":CacheKeys.getKey("valorEntrada");
 	    	}
     	}
     	else {

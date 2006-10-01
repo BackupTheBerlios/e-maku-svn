@@ -4961,6 +4961,20 @@
     <en_US>New relationship for commodity consume</en_US>
   </sentence>
   <sentence>
+    <key>TIP-NPRODUCCION</key>
+    <es_CO>Nueva nota de produccion</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
+    <key>TIP-NCONSUMOMP</key>
+    <es_CO>Nueva nota de consumo materias primas</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>PENDIENTE</en_US>
+  </sentence>
+  <sentence>
     <key>LISTAPRECIOS</key>
     <es_CO>Lista de precios</es_CO>
     <es_EC></es_EC>
@@ -4973,5 +4987,12 @@
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>L</en_US>
+  </sentence>
+  <sentence>
+    <key>OBSERVACIONES</key>
+    <es_CO>Observaciones</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Note</en_US>
   </sentence>
 </language>  

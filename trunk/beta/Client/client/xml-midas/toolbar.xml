@@ -28,6 +28,20 @@
 	<JToolBar>
 		<JButtonBar>
 			<Activo />
+			<Transaction>TR00223</Transaction>
+			<Icon>/icons/ico_pro_terminados.png</Icon>
+			<ToolTipText>TIP-NPRODUCCION</ToolTipText>
+		</JButtonBar>
+		<JButtonBar>
+			<Activo />
+			<Transaction>TR00224</Transaction>
+			<Icon>/icons/ico_con_materiap.png</Icon>
+			<ToolTipText>TIP-NCONSUMOMP</ToolTipText>
+		</JButtonBar>
+	</JToolBar>
+	<JToolBar>
+		<JButtonBar>
+			<Activo />
 			<Transaction>TR00174</Transaction>
 			<Icon>/icons/ico_cartera.png</Icon>
 			<ToolTipText>TIP-NCARTERA</ToolTipText>
