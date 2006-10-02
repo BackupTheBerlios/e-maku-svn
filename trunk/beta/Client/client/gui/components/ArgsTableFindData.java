@@ -109,7 +109,7 @@ public class ArgsTableFindData {
 			            ColumnClass = Integer.class;
 			        }
 			        else if (value.equals("DECIMAL")) {
-			            typeDate = bd.setScale(2,BigDecimal.ROUND_HALF_UP);
+			            typeDate = bd.setScale(decimals,BigDecimal.ROUND_HALF_UP);
 			            ColumnClass = BigDecimal.class;
 			        }
 			        else if (value.equals("COMBOSQL")) {
@@ -180,22 +180,23 @@ public class ArgsTableFindData {
 	    			defaultValue = new Integer(0);
 	    		}
 	    		
-	    } else  if (type.equals("DECIMAL")) {
+	    	} else  if (type.equals("DECIMAL")) {
 	    		if (defaultValue!=null) {
 	    			try {
-	    				defaultValue = new BigDecimal(tmpDefaultValue);
+	    				defaultValue = new BigDecimal(tmpDefaultValue).setScale(decimals);
 	    			}
-				catch(NumberFormatException NFEe) {
-	            		defaultValue = new BigDecimal(0.00);
-				}
-				catch(NullPointerException NPEe) {
-	            		defaultValue = new BigDecimal(0.00);
-				}
+	    			catch(NumberFormatException NFEe) {
+	            		defaultValue = bd.setScale(decimals);
+	    			}
+	    			catch(NullPointerException NPEe) {
+	            		defaultValue = bd.setScale(decimals);
+	    			}
 	    		}
 	    		else {
-	            	defaultValue = new BigDecimal(0.00);
+	            	defaultValue = bd.setScale(decimals);
+	            	
 	    		}
-	    } 
+	    	}
     }
 
     public int getLengthCol() {
@@ -297,7 +298,7 @@ public class ArgsTableFindData {
 		}
 		return argsret;
 	}
-	
+
 	public int getDecimals() {
 		return decimals;
 	}

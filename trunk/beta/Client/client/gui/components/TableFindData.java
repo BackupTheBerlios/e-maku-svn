@@ -470,10 +470,10 @@ public class TableFindData extends JPanel implements AnswerListener,
 		JTtabla.setDefaultRenderer(Integer.class, new FortmaCell(Integer.class));
 		JTtabla.setDefaultRenderer(Date.class, new FortmaCell(Date.class));
 		
-		JTtabla.setDefaultEditor(BigDecimal.class, new CellEditor(Double.class,JTtabla));
-		JTtabla.setDefaultEditor(Integer.class, new CellEditor(Integer.class,JTtabla));
-		JTtabla.setDefaultEditor(Date.class,new CellEditor(Date.class,JTtabla));
-		JTtabla.setDefaultEditor(String.class,new CellEditor(String.class,JTtabla));
+		JTtabla.setDefaultEditor(BigDecimal.class,	new EmakuCellEditor(BigDecimal.class));
+		JTtabla.setDefaultEditor(Integer.class,		new EmakuCellEditor(Integer.class));
+		
+		JTtabla.setDefaultEditor(Date.class,new EmakuCellEditorDate(JTtabla));
 
 		GFforma.addChangeExternalValueListener(this);
 		JTtabla.changeSelection(0, 0, false, false);
@@ -917,199 +917,144 @@ public class TableFindData extends JPanel implements AnswerListener,
 			}
 		}
 	}
-	
-	
-}
 
+	class EmakuCellEditor extends DefaultCellEditor {
 
+		private static final long serialVersionUID = -4269349473866585354L;
+		private Class _class;
+		
+	    public EmakuCellEditor(Class _class) {
+	    	super(new JTextField());
+	        this._class = _class;
+	    }
+	    
+	    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+	    	((JTextField)super.getComponent()).setText("");
+	        return super.getComponent();
+	    }
 
-/**
- * 
- * TableFindData.java Creado el 22-jun-2005
- * 
- * Este archivo es parte de E-Maku <A
- * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
- * 
- * E-Maku es Software Libre; usted puede redistribuirlo y/o realizar
- * modificaciones bajo los terminos de la Licencia Publica General GNU GPL como
- * esta publicada por la Fundacion del Software Libre (FSF); tanto en la version
- * 2 de la licencia, o cualquier version posterior.
- * 
- * E-Maku es distribuido con la expectativa de ser util, pero SIN NINGUNA
- * GARANTIA; sin ninguna garantia aun por COMERCIALIZACION o por un PROPOSITO
- * PARTICULAR. Consulte la Licencia Publica General GNU GPL para mas detalles.
- * <br>
- * Esta clase se encarga de limpiar el valor anterior antes del ingreso de un
- * nuevo valor en una celda de la tabla, ademas valida que si el texto ingresado
- * no puede ser moldeado, entonces retorna un 0 <br>
- * 
- * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
- */
-
-class CellEditor extends AbstractCellEditor implements TableCellEditor {
-
-	private static final long serialVersionUID = -4269349473866585354L;
-	private Class c;
-	private JTextField jtf;
-	private JDateChooser jtfd;
-	private JTable refJTable;
-	
-	public CellEditor(Class c,JTable table) {
-		this.c = c;
-		this.refJTable = table;
-		jtf = new JTextField();
-		jtf.addFocusListener(new FocusAdapter() {
-			public void focusLost(FocusEvent e) {
-				fireEditingStopped();
-				jtf.validate();
-			}
-		});
-		jtfd = new JDateChooser();
-		jtfd.setDateFormatString("yyyy-MM-dd");
-		jtfd.setFocusCycleRoot(true);
-		jtfd.addFocusListener(new FocusAdapter() {
-			public void focusGained(FocusEvent e) {
-				jtfd.getDateEditor().getUiComponent().requestFocusInWindow();
-			}
-		});
-		jtfd.getDateEditor().getUiComponent().addKeyListener(new KeyAdapter() {
-			
-			public void keyPressed(final KeyEvent e) {
-				Thread t = new Thread() {
-					public void run() {
-						try {
-							Thread.sleep(100);
-						}
-						catch (InterruptedException e1) {
-							e1.printStackTrace();
-						}
-						int keyCode = e.getKeyCode();
-						switch (keyCode) {
-							case KeyEvent.VK_TAB:
-							case KeyEvent.VK_LEFT:
-							case KeyEvent.VK_RIGHT:
-							case KeyEvent.VK_UP:
-							case KeyEvent.VK_DOWN:
-								refJTable.requestFocus(false);
-								break;
-						}						
-					}
-				};
-				t.start();
-			}
-		});
+	    public Object getCellEditorValue() {
+	        Number value = null;
+	        if (_class.equals(BigDecimal.class)) {
+	            try {
+	                value = new Double(((JTextField)super.getComponent()).getText());
+	                BigDecimal bd = new BigDecimal(value.doubleValue());
+	            		value =  bd.setScale(2,BigDecimal.ROUND_HALF_UP);
+	            }
+	            catch (NumberFormatException NFEe) {
+	            		BigDecimal bd = new BigDecimal(0.00);
+	            		value = bd.setScale(2,BigDecimal.ROUND_HALF_UP);
+	            }
+	        }
+	        else if (_class.equals(Integer.class)){
+	            try {
+	                value = new Integer(((JTextField)super.getComponent()).getText());
+	            }
+	            catch (NumberFormatException NFEe) {
+	                value = new Integer(0);
+	            }
+	        }
+	        return value;
+	    }
 	}
-
-	public Component getTableCellEditorComponent(JTable table, Object value,boolean isSelected, int row, int column) {
-		boolean enabled = true;
-		if (row > 0) {
-			Object obj= table.getValueAt(row-1,column);
-			enabled = obj!=null && !"".equals(obj) ? true : false; 
+	
+	class EmakuCellEditorDate extends AbstractCellEditor implements TableCellEditor {
+	
+		private static final long serialVersionUID = -4269349473866585354L;
+		private JDateChooser jtfd;
+		private JTable refJTable;
+		
+		public EmakuCellEditorDate(JTable table) {
+			this.refJTable = table;
+			jtfd = new JDateChooser();
+			jtfd.setDateFormatString("yyyy-MM-dd");
+			jtfd.setFocusCycleRoot(true);
+			jtfd.addFocusListener(new FocusAdapter() {
+				public void focusGained(FocusEvent e) {
+					jtfd.getDateEditor().getUiComponent().requestFocusInWindow();
+				}
+			});
+			jtfd.getDateEditor().getUiComponent().addKeyListener(new KeyAdapter() {
+				
+				public void keyPressed(final KeyEvent e) {
+					Thread t = new Thread() {
+						public void run() {
+							try {
+								Thread.sleep(100);
+							}
+							catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
+							int keyCode = e.getKeyCode();
+							switch (keyCode) {
+								case KeyEvent.VK_TAB:
+								case KeyEvent.VK_LEFT:
+								case KeyEvent.VK_RIGHT:
+								case KeyEvent.VK_UP:
+								case KeyEvent.VK_DOWN:
+									refJTable.requestFocus(false);
+									break;
+							}						
+						}
+					};
+					t.start();
+				}
+			});
 		}
-		if (Date.class.equals(c)) {
+		
+		public Component getTableCellEditorComponent(JTable table, Object value,boolean isSelected, int row, int column) {
+			boolean enabled = true;
+			if (row > 0) {
+				Object obj= table.getValueAt(row-1,column);
+				enabled = obj!=null && !"".equals(obj) ? true : false; 
+			}
 			if (value != null)
 				jtfd.setDate((Date) value);
 			jtfd.setEnabled(enabled);
 			return jtfd;
 		}
-		else if (String.class.equals(c)){
-			jtf.setText(value!=null ? value.toString() : "");
-			jtf.setEnabled(enabled);
-			return jtf; 
-		}
-		else {
-			jtf.setText("");
-			jtf.setEnabled(enabled);
-			return jtf; 
-		}
-	}
-
-	public Object getCellEditorValue() {
-		Object valueRet = null;
-		if (Double.class.equals(c)) {
-			try {
-				valueRet = new Double(jtf.getText());
-				BigDecimal bd = new BigDecimal(((Number)valueRet).doubleValue());
-				valueRet = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
-			} catch (NumberFormatException NFEe) {
-				BigDecimal bd = new BigDecimal(0.00);
-				valueRet = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
-			}
-		}
-		else if (Integer.class.equals(c)){
-			try {
-				valueRet = new Integer(jtf.getText());
-			} catch (NumberFormatException NFEe) {
-				valueRet = new Integer(0);
-			}
-		}
-		else if (Date.class.equals(c)) {
-			valueRet = jtfd.getDate();
-		}
-		else if (String.class.equals(c)) {
-			valueRet = jtf.getText();
-		}
-		return valueRet;
-	}
-}
-
-
-/**
- * 
- * TableFindData.java Creado el 22-jun-2005
- * 
- * Este archivo es parte de E-Maku <A
- * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
- * 
- * E-Maku es Software Libre; usted puede redistribuirlo y/o realizar
- * modificaciones bajo los terminos de la Licencia Publica General GNU GPL como
- * esta publicada por la Fundacion del Software Libre (FSF); tanto en la version
- * 2 de la licencia, o cualquier version posterior.
- * 
- * E-Maku es distribuido con la expectativa de ser util, pero SIN NINGUNA
- * GARANTIA; sin ninguna garantia aun por COMERCIALIZACION o por un PROPOSITO
- * PARTICULAR. Consulte la Licencia Publica General GNU GPL para mas detalles.
- * <br>
- * Esta clase se encarga de formatear los valores tipo numerico, dependiendo de
- * si son enteros o dobles <br>
- * 
- * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
- * 
- */
-class FortmaCell extends DefaultTableCellRenderer {
-
-
-	private static final long serialVersionUID = -1516957430275114235L;
-
-	String mascara;
-	Class _class;
 	
-	public FortmaCell(Class c) {
-		super();
-		this._class = c;
-		if (Double.class.equals(c)) {
-			this.setHorizontalAlignment(SwingConstants.RIGHT);
-			mascara = "###,###,##0.00";
-		}
-		else if (Integer.class.equals(c)){
-			this.setHorizontalAlignment(SwingConstants.RIGHT);
-			mascara = "###,###,##0";
-		}
-		else if (Date.class.equals(c)){
-			mascara = "yyyy-MM-dd";
+		public Object getCellEditorValue() {
+			return jtfd.getDate();
 		}
 	}
 
-	public void setValue(Object value) {
-		if (Double.class.equals(_class) || Integer.class.equals(_class)) {
-			NumberFormat nf = NumberFormat.getNumberInstance();
-			DecimalFormat form = (DecimalFormat) nf;
-			form.applyPattern(mascara);
-			super.setValue(value!=null?form.format(value):null);
+	class FortmaCell extends DefaultTableCellRenderer {
+	
+	
+		private static final long serialVersionUID = -1516957430275114235L;
+	
+		String mascara;
+		Class _class;
+		
+		public FortmaCell(Class c) {
+			super();
+			this._class = c;
+			if (Double.class.equals(c)) {
+				this.setHorizontalAlignment(SwingConstants.RIGHT);
+				mascara = "###,###,##0.00";
+			}
+			else if (Integer.class.equals(c)){
+				this.setHorizontalAlignment(SwingConstants.RIGHT);
+				mascara = "###,###,##0";
+			}
+			else if (Date.class.equals(c)){
+				mascara = "yyyy-MM-dd";
+			}
 		}
-		else if (Date.class.equals(_class)) {
-			SimpleDateFormat sdf = new SimpleDateFormat(mascara);
-			super.setValue(value!=null?sdf.format(value):null);
+		
+		public void setValue(Object value) {
+			if (Double.class.equals(_class) || Integer.class.equals(_class)) {
+				NumberFormat nf = NumberFormat.getNumberInstance();
+				DecimalFormat form = (DecimalFormat) nf;
+				form.applyPattern(mascara);
+				super.setValue(value!=null?form.format(value):null);
+			}
+			else if (Date.class.equals(_class)) {
+				SimpleDateFormat sdf = new SimpleDateFormat(mascara);
+				super.setValue(value!=null?sdf.format(value):null);
+			}
 		}
 	}
+
 }

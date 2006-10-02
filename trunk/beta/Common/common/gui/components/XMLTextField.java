@@ -456,7 +456,8 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 		                    for (int i = 0; i < s.length(); i++) {
 			                    try {
 		                            Snum = Snum + s.substring(i, i + 1);
-		                            Integer.parseInt(Snum);
+		                            if (!"-".equals(Snum))
+		                            	Integer.parseInt(Snum);
 			                        super.insertString(offset, s, attributeSet);
 			                    }
 			                    catch (NumberFormatException NFEe) {
