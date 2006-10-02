@@ -348,7 +348,8 @@ public class SQLComboBox extends JComboBox implements
 				generar();
 			}
 		}
-		if ( importValueCode.size() > 0 && importValueCode.contains(ext)) {
+		if (importValueCode!=null && 
+			importValueCode.contains(ext)) {
 			exportar();
 		}
 	}
