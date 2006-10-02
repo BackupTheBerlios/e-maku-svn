@@ -697,6 +697,9 @@ public class LNContabilidad {
 			String idProdServ = "";
 			boolean debito = false;
 			String attribute = colAccount.get(k);
+			
+
+
 			/*
 			 * Ser verifica si en las columnas viene especificado el codigo del
 			 * producto, si es asi entonces se procede a buscar cual es la
@@ -712,26 +715,42 @@ public class LNContabilidad {
 			}
 
 			/*
+			 * Se obtiene el codigo del asiento predefinido 
+			 */
+			String code = CacheEnlace.getIdAsientosPr(bd, idProdServ,codeAPS);
+			boolean cuentaregistrada = true;
+			
+			/*
+			 * Verificando si el asiento es debito o credito, esto esta
+			 * en la asignacion de cuentas contables para cada producto
+			 */
+
+			if (naturaleza == null) {
+
+				/*
+				 * Luego con el codigo obtenido se procede a obtener el tipo
+				 * de asiento para la cuenta a mover
+				 */
+
+				try {
+					debito = CacheEnlace.isAsientoDebito(bd, code, attribute);
+				}
+				catch (DontHaveKeyException DHKEe) {
+					cuentaregistrada=false;
+				}
+			} else {
+				debito = naturaleza.booleanValue();
+			}
+
+			/*
 			 * Si la columna actual genera asiento y el valor de la columna es
 			 * mayor a 0 entonces ...
 			 */
-			if (valueAccount > 0 && !"IdProdServ".equals(attribute.trim())) {
+			
+			if (valueAccount > 0 && !"IdProdServ".equals(attribute.trim()) && cuentaregistrada) {
 				double baseAccount = CacheEnlace
 						.getPCBase(bd, attribute.trim());
 
-				if (naturaleza == null) {
-					String code = CacheEnlace.getIdAsientosPr(bd, idProdServ,
-							codeAPS);
-
-					/*
-					 * Luego con el codigo obtenido se procede a obtener el tipo
-					 * de asiento para la cuenta a mover
-					 */
-
-					debito = CacheEnlace.isAsientoDebito(bd, code, attribute);
-				} else {
-					debito = naturaleza.booleanValue();
-				}
 				/*
 				 * Se verifica que el valor de la columna sea mayor a 0 y cumpla
 				 * la base para generar el asiento
@@ -741,11 +760,6 @@ public class LNContabilidad {
 					 * Si el atributo no es idProdServ es porque es un codigo de
 					 * una cuenta contable, por tanto se procede a verificar si
 					 * el tipo de asiento es debito o credito
-					 */
-
-					/*
-					 * Verificando si el asiento es debito o credito, esto esta
-					 * en la asignacion de cuentas contables para cada producto
 					 */
 
 					/*
@@ -855,11 +869,12 @@ public class LNContabilidad {
 	 * @throws SQLBadArgumentsException
 	 * @throws SQLNotFoundException
 	 * @throws SQLException
+	 * @throws DontHaveKeyException 
 	 */
 
 	private void asientosConTipo(String idCta, double value, String idTipo,
 			boolean debito, boolean tipo) throws SQLNotFoundException,
-			SQLBadArgumentsException, SQLException {
+			SQLBadArgumentsException, SQLException, DontHaveKeyException {
 		/*
 		 * Se define un arreglo de 8 campos para generar los argumentos del
 		 * asiento
@@ -893,14 +908,20 @@ public class LNContabilidad {
 		asiento[4] = CacheKeys.getKey("ndocumento");
 
 		if (debito) {
-			nsaldo = saldo + value;
 			asiento[5] = String.valueOf(value);
 			asiento[6] = "0";
 		} else {
-			nsaldo = saldo - value;
 			asiento[5] = "0";
 			asiento[6] = String.valueOf(value);
 		}
+		
+		if (CacheEnlace.isDebitAccount(bd,idCta)) {
+			nsaldo = saldo + value;
+		}
+		else {
+			nsaldo = saldo + value;
+		}
+
 		try {
 			BigDecimal bigDecimal = new BigDecimal(nsaldo);
 			bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -937,10 +958,11 @@ public class LNContabilidad {
 	 * @throws SQLBadArgumentsException
 	 * @throws SQLNotFoundException
 	 * @throws SQLException
+	 * @throws DontHaveKeyException 
 	 */
 
 	private void asientosDetalle(String idCta, double value, boolean debito)
-			throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
+			throws SQLNotFoundException, SQLBadArgumentsException, SQLException, DontHaveKeyException {
 		/*
 		 * Se define un arreglo de 7 campos para generar los argumentos del
 		 * asiento
@@ -964,14 +986,20 @@ public class LNContabilidad {
 		asiento[3] = CacheKeys.getKey("ndocumento");
 
 		if (debito) {
-			nsaldo = saldo + value;
 			asiento[4] = String.valueOf(value);
 			asiento[5] = "0";
 		} else {
-			nsaldo = saldo - value;
 			asiento[4] = "0";
 			asiento[5] = String.valueOf(value);
 		}
+		
+		if (CacheEnlace.isDebitAccount(bd,idCta)) {
+			nsaldo = saldo + value;
+		}
+		else {
+			nsaldo = saldo + value;
+		}
+
 		try {
 			BigDecimal bigDecimal = new BigDecimal(nsaldo);
 			bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);

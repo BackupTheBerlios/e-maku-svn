@@ -57,6 +57,7 @@ public class CacheEnlace {
     private static Hashtable <String,PerfilCta>Hperfil_cta = new Hashtable<String,PerfilCta>();
     private static Hashtable <String,String>Hasientos_pr = new Hashtable<String,String>();
     private static Hashtable <String,Boolean>Hctas_asientos = new Hashtable<String,Boolean>();
+    private static Hashtable <String,Boolean>Hctas_naturaleza = new Hashtable<String,Boolean>();
     
     /**
      * Metodo encargado de llenar el cache de los saldos en las tablas de
@@ -294,6 +295,23 @@ public class CacheEnlace {
                     Hctas_asientos.put("K-" + ConfigFile.getDBName(i) + "-"
                                           + rs.getString("id_asientos_pr")+"-"
                                           + rs.getString("char_cta").trim(),
+                                          new Boolean(rs.getBoolean("naturaleza")));
+                }
+
+                /*
+                 * Esta consulta carga la naturaleza de las cuentas de detalle
+                 */
+
+                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SEL0315"));
+
+                /*
+                 * Se almacena la informaci�n en un objeto PerfilCta y luego en la
+                 * tabla hashtable Hperfil_cta
+                 */
+
+                while (rs.next()) {
+                    Hctas_naturaleza.put("K-" + ConfigFile.getDBName(i) + "-"
+                                          + rs.getString("id_cta").trim(),
                                           new Boolean(rs.getBoolean("naturaleza")));
                 }
 
@@ -837,6 +855,15 @@ public class CacheEnlace {
     	}
     	else {
     		throw new DontHaveKeyException("K-"+bd+"-"+id_asiento_pr+"-"+cta);
+    	}
+    }
+    
+    public static boolean isDebitAccount(String bd,String cta) throws DontHaveKeyException {
+    	if (Hctas_naturaleza.containsKey("K-"+bd+"-"+cta)) {
+    		return Hctas_naturaleza.get("K-"+bd+"-"+cta).booleanValue();
+    	}
+    	else {
+    		throw new DontHaveKeyException("K-"+bd+"-"+cta);
     	}
     }
  
