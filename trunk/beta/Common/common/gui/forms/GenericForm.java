@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -29,21 +30,22 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.TitledBorder;
 
+import org.jdom.Document;
+import org.jdom.Element;
+
 import bsh.EvalError;
 import bsh.Interpreter;
+
 import common.comunications.DateSender;
-import common.comunications.UpdateCodeSender;
 import common.comunications.SocketConnector;
 import common.comunications.SocketWriter;
+import common.comunications.UpdateCodeSender;
 import common.gui.components.VoidPackageException;
 import common.misc.Icons;
 import common.misc.language.Language;
 import common.misc.parameters.GenericParameters;
 import common.transactions.STException;
 import common.transactions.STResultSet;
-
-import org.jdom.Document;
-import org.jdom.Element;
 
 /**
  * GenericForm.java Creado el 22-sep-2004
@@ -79,7 +81,7 @@ public class GenericForm extends JInternalFrame{
     private JDesktopPane JDPpanel;
     private Dimension size;
     private boolean child;
-    private Hashtable <Object,Object>externalValues;
+    private HashMap <Object,Object>externalValues;
     /*
      * En esta variable se almacena el id de la transaccion que genera la forma,
      * este parametro es recibido por referencia
@@ -166,7 +168,7 @@ public class GenericForm extends JInternalFrame{
         this.size = size;
         this.idTransaction = idTransaction;
         this.password = password;
-        this.externalValues = new Hashtable<Object,Object>();
+        this.externalValues = new HashMap<Object,Object>();
         generar(doc);
         FinishEvent event = new FinishEvent(this);
         notificando(event);
@@ -188,7 +190,7 @@ public class GenericForm extends JInternalFrame{
         this.JDPpanel = JDPpanel;
         this.size = size;
         this.idTransaction = idTransaction;
-        this.externalValues = new Hashtable<Object,Object>();
+        this.externalValues = new HashMap<Object,Object>();
         new InitShell();
         generar(doc);
         FinishEvent event = new FinishEvent(this);
@@ -817,7 +819,6 @@ public class GenericForm extends JInternalFrame{
 	            e.printStackTrace();
 	        }
             return retorno;
-	        
         }
         else {
             throw new NotFoundComponentException(driver);
@@ -1154,11 +1155,22 @@ public class GenericForm extends JInternalFrame{
         	GFforma.cleanExternalValues();
         }
         else {
-        	externalValues.clear();
+        	Object[] keys = externalValues.keySet().toArray();
+        	for (int i =0 ; i< keys.length ; i++) {
+        		Object key = keys[i]; 
+        		Object obj = externalValues.get(key);
+        		if ( obj instanceof Double) {
+        			externalValues.remove(key);
+        			externalValues.put(key,new Double(0));
+        		}
+        		else {
+        			externalValues.remove(key);
+        		}
+        	}
     	}
 	}
 	
-	public double getExteralValues(Object key) {
+	public  double getExteralValues(Object key) {
     	if (child) {
         	return GFforma.getExteralValues(key);
         }
@@ -1175,7 +1187,7 @@ public class GenericForm extends JInternalFrame{
         }
 	}
 
-	public String getExteralValuesString(Object key) {
+	public synchronized String getExteralValuesString(Object key) {
     	if (child) {
         	return GFforma.getExteralValuesString(key);
         }
@@ -1195,7 +1207,7 @@ public class GenericForm extends JInternalFrame{
         }
 	}
 	
-	public void setExternalValues(Object key,double value) {
+	public synchronized void setExternalValues(Object key,double value) {
 		if (child) {
         	GFforma.setExternalValues(key,value);
         }
@@ -1210,7 +1222,7 @@ public class GenericForm extends JInternalFrame{
         }
 	}
 	
-	public void setExternalValues(Object key,String value) {
+	public synchronized void setExternalValues(Object key,String value) {
 		if (child) {
         	GFforma.setExternalValues(key,value);
         }

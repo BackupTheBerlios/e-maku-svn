@@ -476,7 +476,6 @@ public class TableFindData extends JPanel implements AnswerListener,
 		JTtabla.setDefaultEditor(Date.class,new EmakuCellEditorDate(JTtabla));
 
 		GFforma.addChangeExternalValueListener(this);
-		JTtabla.changeSelection(0, 0, false, false);
 		TMFDtabla.addTableModelListener(new TModelListener(JTtabla));
 	}
 
