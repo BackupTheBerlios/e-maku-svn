@@ -3,7 +3,6 @@ package client.control;
 import java.awt.Cursor;
 import java.io.IOException;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import org.jdom.Document;
@@ -160,9 +159,10 @@ public class HeadersValidator implements ArrivePackageListener {
     }
     
     private static void displayError() {
-        JFrame jf = new JFrame();
         JOptionPane.showMessageDialog(
-                jf,raiz.getChild("errorMsg").getText(),
-                "",JOptionPane.ERROR_MESSAGE);
+        						MainWindow.getRefWindow(),
+        						raiz.getChild("errorMsg").getText(),
+        						"",
+        						JOptionPane.ERROR_MESSAGE);
     }
 }
