@@ -3,6 +3,7 @@ package client.gui.components;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -223,7 +224,8 @@ public class FindThird extends JTabbedPane implements AnswerListener, InitiateFi
         XMLTFfind = new XMLTextField("FIND",20,50);
         XMLTFfind.setEnabled(enabled);
         JCBfined = new JComboBox();
-        JCBfined.setMaximumRowCount(3);
+//        JCBfined.setMaximumRowCount(3);
+        JCBfined.setPreferredSize(new Dimension(300,80));
         JCBfined.setRenderer(new WrappableListCellRenderer());
         JCBfined.setEnabled(enabled);
         JPnorth.add(XMLTFfind.getLabel(),BorderLayout.WEST);
@@ -553,7 +555,6 @@ public class FindThird extends JTabbedPane implements AnswerListener, InitiateFi
 		            
                 }
             }
-	        JCBfined.updateUI();
             showDetail((String) Vkeys.get(0));
     		}
         else {
