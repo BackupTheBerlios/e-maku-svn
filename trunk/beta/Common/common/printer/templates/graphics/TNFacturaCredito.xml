@@ -1,4 +1,4 @@
-<emaku_template type="GRAPHIC" requestNumeration="true" copies="3">
+<emaku_template type="GRAPHIC" requestNumeration="true" copies="3" silent="true" printer="stylus800">
 		<settings width="612" height="792"/>
 		<metadata>
 				<font row="0" col="0" name="Monospace" size="8"/>

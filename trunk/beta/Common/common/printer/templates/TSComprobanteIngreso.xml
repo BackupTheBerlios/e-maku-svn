@@ -41,12 +41,12 @@
 				<field row="30" col="50" type="STRING">C.C. o Nit</field>
 		</metadata>
 		<package>
-			<field row="5" col="1" type="STRINGCONCAT" />
+			<field row="5" col="1" type="DATE" mask="EEEEEE, dd MMMM yyyy"/>
 			<field row="0" col="0"/>
 			<field row="0" col="0"/>
 			<field row="0" col="0"/>
 			<field row="0" col="0"/>
-			<field row="5" col="1" link="1" type="STRINGCONCAT" char="- "/>
+			<field row="0" col="0"/>
 		</package>
 		<package>
 			<field row="0" col="0"/>
