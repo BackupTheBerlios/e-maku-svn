@@ -43,7 +43,7 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 				int times = 0;
 				while (!sucess) {
 					try {
-						if (times<=30) {
+						if (times<=100) {
 							Thread.sleep(100);
 						}
 						else {

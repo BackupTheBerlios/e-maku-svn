@@ -35,7 +35,6 @@ import common.gui.forms.NotFoundComponentException;
 import common.misc.Icons;
 import common.misc.language.Language;
 import common.pdf.pdfviewer.PDFViewer;
-import common.printer.AbstractManager;
 import common.printer.PlainManager;
 import common.printer.PostScriptManager;
 import common.printer.PrintManager;
@@ -75,6 +74,8 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
     private String accel = "";
 	private String typePackage = "TRANSACTION";
 	private String idReport;
+    private PlainManager plainManager = new PlainManager();
+    private PostScriptManager postScriptManager = new PostScriptManager();
     
     public ButtonsPanel(GenericForm GFforma, Document doc) {
 
@@ -321,8 +322,6 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 						URL url = this.getClass().getResource(pathTemplate);
 						if (url!=null){
 							template = sax.build(url);
-							AbstractManager print = null;
-							
 							Element rootTemplate= template.getRootElement();
 							Attribute ATType    = rootTemplate.getAttribute("type");
 							Attribute ATSilent  = rootTemplate.getAttribute("silent");
@@ -333,21 +332,23 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 							String _type   = ATType.getValue();
 							
 							if ("PLAIN".equals(_type) ) {
-								print = new PlainManager();
-								print.process(rootTemplate,printJob);
-								if (print.isSusseful()) {
+								plainManager.process(rootTemplate,printJob);
+								if (plainManager.isSusseful()) {
 									System.out.println("================================");
-									System.out.println(print.toString());
+									System.out.println(plainManager.toString());
 									System.out.println("================================");
-									ImpresionType        IType     = print.getImpresionType();
-									ByteArrayInputStream IStream   = print.getStream();
+									ImpresionType        IType     = plainManager.getImpresionType();
+									ByteArrayInputStream IStream   = plainManager.getStream();
 									new PrintManager(IType,IStream, silent, copies);
+									plainManager = new PlainManager();
 								}
 							}
 							if ("GRAPHIC".equals(_type) ) {
-								print = new PostScriptManager(rootTemplate,printJob);
-								new PrintManager((PostScriptManager) print,silent, copies);	
+								postScriptManager.load(rootTemplate,printJob);
+								new PrintManager(postScriptManager,silent, copies);
+								postScriptManager = new PostScriptManager();
 							}
+							System.gc();
 						}
 						else {
 							System.out.println("Plantilla "+pathTemplate+" no encontrada");

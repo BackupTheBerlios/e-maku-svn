@@ -34,20 +34,22 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 	private Graphics2D g2d;
 	
 	private boolean sussceful;
-	private ImpresionType impresionType;
+	private ImpresionType impresionType = ImpresionType.POSTSCRIPT;;
 	private String ndocument = "";
 	private boolean sucess = false;
 	private Element rootTemplate;
 	private int width;
 	private int height;
 	private Element rootTransact;
-	public PostScriptManager (Element rootTemplate,Element rootTransact) {
-		ClientHeaderValidator.addSuccessListener(this);
-		impresionType = ImpresionType.POSTSCRIPT;
+	public void load(Element rootTemplate,Element rootTransact) {
 		this.rootTemplate = rootTemplate;
 		this.rootTransact = rootTransact;
 	}
 	 
+	public PostScriptManager() {
+		ClientHeaderValidator.addSuccessListener(this);
+	}
+
 	public void process() {
 		try {
 			Attribute ATTRequesNumeration = rootTemplate.getAttribute("requestNumeration");
@@ -55,7 +57,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 				int times = 0;
 				while (!sucess) {
 					try {
-						if (times<=30) {
+						if (times<=100) {
 							Thread.sleep(100);
 						}
 						else {
