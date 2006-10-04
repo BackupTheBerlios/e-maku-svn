@@ -3,6 +3,7 @@ package common.printer;
 import java.io.ByteArrayInputStream;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -259,6 +260,28 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 			textGenerator.addTextArea(value,row,col,width,height,true);
 		}
 		else if ("STRING".equals(type)) {
+			/*value = " ".equals(value) || "".equals(value) ? "   " : value.trim();
+			textGenerator.addString(value,row,col,null);*/
+			if (!"".equals(value.trim())) {
+				textGenerator.addString(value,row,col,null);
+			}
+			if (attribs.containsKey("separatorchar")){
+				Attribute att = attribs.get("separatorchar");
+				int colCharSeparator = attribs.get("separatorcol").getIntValue();
+				textGenerator.addString(att.getValue(),row,colCharSeparator,null);
+			}
+		}
+		else if ("DATE".equals(type)) {
+			String mask = attribs.get("mask").getValue();
+			SimpleDateFormat sdf = new SimpleDateFormat(mask);
+			Calendar c = Calendar.getInstance();
+			int year  = Integer.valueOf(value.substring(0,4));
+			int month = Integer.valueOf(value.substring(5,7));
+			int day   = Integer.valueOf(value.substring(8,10));
+			c.set(Calendar.YEAR,year);
+			c.set(Calendar.MONTH, (month-1));
+			c.set(Calendar.DAY_OF_MONTH,day);
+			value = sdf.format(c.getTime());
 			/*value = " ".equals(value) || "".equals(value) ? "   " : value.trim();
 			textGenerator.addString(value,row,col,null);*/
 			if (!"".equals(value.trim())) {
