@@ -20,7 +20,9 @@ public class Printer {
 			new PrintManager(
 					PrintManager.ImpresionType.PDF,
 					new ByteArrayInputStream(decode_pdf.getPdfBuffer()),
-					false,1);
+					false,
+					1,
+					null);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (PrintException e) {

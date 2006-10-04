@@ -115,16 +115,31 @@ public class SendACP extends Thread{
 	public void run() {
         try {
         	st = PoolConexiones.getConnection(bd).createStatement();
-
-            RunQuery runquery = new RunQuery(bd,"SEL0005",Arrlogin);
+            
+        	RunQuery runquery = new RunQuery(bd,"SEL0006",Arrlogin);
+            rs = runquery.ejecutarSELECT();
+            
+            /* Transmision de setencias SQL*/
+            Document doc = new Document();
+            doc.setRootElement(new Element("ACPData"));
+            Element query = new Element("query");
+            while(rs.next()){
+                Element sql = new Element("sql");
+                sql.setText(rs.getString("codigo"));
+                sql.setAttribute("type",validPass(rs.getString("password")));
+                query.addContent(sql);
+            }
+            doc.getRootElement().addContent(query);
+            SocketWriter.writing(sock,compressDocument(doc,query.getName()));
+            rs.close();
+            rs = null;
+            runquery = new RunQuery(bd,"SEL0005",Arrlogin);
             rs = runquery.ejecutarSELECT();
             
             while(rs.next()){
-            	Document doc = new Document();
+            	doc = new Document();
                 Element element = new Element("ACPData");
-                
             	doc.setRootElement(element);
-
                 try {
 	                Element transaction = new Element("transaction");
 	
@@ -150,22 +165,6 @@ public class SendACP extends Thread{
 					e.printStackTrace();
 				}
             }
-            
-            runquery = new RunQuery(bd,"SEL0006",Arrlogin);
-            rs = runquery.ejecutarSELECT();
-            
-            /* Transmision de setencias SQL*/
-            Document doc = new Document();
-            doc.setRootElement(new Element("ACPData"));
-            Element query = new Element("query");
-            while(rs.next()){
-                Element sql = new Element("sql");
-                sql.setText(rs.getString("codigo"));
-                sql.setAttribute("type",validPass(rs.getString("password")));
-                query.addContent(sql);
-            }
-            doc.getRootElement().addContent(query);
-            SocketWriter.writing(sock,compressDocument(doc,query.getName()));
         }
         catch (SQLException e) {
 			e.printStackTrace();

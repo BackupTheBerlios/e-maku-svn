@@ -326,11 +326,15 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 							Attribute ATType    = rootTemplate.getAttribute("type");
 							Attribute ATSilent  = rootTemplate.getAttribute("silent");
 							Attribute ATCopies  = rootTemplate.getAttribute("copies");
+							Attribute ATprinter  = rootTemplate.getAttribute("printer");
 							
 							boolean silent = ATSilent!=null ? ATSilent.getBooleanValue() : false;
 							int copies     = ATCopies!=null ? ATCopies.getIntValue() : 1;
 							String _type   = ATType.getValue();
-							
+							String printer = ATprinter!=null && 
+											 !ATprinter.getValue().trim().equals("") ?  
+											 ATprinter.getValue() : 
+											 null ;
 							if ("PLAIN".equals(_type) ) {
 								plainManager.process(rootTemplate,printJob);
 								if (plainManager.isSusseful()) {
@@ -339,13 +343,13 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 									System.out.println("================================");
 									ImpresionType        IType     = plainManager.getImpresionType();
 									ByteArrayInputStream IStream   = plainManager.getStream();
-									new PrintManager(IType,IStream, silent, copies);
+									new PrintManager(IType,IStream, silent, copies,printer);
 									plainManager = new PlainManager();
 								}
 							}
 							if ("GRAPHIC".equals(_type) ) {
 								postScriptManager.load(rootTemplate,printJob);
-								new PrintManager(postScriptManager,silent, copies);
+								new PrintManager(postScriptManager,silent, copies,printer);
 								postScriptManager = new PostScriptManager();
 							}
 							System.gc();

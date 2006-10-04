@@ -8,7 +8,6 @@ import javax.print.DocFlavor;
 import javax.print.DocPrintJob;
 import javax.print.PrintException;
 import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
 import javax.print.ServiceUI;
 import javax.print.SimpleDoc;
 import javax.print.attribute.HashPrintRequestAttributeSet;
@@ -23,12 +22,19 @@ public class PrintManager {
 	private ImpresionType type;
 	private DocFlavor docFlavor;
 	
-	public PrintManager (ImpresionType type, ByteArrayInputStream is,boolean silent, int copies) throws FileNotFoundException, PrintException {
+	public PrintManager (
+			ImpresionType type,
+			ByteArrayInputStream is,
+			boolean silent,
+			int copies,
+			String printer) throws FileNotFoundException, PrintException {
 		
 		this.type = type;
 		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
 		pras.add(new Copies(copies));
-		PrintService defaultService = CommonConst.defaultPrintService;
+		PrintService[] jps = CommonConst.printServices;
+		PrintService defaultService =null;
+		
 		if (this.type.equals(ImpresionType.PLAIN)) {
 			docFlavor = DocFlavor.INPUT_STREAM.TEXT_PLAIN_UTF_8;
 		}
@@ -36,31 +42,51 @@ public class PrintManager {
 			docFlavor = DocFlavor.INPUT_STREAM.PDF;
 		}
 		
-		if (!silent) {
-			PrintService printServices[] = PrintServiceLookup.lookupPrintServices(this.docFlavor, pras);
-			defaultService = ServiceUI.printDialog(null, 200, 200,printServices, defaultService, this.docFlavor, pras);	
+		if (!silent && printer==null) {
+			defaultService = ServiceUI.printDialog(null, 200, 200,jps, defaultService, this.docFlavor, pras);	
 		}
-		
 		if (defaultService != null) {
-			DocPrintJob job = defaultService.createPrintJob();
-			Doc doc = new SimpleDoc(is, docFlavor, null);
-			job.print(doc, pras);
+			for (PrintService ps : jps) {
+				if (printer.equals(ps.getName())) {
+					print(ps,is,pras);
+					break;
+				}
+			}
+		}
+		else {
+			print(defaultService,is,pras);
 		}
 	}
 	
-	public PrintManager (PostScriptManager postScriptManager, boolean silent, int copies) throws PrintException {
-		PrintService defaultService = CommonConst.defaultPrintService;
+	public PrintManager (
+			PostScriptManager postScriptManager,
+			boolean silent,
+			int copies,
+			String printer) throws PrintException {
 		this.docFlavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
 		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
 		pras.add(new Copies(copies));
-		if (!silent) {
-			PrintService printServices[] = PrintServiceLookup.lookupPrintServices(this.docFlavor, pras);
-			defaultService = ServiceUI.printDialog(null, 200, 200,printServices, defaultService, this.docFlavor,pras);	
+		PrintService[] jps = CommonConst.printServices;
+		PrintService defaultService = null;
+		if (!silent && printer==null) {
+			defaultService = ServiceUI.printDialog(null, 200, 200,jps, defaultService, this.docFlavor,pras);	
 		}
 		if (defaultService != null) {
-			DocPrintJob job = defaultService.createPrintJob();
-			Doc doc = new SimpleDoc(postScriptManager, docFlavor, null);
-			job.print(doc, pras);
+			for (PrintService ps : jps) {
+				if (printer.equals(ps.getName())) {
+					print(ps,postScriptManager,pras);
+					break;
+				}
+			}
 		}
+		else {
+			print(defaultService,postScriptManager,pras);
+		}
+	}
+	
+	private void print(PrintService ps, Object printData, PrintRequestAttributeSet pras) throws PrintException {
+		DocPrintJob job = ps.createPrintJob();
+		Doc doc = new SimpleDoc(printData, docFlavor, null);
+		job.print(doc, pras);
 	}
 }

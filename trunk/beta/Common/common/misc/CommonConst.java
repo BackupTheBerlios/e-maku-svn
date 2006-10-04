@@ -35,11 +35,11 @@ public class CommonConst {
     public static final String TMP 		= System.getProperty("java.io.tmpdir");
     public static PrintService defaultPrintService;
     public static HashMap<String, Integer> ScpCodes;
-    
+    public static PrintService printServices[];
+
     public static void lookupDefaultPrintService() {
-    	defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
+    	printServices = PrintServiceLookup.lookupPrintServices(null, null);
     	ScpCodes = new HashMap<String, Integer>();
-    	
     	ScpCodes.put("ESC",27);
     	ScpCodes.put("FF",10);
     	ScpCodes.put("EOT",7);
