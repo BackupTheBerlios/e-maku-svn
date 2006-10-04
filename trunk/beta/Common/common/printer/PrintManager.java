@@ -34,7 +34,7 @@ public class PrintManager {
 		pras.add(new Copies(copies));
 		PrintService[] jps = CommonConst.printServices;
 		PrintService defaultService =null;
-		
+		System.out.println("Printer name " + printer);
 		if (this.type.equals(ImpresionType.PLAIN)) {
 			docFlavor = DocFlavor.INPUT_STREAM.TEXT_PLAIN_UTF_8;
 		}
@@ -43,18 +43,22 @@ public class PrintManager {
 		}
 		
 		if (!silent && printer==null) {
-			defaultService = ServiceUI.printDialog(null, 200, 200,jps, defaultService, this.docFlavor, pras);	
+			defaultService = ServiceUI.printDialog(null, 200, 200,jps, CommonConst.printSelect, this.docFlavor, pras);
+			CommonConst.printSelect = defaultService;
+			print(defaultService,is,pras);
 		}
-		if (defaultService != null) {
+		else {
+			int nroServices = 0;
 			for (PrintService ps : jps) {
+				nroServices ++;
 				if (printer.equals(ps.getName())) {
 					print(ps,is,pras);
 					break;
 				}
 			}
-		}
-		else {
-			print(defaultService,is,pras);
+			if (nroServices == jps.length) {
+				System.out.println("Impresora "+printer+"no econtrada");
+			}
 		}
 	}
 	
@@ -68,19 +72,25 @@ public class PrintManager {
 		pras.add(new Copies(copies));
 		PrintService[] jps = CommonConst.printServices;
 		PrintService defaultService = null;
+		System.out.println("Printer name " + printer);
+		
 		if (!silent && printer==null) {
-			defaultService = ServiceUI.printDialog(null, 200, 200,jps, defaultService, this.docFlavor,pras);	
+			defaultService = ServiceUI.printDialog(null, 200, 200,jps, CommonConst.printSelect, this.docFlavor,pras);
+			CommonConst.printSelect = defaultService;
+			print(defaultService,postScriptManager,pras);
 		}
-		if (defaultService != null) {
+		else {
+			int nroServices = 0;
 			for (PrintService ps : jps) {
+				nroServices++;
 				if (printer.equals(ps.getName())) {
 					print(ps,postScriptManager,pras);
 					break;
 				}
 			}
-		}
-		else {
-			print(defaultService,postScriptManager,pras);
+			if (nroServices == jps.length) {
+				System.out.println("Impresora "+printer+"no econtrada");
+			}
 		}
 	}
 	

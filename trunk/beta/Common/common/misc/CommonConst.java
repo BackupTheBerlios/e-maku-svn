@@ -36,7 +36,8 @@ public class CommonConst {
     public static PrintService defaultPrintService;
     public static HashMap<String, Integer> ScpCodes;
     public static PrintService printServices[];
-
+    public static PrintService printSelect = null;
+    
     public static void lookupDefaultPrintService() {
     	printServices = PrintServiceLookup.lookupPrintServices(null, null);
     	ScpCodes = new HashMap<String, Integer>();
