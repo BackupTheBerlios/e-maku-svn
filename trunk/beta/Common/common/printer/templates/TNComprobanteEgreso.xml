@@ -8,13 +8,13 @@
 				<scp row="33" col="1">FF</scp>
 				<scp row="33" col="2">EOT</scp>
 				<!-- Encabezado -->
-				<line row="1" col="1" length="80" charfill="-" align="horizontal" />
+				<line row="1" col="1" length="80" charfill="=" align="horizontal" />
 				<field row="2" col="2" type="STRING">F.A. Uribe &amp; Cia Ltda</field>
 				<field row="3" col="3" type="STRING">Nit.  891.200.250-1</field>
 				<field row="2" col="56" type="STRING">Comprobante de Egreso</field>
 				<field row="3" col="56" type="STRING">Nro.</field>
 				<ndocument row="3" col="61" />
-				<line row="4" col="1" length="80" charfill="-" align="horizontal" />
+				<line row="4" col="1" length="80" charfill="=" align="horizontal" />
 				<!-- Ciudad y Fecha -->
 				<line row="6" col="1" length="80" charfill="-" align="horizontal" />
 				<!-- Tercero -->
@@ -37,7 +37,7 @@
 				<line row="31" col="1" length="47" charfill="-" align="horizontal" />
 				<field row="31" col="48" type="STRING">+</field>
 				<!-- Aceptacion -->
-				<line row="29" col="1" length="47" charfill="-" align="horizontal" />
+				<line row="28" col="1" length="47" charfill="-" align="horizontal" />
 				<field row="29" col="1" type="STRING">Elaborado</field>
 				<field row="29" col="17" type="STRING">Aprobado</field>
 				<field row="29" col="33" type="STRING">Contabilizado</field>
