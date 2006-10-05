@@ -325,7 +325,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
      * Actualiza el valor de una celda especifica
      */
     
-    public synchronized void setValueAt(Object value, int rowIndex, int colIndex) {
+    public synchronized void setValueAt(Object value, int rowIndex, final int colIndex) {
         /*
          * Esta clase se encarga de solicitar la busqueda al Servidor de transacciones
          * y cargarla a sus respectivos campos
@@ -413,7 +413,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
                         }
 		            }
 		            
-                    calcular(rowIndex);	
+                    calcular(rowIndex,colIndex);	
                     totalizar();
 		        }
 		        catch (STException STe) {
@@ -475,7 +475,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 	        	new Searching(valArg,rowIndex).start();
         }
         else {
-	        calcular(rowIndex);
+	        calcular(rowIndex,colIndex);
 	       	totalizar();
         }
         /*if (ATFDargs[colIndex].getType().equals("DATE")) {
@@ -491,8 +491,8 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
         }*/
     }
     
-    private void calcular(int rowIndex) {
-    		calcular(rowIndex,true);
+    private void calcular(int rowIndex,int colIndex) {
+    		calcular(rowIndex,colIndex,true);
     }
 
     /**
@@ -501,7 +501,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
      * @param rowIndex almacena la fila sobre la que se calculara la informacion
      */
     
-    private synchronized void calcular(int rowIndex,boolean initQuery) {
+    private synchronized void calcular(int rowIndex,int colIndex,boolean initQuery) {
 	    	boolean calc = false;
 	    	if (rowIndex>=0) {
 	    		if (rowIndex>0) {
@@ -518,43 +518,44 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 	        		for (int i=0;i<formulas.size();i++) {
 	                    Formula formula = (Formula)formulas.get(i);
 	                    String var = formula.getFormula();
-	                    
-	                    switch(formula.getType()) {
-			            case SIMPLE:
-			            		procesarFormulas(var,rowIndex,true);
-			            		break;
-			            case BEANSHELL:
-			            		procesarFormulas(var,rowIndex,false);
-			            		break;
-			            case SUPER:
-				            	for (int j = 0 ; j < rows && !"".equals(getValueAt(j,0)); j++ ) {
-						        	procesarFormulas(var,j,false);
-				            	}
-				            	break;
-			            case SIMPLENQ:
-				            	if (initQuery) {
+	                    if ( getColIndex(var) != colIndex ) {
+		                    switch(formula.getType()) {
+				            case SIMPLE:
 				            		procesarFormulas(var,rowIndex,true);
-				            	}
-				            	break;
-			            case BEANSHELLNQ:
-				            	if (initQuery) {
+				            		break;
+				            case BEANSHELL:
 				            		procesarFormulas(var,rowIndex,false);
-				            	}
-				            	break;
-			            case SUPERNQ:
-				            	if (initQuery) {
+				            		break;
+				            case SUPER:
 					            	for (int j = 0 ; j < rows && !"".equals(getValueAt(j,0)); j++ ) {
-							        	procesarFormulas(var,j,true);
-							        }
-				            	}
-				            	break;
-			            case SUPERBEANNQ:
-				            	if (initQuery) {
-				            		for (int j = 0 ; j < rows && !"".equals(getValueAt(j,0)); j++ ) {
 							        	procesarFormulas(var,j,false);
-				            		}
-				            	}
-				            	break;
+					            	}
+					            	break;
+				            case SIMPLENQ:
+					            	if (initQuery) {
+					            		procesarFormulas(var,rowIndex,true);
+					            	}
+					            	break;
+				            case BEANSHELLNQ:
+					            	if (initQuery) {
+					            		procesarFormulas(var,rowIndex,false);
+					            	}
+					            	break;
+				            case SUPERNQ:
+					            	if (initQuery) {
+						            	for (int j = 0 ; j < rows && !"".equals(getValueAt(j,0)); j++ ) {
+								        	procesarFormulas(var,j,true);
+								        }
+					            	}
+					            	break;
+				            case SUPERBEANNQ:
+					            	if (initQuery) {
+					            		for (int j = 0 ; j < rows && !"".equals(getValueAt(j,0)); j++ ) {
+								        	procesarFormulas(var,j,false);
+					            		}
+					            	}
+					            	break;
+		                    }
 	                    }
 	        		}
 	        	}
@@ -574,7 +575,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
         /* Recorriendo cada formula */
         String key=var.substring(0,1);
         String newVar=reemplazarFormula(var,rowIndex,valueOld);
-	    	try {
+    	try {
 	    		Object result = null;
 	    		int col= getColIndex(key);
 	        if (tipoFormula) {
@@ -681,7 +682,15 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 		                 * Se verifica si en el contenido existe una funcion
 		                 * de totalizacion
 		                 */
-		                if (var.length()>=j+5 && var.substring(j,j+3).toUpperCase().equals("SUM")) {
+		                if (var.substring(2,var.length()).startsWith("ROUND")) {
+		                	String args = var.substring(6,var.length()-1);
+		                	int sep = args.indexOf(',');
+		                	String arg1  = args.substring(0,sep);
+		                	String arg2  = args.substring(sep+1,args.length());
+		                	newVar+= round(arg1, arg2, rowIndex);
+		                	j+=var.length();
+		                }
+		                else if (var.length()>=j+5 && var.substring(j,j+3).toUpperCase().equals("SUM")) {
 		                	newVar+=sum(var.substring(j+4,j+5));
 		                	j+=5;
 		                }
@@ -835,6 +844,30 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
             errFormula=true;
         }
 		return 0.0;
+    }
+    
+    public double round(String value, String aprox, int rowIndex) {
+    	Hashtable<String,Object> valueOld = new Hashtable<String,Object>();
+    	String var = reemplazarFormula(value, rowIndex, valueOld);
+    	
+    	Double val = null;
+		try {
+			val = (Double)GFforma.invokeMethod((String)externalValues.get(aprox),
+					  "getDoubleValue",
+					  new Class[]{String.class},
+					  new Object[]{aprox});
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (NotFoundComponentException e) {
+			e.printStackTrace();
+		}
+    	
+    	Double result = (Double) FormulaCalculator.operar(var);
+    	double decene = result % 100 ;
+    	double daprox = val!= null ? val.doubleValue() : 0.00;
+    	double adjust = Math.rint(decene/daprox);
+    	int intvalue = (int) (result / 100) ;
+    	return daprox > 0 ?  (intvalue + ((adjust * daprox) / 100)) * 100: result;
     }
 
     /**
@@ -1698,7 +1731,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 	                updateCells(addCols(j,Lcol),i,j);
 	            }
 	            if (formulas!=null) {
-                    calcular(i,false);
+                    calcular(i,0,false);
                 }
             }
         }
@@ -1731,7 +1764,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 	            }
         		currentRow++;
 	            if (formulas!=null) {
-                    calcular(i,false);
+                    calcular(i,0,false);
                 }
         	}
         }
@@ -1830,7 +1863,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     public void changeValue(ChangeValueEvent e) {
         for (int i=0;i<rows;i++) {
             if (!getValueAt(i,0).equals("")) {
-                calcular(i);
+                calcular(i,0);
             }
             else {
                 break;
@@ -1876,7 +1909,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 		if (importTotalCol.containsValue(e.getExternalValue())) {
 			for (int i=0;i<rows;i++) {
 		        if (!getValueAt(i,0).equals("")) {
-		            calcular(i);
+		            calcular(i,0);
 		        }
 		        else {
 		            break;
