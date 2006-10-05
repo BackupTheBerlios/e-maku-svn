@@ -3743,7 +3743,7 @@
   </sentence>
   <sentence>
     <key>KEYWORD</key>
-    <es_CO>Palabra Clave</es_CO>
+    <es_CO>Palabra Clave: </es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Key Word</en_US>
@@ -4357,6 +4357,13 @@
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New Return in Purchases</en_US>
+  </sentence>
+  <sentence>
+    <key>TIP-CAMBIAR-PRECIOS</key>
+    <es_CO>Cambiar Precios de Productos</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Change List Price</en_US>
   </sentence>
   <sentence>
     <key>TIP-NCARTERA</key>
@@ -5036,5 +5043,12 @@
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Unit</en_US>
+  </sentence>
+  <sentence>
+    <key>SPRODUCTO</key>
+    <es_CO>Consultar Producto</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Search Product</en_US>
   </sentence>
 </language>  

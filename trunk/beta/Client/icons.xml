@@ -463,4 +463,8 @@
     <key>LISTAPRECIOS</key>
     <path>/icons/ico_lista_pre_con.png</path>
   </icon>
+  <icon>
+    <key>SPRODUCTO</key>
+    <path>/icons/ico_buscar_producto.png</path>
+  </icon>
 </icons>

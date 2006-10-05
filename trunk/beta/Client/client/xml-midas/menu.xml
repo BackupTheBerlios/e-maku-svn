@@ -738,6 +738,14 @@
 				</JMenuItem>
 			</JMenu>
 		</JMenu>
+		<JSeparator/>
+		<JMenuItem>
+			<Text>SPRODUCTO</Text>
+			<Icon>/icons/ico_buscar_producto.png</Icon>
+			<Mnemonic>NEMO-BORRAR</Mnemonic>
+			<Activo />
+			<Transaction>TR00230</Transaction>
+		</JMenuItem>
 	</JMenu>
 	<JMenu>
 		<Text>PRODUCTION</Text>

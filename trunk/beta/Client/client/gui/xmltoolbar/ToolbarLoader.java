@@ -135,7 +135,13 @@ public class ToolbarLoader extends JPanel {
                 JBtmp.setActionCommand(subdatos.getValue());
             }
             else if (subdatos.getName().equals("Icon")) {
-                JBtmp.setIcon(new ImageIcon(this.getClass().getResource(subdatos.getValue())));
+            	try {
+            		JBtmp.setIcon(new ImageIcon(this.getClass().getResource(subdatos.getValue())));
+            	}
+            	catch(NullPointerException NPEe) {
+            		System.out.println(subdatos.getValue());
+            		NPEe.printStackTrace();
+            	}
             }
             else if (subdatos.getName().equals("ToolTipText")) {
                 JBtmp.setToolTipText(Language.getWord(subdatos.getValue()));

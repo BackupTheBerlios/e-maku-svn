@@ -18,11 +18,25 @@
 			<Icon>/icons/ico_terceros.png</Icon>
 			<ToolTipText>TIP-NTERCERO</ToolTipText>
 		</JButtonBar>
+	</JToolBar>
+	<JToolBar>
 		<JButtonBar>
 			<Activo />
 			<Transaction>TR00038</Transaction>
 			<Icon>/icons/ico_nprod.png</Icon>
 			<ToolTipText>TIP-NPRODUCTO</ToolTipText>
+		</JButtonBar>
+		<JButtonBar>
+			<Activo />
+			<Transaction>TR00225</Transaction>
+			<Icon>/icons/ico_lista_pre_con.png</Icon>
+			<ToolTipText>TIP-CAMBIAR-PRECIOS</ToolTipText>
+		</JButtonBar>
+		<JButtonBar>
+			<Activo />
+			<Transaction>TR00230</Transaction>
+			<Icon>/icons/ico_buscar_producto.png</Icon>
+			<ToolTipText>SPRODUCTO</ToolTipText>
 		</JButtonBar>
 	</JToolBar>
 	<JToolBar>
