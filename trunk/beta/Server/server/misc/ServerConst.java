@@ -25,7 +25,7 @@ package server.misc;
  */
 public interface ServerConst {
     
-	public final String KeyServer = "E-Maku";
+	public final String KeyServer = "emaku";
 
 	public final String EMAKU_HOME       =  System.getenv("EMAKU_HOME");
 	public final String HOME 		= System.getProperty("user.home");
