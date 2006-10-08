@@ -122,6 +122,9 @@ public class MakeReport extends Thread {
 				} else {
 					rs = new RunQuery(SocketServer.getBd(socket), sql).ejecutarSELECT();
 				}
+				
+				// TODO: Si rs es un conjunto vacio... imprima una hoja con el mensaje "Este reporte no contiene registros"
+				
 				JRResultSetDataSource jrRS = new JRResultSetDataSource(rs);
 				
 				Map <String,String>parameters = new HashMap<String,String>();
