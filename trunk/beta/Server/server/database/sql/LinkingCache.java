@@ -119,14 +119,14 @@ public class LinkingCache {
                  * los usuarios
                  */
                 
-                Htransacciones = loadCache(ConfigFile.getDBName(i),"SEL0001", new String[]{"login","codigo","password"},"ok");
+                Htransacciones.putAll(loadCache(ConfigFile.getDBName(i),"SEL0001", new String[]{"login","codigo","password"},"ok"));
 
                 /*
                  * Esta consulta carga las sentencias a las que tienen permisos
                  * los usuarios 
                  */
 
-                Hpermisos = loadCache(ConfigFile.getDBName(i),"SEL0002", new String[]{"login","codigo","password"},"ok");
+                Hpermisos.putAll(loadCache(ConfigFile.getDBName(i),"SEL0002", new String[]{"login","codigo","password"},"ok"));
                 
                 /*
                  * Se realiza la consulta para obtener los drivers de la tabla
@@ -244,7 +244,7 @@ public class LinkingCache {
                  * libro_aux
                  */
 
-                Hlibro_aux = loadCache(ConfigFile.getDBName(i),"SEL0097", new String[]{"centro","id_cta","id_tercero","id_prod_serv"},"saldo");
+                Hlibro_aux.putAll(loadCache(ConfigFile.getDBName(i),"SEL0097", new String[]{"centro","id_cta","id_tercero","id_prod_serv"},"saldo"));
             }
             catch (SQLException SQLEe) {
             	SQLEe.printStackTrace();
@@ -264,18 +264,18 @@ public class LinkingCache {
 
     }
 
-    private static void loadAsientosPredefinidos(String bd) 
+    public static void loadAsientosPredefinidos(String bd) 
     throws SQLException, SQLNotFoundException {
         /*
          * Esta consulta carga los id de todos los asientos predefinidos.
          */
 
-        Hasientos_pr = loadCache(bd,"SEL0095", new String[]{"id_prod_serv","id_asientos_prod_serv"},"id_asientos_pr");
+        Hasientos_pr.putAll(loadCache(bd,"SEL0095", new String[]{"id_prod_serv","id_asientos_prod_serv"},"id_asientos_pr"));
         /*
          * Esta consulta carga las cuentas de los asientos predefinidos con su respectiva naturaleza
          */
 
-        Hctas_asientos = loadCache(bd,"SEL0096", new String[]{"id_asientos_pr","char_cta"},"naturaleza");
+        Hctas_asientos.putAll(loadCache(bd,"SEL0096", new String[]{"id_asientos_pr","char_cta"},"naturaleza"));
     }
     
     /**
@@ -310,7 +310,7 @@ public class LinkingCache {
          * Esta consulta carga la naturaleza de las cuentas de detalle
          */
 
-        Hctas_naturaleza = loadCache(bd,"SEL0315", new String[]{"id_cta"},"naturaleza");
+        Hctas_naturaleza.putAll(loadCache(bd,"SEL0315", new String[]{"id_cta"},"naturaleza"));
 
         CloseSQL.close(st);
         CloseSQL.close(rs);
