@@ -20,7 +20,7 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import server.comunications.SocketServer;
-import server.database.sql.CacheEnlace;
+import server.database.sql.LinkingCache;
 import server.database.sql.DontHaveKeyException;
 import server.database.sql.RunQuery;
 import server.database.sql.SQLBadArgumentsException;
@@ -173,7 +173,7 @@ public class LNDocuments {
 	                    	
 	                        if (linkDocument!=null) {
 	                        	// Se obtiene su consecutivo
-	                        	String consecutiveLinkDocument = CacheEnlace.getConsecutive(bd,linkDocument);
+	                        	String consecutiveLinkDocument = LinkingCache.getConsecutive(bd,linkDocument);
 	                        	// Se crea el documento alterno
 		                    	createDocument(linkDocument.trim(),consecutiveLinkDocument);
 		    	                
@@ -478,14 +478,14 @@ public class LNDocuments {
 		         * correspondiente.
 		         */
 		        if (CREATE_DOCUMENT.equals(LNDocuments.actionDocument)) {
-	        		CacheEnlace.incrementeConsecutive(bd,idDocument);
+	        		LinkingCache.incrementeConsecutive(bd,idDocument);
 	        		if (linkDocument!=null){
-	        			CacheEnlace.incrementeConsecutive(bd,linkDocument);
+	        			LinkingCache.incrementeConsecutive(bd,linkDocument);
 	        		}
 	        	} else if (DELETE_DOCUMENT.equals(LNDocuments.actionDocument)) {
-	        		CacheEnlace.reloadConsecutive(bd,idDocument);
+	        		LinkingCache.reloadConsecutive(bd,idDocument);
 	        		if (linkDocument!=null){
-	        			CacheEnlace.incrementeConsecutive(bd,linkDocument);
+	        			LinkingCache.incrementeConsecutive(bd,linkDocument);
 	        		}
 	        	}
 	        }
@@ -846,7 +846,7 @@ public class LNDocuments {
             
             else if (subpackage.getAttributeValue("attribute").equals("consecutive")) {
                 String bd = SocketServer.getBd(sock);
-                LNDocuments.consecutive = CacheEnlace.getConsecutive(bd,idDocument);
+                LNDocuments.consecutive = LinkingCache.getConsecutive(bd,idDocument);
             }
             
             // date

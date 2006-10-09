@@ -13,7 +13,7 @@ import common.misc.log.LogAdmin;
 import server.comunications.ErrorXML;
 import server.comunications.SocketServer;
 import server.comunications.SuccessXML;
-import server.database.sql.CacheEnlace;
+import server.database.sql.LinkingCache;
 import server.database.sql.ClassLogicDriver;
 import server.database.sql.InstruccionesSQL;
 import server.misc.ServerConst;
@@ -89,8 +89,8 @@ public class RunTransaction {
         
         
         if (InstruccionesSQL.permisoTransaccion(bd,login,transaction_code,password)){
-        		System.out.println("bd: "+bd+" transaction_code: "+transaction_code+" Driver: "+CacheEnlace.getDriver(bd,transaction_code));
-	        callDriver(CacheEnlace.getDriver(bd,transaction_code),
+        		System.out.println("bd: "+bd+" transaction_code: "+transaction_code+" Driver: "+LinkingCache.getDriver(bd,transaction_code));
+	        callDriver(LinkingCache.getDriver(bd,transaction_code),
 	                   id_transaction);
         }
         else

@@ -16,7 +16,7 @@ import org.jdom.output.XMLOutputter;
 
 import server.comunications.SocketServer;
 import server.database.connection.PoolConexiones;
-import server.database.sql.CacheEnlace;
+import server.database.sql.LinkingCache;
 import server.database.sql.CloseSQL;
 import server.database.sql.RunQuery;
 import server.database.sql.SQLBadArgumentsException;
@@ -90,8 +90,8 @@ public class SendACP extends Thread{
 	        rs.next();
 	        String numQuerys = rs.getString(1);
 	        
-			String company = CacheEnlace.getCompanyData(SocketServer.getCompanyNameKey(sock));
-			String companyID = CacheEnlace.getCompanyData(SocketServer.getCompanyIDKey(sock));	        
+			String company = LinkingCache.getCompanyData(SocketServer.getCompanyNameKey(sock));
+			String companyID = LinkingCache.getCompanyData(SocketServer.getCompanyIDKey(sock));	        
 	        
 	        docACPBegin = new Document();
 	        docACPBegin.setRootElement(element);

@@ -125,6 +125,7 @@ public class LNGenericSQL {
 		/*
 		 * puede venir de las dos formas
 		 */
+		
 		String SattributeName = Efirst.getAttributeValue("name");
 		if (Efirst.getAttributeValue("nameField")!=null  && !"".equals(Efirst.getAttributeValue("nameField"))) {
 			SattributeName = Efirst.getAttributeValue("nameField");

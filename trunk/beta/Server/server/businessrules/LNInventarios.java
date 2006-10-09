@@ -8,7 +8,7 @@ import java.util.Vector;
 
 import org.jdom.Element;
 
-import server.database.sql.CacheEnlace;
+import server.database.sql.LinkingCache;
 import server.database.sql.RunQuery;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
@@ -223,7 +223,7 @@ public class LNInventarios {
     	}
     	else {
             if (record[5]==null) {
-            	record[5] = String.valueOf(CacheEnlace.getPCosto(bd, record[2], record[3]));
+            	record[5] = String.valueOf(LinkingCache.getPCosto(bd, record[2], record[3]));
             }
     	}
     	
@@ -303,8 +303,8 @@ public class LNInventarios {
 	        /*
 	         * Se captura los saldos antes del movimiento
 	         */
-	        saldo = CacheEnlace.getSaldoInventario(bd, record[2], record[3]);
-	        vsaldo = CacheEnlace.getVSaldoInventario(bd, record[2], record[3]);
+	        saldo = LinkingCache.getSaldoInventario(bd, record[2], record[3]);
+	        vsaldo = LinkingCache.getVSaldoInventario(bd, record[2], record[3]);
 
 	        /*
 	    	 * Se carga los datos iniciales
@@ -322,7 +322,7 @@ public class LNInventarios {
 	        record[6] = String.valueOf(saldo);
 	        record[7] = String.valueOf(vsaldo);
 	    	RQmovimiento.ejecutarSQL(record);
-	        CacheEnlace.setPCosto(bd, record[2], record[3],pcosto);
+	        LinkingCache.setPCosto(bd, record[2], record[3],pcosto);
 	        actualizarSaldos(record);
 		}
 		
@@ -382,8 +382,8 @@ public class LNInventarios {
         /*
          * Se captura los saldos antes del movimiento
          */
-        saldo = CacheEnlace.getSaldoInventario(bd, record[2], record[3]);
-        vsaldo = CacheEnlace.getVSaldoInventario(bd, record[2], record[3]);
+        saldo = LinkingCache.getSaldoInventario(bd, record[2], record[3]);
+        vsaldo = LinkingCache.getVSaldoInventario(bd, record[2], record[3]);
 
         /*
          * Se almacena primer saldo de la transaccion
@@ -435,8 +435,8 @@ public class LNInventarios {
             /*
              * Se captura los saldos antes del movimiento
              */
-            saldo = CacheEnlace.getSaldoInventario(bd, RSdatos.getString(2),RSdatos.getString(1));
-            vsaldo = CacheEnlace.getVSaldoInventario(bd, RSdatos.getString(2),RSdatos.getString(1));
+            saldo = LinkingCache.getSaldoInventario(bd, RSdatos.getString(2),RSdatos.getString(1));
+            vsaldo = LinkingCache.getVSaldoInventario(bd, RSdatos.getString(2),RSdatos.getString(1));
 
             /*
              * Se almacena primer saldo de la transaccion
@@ -540,9 +540,9 @@ public class LNInventarios {
 	    								   String.valueOf(saldo),
 	    								   String.valueOf(vsaldo)};
 
-	    CacheEnlace.setPCosto(bd,idBodega,idProdServ,pcosto);
-        CacheEnlace.setSaldoInventario(bd, idBodega,idProdServ,saldo);
-        CacheEnlace.setVSaldoInventario(bd, idBodega,idProdServ,vsaldo);
+	    LinkingCache.setPCosto(bd,idBodega,idProdServ,pcosto);
+        LinkingCache.setSaldoInventario(bd, idBodega,idProdServ,saldo);
+        LinkingCache.setVSaldoInventario(bd, idBodega,idProdServ,vsaldo);
 
 	    return ponderados;
     }
@@ -554,7 +554,7 @@ public class LNInventarios {
      */
     
     private void actualizarSaldos(Object[] record) {
-        CacheEnlace.setSaldoInventario(bd, (String)record[2], (String)record[3],saldo);
-        CacheEnlace.setVSaldoInventario(bd, (String)record[2], (String)record[3],vsaldo);
+        LinkingCache.setSaldoInventario(bd, (String)record[2], (String)record[3],saldo);
+        LinkingCache.setVSaldoInventario(bd, (String)record[2], (String)record[3],vsaldo);
     }
 }

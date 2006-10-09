@@ -7,6 +7,7 @@ import java.util.Iterator;
 
 import common.misc.language.Language;
 import server.comunications.SocketServer;
+import server.database.sql.LinkingCache;
 import server.database.sql.RunQuery;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
@@ -160,7 +161,6 @@ public class LNAdminPUC {
 	        else if (argValue.equals("EDIT")) { 
 	            for (int k=0;i.hasNext();k++) {
 	                Element arg = (Element)i.next();
-	                System.out.println("k="+k);
 	                /*
 	                 * Se captura el codigo de la sentencia que consulta la existencia de hijos
 	                 */
@@ -234,19 +234,16 @@ public class LNAdminPUC {
 		                 */
 	                    SQLdisableAccount = arg.getValue();
 	                    String tipo = LNGtransaccion.getArg(3);
-	                    System.out.println("verificando tipo de "+tipo);
 	                    /*
 	                     * Si tipo es mayor entonces
 	                     */
 	                    if (tipo.equals("1")) {
-	                        System.out.println("Desactivando la cuenta");
 			                disableAccount(LNGtransaccion.getKey(0),SQLdisableAccount,SQLdisableFather);
 	                    }
 	                    /*
 	                     * Si no es porque tipo es detalle, entonces ...
 	                     */
 	                    else {
-	                        System.out.println("Activando la cuenta");
 	                        enableAccount(SQLenableAccount,SQLenableFather,SQLhijo);
 	                    }
 	                }
@@ -341,7 +338,7 @@ public class LNAdminPUC {
 	         * Si la transaccion se procesa con exito, entonces se hace un commit y se envia el
 	         * paquete <SUCCESS> :-D
 	         */
-	        
+	        LinkingCache.loadPerfilCta(SocketServer.getBd(sock));
 	        LNGtransaccion.commit();
 	        RunTransaction.successMessage(sock,
 							          	  id_transaction,
@@ -401,7 +398,6 @@ public class LNAdminPUC {
 		ResultSet RSpadre = RQpadre.ejecutarSELECT();
 		RSpadre.next();
 		String padre = RSpadre.getString(1);
-		System.out.println("padre: "+padre);
 		if (padre.equals("0")) 
 		    return false;
 		else 
@@ -429,7 +425,6 @@ public class LNAdminPUC {
     	String argUpdate[] = new String[2];
         argUpdate[0]="true";
         while (!padre.equals("0")) {
-            System.out.println("Padre: "+padre);
             argUpdate[1]=padre;
             getTransaction(arg,argUpdate);
             RQpadre = new RunQuery(bd,SQLpadre,
@@ -463,11 +458,7 @@ public class LNAdminPUC {
          ResultSet RSpadre = RQpadre.ejecutarSELECT();
          RSpadre.next();
          descendencia = RSpadre.getString(1);
-         System.out.println("Descendencia: "+descendencia);
-         System.out.println("Padre: "+padre);
-         System.out.println("sentencia: "+SQLpadre);
         while (descendencia.equals("0")){
-            System.out.println("ciclo...");
             argUpdate[1]=padre;
             getTransaction(arg,argUpdate);
             
@@ -498,9 +489,7 @@ public class LNAdminPUC {
             RSpadre = RQpadre.ejecutarSELECT();
             RSpadre.next();
             descendencia = RSpadre.getString(1);
-            System.out.println("Padre: "+padre+" Descendencia: "+descendencia);
         } 
-        
     }
     
     /**
@@ -511,7 +500,6 @@ public class LNAdminPUC {
     
     private void getTransaction(String sql,Element pack) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
-        System.out.println("Sentencia: "+sql);
         LNGtransaccion.setArgs(pack,id_transaction);
         LNGtransaccion.generar(sql);
     }
@@ -524,7 +512,6 @@ public class LNAdminPUC {
     
     private void getTransaction(String sql,String[] argUpdate) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
-        System.out.println("Sentencia: "+sql);
         LNGtransaccion.setArgs(argUpdate,id_transaction);
         LNGtransaccion.generar(sql);
     }

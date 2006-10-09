@@ -10,18 +10,19 @@ import java.sql.Statement;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import common.comunications.SocketWriter;
-import common.misc.language.Language;
-import common.misc.log.LogAdmin;
+import org.jdom.Document;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+
 import server.comunications.SocketServer;
 import server.control.SendUPDATECODE;
 import server.database.connection.PoolConexiones;
 import server.misc.ServerConst;
 import server.misc.settings.ConfigFile;
 
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+import common.comunications.SocketWriter;
+import common.misc.language.Language;
+import common.misc.log.LogAdmin;
 /**
  * CacheEnlace.java Creado el 1-jul-2004
  * 
@@ -44,20 +45,23 @@ import org.jdom.input.SAXBuilder;
  *         Cepeda </A>
  */
 
-public class CacheEnlace {
+public class LinkingCache {
 
+    private static Statement st = null;
     private static Hashtable <String,String>HcompanyData = new Hashtable<String,String>();
-	private static Hashtable <String,String>Hinstrucciones = new Hashtable<String,String>();
-    private static Hashtable <String,Boolean>Htransacciones = new Hashtable<String,Boolean>();
-    private static Hashtable <String,Boolean>Hpermisos      = new Hashtable<String,Boolean>();
+	
+    private static Hashtable <String,Object>Hinstrucciones = new Hashtable<String,Object>();
+    private static Hashtable <String,Object>Htransacciones = new Hashtable<String,Object>();
+    private static Hashtable <String,Object>Hpermisos      = new Hashtable<String,Object>();
+    private static Hashtable <String,Object>Hasientos_pr = new Hashtable<String,Object>();
+    private static Hashtable <String,Object>Hctas_asientos = new Hashtable<String,Object>();
+    private static Hashtable <String,Object>Hctas_naturaleza = new Hashtable<String,Object>();
+    private static Hashtable <String,Object>Hlibro_aux = new Hashtable<String,Object>();
+    
     private static Hashtable <String,ClassLogicDriver>Hlogica_drivers = new Hashtable<String,ClassLogicDriver>();
     private static Hashtable <String,InfoInventario>Hinventarios = new Hashtable<String,InfoInventario>();
-    private static Hashtable <String,Double>Hlibro_aux = new Hashtable<String,Double>();
     private static Hashtable <String,String>Hconsecutive = new Hashtable<String,String>();
     private static Hashtable <String,PerfilCta>Hperfil_cta = new Hashtable<String,PerfilCta>();
-    private static Hashtable <String,String>Hasientos_pr = new Hashtable<String,String>();
-    private static Hashtable <String,Boolean>Hctas_asientos = new Hashtable<String,Boolean>();
-    private static Hashtable <String,Boolean>Hctas_naturaleza = new Hashtable<String,Boolean>();
     
     /**
      * Metodo encargado de llenar el cache de los saldos en las tablas de
@@ -65,8 +69,6 @@ public class CacheEnlace {
      */
     public static void cargar() {
 
-        Connection cn;
-        Statement st = null;
         ResultSet rs = null;
         /** Obtengo el numero de conexiones que maneja el ST */
         int max = ConfigFile.getDBSize();
@@ -90,15 +92,18 @@ public class CacheEnlace {
                  * Establezco la conexion con la base de datos
                  */
 
-                cn = PoolConexiones.getConnection(ConfigFile.getDBName(i));
-                st = cn.createStatement();
+                st = PoolConexiones.getConnection(ConfigFile.getDBName(i)).createStatement();
 
                 LogAdmin.setMessage(Language.getWord("INIT_BDS"), ServerConst.MESSAGE);
                 LogAdmin.setMessage(Language.getWord("LOADING_ST") + " " + ConfigFile.getDBName( i ) , ServerConst.MESSAGE);
 
-                rs = st.executeQuery("SELECT codigo,sentencia FROM "+
-                                     "sentencia_sql ORDER BY codigo desc");
+                /*
+                 * Esta es la unica maldita sentencia que encontraras en el codigo de emaku
+                 */
                 
+                         	  
+                rs = st.executeQuery("SELECT codigo,sentencia FROM "+
+                "sentencia_sql ORDER BY codigo desc");
                 /*
                  * Se almacena la información en la hashtable Hinstrucciones 
                  */
@@ -107,41 +112,22 @@ public class CacheEnlace {
                     Hinstrucciones.put("K-"+ConfigFile.getDBName(i)+"-"+
 			                           rs.getString("codigo"),
 				                       rs.getString("sentencia"));
-                }
+                }                
                 
                 /*
                  * Esta sentencia carga las transacciones a las que tienen permisos
                  * los usuarios
                  */
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),
-                        										   "SEL0001"));
-                while(rs.next()) {
-
-                    String tmp_password=rs.getString("password");
-                    String password="";
-                    if (tmp_password!=null)
-                        password=tmp_password;
-                    
-                    Htransacciones.put("K-"+ConfigFile.getDBName(i)+"-"+
-                            					  rs.getString("login").trim()+"-"+
-                                                  rs.getString("codigo").trim()+"-"+
-                                                  password,
-                                                  new Boolean(true));
-                }
                 
+                Htransacciones = loadCache(ConfigFile.getDBName(i),"SEL0001", new String[]{"login","codigo","password"},"ok");
+
                 /*
                  * Esta consulta carga las sentencias a las que tienen permisos
                  * los usuarios 
                  */
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),
-                        										   "SEL0002"));
-                while(rs.next()) {
-                    Hpermisos.put("K-"+ConfigFile.getDBName(i)+"-"+
-                            					  rs.getString("login").trim()+"-"+
-                                                  rs.getString("codigo").trim()+"-"+
-                                                  rs.getString("password"),
-                                                  new Boolean(true));
-                }
+
+                Hpermisos = loadCache(ConfigFile.getDBName(i),"SEL0002", new String[]{"login","codigo","password"},"ok");
+                
                 /*
                  * Se realiza la consulta para obtener los drivers de la tabla
                  * transacciones
@@ -236,106 +222,29 @@ public class CacheEnlace {
                     Hinventarios.put("K-" + ConfigFile.getDBName(i) + "-"
                                           + rs.getInt("id_bodega")+ "-"
                                           + rs.getInt("id_prod_serv"),
-                                          new InfoInventario(rs.getDouble("pinventario"),rs.getDouble("saldo"),rs.getDouble("valor_saldo")));
+                                          new InfoInventario(rs.getDouble("pinventario"),
+                                        		  			 rs.getDouble("saldo"),
+                                        		  			 rs.getDouble("valor_saldo")));
                 }
 
                 /*
-                 * Esta consulta carga el perfil de todas las cuentas contables generadas.
+                 * Esta metodo carga el perfil de todas las cuentas contables generadas.
                  */
 
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SEL0094"));
+                loadPerfilCta(ConfigFile.getDBName(i));
 
                 /*
-                 * Se almacena la informaci�n en un objeto PerfilCta y luego en la
-                 * tabla hashtable Hperfil_cta
+                 * Este metodo carga la informacion relacionada a asientos prefedinidos
                  */
-
-                while (rs.next()) {
-                    Hperfil_cta.put("K-" + ConfigFile.getDBName(i) + "-"
-                                          + rs.getString("char_cta").trim(),
-                                          new PerfilCta(rs.getString("id_cta"),
-                                        		        rs.getBoolean("terceros"),
-                                        		  		rs.getBoolean("inventarios"),
-                                        		  		rs.getBoolean("centro"),
-                                        		  		rs.getBoolean("ajuste"),
-                                        		  		rs.getDouble("base"),
-                                        		  		rs.getDouble("porcentaje")));
-                }
                 
-                /*
-                 * Esta consulta carga los id de todos los asientos predefinidos.
-                 */
-
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SEL0095"));
-
-                /*
-                 * Se almacena la informaci�n en un objeto PerfilCta y luego en la
-                 * tabla hashtable Hperfil_cta
-                 */
-
-                while (rs.next()) {
-                    Hasientos_pr.put("K-" + ConfigFile.getDBName(i) + "-"
-                                          + rs.getString("id_prod_serv")+"-"
-                                          + rs.getString("id_asientos_prod_serv"),
-                                          String.valueOf(rs.getString("id_asientos_pr")));
-                }
-
-                /*
-                 * Esta consulta carga las cuentas de los asientos predefinidos con su respectiva naturaleza
-                 */
-
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SEL0096"));
-
-                /*
-                 * Se almacena la informaci�n en un objeto PerfilCta y luego en la
-                 * tabla hashtable Hperfil_cta
-                 */
-
-                while (rs.next()) {
-                    Hctas_asientos.put("K-" + ConfigFile.getDBName(i) + "-"
-                                          + rs.getString("id_asientos_pr")+"-"
-                                          + rs.getString("char_cta").trim(),
-                                          new Boolean(rs.getBoolean("naturaleza")));
-                }
-
-                /*
-                 * Esta consulta carga la naturaleza de las cuentas de detalle
-                 */
-
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SEL0315"));
-
-                /*
-                 * Se almacena la informaci�n en un objeto PerfilCta y luego en la
-                 * tabla hashtable Hperfil_cta
-                 */
-
-                while (rs.next()) {
-                    Hctas_naturaleza.put("K-" + ConfigFile.getDBName(i) + "-"
-                                          + rs.getString("id_cta").trim(),
-                                          new Boolean(rs.getBoolean("naturaleza")));
-                }
+                loadAsientosPredefinidos(ConfigFile.getDBName(i));
 
                 /*
                  * Se realiza la consulta para obtener los saldos de la tabla
                  * libro_aux
                  */
 
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SEL0097"));
-
-                /*
-                 * Se almacena la informaci�n en la tabla hashtable Hlibro_aux
-                 */
-
-                while (rs.next()) {
-                    Hlibro_aux.put("K-" + ConfigFile.getDBName(i) + "-"
-                            + getValue(rs.getString("centro")) + "-"
-                            + getValue(rs.getString("id_cta")) + "-"
-                            + getValue(rs.getString("id_tercero")) + "-"
-                            + getValue(rs.getString("id_prod_serv")),                        
-                            new Double(rs.getDouble("saldo")));
-                }
-
-
+                Hlibro_aux = loadCache(ConfigFile.getDBName(i),"SEL0097", new String[]{"centro","id_cta","id_tercero","id_prod_serv"},"saldo");
             }
             catch (SQLException SQLEe) {
             	SQLEe.printStackTrace();
@@ -350,21 +259,84 @@ public class CacheEnlace {
                         ServerConst.ERROR);
             }
             
-            
         CloseSQL.close(st);
         CloseSQL.close(rs);
 
     }
 
-    private static String getValue(String value) {
-    	try {
-    		return value.trim();
-    	}
-    	catch (NullPointerException NPEe) {
-    		return "";
-    	}
+    private static void loadAsientosPredefinidos(String bd) 
+    throws SQLException, SQLNotFoundException {
+        /*
+         * Esta consulta carga los id de todos los asientos predefinidos.
+         */
+
+        Hasientos_pr = loadCache(bd,"SEL0095", new String[]{"id_prod_serv","id_asientos_prod_serv"},"id_asientos_pr");
+        /*
+         * Esta consulta carga las cuentas de los asientos predefinidos con su respectiva naturaleza
+         */
+
+        Hctas_asientos = loadCache(bd,"SEL0096", new String[]{"id_asientos_pr","char_cta"},"naturaleza");
     }
     
+    /**
+     * Este metodo se encarga de abrir el perfil de una cuenta de detalle
+     * @param bd
+     * @throws SQLException
+     * @throws SQLNotFoundException
+     */
+    public static void loadPerfilCta(String bd) 
+    throws SQLException, SQLNotFoundException {
+    	Statement st = PoolConexiones.getConnection(bd).createStatement();
+        ResultSet rs = st.executeQuery(InstruccionesSQL.getSentencia(bd,"SEL0094"));
+
+        /*
+         * Se almacena la informacion en un objeto PerfilCta y luego en la
+         * tabla hashtable Hperfil_cta
+         */
+
+        while (rs.next()) {
+            Hperfil_cta.put("K-" + bd + "-"
+                                  + rs.getString("char_cta").trim(),
+                                  new PerfilCta(rs.getString("id_cta"),
+                                		        rs.getBoolean("terceros"),
+                                		  		rs.getBoolean("inventarios"),
+                                		  		rs.getBoolean("centro"),
+                                		  		rs.getBoolean("ajuste"),
+                                		  		rs.getDouble("base"),
+                                		  		rs.getDouble("porcentaje")));
+        }
+        
+        /*
+         * Esta consulta carga la naturaleza de las cuentas de detalle
+         */
+
+        Hctas_naturaleza = loadCache(bd,"SEL0315", new String[]{"id_cta"},"naturaleza");
+
+        CloseSQL.close(st);
+        CloseSQL.close(rs);
+    }
+    
+    private static synchronized Hashtable<String,Object> loadCache(String bd,String sql,String key[],String rsValue) 
+    throws SQLException, SQLNotFoundException {
+        ResultSet rs = st.executeQuery(InstruccionesSQL.getSentencia(bd,sql));
+        key.getClass().getName();
+        
+        Hashtable<String,Object> tabla = new Hashtable<String,Object>();
+        while (rs.next()) {
+        	String subkey="";
+        	for (String subData:key) {
+        		subkey+=rs.getString(subData).trim()+"-";
+        	}
+            tabla.put("K-" + 
+            		  bd + 
+            		  "-" +
+            		  subkey.substring(0,subkey.length()-1),
+                      rs.getString(rsValue));
+        }
+        CloseSQL.close(rs);
+        return tabla;
+    }
+
     /**
      * Este metodo retorna el nombre o el NIT de una empresa
      * @param key Codigo de la empresa
@@ -533,7 +505,7 @@ public class CacheEnlace {
 
     public static double getSaldoLibroAux(String bd, String centro, String cta, String id_tercero, String id_prod_serv) {
         if (Hlibro_aux.containsKey("K-"+bd+"-"+centro+"-"+cta+"-"+id_tercero+"-"+id_prod_serv)) {
-            return Hlibro_aux.get("K-"+bd+"-"+centro+"-"+cta+"-"+id_tercero+"-"+id_prod_serv).doubleValue();
+            return Double.parseDouble((String)Hlibro_aux.get("K-"+bd+"-"+centro+"-"+cta+"-"+id_tercero+"-"+id_prod_serv));
         }
         else {
         	return 0;
@@ -587,7 +559,7 @@ public class CacheEnlace {
      */
 
     public static String getSentenciaSQL(String key) {
-        return Hinstrucciones.get(key);
+        return (String)Hinstrucciones.get(key);
     }
     
     /**
@@ -675,7 +647,7 @@ public class CacheEnlace {
                 if (SocketServer.getBd(sock).equals(bd)) {
 		            SocketWriter.writing(sock,
 		                    SendUPDATECODE.getPackage(key,
-		                                              CacheEnlace.getConsecutive(bd,key)));
+		                                              LinkingCache.getConsecutive(bd,key)));
                 }
             }
         }
@@ -833,7 +805,7 @@ public class CacheEnlace {
     
     public static String getIdAsientosPr(String bd,String id_prod_serv,String id_asientos_prod_serv) throws DontHaveKeyException {
 	   	if (Hasientos_pr.containsKey("K-"+bd+"-"+id_prod_serv+"-"+id_asientos_prod_serv)) {
-	    		return Hasientos_pr.get("K-"+bd+"-"+id_prod_serv+"-"+id_asientos_prod_serv);
+	    		return (String)Hasientos_pr.get("K-"+bd+"-"+id_prod_serv+"-"+id_asientos_prod_serv);
 	    	}
 	    	else {
 	    		throw new DontHaveKeyException("K-"+bd+"-"+id_prod_serv+"-"+id_asientos_prod_serv);
@@ -851,7 +823,8 @@ public class CacheEnlace {
     
     public static boolean isAsientoDebito(String bd,String id_asiento_pr,String cta) throws DontHaveKeyException {
     	if (Hctas_asientos.containsKey("K-"+bd+"-"+id_asiento_pr+"-"+cta)) {
-    		return Hctas_asientos.get("K-"+bd+"-"+id_asiento_pr+"-"+cta).booleanValue();
+    		return Boolean.parseBoolean((String)Hctas_asientos.get("K-"+bd+"-"+id_asiento_pr+"-"+cta));
+    		
     	}
     	else {
     		throw new DontHaveKeyException("K-"+bd+"-"+id_asiento_pr+"-"+cta);
@@ -860,7 +833,7 @@ public class CacheEnlace {
     
     public static boolean isDebitAccount(String bd,String cta) throws DontHaveKeyException {
     	if (Hctas_naturaleza.containsKey("K-"+bd+"-"+cta)) {
-    		return Hctas_naturaleza.get("K-"+bd+"-"+cta).booleanValue();
+    		return Boolean.parseBoolean((String)Hctas_naturaleza.get("K-"+bd+"-"+cta));
     	}
     	else {
     		throw new DontHaveKeyException("K-"+bd+"-"+cta);
@@ -978,5 +951,4 @@ class InfoInventario {
     public void setVsaldo(double vsaldo) {
         this.vsaldo = vsaldo;
     }
-    
 }

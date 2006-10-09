@@ -13,7 +13,7 @@ import server.comunications.ErrorXML;
 import server.comunications.ResultSetToXML;
 import server.comunications.SocketServer;
 import server.database.connection.PoolConexiones;
-import server.database.sql.CacheEnlace;
+import server.database.sql.LinkingCache;
 import server.database.sql.TotalizarCuentas;
 import server.misc.ServerConst;
 import server.reports.MakeReport;
@@ -158,7 +158,7 @@ public class ValidHeaders {
                 String key = raiz.getChild("idDocument").getValue();
                 SocketWriter.writing(sock,
                                     SendUPDATECODE.getPackage(key,
-                                                              CacheEnlace.getConsecutive(bd,key)));
+                                                              LinkingCache.getConsecutive(bd,key)));
 
             }
             /*

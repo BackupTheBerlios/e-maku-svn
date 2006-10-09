@@ -44,7 +44,7 @@ public class InstruccionesSQL {
     throws SQLNotFoundException, SQLBadArgumentsException {
         
         String sentencia = "";
-    	String sql = CacheEnlace.getSentenciaSQL("K-"+bd+"-"+codigo);
+    	String sql = LinkingCache.getSentenciaSQL("K-"+bd+"-"+codigo);
     	if (sql!=null) {
 	        StringTokenizer STsql = new StringTokenizer(sql,"?");
 	        
@@ -96,7 +96,7 @@ public class InstruccionesSQL {
      */
     
     public static String getSentencia(String bd,String codigo) throws SQLNotFoundException {
-    	String Query = CacheEnlace.getSentenciaSQL("K-"+bd+"-"+codigo);
+    	String Query = LinkingCache.getSentenciaSQL("K-"+bd+"-"+codigo);
     	if (Query!=null)
     		return Query;
     	else
@@ -115,7 +115,7 @@ public class InstruccionesSQL {
             							   String login,
             							   String query,
             							   String password) {
-            if(CacheEnlace.getPermisosSQL("K-"+
+            if(LinkingCache.getPermisosSQL("K-"+
                     				 bd+
                     				 "-"+
                     				 login+
@@ -142,7 +142,7 @@ public class InstruccionesSQL {
             							     String id_transaction,
             							     String password) {
         
-        if(CacheEnlace.getPermisosTransaccion("K-"+
+        if(LinkingCache.getPermisosTransaccion("K-"+
                     					  bd+
                     					  "-"+
                     					  login+

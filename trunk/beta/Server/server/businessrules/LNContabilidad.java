@@ -32,7 +32,7 @@ import java.util.Vector;
 
 import org.jdom.Element;
 
-import server.database.sql.CacheEnlace;
+import server.database.sql.LinkingCache;
 import server.database.sql.DontHaveKeyException;
 import server.database.sql.RunQuery;
 import server.database.sql.SQLBadArgumentsException;
@@ -281,7 +281,7 @@ public class LNContabilidad {
 				 * Se procede a verificar si se cumple con la base
 				 */
 
-				double baseAccount = CacheEnlace.getPCBase(bd, account.trim());
+				double baseAccount = LinkingCache.getPCBase(bd, account.trim());
 				/*
 				 * Se verifica que el valor de la columna sea mayor a 0 y cumpla
 				 * la base para generar el asiento
@@ -306,7 +306,7 @@ public class LNContabilidad {
 						debito = false;
 					}
 
-					String idCta = CacheEnlace.getPCIdCta(bd, account);
+					String idCta = LinkingCache.getPCIdCta(bd, account);
 
 					/*
 					 * Una vez verificado esto, se procede a generar el asiento
@@ -316,7 +316,7 @@ public class LNContabilidad {
 					/*
 					 * Si el asiento es de una cuenta de terceros entonces ...
 					 */
-					if (CacheEnlace.isPCTerceros(bd, account)) {
+					if (LinkingCache.isPCTerceros(bd, account)) {
 						asientosConTipo(idCta, valueAccount, CacheKeys
 								.getKey("idTercero"), debito, LIBRO_AUX_TER);
 					}
@@ -324,7 +324,7 @@ public class LNContabilidad {
 					 * Si el asiento es de una cuenta de inventarios entonces
 					 * ...
 					 */
-					else if (CacheEnlace.isPCInventarios(bd, account)) {
+					else if (LinkingCache.isPCInventarios(bd, account)) {
 						asientosConTipo(idCta, valueAccount, CacheKeys
 								.getKey("idProdServ"), debito, LIBRO_AUX_INV);
 					}
@@ -428,7 +428,7 @@ public class LNContabilidad {
 			} else if (k == 5 && tercero != null) {
 				if (tercero.equals("getname") && 
 				    CacheKeys.getKey("idTercero")!=null &&
-				    CacheEnlace.isPCTerceros(bd, asiento[4])) {
+				    LinkingCache.isPCTerceros(bd, asiento[4])) {
 					asiento[k] = CacheKeys.getKey("idTercero");
 				} else if (tercero.equals("notdata")) {
 					asiento[k] = "NULL";
@@ -438,7 +438,7 @@ public class LNContabilidad {
 			} else if (k == 6 && inventario != null) {
 				if (inventario.equals("getname") && 
 				    CacheKeys.getKey("inventario")!=null &&
-				    CacheEnlace.isPCInventarios(bd, asiento[4])) { 
+				    LinkingCache.isPCInventarios(bd, asiento[4])) { 
 					asiento[k] = CacheKeys.getKey("inventario");
 				} else if (inventario.equals("notdata")) {
 					asiento[k] = "NULL";
@@ -458,9 +458,9 @@ public class LNContabilidad {
 			/*
 			 * Se reemplaza el numero de la cuenta contable por su id
 			 */
-			asiento[4] = CacheEnlace.getPCIdCta(bd, asiento[4]);
+			asiento[4] = LinkingCache.getPCIdCta(bd, asiento[4]);
 	
-			double saldo = CacheEnlace.getSaldoLibroAux(bd, 
+			double saldo = LinkingCache.getSaldoLibroAux(bd, 
 														asiento[3]=="NULL"?"":asiento[3],
 														asiento[4],
 														asiento[5]=="NULL"?"":asiento[5], 
@@ -478,7 +478,7 @@ public class LNContabilidad {
 												asiento[6]=="NULL"?"":asiento[6],
 												new Double(saldo));
 				
-				CacheEnlace.setSaldoLibroAux(bd,
+				LinkingCache.setSaldoLibroAux(bd,
 								asiento[3]=="NULL"?"":asiento[3],
 								asiento[4],
 								asiento[5]=="NULL"?"":asiento[5], 
@@ -506,7 +506,7 @@ public class LNContabilidad {
 											asiento[6]=="NULL"?"":asiento[6],
 											new Double(saldo));
 											
-				CacheEnlace.setSaldoLibroAux(bd,														
+				LinkingCache.setSaldoLibroAux(bd,														
 											asiento[3]=="NULL"?"":asiento[3],
 											asiento[4],
 											asiento[5]=="NULL"?"":asiento[5], 
@@ -550,7 +550,7 @@ public class LNContabilidad {
 		if (accountKey != -1) {
 			String charCta = ((Element) lpack.get(accountKey)).getValue();
 			value = ((Element) lpack.get(accountData)).getValue();
-			idCta = CacheEnlace.getPCIdCta(bd, charCta.trim());
+			idCta = LinkingCache.getPCIdCta(bd, charCta.trim());
 
 			/*
 			 * Se intenta convertir el valor de la columna a numero
@@ -580,7 +580,7 @@ public class LNContabilidad {
 				/*
 				 * Si el asiento es de una cuenta de terceros entonces ...
 				 */
-				if (CacheEnlace.isPCTerceros(bd, charCta.trim())) {
+				if (LinkingCache.isPCTerceros(bd, charCta.trim())) {
 					if (accountTh >= 0) {
 						asientosConTipo(idCta, valueAccount, ((Element) lpack
 								.get(accountTh)).getValue(), naturaleza
@@ -592,7 +592,7 @@ public class LNContabilidad {
 				/*
 				 * Si el asiento es de una cuenta de inventarios entonces ...
 				 */
-				else if (CacheEnlace.isPCInventarios(bd, charCta.trim())) {
+				else if (LinkingCache.isPCInventarios(bd, charCta.trim())) {
 					if (accountPS >= 0) {
 						asientosConTipo(idCta, valueAccount, ((Element) lpack
 								.get(accountPS)).getValue(), naturaleza
@@ -717,7 +717,7 @@ public class LNContabilidad {
 			/*
 			 * Se obtiene el codigo del asiento predefinido 
 			 */
-			String code = CacheEnlace.getIdAsientosPr(bd, idProdServ,codeAPS);
+			String code = LinkingCache.getIdAsientosPr(bd, idProdServ,codeAPS);
 			boolean cuentaregistrada = true;
 			
 			/*
@@ -733,7 +733,7 @@ public class LNContabilidad {
 				 */
 
 				try {
-					debito = CacheEnlace.isAsientoDebito(bd, code, attribute);
+					debito = LinkingCache.isAsientoDebito(bd, code, attribute);
 				}
 				catch (DontHaveKeyException DHKEe) {
 					cuentaregistrada=false;
@@ -748,7 +748,7 @@ public class LNContabilidad {
 			 */
 			
 			if (valueAccount > 0 && !"IdProdServ".equals(attribute.trim()) && cuentaregistrada) {
-				double baseAccount = CacheEnlace
+				double baseAccount = LinkingCache
 						.getPCBase(bd, attribute.trim());
 
 				/*
@@ -766,7 +766,7 @@ public class LNContabilidad {
 					 * Primero se procede a obtener el codigo del asiento
 					 * predefinido
 					 */
-					String idCta = CacheEnlace.getPCIdCta(bd, attribute);
+					String idCta = LinkingCache.getPCIdCta(bd, attribute);
 
 					/*
 					 * Una vez verificado esto, se procede a generar el asiento
@@ -777,7 +777,7 @@ public class LNContabilidad {
 					 * Si el asiento es de una cuenta de inventarios entonces
 					 * ...
 					 */
-					if (CacheEnlace.isPCInventarios(bd, attribute)) {
+					if (LinkingCache.isPCInventarios(bd, attribute)) {
 						/*
 						 * Se verifica si en una de las columnas de la tabla
 						 * viene especificado el codigo del producto.
@@ -785,7 +785,7 @@ public class LNContabilidad {
 
 						if (colCost == col) {
 							valueAccount = valueAccount
-									* CacheEnlace.getPCosto(bd, CacheKeys
+									* LinkingCache.getPCosto(bd, CacheKeys
 											.getKey("idBodega"), idProdServ);
 							try {
 								BigDecimal bigDecimal = new BigDecimal(
@@ -800,7 +800,7 @@ public class LNContabilidad {
 
 						asientosConTipo(idCta, valueAccount, idProdServ,
 								debito, LIBRO_AUX_INV);
-					} else if (CacheEnlace.isPCTerceros(bd, attribute)) {
+					} else if (LinkingCache.isPCTerceros(bd, attribute)) {
 						asientosConTipo(idCta, valueAccount, CacheKeys
 								.getKey("idTercero"), debito, LIBRO_AUX_TER);
 					}
@@ -884,11 +884,11 @@ public class LNContabilidad {
 		double saldo;
 
 		if (tipo == LIBRO_AUX_INV) {
-			saldo = CacheEnlace.getSaldoLibroAux(bd, "", idCta, "", idTipo);
+			saldo = LinkingCache.getSaldoLibroAux(bd, "", idCta, "", idTipo);
 			LNUndoSaldos.setSaldoAntLibroAux(bd, "", idCta, "", idTipo,
 					new Double(saldo));
 		} else {
-			saldo = CacheEnlace.getSaldoLibroAux(bd, "", idCta, idTipo, "");
+			saldo = LinkingCache.getSaldoLibroAux(bd, "", idCta, idTipo, "");
 			LNUndoSaldos.setSaldoAntLibroAux(bd, "", idCta, idTipo, "",
 					new Double(saldo));
 		}
@@ -915,7 +915,7 @@ public class LNContabilidad {
 			asiento[6] = String.valueOf(value);
 		}
 		
-		if (CacheEnlace.isDebitAccount(bd,idCta)) {
+		if (LinkingCache.isDebitAccount(bd,idCta)) {
 			nsaldo = saldo + value;
 		}
 		else {
@@ -933,11 +933,11 @@ public class LNContabilidad {
 		RunQuery RQsalidas;
 
 		if (tipo == LIBRO_AUX_INV) {
-			CacheEnlace.setSaldoLibroAux(bd, "", idCta, "", idTipo, new Double(
+			LinkingCache.setSaldoLibroAux(bd, "", idCta, "", idTipo, new Double(
 					nsaldo));
 			RQsalidas = new RunQuery(bd, "INS0043", asiento);
 		} else {
-			CacheEnlace.setSaldoLibroAux(bd, "", idCta, idTipo, "", new Double(
+			LinkingCache.setSaldoLibroAux(bd, "", idCta, idTipo, "", new Double(
 					nsaldo));
 			RQsalidas = new RunQuery(bd, "INS0042", asiento);
 		}
@@ -968,7 +968,7 @@ public class LNContabilidad {
 		 * asiento
 		 */
 
-		double saldo = CacheEnlace.getSaldoLibroAux(bd, "", idCta, "", "");
+		double saldo = LinkingCache.getSaldoLibroAux(bd, "", idCta, "", "");
 		double nsaldo;
 
 		/*
@@ -993,7 +993,7 @@ public class LNContabilidad {
 			asiento[5] = String.valueOf(value);
 		}
 		
-		if (CacheEnlace.isDebitAccount(bd,idCta)) {
+		if (LinkingCache.isDebitAccount(bd,idCta)) {
 			nsaldo = saldo + value;
 		}
 		else {
@@ -1009,7 +1009,7 @@ public class LNContabilidad {
 
 		asiento[6] = String.valueOf(nsaldo);
 
-		CacheEnlace.setSaldoLibroAux(bd, "", idCta, "", "", new Double(nsaldo));
+		LinkingCache.setSaldoLibroAux(bd, "", idCta, "", "", new Double(nsaldo));
 
 		/*
 		 * Depurando ....
@@ -1059,7 +1059,7 @@ public class LNContabilidad {
 			record[5] = concepto;
 			record[6] = idDocumento;
 
-			saldo = CacheEnlace.getSaldoLibroAux(bd, record[1] == "NULL" ? ""
+			saldo = LinkingCache.getSaldoLibroAux(bd, record[1] == "NULL" ? ""
 					: record[1], record[0], record[2] == "NULL" ? ""
 					: record[2], record[3] == "NULL" ? "" : record[3]);
 
@@ -1091,7 +1091,7 @@ public class LNContabilidad {
 			}
 			record[9] = String.valueOf(saldo);
 			RQanular.ejecutarSQL(record);
-			CacheEnlace.setSaldoLibroAux(bd, record[1] == "NULL" ? ""
+			LinkingCache.setSaldoLibroAux(bd, record[1] == "NULL" ? ""
 					: record[1], record[0], record[2] == "NULL" ? ""
 					: record[2], record[3] == "NULL" ? "" : record[3], saldo);
 

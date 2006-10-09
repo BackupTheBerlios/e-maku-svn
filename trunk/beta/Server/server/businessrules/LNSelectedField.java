@@ -1,17 +1,23 @@
 package server.businessrules;
 
+import java.io.IOException;
+import java.nio.channels.SocketChannel;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
+import org.jdom.Document;
 import org.jdom.Element;
 
+import server.comunications.SocketServer;
 import server.database.sql.RunQuery;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
 
 import common.misc.formulas.BeanShell;
+import common.misc.language.Language;
 
 /**
  * 
@@ -46,13 +52,40 @@ import common.misc.formulas.BeanShell;
 public class LNSelectedField {
 
 	private String fields;
-
 	private String conditional;
-
 	private int[] cols;
-
 	private RunQuery RQfields;
 
+
+    public LNSelectedField(SocketChannel sock,Document doc,Element pack, String idTransaction) {
+    	try {
+            analizar(doc.getRootElement(),pack,SocketServer.getBd(sock),false);
+	    	RQfields.commit();
+	        RunTransaction.successMessage(sock,
+		          	  idTransaction,
+		          	  Language.getWord("TRANSACTION_OK"));
+		} catch (SQLNotFoundException SQLNFEe) {
+            RunTransaction.errorMessage(sock,
+               	 idTransaction,
+               	 SQLNFEe.getMessage());
+	    	RQfields.rollback();
+		} catch (SQLBadArgumentsException SQLBAEe) {
+            RunTransaction.errorMessage(sock,
+               	 idTransaction,
+               	 SQLBAEe.getMessage());
+	    	RQfields.rollback();
+		} catch (SQLException SQLEe) {
+            RunTransaction.errorMessage(sock,
+               	 idTransaction,
+               	 SQLEe.getMessage());
+	    	RQfields.rollback();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		RQfields.setAutoCommit(true);
+    }	
+	
 	/**
 	 * Constructo...
 	 * 
@@ -62,6 +95,59 @@ public class LNSelectedField {
 
 	public LNSelectedField(Element parameters, String bd)
 			throws SQLNotFoundException, SQLBadArgumentsException {
+		parametrizar(parameters,bd);
+	}
+
+	private void analizar(Element parametros,Element paquetes,String bd,boolean subparametro) 
+	throws SQLNotFoundException, SQLBadArgumentsException, SQLException, IOException {
+		Iterator parametro = parametros.getChildren().iterator();
+		Iterator paquete = paquetes.getChildren().iterator();
+		
+        while (parametro.hasNext()) {
+            Element data = (Element) parametro.next();
+        	Element pack = null;
+        	
+        	if (!subparametro)
+            	pack = (Element) paquete.next();
+            else
+            	pack = (Element)paquetes.clone();
+        	
+            try {
+            	if (data.getName().equals("LNData")) {
+            		Element args = (Element)data.getChildren("parameters").iterator().next();
+    				parametrizar(args,bd);
+    				RQfields.setAutoCommit(false);
+		            if (((Element)pack.getChildren().iterator().next()).getName().equals("field")) {
+		            	getFields(pack);
+		            }
+		            else {
+		            	getSubPackage(pack);
+		            }
+            	}
+	            else {
+                    analizar((Element)data.clone(),(Element)paquetes.clone(),bd,true);
+	            }
+            }
+            catch(NoSuchElementException NSEEe) {}
+        }
+	}
+
+	private void getSubPackage(Element paquete) 
+	throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+    	Iterator subpack = paquete.getChildren().iterator();
+    	while (subpack.hasNext()) {
+    		Element fields = (Element)subpack.next();
+            if (((Element)fields.getChildren().iterator().next()).getName().equals("field")) {
+            	getFields(fields);
+            }
+            else {
+            	getSubPackage(fields);
+            }
+    	}
+	}
+	
+	private void parametrizar(Element parameters, String bd) 
+	throws SQLNotFoundException, SQLBadArgumentsException {
 		Iterator i = parameters.getChildren().iterator();
 		String sql = "";
 		while (i.hasNext()) {
@@ -88,8 +174,8 @@ public class LNSelectedField {
 		for (int j = 0; STcols.hasMoreTokens(); j++) {
 			cols[j] = Integer.parseInt(STcols.nextToken());
 		}
+		
 	}
-
 	/**
 	 * Este metodo se encarga de generar latransaccion para paquetes que
 	 * contienen fields

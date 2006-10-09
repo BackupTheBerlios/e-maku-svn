@@ -2,7 +2,7 @@ package server.businessrules;
 
 import java.util.Enumeration;
 
-import server.database.sql.CacheEnlace;
+import server.database.sql.LinkingCache;
 
 import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
 
@@ -81,7 +81,7 @@ public class LNUndoSaldos {
 			Enumeration Ekeys = HSaldoAntInv.keys();
 			Enumeration Evalues = HSaldoAntInv.elements();
 			while(Ekeys.hasMoreElements()) {
-				CacheEnlace.setVSaldoInventario((String)Ekeys.nextElement(),
+				LinkingCache.setVSaldoInventario((String)Ekeys.nextElement(),
 												((Double)Evalues.nextElement()).doubleValue());
 			}
 			HSaldoAntInv.clear();
@@ -90,7 +90,7 @@ public class LNUndoSaldos {
 			Enumeration Ekeys = HSaldoAntLibroAux.keys();
 			Enumeration Evalues = HSaldoAntLibroAux.elements();
 			while(Ekeys.hasMoreElements()) {
-				CacheEnlace.setVSaldoInventario((String)Ekeys.nextElement(),
+				LinkingCache.setVSaldoInventario((String)Ekeys.nextElement(),
 												((Double)Evalues.nextElement()).doubleValue());
 			}
 			HSaldoAntLibroAux.clear();

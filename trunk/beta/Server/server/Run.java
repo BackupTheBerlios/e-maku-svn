@@ -10,7 +10,7 @@ import server.comunications.SocketServer;
 import server.control.ReportsStore;
 import server.database.connection.PoolConexiones;
 import server.database.connection.PoolNotLoadException;
-import server.database.sql.CacheEnlace;
+import server.database.sql.LinkingCache;
 import server.misc.ServerConst;
 import server.misc.settings.ConfigFile;
 import server.misc.settings.ConfigFileNotLoadException;
@@ -72,7 +72,7 @@ public class Run {
 			ConfigFile.loadConfigFile(emakuConfigFile);
 			PoolConexiones.CargarBD();
 			ReportsStore.Load(this.getClass().getResource("/reports"));
-			CacheEnlace.cargar();
+			LinkingCache.cargar();
 			new BeanShell();
 			Thread t = new Thread() {
 				public void run() {
