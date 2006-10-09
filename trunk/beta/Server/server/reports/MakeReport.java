@@ -29,7 +29,7 @@ import org.jdom.output.XMLOutputter;
 
 import server.comunications.SocketServer;
 import server.control.ReportsStore;
-import server.database.sql.CacheEnlace;
+import server.database.sql.LinkingCache;
 import server.database.sql.RunQuery;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
@@ -129,8 +129,8 @@ public class MakeReport extends Thread {
 				
 				Map <String,String>parameters = new HashMap<String,String>();
 				
-				String company = CacheEnlace.getCompanyData(SocketServer.getCompanyNameKey(socket));
-				String companyID = CacheEnlace.getCompanyData(SocketServer.getCompanyIDKey(socket));
+				String company = LinkingCache.getCompanyData(SocketServer.getCompanyNameKey(socket));
+				String companyID = LinkingCache.getCompanyData(SocketServer.getCompanyIDKey(socket));
 				
 				if (company == null)
 					company = "Dato no encontrado";
