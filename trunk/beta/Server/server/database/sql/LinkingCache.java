@@ -270,15 +270,15 @@ public class LinkingCache {
         ResultSet rs= st.executeQuery(InstruccionesSQL.getSentencia(bd,"SEL0317",args));
         
         while (rs.next()) {
-        	String key = bd+"-"+rs.getString(1)+"-"+rs.getString(2).trim();
-        	Hasientos_pr.remove(key);
+        	String key = "K-"+bd+"-"+rs.getString(1).trim()+"-"+rs.getString(2).trim();
+        	Hctas_asientos.remove(key);
         }
         CloseSQL.close(rs);
     }
     
     public static void reloadAsientosPr(String bd,String[] args) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
-    	Hasientos_pr.putAll(loadCache(bd,"SEL0317", args,new String[]{"id_prod_serv","id_asientos_prod_serv"},"id_asientos_pr"));
+    	Hctas_asientos.putAll(loadCache(bd,"SEL0317", args,new String[]{"id_asientos_pr","char_cta"},"naturaleza"));
     }
 
     public static void loadAsientosPredefinidos(String bd) 
@@ -355,7 +355,12 @@ public class LinkingCache {
         	for (String subData:key) {
         		subkey+=rs.getString(subData).trim()+"-";
         	}
-            tabla.put("K-" + 
+/*            System.out.println("K-" + 
+          		  bd + 
+          		  "-" +
+          		  subkey.substring(0,subkey.length()-1)+" valor: "+
+                    rs.getObject(rsValue));
+*/            tabla.put("K-" + 
             		  bd + 
             		  "-" +
             		  subkey.substring(0,subkey.length()-1),
