@@ -66,8 +66,9 @@ public class LinkingCache {
     /**
      * Metodo encargado de llenar el cache de los saldos en las tablas de
      * dispersion.
+     * @throws SQLBadArgumentsException 
      */
-    public static void cargar() {
+    public static void cargar() throws SQLBadArgumentsException {
 
         ResultSet rs = null;
         /** Obtengo el numero de conexiones que maneja el ST */
@@ -263,9 +264,25 @@ public class LinkingCache {
         CloseSQL.close(rs);
 
     }
+    
+    public static void removeAsientosPr(String bd,String[] args) 
+    throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+        ResultSet rs= st.executeQuery(InstruccionesSQL.getSentencia(bd,"SEL0317",args));
+        
+        while (rs.next()) {
+        	String key = bd+"-"+rs.getString(1)+"-"+rs.getString(2).trim();
+        	Hasientos_pr.remove(key);
+        }
+        CloseSQL.close(rs);
+    }
+    
+    public static void reloadAsientosPr(String bd,String[] args) 
+    throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+    	Hasientos_pr.putAll(loadCache(bd,"SEL0317", args,new String[]{"id_prod_serv","id_asientos_prod_serv"},"id_asientos_pr"));
+    }
 
     public static void loadAsientosPredefinidos(String bd) 
-    throws SQLException, SQLNotFoundException {
+    throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
         /*
          * Esta consulta carga los id de todos los asientos predefinidos.
          */
@@ -283,9 +300,10 @@ public class LinkingCache {
      * @param bd
      * @throws SQLException
      * @throws SQLNotFoundException
+     * @throws SQLBadArgumentsException 
      */
     public static void loadPerfilCta(String bd) 
-    throws SQLException, SQLNotFoundException {
+    throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
     	Statement st = PoolConexiones.getConnection(bd).createStatement();
         ResultSet rs = st.executeQuery(InstruccionesSQL.getSentencia(bd,"SEL0094"));
 
@@ -317,9 +335,19 @@ public class LinkingCache {
     }
     
     private static synchronized Hashtable<String,Object> loadCache(String bd,String sql,String key[],String rsValue) 
-    throws SQLException, SQLNotFoundException {
-        ResultSet rs = st.executeQuery(InstruccionesSQL.getSentencia(bd,sql));
-        key.getClass().getName();
+    throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+    	return loadCache(bd,sql,null,key,rsValue);
+    }
+    
+    private static synchronized Hashtable<String,Object> loadCache(String bd,String sql,String args[],String key[],String rsValue) 
+    throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+        ResultSet rs;
+        if (args!=null) {
+        	rs= st.executeQuery(InstruccionesSQL.getSentencia(bd,sql,args));
+        }
+        else {
+        	rs= st.executeQuery(InstruccionesSQL.getSentencia(bd,sql));
+        }
         
         Hashtable<String,Object> tabla = new Hashtable<String,Object>();
         while (rs.next()) {
@@ -331,7 +359,7 @@ public class LinkingCache {
             		  bd + 
             		  "-" +
             		  subkey.substring(0,subkey.length()-1),
-                      rs.getString(rsValue));
+                      rs.getObject(rsValue));
         }
         CloseSQL.close(rs);
         return tabla;
@@ -505,7 +533,7 @@ public class LinkingCache {
 
     public static double getSaldoLibroAux(String bd, String centro, String cta, String id_tercero, String id_prod_serv) {
         if (Hlibro_aux.containsKey("K-"+bd+"-"+centro+"-"+cta+"-"+id_tercero+"-"+id_prod_serv)) {
-            return Double.parseDouble((String)Hlibro_aux.get("K-"+bd+"-"+centro+"-"+cta+"-"+id_tercero+"-"+id_prod_serv));
+            return ((Double)Hlibro_aux.get("K-"+bd+"-"+centro+"-"+cta+"-"+id_tercero+"-"+id_prod_serv)).doubleValue();
         }
         else {
         	return 0;
@@ -805,7 +833,7 @@ public class LinkingCache {
     
     public static String getIdAsientosPr(String bd,String id_prod_serv,String id_asientos_prod_serv) throws DontHaveKeyException {
 	   	if (Hasientos_pr.containsKey("K-"+bd+"-"+id_prod_serv+"-"+id_asientos_prod_serv)) {
-	    		return (String)Hasientos_pr.get("K-"+bd+"-"+id_prod_serv+"-"+id_asientos_prod_serv);
+	    		return String.valueOf(Hasientos_pr.get("K-"+bd+"-"+id_prod_serv+"-"+id_asientos_prod_serv));
 	    	}
 	    	else {
 	    		throw new DontHaveKeyException("K-"+bd+"-"+id_prod_serv+"-"+id_asientos_prod_serv);
@@ -823,7 +851,7 @@ public class LinkingCache {
     
     public static boolean isAsientoDebito(String bd,String id_asiento_pr,String cta) throws DontHaveKeyException {
     	if (Hctas_asientos.containsKey("K-"+bd+"-"+id_asiento_pr+"-"+cta)) {
-    		return Boolean.parseBoolean((String)Hctas_asientos.get("K-"+bd+"-"+id_asiento_pr+"-"+cta));
+    		return ((Boolean)Hctas_asientos.get("K-"+bd+"-"+id_asiento_pr+"-"+cta)).booleanValue();
     		
     	}
     	else {
@@ -833,7 +861,7 @@ public class LinkingCache {
     
     public static boolean isDebitAccount(String bd,String cta) throws DontHaveKeyException {
     	if (Hctas_naturaleza.containsKey("K-"+bd+"-"+cta)) {
-    		return Boolean.parseBoolean((String)Hctas_naturaleza.get("K-"+bd+"-"+cta));
+    		return ((Boolean)Hctas_naturaleza.get("K-"+bd+"-"+cta)).booleanValue();
     	}
     	else {
     		throw new DontHaveKeyException("K-"+bd+"-"+cta);

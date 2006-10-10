@@ -11,6 +11,7 @@ import server.control.ReportsStore;
 import server.database.connection.PoolConexiones;
 import server.database.connection.PoolNotLoadException;
 import server.database.sql.LinkingCache;
+import server.database.sql.SQLBadArgumentsException;
 import server.misc.ServerConst;
 import server.misc.settings.ConfigFile;
 import server.misc.settings.ConfigFileNotLoadException;
@@ -72,7 +73,12 @@ public class Run {
 			ConfigFile.loadConfigFile(emakuConfigFile);
 			PoolConexiones.CargarBD();
 			ReportsStore.Load(this.getClass().getResource("/reports"));
-			LinkingCache.cargar();
+			try {
+				LinkingCache.cargar();
+			} catch (SQLBadArgumentsException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			new BeanShell();
 			Thread t = new Thread() {
 				public void run() {
