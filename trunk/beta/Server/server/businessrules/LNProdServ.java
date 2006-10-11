@@ -12,14 +12,12 @@ import server.database.sql.LinkingCache;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
 
-public class LNAsientosPredefinidos {
-
-	public LNAsientosPredefinidos(SocketChannel sock, 
-								  Document doc, 
-								  Element sn_pack,
-								  String id_transaction) 
+public class LNProdServ {
+	public LNProdServ(SocketChannel sock, 
+			  Document doc, 
+			  Element sn_pack,
+			  String id_transaction) 
 	throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
-		
 		Element elm = doc.getRootElement().getChild("arg");
 		String action = elm.getAttributeValue("attribute");
 		String code="";
@@ -40,28 +38,29 @@ public class LNAsientosPredefinidos {
 				break;
 			}
 		}
+		code=code.trim();
 		if (action.equals("new")) {
 			new LNMultiPackage(sock,
 					   new Document((Element)doc.getRootElement().getChild("subarg").clone()),
 					   (Element)sn_pack.clone(),
 					   id_transaction);
-			LinkingCache.reloadCtasAsientos(SocketServer.getBd(sock),new String[]{code});
+			LinkingCache.reloadAsientosPr(SocketServer.getBd(sock),new String[]{code});
 		}
 		else if (action.equals("edit")) {
-			LinkingCache.removeCtasAsientos(SocketServer.getBd(sock),new String[]{code});
+			LinkingCache.removeAsientosPr(SocketServer.getBd(sock),new String[]{code});
 			new LNMultiPackage(sock,
 					   new Document((Element)doc.getRootElement().getChild("subarg").clone()),
 					   (Element)sn_pack.clone(),
 					   id_transaction);
-			LinkingCache.reloadCtasAsientos(SocketServer.getBd(sock),new String[]{code});
+			LinkingCache.reloadAsientosPr(SocketServer.getBd(sock),new String[]{code});
 		}
 		else if (action.equals("delete")) {
-			LinkingCache.removeCtasAsientos(SocketServer.getBd(sock),new String[]{code});
+			LinkingCache.removeAsientosPr(SocketServer.getBd(sock),new String[]{code});
 			new LNGenericSQL(sock,
 					   new Document((Element)doc.getRootElement().getChild("subarg").clone()),
 					   (Element)sn_pack.clone(),
 					   id_transaction);
-		}
-		
+		}		
 	}
+
 }

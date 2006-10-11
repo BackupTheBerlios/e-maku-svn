@@ -36,6 +36,7 @@ public class CloseSQL {
     public static void close(Statement st) {
         try {
             st.close();
+            st = null;
         }
         catch(SQLException SQLEe) {
             SQLEe.printStackTrace();
@@ -54,6 +55,7 @@ public class CloseSQL {
     public static void close(ResultSet rs) {
         try {
             rs.close();
+            rs = null;
         }
         catch(SQLException SQLEe) {
             SQLEe.printStackTrace();

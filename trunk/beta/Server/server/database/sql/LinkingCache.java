@@ -267,6 +267,17 @@ public class LinkingCache {
     
     public static void removeAsientosPr(String bd,String[] args) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+        ResultSet rs= st.executeQuery(InstruccionesSQL.getSentencia(bd,"SEL0318",args));
+        
+        while (rs.next()) {
+        	String key = "K-"+bd+"-"+rs.getString(1).trim()+"-"+rs.getString(2).trim();
+        	Hasientos_pr.remove(key);
+        }
+        CloseSQL.close(rs);
+    }
+    
+    public static void removeCtasAsientos(String bd,String[] args) 
+    throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
         ResultSet rs= st.executeQuery(InstruccionesSQL.getSentencia(bd,"SEL0317",args));
         
         while (rs.next()) {
@@ -275,8 +286,13 @@ public class LinkingCache {
         }
         CloseSQL.close(rs);
     }
-    
+
     public static void reloadAsientosPr(String bd,String[] args) 
+    throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+    	Hasientos_pr.putAll(loadCache(bd,"SEL0318",args, new String[]{"id_prod_serv","id_asientos_prod_serv"},"id_asientos_pr"));
+    }
+
+    public static void reloadCtasAsientos(String bd,String[] args) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
     	Hctas_asientos.putAll(loadCache(bd,"SEL0317", args,new String[]{"id_asientos_pr","char_cta"},"naturaleza"));
     }
@@ -348,7 +364,6 @@ public class LinkingCache {
         else {
         	rs= st.executeQuery(InstruccionesSQL.getSentencia(bd,sql));
         }
-        
         Hashtable<String,Object> tabla = new Hashtable<String,Object>();
         while (rs.next()) {
         	String subkey="";
@@ -366,6 +381,8 @@ public class LinkingCache {
             		  subkey.substring(0,subkey.length()-1),
                       rs.getObject(rsValue));
         }
+//        rs.last();
+//        System.out.println("Numero de registros: "+rs.getRow());
         CloseSQL.close(rs);
         return tabla;
     }
