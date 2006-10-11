@@ -5,15 +5,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
 
-import common.misc.language.Language;
+import org.jdom.Document;
+import org.jdom.Element;
+
 import server.comunications.SocketServer;
 import server.database.sql.LinkingCache;
 import server.database.sql.RunQuery;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
 
-import org.jdom.Document;
-import org.jdom.Element;
+import common.misc.language.Language;
 
 /**
  * LNAdminPUC.java Creado el 07-mar-2005
@@ -154,6 +155,13 @@ public class LNAdminPUC {
 	                    }
 	                }
 	            }
+	            /*
+	             * Si la cuenta es de detalle se proceda a adicionar la informacion 
+	             * a los caches
+	             */
+	            if (detalle) {
+	                LinkingCache.loadPerfilCta(SocketServer.getBd(sock),"SEL0319",new String[]{LNGtransaccion.getKey(0)});
+	            }
 	        }
 	        /*
 	         * Si se va a editar una cuenta contable entonces ...
@@ -245,6 +253,8 @@ public class LNAdminPUC {
 	                     */
 	                    else {
 	                        enableAccount(SQLenableAccount,SQLenableFather,SQLhijo);
+		                    LinkingCache.removePerfilCta(SocketServer.getBd(sock),new String[]{LNGtransaccion.getKey(0)});
+	                        detalle = true;
 	                    }
 	                }
 	                
@@ -268,6 +278,9 @@ public class LNAdminPUC {
 	                        getTransaction(arg.getValue(),subpack);
 	                    }
 	                }
+	            }
+	            if (detalle) {
+	                LinkingCache.loadPerfilCta(SocketServer.getBd(sock),"SEL0319",new String[]{LNGtransaccion.getKey(0)});
 	            }
 	        }
 
@@ -293,8 +306,8 @@ public class LNAdminPUC {
 	    	               		 LNGtransaccion.rollback();
 	    	               		 break;
 	    	            }
-	                    
-	                }
+	                    LinkingCache.removePerfilCta(SocketServer.getBd(sock),new String[]{key});
+                    }
 	                /*
 	                 * Se procede a eliminar la cuenta de la tabla perfiles
 	                 */
@@ -331,14 +344,13 @@ public class LNAdminPUC {
 		                disableAccount(LNGtransaccion.getArg(0),arg.getValue(),SQLpadre);
 	                    
 	                }
-	            }
+	            }	            
 	        }
             
 	        /*
 	         * Si la transaccion se procesa con exito, entonces se hace un commit y se envia el
 	         * paquete <SUCCESS> :-D
 	         */
-	        LinkingCache.loadPerfilCta(SocketServer.getBd(sock));
 	        LNGtransaccion.commit();
 	        RunTransaction.successMessage(sock,
 							          	  id_transaction,

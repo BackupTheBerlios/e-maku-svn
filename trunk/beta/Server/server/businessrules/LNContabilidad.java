@@ -317,23 +317,33 @@ public class LNContabilidad {
 					 * Si el asiento es de una cuenta de terceros entonces ...
 					 */
 					if (LinkingCache.isPCTerceros(bd, account)) {
-						asientosConTipo(idCta, valueAccount, CacheKeys
-								.getKey("idTercero"), debito, LIBRO_AUX_TER);
+						asientosConTipo(idCta, 
+										valueAccount, 
+										CacheKeys.getKey("idTercero"), 
+										debito, LIBRO_AUX_TER,
+										LinkingCache.isPCNaturaleza(bd,account));
 					}
 					/*
 					 * Si el asiento es de una cuenta de inventarios entonces
 					 * ...
 					 */
 					else if (LinkingCache.isPCInventarios(bd, account)) {
-						asientosConTipo(idCta, valueAccount, CacheKeys
-								.getKey("idProdServ"), debito, LIBRO_AUX_INV);
+						asientosConTipo(idCta, 
+										valueAccount, 
+										CacheKeys.getKey("idProdServ"), 
+										debito, 
+										LIBRO_AUX_INV,
+										LinkingCache.isPCNaturaleza(bd,account));
 					}
 					/*
 					 * Si no es porque el asiento es de una cuenta de detalle,
 					 * por tanto entonces ...
 					 */
 					else {
-						asientosDetalle(idCta, valueAccount, debito);
+						asientosDetalle(idCta, 
+										valueAccount, 
+										debito,
+										LinkingCache.isPCNaturaleza(bd,account));
 					}
 
 					/*
@@ -582,9 +592,12 @@ public class LNContabilidad {
 				 */
 				if (LinkingCache.isPCTerceros(bd, charCta.trim())) {
 					if (accountTh >= 0) {
-						asientosConTipo(idCta, valueAccount, ((Element) lpack
-								.get(accountTh)).getValue(), naturaleza
-								.booleanValue(), LIBRO_AUX_TER);
+						asientosConTipo(idCta, 
+										valueAccount, 
+										((Element) lpack.get(accountTh)).getValue(), 
+										naturaleza.booleanValue(), 
+										LIBRO_AUX_TER,
+										LinkingCache.isPCNaturaleza(bd,charCta.trim()));
 					} else {
 						throw new LNErrorProcecuteException("");
 					}
@@ -594,9 +607,12 @@ public class LNContabilidad {
 				 */
 				else if (LinkingCache.isPCInventarios(bd, charCta.trim())) {
 					if (accountPS >= 0) {
-						asientosConTipo(idCta, valueAccount, ((Element) lpack
-								.get(accountPS)).getValue(), naturaleza
-								.booleanValue(), LIBRO_AUX_INV);
+						asientosConTipo(idCta, 
+										valueAccount, 
+										((Element) lpack.get(accountPS)).getValue(), 
+										naturaleza.booleanValue(), 
+										LIBRO_AUX_INV,
+										LinkingCache.isPCNaturaleza(bd,charCta.trim()));
 					} else {
 						throw new LNErrorProcecuteException("");
 					}
@@ -606,8 +622,10 @@ public class LNContabilidad {
 				 * tanto entonces ...
 				 */
 				else {
-					asientosDetalle(idCta, valueAccount, naturaleza
-							.booleanValue());
+					asientosDetalle(idCta, 
+									valueAccount, 
+									naturaleza.booleanValue(),
+									LinkingCache.isPCNaturaleza(bd,charCta.trim()));
 				}
 
 				/*
@@ -696,7 +714,7 @@ public class LNContabilidad {
 
 			String idProdServ = "";
 			boolean debito = false;
-			String attribute = colAccount.get(k);
+			String account = colAccount.get(k);
 			
 
 
@@ -733,7 +751,7 @@ public class LNContabilidad {
 				 */
 
 				try {
-					debito = LinkingCache.isAsientoDebito(bd, code, attribute);
+					debito = LinkingCache.isAsientoDebito(bd, code, account);
 				}
 				catch (DontHaveKeyException DHKEe) {
 					cuentaregistrada=false;
@@ -747,9 +765,9 @@ public class LNContabilidad {
 			 * mayor a 0 entonces ...
 			 */
 			
-			if (valueAccount > 0 && !"IdProdServ".equals(attribute.trim()) && cuentaregistrada) {
+			if (valueAccount > 0 && !"IdProdServ".equals(account.trim()) && cuentaregistrada) {
 				double baseAccount = LinkingCache
-						.getPCBase(bd, attribute.trim());
+						.getPCBase(bd, account.trim());
 
 				/*
 				 * Se verifica que el valor de la columna sea mayor a 0 y cumpla
@@ -766,7 +784,7 @@ public class LNContabilidad {
 					 * Primero se procede a obtener el codigo del asiento
 					 * predefinido
 					 */
-					String idCta = LinkingCache.getPCIdCta(bd, attribute);
+					String idCta = LinkingCache.getPCIdCta(bd, account);
 
 					/*
 					 * Una vez verificado esto, se procede a generar el asiento
@@ -777,7 +795,7 @@ public class LNContabilidad {
 					 * Si el asiento es de una cuenta de inventarios entonces
 					 * ...
 					 */
-					if (LinkingCache.isPCInventarios(bd, attribute)) {
+					if (LinkingCache.isPCInventarios(bd, account)) {
 						/*
 						 * Se verifica si en una de las columnas de la tabla
 						 * viene especificado el codigo del producto.
@@ -798,11 +816,19 @@ public class LNContabilidad {
 
 						}
 
-						asientosConTipo(idCta, valueAccount, idProdServ,
-								debito, LIBRO_AUX_INV);
-					} else if (LinkingCache.isPCTerceros(bd, attribute)) {
-						asientosConTipo(idCta, valueAccount, CacheKeys
-								.getKey("idTercero"), debito, LIBRO_AUX_TER);
+						asientosConTipo(idCta, 
+										valueAccount, 
+										idProdServ,
+										debito, 
+										LIBRO_AUX_INV,
+										LinkingCache.isPCNaturaleza(bd,account));
+					} else if (LinkingCache.isPCTerceros(bd, account)) {
+						asientosConTipo(idCta, 
+										valueAccount, 
+										CacheKeys.getKey("idTercero"), 
+										debito, 
+										LIBRO_AUX_TER,
+										LinkingCache.isPCNaturaleza(bd,account));
 					}
 
 					/*
@@ -810,7 +836,10 @@ public class LNContabilidad {
 					 * por tanto entonces ...
 					 */
 					else {
-						asientosDetalle(idCta, valueAccount, debito);
+						asientosDetalle(idCta, 
+										valueAccount, 
+										debito,
+										LinkingCache.isPCNaturaleza(bd,account));
 					}
 
 					/*
@@ -873,7 +902,7 @@ public class LNContabilidad {
 	 */
 
 	private void asientosConTipo(String idCta, double value, String idTipo,
-			boolean debito, boolean tipo) throws SQLNotFoundException,
+			boolean debito, boolean tipo,boolean natCta) throws SQLNotFoundException,
 			SQLBadArgumentsException, SQLException, DontHaveKeyException {
 		/*
 		 * Se define un arreglo de 8 campos para generar los argumentos del
@@ -910,17 +939,23 @@ public class LNContabilidad {
 		if (debito) {
 			asiento[5] = String.valueOf(value);
 			asiento[6] = "0";
+			if (natCta) {
+				nsaldo = saldo + value;
+			}
+			else {
+				nsaldo = saldo - value;
+			}
 		} else {
 			asiento[5] = "0";
 			asiento[6] = String.valueOf(value);
+			if (natCta) {
+				nsaldo = saldo - value;
+			}
+			else {
+				nsaldo = saldo + value;
+			}
 		}
 		
-		if (LinkingCache.isDebitAccount(bd,idCta)) {
-			nsaldo = saldo + value;
-		}
-		else {
-			nsaldo = saldo + value;
-		}
 
 		try {
 			BigDecimal bigDecimal = new BigDecimal(nsaldo);
@@ -961,7 +996,7 @@ public class LNContabilidad {
 	 * @throws DontHaveKeyException 
 	 */
 
-	private void asientosDetalle(String idCta, double value, boolean debito)
+	private void asientosDetalle(String idCta, double value, boolean debito,boolean natCta)
 			throws SQLNotFoundException, SQLBadArgumentsException, SQLException, DontHaveKeyException {
 		/*
 		 * Se define un arreglo de 7 campos para generar los argumentos del
@@ -988,17 +1023,23 @@ public class LNContabilidad {
 		if (debito) {
 			asiento[4] = String.valueOf(value);
 			asiento[5] = "0";
+			if (natCta) {
+				nsaldo = saldo + value;
+			}
+			else {
+				nsaldo = saldo - value;
+			}
 		} else {
 			asiento[4] = "0";
 			asiento[5] = String.valueOf(value);
+			if (natCta) {
+				nsaldo = saldo - value;
+			}
+			else {
+				nsaldo = saldo + value;
+			}
 		}
 		
-		if (LinkingCache.isDebitAccount(bd,idCta)) {
-			nsaldo = saldo + value;
-		}
-		else {
-			nsaldo = saldo + value;
-		}
 
 		try {
 			BigDecimal bigDecimal = new BigDecimal(nsaldo);

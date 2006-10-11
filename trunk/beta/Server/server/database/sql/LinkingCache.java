@@ -55,7 +55,6 @@ public class LinkingCache {
     private static Hashtable <String,Object>Hpermisos      = new Hashtable<String,Object>();
     private static Hashtable <String,Object>Hasientos_pr = new Hashtable<String,Object>();
     private static Hashtable <String,Object>Hctas_asientos = new Hashtable<String,Object>();
-    private static Hashtable <String,Object>Hctas_naturaleza = new Hashtable<String,Object>();
     private static Hashtable <String,Object>Hlibro_aux = new Hashtable<String,Object>();
     
     private static Hashtable <String,ClassLogicDriver>Hlogica_drivers = new Hashtable<String,ClassLogicDriver>();
@@ -232,7 +231,7 @@ public class LinkingCache {
                  * Esta metodo carga el perfil de todas las cuentas contables generadas.
                  */
 
-                loadPerfilCta(ConfigFile.getDBName(i));
+                loadPerfilCta(ConfigFile.getDBName(i),"SEL0094",null);
 
                 /*
                  * Este metodo carga la informacion relacionada a asientos prefedinidos
@@ -265,6 +264,17 @@ public class LinkingCache {
 
     }
     
+    public static void removePerfilCta(String bd,String[] args) 
+    throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+        ResultSet rs= st.executeQuery(InstruccionesSQL.getSentencia(bd,"SEL0319",args));
+        
+        while (rs.next()) {
+        	String key = "K-"+bd+"-"+rs.getString(1).trim();
+        	Hperfil_cta.remove(key);
+        }
+        CloseSQL.close(rs);
+    }
+
     public static void removeAsientosPr(String bd,String[] args) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
         ResultSet rs= st.executeQuery(InstruccionesSQL.getSentencia(bd,"SEL0318",args));
@@ -318,11 +328,15 @@ public class LinkingCache {
      * @throws SQLNotFoundException
      * @throws SQLBadArgumentsException 
      */
-    public static void loadPerfilCta(String bd) 
+    public static void loadPerfilCta(String bd,String sqlPerfil,String[] args) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
     	Statement st = PoolConexiones.getConnection(bd).createStatement();
-        ResultSet rs = st.executeQuery(InstruccionesSQL.getSentencia(bd,"SEL0094"));
-
+        ResultSet rs;
+        if (args==null)
+        	rs = st.executeQuery(InstruccionesSQL.getSentencia(bd,sqlPerfil));
+        else
+        	rs = st.executeQuery(InstruccionesSQL.getSentencia(bd,sqlPerfil,args));
+        
         /*
          * Se almacena la informacion en un objeto PerfilCta y luego en la
          * tabla hashtable Hperfil_cta
@@ -332,6 +346,7 @@ public class LinkingCache {
             Hperfil_cta.put("K-" + bd + "-"
                                   + rs.getString("char_cta").trim(),
                                   new PerfilCta(rs.getString("id_cta"),
+                                		  		rs.getBoolean("naturaleza"),
                                 		        rs.getBoolean("terceros"),
                                 		  		rs.getBoolean("inventarios"),
                                 		  		rs.getBoolean("centro"),
@@ -339,13 +354,6 @@ public class LinkingCache {
                                 		  		rs.getDouble("base"),
                                 		  		rs.getDouble("porcentaje")));
         }
-        
-        /*
-         * Esta consulta carga la naturaleza de las cuentas de detalle
-         */
-
-        Hctas_naturaleza.putAll(loadCache(bd,"SEL0315", new String[]{"id_cta"},"naturaleza"));
-
         CloseSQL.close(st);
         CloseSQL.close(rs);
     }
@@ -794,6 +802,22 @@ public class LinkingCache {
     }
 
     /**
+     * Este metodo retorna la naturaleza de la cuenta
+     * @param bd Codigo de la base de datos
+     * @param account cuenta contable a consultar
+     * @return boolean true si es cuenta debito, false si es credito.
+     * @throws DontHaveKeyException excepcion en caso de no encontrar la cuenta
+     */
+    
+    public static boolean isPCNaturaleza(String bd,String account) throws DontHaveKeyException {
+    	if (Hperfil_cta.containsKey("K-"+bd+"-"+account)) {
+    		return Hperfil_cta.get("K-"+bd+"-"+account).isNaturaleza();
+    	}
+    	else {
+    		throw new DontHaveKeyException(account);
+    	}
+    }
+    /**
      * Este metodo retorna el valor de la base para realizar un asiento
      * @param bd Codigo de la base de datos
      * @param account cuenta contable a consultar
@@ -880,21 +904,12 @@ public class LinkingCache {
     		throw new DontHaveKeyException("K-"+bd+"-"+id_asiento_pr+"-"+cta);
     	}
     }
-    
-    public static boolean isDebitAccount(String bd,String cta) throws DontHaveKeyException {
-    	if (Hctas_naturaleza.containsKey("K-"+bd+"-"+cta)) {
-    		return ((Boolean)Hctas_naturaleza.get("K-"+bd+"-"+cta)).booleanValue();
-    	}
-    	else {
-    		throw new DontHaveKeyException("K-"+bd+"-"+cta);
-    	}
-    }
- 
 }
 
 class PerfilCta {
 	
 	private String id_cta="";
+	private boolean naturaleza;
 	private boolean terceros;
 	private boolean inventarios;
 	private boolean centro;
@@ -902,8 +917,9 @@ class PerfilCta {
 	private double base=0;
 	private double porcentaje=0;
 	
-	public PerfilCta(String id_cta,boolean terceros,boolean inventarios,boolean centro,boolean ajuste,double base,double porcentaje) {
+	public PerfilCta(String id_cta,boolean naturaleza,boolean terceros,boolean inventarios,boolean centro,boolean ajuste,double base,double porcentaje) {
 		this.id_cta=id_cta;
+		this.naturaleza=naturaleza;
 		this.terceros=terceros;
 		this.inventarios=inventarios;
 		this.centro=centro;
@@ -960,6 +976,14 @@ class PerfilCta {
 
 	public void setTerceros(boolean terceros) {
 		this.terceros = terceros;
+	}
+
+	public boolean isNaturaleza() {
+		return naturaleza;
+	}
+
+	public void setNaturaleza(boolean naturaleza) {
+		this.naturaleza = naturaleza;
 	}
 
 	public String getId_cta() {
