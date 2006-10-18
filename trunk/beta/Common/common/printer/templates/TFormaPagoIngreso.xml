@@ -14,35 +14,41 @@
 	<package validate="true">
 		<subpackage rowInit="last">
 			<metadata>
-				<line row="last" col="1" incrementRow="false" length="70" charfill="-" align="horizontal" />
+				<line row="last" col="1" incrementRow="false" length="90" charfill="-" align="horizontal" />
 				<field row="last" col="1" type="STRING">T. Credito</field>
-				<field row="last" col="6" incrementRow="false" type="STRING">Tarjeta de Credito</field>
-				<field row="last" col="34" incrementRow="false" type="STRING">|</field>
-				<field row="last" col="45" incrementRow="false" type="STRING">Cuenta</field>
-				<field row="last" col="63" incrementRow="false" type="STRING">|</field>
-				<field row="last" col="69" type="STRING">Valor</field>
-				<line row="last" col="1" length="80" charfill="-" align="horizontal" />
+				<field row="last" col="3" incrementRow="false" type="STRING">Tarjeta de Credito</field>
+				<field row="last" col="24" incrementRow="false" type="STRING">|</field>
+				<field row="last" col="35" incrementRow="false" type="STRING">Cuenta</field>
+				<field row="last" col="53" incrementRow="false" type="STRING">|</field>
+				<field row="last" col="63" incrementRow="false" type="STRING">Banco</field>
+				<field row="last" col="79" incrementRow="false" type="STRING">|</field>
+				<field row="last" col="88" type="STRING">Valor</field>
+				<line row="last" col="1" length="100" charfill="-" align="horizontal" />
 			</metadata>
 			<field col="1" type="STRING" />
-			<field col="37" type="STRING" separatorchar="|" separatorcol="34"/>
-			<field col="64" width="15" type="NUMERIC" mask="##,###,###,##0.00" separatorchar="|" separatorcol="63" />
+			<field col="26" type="STRING" separatorchar="|" separatorcol="24"/>
+			<field col="54" type="STRING" separatorchar="|" separatorcol="53"/>
+			<field col="82" width="15" type="NUMERIC" mask="##,###,###,##0.00" separatorchar="|" separatorcol="79" />
 		</subpackage>
 	</package>
 	<package validate="true">
 		<subpackage rowInit="last">
 			<metadata>
-				<line row="last" col="1" incrementRow="false" length="66" charfill="-" align="horizontal" />
+				<line row="last" col="1" incrementRow="false" length="86" charfill="-" align="horizontal" />
 				<field row="last" col="1" type="STRING">Consignaciones</field>
-				<field row="last" col="13" incrementRow="false" type="STRING">Fecha</field>
-				<field row="last" col="34" incrementRow="false" type="STRING">|</field>
-				<field row="last" col="45" incrementRow="false" type="STRING">Cuenta</field>
-				<field row="last" col="63" incrementRow="false" type="STRING">|</field>
-				<field row="last" col="69" type="STRING">Valor</field>
-				<line row="last" col="1" length="80" charfill="-" align="horizontal" />
+				<field row="last" col="8" incrementRow="false" type="STRING">Fecha</field>
+				<field row="last" col="24" incrementRow="false" type="STRING">|</field>
+				<field row="last" col="35" incrementRow="false" type="STRING">Cuenta</field>
+				<field row="last" col="53" incrementRow="false" type="STRING">|</field>
+				<field row="last" col="63" incrementRow="false" type="STRING">Banco</field>
+				<field row="last" col="77" incrementRow="false" type="STRING">|</field>
+				<field row="last" col="84" type="STRING">Valor</field>
+				<line row="last" col="1" length="100" charfill="-" align="horizontal" />
 			</metadata>
 			<field col="1" type="STRING" />
-			<field col="36" type="STRING" separatorchar="|" separatorcol="34"/>
-			<field col="64" width="15" separatorchar="|" separatorcol="63" type="NUMERIC" mask="##,###,###,##0.00" />
+			<field col="26" type="STRING" separatorchar="|" separatorcol="24"/>
+			<field col="54" type="STRING" separatorchar="|" separatorcol="53"/>
+			<field col="82" width="15" type="NUMERIC" mask="##,###,###,##0.00" separatorchar="|" separatorcol="79" />
 		</subpackage>
 	</package>
 	<package validate="true">
@@ -50,25 +56,19 @@
 			<metadata>
 				<line row="last" col="1" incrementRow="false" length="123" charfill="-" align="horizontal" />
 				<field row="last" col="1" type="STRING">Cheques</field>
-				<field row="last" col="5" incrementRow="false" type="STRING">Fecha</field>
-				<field row="last" col="15" incrementRow="false" type="STRING">|</field>
-				<field row="last" col="27" incrementRow="false" type="STRING">Banco</field>
-				<field row="last" col="43" incrementRow="false" type="STRING">|</field>
-				<field row="last" col="51" incrementRow="false" type="STRING">Departamento</field>
-				<field row="last" col="70" incrementRow="false" type="STRING">|</field>
-				<field row="last" col="79" incrementRow="false" type="STRING">Municipio</field>
-				<field row="last" col="99" incrementRow="false" type="STRING">|</field>
-				<field row="last" col="103" incrementRow="false" type="STRING">Numero</field>
-				<field row="last" col="114" incrementRow="false" type="STRING">|</field>
-				<field row="last" col="121" type="STRING">Valor</field>
+				<field row="last" col="10" incrementRow="false" type="STRING">Banco</field>
+				<field row="last" col="27" incrementRow="false" type="STRING">|</field>
+				<field row="last" col="37" incrementRow="false" type="STRING">Sucursal</field>
+				<field row="last" col="55" incrementRow="false" type="STRING">|</field>
+				<field row="last" col="63" incrementRow="false" type="STRING">Numero</field>
+				<field row="last" col="77" incrementRow="false" type="STRING">|</field>
+				<field row="last" col="84" type="STRING">Valor</field>
 				<line row="last" col="1" length="130" charfill="-" align="horizontal" />
 			</metadata>
 			<field col="1" type="STRING" />
-			<field col="16" type="STRING" separatorchar="|" separatorcol="15"/>
-			<field col="44" type="STRING" separatorchar="|" separatorcol="43"/>
-			<field col="71" type="STRING" separatorchar="|" separatorcol="70"/>
-			<field col="101" type="STRING" separatorchar="|" separatorcol="99"/>
-			<field col="116" width="15" type="NUMERIC" mask="##,###,###,##0.00" separatorchar="|" separatorcol="114"/>
+			<field col="28" type="STRING" separatorchar="|" separatorcol="27"/>
+			<field col="57" type="STRING" separatorchar="|" separatorcol="55"/>
+			<field col="82" width="15" type="NUMERIC" mask="##,###,###,##0.00" separatorchar="|" separatorcol="77"/>
 		</subpackage>
 	</package>
 </emaku_template>
