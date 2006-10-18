@@ -299,34 +299,35 @@ public class LNInventarios {
         }
 		RunQuery RQmovimiento = new RunQuery(bd,"INS0069");
 		
-		for (int j=0;j<gastos.size();j++) {
-	        /*
-	         * Se captura los saldos antes del movimiento
-	         */
-	        saldo = LinkingCache.getSaldoInventario(bd, record[2], record[3]);
-	        vsaldo = LinkingCache.getVSaldoInventario(bd, record[2], record[3]);
-
-	        /*
-	    	 * Se carga los datos iniciales
-	    	 */
-	            	
-	        double ventrada = gastos.get(j).doubleValue();
-	        vsaldo+=ventrada;
-	        double pcosto=(vsaldo/saldo);
-	        BigDecimal bigDecimal = new BigDecimal(pcosto);
-	        bigDecimal = bigDecimal.setScale(2,BigDecimal.ROUND_HALF_UP);
-	        pcosto = bigDecimal.doubleValue();
-	        
-	        record[4] = String.valueOf(ventrada);
-	        record[5] = String.valueOf(pcosto);
-	        record[6] = String.valueOf(saldo);
-	        record[7] = String.valueOf(vsaldo);
-	    	RQmovimiento.ejecutarSQL(record);
-	        LinkingCache.setPCosto(bd, record[2], record[3],pcosto);
-	        actualizarSaldos(record);
+		if (gastos.size()>0) {
+			for (int j=0;j<gastos.size();j++) {
+		        /*
+		         * Se captura los saldos antes del movimiento
+		         */
+		        saldo = LinkingCache.getSaldoInventario(bd, record[2], record[3]);
+		        vsaldo = LinkingCache.getVSaldoInventario(bd, record[2], record[3]);
+	
+		        /*
+		    	 * Se carga los datos iniciales
+		    	 */
+		            	
+		        double ventrada = gastos.get(j).doubleValue();
+		        vsaldo+=ventrada;
+		        double pcosto=(vsaldo/saldo);
+		        BigDecimal bigDecimal = new BigDecimal(pcosto);
+		        bigDecimal = bigDecimal.setScale(2,BigDecimal.ROUND_HALF_UP);
+		        pcosto = bigDecimal.doubleValue();
+		        
+		        record[4] = String.valueOf(ventrada);
+		        record[5] = String.valueOf(pcosto);
+		        record[6] = String.valueOf(saldo);
+		        record[7] = String.valueOf(vsaldo);
+		    	RQmovimiento.ejecutarSQL(record);
+		        LinkingCache.setPCosto(bd, record[2], record[3],pcosto);
+		        actualizarSaldos(record);
+			}
+			RQmovimiento.closeStatement();
 		}
-		
-		RQmovimiento.closeStatement();
     }
     
     /**

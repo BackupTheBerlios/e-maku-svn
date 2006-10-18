@@ -435,15 +435,34 @@ public class LNContabilidad {
 				} else {
 					asiento[k] = "NULL";
 				}
-			} else if (k == 5 && tercero != null) {
-				if (tercero.equals("getname") && 
-				    CacheKeys.getKey("idTercero")!=null &&
-				    LinkingCache.isPCTerceros(bd, asiento[4])) {
-					asiento[k] = CacheKeys.getKey("idTercero");
-				} else if (tercero.equals("notdata")) {
-					asiento[k] = "NULL";
-				} else {
-					asiento[k] = "NULL";
+			} 
+			/*
+			 * Verificacion del tercero
+			 */
+			else if(k==5) {
+				Element elm2 = (Element) i.next();
+				asiento[k] = "NULL";
+				System.out.println("Consultando tercero: "+asiento[4]+" "+LinkingCache.isPCTerceros(bd, asiento[4]));
+				if(LinkingCache.isPCTerceros(bd, asiento[4])) {
+					System.out.println("La cuenta es de terceros el tercero es: "+elm2.getText().trim());
+					/*
+					 * Si el tercero viene en el paquete entonces se toma ese tercero
+					 */
+					if (!"".equals(elm2.getText())) {
+						asiento[k] = elm2.getText().trim();
+					}
+					/*
+					 * Si no entonces se toma el tercero de las llaves
+					 */
+					else if ("getname".equals(tercero) && CacheKeys.getKey("idTercero")!=null){
+						asiento[k] = CacheKeys.getKey("idTercero");
+					} 
+					/*
+					 * si en las llaves no viene tercero entonces el asientos es NULL
+					 */
+					else if (tercero.equals("notdata")) {
+						asiento[k] = "NULL";
+					} 
 				}
 			} else if (k == 6 && inventario != null) {
 				if (inventario.equals("getname") && 
@@ -455,7 +474,8 @@ public class LNContabilidad {
 				} else {
 					asiento[k] = "NULL";
 				}
-			} else {
+			} 
+			else {
 				Element elm2 = (Element) i.next();
 				asiento[k] = elm2.getText().trim();
 			}
@@ -737,7 +757,6 @@ public class LNContabilidad {
 			 */
 			String code = LinkingCache.getIdAsientosPr(bd, idProdServ,codeAPS);
 			boolean cuentaregistrada = true;
-			
 			/*
 			 * Verificando si el asiento es debito o credito, esto esta
 			 * en la asignacion de cuentas contables para cada producto
@@ -760,6 +779,11 @@ public class LNContabilidad {
 				debito = naturaleza.booleanValue();
 			}
 
+			if (debug) {
+				System.out.println("La cuenta a procesar es: "+account);
+				System.out.println("La cuenta esta registrada: "+cuentaregistrada);
+				System.out.println("Valor del movimiento: "+valueAccount);
+			}
 			/*
 			 * Si la columna actual genera asiento y el valor de la columna es
 			 * mayor a 0 entonces ...

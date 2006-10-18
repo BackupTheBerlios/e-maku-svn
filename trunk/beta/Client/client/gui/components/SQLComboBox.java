@@ -72,7 +72,7 @@ public class SQLComboBox extends JComboBox implements
 	private String key;
 	private Vector<String> keysCombo = new Vector<String>();
 
-	private boolean saveKey = false;
+	private boolean saveKey = true;
 	private boolean clean = false;
 	private String nameField = null;
 	private String driverEvent;
@@ -134,6 +134,25 @@ public class SQLComboBox extends JComboBox implements
 	}
 
 	/**
+	 * Este constructor parametriza el una consulta y el valor exportable por su seleccion 
+	 * @param GFforma
+	 * @param sqlCombo
+	 * @param exportValue
+	 * @param saveKey
+	 */
+	
+	public SQLComboBox(GenericForm GFforma,String sqlCombo,String exportValue,boolean saveKey) {
+		super();
+		this.sqlCombo = sqlCombo;
+		this.GFforma = GFforma;
+		this.exportValue=exportValue;
+		this.saveKey=saveKey;
+        this.GFforma.addChangeExternalValueListener(this);
+    		this.addPopupMenuListener(this);
+        generar();
+	}
+
+	/**
 	 * Este constructor parametriza una consulta con argumentos
 	 * @param GFforma
 	 * @param sqlCombo
@@ -144,6 +163,24 @@ public class SQLComboBox extends JComboBox implements
 		super();
 		this.sqlCombo = sqlCombo;
 		this.keys = args;
+		this.GFforma = GFforma;
+        this.GFforma.addChangeExternalValueListener(this);
+    		this.addPopupMenuListener(this);
+        generar();
+	}
+
+	/**
+	 * Este constructor parametriza una consulta con argumentos
+	 * @param GFforma
+	 * @param sqlCombo
+	 * @param args
+	 */
+	
+	public SQLComboBox(GenericForm GFforma,String sqlCombo, String[] args,boolean saveKey) {
+		super();
+		this.sqlCombo = sqlCombo;
+		this.keys = args;
+		this.saveKey=saveKey;
 		this.GFforma = GFforma;
         this.GFforma.addChangeExternalValueListener(this);
     		this.addPopupMenuListener(this);
@@ -163,6 +200,25 @@ public class SQLComboBox extends JComboBox implements
 		this.keys = args;
 		this.GFforma = GFforma;
 		this.exportValue=exportValue;
+        this.GFforma.addChangeExternalValueListener(this);
+    		this.addPopupMenuListener(this);
+        generar();
+	}
+
+	/**
+	 * Este constructor parametriza una consulta con argumentos y exporta su valor por seleccion
+	 * @param GFforma
+	 * @param sqlCombo
+	 * @param args
+	 * @param exportValue
+	 */
+	public SQLComboBox(GenericForm GFforma,String sqlCombo, String[] args,String exportValue,boolean saveKey) {
+		super();
+		this.sqlCombo = sqlCombo;
+		this.keys = args;
+		this.GFforma = GFforma;
+		this.exportValue=exportValue;
+		this.saveKey=saveKey;
         this.GFforma.addChangeExternalValueListener(this);
     		this.addPopupMenuListener(this);
         generar();

@@ -443,21 +443,21 @@ public class TableFindData extends JPanel implements AnswerListener,
 							comboColumn.setCellEditor(new DefaultCellEditor(
 									new SQLComboBox(GFforma, ATFDargs[k]
 											.getSqlCombo(), ATFDargs[k]
-											.getImportCombos(), exportValue)));
+											.getImportCombos(), exportValue,false)));
 						} else {
 							comboColumn.setCellEditor(new DefaultCellEditor(
 									new SQLComboBox(
 									                GFforma,
 									                ATFDargs[k].getSqlCombo(),
-									                ATFDargs[k].getImportCombos())));
+									                ATFDargs[k].getImportCombos(),false)));
 						}
 					} else {
 						if (ATFDargs[k].isExporValueCombo()) {
 							comboColumn.setCellEditor(new DefaultCellEditor(
-									new SQLComboBox(GFforma, ATFDargs[k].getSqlCombo(), exportValue)));
+									new SQLComboBox(GFforma, ATFDargs[k].getSqlCombo(), exportValue,false)));
 						} else {
 							comboColumn.setCellEditor(new DefaultCellEditor(
-									new SQLComboBox(GFforma, ATFDargs[k].getSqlCombo())));
+									new SQLComboBox(GFforma, ATFDargs[k].getSqlCombo(),false)));
 						}
 					}
 				}

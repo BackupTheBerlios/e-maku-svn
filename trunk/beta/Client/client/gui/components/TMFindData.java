@@ -1768,6 +1768,9 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
                 }
         	}
         }
+        else if (max==0) {
+        	clean();
+        }
         totalizar();
         loadingQuery = false;
     }
