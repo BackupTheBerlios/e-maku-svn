@@ -22,7 +22,7 @@ public class PrintManager {
 	public static enum ImpresionType {PLAIN,POSTSCRIPT,PDF};
 	private ImpresionType type;
 	private DocFlavor docFlavor;
-	public static boolean lastError = false;
+	private static boolean lastError = false;
 	public PrintManager (
 			ImpresionType type,
 			ByteArrayInputStream is,
