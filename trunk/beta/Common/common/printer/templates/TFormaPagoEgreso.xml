@@ -1,4 +1,4 @@
-<emaku_template type="PLAIN">
+<emaku_template type="PLAIN" silent="true" printer="fx1050">
 	<settings width="80" height="30" />
 	<metadata>
 		<scp row="1" col="1">ESC</scp>

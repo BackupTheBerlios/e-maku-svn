@@ -13,6 +13,7 @@ import javax.print.SimpleDoc;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Copies;
+import javax.swing.JOptionPane;
 
 import common.misc.CommonConst;
 
@@ -21,7 +22,7 @@ public class PrintManager {
 	public static enum ImpresionType {PLAIN,POSTSCRIPT,PDF};
 	private ImpresionType type;
 	private DocFlavor docFlavor;
-	
+	public static boolean lastError = false;
 	public PrintManager (
 			ImpresionType type,
 			ByteArrayInputStream is,
@@ -33,6 +34,19 @@ public class PrintManager {
 		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
 		pras.add(new Copies(copies));
 		PrintService[] jps = CommonConst.printServices;
+		if ((jps==null ) || (jps.length == 0)) {
+			if (!lastError) {
+				JOptionPane.showMessageDialog(
+					null,
+					"No existen medios de impresion\n"+
+					"disponibles, debe configurar una\n"+
+					"impresora en su sistema, y reiniciar\n"+
+					"el programa para que se apliquen los cambios"
+					);
+				lastError = true;
+			}
+			return;
+		}
 		PrintService defaultService =null;
 		System.out.println("Printer name " + printer);
 		if (this.type.equals(ImpresionType.PLAIN)) {
@@ -74,6 +88,19 @@ public class PrintManager {
 		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
 		pras.add(new Copies(copies));
 		PrintService[] jps = CommonConst.printServices;
+		if ((jps==null ) || jps.length == 0) {
+			if (!lastError) {
+				JOptionPane.showMessageDialog(
+						null,
+						"No existen medios de impresion\n"+
+						"disponibles, debe configurar una\n"+
+						"impresora en su sistema, y reiniciar\n"+
+						"el programa para que se apliquen los cambios"
+						);
+				lastError = true;
+			}
+			return;
+		}
 		PrintService defaultService = null;
 		System.out.println("Printer name " + printer);
 		
