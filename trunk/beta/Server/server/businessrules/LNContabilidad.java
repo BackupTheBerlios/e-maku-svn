@@ -752,10 +752,6 @@ public class LNContabilidad {
 				idProdServ = "";
 			}
 
-			/*
-			 * Se obtiene el codigo del asiento predefinido 
-			 */
-			String code = LinkingCache.getIdAsientosPr(bd, idProdServ,codeAPS);
 			boolean cuentaregistrada = true;
 			/*
 			 * Verificando si el asiento es debito o credito, esto esta
@@ -763,6 +759,11 @@ public class LNContabilidad {
 			 */
 
 			if (naturaleza == null) {
+
+				/*
+				 * Se obtiene el codigo del asiento predefinido 
+				 */
+				String code = LinkingCache.getIdAsientosPr(bd, idProdServ,codeAPS);
 
 				/*
 				 * Luego con el codigo obtenido se procede a obtener el tipo
