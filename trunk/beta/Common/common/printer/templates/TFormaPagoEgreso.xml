@@ -84,6 +84,6 @@
 		<field row="2" col="103" type="STRING"/>
 	</package>
 	<package>
-		<field row="3" col="103" type="STRING"/>
+		<field row="3" col="108" type="STRING"/>
 	</package>
 </emaku_template>
