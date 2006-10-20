@@ -31,10 +31,11 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 	private ByteArrayInputStream in;
 	private boolean sussceful;
 	private ImpresionType impresionType;
-	
-	public PlainManager() {
+
+	public PlainManager(String ndocument) {
 		ClientHeaderValidator.addSuccessListener(this);
-		impresionType = ImpresionType.PLAIN; 
+		impresionType = ImpresionType.PLAIN;
+		this.ndocument = ndocument;
 	}
 	
 	public void process(Element rootTemplate,Element rootTransact) {
@@ -366,5 +367,9 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 
 	public boolean isSusseful() {
 		return this.sussceful;
+	}
+
+	public String getNdocument() {
+		return ndocument;
 	}
 }

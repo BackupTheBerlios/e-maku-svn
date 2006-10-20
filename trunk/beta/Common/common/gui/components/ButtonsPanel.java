@@ -74,7 +74,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
     private String accel = "";
 	private String typePackage = "TRANSACTION";
 	private String idReport;
-    private PlainManager plainManager = new PlainManager();
+    private PlainManager plainManager = new PlainManager("");
     private PostScriptManager postScriptManager = new PostScriptManager();
     
     public ButtonsPanel(GenericForm GFforma, Document doc) {
@@ -344,7 +344,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 									ImpresionType        IType     = plainManager.getImpresionType();
 									ByteArrayInputStream IStream   = plainManager.getStream();
 									new PrintManager(IType,IStream, silent, copies,printer);
-									plainManager = new PlainManager();
+									plainManager = new PlainManager(plainManager.getNdocument());
 								}
 							}
 							if ("GRAPHIC".equals(_type) ) {

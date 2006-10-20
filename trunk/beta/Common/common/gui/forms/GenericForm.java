@@ -1331,7 +1331,6 @@ public class GenericForm extends JInternalFrame{
 				}
 				pack.addContent(e);
 			}
-			
 			else if ("beanshell".equals(elm.getAttributeValue("attribute"))) {
 				String formula = elm.getValue();
     			String script = parseFormula(formula);
@@ -1344,8 +1343,12 @@ public class GenericForm extends JInternalFrame{
 					e.printStackTrace();
 				}
     		}
+			else if ("staticText".equals(elm.getAttributeValue("attribute"))) {
+				Element field = new Element("field");
+				field.setText(elm.getValue());
+				pack.addContent(field);
+    		}
 		}
-		
 		if (blankPackage && cont==0) {
 			return new Element("package");
 		}
