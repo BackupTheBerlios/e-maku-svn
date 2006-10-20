@@ -14,14 +14,14 @@
 		<field row="last" col="1" type="STRING">F.A. Uribe &amp; Cia Ltda</field>
 		<field row="last" col="1" type="STRING">Nit.  891.200.250-1</field>
 		<field row="3" col="103" type="STRING">Nro :</field>
-		<ndocument row="3" col="109"/>
+		<ndocument row="3" col="108"/>
 		<line row="last" col="1" length="144" charfill="=" align="horizontal" />
 	</metadata>
 	<package validate="true">
 		<subpackage rowInit="last">
 			<metadata>
-				<line row="last" col="1" incrementRow="false" length="134" charfill="-" align="horizontal" />
-				<field row="last" col="1" type="STRING">T. Credito</field>
+				<field row="last" col="4" type="STRING">TARJETA DE CREDITO</field>
+				<line row="last" col="1" length="144" charfill="-" align="horizontal" />
 				<field row="last" col="3" incrementRow="false" type="STRING">Tarjeta de Credito</field>
 				<field row="last" col="24" incrementRow="false" type="STRING">|</field>
 				<field row="last" col="44" incrementRow="false" type="STRING">Cuenta</field>
@@ -40,8 +40,8 @@
 	<package validate="true">
 		<subpackage rowInit="last">
 			<metadata>
-				<line row="last" col="1" incrementRow="false" length="130" charfill="-" align="horizontal" />
-				<field row="last" col="1" type="STRING">Consignaciones</field>
+				<field row="last" col="4" type="STRING">CONSIGNACIONES</field>
+				<line row="last" col="1" length="144" charfill="-" align="horizontal" />
 				<field row="last" col="8" incrementRow="false" type="STRING">Fecha</field>
 				<field row="last" col="24" incrementRow="false" type="STRING">|</field>
 				<field row="last" col="44" incrementRow="false" type="STRING">Cuenta</field>
@@ -60,8 +60,8 @@
 	<package validate="true">
 		<subpackage rowInit="last">
 			<metadata>
-				<line row="last" col="1" incrementRow="false" length="137" charfill="-" align="horizontal" />
-				<field row="last" col="1" type="STRING">Cheques</field>
+				<field row="last" col="4" type="STRING">CHEQUES</field>
+				<line row="last" col="1" length="144" charfill="-" align="horizontal" />
 				<field row="last" col="4" incrementRow="false" type="STRING">Fecha</field>
 				<field row="last" col="12" incrementRow="false" type="STRING">|</field>
 				<field row="last" col="29" incrementRow="false" type="STRING">Banco</field>
@@ -81,6 +81,9 @@
 		</subpackage>
 	</package>
 	<package>
-		<field row="2" col="108" type="STRING"/>
+		<field row="2" col="103" type="STRING"/>
+	</package>
+	<package>
+		<field row="3" col="108" type="STRING"/>
 	</package>
 </emaku_template>
