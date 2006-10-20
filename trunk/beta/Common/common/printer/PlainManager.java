@@ -75,7 +75,10 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 				Element elmTemplate = (Element)itTemplate.next();
 				Element elmTransact = (Element)itTransact.next();
 				Attribute attr = elmTemplate.getAttribute("validate");
-				countPacks += elmTransact.getChildren().size();
+				Attribute attrInv = elmTemplate.getAttribute("invalidate");
+				if (attrInv==null || (attrInv!=null && !attrInv.getBooleanValue()) ) {
+					countPacks += elmTransact.getChildren().size();
+				}
 				boolean validate = attr != null ? attr.getBooleanValue() : false;
 				if (validate) {
 					if (elmTransact.getChildren().size() > 0) {

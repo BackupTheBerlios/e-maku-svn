@@ -80,10 +80,10 @@
 			<field col="124" width="15" type="NUMERIC" mask="##,###,###,##0.00" separatorchar="|" separatorcol="118" />
 		</subpackage>
 	</package>
-	<package>
+	<package invalidate="true">
 		<field row="2" col="103" type="STRING"/>
 	</package>
-	<package>
+	<package invalidate="true">
 		<field row="3" col="108" type="STRING"/>
 	</package>
 </emaku_template>
