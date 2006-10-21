@@ -57,7 +57,7 @@ public class PrintManager {
 		}
 		
 		if (!silent && printer==null) {
-			defaultService = ServiceUI.printDialog(null, 200, 200,jps, CommonConst.printSelect, this.docFlavor, pras);
+			defaultService = ServiceUI.printDialog(null, 200, 200,jps, CommonConst.printSelect, null, pras);
 			if (defaultService!=null) {
 				CommonConst.printSelect = defaultService;
 				print(defaultService,is,pras);
@@ -105,7 +105,7 @@ public class PrintManager {
 		System.out.println("Printer name " + printer);
 		
 		if (!silent && printer==null) {
-			defaultService = ServiceUI.printDialog(null, 200, 200,jps, CommonConst.printSelect, this.docFlavor,pras);
+			defaultService = ServiceUI.printDialog(null, 200, 200,jps, CommonConst.printSelect, null,pras);
 			if (defaultService!=null) {
 				CommonConst.printSelect = defaultService;
 				print(defaultService,postScriptManager,pras);
