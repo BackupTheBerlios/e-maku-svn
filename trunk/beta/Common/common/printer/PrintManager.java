@@ -89,7 +89,7 @@ public class PrintManager {
 		this.docFlavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
 		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
 		pras.add(new Copies(copies));
-		PrintService[] jps = CommonConst.printServices;
+		jps = CommonConst.printServices;
 		if ((jps==null ) || jps.length == 0) {
 			if (!lastError) {
 				JOptionPane.showMessageDialog(
