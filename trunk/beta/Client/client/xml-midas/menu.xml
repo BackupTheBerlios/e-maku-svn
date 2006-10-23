@@ -746,6 +746,19 @@
 			<Activo />
 			<Transaction>TR00230</Transaction>
 		</JMenuItem>
+		<JMenu>
+			<Mnemonic>NEMO-REPORTE</Mnemonic>
+			<Icon>GREPORTS</Icon>
+			<Text>REPORTS</Text>
+			<Activo />
+			<JMenuItem>
+				<Text>LISTAS-PRECIOS</Text>
+				<Icon>REPORT</Icon>
+				<Mnemonic>NEMO-LISTAS-PRECIOS</Mnemonic>
+				<Activo />
+				<Transaction>TR00231</Transaction>
+			</JMenuItem>
+		</JMenu>
 	</JMenu>
 	<JMenu>
 		<Text>PRODUCTION</Text>

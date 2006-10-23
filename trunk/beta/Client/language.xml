@@ -5051,4 +5051,18 @@
     <es_ES></es_ES>
     <en_US>Search Product</en_US>
   </sentence>
+  <sentence>
+    <key>LISTAS-PRECIOS</key>
+    <es_CO>Listado de precios de venta</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>List sales price</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-LISTAS-PRECIOS</key>
+    <es_CO>L</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>L</en_US>
+  </sentence>
 </language>  

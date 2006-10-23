@@ -1,4 +1,4 @@
-<emaku_template type="PLAIN"  requestNumeration="true" name="Nueva Devolucion En Ventas">
+<emaku_template type="PLAIN"  requestNumeration="true" name="Nueva Devolucion En Ventas" printer="fx1050">
 		<metadata>
 				<scp row="1" col="1">ESC</scp>
 				<scp row="1" col="2">C</scp>
