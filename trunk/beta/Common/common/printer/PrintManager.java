@@ -53,7 +53,7 @@ public class PrintManager {
 			docFlavor = DocFlavor.INPUT_STREAM.TEXT_PLAIN_UTF_8;
 		}
 		else if (type.equals(ImpresionType.PDF)) {
-			docFlavor = DocFlavor.INPUT_STREAM.PDF;
+			docFlavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
 		}
 		
 		if (!silent && printer==null) {
