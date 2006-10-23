@@ -27,7 +27,7 @@
 				<field row="12" col="3" type="STRING">CONCEPTO</field>
 				<line row="16" col="1" length="80" charfill="-" align="horizontal" />
 				<!-- Forma de pago -->
-				<field row="17" col="1" type="STRING">Forma de pago: Efectivo [ ]  Cheque [ ]  Consignación [ ]  T. Credito [ ]</field>
+				<field row="17" col="1" type="STRING">Forma de pago: Efectivo [ ]  Cheque [ ]  Consignacion [ ]  T. Credito [ ]</field>
 				<line row="18" col="1" length="80" charfill="-" align="horizontal" />
 				<!-- Contabilizacion -->
 				<field row="19" col="5" type="STRING">Codigo</field>
