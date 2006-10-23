@@ -8,6 +8,7 @@ import javax.print.DocFlavor;
 import javax.print.DocPrintJob;
 import javax.print.PrintException;
 import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
 import javax.print.ServiceUI;
 import javax.print.SimpleDoc;
 import javax.print.attribute.HashPrintRequestAttributeSet;
@@ -23,6 +24,7 @@ public class PrintManager {
 	private ImpresionType type;
 	private DocFlavor docFlavor;
 	private static boolean lastError = false;
+	private PrintService[] jps;
 	public PrintManager (
 			ImpresionType type,
 			ByteArrayInputStream is,
@@ -33,7 +35,7 @@ public class PrintManager {
 		this.type = type;
 		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
 		pras.add(new Copies(copies));
-		PrintService[] jps = CommonConst.printServices;
+		jps = CommonConst.printServices;
 		if ((jps==null ) || (jps.length == 0)) {
 			if (!lastError) {
 				JOptionPane.showMessageDialog(
@@ -56,8 +58,8 @@ public class PrintManager {
 			docFlavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
 		}
 		
-		if (!silent && printer==null) {
-			defaultService = ServiceUI.printDialog(null, 200, 200,jps, CommonConst.printSelect, docFlavor, pras);
+		if (!silent) {
+			defaultService = ServiceUI.printDialog(null, 200, 200,jps, selectPrinservice(printer), docFlavor, pras);
 			if (defaultService!=null) {
 				CommonConst.printSelect = defaultService;
 				print(defaultService,is,pras);
@@ -104,8 +106,8 @@ public class PrintManager {
 		PrintService defaultService = null;
 		System.out.println("Printer name " + printer);
 		
-		if (!silent && printer==null) {
-			defaultService = ServiceUI.printDialog(null, 200, 200,jps, CommonConst.printSelect,docFlavor,pras);
+		if (!silent) {
+			defaultService = ServiceUI.printDialog(null, 200, 200,jps, selectPrinservice(printer),docFlavor,pras);
 			if (defaultService!=null) {
 				CommonConst.printSelect = defaultService;
 				print(defaultService,postScriptManager,pras);
@@ -130,5 +132,14 @@ public class PrintManager {
 		DocPrintJob job = ps.createPrintJob();
 		Doc doc = new SimpleDoc(printData, docFlavor, null);
 		job.print(doc, pras);
+	}
+	
+	private PrintService selectPrinservice(String printer) {
+		for (PrintService ps : jps) {
+			if (ps.getName().equals(printer)) {
+				return ps;
+			}
+		}
+		return PrintServiceLookup.lookupDefaultPrintService();
 	}
 }
