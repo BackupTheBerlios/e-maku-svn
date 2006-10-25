@@ -108,8 +108,7 @@ public class MainWindow extends JFrame {
 			}
 		};
         JPcentral.add(JDPpanel,BorderLayout.CENTER);
-        JDPpanel.setForeground(Color.darkGray);
-
+        JDPpanel.setBackground(Color.LIGHT_GRAY);
         this.setJMenuBar(menu);
         this.getContentPane().setLayout(new BorderLayout());
         this.getContentPane().add(toolbar1, BorderLayout.NORTH);
