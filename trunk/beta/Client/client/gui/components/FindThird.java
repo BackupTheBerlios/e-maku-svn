@@ -306,12 +306,13 @@ public class FindThird extends JTabbedPane implements AnswerListener, InitiateFi
             public void popupMenuCanceled(PopupMenuEvent e) {}
             public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
 	            	if (Vkeys.size() > 0) {
-	                JCBver.setSelectedIndex(0);
-		    	        	JCBdireccion.removeAllItems();
+	            		JCBver.setSelectedIndex(0);
+	    	        	JCBdireccion.removeAllItems();
 		    	        JCBtelefono.removeAllItems();
-	                String key = Vkeys.get(JCBfined.getSelectedIndex());
-	                showDetail(key);
-	                searchOthersSQL();
+		    	        String key = Vkeys.get(JCBfined.getSelectedIndex());
+		    	        showDetail(key);
+			            asignExternalQuery();
+		    	        searchOthersSQL();
 	            	}
             }
         });
@@ -329,7 +330,7 @@ public class FindThird extends JTabbedPane implements AnswerListener, InitiateFi
 	        	        JCBfined.insertItemAt(DT.getItem(),indice);
 	        	        JCBfined.setSelectedIndex(indice);
 	        	        JCBfined.updateUI();
-                    asignExternalQuery();
+	        	        asignExternalQuery();
                 }
                 else if (JCBver.getSelectedIndex()>0  && JCBfined.getSelectedIndex() >= 0 ) {
 	                	int indice = JCBfined.getSelectedIndex();
@@ -340,7 +341,7 @@ public class FindThird extends JTabbedPane implements AnswerListener, InitiateFi
 	        	        JCBfined.insertItemAt(DT.getItem(),indice);
 	        	        JCBfined.setSelectedIndex(indice);
 	        	        JCBfined.updateUI();
-                    asignExternalQuery();
+	        	        asignExternalQuery();
                 }
             }
         });
@@ -606,33 +607,33 @@ public class FindThird extends JTabbedPane implements AnswerListener, InitiateFi
 
         if ("regimen".equals(keySwitch) || "catalogo".equals(keySwitch)) {
             
-	        	if ("regimen".equals(keySwitch)) {
-	        		caso = (String) casos.get(DTdata.getIdRegimen());
-	        	}
+        	if ("regimen".equals(keySwitch)) {
+        		caso = (String) casos.get(DTdata.getIdRegimen());
+        	}
 	        else if ("catalogo".equals(keySwitch)) {
 	        		caso = (String) casos.get(DTdata.getIdatalogo());
 	        }
 
-	        	String newSQLCode = null;
+        	String newSQLCode = null;
 
-	        	if (caso!=null && !"".equals(caso)) {
-		        	newSQLCode = caso;
-	        	}
-	        	else {
-	        		newSQLCode = defaultSQL;
-	        	}
-
-	        	if (newSQLCode!=null && !"".equals(newSQLCode)) {
-	        		try {
-		            	Object [] argsMethod  = new Object[]{newSQLCode};
-			        	Class [] argsClass = new Class[] {String.class};
-					GFforma.invokeMethod(driverEventClass,method,argsClass,argsMethod);
-				} catch (InvocationTargetException e1) {
-					e1.printStackTrace();
-				} catch (NotFoundComponentException e1) {
-					e1.printStackTrace();
-				}
-	        	}
+        	if (caso!=null && !"".equals(caso)) {
+	        	newSQLCode = caso;
+        	}
+        	else {
+        		newSQLCode = defaultSQL;
+        	}
+        	System.out.println("consulta de catalogo: "+newSQLCode);
+        	if (newSQLCode!=null && !"".equals(newSQLCode)) {
+        		try {
+	            	Object [] argsMethod  = new Object[]{newSQLCode};
+		        	Class [] argsClass = new Class[] {String.class};
+				GFforma.invokeMethod(driverEventClass,method,argsClass,argsMethod);
+			} catch (InvocationTargetException e1) {
+				e1.printStackTrace();
+			} catch (NotFoundComponentException e1) {
+				e1.printStackTrace();
+			}
+        	}
         }
     }
     /**
