@@ -6,7 +6,6 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import bsh.Interpreter;
 import client.gui.components.MainWindow;
@@ -16,6 +15,7 @@ import client.misc.ClientConst;
 import client.misc.settings.ConfigFile;
 import client.misc.settings.ConfigFileNotLoadException;
 
+import com.nilo.plaf.nimrod.NimRODLookAndFeel;
 import common.comunications.SocketConnector;
 import common.misc.language.Language;
 
@@ -48,7 +48,7 @@ public class Run {
 	public static void main(String[] args) {
 
         try {
-        	UIManager.setLookAndFeel(new MetalLookAndFeel());
+        	UIManager.setLookAndFeel(new NimRODLookAndFeel());
         	
             Font f = new Font("Tahoma", Font.PLAIN, 12);
             UIManager.put("Menu.font",			f);
