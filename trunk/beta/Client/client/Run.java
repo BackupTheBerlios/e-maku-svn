@@ -1,5 +1,6 @@
 package client;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.io.IOException;
 
@@ -16,6 +17,8 @@ import client.misc.settings.ConfigFile;
 import client.misc.settings.ConfigFileNotLoadException;
 
 import com.nilo.plaf.nimrod.NimRODLookAndFeel;
+import com.nilo.plaf.nimrod.NimRODTheme;
+
 import common.comunications.SocketConnector;
 import common.misc.language.Language;
 
@@ -48,25 +51,33 @@ public class Run {
 	public static void main(String[] args) {
 
         try {
-        	UIManager.setLookAndFeel(new NimRODLookAndFeel());
         	
-            Font f = new Font("Tahoma", Font.PLAIN, 12);
-            UIManager.put("Menu.font",			f);
-            UIManager.put("MenuItem.font",		f);
-            UIManager.put("Button.font",		f);
-            UIManager.put("Label.font",			f);
-            UIManager.put("TextField.font",		f);
-            UIManager.put("ComboBox.font",		f);
-            UIManager.put("CheckBox.font",		f);
-            UIManager.put("TextPane.font",		f);
-            UIManager.put("TextArea.font",		f);
-            UIManager.put("List.font",			f);
-            UIManager.put("Slider.font",		f);
-            UIManager.put("TitledBorder.font",	f);
-            UIManager.put("RadioButton.font",	f);
-            UIManager.put("InternalFrame.font",	f);
-            UIManager.put("Table.font",			f);
-            UIManager.put("TabbedPane.font",	f);
+             
+        	NimRODLookAndFeel look = new NimRODLookAndFeel();
+        	NimRODTheme theme = new NimRODTheme();
+
+        	NimRODLookAndFeel.setCurrentTheme(theme);
+        	UIManager.setLookAndFeel(look);
+        	Font f = new Font("Tahoma", Font.PLAIN, 12);
+        	
+        	UIManager.put("Menu.font",			f);
+        	UIManager.put("MenuItem.font",		f);
+        	UIManager.put("Button.font",		f);
+        	UIManager.put("Label.font",			f);
+        	UIManager.put("TextField.font",		f);
+        	UIManager.put("ComboBox.font",		f);
+        	UIManager.put("CheckBox.font",		f);
+        	UIManager.put("TextPane.font",		f);
+        	UIManager.put("TextArea.font",		f);
+        	UIManager.put("List.font",			f);
+        	UIManager.put("Slider.font",		f);
+        	UIManager.put("TitledBorder.font",	f);
+        	UIManager.put("RadioButton.font",	f);
+        	UIManager.put("InternalFrame.font",	f);
+        	UIManager.put("Table.font",			f);
+        	UIManager.put("TabbedPane.font",	f);
+        	UIManager.put("WindowBackground.color",	Color.GRAY);
+           
             ConfigFile.loadSettings();
             
             new Connection();
