@@ -621,4 +621,8 @@ public class SQLComboBox extends JComboBox implements
             listener.arriveAnswerEvent(event);
         }
     }
+
+	public boolean isSaveKey() {
+		return saveKey;
+	}
 }

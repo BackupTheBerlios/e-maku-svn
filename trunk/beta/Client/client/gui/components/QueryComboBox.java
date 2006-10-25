@@ -56,20 +56,28 @@ public class QueryComboBox extends Thread {
             int row = doc.getRootElement().getChildren("row").size();
                 
             String data="";
-            
-            
+            System.out.println("Consulta: "+sql+" Registros: "+row);
             if (row>0) {
 	            while (i.hasNext()) {
 	                Element e = (Element) i.next();
                     Iterator j = e.getChildren().iterator();
-                    while (j.hasNext()) 
-                        data+= ((Element)j.next()).getValue()+" ";
+                    for(int k=0;j.hasNext();k++) {
+                    	String record = ((Element)j.next()).getValue();
+                    	if (k==0) {
+                    		data= record+" ";
+                    	}
+                    	if (!XMLCBout.isSaveKey() && k>0) {
+                    		data+=record;
+                    	}
+                    }
 	            }
+
 	            XMLCBout.setSelectedItem(data.trim());
             }
             else {
 	            XMLCBout.setSelectedItem("");
             }
+            System.out.println(data);
         }
         catch (STException e) {
             e.printStackTrace();
