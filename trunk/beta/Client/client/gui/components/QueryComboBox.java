@@ -56,7 +56,6 @@ public class QueryComboBox extends Thread {
             int row = doc.getRootElement().getChildren("row").size();
                 
             String data="";
-            System.out.println("Consulta: "+sql+" Registros: "+row);
             if (row>0) {
 	            while (i.hasNext()) {
 	                Element e = (Element) i.next();
@@ -77,7 +76,6 @@ public class QueryComboBox extends Thread {
             else {
 	            XMLCBout.setSelectedItem("");
             }
-            System.out.println(data);
         }
         catch (STException e) {
             e.printStackTrace();
