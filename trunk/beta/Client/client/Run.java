@@ -55,7 +55,6 @@ public class Run {
              
         	NimRODLookAndFeel look = new NimRODLookAndFeel();
         	NimRODTheme theme = new NimRODTheme();
-
         	NimRODLookAndFeel.setCurrentTheme(theme);
         	UIManager.setLookAndFeel(look);
         	Font f = new Font("Tahoma", Font.PLAIN, 12);
@@ -76,7 +75,7 @@ public class Run {
         	UIManager.put("InternalFrame.font",	f);
         	UIManager.put("Table.font",			f);
         	UIManager.put("TabbedPane.font",	f);
-        	UIManager.put("WindowBackground.color",	Color.GRAY);
+        	UIManager.put("DesktopColor.color",	Color.GRAY);
            
             ConfigFile.loadSettings();
             

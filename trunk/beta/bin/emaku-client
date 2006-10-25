@@ -35,6 +35,6 @@ else
   PS=":"
 fi
 
-LOCALCLASSPATH=${JAVA_HOME}/lib/tools.jar${PS}${JAVA_HOME}/lib/dev.jar${PS}$EMAKU_HOME/lib/contrib/ant.jar${PS}$EMAKU_HOME/lib/emaku/icons.jar${PS}$EMAKU_HOME/lib/contrib/jdom.jar${PS}$EMAKU_HOME/lib/contrib/jdbc-pgsql.jar${PS}$EMAKU_HOME/lib/emaku/common.jar${PS}$EMAKU_HOME/lib/emaku/client.jar${PS}$EMAKU_HOME/lib/emaku/credits.jar${PS}$EMAKU_HOME/lib/emaku/printing.jar${PS}$EMAKU_HOME/lib/contrib/bsh-core.jar${PS}$EMAKU_HOME/lib/contrib/ostermillerutils.jar${PS}$EMAKU_HOME/lib/contrib/jpedal.jar${PS}$EMAKU_HOME/lib/contrib/jai_codec.jar${PS}$EMAKU_HOME/lib/contrib/jai_core.jar${PS}$EMAKU_HOME/lib/contrib/itext.jar${PS}$EMAKU_HOME/lib/contrib/jcalendar.jar${PS}$EMAKU_HOME../lib/contrib/nimrodlf.jar
+LOCALCLASSPATH=${JAVA_HOME}/lib/tools.jar${PS}${JAVA_HOME}/lib/dev.jar${PS}$EMAKU_HOME/lib/contrib/ant.jar${PS}$EMAKU_HOME/lib/emaku/icons.jar${PS}$EMAKU_HOME/lib/contrib/jdom.jar${PS}$EMAKU_HOME/lib/contrib/jdbc-pgsql.jar${PS}$EMAKU_HOME/lib/emaku/common.jar${PS}$EMAKU_HOME/lib/emaku/client.jar${PS}$EMAKU_HOME/lib/emaku/credits.jar${PS}$EMAKU_HOME/lib/emaku/printing.jar${PS}$EMAKU_HOME/lib/contrib/bsh-core.jar${PS}$EMAKU_HOME/lib/contrib/ostermillerutils.jar${PS}$EMAKU_HOME/lib/contrib/jpedal.jar${PS}$EMAKU_HOME/lib/contrib/jai_codec.jar${PS}$EMAKU_HOME/lib/contrib/jai_core.jar${PS}$EMAKU_HOME/lib/contrib/itext.jar${PS}$EMAKU_HOME/lib/contrib/jcalendar.jar${PS}$EMAKU_HOME/lib/contrib/nimrodlf.jar
 
 $JAVA_HOME/bin/java -classpath $LOCALCLASSPATH${PS}$ADDITIONALCLASSPATH client.Run
