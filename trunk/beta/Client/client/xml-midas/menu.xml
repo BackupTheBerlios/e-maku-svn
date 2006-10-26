@@ -1759,35 +1759,28 @@
 					<Icon>REPORT</Icon>
 					<Mnemonic>NEMO-REPORTE-NUMERO</Mnemonic>
 					<Activo />
-					<Transaction>TR00185</Transaction>
+					<Transaction>TR00232</Transaction>
 				</JMenuItem>
 				<JMenuItem>
 					<Text>REPORTE-TERCERO</Text>
 					<Icon>REPORT</Icon>
 					<Mnemonic>NEMO-REPORTE-TERCERO</Mnemonic>
 					<Activo />
-					<Transaction>TR00186</Transaction>
-				</JMenuItem>
-				<JMenuItem>
-					<Text>REPORTE-FECHA-PRODUCTO</Text>
-					<Icon>REPORT</Icon>
-					<Mnemonic>NEMO-REPORTE-FECHA-PRODUCTO</Mnemonic>
-					<Activo />
-					<Transaction>TR00187</Transaction>
+					<Transaction>TR00233</Transaction>
 				</JMenuItem>
 				<JMenuItem>
 					<Text>REPORTE-FECHA-TERCERO</Text>
 					<Icon>REPORT</Icon>
 					<Mnemonic>NEMO-REPORTE-FECHA-TERCERO</Mnemonic>
 					<Activo />
-					<Transaction>TR00189</Transaction>
+					<Transaction>TR00234</Transaction>
 				</JMenuItem>
 				<JMenuItem>
 					<Text>REPORTE-FECHA-VALOR</Text>
 					<Icon>REPORT</Icon>
 					<Mnemonic>NEMO-REPORTE-FECHA-VALOR</Mnemonic>
 					<Activo />
-					<Transaction>TR00188</Transaction>
+					<Transaction>TR00235</Transaction>
 				</JMenuItem>
 			</JMenu>
 		</JMenu>
@@ -1823,6 +1816,34 @@
 				<Icon>GREPORTS</Icon>
 				<Text>REPORTS</Text>
 				<Activo />
+				<JMenuItem>
+					<Text>REPORTE-NUMERO</Text>
+					<Icon>REPORT</Icon>
+					<Mnemonic>NEMO-REPORTE-NUMERO</Mnemonic>
+					<Activo />
+					<Transaction>TR00236</Transaction>
+				</JMenuItem>
+				<JMenuItem>
+					<Text>REPORTE-TERCERO</Text>
+					<Icon>REPORT</Icon>
+					<Mnemonic>NEMO-REPORTE-TERCERO</Mnemonic>
+					<Activo />
+					<Transaction>TR00237</Transaction>
+				</JMenuItem>
+				<JMenuItem>
+					<Text>REPORTE-FECHA-TERCERO</Text>
+					<Icon>REPORT</Icon>
+					<Mnemonic>NEMO-REPORTE-FECHA-TERCERO</Mnemonic>
+					<Activo />
+					<Transaction>TR00238</Transaction>
+				</JMenuItem>
+				<JMenuItem>
+					<Text>REPORTE-FECHA-VALOR</Text>
+					<Icon>REPORT</Icon>
+					<Mnemonic>NEMO-REPORTE-FECHA-VALOR</Mnemonic>
+					<Activo />
+					<Transaction>TR00239</Transaction>
+				</JMenuItem>
 			</JMenu>
 		</JMenu>
 		<JSeparator />

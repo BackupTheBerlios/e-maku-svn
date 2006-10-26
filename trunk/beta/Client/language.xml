@@ -5065,4 +5065,61 @@
     <es_ES></es_ES>
     <en_US>L</en_US>
   </sentence>
+  <sentence>
+    <key>REPORTE-INGRESOS-NUMERO</key>
+    <es_CO>Reporte de Comprobantes de Ingreso por numero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Income Rouchers by number</en_US>
+    </sentence>
+  <sentence>
+    <key>REPORTE-INGRESOS-TERCERO</key>
+    <es_CO>Reporte de Comprobantes de Ingreso por tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Income Rouchers by third</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-INGRESOS-FECHA-TERCERO</key>
+    <es_CO>Reporte de Comprobantes de Ingreso por fecha y tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Income Rouchers by date and third</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-INGRESOS-FECHA-VALOR</key>
+    <es_CO>Reporte de Comprobantes de Ingreso por fecha y valor</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Income Rouchers by date and value</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-EGRESOS-NUMERO</key>
+    <es_CO>Reporte de Comprobantes de Egreso por numero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Expense Roucher by number</en_US>
+    </sentence>
+  <sentence>
+    <key>REPORTE-EGRESOS-TERCERO</key>
+    <es_CO>Reporte de Comprobantes de Egreso por tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Expense Roucher by third</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-EGRESOS-FECHA-TERCERO</key>
+    <es_CO>Reporte de Comprobantes de Egreso por fecha y tercero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Expense Roucher by date and third</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-EGRESOS-FECHA-VALOR</key>
+    <es_CO>Reporte de Comprobantes de Egreso por fecha y valor</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Expense Roucher by date and value</en_US>
+  </sentence>
+  
 </language>  
