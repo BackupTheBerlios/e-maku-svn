@@ -52,11 +52,25 @@ public class Run {
 
         try {
         	
-             
-        	NimRODLookAndFeel look = new NimRODLookAndFeel();
-        	NimRODTheme theme = new NimRODTheme();
-        	NimRODLookAndFeel.setCurrentTheme(theme);
-        	UIManager.setLookAndFeel(look);
+            /*
+             * Al patron no le gusto pero a nosotros si, el dijo 
+             * el programa perdia seriedad y que mas bien parecia
+             * una caricatura de dragon ball Z, por tanto si quieres
+             * que el skin sea algo diferente, como argumetos debes poner:
+             * DRAGON BALL Z
+             * 
+             * PD: No se lo digas a nadie .... ;)
+             */
+        	if (args.length==3 && 
+        		args[0].toUpperCase().equals("DRAGON") &&
+        		args[1].toUpperCase().equals("BALL") &&
+        		args[2].toUpperCase().equals("Z")) {
+	        	NimRODLookAndFeel look = new NimRODLookAndFeel();
+	        	NimRODTheme theme = new NimRODTheme();
+	        	NimRODLookAndFeel.setCurrentTheme(theme);
+	        	UIManager.setLookAndFeel(look);
+        	}
+        	
         	Font f = new Font("Tahoma", Font.PLAIN, 12);
         	
         	UIManager.put("Menu.font",			f);

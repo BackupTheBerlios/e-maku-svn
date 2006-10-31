@@ -468,7 +468,6 @@ public class TableFindData extends JPanel implements AnswerListener,
 				if (ATFDargs[k].getType().equals("DATASEARCH")) {
 					TableColumn dataColumn = JTtabla.getColumn(JTtabla.getColumnName(k));
 					dataColumn.setCellEditor(new EmakuDataSearchCellEditor(GFforma,
-																		   JTtabla,
 																		   ATFDargs[k].getSqlCombo(),
 																		   ATFDargs[k].getKeyDataSearch(),
 																		   ATFDargs[k].getRepeatData()));
