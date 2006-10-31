@@ -51,6 +51,8 @@ public class ArgsTableFindData {
     private boolean returnNullCol;
     private boolean printable = false;
     private Class ColumnClass;
+    private String keyDataSearch;
+    private int repeatData;
 
     /**
      * Este constructor recibe un StringTokenizer como parametro
@@ -120,6 +122,10 @@ public class ArgsTableFindData {
 			            typeDate = null;
 			            ColumnClass = Date.class;
 			        }
+			        else if (value.equals("DATASEARCH")) {
+			        	typeDate = null;
+			        	ColumnClass = EmakuDataSearch.class;
+			        }
 	    		}
 	    		else if (attrib.equals("defaultValue")) {
 	    			tmpDefaultValue = value;
@@ -161,6 +167,17 @@ public class ArgsTableFindData {
 	    		else if ("nameField".equals(attrib)) {
 	                nameField = value;
 	        	}
+	    		else if ("repeatData".equals(attrib)) {
+	                try {
+	                	repeatData = Integer.parseInt(value);
+	                }
+	                catch(NumberFormatException NFEe) {
+	                	repeatData = 1;
+	                }
+	        	}
+		        else if (value.equals("keyDataSearch")) {
+		        	keyDataSearch = value; 
+		        }
 	    	}
     	
 	    	if (type.equals("INT") || type.equals("INTEGER")) { 
@@ -241,7 +258,15 @@ public class ArgsTableFindData {
 	public String getSqlCombo() {
 		return sqlCombo;
 	}
+
+	public String getKeyDataSearch() {
+		return keyDataSearch;
+	}
 	
+	public int getRepeatData() {
+		return repeatData;
+	}
+
 	public boolean isExporValue() {
 		if (exportValue!=null) {
 			return true;

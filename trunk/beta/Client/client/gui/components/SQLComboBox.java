@@ -224,6 +224,7 @@ public class SQLComboBox extends JComboBox implements
         generar();
 	}
 
+
 	/**
 	 * Este constructor lee una parametrizacion, cuando XMLComboBox es generado desde codigo <xml/>
 	 * @param GFforma
@@ -337,19 +338,28 @@ public class SQLComboBox extends JComboBox implements
 				try {
 					Document doc = null;
 					String [] args = null;
+					boolean cleanArgs = false;
 					if (keys!=null) {
 						args= new String[keys.length];
 					
 						for (int i = 0 ; i < args.length ; i++ ) {
 							args[i] = GFforma.getExteralValuesString(keys[i]);
+							if (args[i]==null || "".equals(args[i].trim())) {
+								cleanArgs=true;
+							}
 						}
 					}
 					
-					doc = STResultSet.getResultSetST(sqlCombo, args);
-					Iterator i = doc.getRootElement().getChildren().iterator();
-					CargarCombo(i);
-					setSelectedIndex(selected);
-					exportar();
+					if (!cleanArgs) {
+						doc = STResultSet.getResultSetST(sqlCombo, args);
+						Iterator i = doc.getRootElement().getChildren().iterator();
+						CargarCombo(i);
+						setSelectedIndex(selected);
+						exportar();
+					}
+					else {
+						clean();
+					}
 				} catch (STException e) {
 					e.printStackTrace();
 				} catch (IndexOutOfBoundsException IOBEe) {
@@ -360,6 +370,13 @@ public class SQLComboBox extends JComboBox implements
 		}
 		new buildCombo().start();
 	}
+	
+	protected void clean() {
+		this.removeAllItems();
+		this.addItem("");
+		keysCombo.removeAllElements();
+		keysCombo.addElement("");
+	}
 
 	/**
 	 * Este metodo se encarga de cargar la informacion obtenida de una consulta
@@ -367,11 +384,8 @@ public class SQLComboBox extends JComboBox implements
 	 */
 	
 	private void CargarCombo(Iterator i) {
-		this.removeAllItems();
-		this.addItem("");
-		keysCombo.removeAllElements();
-		keysCombo.addElement("");
-		while (i.hasNext()) {
+			clean();
+			while (i.hasNext()) {
 			Element e = (Element) i.next();
 			String nombre = e.getName();
 			if (nombre.equals("row")) {
@@ -620,6 +634,10 @@ public class SQLComboBox extends JComboBox implements
             AnswerListener listener = (AnswerListener)lista.elementAt(i);
             listener.arriveAnswerEvent(event);
         }
+    }
+
+    public String getStringCombo() {
+    	return (String) getItemAt(getSelectedIndex());
     }
 
 	public boolean isSaveKey() {

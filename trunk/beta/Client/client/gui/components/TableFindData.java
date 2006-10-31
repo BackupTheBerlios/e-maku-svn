@@ -461,6 +461,19 @@ public class TableFindData extends JPanel implements AnswerListener,
 						}
 					}
 				}
+				
+				/*
+				 * Si el tipo de Editor es para consulta entonces ....
+				 */
+				if (ATFDargs[k].getType().equals("DATASEARCH")) {
+					TableColumn dataColumn = JTtabla.getColumn(JTtabla.getColumnName(k));
+					dataColumn.setCellEditor(new EmakuDataSearchCellEditor(GFforma,
+																		   JTtabla,
+																		   ATFDargs[k].getSqlCombo(),
+																		   ATFDargs[k].getKeyDataSearch(),
+																		   ATFDargs[k].getRepeatData()));
+				}
+				
 			} catch (IllegalArgumentException IAEe) {
 				IAEe.printStackTrace();
 			}

@@ -219,9 +219,6 @@ public class XMLComboBox extends SQLComboBox {
     	return elm;
     	
     }
-    public String getStringCombo() {
-    	return (String) getItemAt(getSelectedIndex());
-    }
 
 	public void addPanel(Component component) {
 		
