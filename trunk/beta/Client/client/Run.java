@@ -56,7 +56,7 @@ public class Run {
              * Al patron no le gusto pero a nosotros si, el dijo 
              * el programa perdia seriedad y que mas bien parecia
              * una caricatura de dragon ball Z, por tanto si quieres
-             * que el skin sea algo diferente, como argumetos debes poner:
+             * que el skin sea algo diferente, como argumentos debes poner:
              * DRAGON BALL Z
              * 
              * PD: No se lo digas a nadie .... ;)
