@@ -978,6 +978,9 @@ public class TableFindData extends JPanel implements AnswerListener,
 		
 		public EmakuCellEditorDate(JTable table) {
 			this.refJTable = table;
+		}
+		
+		public void createChooser() {
 			jtfd = new JDateChooser();
 			jtfd.setDateFormatString("yyyy-MM-dd");
 			jtfd.setFocusCycleRoot(true);
@@ -1015,6 +1018,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 		}
 		
 		public Component getTableCellEditorComponent(JTable table, Object value,boolean isSelected, int row, int column) {
+			createChooser();
 			boolean enabled = true;
 			if (row > 0) {
 				Object obj= table.getValueAt(row-1,column);
