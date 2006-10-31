@@ -28,6 +28,7 @@ public class EmakuDataSearchCellEditor extends AbstractCellEditor implements
 			final JTable refJTable, String sql, String keyValue, int repeatData) {
 		dataSearch = new EmakuDataSearch(gfforma, sql, keyValue, repeatData);
 		this.clickCountToStart = 2;
+		/*
 		dataSearch.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
 				dataSearch.getJTFvalue().requestFocus(false);

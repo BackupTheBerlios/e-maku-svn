@@ -16,7 +16,7 @@ import javax.swing.event.PopupMenuListener;
 import common.gui.components.XMLTextField;
 import common.gui.forms.GenericForm;
 
-public class EmakuDataSearch extends JPanel implements ActionListener,PopupMenuListener,FocusListener {
+public class EmakuDataSearch extends JTextField implements ActionListener,PopupMenuListener,FocusListener {
 
 	/**
 	 * 
@@ -32,14 +32,15 @@ public class EmakuDataSearch extends JPanel implements ActionListener,PopupMenuL
 	/**
 	 * 
 	 */
-	private JTextField JTFvalue;
+//	private JTextField JTFvalue;
 	private String keyValue;
 	
 	public EmakuDataSearch(GenericForm GFforma,String sql,String keyValue,int repeatData) {
-		JTFvalue = new JTextField();
-		JTFvalue.addActionListener(this);
+//		JTFvalue = new JTextField();
+//		JTFvalue.addActionListener(this);
+		this.addActionListener(this);
 		this.setLayout(new BorderLayout());
-		this.add(JTFvalue,BorderLayout.CENTER);
+//		this.add(JTFvalue,BorderLayout.CENTER);
 		this.GFforma=GFforma;
 		this.keyValue=keyValue;
 		XMLTFkey = new XMLTextField("KEY", 16, 50);
@@ -65,7 +66,6 @@ public class EmakuDataSearch extends JPanel implements ActionListener,PopupMenuL
 				}
 			}
 		};
-
 		JPMpopup.setLightWeightPopupEnabled(true);
 		JPMpopup.add(dataSearch());
 
@@ -76,19 +76,21 @@ public class EmakuDataSearch extends JPanel implements ActionListener,PopupMenuL
 		JPNorth = new JPanel(new BorderLayout());
 		JPNorth.add(XMLTFkey.getLabel(), BorderLayout.WEST);
 		JPNorth.add(XMLTFkey.getJPtext(), BorderLayout.CENTER);
-		JPdataSearch.add(JPNorth, BorderLayout.CENTER);
 		JPdataSearch.add(SQLCBselection, BorderLayout.SOUTH);
+		JPdataSearch.add(JPNorth, BorderLayout.CENTER);
 		return JPdataSearch;
 	}
 
 	protected void clean() {
-		JTFvalue.setText("");
+		//JTFvalue.setText("");
+		this.setText("");
 		XMLTFkey.setText("");
 		SQLCBselection.clean();
 	}
 	
 	protected String getValue() {
-		return JTFvalue.getText();
+//		return JTFvalue.getText();
+		return this.getText();
 	}
 
 	public void updateUI() {
@@ -101,11 +103,18 @@ public class EmakuDataSearch extends JPanel implements ActionListener,PopupMenuL
 	}
 
 	private void showDataSearch() {
-		int x = JTFvalue.getWidth()
+/*		int x = JTFvalue.getWidth()
 		- (int) JPMpopup.getPreferredSize().getWidth();
 		int y = JTFvalue.getY() + JTFvalue.getHeight();
-		JPMpopup.show(JTFvalue,x,y);
-		XMLTFkey.requestFocus();
+		
+*/		
+		int x = this.getWidth()
+		- (int) JPMpopup.getPreferredSize().getWidth();
+		int y = this.getY() + this.getHeight();
+		
+//		JPMpopup.show(JTFvalue,x,y);
+		JPMpopup.show(this,x,y);
+		XMLTFkey.requestFocusInWindow();
 		dataSelected = false;
 	}
 	
@@ -115,7 +124,8 @@ public class EmakuDataSearch extends JPanel implements ActionListener,PopupMenuL
 	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
 		if (JPMpopup.isVisible()) {
 			dataSelected = true;
-			JTFvalue.setText(SQLCBselection.getStringCombo());
+//			JTFvalue.setText(SQLCBselection.getStringCombo());
+			this.setText(SQLCBselection.getStringCombo());
 //			JPMpopup.transferFocus();
 			JPMpopup.setVisible(false);
 		}
@@ -134,6 +144,7 @@ public class EmakuDataSearch extends JPanel implements ActionListener,PopupMenuL
 	}
 
 	public JTextField getJTFvalue() {
-		return JTFvalue;
+		//return JTFvalue;
+		return this;
 	}
 }
