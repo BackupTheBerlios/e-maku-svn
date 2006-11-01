@@ -32,6 +32,7 @@ import java.awt.RenderingHints;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -81,6 +82,8 @@ public class SQLComboBox extends JComboBox implements
 	private int preferredLength =0;
 	private boolean returnNullValue = false;
 	private String name = "";
+	private boolean dataBeep;
+	private String noDataMessage;
     private Vector<AnswerListener> AnswerListener = new Vector<AnswerListener>();
     
 	/**
@@ -164,6 +167,26 @@ public class SQLComboBox extends JComboBox implements
 		this.sqlCombo = sqlCombo;
 		this.keys = args;
 		this.GFforma = GFforma;
+        this.GFforma.addChangeExternalValueListener(this);
+    		this.addPopupMenuListener(this);
+        generar();
+	}
+
+	/**
+	 * Este constructor parametriza una consulta con argumentos
+	 * @param GFforma
+	 * @param sqlCombo
+	 * @param args
+	 */
+	
+	public SQLComboBox(GenericForm GFforma,String sqlCombo, String[] args,boolean dataBeep,int selected,String noDataMessage) {
+		super();
+		this.sqlCombo = sqlCombo;
+		this.keys = args;
+		this.GFforma = GFforma;
+		this.dataBeep=dataBeep;
+		this.noDataMessage=noDataMessage;
+		this.selected=selected;
         this.GFforma.addChangeExternalValueListener(this);
     		this.addPopupMenuListener(this);
         generar();
@@ -311,6 +334,12 @@ public class SQLComboBox extends JComboBox implements
          	else if ("nullValue".equals(element.getAttributeValue("attribute"))) {
                 returnNullValue = Boolean.parseBoolean(value);
          	}
+         	else if ("noDataBeep".equals(element.getAttributeValue("attribute"))) {
+                dataBeep = Boolean.parseBoolean(value);
+         	}
+         	else if ("noDataMessage".equals(element.getAttributeValue("attribute"))) {
+                noDataMessage = value;
+         	}
 		}
 		if (orden > -1 && exportValue!=null) {
 			GFforma.addExportField(orden,exportValue);
@@ -327,13 +356,22 @@ public class SQLComboBox extends JComboBox implements
 		generar();
 	}
 
+	private void generar() {
+		generar(null,false);
+	}
 	/**
 	 * Este metodo construye un combo, apartir de su parametrizacion
 	 *
 	 */
-	private void generar() {
+	private void generar(String noDataMessage,boolean dataBeep) {
 		
 		class buildCombo extends Thread {
+			private String noDataMessage;
+			private boolean dataBeep;
+			public buildCombo(String noDataMessage,boolean dataBeep) {
+				this.noDataMessage=noDataMessage;
+				this.dataBeep=dataBeep;
+			}
 			public void run() {
 				try {
 					Document doc = null;
@@ -352,8 +390,26 @@ public class SQLComboBox extends JComboBox implements
 					
 					if (!cleanArgs) {
 						doc = STResultSet.getResultSetST(sqlCombo, args);
-						Iterator i = doc.getRootElement().getChildren().iterator();
-						CargarCombo(i);
+						List data = doc.getRootElement().getChildren("row");
+						if (data.size()>0) {
+							Iterator i = data.iterator();
+							CargarCombo(i);
+						}
+						else {
+							if (dataBeep) {
+								java.awt.Toolkit.getDefaultToolkit().beep();
+							}
+							if (noDataMessage!=null) {
+								if (saveKey) {
+									clean();
+									keysCombo.addElement("");
+									setData(noDataMessage);
+								}
+								else {
+									setData(noDataMessage);
+								}
+							}
+						}
 						setSelectedIndex(selected);
 						exportar();
 					}
@@ -368,7 +424,11 @@ public class SQLComboBox extends JComboBox implements
 			}
 
 		}
-		new buildCombo().start();
+		new buildCombo(noDataMessage,dataBeep).start();
+	}
+	
+	private void setData(String data) {
+		this.addItem(data);
 	}
 	
 	protected void clean() {
@@ -387,18 +447,15 @@ public class SQLComboBox extends JComboBox implements
 			clean();
 			while (i.hasNext()) {
 			Element e = (Element) i.next();
-			String nombre = e.getName();
-			if (nombre.equals("row")) {
-				Iterator j = e.getChildren().iterator();
-				String code = ((Element) j.next()).getValue();
-				String name = ((Element) j.next()).getValue().trim();
-				if (saveKey) {
-					keysCombo.addElement(code);
-					this.addItem(name);
-				}
-				else {
-					this.addItem(name+" "+code);
-				}
+			Iterator j = e.getChildren().iterator();
+			String code = ((Element) j.next()).getValue();
+			String name = ((Element) j.next()).getValue().trim();
+			if (saveKey) {
+				keysCombo.addElement(code);
+				this.addItem(name);
+			}
+			else {
+				this.addItem(name+" "+code);
 			}
 		}
 	}
@@ -412,10 +469,10 @@ public class SQLComboBox extends JComboBox implements
 		
 		if (keys!=null) {
 			if (!e.getExternalValue().equals(exportValue) && importValue==null) {
-				generar();
+				generar(noDataMessage,dataBeep);
 			}
 			if (importValue!=null && importValue.contains(e.getExternalValue())) {
-				generar();
+				generar(noDataMessage,dataBeep);
 			}
 		}
 		if (importValueCode!=null && 

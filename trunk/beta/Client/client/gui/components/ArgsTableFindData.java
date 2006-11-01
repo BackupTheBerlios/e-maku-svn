@@ -53,8 +53,19 @@ public class ArgsTableFindData {
     private Class ColumnClass;
     private String keyDataSearch;
     private int repeatData;
+	private boolean dataBeep;
+	private String noDataMessage;
+	private int selected;
 
-    /**
+    public boolean isDataBeep() {
+		return dataBeep;
+	}
+
+	public String getNoDataMessage() {
+		return noDataMessage;
+	}
+
+	/**
      * Este constructor recibe un StringTokenizer como parametro
      * y de este genera todos los argumentos necesarios para 
      * parametrizar la columna
@@ -178,6 +189,23 @@ public class ArgsTableFindData {
 		        else if (value.equals("keyDataSearch")) {
 		        	keyDataSearch = value; 
 		        }
+	         	else if ("noDataBeep".equals(attrib)) {
+	                dataBeep = Boolean.parseBoolean(value);
+	         	}
+	         	else if ("noDataMessage".equals(attrib)) {
+	                noDataMessage = value;
+	         	}
+	         	else if ("noDataMessage".equals(attrib)) {
+	                noDataMessage = value;
+	         	}
+				else if ("selectedIndex".equals(attrib)) {
+	                try {
+						selected = Integer.parseInt(value);
+	                }
+	                catch(NumberFormatException NFEe) {
+	                	selected = 1;
+	                }
+				}
 	    	}
     	
 	    	if (type.equals("INT") || type.equals("INTEGER")) { 
@@ -362,5 +390,9 @@ public class ArgsTableFindData {
 
 	public Class getColumnClass() {
 		return ColumnClass;
+	}
+
+	public int getSelected() {
+		return selected;
 	}
 }

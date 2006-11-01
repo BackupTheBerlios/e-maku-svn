@@ -2,10 +2,10 @@ package client.gui.components;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -39,7 +39,7 @@ import common.gui.forms.GenericForm;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez </A>
  */
 
-public class EmakuDataSearch extends JTextField implements ActionListener,PopupMenuListener,FocusListener {
+public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenuListener,FocusListener {
 
 	/**
 	 * 
@@ -54,8 +54,14 @@ public class EmakuDataSearch extends JTextField implements ActionListener,PopupM
 	private boolean dataSelected;
 	private String keyValue;
 	
-	public EmakuDataSearch(GenericForm GFforma,String sql,String keyValue,int repeatData) {
-		this.addActionListener(this);
+	public EmakuDataSearch(GenericForm GFforma,
+						   String sql,
+						   String keyValue,
+						   boolean dataBeep,
+						   String dataMessage,
+						   int selected,
+						   int repeatData) {
+		this.addKeyListener(this);
 		this.setLayout(new BorderLayout());
 		this.GFforma=GFforma;
 		this.keyValue=keyValue;
@@ -65,7 +71,7 @@ public class EmakuDataSearch extends JTextField implements ActionListener,PopupM
 		for (int i=0;i<args.length;i++) {
 			args[i]=keyValue;
 		}
-		SQLCBselection = new SQLComboBox(GFforma,sql,args);
+		SQLCBselection = new SQLComboBox(GFforma,sql,args,dataBeep,selected,dataMessage);
 		SQLCBselection.addPopupMenuListener(this);
 		SQLCBselection.setPreferredSize(new Dimension(100,20)); 
 		JPMpopup = new JPopupMenu() {
@@ -115,15 +121,6 @@ public class EmakuDataSearch extends JTextField implements ActionListener,PopupM
 	}
 
 	/**
-	 * Este metodo se encarga de llamar al metodo que despliega
-	 * el menu de busqueda, se activa a dar enter, es una implementacion
-	 * del evento ActionListener
-	 */
-	public void actionPerformed(ActionEvent e) {
-		showDataSearch();
-	}
-
-	/**
 	 * Este metodo visualiza el menu emergente con sus coordenadas respectivas
 	 */
 	
@@ -165,6 +162,22 @@ public class EmakuDataSearch extends JTextField implements ActionListener,PopupM
 	 */
 	public void focusLost(FocusEvent e) {
 		GFforma.setExternalValues(keyValue,XMLTFkey.getText());
+	}
+
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode()==KeyEvent.VK_F3) {
+			showDataSearch();
+		}
+	}
+
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

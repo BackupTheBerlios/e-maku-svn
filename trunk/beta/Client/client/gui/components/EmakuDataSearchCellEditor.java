@@ -40,8 +40,14 @@ implements TableCellEditor {
 	private EmakuDataSearch dataSearch;
 	protected int clickCountToStart = 1;
 
-	public EmakuDataSearchCellEditor(GenericForm gfforma, String sql, String keyValue, int repeatData) {
-		dataSearch = new EmakuDataSearch(gfforma, sql, keyValue, repeatData);
+	public EmakuDataSearchCellEditor(GenericForm gfforma, 
+									 String sql, 
+									 String keyValue, 
+									 boolean dataBeep,
+									 String noDataMessage,
+									 int selected,
+									 int repeatData) {
+		dataSearch = new EmakuDataSearch(gfforma,sql,keyValue,dataBeep,noDataMessage,selected,repeatData);
 		this.clickCountToStart = 2;
 	}
 

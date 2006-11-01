@@ -470,6 +470,9 @@ public class TableFindData extends JPanel implements AnswerListener,
 					dataColumn.setCellEditor(new EmakuDataSearchCellEditor(GFforma,
 																		   ATFDargs[k].getSqlCombo(),
 																		   ATFDargs[k].getKeyDataSearch(),
+																		   ATFDargs[k].isDataBeep(),
+																		   ATFDargs[k].getNoDataMessage(),
+																		   ATFDargs[k].getSelected(),
 																		   ATFDargs[k].getRepeatData()));
 				}
 				
