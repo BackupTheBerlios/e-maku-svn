@@ -515,53 +515,72 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
         if (!errFormula && calc) {
 	        	/* Procesando formulas con Clases Locales*/
 	        	if (formulas!=null) {
-	        		for (int i=0;i<formulas.size();i++) {
-	                    Formula formula = (Formula)formulas.get(i);
-	                    String var = formula.getFormula();
-	                    if ( getColIndex(var) != colIndex ) {
-		                    switch(formula.getType()) {
-				            case SIMPLE:
-				            		procesarFormulas(var,rowIndex,true);
-				            		break;
-				            case BEANSHELL:
-				            		procesarFormulas(var,rowIndex,false);
-				            		break;
-				            case SUPER:
-					            	for (int j = 0 ; j < rows && !"".equals(getValueAt(j,0)); j++ ) {
-							        	procesarFormulas(var,j,false);
-					            	}
-					            	break;
-				            case SIMPLENQ:
-					            	if (initQuery) {
+	        		try {
+		        		for (int i=0;i<formulas.size();i++) {
+		                    Formula formula = (Formula)formulas.get(i);
+		                    String var = formula.getFormula();
+		                    if ( getColIndex(var) != colIndex ) {
+			                    switch(formula.getType()) {
+					            case SIMPLE:
 					            		procesarFormulas(var,rowIndex,true);
-					            	}
-					            	break;
-				            case BEANSHELLNQ:
-					            	if (initQuery) {
+					            		break;
+					            case BEANSHELL:
 					            		procesarFormulas(var,rowIndex,false);
-					            	}
-					            	break;
-				            case SUPERNQ:
-					            	if (initQuery) {
+					            		break;
+					            case SUPER:
 						            	for (int j = 0 ; j < rows && !"".equals(getValueAt(j,0)); j++ ) {
-								        	procesarFormulas(var,j,true);
-								        }
-					            	}
-					            	break;
-				            case SUPERBEANNQ:
-					            	if (initQuery) {
-					            		for (int j = 0 ; j < rows && !"".equals(getValueAt(j,0)); j++ ) {
 								        	procesarFormulas(var,j,false);
-					            		}
-					            	}
-					            	break;
+						            	}
+						            	break;
+					            case SIMPLENQ:
+						            	if (initQuery) {
+						            		procesarFormulas(var,rowIndex,true);
+						            	}
+						            	break;
+					            case BEANSHELLNQ:
+						            	if (initQuery) {
+						            		procesarFormulas(var,rowIndex,false);
+						            	}
+						            	break;
+					            case SUPERNQ:
+						            	if (initQuery) {
+							            	for (int j = 0 ; j < rows && !"".equals(getValueAt(j,0)); j++ ) {
+									        	procesarFormulas(var,j,true);
+									        }
+						            	}
+						            	break;
+					            case SUPERBEANNQ:
+						            	if (initQuery) {
+						            		for (int j = 0 ; j < rows && !"".equals(getValueAt(j,0)); j++ ) {
+									        	procesarFormulas(var,j,false);
+						            		}
+						            	}
+						            	break;
+			                    }
 		                    }
-	                    }
+		        		}
 	        		}
+	        		catch(NumberFormatException NFEe) {
+	        				NFEe.printStackTrace();
+	        		    message("ERR_FORMULA",NFEe.getMessage());
+	        		    errFormula=true;
+	        		}
+	        		catch(ArrayIndexOutOfBoundsException AIOOBEe) {
+	        				AIOOBEe.printStackTrace();
+	        		    message("ERR_FORMULA");
+	        		    errFormula=true;
+	        		} catch (EvalError e) {
+	        				e.printStackTrace();
+	        		    message("ERR_FORMULA");
+	        		    errFormula=true;
+	        		}
+
+
 	        	}
         }
         initQuery = true;
     }
+
     
 	/**
 	 * Este metodo se encarga de recorrer el contenido del vector de formulas
@@ -570,68 +589,54 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 	 * @param tipoFormula define si la formula sera operada por BeanShell o por Clases Locales
 	 * @param rowIndex define la fila a procesar
 	 */    
-    private void procesarFormulas(String var,int rowIndex,boolean tipoFormula) {
+    private void procesarFormulas(String var,int rowIndex,boolean tipoFormula) 
+    throws NumberFormatException,ArrayIndexOutOfBoundsException,EvalError {
 	    	Hashtable<String,Object> valueOld = new Hashtable<String,Object>();
         /* Recorriendo cada formula */
         String key=var.substring(0,1);
         String newVar=reemplazarFormula(var,rowIndex,valueOld);
-    	try {
-	    		Object result = null;
-	    		int col= getColIndex(key);
-	        if (tipoFormula) {
-	        		result = FormulaCalculator.operar(newVar);	
-	        }
-	        else {
-	        		result = Run.shellScript.eval(newVar);
-	        }
-	        if ("INTEGER".equals(ATFDargs[col].getType())) {
-		        	Integer resultado;
-		        	if (result instanceof Double) {
-		        		resultado = new Integer(((Double)result).intValue());
-		        	}else {
-		        		resultado = (Integer)result;
-		        	}
-		        	Integer val = new Integer(resultado.intValue());
-		        	updateCells(val,rowIndex,col);
-		        	valueOld.put(key,val);
-	        }
-	        else if ("DECIMAL".equals(ATFDargs[col].getType())) {
-		        	Object resultado;
-		        	try {
-		        		resultado = (Double) result;
-		        		BigDecimal bd = new BigDecimal(((Double)resultado).doubleValue());
-		            	bd =  bd.setScale(ATFDargs[col].getDecimals(),BigDecimal.ROUND_HALF_UP);
-		            	updateCells(bd,rowIndex,col);
-		            	valueOld.put(key,bd);
-		        	} catch (ClassCastException CCEe) {
-		        		resultado = (Integer) result;
-		            	updateCells(resultado,rowIndex,col);
-		            	valueOld.put(key,resultado);
-		        	}
-	        }
-	        else if ("STRING".equals(ATFDargs[col].getType()) ||
-	        		 "COMBOSQL".equals(ATFDargs[col].getType())) {
-		        	Object resultado;
-		    		resultado =  result;
-		        	updateCells(resultado,rowIndex,col);
-		        	valueOld.put(key,resultado);
-	        }
-	        //totalizar(col);
-	    }
-	    catch(NumberFormatException NFEe) {
-	    		NFEe.printStackTrace();
-	        message("ERR_FORMULA",NFEe.getMessage());
-	        errFormula=true;
-	    }
-	    catch(ArrayIndexOutOfBoundsException AIOOBEe) {
-	    		AIOOBEe.printStackTrace();
-	        message("ERR_FORMULA");
-	        errFormula=true;
-	    } catch (EvalError e) {
-	    		e.printStackTrace();
-	        message("ERR_FORMULA");
-	        errFormula=true;
-		}
+    		Object result = null;
+    		int col= getColIndex(key);
+        if (tipoFormula) {
+        		result = FormulaCalculator.operar(newVar);	
+        }
+        else {
+        		result = Run.shellScript.eval(newVar);
+        }
+        if ("INTEGER".equals(ATFDargs[col].getType())) {
+	        	Integer resultado;
+	        	if (result instanceof Double) {
+	        		resultado = new Integer(((Double)result).intValue());
+	        	}else {
+	        		resultado = (Integer)result;
+	        	}
+	        	Integer val = new Integer(resultado.intValue());
+	        	updateCells(val,rowIndex,col);
+	        	valueOld.put(key,val);
+        }
+        else if ("DECIMAL".equals(ATFDargs[col].getType())) {
+	        	Object resultado;
+	        	try {
+	        		resultado = (Double) result;
+	        		BigDecimal bd = new BigDecimal(((Double)resultado).doubleValue());
+	            	bd =  bd.setScale(ATFDargs[col].getDecimals(),BigDecimal.ROUND_HALF_UP);
+	            	updateCells(bd,rowIndex,col);
+	            	valueOld.put(key,bd);
+	        	} catch (ClassCastException CCEe) {
+	        		resultado = (Integer) result;
+	            	updateCells(resultado,rowIndex,col);
+	            	valueOld.put(key,resultado);
+	        	}
+        }
+        else if ("STRING".equals(ATFDargs[col].getType()) ||
+        		 "COMBOSQL".equals(ATFDargs[col].getType()) ||
+        		 "DATASEARCH".equals(ATFDargs[col].getTypeDate())) {
+	        	Object resultado;
+	    		resultado =  result;
+	        	updateCells(resultado,rowIndex,col);
+	        	valueOld.put(key,resultado);
+        }
+        //totalizar(col);
     }
     
     private int getColIndex(String key) {
@@ -1018,6 +1023,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 											fireTableCellUpdated(rowIndex,col);
 											/* Este codigo analiza las columnas por beanshell antes de insertarlas */
 											if (formulas!=null) {
+												try{
 									        		for (int i=0;i<formulas.size();i++) {
 									        			
 									                    Formula formula = (Formula)formulas.get(i);
@@ -1028,6 +1034,23 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 												            		break;
 									                    }
 									        		}
+												}
+												catch(NumberFormatException NFEe) {
+														NFEe.printStackTrace();
+												    message("ERR_FORMULA",NFEe.getMessage());
+												    errFormula=true;
+												}
+												catch(ArrayIndexOutOfBoundsException AIOOBEe) {
+														AIOOBEe.printStackTrace();
+												    message("ERR_FORMULA");
+												    errFormula=true;
+												} catch (EvalError e) {
+														e.printStackTrace();
+												    message("ERR_FORMULA");
+												    errFormula=true;
+												}
+
+
 											}
 										//}
 				        			}

@@ -109,7 +109,7 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 	protected void clean() {
 		this.setText("");
 		XMLTFkey.setText("");
-		SQLCBselection.clean();
+		SQLCBselection.clear();
 	}
 	
 	/**

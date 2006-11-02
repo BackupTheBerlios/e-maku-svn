@@ -388,6 +388,7 @@ public class SQLComboBox extends JComboBox implements
 						}
 					}
 					
+					clear();
 					if (!cleanArgs) {
 						doc = STResultSet.getResultSetST(sqlCombo, args);
 						List data = doc.getRootElement().getChildren("row");
@@ -401,20 +402,13 @@ public class SQLComboBox extends JComboBox implements
 							}
 							if (noDataMessage!=null) {
 								if (saveKey) {
-									clean();
 									keysCombo.addElement("");
-									setData(noDataMessage);
 								}
-								else {
-									setData(noDataMessage);
-								}
+								setData(noDataMessage);
 							}
 						}
 						setSelectedIndex(selected);
 						exportar();
-					}
-					else {
-						clean();
 					}
 				} catch (STException e) {
 					e.printStackTrace();
@@ -431,7 +425,7 @@ public class SQLComboBox extends JComboBox implements
 		this.addItem(data);
 	}
 	
-	protected void clean() {
+	protected void clear() {
 		this.removeAllItems();
 		this.addItem("");
 		keysCombo.removeAllElements();
@@ -444,8 +438,7 @@ public class SQLComboBox extends JComboBox implements
 	 */
 	
 	private void CargarCombo(Iterator i) {
-			clean();
-			while (i.hasNext()) {
+		while (i.hasNext()) {
 			Element e = (Element) i.next();
 			Iterator j = e.getChildren().iterator();
 			String code = ((Element) j.next()).getValue();
