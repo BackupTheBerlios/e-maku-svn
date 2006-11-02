@@ -67,6 +67,7 @@ implements TableCellEditor {
 	}
 
 	public Object getCellEditorValue() {
+		System.out.println("retornando valor de la celda: "+dataSearch.getValue());
 		return dataSearch.getValue();
 	}
 

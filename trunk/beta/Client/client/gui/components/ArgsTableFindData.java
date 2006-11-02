@@ -134,8 +134,8 @@ public class ArgsTableFindData {
 			            ColumnClass = Date.class;
 			        }
 			        else if (value.equals("DATASEARCH")) {
-			        	typeDate = null;
-			        	ColumnClass = EmakuDataSearch.class;
+			        	typeDate = new String();
+			        	ColumnClass = String.class;
 			        }
 	    		}
 	    		else if (attrib.equals("defaultValue")) {
