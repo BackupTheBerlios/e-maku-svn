@@ -63,7 +63,6 @@ public class Language  {
             while (i.hasNext()) {
                 Element campos = (Element)i.next();
             	String message = campos.getChildText(lenguaje);
-            	
                 if (campos.getChild("key").getAttribute("errorCode")!=null) {
                 	String codeError = campos.getChild("key").getAttribute("errorCode").getValue();
                 	glossary.put(campos.getChildText("key"),new messageStructure(codeError,message));
