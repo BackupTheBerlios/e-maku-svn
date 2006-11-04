@@ -98,7 +98,8 @@ public class MainWindow extends JFrame {
 			@Override
 			public Component add(Component comp) {
 				Component component = super.add(comp);
-				if (component instanceof JInternalFrame && !((JInternalFrame)component).isIcon()) {
+				if (component instanceof JInternalFrame && 
+					!((JInternalFrame)component).isIcon()) {
 					component.setLocation(
 							(JDPpanel.getWidth()/2)-(component.getWidth()/2),
 							(JDPpanel.getHeight()/2)-(component.getHeight()/2));
@@ -147,8 +148,10 @@ public class MainWindow extends JFrame {
 
     public void setDisabledAll() {
         for (int i = 0; i < Vtoolbar1.size(); i++) {
-            if (!((JButtonXML) Vtoolbar1.elementAt(i)).getActivo())
-                ((JButtonXML) Vtoolbar1.elementAt(i)).setEnabled(false);
+        	JButtonXML button = (JButtonXML) Vtoolbar1.elementAt(i); 
+            if (!button.getActivo()) {
+                button.setEnabled(false);
+            }
         }
     }
 
