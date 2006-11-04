@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URL;
 import java.util.Vector;
 
 import javax.swing.JDesktopPane;
@@ -19,6 +20,7 @@ import client.gui.xmlmenu.MenuLoader;
 import client.gui.xmltoolbar.JButtonXML;
 import client.gui.xmltoolbar.ToolbarLoader;
 import client.misc.ClientConst;
+
 import common.misc.CommonConst;
 import common.misc.language.Language;
 
@@ -77,15 +79,12 @@ public class MainWindow extends JFrame {
         /**
          * Creando e Instanciando del Menu y la Barras de herramientas 
          */
-
-        MenuLoader menu = 
-            new MenuLoader(this.getClass().getResource("/client/xml-midas/menu.xml"));
-        
+        URL url = this.getClass().getResource("/client/xml-midas/menu.xml");
+        MenuLoader menu = new MenuLoader(url);
         menu.Loading();
         menu.setDisabledAll();
-
-        ToolbarLoader toolbar1 = new ToolbarLoader(this.getClass().getResource(
-                "/client/xml-midas/toolbar.xml"));
+        url = this.getClass().getResource("/client/xml-midas/toolbar.xml");
+        ToolbarLoader toolbar1 = new ToolbarLoader(url);
 
         Vtoolbar1 = toolbar1.Loading();
         setDisabledAll();
