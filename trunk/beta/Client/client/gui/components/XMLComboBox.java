@@ -174,7 +174,7 @@ public class XMLComboBox extends SQLComboBox {
     	if (isClean())
     		removeAllItems();
     	else {
-    		setSelectedIndex(getSelectedIndex());
+    		setSelectedIndex(getSelected());
     		exportar();
     	}
     }

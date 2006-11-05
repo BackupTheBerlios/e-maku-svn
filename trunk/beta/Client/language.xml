@@ -64,6 +64,20 @@
     <en_US>Error 208: Must to be at least a sale unit</en_US>
   </sentence>
   <sentence>
+    <key>ERROR_BUTTON_NOT_FOUND</key>
+    <es_CO>Error 208: No existe referencia almacenada del boton </es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Error 208: there are not reference of button </en_US>
+  </sentence>
+  <sentence>
+    <key>ERROR_PARAMETERS_BUTTONS</key>
+    <es_CO>Error 208: La parametrizacion de los botones es incorrecta</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Error 208: The buttons profile is incorrect</en_US>
+  </sentence>
+  <sentence>
     <key>ARCHIVO</key>
     <es_CO>Archivo</es_CO>
     <es_EC></es_EC>

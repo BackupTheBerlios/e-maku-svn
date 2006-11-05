@@ -694,4 +694,8 @@ public class SQLComboBox extends JComboBox implements
 	public boolean isSaveKey() {
 		return saveKey;
 	}
+
+	public int getSelected() {
+		return selected;
+	}
 }

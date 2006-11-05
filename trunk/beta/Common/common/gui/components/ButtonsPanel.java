@@ -574,10 +574,21 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
     	}
     	if (name!=null && !"".equals(name) &&
     			state!=null && !"".equals(state) ) {
-    		((JButton)Hbuttons.get(name)).setEnabled(Boolean.parseBoolean(state));
+    		if (Hbuttons.containsKey(name)) {
+    			((JButton)Hbuttons.get(name)).setEnabled(Boolean.parseBoolean(state));
+    		}
+    		else {
+    			JOptionPane.showInternalMessageDialog(GFforma.getDesktopPane(),
+    					Language.getWord("ERROR_BUTTON_NOT_FOUND")+name,
+    					Language.getWord("ERROR_MESSAGE"),
+                        JOptionPane.ERROR_MESSAGE);    				
+    		}
     	}
     	else {
-    		System.out.println("Inconsistencia en la parametrizacion en los botones");
+			JOptionPane.showInternalMessageDialog(GFforma.getDesktopPane(),
+					Language.getWord("ERROR_PARAMETERS_BUTTONS"),
+					Language.getWord("ERROR_MESSAGE"),
+                    JOptionPane.ERROR_MESSAGE);    				
     	}
     }
 }
