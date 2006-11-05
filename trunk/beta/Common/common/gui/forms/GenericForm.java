@@ -27,7 +27,6 @@ import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.border.TitledBorder;
 
 import org.jdom.Document;
@@ -41,6 +40,7 @@ import common.comunications.SocketConnector;
 import common.comunications.SocketWriter;
 import common.comunications.UpdateCodeSender;
 import common.gui.components.VoidPackageException;
+import common.gui.components.XMLTabbedPane;
 import common.misc.Icons;
 import common.misc.language.Language;
 import common.misc.parameters.GenericParameters;
@@ -292,7 +292,10 @@ public class GenericForm extends JInternalFrame{
 
             else if (nombre.equals("tab")) {
                 String locate = e.getAttributeValue("locate");
-                this.getContentPane().add((Component) Tab(e), locate);
+                Object obj =  Tab(e);
+                String id = e.getAttributeValue("id");
+                setComps("this"+id,new Componentes(XMLTabbedPane.class,obj));
+                this.getContentPane().add((Component)obj, locate);
             }
 
             /*
@@ -901,7 +904,10 @@ public class GenericForm extends JInternalFrame{
 
             else if (nombre.equals("tab")) {
                 String locate = e.getAttributeValue("locate");
-                panel.add((Component) Tab(e), locate);
+                Object obj =  Tab(e);
+                String id = e.getAttributeValue("id");
+                setComps("this"+id,new Componentes(XMLTabbedPane.class,obj));
+                panel.add((Component)obj, locate);
             }
         }
 
@@ -913,8 +919,7 @@ public class GenericForm extends JInternalFrame{
      */
     private Object Tab(Element elm) {
 
-        JTabbedPane JTPtab = new JTabbedPane();
-
+        XMLTabbedPane JTPtab = new XMLTabbedPane();
         List listaPanel = elm.getChildren();
         Iterator i = listaPanel.iterator();
 
