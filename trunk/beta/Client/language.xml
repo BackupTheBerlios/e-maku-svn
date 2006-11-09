@@ -2017,18 +2017,11 @@
     <en_US>New Guide</en_US>
   </sentence>
   <sentence>
-    <key>EGUIAS</key>
-    <es_CO>Editar Guía</es_CO>
+    <key>AGUIAS</key>
+    <es_CO>Anular Guía</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Editar Guide</en_US>
-  </sentence>
-  <sentence>
-    <key>DGUIAS</key>
-    <es_CO>Borrar Guía</es_CO>
-    <es_EC></es_EC>
-    <es_ES></es_ES>
-    <en_US>Delete Guide</en_US>
+    <en_US>Annull Guide</en_US>
   </sentence>
   <sentence>
     <key>SGUIAS</key>
@@ -2043,6 +2036,13 @@
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>G</en_US>
+  </sentence>
+  <sentence>
+    <key>TIEMPO_ENTREGA</key>
+    <es_CO>Días de Entegra </es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Days de Entrega </en_US>
   </sentence>
   <sentence>
     <key>DEVOLUCIONES</key>
@@ -2167,6 +2167,13 @@
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Number</en_US>
+  </sentence>
+  <sentence>
+    <key>TOTAL_UNDS</key>
+    <es_CO>Total Unidades </es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Unit Total </en_US>
   </sentence>
   <sentence>
     <key>STOTAL</key>

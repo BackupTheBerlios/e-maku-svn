@@ -1289,16 +1289,9 @@
 				<Transaction>TR00089</Transaction>
 			</JMenuItem>
 			<JMenuItem>
-				<Text>EDITAR</Text>
-				<Icon>/icons/ico_editar.png</Icon>
-				<Mnemonic>NEMO-EDITAR</Mnemonic>
-				<Activo />
-				<Transaction>TR00093</Transaction>
-			</JMenuItem>
-			<JMenuItem>
-				<Text>BORRAR</Text>
-				<Icon>/icons/ico_eliminar.png</Icon>
-				<Mnemonic>NEMO-BORRAR</Mnemonic>
+				<Text>ANULAR</Text>
+				<Icon>/icons/ico_anular.png</Icon>
+				<Mnemonic>NEMO-ANULAR</Mnemonic>
 				<Activo />
 				<Transaction>TR00094</Transaction>
 			</JMenuItem>

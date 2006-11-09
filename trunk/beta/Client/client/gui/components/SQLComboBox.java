@@ -560,7 +560,7 @@ public class SQLComboBox extends JComboBox implements
        		}
        		
 		}
-		if (sqlCode!=null && getSelectedIndex() >= 0) {
+		if (sqlCode!=null && getSelectedIndex() > 0) {
 			class SearchingSQL extends Thread {
 	            
 		        private String[] args;
