@@ -66,6 +66,7 @@ public class SQLComboBox extends JComboBox implements
 	private Vector<String> importValue = null;
 	private Vector<String> importValueCode = null;
 	private String exportValue = null;
+	private String exportTextValue = null;
 	private String[] keys;
 	private GenericForm GFforma;
 	private String labelName="";
@@ -294,6 +295,9 @@ public class SQLComboBox extends JComboBox implements
 			}
 			else if ("exportValue".equals(element.getAttributeValue("attribute"))) {
 				exportValue = value;
+			}
+			else if ("exportTextValue".equals(element.getAttributeValue("attribute"))) {
+				exportTextValue = value;
 			}
 			else if ("addAttribute".equals(element.getAttributeValue("attribute"))) {
 				key = value;
@@ -559,6 +563,9 @@ public class SQLComboBox extends JComboBox implements
 				GFforma.setExternalValues(exportValue,keysCombo.get(getSelectedIndex()));
        		}
        		
+		}
+		if (exportTextValue!=null) {
+			GFforma.setExternalValues(exportTextValue,this.getSelectedItem().toString());
 		}
 		if (sqlCode!=null && getSelectedIndex() > 0) {
 			class SearchingSQL extends Thread {

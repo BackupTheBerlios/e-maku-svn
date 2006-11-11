@@ -1275,6 +1275,7 @@ public class GenericForm extends JInternalFrame{
 		}
 	}
 	
+	
 	public Element getPackage() {
 		Element elementXML = new Element("package");
 		ArrayList <Integer>v = new ArrayList<Integer>(exportFields.keySet());
@@ -1358,6 +1359,42 @@ public class GenericForm extends JInternalFrame{
 			return new Element("package");
 		}
 		
+		return pack;
+	}
+	
+	public Element generateConcept(Element element) {
+		Element pack = new Element("package");
+        Element field = new Element("field");
+        String text="";
+		String blankImport = "";
+		Iterator arg = element.getChildren("arg").iterator();
+		while (arg.hasNext()) {
+			Element elm = (Element)arg.next();
+			if ("replaceBlankImport".equals(elm.getAttributeValue("attribute"))) {
+				blankImport = elm.getValue();
+			}
+		}
+		
+		Iterator it = element.getChild("subarg").getChildren().iterator();
+		while(it.hasNext()) {
+			Element elm = (Element) it.next();
+			String value = elm.getValue();
+			if ("importValue".equals(elm.getAttributeValue("attribute"))) {
+				String importValue = getExteralValuesString(value);
+				if (importValue==null || importValue.trim().equals("")) {
+					text += blankImport;
+				}
+				else {
+					text+=importValue;
+				}
+			
+			}
+			else if ("text".equals(elm.getAttributeValue("attribute"))) {
+				text+=elm.getValue();
+			}
+		}
+		field.setText(text);
+		pack.addContent(field);
 		return pack;
 	}
 	

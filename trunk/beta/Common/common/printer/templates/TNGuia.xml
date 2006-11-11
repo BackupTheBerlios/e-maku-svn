@@ -1,4 +1,4 @@
-<emaku_template type="PLAIN" printer="fx1050">
+<emaku_template type="PLAIN" requestNumeration="true" copies="2" silent="true" printer="fx1050">
 		<settings width="84" height="64" />
 		<metadata>
 				<scp row="1" col="1">ESC</scp>
@@ -11,6 +11,7 @@
 				<scp row="66" col="2">EOT</scp>
 				<!-- Datos personales -->
 				<field row="1" col="2" type="STRING">Guia Nro.</field>
+				<ndocument row="1" col="11" />
 				<field row="1" col="23" type="STRING">Pasto</field>
 				<!-- Informacion detallada de productos -->
 				<field row="9" col="3" type="STRING">Referencia</field>
@@ -35,9 +36,6 @@
 				<field row="9" col="15" type="STRING">|</field>
 				<field row="9" col="68" type="STRING">|</field>
 		</metadata>
-		<package>
-				<field row="1" col="11" type="STRING"/>
-		</package>
 		<package>
 				<field row="1" col="29" type="DATE" mask=",EEEEEE dd MMMM yyyy"/>
 		</package>

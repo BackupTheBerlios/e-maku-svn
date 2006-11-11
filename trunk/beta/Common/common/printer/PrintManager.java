@@ -25,6 +25,7 @@ public class PrintManager {
 	private DocFlavor docFlavor;
 	private static boolean lastError = false;
 	private PrintService[] jps;
+
 	public PrintManager (
 			ImpresionType type,
 			ByteArrayInputStream is,
@@ -67,15 +68,11 @@ public class PrintManager {
 
 		}
 		else {
-			int nroServices = 0;
-			for (PrintService ps : jps) {
-				nroServices ++;
-				if (printer.equals(ps.getName())) {
-					print(ps,is,pras);
-					break;
-				}
+			PrintService ps = selectPrinservice(printer);
+			if (ps!=null) {
+				print(ps,is,pras);
 			}
-			if (nroServices == jps.length) {
+			else {
 				System.out.println("Impresora "+printer+"no econtrada");
 			}
 		}
@@ -114,15 +111,11 @@ public class PrintManager {
 			}
 		}
 		else {
-			int nroServices = 0;
-			for (PrintService ps : jps) {
-				nroServices++;
-				if (printer.equals(ps.getName())) {
-					print(ps,postScriptManager,pras);
-					break;
-				}
+			PrintService ps = selectPrinservice(printer);
+			if (ps!=null) {
+				print(ps,postScriptManager,pras);
 			}
-			if (nroServices == jps.length) {
+			else {
 				System.out.println("Impresora "+printer+"no econtrada");
 			}
 		}
@@ -132,7 +125,7 @@ public class PrintManager {
 		DocPrintJob job = ps.createPrintJob();
 		Doc doc = new SimpleDoc(printData, docFlavor, null);
 		job.print(doc, pras);
-	}
+}
 	
 	private PrintService selectPrinservice(String printer) {
 		for (PrintService ps : jps) {

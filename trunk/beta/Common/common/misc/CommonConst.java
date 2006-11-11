@@ -41,14 +41,14 @@ public class CommonConst {
     public static void lookupDefaultPrintService() {
     	printServices = PrintServiceLookup.lookupPrintServices(null, null);
     	ScpCodes = new HashMap<String, Integer>();
-    	ScpCodes.put("ESC",27);
-    	ScpCodes.put("FF",10);
-    	ScpCodes.put("EOT",7);
-    	ScpCodes.put("DC2",18);
-    	ScpCodes.put("ETB",23);
-    	ScpCodes.put("SI",15);
-    	ScpCodes.put("C",67);
-    	ScpCodes.put("E",69);
+    	ScpCodes.put("ESC",27); // Escape
+    	ScpCodes.put("FF",10);  // Fin de Pagina 
+    	ScpCodes.put("EOT",7);  // Final de Transmision 
+    	ScpCodes.put("DC2",18); // No Condensada
+    	ScpCodes.put("ETB",23); // Fin de Comando
+    	ScpCodes.put("SI",15);  // Si Condensada
+    	ScpCodes.put("C",67);   // No. de Lineas
+    	ScpCodes.put("E",69);   // 
     	ScpCodes.put("F",70);
     }
 }
