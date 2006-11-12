@@ -3876,10 +3876,10 @@
   </sentence>
   <sentence>
     <key>REPORTE-PEDIDOS-NUMERO</key>
-    <es_CO>Reporte de pedidos por numero</es_CO>
+    <es_CO>Reporte de pedidos por rango de numeros</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Report of request by number</en_US>
+    <en_US>Report of request by rank of numbesr</en_US>
   </sentence>
   <sentence>
     <key>REPORTE-PEDIDOS-TERCERO</key>
@@ -3918,10 +3918,10 @@
   </sentence>
   <sentence>
     <key>REPORTE-COTIZACION-NUMERO</key>
-    <es_CO>Reporte de cotización por numero</es_CO>
+    <es_CO>Reporte de cotización por rango de numeros</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Report of market price by number</en_US>
+    <en_US>Report of market price by rank of numbers</en_US>
   </sentence>
   <sentence>
     <key>REPORTE-COTIZACION-TERCERO</key>
@@ -3967,10 +3967,10 @@
   </sentence>
   <sentence>
     <key>REPORTE-FCONTADO-NUMERO</key>
-    <es_CO>Reporte factura de contado por numero</es_CO>
+    <es_CO>Reporte factura de contado por rango de numeros</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Report of invoice by number</en_US>
+    <en_US>Report of invoice by rank of numbers</en_US>
   </sentence>
   <sentence>
     <key>REPORTE-FCONTADO-TERCERO</key>
@@ -4002,10 +4002,10 @@
   </sentence>
   <sentence>
     <key>REPORTE-FCREDITO-NUMERO</key>
-    <es_CO>Reporte factura de credito por numero</es_CO>
+    <es_CO>Reporte factura de credito por rango de numeros</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Report of credit invoice by number</en_US>
+    <en_US>Report of credit invoice by rank of numbers</en_US>
   </sentence>
   <sentence>
     <key>REPORTE-FCREDITO-TERCERO</key>
@@ -4037,10 +4037,10 @@
   </sentence>
   <sentence>
     <key>REPORTE-REMISION-NUMERO</key>
-    <es_CO>Reporte de remisiones por numero</es_CO>
+    <es_CO>Reporte de remisiones por rango de numeros</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Report of remissions by number</en_US>
+    <en_US>Report of remissions by rank of numbers</en_US>
   </sentence>
   <sentence>
     <key>REPORTE-REMISION-TERCERO</key>
@@ -4065,10 +4065,10 @@
   </sentence>
   <sentence>
     <key>REPORTE-NUMERO</key>
-    <es_CO>Reporte por numero</es_CO>
+    <es_CO>Reporte por rango de numeros</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Report by number</en_US>
+    <en_US>Report by rank of numbers</en_US>
   </sentence>
   <sentence>
     <key>NEMO-REPORTE-NUMERO</key>
@@ -4136,10 +4136,10 @@
 
   <sentence>
     <key>REPORTE-OCOMPRA-NUMERO</key>
-    <es_CO>Reporte orden de compra por numero</es_CO>
+    <es_CO>Reporte orden de compra por rango de numeros</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Report of buy order invoice by number</en_US>
+    <en_US>Report of buy order invoice by rank of numbers</en_US>
   </sentence>
   <sentence>
     <key>REPORTE-OCOMPRA-TERCERO</key>
@@ -4171,10 +4171,10 @@
   </sentence>
   <sentence>
     <key>REPORTE-EALMACEN-NUMERO</key>
-    <es_CO>Reporte entrada a almacen por numero</es_CO>
+    <es_CO>Reporte entrada a almacen por rango de numeros</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Report of store in by number</en_US>
+    <en_US>Report of store in by rank of numbers</en_US>
   </sentence>
   <sentence>
     <key>REPORTE-EALMACEN-TERCERO</key>
@@ -4444,10 +4444,10 @@
   </sentence>
   <sentence>
     <key>REPORTE-DVENTAS-NUMERO</key>
-    <es_CO>Reporte de devolución en ventas por numero</es_CO>
+    <es_CO>Reporte de devolución en ventas por rango de numeros</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Report of Return in Sales by number</en_US>
+    <en_US>Report of Return in Sales by rank of numbers</en_US>
   </sentence>
   <sentence>
     <key>REPORTE-DVENTAS-TERCERO</key>
@@ -4479,10 +4479,10 @@
   </sentence>
   <sentence>
     <key>REPORTE-DCOMPRAS-NUMERO</key>
-    <es_CO>Reporte de devolución en compras por numero</es_CO>
+    <es_CO>Reporte de devolución en compras por rango de numeros</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Report of Return in Purchases by number</en_US>
+    <en_US>Report of Return in Purchases by rank of numbers</en_US>
     </sentence>
   <sentence>
     <key>REPORTE-DCOMPRAS-TERCERO</key>
@@ -4514,10 +4514,10 @@
   </sentence>
   <sentence>
     <key>REPORTE-CCARTERA-NUMERO</key>
-    <es_CO>Reporte de comprobantes de cartera por numero</es_CO>
+    <es_CO>Reporte de comprobantes de cartera por rango de numeros</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Report of --Comprobantes de cartera-- by number</en_US>
+    <en_US>Report of --Comprobantes de cartera-- by rank of numbers</en_US>
     </sentence>
   <sentence>
     <key>REPORTE-CCARTERA-TERCERO</key>
@@ -4542,10 +4542,10 @@
   </sentence>
   <sentence>
     <key>REPORTE-CPAGOS-NUMERO</key>
-    <es_CO>Reporte de comprobantes de pago a proveedores por numero</es_CO>
+    <es_CO>Reporte de comprobantes de pago a proveedores por rango de numeros</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Report of --Comprobantes de pago a proveedores-- by number</en_US>
+    <en_US>Report of --Comprobantes de pago a proveedores-- by rank of numbers</en_US>
     </sentence>
   <sentence>
     <key>REPORTE-CPAGOS-TERCERO</key>
@@ -4626,10 +4626,10 @@
   </sentence>
   <sentence>
     <key>REPORTE-ARQUEO-NUMERO</key>
-    <es_CO>Reporte de Arqueo por numero</es_CO>
+    <es_CO>Reporte de Arqueo por rango de numeros</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Cash count report by number</en_US>
+    <en_US>Cash count report by rank of numbers</en_US>
   </sentence>
   <sentence>
     <key>NEMO-REPORTE-ARQUEO-NUMERO</key>
@@ -5095,10 +5095,10 @@
   </sentence>
   <sentence>
     <key>REPORTE-INGRESOS-NUMERO</key>
-    <es_CO>Reporte de Comprobantes de Ingreso por numero</es_CO>
+    <es_CO>Reporte de Comprobantes de Ingreso por rango de numeros</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Report of Income Rouchers by number</en_US>
+    <en_US>Report of Income Rouchers by rank of numbers</en_US>
     </sentence>
   <sentence>
     <key>REPORTE-INGRESOS-TERCERO</key>
@@ -5123,10 +5123,10 @@
   </sentence>
   <sentence>
     <key>REPORTE-EGRESOS-NUMERO</key>
-    <es_CO>Reporte de Comprobantes de Egreso por numero</es_CO>
+    <es_CO>Reporte de Comprobantes de Egreso por rango de numeros</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>Report of Expense Roucher by number</en_US>
+    <en_US>Report of Expense Roucher by rank of numbers</en_US>
     </sentence>
   <sentence>
     <key>REPORTE-EGRESOS-TERCERO</key>
@@ -5148,6 +5148,20 @@
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Report of Expense Roucher by date and value</en_US>
+  </sentence>
+  <sentence>
+    <key>DESDE</key>
+    <es_CO>Desde</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Init</en_US>
+  </sentence>
+  <sentence>
+    <key>HASTA</key>
+    <es_CO>Hasta</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>End</en_US>
   </sentence>
   
 </language>  
