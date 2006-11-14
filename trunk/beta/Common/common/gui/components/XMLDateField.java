@@ -53,6 +53,7 @@ public class XMLDateField extends JDateChooser implements AnswerListener, Initia
 	private Vector<String> importValue = null;
 	private String exportValue = null;
 	private JPanel panel;
+	private JTextFieldDateEditor editor;
 	private boolean onPanel = true;
 
     public XMLDateField(GenericForm GFforma, Document doc) {
@@ -62,7 +63,7 @@ public class XMLDateField extends JDateChooser implements AnswerListener, Initia
         keySQL = new Vector<String>();
         Element parameters = doc.getRootElement();
         Iterator i = parameters.getChildren().iterator();
-
+        
         while (i.hasNext()) {
             Element subargs = (Element) i.next();
             String value = subargs.getValue();
@@ -95,8 +96,7 @@ public class XMLDateField extends JDateChooser implements AnswerListener, Initia
         	panel = new JPanel(new FlowLayout(FlowLayout.LEADING));
         	panel.add(this);
         }
-        
-        JTextFieldDateEditor editor = (JTextFieldDateEditor)this.getComponent(1);
+        editor = (JTextFieldDateEditor)this.getComponent(1);
         editor.setColumns(20);
         editor.addFocusListener(this);
         this.GFforma.addInitiateFinishListener(this);
@@ -111,6 +111,7 @@ public class XMLDateField extends JDateChooser implements AnswerListener, Initia
     	}
     }
 
+    
     public Element getPackage() {
         Element pack = new Element("package");
         if (!this.getDate().equals("")) {
@@ -164,6 +165,10 @@ public class XMLDateField extends JDateChooser implements AnswerListener, Initia
 	public void focusGained(FocusEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void clean() {
+		editor.setText("");
 	}
 
 	public void focusLost(FocusEvent e) {

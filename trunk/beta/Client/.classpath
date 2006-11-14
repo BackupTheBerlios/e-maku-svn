@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="/Common"/>
-	<classpathentry kind="lib" path="/Common/bin"/>
 	<classpathentry kind="src" path=""/>
 	<classpathentry kind="lib" path="/home/emaku/beta/lib/emaku/icons.jar"/>
 	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/jdom.jar"/>
@@ -11,5 +10,6 @@
 	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/ostermillerutils.jar"/>
 	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/jcalendar.jar"/>
 	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/nimrodlf.jar"/>
+	<classpathentry kind="lib" path="/Common/bin"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
