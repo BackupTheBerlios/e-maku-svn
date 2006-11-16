@@ -2230,16 +2230,34 @@
 				<Transaction>TR00203</Transaction>
 			</JMenuItem>
 		</JMenu>
-		<JMenuItem>
-			<Activo />
-			<Acelerator></Acelerator>
-			<ActionCommand>ajustes</ActionCommand>
-			<Icon>/icons/ico_ajustes.png</Icon>
+		<JMenu>
 			<Mnemonic>NEMO-AJUSTES</Mnemonic>
+			<Icon>/icons/ico_ajustes.png</Icon>
 			<Text>AJUSTES</Text>
 			<Activo />
-			<Transaction>TR00049</Transaction>
-		</JMenuItem>
+			<JMenuItem>
+				<Text>NUEVO</Text>
+				<Icon>/icons/ico_nuevo.png</Icon>
+				<Mnemonic>NEMO-NUEVO</Mnemonic>
+				<Activo />
+				<Transaction>TR00240</Transaction>
+			</JMenuItem>
+			<JMenuItem>
+				<Text>ANULAR</Text>
+				<Icon>/icons/ico_anular.png</Icon>
+				<Mnemonic>NEMO-ANULAR</Mnemonic>
+				<Activo />
+				<Transaction>TR00241</Transaction>
+			</JMenuItem>
+			<JSeparator />
+			<JMenuItem>
+				<Text>CONSULTAR</Text>
+				<Icon>/icons/ico_consultar.png</Icon>
+				<Mnemonic>NEMO-CONSULTAR</Mnemonic>
+				<Activo />
+				<Transaction>TR00242</Transaction>
+			</JMenuItem>
+		</JMenu>
 		<JMSeparator />
 		<JMenu>
 			<Mnemonic>NEMO-INFORME-INVENTARIOS</Mnemonic>
