@@ -797,6 +797,20 @@
 				<Icon>GREPORTS</Icon>
 				<Text>REPORTS</Text>
 				<Activo />
+				<JMenuItem>
+					<Text>REPORTE-NUMERO</Text>
+					<Icon>REPORT</Icon>
+					<Mnemonic>NEMO-REPORTE-NUMERO</Mnemonic>
+					<Activo />
+					<Transaction>TR00247</Transaction>
+				</JMenuItem>
+				<JMenuItem>
+					<Text>REPORTE-FECHA-PRODUCTO</Text>
+					<Icon>REPORT</Icon>
+					<Mnemonic>NEMO-REPORTE-FECHA-PRODUCTO</Mnemonic>
+					<Activo />
+					<Transaction>TR00248</Transaction>
+				</JMenuItem>
 			</JMenu>
 		</JMenu>
 		<JMenu>
@@ -833,6 +847,20 @@
 				<Icon>GREPORTS</Icon>
 				<Text>REPORTS</Text>
 				<Activo />
+				<JMenuItem>
+					<Text>REPORTE-NUMERO</Text>
+					<Icon>REPORT</Icon>
+					<Mnemonic>NEMO-REPORTE-NUMERO</Mnemonic>
+					<Activo />
+					<Transaction>TR00249</Transaction>
+				</JMenuItem>
+				<JMenuItem>
+					<Text>REPORTE-FECHA-PRODUCTO</Text>
+					<Icon>REPORT</Icon>
+					<Mnemonic>NEMO-REPORTE-FECHA-PRODUCTO</Mnemonic>
+					<Activo />
+					<Transaction>TR00250</Transaction>
+				</JMenuItem>
 			</JMenu>
 		</JMenu>
 	</JMenu>
