@@ -5219,5 +5219,33 @@
     <es_ES></es_ES>
     <en_US>End</en_US>
   </sentence>
+  <sentence>
+    <key>REPORTE-NPRODUCCION-NUMERO</key>
+    <es_CO>Reporte de Nota de Produccion por Rango de Numeros</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Production Note by rango of numbers</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-NPRODUCCION-FECHA-PRODUCTO</key>
+    <es_CO>Reporte de Nota de Produccion por fecha y producto</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Producton Note by date and producto</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-NCONSUMO-NUMERO</key>
+    <es_CO>Reporte de Nota de Consumo por Rango de Numeros</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Consumo Note by rango of numbers</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-NCONSUMO-FECHA-PRODUCTO</key>
+    <es_CO>Reporte de Nota de Consumo por fecha y producto</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Consumo Note by date and producto</en_US>
+  </sentence>
   
 </language>  
