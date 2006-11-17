@@ -1312,28 +1312,28 @@
 					<Icon>REPORT</Icon>
 					<Mnemonic>NEMO-REPORTE-NUMERO</Mnemonic>
 					<Activo />
-					<Transaction>TR00152</Transaction>
+					<Transaction>TR00243</Transaction>
 				</JMenuItem>
 				<JMenuItem>
-					<Text>REPORTE-TERCERO</Text>
+					<Text>REPORTE-ZONA</Text>
 					<Icon>REPORT</Icon>
-					<Mnemonic>NEMO-REPORTE-TERCERO</Mnemonic>
+					<Mnemonic>NEMO-REPORTE-ZONA</Mnemonic>
 					<Activo />
-					<Transaction>TR00153</Transaction>
+					<Transaction>TR00244</Transaction>
 				</JMenuItem>
 				<JMenuItem>
 					<Text>REPORTE-FECHA-PRODUCTO</Text>
 					<Icon>REPORT</Icon>
 					<Mnemonic>NEMO-REPORTE-FECHA-PRODUCTO</Mnemonic>
 					<Activo />
-					<Transaction>TR00154</Transaction>
+					<Transaction>TR00245</Transaction>
 				</JMenuItem>
 				<JMenuItem>
-					<Text>REPORTE-FECHA-TERCERO</Text>
+					<Text>REPORTE-FECHA-ZONA</Text>
 					<Icon>REPORT</Icon>
-					<Mnemonic>NEMO-REPORTE-FECHA-TERCERO</Mnemonic>
+					<Mnemonic>NEMO-REPORTE-FECHA-ZONA</Mnemonic>
 					<Activo />
-					<Transaction>TR00155</Transaction>
+					<Transaction>TR00246</Transaction>
 				</JMenuItem>
 				<Activo />
 			</JMenu>

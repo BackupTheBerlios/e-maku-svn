@@ -5150,6 +5150,62 @@
     <en_US>Report of Expense Roucher by date and value</en_US>
   </sentence>
   <sentence>
+    <key>REPORTE-ZONA</key>
+    <es_CO>Reporte de Zona</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Zone</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-ZONA</key>
+    <es_CO>Z</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Z</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-FECHA-ZONA</key>
+    <es_CO>Reporte de Zona</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Zone</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-GUIA-ZONA</key>
+    <es_CO>Reporte de Guia por Zona</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Guia by Zone</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-GUIA-NUMERO</key>
+    <es_CO>Reporte de Guia por Rango de Numeros</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Guia by rango of numbers</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-GUIA-FECHA-PRODUCTO</key>
+    <es_CO>Reporte de Guia por fecha y producto</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Guia by date and producto</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-GUIA-FECHA-ZONA</key>
+    <es_CO>Reporte de Guia por fecha y zona</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Report of Guia by date and zone</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-FECHA-ZONA</key>
+    <es_CO>Z</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Z</en_US>
+  </sentence>
+  <sentence>
     <key>DESDE</key>
     <es_CO>Desde</es_CO>
     <es_EC></es_EC>
