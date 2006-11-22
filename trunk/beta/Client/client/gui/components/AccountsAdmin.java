@@ -262,7 +262,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 					/*
 					 * Se consulta si la cuenta digitada ya existe
 					 */
-					doc = STResultSet.getResultSetST("SEL0024", new String[] { texto });
+					doc = STResultSet.getResultSetST("SCS0013", new String[] { texto });
 
 					row = doc.getRootElement().getChild("row");
 
@@ -332,7 +332,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 						 * consulta retorna 1 si la cuenta a crear tiene padre y
 						 * 0 si no lo tiene
 						 */
-						Document doc2 = STResultSet.getResultSetST("SEL0025",
+						Document doc2 = STResultSet.getResultSetST("SCS0014",
 								new String[] { texto.substring(0, fin) });
 						cleanData();
 
@@ -417,7 +417,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 				});
 			}
 		}
-		new LoadTable(JTpuc, "SEL0050").start();
+		new LoadTable(JTpuc, "SCS0022").start();
 	}
 
 	/**
@@ -480,7 +480,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		XMLTFbase = new XMLTextField("BASE", 9, 10, XMLTextField.NUMERIC);
 		XMLTFporcentaje = new XMLTextField("PORCENTAJE", 9, 10,
 				XMLTextField.NUMERIC);
-		XMLCBmoneda = new XMLComboBox(GFforma, "SEL0023", "MONEDA");
+		XMLCBmoneda = new XMLComboBox(GFforma, "SCS0012", "MONEDA");
 
 		XMLTFbase.setHorizontalAlignment(SwingConstants.RIGHT);
 		XMLTFporcentaje.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -590,7 +590,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		try {
 			String id_cta = ((Element) query.getChildren().get(0))
 					.getTextTrim();
-			Document Dperfil = STResultSet.getResultSetST("SEL0048", new String[] { id_cta });
+			Document Dperfil = STResultSet.getResultSetST("SCS0021", new String[] { id_cta });
 			Element pack = Dperfil.getRootElement().getChild("row");
 			XMLCBnaturaleza.setSelected(getBoolean(pack, 0));
 			XMLCBcentro.setSelected(getBoolean(pack, 1));

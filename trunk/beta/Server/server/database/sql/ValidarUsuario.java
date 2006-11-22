@@ -49,7 +49,7 @@ public class ValidarUsuario {
         boolean retorno = false;
 
         try {
-            sql = new RunQuery(db, "SEL0004",args);
+            sql = new RunQuery(db, "SCS0003",args);
             rs = sql.ejecutarSELECT();
             rs.next();
             if (rs.getInt(1) == 1){

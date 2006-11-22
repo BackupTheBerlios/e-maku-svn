@@ -90,7 +90,7 @@ public class MakeReport extends Thread {
 			codigo = element.getChildText("driver");
 			rs = new RunQuery(
 					dataBase,
-					"SEL0208",
+					"SCS0050",
 					new String[] { codigo }).ejecutarSELECT();
 			boolean next = rs.next();
 			String title = null;

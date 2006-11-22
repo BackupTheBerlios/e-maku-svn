@@ -63,17 +63,17 @@ public class CacheXML extends Document {
             
             /*
              * Se obtiene las llaves del cache que se va a generar
-             * la consulta para obtener las llaves es la SEL0007,
+             * la consulta para obtener las llaves es la SCS0006,
              * recibe como argumentos el codigo de CACHE 
              */
             String[] args = {codigo};
             String SQL;
-            ResultSet RSdatos = new RunQuery(bd, "SEL0009",args).ejecutarSELECT();
+            ResultSet RSdatos = new RunQuery(bd, "SCS0007",args).ejecutarSELECT();
             RSdatos.next();
             SQL= RSdatos.getString("codigo");
             CloseSQL.close(RSdatos);
             
-            rselect = new RunQuery(bd, "SEL0007",args);
+            rselect = new RunQuery(bd, "SCS0006",args);
             
             RSdatos = rselect.ejecutarSELECT();
 
@@ -99,7 +99,7 @@ public class CacheXML extends Document {
 	             * a transmitir 
 	             */
 	            
-	            RSdatos = new RunQuery(bd, "SEL0010",args).ejecutarSELECT();
+	            RSdatos = new RunQuery(bd, "SCS0008",args).ejecutarSELECT();
 	            RSdatos.next();
 	            String cache_sql = RSdatos.getString("sentencia_cache");
 	            

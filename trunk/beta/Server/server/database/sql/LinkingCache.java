@@ -119,14 +119,14 @@ public class LinkingCache {
                  * los usuarios
                  */
                 
-                Htransacciones.putAll(loadCache(ConfigFile.getDBName(i),"SEL0001", new String[]{"login","codigo","password"},"ok"));
+                Htransacciones.putAll(loadCache(ConfigFile.getDBName(i),"SCS0001", new String[]{"login","codigo","password"},"ok"));
 
                 /*
                  * Esta consulta carga las sentencias a las que tienen permisos
                  * los usuarios 
                  */
 
-                Hpermisos.putAll(loadCache(ConfigFile.getDBName(i),"SEL0002", new String[]{"login","codigo","password"},"ok"));
+                Hpermisos.putAll(loadCache(ConfigFile.getDBName(i),"SCS0002", new String[]{"login","codigo","password"},"ok"));
                 
                 /*
                  * Se realiza la consulta para obtener los drivers de la tabla
@@ -134,7 +134,7 @@ public class LinkingCache {
                  */
 
                 rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),
-                					 "SEL0026"));
+                					 "SCS0015"));
 
                 /*
                  * Se almacena la información en la tabla hashtable Hlogica_drivers
@@ -182,7 +182,7 @@ public class LinkingCache {
                  * Esta consulta captura el nombre de la empresa y su Nit
                  */
                 
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SEL0305"));
+                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SCS0054"));
 
                 while (rs.next()) {                	
                     HcompanyData.put("K-" + ConfigFile.getDBName(i) + "-company",
@@ -198,7 +198,7 @@ public class LinkingCache {
                  * a este se le suma un uno.
                  */
 
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SEL0072"));
+                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SCS0023"));
 
 				while (rs.next()) {
                     Hconsecutive.put("K-" + ConfigFile.getDBName(i) + "-"
@@ -211,7 +211,7 @@ public class LinkingCache {
                  * de la tabla inventarios
                  */
 
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SEL0089"));
+                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SCS0037"));
 
                 /*
                  * Se almacena la informaci�n en un objeto InfoInventario y luego en la
@@ -231,7 +231,7 @@ public class LinkingCache {
                  * Esta metodo carga el perfil de todas las cuentas contables generadas.
                  */
 
-                loadPerfilCta(ConfigFile.getDBName(i),"SEL0094",null);
+                loadPerfilCta(ConfigFile.getDBName(i),"SCS0038",null);
 
                 /*
                  * Este metodo carga la informacion relacionada a asientos prefedinidos
@@ -244,7 +244,7 @@ public class LinkingCache {
                  * libro_aux
                  */
 
-                Hlibro_aux.putAll(loadCache(ConfigFile.getDBName(i),"SEL0097", new String[]{"centro","id_cta","id_tercero","id_prod_serv"},"saldo"));
+                Hlibro_aux.putAll(loadCache(ConfigFile.getDBName(i),"SCS0041", new String[]{"centro","id_cta","id_tercero","id_prod_serv"},"saldo"));
             }
             catch (SQLException SQLEe) {
             	SQLEe.printStackTrace();
@@ -266,7 +266,7 @@ public class LinkingCache {
     
     public static void removePerfilCta(String bd,String[] args) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
-        ResultSet rs= st.executeQuery(InstruccionesSQL.getSentencia(bd,"SEL0319",args));
+        ResultSet rs= st.executeQuery(InstruccionesSQL.getSentencia(bd,"SCS0057",args));
         
         while (rs.next()) {
         	String key = "K-"+bd+"-"+rs.getString(1).trim();
@@ -277,7 +277,7 @@ public class LinkingCache {
 
     public static void removeAsientosPr(String bd,String[] args) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
-        ResultSet rs= st.executeQuery(InstruccionesSQL.getSentencia(bd,"SEL0318",args));
+        ResultSet rs= st.executeQuery(InstruccionesSQL.getSentencia(bd,"SCS0056",args));
         
         while (rs.next()) {
         	String key = "K-"+bd+"-"+rs.getString(1).trim()+"-"+rs.getString(2).trim();
@@ -288,7 +288,7 @@ public class LinkingCache {
     
     public static void removeCtasAsientos(String bd,String[] args) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
-        ResultSet rs= st.executeQuery(InstruccionesSQL.getSentencia(bd,"SEL0317",args));
+        ResultSet rs= st.executeQuery(InstruccionesSQL.getSentencia(bd,"SCS0055",args));
         
         while (rs.next()) {
         	String key = "K-"+bd+"-"+rs.getString(1).trim()+"-"+rs.getString(2).trim();
@@ -299,12 +299,12 @@ public class LinkingCache {
 
     public static void reloadAsientosPr(String bd,String[] args) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
-    	Hasientos_pr.putAll(loadCache(bd,"SEL0318",args, new String[]{"id_prod_serv","id_asientos_prod_serv"},"id_asientos_pr"));
+    	Hasientos_pr.putAll(loadCache(bd,"SCS0056",args, new String[]{"id_prod_serv","id_asientos_prod_serv"},"id_asientos_pr"));
     }
 
     public static void reloadCtasAsientos(String bd,String[] args) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
-    	Hctas_asientos.putAll(loadCache(bd,"SEL0317", args,new String[]{"id_asientos_pr","char_cta"},"naturaleza"));
+    	Hctas_asientos.putAll(loadCache(bd,"SCS0055", args,new String[]{"id_asientos_pr","char_cta"},"naturaleza"));
     }
 
     public static void loadAsientosPredefinidos(String bd) 
@@ -313,12 +313,12 @@ public class LinkingCache {
          * Esta consulta carga los id de todos los asientos predefinidos.
          */
 
-        Hasientos_pr.putAll(loadCache(bd,"SEL0095", new String[]{"id_prod_serv","id_asientos_prod_serv"},"id_asientos_pr"));
+        Hasientos_pr.putAll(loadCache(bd,"SCS0039", new String[]{"id_prod_serv","id_asientos_prod_serv"},"id_asientos_pr"));
         /*
          * Esta consulta carga las cuentas de los asientos predefinidos con su respectiva naturaleza
          */
 
-        Hctas_asientos.putAll(loadCache(bd,"SEL0096", new String[]{"id_asientos_pr","char_cta"},"naturaleza"));
+        Hctas_asientos.putAll(loadCache(bd,"SCS0040", new String[]{"id_asientos_pr","char_cta"},"naturaleza"));
     }
     
     /**
@@ -672,7 +672,7 @@ public class LinkingCache {
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
         Connection cn = PoolConexiones.getConnection(bd);
         Statement st = cn.createStatement();
-        ResultSet rs = st.executeQuery(InstruccionesSQL.getSentencia(bd,"SEL0139",new String[]{key}));
+        ResultSet rs = st.executeQuery(InstruccionesSQL.getSentencia(bd,"SCS0046",new String[]{key}));
         String consecutive="";
 		while (rs.next()) {
 			consecutive = rs.getString(1);

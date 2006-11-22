@@ -122,10 +122,10 @@ public class Third extends JPanel {
         XMLTFnitcc = new XMLTextField("NITCC", 26, 50);
         XMLTFnombre = new XMLTextField("NOMBRE", 26, 50);
         XMLTFestablecimiento = new XMLTextField("ESTABLECIMIENTO", 26, 50);
-        XMLCBregimen = new XMLComboBox(GFforma,"SEL0018", "REGIMEN");
-        XMLCBactividad = new XMLComboBox(GFforma,"SEL0202", "ACTIVIDAD");
+        XMLCBregimen = new XMLComboBox(GFforma,"SCS0010", "REGIMEN");
+        XMLCBactividad = new XMLComboBox(GFforma,"SCS0048", "ACTIVIDAD");
         XMLCBactividad.setPreferredSize(new Dimension(250,20));
-        XMLCBcatalogo = new XMLComboBox(GFforma,"SEL0019", "CATALOGO");
+        XMLCBcatalogo = new XMLComboBox(GFforma,"SCS0011", "CATALOGO");
         JPetiquetas.add(XMLTFnitcc.getLabel());
         JPetiquetas.add(XMLTFnombre.getLabel());
         JPetiquetas.add(XMLTFestablecimiento.getLabel());
@@ -165,7 +165,7 @@ public class Third extends JPanel {
                         try {
                             GenericDataFiller QDsearch = new GenericDataFiller(
                                     GFforma,
-                                    namebutton, enablebutton, "SEL0037",
+                                    namebutton, enablebutton, "SCS0016",
                                     new String[] { returnValue }, XMLTFnitcc
                                             .getText(),
                                     new XMLTextField[] { XMLTFnombre });
@@ -175,7 +175,7 @@ public class Third extends JPanel {
                             	 // Consultado Estados
 
                                 Document Destados = STResultSet.getResultSetST(
-                                        "SEL0046",
+                                        "SCS0020",
                                         new String[] { XMLTFnitcc.getText() });
 
                                 updateCheckBox(Destados);
@@ -183,23 +183,23 @@ public class Third extends JPanel {
                                 // Consultado Establecimiento
                                 new GenericDataFiller(
                                         GFforma,
-                                        "SEL0043",
+                                        "SCS0017",
                                         XMLTFnitcc.getText(),
                                         new XMLTextField[] { XMLTFestablecimiento })
                                         .start();
 
                                 // Consultando Regimen
-                                new QueryComboBox(GFforma, "SEL0044",
+                                new QueryComboBox(GFforma, "SCS0018",
                                         XMLTFnitcc.getText(), XMLCBregimen)
                                         .start();
 
                                 // Consultando Activiadad
-                                new QueryComboBox(GFforma, "SEL0203",
+                                new QueryComboBox(GFforma, "SCS0049",
                                         XMLTFnitcc.getText(), XMLCBactividad)
                                         .start();
                                 
 //                              Consultando Catalogo Precios de Venta
-                                new QueryComboBox(GFforma, "SEL0045",
+                                new QueryComboBox(GFforma, "SCS0019",
                                         XMLTFnitcc.getText(), XMLCBcatalogo)
                                         .start();
                                 searchOthersSqls();

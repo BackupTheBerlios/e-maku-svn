@@ -133,19 +133,19 @@ public class Employees extends JPanel {
         XMLTFnombre = new XMLTextField("NOMBRE", 26, 50);
         XMLTFsigla = new XMLTextField("SIGLA", 26, 50);
         XMLTFfechaNac = new XMLTextField("FECHA_NAC", 26, 50);
-        XMLCBnacionalidad = new XMLComboBox(GFforma,"SEL0012", "NACIONALIDAD");
+        XMLCBnacionalidad = new XMLComboBox(GFforma,"SCS0009", "NACIONALIDAD");
         XMLTFprocedencia = new XMLTextField("PROCEDENCIA",26,50);
         JCBsexo = new JComboBox();
         JCBsexo.addItem("");
         JCBsexo.addItem(Language.getWord("MASCULINO"));
         JCBsexo.addItem(Language.getWord("FEMENINO"));
         
-        XMLCBestadoCivil = new XMLComboBox(GFforma,"SEL0075", "ESTADO_CIVIL");
-        XMLCBcargo = new XMLComboBox(GFforma,"SEL0077", "CARGO-EMPLEADO");
-        XMLCBtipoContrato = new XMLComboBox(GFforma,"SEL0076", "TIPO_CONTRATO");
+        XMLCBestadoCivil = new XMLComboBox(GFforma,"SCS0026", "ESTADO_CIVIL");
+        XMLCBcargo = new XMLComboBox(GFforma,"SCS0028", "CARGO-EMPLEADO");
+        XMLCBtipoContrato = new XMLComboBox(GFforma,"SCS0027", "TIPO_CONTRATO");
         XMLTFfechaIniciacion = new XMLTextField("FECHA_INICIACION",26,50);
         XMLTFfechaTerminacion = new XMLTextField("FECHA_TERMINACION",26,50);
-        XMLCBestado = new XMLComboBox(GFforma,"SEL0078", "ESTADO_EMPLEADO");
+        XMLCBestado = new XMLComboBox(GFforma,"SCS0029", "ESTADO_EMPLEADO");
 
         JPetiquetas.add(XMLTFnitcc.getLabel());
         JPetiquetas.add(XMLTFnombre.getLabel());
@@ -198,7 +198,7 @@ public class Employees extends JPanel {
                         //try {
                             GenericDataFiller QDsearch = new GenericDataFiller(
                                     GFforma,
-                                    namebutton, enablebutton, "SEL0037",
+                                    namebutton, enablebutton, "SCS0016",
                                     new String[] { returnValue }, XMLTFnitcc
                                             .getText(),
                                     new XMLTextField[] { XMLTFnombre });
@@ -210,7 +210,7 @@ public class Employees extends JPanel {
                                 
                                 new GenericDataFiller(
                                         GFforma,
-                                        "SEL0084",
+                                        "SCS0035",
                                         XMLTFnitcc.getText(),
                                         new XMLTextField[] { XMLTFsigla,
                                                              XMLTFfechaNac,
@@ -222,27 +222,27 @@ public class Employees extends JPanel {
                                 searchSex();
                                 
                                 // Consultando Nacionalidad
-                                new QueryComboBox(GFforma, "SEL0079",
+                                new QueryComboBox(GFforma, "SCS0030",
                                         XMLTFnitcc.getText(), XMLCBnacionalidad)
                                         .start();
 
                                 // Consultando Estado Civil
-                                new QueryComboBox(GFforma, "SEL0080",
+                                new QueryComboBox(GFforma, "SCS0031",
                                         XMLTFnitcc.getText(), XMLCBestadoCivil)
                                         .start();
 
                                 // Consultando Cargo Empleado
-                                new QueryComboBox(GFforma, "SEL0081",
+                                new QueryComboBox(GFforma, "SCS0032",
                                         XMLTFnitcc.getText(), XMLCBcargo)
                                         .start();
 
                                 // Consultando Tipo Contrato
-                                new QueryComboBox(GFforma, "SEL0082",
+                                new QueryComboBox(GFforma, "SCS0033",
                                         XMLTFnitcc.getText(), XMLCBtipoContrato)
                                         .start();
                                 
                                 // Consultando Estado Empleado
-                                new QueryComboBox(GFforma, "SEL0083",
+                                new QueryComboBox(GFforma, "SCS0034",
                                         XMLTFnitcc.getText(), XMLCBestado)
                                         .start();
 
@@ -275,7 +275,7 @@ public class Employees extends JPanel {
         class Sexo extends Thread {
             public void run(){
                 try {
-                    Document doc = STResultSet.getResultSetST("SEL0085",new String[]{XMLTFnitcc.getText()});
+                    Document doc = STResultSet.getResultSetST("SCS0036",new String[]{XMLTFnitcc.getText()});
                     Iterator i = doc.getRootElement().getChildren("row").iterator();
                     int row = doc.getRootElement().getChildren("row").size();
                         

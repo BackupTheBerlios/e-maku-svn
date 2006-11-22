@@ -115,7 +115,7 @@ public class AdminProdServ extends JPanel implements FocusListener {
         XMLTFbarras = new XMLTextField("BARRAS", 10, 13,XMLTextField.TEXT);
 
         XMLTFdescripcion = new XMLTextField("DESCRIPCION", 25, 50);
-        XMLCBgrupoImp = new XMLComboBox(GFforma,"SEL0125", "GRUPOIMPUESTOS",true);
+        XMLCBgrupoImp = new XMLComboBox(GFforma,"SCS0044", "GRUPOIMPUESTOS",true);
         XMLTFmarca = new XMLTextField("MARCA", 25, 50);
         XMLTFpeso = new XMLTextField("PESO", 10, 13,XMLTextField.NUMERIC);
         XMLTFiva = new XMLTextField("IVA", 10, 13,XMLTextField.NUMERIC);

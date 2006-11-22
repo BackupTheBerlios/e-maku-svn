@@ -80,12 +80,12 @@ public class SendACP extends Thread{
         try {
 			st = PoolConexiones.getConnection(bd).createStatement();
 		
-			RunQuery runquery = new RunQuery(bd,"SEL0108",Arrlogin);
+			RunQuery runquery = new RunQuery(bd,"SCS0042",Arrlogin);
 	        rs = runquery.ejecutarSELECT();
 	        rs.next();
 	        String numTrans = rs.getString(1);
 	        
-	        runquery = new RunQuery(bd,"SEL0109",Arrlogin);
+	        runquery = new RunQuery(bd,"SCS0043",Arrlogin);
 	        rs = runquery.ejecutarSELECT();
 	        rs.next();
 	        String numQuerys = rs.getString(1);
@@ -116,7 +116,7 @@ public class SendACP extends Thread{
         try {
         	st = PoolConexiones.getConnection(bd).createStatement();
             
-        	RunQuery runquery = new RunQuery(bd,"SEL0006",Arrlogin);
+        	RunQuery runquery = new RunQuery(bd,"SCS0005",Arrlogin);
             rs = runquery.ejecutarSELECT();
             
             /* Transmision de setencias SQL*/
@@ -133,7 +133,7 @@ public class SendACP extends Thread{
             SocketWriter.writing(sock,compressDocument(doc,query.getName()));
             rs.close();
             rs = null;
-            runquery = new RunQuery(bd,"SEL0005",Arrlogin);
+            runquery = new RunQuery(bd,"SCS0004",Arrlogin);
             rs = runquery.ejecutarSELECT();
             
             while(rs.next()){

@@ -91,7 +91,7 @@ public class LNInventarios {
     	RunQuery RQmovimiento = null;
     	System.out.print("tipo Movimiento: "+tipoMovimiento);
     	if (ENTRADA.equals(tipoMovimiento.trim().toLowerCase())) {
-        	RQmovimiento = new RunQuery(bd,"INS0052");
+        	RQmovimiento = new RunQuery(bd,"SCI00O8");
         	String record[] = movimientoInventario(pack,ENTRADA);
         	/*
         	 * Se valida que no se genere un asiento de inventario con cantidad 0
@@ -108,7 +108,7 @@ public class LNInventarios {
         	}
     	}
     	else if (SALIDA.equals(tipoMovimiento.trim().toLowerCase())) {
-        	RQmovimiento = new RunQuery(bd,"INS0038");
+        	RQmovimiento = new RunQuery(bd,"SCI00O4");
         	String record[] = movimientoInventario(pack,SALIDA);
         	if (!(record[4].equals("0") || record[4].equals("0.0"))) {
 /*        		System.out.print("Registros: ");
@@ -136,11 +136,11 @@ public class LNInventarios {
     	RunQuery RQsalida = null;
         try {
         	String[] records = movimientoInventario(pack,SALIDA);
-        	RQsalida = new RunQuery(bd,"INS0038");
+        	RQsalida = new RunQuery(bd,"SCI00O4");
         	RQsalida.ejecutarSQL(records);
         	CacheKeys.setKey("valorEntrada",records[6]);
         	String[] ventradas = movimientoInventario(pack,ENTRADA);
-        	RQentrada = new RunQuery(bd,"INS0052");
+        	RQentrada = new RunQuery(bd,"SCI00O8");
         	RQentrada.ejecutarSQL(ventradas);
         	RQentrada.closeStatement();
         	RQsalida.closeStatement();
@@ -297,7 +297,7 @@ public class LNInventarios {
 	        	}
         	}
         }
-		RunQuery RQmovimiento = new RunQuery(bd,"INS0069");
+		RunQuery RQmovimiento = new RunQuery(bd,"SCI0013");
 		
 		if (gastos.size()>0) {
 			for (int j=0;j<gastos.size();j++) {
@@ -408,7 +408,7 @@ public class LNInventarios {
     private void anular() 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
     	String idDocumento = CacheKeys.getKey("ndocumento");
-        RunQuery RQdocumento = new RunQuery(bd,"SEL0238",new String[]{idDocumento});
+        RunQuery RQdocumento = new RunQuery(bd,"SCS0051",new String[]{idDocumento});
         ResultSet RSdatos = RQdocumento.ejecutarSELECT();
         /*
          * La anterior consulta nos retorna las siguientes columnas
@@ -476,7 +476,7 @@ public class LNInventarios {
         	 * es una entrada
         	 */
         	if (RSdatos.getDouble(4)!= 0) {
-            	RQanular = new RunQuery(bd,"INS0038");
+            	RQanular = new RunQuery(bd,"SCI00O4");
 
             	record.addElement(RSdatos.getString(4));
             	record.addElement(RSdatos.getString(5));
@@ -496,7 +496,7 @@ public class LNInventarios {
         	 * anular es una salida 
         	 */
         	else if (RSdatos.getDouble(6)!=0) {
-            	RQanular = new RunQuery(bd,"INS0052");
+            	RQanular = new RunQuery(bd,"SCI00O8");
             	record.addElement(RSdatos.getString(6));
             	record.addElement(RSdatos.getString(7));
             	ponderado = ponderar(RSdatos.getString(2),

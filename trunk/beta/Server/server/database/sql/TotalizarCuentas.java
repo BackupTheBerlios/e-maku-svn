@@ -41,7 +41,7 @@ public class TotalizarCuentas {
 				 */
 				int accountParent = -1;
 				if (!"".equals(account)) {
-					ResultSet rs = st.executeQuery(InstruccionesSQL.getSentencia(nombreDB,"SEL0162",new String[]{account}));
+					ResultSet rs = st.executeQuery(InstruccionesSQL.getSentencia(nombreDB,"SCS0047",new String[]{account}));
 					while (rs.next()) {
 						accountParent = rs.getInt(1);
 					}
@@ -60,28 +60,28 @@ public class TotalizarCuentas {
 					 * e insertar en la tabla temporal
 					 */
 					
-					st.execute(InstruccionesSQL.getSentencia(nombreDB,"INS0055",new String[]{account}));
+					st.execute(InstruccionesSQL.getSentencia(nombreDB,"SCI00O9",new String[]{account}));
 					
 					/*
 					 * Se Procede a obtener los saldos de las cuentas auxiliares de 
 					 * inventarios e insertar en la tabla temporal
 					 */
 
-					st.execute(InstruccionesSQL.getSentencia(nombreDB,"INS0056",new String[]{account}));
+					st.execute(InstruccionesSQL.getSentencia(nombreDB,"SCI0010",new String[]{account}));
 
 					/*
 					 * Se procede a obtener los saldos de las cuentas auxiliares de 
 					 * terceros e insertar en la tabla temporal
 					 */
 
-					st.execute(InstruccionesSQL.getSentencia(nombreDB,"INS0057",new String[]{account}));
+					st.execute(InstruccionesSQL.getSentencia(nombreDB,"SCI0011",new String[]{account}));
 					
 					/*
 					 * Ahora se genera una consulta encargada de asignar los totales de las cuentas de mayor
 					 * nivel a menor nivel
 					 */
 					for (int j=10;j>account.length();j-=2) {
-						st.execute(InstruccionesSQL.getSentencia(nombreDB,"INS0058",new String[]{String.valueOf(j)}));
+						st.execute(InstruccionesSQL.getSentencia(nombreDB,"SCI0012",new String[]{String.valueOf(j)}));
 					}
 				}
 				

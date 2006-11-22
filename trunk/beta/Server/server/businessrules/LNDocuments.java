@@ -184,10 +184,10 @@ public class LNDocuments {
 		                        
 		                        if (cash) {
 			                        infoDocumentPack.addContent(new Element("field").setText(SocketServer.getLoging(sock)));
-		                            getTransaction(LNGtransaccion,"INS0083",infoDocumentPack);
+		                            getTransaction(LNGtransaccion,"SCI0016",infoDocumentPack);
 		                        }
 		                        else {
-		                            getTransaction(LNGtransaccion,"INS0085",infoDocumentPack);
+		                            getTransaction(LNGtransaccion,"SCI0017",infoDocumentPack);
 		                        }
 		    	                
 		    	                
@@ -219,10 +219,10 @@ public class LNDocuments {
 	                        
 	                        if (cash) {
 		                        infoDocumentPack.addContent(new Element("field").setText(SocketServer.getLoging(sock)));
-	                            getTransaction(LNGtransaccion,"INS0036",infoDocumentPack);
+	                            getTransaction(LNGtransaccion,"SCI00O3",infoDocumentPack);
 	                        }
 	                        else {
-	                            getTransaction(LNGtransaccion,"INS0035",infoDocumentPack);
+	                            getTransaction(LNGtransaccion,"SCI00O2",infoDocumentPack);
 	                        }
 	                        
 
@@ -272,7 +272,7 @@ public class LNDocuments {
         	             */
         	            
         	            if ((rfDocument != null) && !rfDocument.equals("")) {
-        	            	RunQuery RQrfkey = new RunQuery(bd,"SEL0304",new String[]{primaryKey});
+        	            	RunQuery RQrfkey = new RunQuery(bd,"SCS0053",new String[]{primaryKey});
             	            ResultSet RSrfkey = RQrfkey.ejecutarSELECT();
         	            	String rfKey = "";
             	            while (RSrfkey.next()) {
@@ -287,7 +287,7 @@ public class LNDocuments {
             	            LNGtransaccion.removeKey("ndocumento");
         	                Element documentPack = new Element("package");
                             documentPack.addContent(new Element("field").setText(rfKey));
-                            getTransaction(LNGtransaccion,"UPD0022",documentPack);
+                            getTransaction(LNGtransaccion,"SCU0001",documentPack);
             	            LNGtransaccion.setKey("ndocumento",tmpKey);
             	            
 
@@ -300,7 +300,7 @@ public class LNDocuments {
 
     	                Element documentPack = new Element("package");
                         documentPack.addContent(new Element("field"));
-                        getTransaction(LNGtransaccion,"UPD0022",documentPack);
+                        getTransaction(LNGtransaccion,"SCU0001",documentPack);
 
     	                /*
     	                 * una vez obtenido el numero de documento se avanza un elemento para empezar 
@@ -570,7 +570,7 @@ public class LNDocuments {
     private static boolean isAnnullDocument(String keyDocument) 
     throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
         boolean annul = true;
-        RunQuery RQkey = new RunQuery(bd,"SEL0129",new String[]{keyDocument});
+        RunQuery RQkey = new RunQuery(bd,"SCS0045",new String[]{keyDocument});
         ResultSet RSdatos = RQkey.ejecutarSELECT();
         while (RSdatos.next()) {
             annul=RSdatos.getBoolean(1);
@@ -582,7 +582,7 @@ public class LNDocuments {
     
     private static String getPrimaryKey(String numero) throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
         String primaryKey=null;
-        RunQuery RQkey = new RunQuery(bd,"SEL0073",new String[]{idDocument,numero});
+        RunQuery RQkey = new RunQuery(bd,"SCS0024",new String[]{idDocument,numero});
         ResultSet RSdatos = RQkey.ejecutarSELECT();
         while (RSdatos.next()) {
             primaryKey=RSdatos.getString(1);
@@ -762,7 +762,7 @@ public class LNDocuments {
     private static String getDocumentKey(String idDocument,String consecutive) 
     throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
         String primaryKey=null;
-        RunQuery RQkey = new RunQuery(bd,"SEL0073",new String[]{idDocument,consecutive});
+        RunQuery RQkey = new RunQuery(bd,"SCS0024",new String[]{idDocument,consecutive});
         ResultSet RSdatos = RQkey.ejecutarSELECT();
         while (RSdatos.next()) {
             primaryKey=RSdatos.getString(1);
@@ -779,7 +779,7 @@ public class LNDocuments {
         documentPack.addContent(new Element("field").setText(idDocument));
         documentPack.addContent(new Element("field").setText(consecutive));
         documentPack.addContent(new Element("field").setText(CacheKeys.getDate().trim()));
-        getTransaction(LNGtransaccion,"INS0029",documentPack);
+        getTransaction(LNGtransaccion,"SCI00O1",documentPack);
     }
 
     /**

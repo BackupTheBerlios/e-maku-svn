@@ -160,7 +160,7 @@ public class LNAdminPUC {
 	             * a los caches
 	             */
 	            if (detalle) {
-	                LinkingCache.loadPerfilCta(SocketServer.getBd(sock),"SEL0319",new String[]{LNGtransaccion.getKey(0)});
+	                LinkingCache.loadPerfilCta(SocketServer.getBd(sock),"SCS0057",new String[]{LNGtransaccion.getKey(0)});
 	            }
 	        }
 	        /*
@@ -280,7 +280,7 @@ public class LNAdminPUC {
 	                }
 	            }
 	            if (detalle) {
-	                LinkingCache.loadPerfilCta(SocketServer.getBd(sock),"SEL0319",new String[]{LNGtransaccion.getKey(0)});
+	                LinkingCache.loadPerfilCta(SocketServer.getBd(sock),"SCS0057",new String[]{LNGtransaccion.getKey(0)});
 	            }
 	        }
 

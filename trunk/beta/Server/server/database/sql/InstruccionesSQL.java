@@ -91,7 +91,7 @@ public class InstruccionesSQL {
     /**
      * Este metodo retorna una consulta que no tiene argumentos.
      *
-     * @param codigo codigo de la sentencia SQL, ej. SEL0010
+     * @param codigo codigo de la sentencia SQL, ej. SCS0008
      * @return retorna una sentencia sql en un objeto String
      */
     

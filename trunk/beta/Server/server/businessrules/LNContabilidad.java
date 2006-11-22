@@ -544,7 +544,7 @@ public class LNContabilidad {
 											new Double(nsaldo));
 			}
 		
-			new RunQuery(bd, "INS0073", asiento).ejecutarSQL();
+			new RunQuery(bd, "SCI0014", asiento).ejecutarSQL();
 		}
 
 		return partidaDoble;
@@ -995,11 +995,11 @@ public class LNContabilidad {
 		if (tipo == LIBRO_AUX_INV) {
 			LinkingCache.setSaldoLibroAux(bd, "", idCta, "", idTipo, new Double(
 					nsaldo));
-			RQsalidas = new RunQuery(bd, "INS0043", asiento);
+			RQsalidas = new RunQuery(bd, "SCI00O7", asiento);
 		} else {
 			LinkingCache.setSaldoLibroAux(bd, "", idCta, idTipo, "", new Double(
 					nsaldo));
-			RQsalidas = new RunQuery(bd, "INS0042", asiento);
+			RQsalidas = new RunQuery(bd, "SCI00O6", asiento);
 		}
 
 		/*
@@ -1083,7 +1083,7 @@ public class LNContabilidad {
 		 * System.out.println("Datos a almacenar"); for (int i=0;i<asiento.length;i++) {
 		 * System.out.println("Campo "+i+": "+asiento[i]); }
 		 */
-		RunQuery RQsalidas = new RunQuery(bd, "INS0041", asiento);
+		RunQuery RQsalidas = new RunQuery(bd, "SCI00O5", asiento);
 		RQsalidas.ejecutarSQL();
 
 	}
@@ -1101,7 +1101,7 @@ public class LNContabilidad {
 			SQLException {
 
 		String idDocumento = CacheKeys.getKey("ndocumento");
-		RunQuery RQdocumento = new RunQuery(bd, "SEL0241",
+		RunQuery RQdocumento = new RunQuery(bd, "SCS0052",
 				new String[] { idDocumento });
 		ResultSet RSdatos = RQdocumento.ejecutarSELECT();
 		/*
@@ -1109,7 +1109,7 @@ public class LNContabilidad {
 		 * id_tercero id_prod_serv debe haber
 		 */
 
-		RunQuery RQanular = new RunQuery(bd, "INS0076");
+		RunQuery RQanular = new RunQuery(bd, "SCI0015");
 		double saldo = 0;
 
 		while (RSdatos.next()) {
