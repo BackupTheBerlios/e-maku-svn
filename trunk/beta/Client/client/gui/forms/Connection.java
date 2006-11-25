@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.UnresolvedAddressException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Properties;
 
@@ -34,6 +33,7 @@ import client.comunications.SendCNX;
 import client.control.HeadersValidator;
 import client.gui.components.panels.PAutentication;
 import client.misc.ClientConst;
+import client.misc.MD5;
 import client.misc.settings.ConfigFile;
 
 import common.comunications.PackageToXML;
@@ -193,23 +193,14 @@ public class Connection {
 	            GenericParameters.removeParameter("userLogin");
 	            GenericParameters.addParameter("userLogin",JPAutenticacion.getUsuario());
 	            SocketChannel socket = SocketConnector.getSock();
-	            MessageDigest md = MessageDigest.getInstance("MD5");
 	            String password = new String(JPAutenticacion.getClave());
-	    		md.update(password.getBytes());
-	    		byte[] bytes = md.digest();
-	    		String md5 ="";
-	    		for (byte b : bytes) {
-	    			int sec = (b & 0xff);
-	    			if ( sec<10 ) {
-	    				md5+="0";	
-	    			}
-					md5+= Integer.toHexString( sec );
-	    		}
+	    		MD5 md5 = new MD5(password);
 	            SocketWriter.writing(socket,
 				                    SendCNX.getPackage(
 				                            JPAutenticacion.getBaseDatos(),
-				                            JPAutenticacion.getUsuario(),md5.toCharArray()));
-	            md = null;
+				                            JPAutenticacion.getUsuario(),
+				                            md5.getDigest().toCharArray()));
+
 			} catch (ConnectException CEe){
 				JOptionPane.showMessageDialog(
 	                    JFConexion,Language.getWord("ERR_CONNECT")+"\n"+
