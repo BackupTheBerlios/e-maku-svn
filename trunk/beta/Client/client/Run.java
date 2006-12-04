@@ -18,7 +18,6 @@ import client.misc.settings.ConfigFileNotLoadException;
 
 import com.nilo.plaf.nimrod.NimRODLookAndFeel;
 import com.nilo.plaf.nimrod.NimRODTheme;
-
 import common.comunications.SocketConnector;
 import common.misc.language.Language;
 
@@ -71,8 +70,12 @@ public class Run {
 	        	UIManager.setLookAndFeel(look);
         	}
         	
+//        	InputStream is = new FileInputStream(new File("/home/felipe/bionic.ttf"));
+//	        Font fo = Font.createFont(
+//	                               Font.TRUETYPE_FONT, is);
+//	        Font f = fo.deriveFont(12f);
         	Font f = new Font("Tahoma", Font.PLAIN, 12);
-        	
+        	Font f2 = new Font("Tahoma",Font.BOLD,14);
         	UIManager.put("Menu.font",			f);
         	UIManager.put("MenuItem.font",		f);
         	UIManager.put("Button.font",		f);
@@ -84,9 +87,9 @@ public class Run {
         	UIManager.put("TextArea.font",		f);
         	UIManager.put("List.font",			f);
         	UIManager.put("Slider.font",		f);
-        	UIManager.put("TitledBorder.font",	f);
+        	UIManager.put("TitledBorder.font",	f2);
         	UIManager.put("RadioButton.font",	f);
-        	UIManager.put("InternalFrame.font",	f);
+        	UIManager.put("InternalFrame.font",	f2);
         	UIManager.put("Table.font",			f);
         	UIManager.put("TabbedPane.font",	f);
         	UIManager.put("DesktopColor.color",	Color.GRAY);

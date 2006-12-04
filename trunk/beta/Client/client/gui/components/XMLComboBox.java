@@ -123,6 +123,11 @@ public class XMLComboBox extends SQLComboBox {
     	        super.paintComponent(g);
     	    }
     	};
+    	
+    	if(this.getFont()!=null) {
+    		JLlabel.setFont(this.getFont());
+    	}
+    	
 	    if (!"".equals(getLabel().getText())) {
 	    	panel.add(JLlabel,BorderLayout.WEST);
     	}

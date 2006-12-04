@@ -26,6 +26,7 @@ package client.gui.components;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -72,6 +73,7 @@ public class SQLComboBox extends JComboBox implements
 	private String labelName="";
 	private int selected;
 	private String key;
+	private Font font;
 	private Vector<String> keysCombo = new Vector<String>();
 
 	private boolean saveKey = true;
@@ -344,7 +346,20 @@ public class SQLComboBox extends JComboBox implements
          	}
          	else if ("noDataMessage".equals(element.getAttributeValue("attribute"))) {
                 noDataMessage = value;
-         	}
+         	} 
+         	else if ("font".equals(element.getAttributeValue("attribute"))) {
+				try {
+					StringTokenizer STfont = new StringTokenizer(element.getValue(), ",");
+					font = new Font(
+					                STfont.nextToken(),
+					                Integer.parseInt(STfont.nextToken()),
+					                Integer.parseInt(STfont.nextToken()));
+				} catch (NumberFormatException NFEe) {
+					font = null;
+				} catch (NoSuchElementException NSEEe) {
+					font = null;
+				}
+			}
 		}
 		if (orden > -1 && exportValue!=null) {
 			GFforma.addExportField(orden,exportValue);
@@ -356,6 +371,10 @@ public class SQLComboBox extends JComboBox implements
 			}
 		}
 			
+		if (font != null) {
+			this.setFont(font);
+		}
+
 		this.addPopupMenuListener(this);
 		this.GFforma.addInitiateFinishListener(this);
 		generar();
@@ -403,6 +422,7 @@ public class SQLComboBox extends JComboBox implements
 						}
 						else {
 							if (dataBeep) {
+								
 								java.awt.Toolkit.getDefaultToolkit().beep();
 							}
 							if (noDataMessage!=null) {
@@ -546,6 +566,7 @@ public class SQLComboBox extends JComboBox implements
 	
 	protected void exportar() {
 		if (exportValue!=null) {
+			System.out.println("El valor es exportable");
        		if (!saveKey) {
 				StringTokenizer stk = new StringTokenizer((String) getSelectedItem()," ");
 				String tok="";
@@ -562,10 +583,12 @@ public class SQLComboBox extends JComboBox implements
        		else  {
 				GFforma.setExternalValues(exportValue,keysCombo.get(getSelectedIndex()));
        		}
-       		
+       		System.out.println("..............");
 		}
 		if (exportTextValue!=null) {
+			System.out.println("Exportando valor del texto ....");
 			GFforma.setExternalValues(exportTextValue,this.getSelectedItem().toString());
+			System.out.println("valor exportado --");
 		}
 		if (sqlCode!=null && getSelectedIndex() > 0) {
 			class SearchingSQL extends Thread {
@@ -578,7 +601,6 @@ public class SQLComboBox extends JComboBox implements
 	            public void run() {
 
 	                String sql;
-	                
 			        for (int i=0;i<sqlCode.size();i++) {
 			            Document doc = null;
 	                    sql = sqlCode.get(i);
@@ -596,7 +618,6 @@ public class SQLComboBox extends JComboBox implements
 	        /*-----------------------------------------------------------*/
 	        Object [] XMLimpValues = importValueCode.toArray();
 			String [] impValues = new String[XMLimpValues.length+1];
-			
 			int i = 0;
 			for ( i = 0; i < impValues.length -1 ; i++) {
 				impValues[i] =  GFforma.getExteralValuesString((String)XMLimpValues[i]);
@@ -704,5 +725,9 @@ public class SQLComboBox extends JComboBox implements
 
 	public int getSelected() {
 		return selected;
+	}
+
+	public Font getFont() {
+		return font;
 	}
 }

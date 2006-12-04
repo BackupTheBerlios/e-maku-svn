@@ -1156,4 +1156,16 @@ public class GenericData extends JPanel implements DateListener,
 			listener.arriveRecordEvent(event);
 		}
 	}
+	
+	/**
+	 * Este metodo genera un paquete en blanco
+	 * 
+	 * @return retorna un paquete en blanco
+	 */
+	public Element getBlankPackage() {
+		Element field = new Element("field");
+		Element pack = new Element("package");
+		pack.addContent(field);
+		return pack;
+	}
 }

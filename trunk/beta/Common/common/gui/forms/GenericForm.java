@@ -115,8 +115,13 @@ public class GenericForm extends JInternalFrame{
      /*
      * Este objeto se lo utiliza cuando se instancia una forma hija
      */
-    
     private GenericForm GFforma;
+    
+    /*
+     * Esta llave cambiara el titulo de la ventana por el valor importado
+     */
+    private String importTitle = null;
+    
 
     /*
      * Este objeto se lo utiliza para generar eventos por cambios de valores exportados
@@ -275,7 +280,6 @@ public class GenericForm extends JInternalFrame{
              */
 
             else if (nombre.equals("component")) {
-
                 String locate = e.getAttributeValue("locate");
                 if (locate!=null) {
                 	this.getContentPane().add(Component(e), locate);
@@ -365,7 +369,6 @@ public class GenericForm extends JInternalFrame{
 
             Element e = (Element) i.next();
             String nombre = e.getName();
-
             /*
              * Interpreta las dimensiones de la forma
              */
@@ -472,12 +475,21 @@ public class GenericForm extends JInternalFrame{
             }
             
             /*
+             * Si esta etiqueta es encontrada,entonces, cada que se importe un valor con
+             * esa etiqueta el titulo de la ventana cambiara por su contenido
+             */
+            else if (nombre.equals("importTitle")) {
+            	this.importTitle = e.getValue();
+            }
+            
+            /*
              * Si esta etiqueta es encontrada se procede a evaluar que la configuracion local
              * coincida con la parametrizada en el Servidor de Transacciones, si no es asi,
              * se aborta el despliegue de la ventana y se saca un mensaje de error informando
              * que los parametros no coinciden por tanto la forma no puede ser ejecutada 
              * desde la terminal lanzada.
              */
+            
             
             else if (nombre.equals("localConfigEquals")) {
                 
@@ -1240,6 +1252,9 @@ public class GenericForm extends JInternalFrame{
         	CEVevent.setExternalValue(String.valueOf(key));
         	notificandoExternalValue(CEVevent);
         }
+    	if (key.equals(importTitle)) {
+    		this.setTitle(value);
+    	}
 	}
 	
 	public void addExportField(int Codigo,String key) {

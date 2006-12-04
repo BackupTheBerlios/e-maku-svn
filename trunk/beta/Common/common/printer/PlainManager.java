@@ -26,6 +26,8 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 	private int currentRow = 1;
 	private String ndocument = "";
 	private boolean sucess = false;
+    private String idTransaction="";
+
 	/*private int width;
 	private int height;*/
 	private ByteArrayInputStream in;
@@ -184,11 +186,10 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 		Iterator it_template = pack_template.getChildren().iterator();
 		Iterator it_transaction = pack_transaction.getChildren().iterator();
 		while(it_template.hasNext() && it_transaction.hasNext()) {
-			
+			int rowInit = -1;
 			Element el_template = (Element)it_template.next();
 			if (el_template.getName().equals("subpackage")) {
 				Attribute attr = el_template.getAttribute("rowInit");
-				int rowInit = -1;
 				boolean isValidate = false;
 				if (attr.getValue().equals("last")) {
 					rowInit = currentRow;
@@ -247,12 +248,29 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 				}
 				addValue(el_transaction.getValue(),attribs);
 			}
+			if (currentRow<rowInit)
+				currentRow = rowInit;
+			else
+				currentRow++;
 		}
 	}
 	
 	private void addValue(String value,HashMap<String,Attribute> attribs) throws DataConversionException {
 		
-		int row =  attribs.get("row").getIntValue();
+		int row = -1; 
+		
+		try {
+			row=  attribs.get("row").getIntValue();
+		}
+		catch(DataConversionException e) {
+			if (attribs.get("row").getValue().equals("last")) {
+				row=  currentRow;
+			}
+			else {
+				row= currentRow--;
+			}
+		}
+		
 		int col =  attribs.get("col").getIntValue();
 		
 		Attribute attribute = attribs.get("type");
@@ -354,7 +372,8 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 
 	public synchronized void cathSuccesEvent(SuccessEvent e) {
 		String numeration = e.getNdocument();
-		if (numeration!=null && !"".equals(numeration)) {
+		
+		if (numeration!=null && !"".equals(numeration) && idTransaction.equals(e.getIdPackage())) {
 			sucess = true;
 			ndocument = numeration;
 		}
@@ -374,5 +393,10 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 
 	public String getNdocument() {
 		return ndocument;
+	}
+
+	public void setIdTransaction(String idTransaction) {
+		System.out.println("Asignando codigo de transaccion ejecutada: "+idTransaction);
+		this.idTransaction = idTransaction;
 	}
 }

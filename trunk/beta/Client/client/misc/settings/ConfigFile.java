@@ -4,12 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Hashtable;
 import java.util.Iterator;
-
-import client.misc.ClientConst;
-import common.misc.Icons;
-import common.misc.language.Language;
-import common.misc.parameters.GenericParameters;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -17,6 +13,12 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+
+import client.misc.ClientConst;
+
+import common.misc.Icons;
+import common.misc.language.Language;
+import common.misc.parameters.GenericParameters;
 /**
  * ConfigFile.java Creado el 25-jun-2004
  * 
@@ -50,7 +52,7 @@ public class ConfigFile extends GenericParameters {
     private static String host;
     private static String language;
     private static String logMode;
-    private static String boxID;
+    private static Hashtable<String,String> boxID = new Hashtable<String,String>();
 
     /**
      * Este metodo sirve para crear un nuevo archivo de configuracion
@@ -140,7 +142,7 @@ public class ConfigFile extends GenericParameters {
                 } else if (nombre.equals("log")) {
                 	logMode = datos.getValue();
                 } else if (nombre.equals("cash")) {
-                    boxID = datos.getValue();
+                    boxID.put(datos.getValue(),"");
 	            }
                 GenericParameters.addParameter(nombre,datos.getValue());
             }
@@ -169,7 +171,7 @@ public class ConfigFile extends GenericParameters {
         return host;
     }
     
-    public static String getBoxID() {
+    public static Hashtable<String,String> getBoxID() {
         return boxID;
     }
     

@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Hashtable;
 import java.util.TreeMap;
 
 import javax.swing.GrayFilter;
@@ -94,7 +95,7 @@ public class FirstDialog extends JDialog {
         
         String host = "localhost";
         String port = "9117";
-        String boxID = "CA001";
+        Hashtable<String,String> boxID = new Hashtable<String,String>();
         String currentLanguage = "es_CO";
         String currentLogMode = "Default";
         
@@ -161,7 +162,7 @@ public class FirstDialog extends JDialog {
         JCBLang.setSelectedItem(currentLanguage);
    
         JTBox = new JTextField(10);
-        JTBox.setText(boxID);      
+        JTBox.setText(boxID.get("cash"));      
 
         Object[] logItems = { "Default", "Verbose", "VerboseFile", "None" };
         JCBLogs = new JComboBox(logItems);

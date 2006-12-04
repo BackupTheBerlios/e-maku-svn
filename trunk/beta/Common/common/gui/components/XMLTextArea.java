@@ -2,6 +2,7 @@ package common.gui.components;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -63,6 +64,7 @@ public class XMLTextArea extends JTextArea implements AnswerListener, InitiateFi
         JSPpanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         driverEvent = new Vector<String>();
         keySQL = new Vector<String>();
+        Font font = null;
         
         Element parameters = doc.getRootElement();
         Iterator i = parameters.getChildren().iterator();
@@ -93,6 +95,22 @@ public class XMLTextArea extends JTextArea implements AnswerListener, InitiateFi
             else if ("colorBackground".equals(subargs.getAttributeValue("attribute"))) {
             	this.setBackground(getColor(subargs.getValue()));
             }
+            else if ("font".equals(subargs.getAttributeValue("attribute"))) {
+				try {
+					StringTokenizer STfont = new StringTokenizer(subargs.getValue(), ",");
+					font = new Font(
+					                STfont.nextToken(),
+					                Integer.parseInt(STfont.nextToken()),
+					                Integer.parseInt(STfont.nextToken()));
+				} catch (NumberFormatException NFEe) {
+					font = null;
+				} catch (NoSuchElementException NSEEe) {
+					font = null;
+				}
+			} 
+        }
+        if (font!=null) {
+        	this.setFont(font);
         }
         this.GFforma.addInitiateFinishListener(this);
     }

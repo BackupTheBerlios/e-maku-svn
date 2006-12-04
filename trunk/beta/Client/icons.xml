@@ -264,6 +264,10 @@
     <path>/icons/ico_nuevo.png</path>
   </icon>
   <icon>
+    <key>EFCONTADO</key>
+    <path>/icons/ico_editar.png</path>
+  </icon>
+  <icon>
     <key>NCARGO-EMPLEADO</key>
     <path>/icons/ico_nuevo.png</path>
   </icon>
@@ -466,5 +470,9 @@
   <icon>
     <key>SPRODUCTO</key>
     <path>/icons/ico_buscar_producto.png</path>
+  </icon>
+  <icon>
+    <key>AGRUPARPRODSERV</key>
+    <path>/icons/ico_agrupar.png</path>
   </icon>
 </icons>

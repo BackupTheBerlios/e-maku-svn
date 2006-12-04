@@ -3,6 +3,7 @@ package client.gui.components;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -129,6 +130,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 		recordEvent = new ArrayList<String>();
 		externalValues = new Hashtable<String, String>();
 		importTotalCol = new HashMap<String, String>();
+		Font font = null;
 
 		Element parameters = doc.getRootElement();
 		Iterator i = parameters.getChildren("arg").iterator();
@@ -156,6 +158,19 @@ public class TableFindData extends JPanel implements AnswerListener,
 					rows = Integer.parseInt(args.getValue());
 				} catch (NumberFormatException NFEe) {
 					NFEe.printStackTrace();
+				}
+			}
+			else if ("font".equals(args.getAttributeValue("attribute"))) {
+				try {
+					StringTokenizer STfont = new StringTokenizer(args.getValue(), ",");
+					font = new Font(
+					                STfont.nextToken(),
+					                Integer.parseInt(STfont.nextToken()),
+					                Integer.parseInt(STfont.nextToken()));
+				} catch (NumberFormatException NFEe) {
+					font = null;
+				} catch (NoSuchElementException NSEEe) {
+					font = null;
 				}
 			}
 			/* Se captura la formula aplicada en la tabla */
@@ -347,7 +362,10 @@ public class TableFindData extends JPanel implements AnswerListener,
 		 */
 
 		GFform.addInitiateFinishListener(this);
-		
+		if (font!=null) {
+			JTtabla.setFont(font);
+			JTtabla.getTableHeader().setFont(font);
+		}
 		JScrollPane JSPtabla = new JScrollPane(JTtabla);
 		this.setLayout(new BorderLayout());
 		this.add(JSPtabla, BorderLayout.CENTER);

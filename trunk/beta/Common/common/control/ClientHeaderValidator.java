@@ -139,6 +139,7 @@ public class ClientHeaderValidator {
             if (!"".equals(message)) {
             	event.setMessage(message);
             }
+
             notifySuccess(event);
             return true;
         }

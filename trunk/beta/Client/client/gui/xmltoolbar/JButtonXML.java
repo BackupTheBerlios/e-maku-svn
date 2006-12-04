@@ -122,53 +122,58 @@ public class JButtonXML extends JButton implements ActionListener,ACPFormListene
      */
     
     public void actionPerformed(ActionEvent e) {
-    	if (ClassName!=null) {
-	        try {
-	            Class cls = Class.forName(ClassName);
-	            if (method==null) {
-	                if (TypeArgConstructor!=null)
-	                    validarArgumentos();
-	                
-	                Constructor cons = cls.getConstructor(TypeArgConstructor);
-	                cons.newInstance(ArgConstructor);
-	            }
-	            else {
-	                Method meth = cls.getMethod(method,new Class[]{});
-	                meth.invoke(cls.newInstance(),new Object[]{});
-	            }
-	        }
-	        catch(ClassNotFoundException CNFEe) {
-	            CNFEe.printStackTrace();
-	            System.out.println("Exception : "+CNFEe.getMessage());
-	        }
-	        catch(NoSuchMethodException NSMEe) {
-	            NSMEe.printStackTrace();
-	            System.out.println("Exception : "+NSMEe.getMessage());
-	        }
-	        catch(InstantiationException IEe) {
-	            IEe.printStackTrace();
-	            System.out.println("Exception : "+IEe.getMessage());
-	        }
-	        catch(IllegalAccessException IAEe) {
-	            IAEe.printStackTrace();
-	            System.out.println("Exception : "+IAEe.getMessage());
-	        }
-	        catch(InvocationTargetException ITEe) {
-	            ITEe.printStackTrace();
-	            System.out.println("Exception: "+ITEe.getMessage());
-	        }
+    	class ActionOption extends Thread {
+    		public void run() {
+			    	if (ClassName!=null) {
+				        try {
+				            Class cls = Class.forName(ClassName);
+				            if (method==null) {
+				                if (TypeArgConstructor!=null)
+				                    validarArgumentos();
+				                
+				                Constructor cons = cls.getConstructor(TypeArgConstructor);
+				                cons.newInstance(ArgConstructor);
+				            }
+				            else {
+				                Method meth = cls.getMethod(method,new Class[]{});
+				                meth.invoke(cls.newInstance(),new Object[]{});
+				            }
+				        }
+				        catch(ClassNotFoundException CNFEe) {
+				            CNFEe.printStackTrace();
+				            System.out.println("Exception : "+CNFEe.getMessage());
+				        }
+				        catch(NoSuchMethodException NSMEe) {
+				            NSMEe.printStackTrace();
+				            System.out.println("Exception : "+NSMEe.getMessage());
+				        }
+				        catch(InstantiationException IEe) {
+				            IEe.printStackTrace();
+				            System.out.println("Exception : "+IEe.getMessage());
+				        }
+				        catch(IllegalAccessException IAEe) {
+				            IAEe.printStackTrace();
+				            System.out.println("Exception : "+IAEe.getMessage());
+				        }
+				        catch(InvocationTargetException ITEe) {
+				            ITEe.printStackTrace();
+				            System.out.println("Exception: "+ITEe.getMessage());
+				        }
+			    	}
+			    	else {
+			    		 Dimension size = new Dimension();
+			             size.height = MainWindow.getAncho();
+			             size.width = MainWindow.getAlto();
+			             new GenericForm(
+			            		 ACPHandler.getDocForm(transaction),
+			            		 MainWindow.getJDPanel(),
+			            		 ClientConst.KeyClient,
+			            		 size,
+			                     transaction);
+			    	}
+    		}
     	}
-    	else {
-    		 Dimension size = new Dimension();
-             size.height = MainWindow.getAncho();
-             size.width = MainWindow.getAlto();
-             new GenericForm(
-            		 ACPHandler.getDocForm(transaction),
-            		 MainWindow.getJDPanel(),
-            		 ClientConst.KeyClient,
-            		 size,
-                     transaction);
-    	}
+    	new ActionOption().start();
     }
 
     /**

@@ -729,6 +729,13 @@
     <en_US>Total</en_US>
   </sentence>
   <sentence>
+    <key>TOTAL-VENDIDO</key>
+    <es_CO>Total Vendido</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Sold Total</en_US>
+  </sentence>
+  <sentence>
     <key>GTOTAL</key>
     <es_CO>GTotal</es_CO>
     <es_EC></es_EC>
@@ -2237,20 +2244,6 @@
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Contract Type</en_US>
-  </sentence>
-  <sentence>
-    <key>FECHA_INICIACION</key>
-    <es_CO>Fecha Iniciación</es_CO>
-    <es_EC></es_EC>
-    <es_ES></es_ES>
-    <en_US>Begining Date</en_US>
-  </sentence>
-  <sentence>
-    <key>FECHA_TERMINACION</key>
-    <es_CO>Fecha Terminación</es_CO>
-    <es_EC></es_EC>
-    <es_ES></es_ES>
-    <en_US>End Date</en_US>
   </sentence>
   <sentence>
     <key>ESTADO_EMPLEADO</key>
@@ -3792,17 +3785,17 @@
   </sentence>
   <sentence>
     <key>INFORME-VENTAS</key>
-    <es_CO>Informes de Ventas</es_CO>
+    <es_CO>Reporte de Ventas</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Say Report</en_US>
   </sentence>
   <sentence>
-    <key>NEMO-INFORME-VENTAS</key>
-    <es_CO>I</es_CO>
+    <key>NEMO-REPORTE-VENTAS</key>
+    <es_CO>R</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>I</en_US>
+    <en_US>R</en_US>
   </sentence>
   <sentence>
     <key>INFORME-CARTERA</key>
@@ -3915,6 +3908,20 @@
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Final Date</en_US>
+  </sentence>
+    <sentence>
+    <key>NUMEROI</key>
+    <es_CO>Numero Inicial</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Init Number</en_US>
+  </sentence>
+  <sentence>
+    <key>NUMEROF</key>
+    <es_CO>Numero Final</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Final Number</en_US>
   </sentence>
   <sentence>
     <key>REPORTE-COTIZACION-NUMERO</key>
@@ -4800,18 +4807,214 @@
     <en_US>PENDIENTE</en_US>
   </sentence>
   <sentence>
-    <key>REPORTE-VENTAS-TERCEROS</key>
-    <es_CO>Reporte de ventas a terceros</es_CO>
+    <key>REPORTE-POST</key>
+    <es_CO>Reporte Post</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>PENDIENTE</en_US>
+    <en_US>Report Post</en_US>
   </sentence>
   <sentence>
-    <key>NEMO-REPORTE-VENTAS-TERCEROS</key>
+    <key>NEMO-REPORTE-POST</key>
+    <es_CO>R</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>R</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-GRAFICO</key>
+    <es_CO>Reportes Gráficos</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Grafics Reports</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-GRAFICO</key>
+    <es_CO>G</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>G</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-FACTURADO</key>
+    <es_CO>Facturado</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Invoiced</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-FACTURADO</key>
+    <es_CO>F</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>F</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-VENDIDO</key>
+    <es_CO>Vendido</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Sold</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-VENDIDO</key>
+    <es_CO>V</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>V</en_US>
+  </sentence>
+  <sentence>
+    <key>VENTAS-DIA</key>
+    <es_CO>Ventas del Día</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Sales of the Day</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-VENTAS-DIA</key>
+    <es_CO>D</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>D</en_US>
+  </sentence>
+  <sentence>
+    <key>FACTURAS-DIA</key>
+    <es_CO>Facturas del Día</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Sales of the Day</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-FACTURAS-DIA</key>
+    <es_CO>F</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>F</en_US>
+  </sentence>
+  <sentence>
+    <key>PRODUCTOS-VENDIDOS-DIA</key>
+    <es_CO>Productos Vendidos del Día</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Sold Products of the Day</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-PRODUCTOS-VENDIDOS-DIA</key>
+    <es_CO>P</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>P</en_US>
+  </sentence>
+  <sentence>
+    <key>PRODUCTOS-FACTURADOS-DIA</key>
+    <es_CO>Productos Facturados del Día</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Sold Products of the Day</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-PRODUCTOS-FACTURADOS-DIA</key>
     <es_CO>a</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>PENDIENTE</en_US>
+    <en_US>a</en_US>
+  </sentence>
+  <sentence>
+    <key>VENTAS-RANGO-FECHA</key>
+    <es_CO>Ventas por Rango de Fecha</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Sales by Rank of Date</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-VENTAS-RANGO-FECHA</key>
+    <es_CO>V</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>V</en_US>
+  </sentence>
+  <sentence>
+    <key>FACTURAS-RANGO-FECHA</key>
+    <es_CO>Facturas por Rango de Fecha</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Sales by Rank of Date</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-FACTURAS-RANGO-FECHA</key>
+    <es_CO>T</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>V</en_US>
+  </sentence>
+  <sentence>
+    <key>PRODUCTOS-RANGO-FECHA</key>
+    <es_CO>Productos por Rango de Fecha</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Products by Rank of Date</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-PRODUCTOS-RANGO-FECHA</key>
+    <es_CO>F</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>F</en_US>
+  </sentence>
+  <sentence>
+    <key>VENTAS-RANGO-NUMEROS</key>
+    <es_CO>Ventas por Rango de Número</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>	Sales by Rank of Number</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-VENTAS-RANGO-NUMEROS</key>
+    <es_CO>N</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>N</en_US>
+  </sentence>
+  <sentence>
+    <key>PRODUCTOS-RANGO-NUMEROS</key>
+    <es_CO>Productos por Rango de Numeros</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Products by Rank of Number</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-PRODUCTOS-RANGO-NUMEROS</key>
+    <es_CO>T</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>T</en_US>
+  </sentence>
+  <sentence>
+    <key>VENTAS-MESERO-DIA</key>
+    <es_CO>Ventas Mesero Según Día</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Sales Mesero According to Day</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-VENTAS-MESERO-DIA</key>
+    <es_CO>M</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>M</en_US>
+  </sentence>
+  <sentence>
+    <key>VENTAS-MESERO-RANGO-NUMERO</key>
+    <es_CO>Ventas Mesero por Rango de Número </es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Mesero sales by Rank of Number</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-VENTAS-MESERO-RANGO-NUMERO</key>
+    <es_CO>S</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>S</en_US>
   </sentence>
   <sentence>
     <key>REPORTE-SALDO-BANCOS</key>
@@ -5247,5 +5450,277 @@
     <es_ES></es_ES>
     <en_US>Report of Consumo Note by date and producto</en_US>
   </sentence>
-  
+  <sentence>
+    <key>MESAS</key>
+    <es_CO>Mesas</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Tables</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-MESAS</key>
+    <es_CO>M</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>T</en_US>
+  </sentence>
+  <sentence>
+    <key>MESEROS</key>
+    <es_CO>Meseros</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Meseros</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-MESEROS</key>
+    <es_CO>C</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>C</en_US>
+  </sentence>
+  <sentence>
+    <key>NMESA</key>
+    <es_CO>Nueva Mesa</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Table</en_US>
+  </sentence>
+  <sentence>
+    <key>EMESA</key>
+    <es_CO>Editar Mesa</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Edit Table</en_US>
+  </sentence>
+  <sentence>
+    <key>DMESA</key>
+    <es_CO>Borra Mesa</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Delete Tables</en_US>
+  </sentence>
+  <sentence>
+    <key>NMESERO</key>
+    <es_CO>Nuevo Mesero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Mesero</en_US>
+  </sentence>
+  <sentence>
+    <key>EMESERO</key>
+    <es_CO>Editar Mesero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Edit Mesero</en_US>
+  </sentence>
+  <sentence>
+    <key>DMESERO</key>
+    <es_CO>Borra Mesero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Delete Mesero</en_US>
+  </sentence>
+  <sentence>
+    <key>MESERO</key>
+    <es_CO>Mesero</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Mesero</en_US>
+  </sentence>
+  <sentence>
+    <key>MESA</key>
+    <es_CO>Mesa</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Mesa</en_US>
+  </sentence>
+  <sentence>
+    <key>TERRAZA</key>
+    <es_CO>Terraza</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Terraza</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-TERRAZA</key>
+    <es_CO>T</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>T</en_US>
+  </sentence>
+  <sentence>
+    <key>BARRA</key>
+    <es_CO>Barra</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Barra</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-BARRA</key>
+    <es_CO>B</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>B</en_US>
+  </sentence>
+  <sentence>
+    <key>NTERRAZA</key>
+    <es_CO>Nueva Terraza</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Terraza</en_US>
+  </sentence>
+  <sentence>
+    <key>ETERRAZA</key>
+    <es_CO>Editar Terraza</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Edit Terraza</en_US>
+  </sentence>
+  <sentence>
+    <key>DTERRAZA</key>
+    <es_CO>Borra Terraza</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Delete Terraza</en_US>
+  </sentence>
+  <sentence>
+    <key>NBARRA</key>
+    <es_CO>Nueva Barra</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Barra</en_US>
+  </sentence>
+  <sentence>
+    <key>EBARRA</key>
+    <es_CO>Editar Barra</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Edit Barra</en_US>
+  </sentence>
+  <sentence>
+    <key>DBARRA</key>
+    <es_CO>Borra Barra</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Delete Barra</en_US>
+  </sentence>
+  <sentence>
+    <key>LUGAR</key>
+    <es_CO>Lugar</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Lugar</en_US>
+  </sentence>
+  <sentence>
+    <key>AGRUPARPROD</key>
+    <es_CO>Agrupar Productos</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Agrupar Productos</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-FPOST</key>
+    <es_CO>P</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>P</en_US>
+  </sentence>
+  <sentence>
+    <key>FPOST</key>
+    <es_CO>Facturacion Post</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Facturacion Post</en_US>
+  </sentence>
+  <sentence>
+    <key>NFPOST</key>
+    <es_CO>Nueva Factura Post</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Nueva Factura Post</en_US>
+  </sentence>
+  <sentence>
+    <key>EFPOST</key>
+    <es_CO>Editar Factura Post</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Edit Invoice Post</en_US>
+  </sentence>
+  <sentence>
+    <key>AFPOST</key>
+    <es_CO>Anular Factura Post</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Annull Invoice Post</en_US>
+  </sentence>
+  <sentence>
+    <key>AVENTA</key>
+    <es_CO>Anular Venta</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Annull Document</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-AVENTA</key>
+    <es_CO>V</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>D</en_US>
+  </sentence>
+  <sentence>
+    <key>ANULADOS-RANGO-FECHA</key>
+    <es_CO>Reporte de documentos anulados por rango de fecha</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Reporte de documentos anulados por rango de fecha</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-ANULADOS-RANGO-FECHA</key>
+    <es_CO>a</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>a</en_US>
+  </sentence>
+  <sentence>
+    <key>FACTURA</key>
+    <es_CO>Factura</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Invoice</en_US>
+  </sentence>
+  <sentence>
+    <key>SFPOST</key>
+    <es_CO>Consultar Factura Post</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>To Consult Invoice Post</en_US>
+  </sentence>
+  <sentence>
+    <key>APRODGRUPO</key>
+    <es_CO>Adicionar Producto a Grupo</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Add Product on Group</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-AGRUPARPROD</key>
+    <es_CO>A</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>A</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-PRODUCTOS</key>
+    <es_CO>Reporte de Productos</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Products Report</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-PRODUCTOS</key>
+    <es_CO>R</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>R</en_US>
+  </sentence>
 </language>  

@@ -29,7 +29,12 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
+import common.control.ClientHeaderValidator;
+import common.control.SuccessEvent;
+import common.control.SuccessListener;
 import common.gui.forms.GenericForm;
 import common.gui.forms.NotFoundComponentException;
 import common.misc.Icons;
@@ -62,7 +67,7 @@ import common.transactions.STResultSet;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David
  *         Cepeda </A>
  */
-public class ButtonsPanel extends JPanel implements ActionListener, KeyListener {
+public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,SuccessListener{
 
     private static final long serialVersionUID = 8883108186183650115L;
 
@@ -72,15 +77,19 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
     private Hashtable <String,JButton>Hbuttons;
     private String idTransaction;
     private String accel = "";
-	private String typePackage = "TRANSACTION";
 	private String idReport;
     private PlainManager plainManager = new PlainManager("");
     private PostScriptManager postScriptManager = new PostScriptManager();
+	private String typePackage = "TRANSACTION";
+	private String lastNumber;
+	private boolean actionFinish;
+
     
     public ButtonsPanel(GenericForm GFforma, Document doc) {
 
         this.GFforma = GFforma;
         this.setLayout(new FlowLayout());
+		ClientHeaderValidator.addSuccessListener(this);
 
         Heventos = new Hashtable<String,Vector<?>>();
         Hbuttons = new Hashtable<String,JButton>();
@@ -137,7 +146,10 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
         }
     }
 
-    private JButton buildButton(String label,String icon,boolean enabled, String keyStroke) {
+    private JButton buildButton(String label,
+    							String icon,
+    							boolean enabled, 
+    							String keyStroke) {
     	JButton button = new JButton();
     	try {
     		button.setIcon(new ImageIcon(this.getClass().getResource(Icons.getIcon(icon))));
@@ -290,31 +302,37 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 
 	@SuppressWarnings("unchecked")
 	private void callEvent(String action) 
-    throws InvocationTargetException,NotFoundComponentException {
+    throws InvocationTargetException,NotFoundComponentException, IOException {
     	
     	Vector vec = Heventos.get(action);
         Object obj = vec.get(0);
         if (obj instanceof Componentes) {
-        	builTransaction(vec,action,null);
+        	builTransaction(vec,action,null,null);
         }
         else if (obj instanceof Element) {
         	for (Object object : vec) {
+        		actionFinish=false;
 	        	Element element= (Element) object;
 	    		String type = element.getChildText("type");
+	    		String idManualTransaction = element.getChildText("idManualTransaction");
 	    		Iterator it = element.getChildren("component").iterator();
     			Vector<Componentes> vector = new Vector<Componentes>();
     			while (it.hasNext()) {
         			Componentes comp = loadComponent((Element) it.next());
             		vector.add(comp);
     			}
+    			System.out.println("Generando transaccion tipo: "+type);
 	    		if ("transaction".equals(type)) {
-            		builTransaction(vector,action,null);
+            		builTransaction(vector,action,null,null);
+	    		}
+	    		else if ("manualTransaction".equals(type)) {
+	    			builTransaction(vector,action,null,idManualTransaction);
 	    		}
 	    		else if ("printer".equals(type)) {
 	    			Document doc = new Document();
 	    			Element printJob = new Element("printjob"); 
 	    			doc.setRootElement(printJob);
-	    			builTransaction(vector,action,printJob);
+	    			builTransaction(vector,action,printJob,null);
 	    			String pathTemplate = element.getChildText("printerTemplate");
 	    			try {
 						SAXBuilder sax = new SAXBuilder(false);
@@ -372,7 +390,8 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
         }
     }
     
-    private void builTransaction(Vector<Componentes> vec,String action,Element ret) throws InvocationTargetException, NotFoundComponentException {
+    private synchronized void builTransaction(Vector<Componentes> vec,String action,Element printJob,String idManualTransaction) 
+    throws InvocationTargetException, NotFoundComponentException, IOException {
         Vector <Element>pack = new Vector<Element>();
     	Element multielementos[] = null;
         Element elementos = null;
@@ -407,11 +426,18 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
 	                pack.addElement(elementos);
             }
         }
-    	if (ret==null) {
-			String namePackage = !"REPORT".equals(action)?"TRANSACTION":typePackage;
+    	if (printJob==null) {
+    		String namePackage;
+    		if (!"REPORT".equals(action)) {
+    			namePackage="TRANSACTION";
+    		}
+    		else {
+    			namePackage=typePackage;
+    		}
+    		
 		    if (pack.size() > 0 || !namePackage.equals("TRANSACTION")) {
 		   		try {
-		   			formatPackageStructure(pack,typePackage);
+		   			formatPackageStructure(pack,typePackage,idManualTransaction);
 				} catch (MalformedProfileException e) {
 					e.printStackTrace();
 				}
@@ -419,7 +445,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
     	}
     	else {
     		for (int i = 0; i < pack.size(); i++) {
-                ret.addContent((Element) pack.elementAt(i).clone());
+                printJob.addContent((Element) pack.elementAt(i).clone());
             }
     	}
     }
@@ -487,18 +513,27 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
             }
             catch (NotFoundComponentException NFCEe) {
                 NFCEe.printStackTrace();
-            }
+            } catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
 
     }
     
-    private void formatPackageStructure(Vector pack,String packageName) throws MalformedProfileException {
+    private void formatPackageStructure(Vector pack,String packageName,String idManualTransaction) 
+    throws MalformedProfileException, IOException {
         Document transaction = new Document();
         transaction.setRootElement(new Element(packageName));
 
         Element driver = new Element("driver");
         if ("TRANSACTION".equals(packageName)) {
-        	driver.setText(GFforma.getIdTransaction());
+        	if (idManualTransaction==null) {
+        		driver.setText(GFforma.getIdTransaction());
+        	}
+        	else {
+        		driver.setText(idManualTransaction);
+        	}
         }
         else if ("REPORTREQUEST".equals(packageName)) {
         	if (idReport!=null) { 
@@ -524,6 +559,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
         Element id = new Element("id");
         idTransaction = "T"+STResultSet.getId();
         id.setText(idTransaction);
+        plainManager.setIdTransaction(idTransaction);
 
         transaction.getRootElement().addContent(driver);
         transaction.getRootElement().addContent(id);
@@ -537,8 +573,31 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
         for (int i = 0; i < pack.size(); i++) {
             transaction.getRootElement().addContent((Element) pack.elementAt(i));
         }
-
+        XMLOutputter out = new XMLOutputter();
+        out.setFormat(Format.getPrettyFormat());
+        try {
+			out.output(transaction,System.out);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         GFforma.sendTransaction(transaction);
+
+        int times = 0;
+		while (!actionFinish) {
+			try {
+				if (times<=100) {
+					Thread.sleep(100);
+				}
+				else {
+					System.out.println("El tiempo de espera expiro, las acciones siguientes seran canceladas");
+					throw new IOException();
+				}
+				times++;
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
     }
 
     public void keyPressed(KeyEvent e) {}
@@ -591,6 +650,26 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener 
                     JOptionPane.ERROR_MESSAGE);    				
     	}
     }
+
+    public Element getLastNumber() {
+    	System.out.println("Valor de lastNumber: "+lastNumber);
+        Element pack = new Element("package");
+        if (lastNumber!=null && !lastNumber.equals("")) {
+            Element field = new Element("field");
+            field.setText(lastNumber);
+            pack.addContent(field);
+        }
+        return pack;
+    }
+    
+	public void cathSuccesEvent(SuccessEvent e) {
+		String numeration = e.getNdocument();
+		if (e.getIdPackage().equals(idTransaction)) {
+			lastNumber = numeration;
+			actionFinish=true;
+		}
+
+	}
 }
 
 class Componentes {

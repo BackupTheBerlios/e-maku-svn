@@ -11,6 +11,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -97,6 +99,7 @@ public class MenuLoader extends JMenuBar {
                 /**
                  * Se adicionara todos los menus principales a la clase MenuLoader
                  */
+                
                 this.add(CargarJMenu(j));
             }
         }
@@ -112,18 +115,12 @@ public class MenuLoader extends JMenuBar {
      * Metodo encargado de cargar los submenus al menu padre
      */
 
-    private JMenu CargarJMenu(Iterator j) {
+    private JMenuXML CargarJMenu(Iterator j) {
         String value="";
+        boolean menuVisible = false;
         try {
-	        JMenu JMtmp = new JMenu() {
-				private static final long serialVersionUID = -7359380148326153002L;
-				public void paintComponent(Graphics g) {
-        	        Graphics2D g2 = (Graphics2D)g;
-        	        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-        	                            RenderingHints.VALUE_ANTIALIAS_ON);
-        	        super.paintComponent(g);
-        	    }
-	        };
+	        JMenuXML JMtmp = new JMenuXML();
+	        JMtmp.setVisible(false);
 	        while (j.hasNext()) {
 	            Element subdatos = (Element) j.next();
 	            value=subdatos.getValue();
@@ -144,18 +141,30 @@ public class MenuLoader extends JMenuBar {
 	                java.util.List Ljmenuitem = subdatos.getChildren();
 	                Iterator k = Ljmenuitem.iterator();
 	                if (subdatos.getName().equals("JMenuItem")) {
-	                    JMenuItem JMItmp = CargarJMenuItem(k);
-	                    if (JMItmp != null)
-	                        JMtmp.add(JMItmp);
+	                    JMenuItemXML JMItmp = CargarJMenuItem(k);
+	                    if (JMItmp != null) {
+	                        JMtmp.add(JMItmp); 
+	                        if (JMItmp.getTransaction()!= null) {
+	                        	JMtmp.setTransaction(JMItmp.getTransaction());
+	                        }
+		                    if (JMItmp.isVisible()) {
+		                    	menuVisible=true;
+		                    }
+	                    }
 	                } else if (subdatos.getName().equals("JMenu")) {
 	                    /**
 	                     * LLamado Recursivo a CargarJMenu
 	                     */
-	                    JMtmp.add(CargarJMenu(k));
+	                	JMenuXML JMsub = CargarJMenu(k);
+	                	if (JMsub!=null) {
+	                		JMtmp.add(JMsub);
+	                		JMtmp.setTransactions(JMsub.getTransactions());
+	                	}
 	                }
 	            }
-        }
-        return JMtmp;
+	        }
+		    JMtmp.setVisible(menuVisible);
+	    	return JMtmp;
         }
     
         catch(NullPointerException NPEe) {
@@ -169,7 +178,7 @@ public class MenuLoader extends JMenuBar {
      * Metodo encargado de cargar los Items al menu padre
      */
 
-    private JMenuItem CargarJMenuItem(Iterator j) {
+    private JMenuItemXML CargarJMenuItem(Iterator j) {
         JMItmp = new JMenuItemXML();
         while (j.hasNext()) {
             Element subdatos = (Element) j.next();
@@ -267,6 +276,7 @@ public class MenuLoader extends JMenuBar {
     public void setEnabledAll() {
         for (int i = 0; i < Items.size(); i++) {
             Items.elementAt(i).setEnabled(true);
+            Items.elementAt(i).setVisible(true);
         }
     }
 
@@ -277,8 +287,10 @@ public class MenuLoader extends JMenuBar {
 
     public void setDisabledAll() {
         for (int i = 0; i < Items.size(); i++) {
-            if (!Items.elementAt(i).getActivo())
+            if (!Items.elementAt(i).getActivo()) {
                 Items.elementAt(i).setEnabled(false);
+            	Items.elementAt(i).setVisible(false);
+            }
         }
     }
 
@@ -289,8 +301,10 @@ public class MenuLoader extends JMenuBar {
 
     public void setEnabled(String actioncommand) {
         for (int i = 0; i < Items.size(); i++) {
-            if (Items.elementAt(i).getActionCommand().equals(actioncommand))
+            if (Items.elementAt(i).getActionCommand().equals(actioncommand)) {
                 Items.elementAt(i).setEnabled(true);
+            	Items.elementAt(i).setVisible(true);
+            }
         }
     }
 
@@ -303,8 +317,53 @@ public class MenuLoader extends JMenuBar {
         for (int i = 0; i < Items.size(); i++) {
             if (Items.elementAt(i).getActionCommand().equals(actioncommand))
                 Items.elementAt(i).setEnabled(false);
+            	Items.elementAt(i).setVisible(false);
         }
     }
+}
+
+class JMenuXML extends JMenu implements ACPFormListener {
+
+	private static final long serialVersionUID = 7636160917375080303L;
+	private Hashtable<String,String> transactions;
+	
+	public JMenuXML() {
+		transactions = new Hashtable<String,String>();
+		ACPHandler.addACPFormListener(this);
+   	}
+	
+	public void setTransaction(String key) {
+		transactions.put(key,"");
+	}
+	
+	public Hashtable getTransactions() {
+		return transactions;
+	}
+	
+	public void setTransactions(Hashtable transactions) {
+		Enumeration e = transactions.keys();
+		while(e.hasMoreElements()) {
+			String key = (String)e.nextElement();
+			this.transactions.put(key,"");
+		}
+	}
+	
+	public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                            RenderingHints.VALUE_ANTIALIAS_ON);
+        super.paintComponent(g);
+    }
+
+	public void arriveACPForm(ACPFormEvent e) {
+		if (transactions.containsKey(e.getTransaction())) {
+			setEnabled(true);
+			setVisible(true);
+			//ACPHandler.removeACPFormListener(this);
+
+		}
+	}
+	
 }
 
 /**
@@ -348,9 +407,14 @@ class JMenuItemXML extends JMenuItem implements ActionListener , ACPFormListener
         return activo;
     }
 
+    public String getTransaction() {
+    	return transaction;
+    }
+    
     public void setTransaction(String transaction) {
         this.transaction = transaction;
         this.setEnabled(false);
+        this.setVisible(false);
     }
 
     /**
@@ -395,52 +459,57 @@ class JMenuItemXML extends JMenuItem implements ActionListener , ACPFormListener
      */
 
     public void actionPerformed(ActionEvent e) {
-        if (ClassName!=null) {
-	        try {
-	            Class cls = Class.forName(ClassName);
-	            if (method == null) {
-	                if (TypeArgConstructor != null)
-	                    validarArgumentos();
-	
-	                Constructor cons = cls.getConstructor(TypeArgConstructor);
-	                cons.newInstance(ArgConstructor);
-	            } else {
-	                Method meth = cls.getMethod(method, new Class[] {});
-	                meth.invoke(cls.newInstance(), new Object[]{});
-	            }
-	        }
-	        catch (ClassNotFoundException CNFEe) {
-	            CNFEe.printStackTrace();
-	            System.out.println("Exception : " + CNFEe.getMessage());
-	        }
-	        catch (NoSuchMethodException NSMEe) {
-	            NSMEe.printStackTrace();
-	            System.out.println("Exception : " + NSMEe.getMessage());
-	        }
-	        catch (InstantiationException IEe) {
-	            IEe.printStackTrace();
-	            System.out.println("Exception : " + IEe.getMessage());
-	        }
-	        catch (IllegalAccessException IAEe) {
-	            IAEe.printStackTrace();
-	            System.out.println("Exception : " + IAEe.getMessage());
-	        }
-	        catch (InvocationTargetException ITEe) {
-	            ITEe.printStackTrace();
-	            System.out.println("Exception: " + ITEe.getMessage());
-	        }
-        }
-        else {
-            Dimension size = new Dimension();
-            size.height = MainWindow.getAncho();
-            size.width = MainWindow.getAlto();
-            
-            new GenericForm(ACPHandler.getDocForm(transaction),
-                    						   MainWindow.getJDPanel(),
-                    						   ClientConst.KeyClient,
-                    						   size,
-                    						   transaction);
-        }
+    	class ActionOption extends Thread {
+    		public void run() {
+		        if (ClassName!=null) {
+			        try {
+			            Class cls = Class.forName(ClassName);
+			            if (method == null) {
+			                if (TypeArgConstructor != null)
+			                    validarArgumentos();
+			
+			                Constructor cons = cls.getConstructor(TypeArgConstructor);
+			                cons.newInstance(ArgConstructor);
+			            } else {
+			                Method meth = cls.getMethod(method, new Class[] {});
+			                meth.invoke(cls.newInstance(), new Object[]{});
+			            }
+			        }
+			        catch (ClassNotFoundException CNFEe) {
+			            CNFEe.printStackTrace();
+			            System.out.println("Exception : " + CNFEe.getMessage());
+			        }
+			        catch (NoSuchMethodException NSMEe) {
+			            NSMEe.printStackTrace();
+			            System.out.println("Exception : " + NSMEe.getMessage());
+			        }
+			        catch (InstantiationException IEe) {
+			            IEe.printStackTrace();
+			            System.out.println("Exception : " + IEe.getMessage());
+			        }
+			        catch (IllegalAccessException IAEe) {
+			            IAEe.printStackTrace();
+			            System.out.println("Exception : " + IAEe.getMessage());
+			        }
+			        catch (InvocationTargetException ITEe) {
+			            ITEe.printStackTrace();
+			            System.out.println("Exception: " + ITEe.getMessage());
+			        }
+		        }
+		        else {
+		            Dimension size = new Dimension();
+		            size.height = MainWindow.getAncho();
+		            size.width = MainWindow.getAlto();
+		            
+		            new GenericForm(ACPHandler.getDocForm(transaction),
+		                    						   MainWindow.getJDPanel(),
+		                    						   ClientConst.KeyClient,
+		                    						   size,
+		                    						   transaction);
+		        }
+    		}
+    	}
+    	new ActionOption().start();
     }
         
 
@@ -465,6 +534,8 @@ class JMenuItemXML extends JMenuItem implements ActionListener , ACPFormListener
 	public void arriveACPForm(ACPFormEvent e) {
 		if (e.getTransaction().equals(transaction)) {
 			setEnabled(true);
+			setVisible(true);
+	     //   ACPHandler.removeACPFormListener(this);
 		}
 	}
 
