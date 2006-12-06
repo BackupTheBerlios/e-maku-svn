@@ -118,22 +118,21 @@ public class HeadersValidator implements ArrivePackageListener {
 	             * Si existe id quiere decir que una consulta o una transaccion
 	             * retorno error
 	             */
-	            if(id!=null) {
+/*	        	XMLOutputter out = new XMLOutputter();
+	        	out.setFormat(Format.getPrettyFormat());
+	        	try {
+					out.output(doc,System.out);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+*/
+	            if(id!=null && "Q".equals(id.substring(0,1))) {
 	                /*
 	                 * si fue una consulta entonces ...
 	                 */
-	                if ("Q".equals(id.substring(0,1))) 
-	                    STResultSet.putSpoolQuery(id,doc);
-	                /*
-	                 * si por el contrario fue una transaccion entonces ...
-	                 */
-	                else if ("T".equals(id.substring(0,1))){
-						displayError();
-	            	}
+                    STResultSet.putSpoolQuery(id,doc);
 	            }
-	            else {
-					displayError();
-	        	}
+				displayError();
 	        }
 	        
 	        

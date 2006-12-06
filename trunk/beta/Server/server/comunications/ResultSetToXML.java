@@ -149,7 +149,7 @@ public class ResultSetToXML extends Document {
 	                    Language.getWord("ERR_RS") + " " +sql+" "+SQLEe.getMessage();
 	                LogAdmin.setMessage(err, ServerConst.ERROR);
 	                ErrorXML error = new ErrorXML();
-	                SocketWriter.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
+	                SocketWriter.writing(sock,error.returnError(ServerConst.ERROR, bd, id,err));
 	                SQLEe.printStackTrace();
 	            }
 	            catch (IOException e) {
@@ -162,7 +162,7 @@ public class ResultSetToXML extends Document {
 	            String err = QNFEe.getMessage();
 	            LogAdmin.setMessage(err, ServerConst.ERROR);
 	            ErrorXML error = new ErrorXML();
-	            SocketWriter.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
+	            SocketWriter.writing(sock,error.returnError(ServerConst.ERROR, bd, id,err));
 	            QNFEe.printStackTrace();
 	
 	        } 
@@ -170,14 +170,14 @@ public class ResultSetToXML extends Document {
 	            String err = Language.getWord("ERR_ST") + " "+sql+" "+ SQLEe.getMessage();
 	            LogAdmin.setMessage(err, ServerConst.ERROR);
 	            ErrorXML error = new ErrorXML();
-	            SocketWriter.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
+	            SocketWriter.writing(sock,error.returnError(ServerConst.ERROR, bd, id,err));
 	            SQLEe.printStackTrace();
 	        }
 	        catch (SQLBadArgumentsException QBAEe) {
 	            String err = QBAEe.getMessage();
 	            LogAdmin.setMessage(err, ServerConst.ERROR);
 	            ErrorXML error = new ErrorXML();
-	            SocketWriter.writing(sock,error.returnError(ServerConst.ERROR, bd, err));
+	            SocketWriter.writing(sock,error.returnError(ServerConst.ERROR, bd, id,err));
 	            QBAEe.printStackTrace();
 	        }
         }

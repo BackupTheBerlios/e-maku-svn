@@ -108,14 +108,25 @@ public class ValidHeaders {
                     }
                     answer.transmition(sock,valida.getId());
                     
+/*                    try {
+                        XMLOutputter xmlOutputter = new XMLOutputter();
+                        xmlOutputter.setFormat(Format.getPrettyFormat());
+                        xmlOutputter.output(doc,System.out);
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
+*/                    
                 } else {
                     ErrorXML error = new ErrorXML();
                     String tmp = Language.getWord("SQL_ACCESS_DENIED") + 
                     		" "+valida.getQuery()+" "+
                             sock.socket();
                     LogAdmin.setMessage(tmp, ServerConst.MESSAGE);
-                    SocketWriter.writing(sock, error.returnError(
-                            ServerConst.ERROR, "", tmp));
+                    SocketWriter.writing(sock, error.returnError(ServerConst.ERROR,
+					            	      SocketServer.getBd(sock),
+					            	      valida.getId(),
+					            	      tmp));
                 }
 
             } 

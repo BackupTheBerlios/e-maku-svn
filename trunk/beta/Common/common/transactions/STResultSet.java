@@ -90,6 +90,7 @@ public class STResultSet {
         int i=0;
         while (!HspoolTransactions.containsKey(id)) {
             try {
+            	System.out.print(".");
                 Thread.sleep(100);
                 i++;
                 if (i>300) {

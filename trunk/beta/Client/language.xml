@@ -4611,11 +4611,32 @@
     <en_US>s</en_US>
   </sentence>
   <sentence>
+    <key>PREARQUEO</key>
+    <es_CO>Prearqueo</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Prearching</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-PREARQUEO</key>
+    <es_CO>p</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>p</en_US>
+  </sentence>
+  <sentence>
     <key>NARQUEO</key>
     <es_CO>Nuevo Arqueo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New cash count</en_US>
+  </sentence>
+   <sentence>
+    <key>NPREARQUEO</key>
+    <es_CO>Nuevo Prerqueo</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Prearching</en_US>
   </sentence>
   <sentence>
     <key>AARQUEO</key>
@@ -4625,11 +4646,39 @@
     <en_US>Annull cash count</en_US>
   </sentence>
   <sentence>
+    <key>APREARQUEO</key>
+    <es_CO>Anular Prearqueo</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Annull Prearching</en_US>
+  </sentence>
+  <sentence>
     <key>SARQUEO</key>
     <es_CO>Consultar Arqueo</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>Search cash count</en_US>
+  </sentence>
+  <sentence>
+    <key>SPREARQUEO</key>
+    <es_CO>Consultar Prearqueo</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Search Prearching</en_US>
+  </sentence>
+  <sentence>
+    <key>ANULAR-PREARQUEO</key>
+    <es_CO>Anular Prearqueo</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Annull Prearching</en_US>
+  </sentence>
+  <sentence>
+    <key>NCOMANDAS</key>
+    <es_CO>Nro. Comandas</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Nro. Comandas</en_US>
   </sentence>
   <sentence>
     <key>REPORTE-ARQUEO-NUMERO</key>
@@ -5722,5 +5771,12 @@
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>R</en_US>
+  </sentence>
+  <sentence>
+    <key>TOTAL-PRODUCTOS</key>
+    <es_CO>Total Productos</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Total Products</en_US>
   </sentence>
 </language>  
