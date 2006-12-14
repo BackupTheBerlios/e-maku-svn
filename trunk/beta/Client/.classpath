@@ -9,7 +9,7 @@
 	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/ostermillerutils.jar"/>
 	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/jcalendar.jar"/>
 	<classpathentry kind="lib" path="/home/emaku/beta/lib/contrib/nimrodlf.jar"/>
-	<classpathentry kind="lib" path="/home/emaku/volcafe/lib/emaku/icons.jar"/>
-	<classpathentry kind="lib" path="/VolcafeCommon/bin"/>
+	<classpathentry kind="lib" path="/home/emaku/beta/lib/emaku/icons.jar"/>
+	<classpathentry kind="lib" path="/Common/bin"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

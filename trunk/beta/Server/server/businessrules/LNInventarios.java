@@ -43,6 +43,7 @@ public class LNInventarios {
     private String tipoMovimiento;
     private final String ENTRADA = "entrada";
     private final String SALIDA = "salida";
+    private final String AJUSTE = "ajuste";
     private final String GASTOS = "gastosydescuentos";
     private final String ANULAR = "anular";
     double saldo;
@@ -65,7 +66,7 @@ public class LNInventarios {
 	            Element e = (Element)i.next();
 	            String attribute = e.getAttributeValue("attribute");
 	            if (attribute.equals("tipoMovimiento")) {
-	            	tipoMovimiento = e.getValue();
+	            	tipoMovimiento = e.getValue().trim().toLowerCase();
 	            }
 	        }
         }
@@ -90,9 +91,9 @@ public class LNInventarios {
          */
     	RunQuery RQmovimiento = null;
     	System.out.print("tipo Movimiento: "+tipoMovimiento);
-    	if (ENTRADA.equals(tipoMovimiento.trim().toLowerCase())) {
+    	if (ENTRADA.equals(tipoMovimiento)) {
         	RQmovimiento = new RunQuery(bd,"SCI00O8");
-        	String record[] = movimientoInventario(pack,ENTRADA);
+        	String record[] = movimientoInventario(pack);
         	/*
         	 * Se valida que no se genere un asiento de inventario con cantidad 0
         	 * si la cantidad es 0 quiere decir que no hubo movimiento por tanto
@@ -107,9 +108,9 @@ public class LNInventarios {
 				RQmovimiento.closeStatement();
         	}
     	}
-    	else if (SALIDA.equals(tipoMovimiento.trim().toLowerCase())) {
+    	else if (SALIDA.equals(tipoMovimiento)) {
         	RQmovimiento = new RunQuery(bd,"SCI00O4");
-        	String record[] = movimientoInventario(pack,SALIDA);
+        	String record[] = movimientoInventario(pack);
         	if (!(record[4].equals("0") || record[4].equals("0.0"))) {
 /*        		System.out.print("Registros: ");
         		for (int i=0;i<record.length;i++) {
@@ -119,13 +120,44 @@ public class LNInventarios {
  				RQmovimiento.closeStatement();
         	}
     	}
-    	else if (GASTOS.equals(tipoMovimiento.trim().toLowerCase())) {
+    	else if (GASTOS.equals(tipoMovimiento)) {
     		gastosYdescuentos(pack);
     	}
-    	else if (ANULAR.endsWith(tipoMovimiento.trim().toLowerCase())) {
+    	else if (AJUSTE.equals(tipoMovimiento)) {
+    		ajustes(pack);
+    	}
+    	else if (ANULAR.endsWith(tipoMovimiento)) {
     		anular(); 
     	}
     }
+
+    /**
+     * Este metodo genera ajustes automaticos apartir de la cantidad, dependiendo
+     * si el valor es positivo o negativo decide si el movimiento de ajuste sera 
+     * una entrada o una salida
+     * @param pack
+     * @throws SQLBadArgumentsException 
+     * @throws SQLNotFoundException 
+     * @throws SQLException 
+     */
+    private void ajustes(Element pack) 
+    throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
+    	String record[] = movimientoInventario(pack);
+    	RunQuery RQmovimiento = null;
+    	
+    	if (SALIDA.equals(tipoMovimiento)) {
+        	RQmovimiento = new RunQuery(bd,"SCI00O4");
+        }
+    	else if (ENTRADA.equals(tipoMovimiento)) {
+        	RQmovimiento = new RunQuery(bd,"SCI00O8");
+    	}
+    	
+    	if (!(record[4].equals("0") || record[4].equals("0.0"))) {
+       		RQmovimiento.ejecutarSQL(record);
+ 			RQmovimiento.closeStatement();
+    	}
+    }
+    
     /**
      * Este metodo se encarga de efectuar traslados entre diferentes bodegas.
      */
@@ -135,11 +167,13 @@ public class LNInventarios {
     	RunQuery RQentrada = null;
     	RunQuery RQsalida = null;
         try {
-        	String[] records = movimientoInventario(pack,SALIDA);
+        	tipoMovimiento=SALIDA;
+        	String[] records = movimientoInventario(pack);
         	RQsalida = new RunQuery(bd,"SCI00O4");
         	RQsalida.ejecutarSQL(records);
         	CacheKeys.setKey("valorEntrada",records[6]);
-        	String[] ventradas = movimientoInventario(pack,ENTRADA);
+        	tipoMovimiento=ENTRADA;
+        	String[] ventradas = movimientoInventario(pack);
         	RQentrada = new RunQuery(bd,"SCI00O8");
         	RQentrada.ejecutarSQL(ventradas);
         	RQentrada.closeStatement();
@@ -171,7 +205,7 @@ public class LNInventarios {
      * 		   de datos.
      */
 
-    private String[] movimientoInventario(Element pack,String movimiento) {
+    private synchronized String[] movimientoInventario(Element pack) {//,String movimiento) {
 		
 		/* 
          * REGISTROS DE UN MOVIMIENTO
@@ -192,12 +226,15 @@ public class LNInventarios {
     	/*
     	 * Se carga los datos iniciales
     	 */
-    	if (movimiento.equals(ENTRADA)) {
+    	if (tipoMovimiento.equals(ENTRADA)) {
     		record = infoMovimiento(pack,"bodegaEntrante");
     	}
-    	else {
+    	else if (tipoMovimiento.equals(SALIDA)){
     		record = infoMovimiento(pack,"bodegaSaliente");
     		conversion = -1;
+    	}
+    	else if (tipoMovimiento.equals(AJUSTE)) {
+    		record = infoMovimiento(pack,"bodegaAjuste");
     	}
     	
     	/*
@@ -208,15 +245,29 @@ public class LNInventarios {
     	if (record[4].equals("0") || record[4].equals("0.0")) {
     		return record;
     	}
-        
+    	
+    	if (tipoMovimiento.equals("AJUSTE")) {
+    		double _cantidad = Double.parseDouble(record[4]); 
+    		if (_cantidad>0) {
+    			tipoMovimiento=ENTRADA;
+    			record[5] = String.valueOf(LinkingCache.getPCosto(bd, record[2], record[3]));
+    		}
+    		else { 
+    			tipoMovimiento=SALIDA;
+    			record[4]= String.valueOf(_cantidad*-1);
+        		conversion = -1;
+    		}
+    	}
+    	
     	/*
     	 * Se verifica si record[5] tiene valor, en caso
     	 * de que no lo tenga es porque se esta generando
-    	 * un traslado, por tanto este tubo que haber sido
-    	 * almacenado con anterioridad en el cache de llaves
+    	 * un traslado, por tanto este tubo que 
+    	 * haber sido almacenado con anterioridad en el cache 
+    	 * de llaves
     	 */
     	
-    	if (movimiento.equals(ENTRADA)) {
+    	if (tipoMovimiento.equals(ENTRADA)) {
 	    	if (record[5]==null) {
 	    		record[5] = CacheKeys.getKey("valorEntrada")==null?"0.0":CacheKeys.getKey("valorEntrada");
 	    	}

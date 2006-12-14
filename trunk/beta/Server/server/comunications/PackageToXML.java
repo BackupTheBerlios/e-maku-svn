@@ -8,17 +8,16 @@ import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SocketChannel;
 import java.util.Vector;
 
-import common.comunications.SocketWriter;
-import common.misc.language.Language;
-import common.misc.log.LogAdmin;
+import org.jdom.Document;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 
 import server.control.ValidHeaders;
 import server.misc.ServerConst;
 import server.misc.settings.ConfigFile;
 
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+import common.misc.language.Language;
+import common.misc.log.LogAdmin;
 
 /**
  * PackageToXML.java Creado el 05-oct-2004
@@ -94,9 +93,7 @@ public class PackageToXML extends Thread {
                     }
                     
                 }
-
                 for (int i = 0; i < vbuffer.size(); i++) {
-
                     ByteArrayOutputStream docStream = new ByteArrayOutputStream();
 
                     try {
@@ -105,7 +102,6 @@ public class PackageToXML extends Thread {
                         if (docStream.size() > 2) {
                             ByteArrayInputStream bufferIn = new ByteArrayInputStream(
                                     docStream.toByteArray());
-
                             doc = builder.build(bufferIn);
 
                             if (channel.socket().getLocalPort() == ConfigFile
@@ -116,15 +112,21 @@ public class PackageToXML extends Thread {
                         }
                     }
                     catch (JDOMException e1) {
-
+                    	
                         SocketServer.getBufferTmp(channel).write(docStream.toByteArray());
-
-                        ErrorXML error = new ErrorXML();
+                        //System.out.println("Paqute: ");
+                        //System.out.println(docStream.toString());
+                       /* File file = new File("/home/felipe/emaku.log");
+                        RandomAccessFile rfile = new RandomAccessFile(file,"rw");
+                        rfile.write(docStream.toByteArray());*/
                         String tmp = Language.getWord("ERR_FORMAT_PROTOCOL")
-                                + " " + channel.socket();
-                        LogAdmin.setMessage(tmp, ServerConst.ERROR);
+                        + " " + channel.socket();
+                        LogAdmin.setMessage(tmp+"\n"+docStream.toString(), ServerConst.ERROR);
+                        /*
+                        ErrorXML error = new ErrorXML();
                         SocketWriter.writing(channel, error.returnError(
                                 ServerConst.ERROR, "", tmp));
+                        */
                     }
                 }
 
