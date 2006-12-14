@@ -3791,6 +3791,27 @@
     <en_US>Say Report</en_US>
   </sentence>
   <sentence>
+    <key>NEMO-INFORME-VENTAS</key>
+    <es_CO>t</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>t</en_US>
+  </sentence>
+  <sentence>
+    <key>REPORTE-VENTAS-TERCEROS</key>
+    <es_CO>Reporte Ventas Terceros</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Reporte Ventas Terceros</en_US>
+  </sentence>
+  <sentence>
+    <key>NEMO-REPORTE-VENTAS-TERCEROS</key>
+    <es_CO>o</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>o</en_US>
+  </sentence>
+  <sentence>
     <key>NEMO-REPORTE-VENTAS</key>
     <es_CO>R</es_CO>
     <es_EC></es_EC>
