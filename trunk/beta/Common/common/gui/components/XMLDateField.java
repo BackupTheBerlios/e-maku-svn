@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.JPanel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -41,7 +43,7 @@ import common.gui.forms.NotFoundComponentException;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  */
 
-public class XMLDateField extends JDateChooser implements AnswerListener, InitiateFinishListener,FocusListener {
+public class XMLDateField extends JDateChooser implements DocumentListener, AnswerListener, InitiateFinishListener,FocusListener {
 
 	/**
 	 * 
@@ -97,9 +99,11 @@ public class XMLDateField extends JDateChooser implements AnswerListener, Initia
         	panel.add(this);
         }
         editor = (JTextFieldDateEditor)this.getComponent(1);
+        editor.getDocument().addDocumentListener(this);
         editor.setColumns(20);
         editor.addFocusListener(this);
         this.GFforma.addInitiateFinishListener(this);
+
     }
     
     public Component getPanel() {
@@ -173,5 +177,20 @@ public class XMLDateField extends JDateChooser implements AnswerListener, Initia
 
 	public void focusLost(FocusEvent e) {
 		exportar();
+	}
+
+	public void changedUpdate(DocumentEvent e) {
+	}
+
+	public void insertUpdate(DocumentEvent e) {
+		if (exportValue!=null) {
+			try {
+				GFforma.setExternalValues(exportValue,this.getDate().toString());
+			}
+			catch(NullPointerException NPEe) {}
+		}
+	}
+
+	public void removeUpdate(DocumentEvent e) {
 	}
 }

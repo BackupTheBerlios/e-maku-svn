@@ -5800,4 +5800,25 @@
     <es_ES></es_ES>
     <en_US>Total Products</en_US>
   </sentence>
+  <sentence>
+    <key>SALDO_SISTEMA</key>
+    <es_CO>Saldo Sistema</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Balance System</en_US>
+  </sentence>
+  <sentence>
+    <key>SALDO_REAL</key>
+    <es_CO>Saldo Real</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Balance Real</en_US>
+  </sentence>
+  <sentence>
+    <key>DIFERENCIA</key>
+    <es_CO>Diferencia</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Difference</en_US>
+  </sentence>
 </language>  
