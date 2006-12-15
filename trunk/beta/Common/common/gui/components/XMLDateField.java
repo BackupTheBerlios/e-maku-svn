@@ -23,6 +23,8 @@ import common.gui.forms.FinishEvent;
 import common.gui.forms.GenericForm;
 import common.gui.forms.InitiateFinishListener;
 import common.gui.forms.NotFoundComponentException;
+import common.transactions.STException;
+import common.transactions.STResultSet;
 
 /**
  * XMLTextField.java Creado el 13-nov-2006
@@ -45,7 +47,8 @@ import common.gui.forms.NotFoundComponentException;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  */
 
-public class XMLDateField extends JDateChooser implements KeyListener, DocumentListener, AnswerListener, InitiateFinishListener,FocusListener {
+public class XMLDateField extends JDateChooser 
+implements KeyListener, DocumentListener, AnswerListener, InitiateFinishListener,FocusListener {
 
 	/**
 	 * 
@@ -59,15 +62,18 @@ public class XMLDateField extends JDateChooser implements KeyListener, DocumentL
 	private JPanel panel;
 	private JTextFieldDateEditor editor;
 	private boolean onPanel = true;
-
+	private Vector<String> sqlCode = null;
+	private Vector<String> constantValue = null;
+	private Vector<AnswerListener> AnswerListener = new Vector<AnswerListener>();
+	
     public XMLDateField(GenericForm GFforma, Document doc) {
     	super("yyyy/MM/dd HH:mm:ss", "####/##/## ##:##:##",'_');
     	this.GFforma=GFforma;
         driverEvent = new Vector<String>();
         keySQL = new Vector<String>();
+        sqlCode = new Vector<String>();
         Element parameters = doc.getRootElement();
         Iterator i = parameters.getChildren().iterator();
-        
         
         while (i.hasNext()) {
             Element subargs = (Element) i.next();
@@ -94,6 +100,15 @@ public class XMLDateField extends JDateChooser implements KeyListener, DocumentL
 			}
 			else if ("panel".equals(subargs.getAttributeValue("panel"))) {
 				onPanel = Boolean.parseBoolean(value);
+			}
+			else if ("sqlCode".equals(subargs.getAttributeValue("attribute"))) {
+				this.sqlCode.add(subargs.getValue());
+			} 
+			else if ("constantValue".equals(subargs.getAttributeValue("attribute"))) {
+				if (constantValue == null) {
+					constantValue = new Vector<String>();
+				}
+				constantValue.addElement(subargs.getValue());
 			}
         }
         
@@ -179,6 +194,72 @@ public class XMLDateField extends JDateChooser implements KeyListener, DocumentL
 		exportar();
 	}
 
+	/**
+	 * Metodo encargado de generar sentencias sql de otros componentes
+	 */
+	public void searchOthersSqls() {
+		class SearchingSQL extends Thread {
+
+			private String[] args;
+
+			public SearchingSQL(String[] args) {
+				this.args = args;
+			}
+
+			public void run() {
+
+				String sql;
+				for (int i = 0; i < sqlCode.size(); i++) {
+					Document doc = null;
+					sql = (String) sqlCode.get(i);
+					try {
+						doc = STResultSet.getResultSetST(sql, args);
+					} catch (STException e) {
+						e.printStackTrace();
+					}
+					AnswerEvent event = new AnswerEvent(this, sql, doc);
+					notificando(event);
+				}
+			}
+		}
+		/*-----------------------------------------------------------*/
+		int sizeConstantValue = 0;
+		if (constantValue!= null) {
+			sizeConstantValue = constantValue.size();
+		}
+		String[] argumentos = new String[importValue.size()
+				+ sizeConstantValue + 1];
+		
+		String[] XMLimpValues = importValue.toArray(new String[importValue.size()]);
+
+		int i = 0;
+		for (i = 0; i < sizeConstantValue; i++) {
+			argumentos[i] = constantValue.get(i);
+		}
+
+		for (; i < importValue.size(); i++) {
+			argumentos[i] = GFforma.getExteralValuesString(XMLimpValues[i]);
+		}
+		argumentos[i] = this.getDate().toString();
+		new SearchingSQL(argumentos).run();
+	}
+	
+	public synchronized void addAnswerListener(AnswerListener listener) {
+		AnswerListener.addElement(listener);
+	}
+
+	public synchronized void removeAnswerListener(AnswerListener listener) {
+		AnswerListener.removeElement(listener);
+	}
+	
+	private synchronized void notificando(AnswerEvent event) {
+		Vector lista;
+		lista = (Vector) AnswerListener.clone();
+		for (int i = 0; i < lista.size(); i++) {
+			AnswerListener listener = (AnswerListener) lista.elementAt(i);
+			listener.arriveAnswerEvent(event);
+		}
+	}
 	
 	public void insertUpdate(DocumentEvent e) {
 		if (exportValue!=null) {
