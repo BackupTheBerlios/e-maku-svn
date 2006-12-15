@@ -134,6 +134,9 @@ implements KeyListener, DocumentListener, AnswerListener, InitiateFinishListener
     	}
     }
 
+    public Element getPrintPackage() {
+    	return getPackage();
+    }
     
     public Element getPackage() {
         Element pack = new Element("package");
