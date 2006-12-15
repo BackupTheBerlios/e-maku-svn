@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.Vector;
@@ -43,7 +45,7 @@ import common.gui.forms.NotFoundComponentException;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  */
 
-public class XMLDateField extends JDateChooser implements DocumentListener, AnswerListener, InitiateFinishListener,FocusListener {
+public class XMLDateField extends JDateChooser implements KeyListener, DocumentListener, AnswerListener, InitiateFinishListener,FocusListener {
 
 	/**
 	 * 
@@ -59,12 +61,13 @@ public class XMLDateField extends JDateChooser implements DocumentListener, Answ
 	private boolean onPanel = true;
 
     public XMLDateField(GenericForm GFforma, Document doc) {
-    	super("yyyy/MM/dd", "####/##/##",'_');
+    	super("yyyy/MM/dd HH:mm:ss", "####/##/## ##:##:##",'_');
     	this.GFforma=GFforma;
         driverEvent = new Vector<String>();
         keySQL = new Vector<String>();
         Element parameters = doc.getRootElement();
         Iterator i = parameters.getChildren().iterator();
+        
         
         while (i.hasNext()) {
             Element subargs = (Element) i.next();
@@ -102,6 +105,7 @@ public class XMLDateField extends JDateChooser implements DocumentListener, Answ
         editor.getDocument().addDocumentListener(this);
         editor.setColumns(20);
         editor.addFocusListener(this);
+        editor.addKeyListener(this);
         this.GFforma.addInitiateFinishListener(this);
 
     }
@@ -166,10 +170,6 @@ public class XMLDateField extends JDateChooser implements DocumentListener, Answ
 		}
 	}
 
-	public void focusGained(FocusEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	public void clean() {
 		editor.setText("");
@@ -179,9 +179,7 @@ public class XMLDateField extends JDateChooser implements DocumentListener, Answ
 		exportar();
 	}
 
-	public void changedUpdate(DocumentEvent e) {
-	}
-
+	
 	public void insertUpdate(DocumentEvent e) {
 		if (exportValue!=null) {
 			try {
@@ -191,6 +189,21 @@ public class XMLDateField extends JDateChooser implements DocumentListener, Answ
 		}
 	}
 
-	public void removeUpdate(DocumentEvent e) {
+	public void keyReleased(KeyEvent e) {
+		int keyCode = e.getKeyCode();
+		if ( (keyCode==KeyEvent.VK_ENTER) || (keyCode==KeyEvent.VK_TAB)) {
+			editor.transferFocus();
+		}
 	}
+	
+	public void focusGained(FocusEvent e) {}
+	
+	public void removeUpdate(DocumentEvent e) {}
+
+	public void keyPressed(KeyEvent e) {}
+
+	public void keyTyped(KeyEvent e) {}
+
+	public void changedUpdate(DocumentEvent e) {}
+
 }

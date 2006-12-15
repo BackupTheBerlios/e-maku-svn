@@ -584,13 +584,12 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
         GFforma.sendTransaction(transaction);
 
         int times = 0;
-		while (!actionFinish) {
+		while (!actionFinish && "TRANSACTION".equals(packageName)) {
 			try {
 				if (times<=100) {
 					Thread.sleep(100);
 				}
 				else {
-					System.out.println("El tiempo de espera expiro, las acciones siguientes seran canceladas");
 					throw new IOException();
 				}
 				times++;
