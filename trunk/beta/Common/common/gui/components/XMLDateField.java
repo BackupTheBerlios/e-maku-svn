@@ -71,6 +71,7 @@ implements KeyListener, DocumentListener, AnswerListener, InitiateFinishListener
     	this.GFforma=GFforma;
         driverEvent = new Vector<String>();
         keySQL = new Vector<String>();
+        importValue = new Vector<String>();
         sqlCode = new Vector<String>();
         Element parameters = doc.getRootElement();
         Iterator i = parameters.getChildren().iterator();
@@ -195,12 +196,15 @@ implements KeyListener, DocumentListener, AnswerListener, InitiateFinishListener
 
 	public void focusLost(FocusEvent e) {
 		exportar();
+		if (sqlCode.size()>0) {
+			searchOthersSqls();
+		}
 	}
 
 	/**
 	 * Metodo encargado de generar sentencias sql de otros componentes
 	 */
-	public void searchOthersSqls() {
+	private void searchOthersSqls() {
 		class SearchingSQL extends Thread {
 
 			private String[] args;
@@ -244,7 +248,7 @@ implements KeyListener, DocumentListener, AnswerListener, InitiateFinishListener
 			argumentos[i] = GFforma.getExteralValuesString(XMLimpValues[i]);
 		}
 		argumentos[i] = this.getDate().toString();
-		new SearchingSQL(argumentos).run();
+		new SearchingSQL(argumentos).start();
 	}
 	
 	public synchronized void addAnswerListener(AnswerListener listener) {
@@ -265,12 +269,11 @@ implements KeyListener, DocumentListener, AnswerListener, InitiateFinishListener
 	}
 	
 	public void insertUpdate(DocumentEvent e) {
-		if (exportValue!=null) {
-			try {
-				GFforma.setExternalValues(exportValue,this.getDate().toString());
-			}
-			catch(NullPointerException NPEe) {}
+		exportar();
+		if (sqlCode.size()>0) {
+			searchOthersSqls();
 		}
+
 	}
 
 	public void keyReleased(KeyEvent e) {

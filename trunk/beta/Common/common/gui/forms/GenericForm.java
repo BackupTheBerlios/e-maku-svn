@@ -745,11 +745,11 @@ public class GenericForm extends JInternalFrame{
             System.out.println("Exception : " + IAEe.getMessage());
         }
         catch (InvocationTargetException ITEe) {
+            ITEe.printStackTrace();
             JOptionPane.showInternalMessageDialog(JDPpanel,
                     ITEe.getCause().getMessage(), Language
                             .getWord("ERROR_MESSAGE"),
                     JOptionPane.ERROR_MESSAGE);
-            ITEe.printStackTrace();
         }
 
         /*
