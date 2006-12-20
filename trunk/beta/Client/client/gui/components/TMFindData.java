@@ -100,6 +100,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     private boolean loadingQuery = false;
     private int tagDataColumn = -1;
     private int currentIndex = 0;
+    private boolean isInitQuery;
     
     public TMFindData(GenericForm GFforma,
             		  String sqlCode,
@@ -123,6 +124,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
             		  int[] totales,
             		  Hashtable externalValues,
 			  		  ArgsTableFindData[] ATFDargs) {
+    	this.isInitQuery=true;
 		this.GFforma=GFforma;
 		this.sqlCode=sqlCode;
 		this.formulas=formulas;
@@ -132,6 +134,7 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 		this.ATFDargs=ATFDargs;
 		this.initSQL=true;
 		VdataRows = new Vector<Vector<Object>>();
+        totalCol = new Hashtable<String,Double>();
         importTotalCol 	= new HashMap<String,String>();
 
 		List Lrows = doc.getRootElement().getChildren("row");
@@ -151,8 +154,10 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 			}
 			/* Se adiciona la nueva fila al vector de filas */
 			VdataRows.add(col);
+			
         }
-	}
+        totalizar();
+    }
     
     public TMFindData(
     		GenericForm GFforma, 
@@ -899,6 +904,9 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     
     public synchronized void addTotalEventListener(TableTotalListener listener ) {
         tableTotalListener.add(listener);
+        if(isInitQuery) {
+        	notificando();
+        }
     }
 
     public synchronized void removeTotalEventListener(TableTotalListener listener ) {
