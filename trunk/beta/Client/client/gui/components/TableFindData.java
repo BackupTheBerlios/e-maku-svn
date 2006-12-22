@@ -542,7 +542,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 		 * Eliminado el hilo por problemas de retorno del objeto TMDtabla. new
 		 * loadingSQL(initSQL, initArgs).start();
 		 */
-		new loadingSQL(initSQL, initArgs).run();
+		new loadingSQL(initSQL, initArgs).start();
 	}
 
 	public JPanel getPanel() {
@@ -791,6 +791,12 @@ public class TableFindData extends JPanel implements AnswerListener,
 	}
 
 	public TMFindData getTMFDtabla() {
+		while(TMFDtabla==null){
+			try {
+				Thread.sleep(30);
+			}
+			catch(InterruptedException e) {}
+		}
 		return TMFDtabla;
 	}
 

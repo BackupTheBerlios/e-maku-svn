@@ -204,7 +204,8 @@ public class GenericData extends JPanel implements DateListener,
 				String nameField = null;
 				String addAttribute = null;
 				String sendRecord = null;
-
+				String cname = null;
+				
 				while (j.hasNext()) {
 					final Element elm = (Element) j.next();
 					if ("sqlCode".equals(elm.getAttributeValue("attribute"))) {
@@ -217,7 +218,11 @@ public class GenericData extends JPanel implements DateListener,
 						lab = elm.getValue();
 					} else if ("format".equals(elm.getAttributeValue("attribute"))) {
 						format = elm.getValue();
-					} else if ("mask".equals(elm.getAttributeValue("attribute"))) {
+					}
+					 else if ("name".equals(elm.getAttributeValue("attribute"))) {
+							cname = elm.getValue();
+						}
+					else if ("mask".equals(elm.getAttributeValue("attribute"))) {
 						mask = elm.getValue();
 					} else if ("size"
 							.equals(elm.getAttributeValue("attribute"))) {
@@ -248,8 +253,7 @@ public class GenericData extends JPanel implements DateListener,
 							constantValue = new Vector<String>();
 						}
 						constantValue.addElement(elm.getValue());
-					} else if ("calculateExportValue".equals(elm
-							.getAttributeValue("attribute"))) {
+					} else if ("calculateExportValue".equals(elm.getAttributeValue("attribute"))) {
 						calculateExportValue = elm.getValue();
 					} else if ("calculateBSExportValue".equals(elm.getAttributeValue("attribute"))) {
 						calculateBSExportValue = elm.getValue();
@@ -344,6 +348,7 @@ public class GenericData extends JPanel implements DateListener,
 				XMLText.setPrintable(printable);
 				XMLText.setSendRecord(sendRecord);
 				XMLText.setCalculateBSExportValue(calculateBSExportValue);
+				XMLText.setName(cname);
 
 				if (exportValue != null) {
 					XMLText.setExportvalue(exportValue);
@@ -998,6 +1003,7 @@ public class GenericData extends JPanel implements DateListener,
 	}
 
 	public void changeExternalValue(ChangeExternalValueEvent e) {
+		
 		Vector fields = this.getVFields();
 		for (int i = 0; i < getVFields().size(); i++) {
 			XMLTextField xmltf = ((XMLTextField) fields.get(i));
