@@ -7,6 +7,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.lang.reflect.InvocationTargetException;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -143,7 +144,8 @@ implements KeyListener, DocumentListener, AnswerListener, InitiateFinishListener
         Element pack = new Element("package");
         if (!this.getDate().equals("")) {
             Element field = new Element("field");
-            field.setText(this.getDate().toString());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            field.setText(sdf.format(this.getDate()));
             pack.addContent(field);
         }
         return pack;
@@ -166,7 +168,8 @@ implements KeyListener, DocumentListener, AnswerListener, InitiateFinishListener
     private void exportar() {
 		if (exportValue!=null) {
 			try {
-				GFforma.setExternalValues(exportValue,this.getDate().toString());
+	            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				GFforma.setExternalValues(exportValue,sdf.format(this.getDate()));
 			}
 			catch(NullPointerException NPEe) {}
 		}
@@ -247,7 +250,9 @@ implements KeyListener, DocumentListener, AnswerListener, InitiateFinishListener
 		for (; i < importValue.size(); i++) {
 			argumentos[i] = GFforma.getExteralValuesString(XMLimpValues[i]);
 		}
-		argumentos[i] = this.getDate().toString();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		argumentos[i] = sdf.format(this.getDate());
 		new SearchingSQL(argumentos).start();
 	}
 	
