@@ -115,7 +115,18 @@ public class TableDataFields extends GenericData implements InitiateFinishListen
      */
     
     public void initiateFinishEvent(FinishEvent e) {
-        try {
+    	class addTotalClass extends Thread {
+	    
+    		public void run() {
+    			addTotalEvent();
+			}
+    	}
+    	new addTotalClass().start();
+    	
+    }
+    
+    private void addTotalEvent() {
+		try {
           	TMFDtabla = (TMFindData) GFforma.invokeMethod("client.gui.components.TableFindData"+getEnlaceTabla(),
 	        "getTMFDtabla");
 	        TMFDtabla.addTotalEventListener(this);
@@ -148,7 +159,6 @@ public class TableDataFields extends GenericData implements InitiateFinishListen
         	if (!"".equals(getEnlaceTabla()))
     			NFCEe.printStackTrace();
         }
-
     }
     
     public Double getDoubleValue(String key) {

@@ -5821,4 +5821,10 @@
     <es_ES></es_ES>
     <en_US>Difference</en_US>
   </sentence>
-</language>  
+<sentence>
+    <key>GRUPO_PRODUCTO</key>
+    <es_CO>Grupo Productos</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Products Group</en_US>
+  </sentence></language>  

@@ -3,9 +3,11 @@ package common.printer;
 import java.io.ByteArrayInputStream;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -294,16 +296,29 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 			}
 		}
 		else if ("DATE".equals(type)) {
+			System.out.println("Fecha: "+value);
 			String mask = attribs.get("mask").getValue();
-			SimpleDateFormat sdf = new SimpleDateFormat(mask);
-			Calendar c = Calendar.getInstance();
+			SimpleDateFormat sdf = new SimpleDateFormat(mask+" HH:mm:ss");
+			
+/*			Calendar c = Calendar.getInstance();
 			int year  = Integer.valueOf(value.substring(0,4));
 			int month = Integer.valueOf(value.substring(5,7));
 			int day   = Integer.valueOf(value.substring(8,10));
 			c.set(Calendar.YEAR,year);
 			c.set(Calendar.MONTH, (month-1));
 			c.set(Calendar.DAY_OF_MONTH,day);
-			value = sdf.format(c.getTime());
+*/			
+//			value = sdf.format(c.getTime());
+			try {
+				Date date = sdf.parse(value);
+				System.out.println("Date: "+date);
+				value = sdf.format(date);
+				System.out.println("value: "+value);
+			} catch (ParseException e) {
+				
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			/*value = " ".equals(value) || "".equals(value) ? "   " : value.trim();
 			textGenerator.addString(value,row,col,null);*/
 			if (!"".equals(value.trim())) {
