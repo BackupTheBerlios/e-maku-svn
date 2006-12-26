@@ -7,7 +7,7 @@
                    
      jUgo                                                                
      ====================================================================== -->
-<project name="server" default="dist" basedir=".">
+<project name="server" default="dist" basedir="src">
 	<description>
             Servidor de transacciones
     </description>
