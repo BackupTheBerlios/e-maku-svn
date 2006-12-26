@@ -7,7 +7,7 @@
                    
      jUgo                                                                
      ====================================================================== -->
-<project name="client" default="dist" basedir=".">
+<project name="client" default="dist" basedir="src">
 	<description>
             Aplicacion Cliente
     </description>
