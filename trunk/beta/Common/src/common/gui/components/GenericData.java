@@ -590,11 +590,13 @@ public class GenericData extends JPanel implements DateListener,
 	}
 
 	protected String formatear(double value) {
+		System.out.print("format");
 		BigDecimal bd = new BigDecimal(value);
 		bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
 		NumberFormat nf = NumberFormat.getNumberInstance();
 		DecimalFormat form = (DecimalFormat) nf;
 		form.applyPattern("###,###,##0.00");
+		System.out.println("eando");
 		return form.format(bd);
 	}
 

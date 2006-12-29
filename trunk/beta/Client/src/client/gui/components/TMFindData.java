@@ -154,9 +154,6 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 			}
 			/* Se adiciona la nueva fila al vector de filas */
 			VdataRows.add(col);
-		    if (formulas!=null) {
-                calcular(i,0,false);
-            }
 			
         }
         totalizar();
@@ -1757,13 +1754,29 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
              */
             
             //for (int i=0;Irows.hasNext() && i<rows;i++) {
-            for (int i=0;Irows.hasNext();i++) {
+            int i=0;
+            for (;Irows.hasNext();i++) {
                 Element Erow = (Element) Irows.next();
                 List Lcol = Erow.getChildren();
-
-	            for (int j=0;j<ATFDargs.length;j++) {
-	                updateCells(addCols(j,Lcol),i,j);
-	            }
+            	//try {
+                if (VdataRows.size() <= i) {
+    				Vector<Object> col = new Vector<Object>();
+        			for (int k=0;k<ATFDargs.length;k++) {
+        			    col.add(addCols(k,Lcol));
+        			}
+        			/* Se adiciona la nueva fila al vector de filas */
+        			VdataRows.add(col);
+        			this.rows++;
+        			fireTableDataChanged();
+    			}
+        		for (int j=0;j<ATFDargs.length;j++) {
+        			updateCells(addCols(j,Lcol),i,j);
+        		}
+            	/*}
+            	catch (ArrayIndexOutOfBoundsException IAOBEe) {
+            		
+                }*/
+                
 	            if (formulas!=null) {
                     calcular(i,0,false);
                 }

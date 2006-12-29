@@ -252,8 +252,10 @@ implements KeyListener, DocumentListener, AnswerListener, InitiateFinishListener
 		}
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-		argumentos[i] = sdf.format(this.getDate());
-		new SearchingSQL(argumentos).start();
+        if (this.getDate()!=null) {
+			argumentos[i] = sdf.format(this.getDate());
+			new SearchingSQL(argumentos).start();
+        }
 	}
 	
 	public synchronized void addAnswerListener(AnswerListener listener) {
