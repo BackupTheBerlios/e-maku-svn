@@ -154,6 +154,9 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
 			}
 			/* Se adiciona la nueva fila al vector de filas */
 			VdataRows.add(col);
+			if (formulas!=null) {
+				calcular(i,0,false);
+			}
 			
         }
         totalizar();
