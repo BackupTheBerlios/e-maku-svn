@@ -960,6 +960,13 @@
     <en_US>Q</en_US>
   </sentence>
   <sentence>
+    <key>NEMO-CONSIGNACIONES</key>
+    <es_CO>C</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>C</en_US>
+  </sentence>
+  <sentence>
     <key>PHONE</key>
     <es_CO>Teléfono</es_CO>
     <es_EC></es_EC>
@@ -5203,7 +5210,14 @@
     <es_CO>Consignaciones</es_CO>
     <es_EC></es_EC>
     <es_ES></es_ES>
-    <en_US>consignments</en_US>
+    <en_US>Consignments</en_US>
+  </sentence>
+  <sentence>
+    <key>CONSIGNACIONES/CHEQUESP</key>
+    <es_CO>Consignaciones/Cheques P.</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>Consignments/Checks P.</en_US>
   </sentence>
   <sentence>
     <key>NUEVO_SALDO</key>
@@ -5281,6 +5295,13 @@
     <es_EC></es_EC>
     <es_ES></es_ES>
     <en_US>New relationship for commodity consume</en_US>
+  </sentence>
+  <sentence>
+    <key>NCONSIGNACION</key>
+    <es_CO>Nueva Consignación</es_CO>
+    <es_EC></es_EC>
+    <es_ES></es_ES>
+    <en_US>New Consigment</en_US>
   </sentence>
   <sentence>
     <key> ACONSUMOMATERIAPRIMA</key>

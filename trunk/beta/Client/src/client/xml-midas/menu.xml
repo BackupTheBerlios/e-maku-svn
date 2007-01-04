@@ -2359,6 +2359,16 @@
 			<Activo />
 			<Transaction>TR00049</Transaction>
 		</JMenuItem>
+		<JMenuItem>
+			<Activo />
+			<Acelerator></Acelerator>
+			<ActionCommand>CONSIGNACIONES</ActionCommand>
+			<Icon>/icons/ico_consignacion.png</Icon>
+			<Mnemonic>NEMO-TRASLADOS</Mnemonic>
+			<Text>CONSIGNACIONES</Text>
+			<Activo />
+			<Transaction>TR00252</Transaction>
+		</JMenuItem>
 		<JMenu>
 			<Mnemonic>NEMO-INFORME-BANCOS</Mnemonic>
 			<Icon>GREPORTS</Icon>
