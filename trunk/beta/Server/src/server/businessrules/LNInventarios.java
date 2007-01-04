@@ -144,7 +144,7 @@ public class LNInventarios {
     throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
     	String record[] = movimientoInventario(pack);
     	RunQuery RQmovimiento = null;
-    	
+    	System.out.println("tipo de movimiento "+tipoMovimiento);
     	if (SALIDA.equals(tipoMovimiento)) {
         	RQmovimiento = new RunQuery(bd,"SCI00O4");
         }
@@ -246,16 +246,16 @@ public class LNInventarios {
     		return record;
     	}
     	
-    	if (tipoMovimiento.equals("AJUSTE")) {
+    	if (tipoMovimiento.equals(AJUSTE)) {
     		double _cantidad = Double.parseDouble(record[4]); 
     		if (_cantidad>0) {
-    			tipoMovimiento=ENTRADA;
+    			tipoMovimiento=SALIDA;
     			record[5] = String.valueOf(LinkingCache.getPCosto(bd, record[2], record[3]));
+        		conversion = -1;
     		}
     		else { 
-    			tipoMovimiento=SALIDA;
+    			tipoMovimiento=ENTRADA;
     			record[4]= String.valueOf(_cantidad*-1);
-        		conversion = -1;
     		}
     	}
     	
@@ -409,7 +409,9 @@ public class LNInventarios {
          * Este ciclo se encarga de sacar la informacion necesaria para generar
          * una salida
          */
+        System.out.println("Recorriendo el paquete ..");
         while (i.hasNext()) {
+        	System.out.println("paquete");
         	Element field = (Element)i.next();
         	String nameField = field.getAttributeValue("name");
         	if (nameField!=null) {
