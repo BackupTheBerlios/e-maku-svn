@@ -154,6 +154,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 			
 			public void keyReleased(KeyEvent e) {
 				int keyCode = e.getKeyCode();
+				typed = false;
 				if ( (keyCode==KeyEvent.VK_ENTER) || (keyCode==KeyEvent.VK_TAB)) {
 					transferFocus();
 				}

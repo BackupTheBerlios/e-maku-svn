@@ -447,7 +447,7 @@ public class GenericData extends JPanel implements DateListener,
 								//NFEe.printStackTrace();
 							}
 							catch (ParseException Pe) {
-								Pe.printStackTrace();
+								//Pe.printStackTrace();
 							}
 						}
 						if (!"".equals(XMLRefText.getText()) &&
