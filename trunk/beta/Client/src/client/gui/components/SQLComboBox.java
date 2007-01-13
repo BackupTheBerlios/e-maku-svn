@@ -566,7 +566,6 @@ public class SQLComboBox extends JComboBox implements
 	
 	protected void exportar() {
 		if (exportValue!=null) {
-			System.out.println("El valor es exportable");
        		if (!saveKey) {
 				StringTokenizer stk = new StringTokenizer((String) getSelectedItem()," ");
 				String tok="";
@@ -583,7 +582,6 @@ public class SQLComboBox extends JComboBox implements
        		else  {
 				GFforma.setExternalValues(exportValue,keysCombo.get(getSelectedIndex()));
        		}
-       		System.out.println("..............");
 		}
 		if (exportTextValue!=null) {
 			System.out.println("Exportando valor del texto ....");

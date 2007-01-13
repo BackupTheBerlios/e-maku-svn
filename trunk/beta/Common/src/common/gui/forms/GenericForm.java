@@ -29,6 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
+import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 
@@ -39,6 +40,7 @@ import common.comunications.DateSender;
 import common.comunications.SocketConnector;
 import common.comunications.SocketWriter;
 import common.comunications.UpdateCodeSender;
+import common.gui.components.GenericData;
 import common.gui.components.VoidPackageException;
 import common.gui.components.XMLTabbedPane;
 import common.misc.Icons;
@@ -321,7 +323,7 @@ public class GenericForm extends JInternalFrame{
         	this.setDefaultCloseOperation(JInternalFrame.HIDE_ON_CLOSE);
         }
         JDPpanel.add(this);
-
+        
         try {
             this.setSelected(true);
         }
@@ -329,7 +331,35 @@ public class GenericForm extends JInternalFrame{
         }
 
     }
-
+    
+    public void transferFocus(Element e) {
+    	if (child) {
+    		GFforma.transferFocus(e);
+    	}
+    	else {
+    		Iterator it = e.getChildren().iterator();
+    		String driver = "";
+    		int index = 0;
+    		while (it.hasNext()) {
+    			Element arg = (Element)it.next();
+    			String attr = arg.getAttributeValue("attribute");
+    			if ("driver".equals(attr)) {
+    				driver = arg.getValue();
+    				Attribute ATid = arg.getAttribute("id");
+    				driver += ATid!=null ? ATid.getValue() : "";
+    			}
+    			else if ("index".equals(attr)) {
+    				index = Integer.parseInt(arg.getValue());
+    			}
+    		}
+    		Componentes comp = Hcomps.get(driver);
+    		Component component = ((Component)comp.getObj());
+    		if (component instanceof GenericData) {
+    			((GenericData)component).requestFocus(index);
+    		}
+    	}
+    }
+    
     private void makeSubForm(Element e) {
     	class MakeSubForm extends Thread {
     		GenericForm fforma;

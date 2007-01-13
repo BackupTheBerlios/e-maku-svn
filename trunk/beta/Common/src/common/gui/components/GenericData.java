@@ -2,6 +2,7 @@ package common.gui.components;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.FocusAdapter;
@@ -590,13 +591,11 @@ public class GenericData extends JPanel implements DateListener,
 	}
 
 	protected String formatear(double value) {
-		System.out.print("format");
 		BigDecimal bd = new BigDecimal(value);
 		bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
 		NumberFormat nf = NumberFormat.getNumberInstance();
 		DecimalFormat form = (DecimalFormat) nf;
 		form.applyPattern("###,###,##0.00");
-		System.out.println("eando");
 		return form.format(bd);
 	}
 
@@ -649,7 +648,11 @@ public class GenericData extends JPanel implements DateListener,
 	public JPanel getPanel() {
 		return this;
 	}
-
+	
+	public void requestFocus(int index) {
+		VFields.get(index).requestFocus();
+	}
+	
 	public void Disabled(int init) {
 		int max = VFields.size();
 		for (int i = init; i < max; i++) {
@@ -1175,5 +1178,9 @@ public class GenericData extends JPanel implements DateListener,
 		Element pack = new Element("package");
 		pack.addContent(field);
 		return pack;
+	}
+	
+	public Component getFieldAt(int index) {
+		return VFields.get(index);
 	}
 }
