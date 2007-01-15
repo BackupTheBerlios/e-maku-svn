@@ -168,14 +168,16 @@ public class ConfigFile extends GenericParameters {
         String jarFile = null;
         String directory = "";
         
-        while (i.hasNext()) {
+        while (i.hasNext() && !isCompany) {
             Element datos = (Element) i.next();
             Iterator j = datos.getChildren().iterator();
+            jarFile="";
+            directory="";
             while (j.hasNext()) {
                 Element config = (Element) j.next();
                 String nombre = config.getName();
                 String value = config.getValue();
-	            if (nombre.equals("name") && value.equals(nameCompany)) {
+	            if (nombre.equals("name") && value.trim().equals(nameCompany.trim())) {
 	            	isCompany = true;
 	            } 
 	            if (nombre.equals("jarFile")) {
@@ -185,16 +187,11 @@ public class ConfigFile extends GenericParameters {
 	            	directory = config.getValue();
 	            } 
             }
-            if (isCompany) {
-            	
-            	break;
-            }
         }
 
 		String jar = "jar:file:/usr/local/emaku/lib/emaku/"+jarFile+"!/";
-		System.out.println("jarFile: "+jar);
 		jarDirectory = jar+directory;
-        GenericParameters.setJarDirectoryTemplates(jarDirectory+"/printer-templates/");
+        GenericParameters.setJarDirectoryTemplates(jarDirectory+"/printer-templates");
 
 		idioma.CargarLenguaje(jarDirectory+"/misc",language);
         /*
