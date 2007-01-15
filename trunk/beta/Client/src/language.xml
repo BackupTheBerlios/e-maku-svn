@@ -84,4 +84,11 @@
 		<es_ES></es_ES>
 		<en_US>Error 236: Can not resolve the transaction server address</en_US>
 	</sentence>
+	<sentence>
+		<key>CLOSE_CURRENT_APP</key>
+		<es_CO>Desea cerrar la aplicación?</es_CO>
+		<es_EC></es_EC>
+		<es_ES></es_ES>
+		<en_US>Exit aplication?</en_US>
+	</sentence>
 </language>
