@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language>
+	<sentence>
+		<key>SETTINGS</key>
+		<es_CO>Configuración</es_CO>
+		<es_EC></es_EC>
+		<es_ES></es_ES>
+		<en_US>Settings</en_US>
+	</sentence>
+	<sentence>
+		<key>TITLE-CONEC</key>
+		<es_CO>Conexión a Base de Datos</es_CO>
+		<es_EC></es_EC>
+		<es_ES></es_ES>
+		<en_US>Database Connection</en_US>
+	</sentence>
+	<sentence>
+		<key>CONECTAR</key>
+		<es_CO>Conectar</es_CO>
+		<es_EC></es_EC>
+		<es_ES></es_ES>
+		<en_US>Connect</en_US>
+	</sentence>
+	<sentence>
+		<key>BD</key>
+		<es_CO>Empresa:</es_CO>
+		<es_EC></es_EC>
+		<es_ES></es_ES>
+		<en_US>Company:</en_US>
+	</sentence>
+	<sentence>
+		<key>USER</key>
+		<es_CO>Usuario:</es_CO>
+		<es_EC></es_EC>
+		<es_ES></es_ES>
+		<en_US>User:</en_US>
+	</sentence>
+	<sentence>
+		<key>PASS</key>
+		<es_CO>Contraseña:</es_CO>
+		<es_EC></es_EC>
+		<es_ES></es_ES>
+		<en_US>Password:</en_US>
+	</sentence>
+	<sentence>
+		<key>CANCEL</key>
+		<es_CO>Cancelar</es_CO>
+		<es_EC></es_EC>
+		<es_ES></es_ES>
+		<en_US>Cancel</en_US>
+	</sentence>
+	<sentence>
+		<key>ERR_CONNECT</key>
+		<es_CO>Error 235: No se pudo establecer comunicación con el servidor</es_CO>
+		<es_EC></es_EC>
+		<es_ES></es_ES>
+		<en_US>Error 235: Can not establish communication with the server</en_US>
+	</sentence>
+	<sentence>
+		<key>ERR_TITLE_CONNECT</key>
+		<es_CO>Error de Conexión</es_CO>
+		<es_EC></es_EC>
+		<es_ES></es_ES>
+		<en_US>Connection Error</en_US>
+	</sentence>
+	<sentence>
+		<key>PORT</key>
+		<es_CO>Puerto</es_CO>
+		<es_EC></es_EC>
+		<es_ES></es_ES>
+		<en_US>Port</en_US>
+	</sentence>
+	<sentence>
+		<key>HOST</key>
+		<es_CO>Host</es_CO>
+		<es_EC></es_EC>
+		<es_ES></es_ES>
+		<en_US>Host</en_US>
+	</sentence>
+	<sentence>
+		<key>ERR_UNRESOLVED_ADDRESS</key>
+		<es_CO>Error 236: No se pudo resolver la dirección del servidor de transacciones.</es_CO>
+		<es_EC></es_EC>
+		<es_ES></es_ES>
+		<en_US>Error 236: Can not resolve the transaction server address</en_US>
+	</sentence>
+</language>
