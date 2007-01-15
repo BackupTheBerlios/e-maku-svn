@@ -35,14 +35,14 @@ public class Icons {
 
     private static Hashtable <String,String>Hicons;
 
-    public void loadIcons() {
+    public void loadIcons(String jarDirectory) {
         
 	    Hicons = new Hashtable<String,String>();
 	    
 	    try {
 	        
 	        SAXBuilder builder = new SAXBuilder(false);
-	        Document doc = builder.build(this.getClass().getResource("/icons.xml"));
+	        Document doc = builder.build(jarDirectory+"/icons.xml");
 	        Element raiz = doc.getRootElement();
 	        List icon = raiz.getChildren("icon");
 	        Iterator i = icon.iterator();

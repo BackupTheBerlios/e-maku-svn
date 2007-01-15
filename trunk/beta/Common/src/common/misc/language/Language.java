@@ -48,16 +48,24 @@ public class Language  {
     
     private static Hashtable <String,messageStructure>glossary;
     
+    public void CargarLenguaje(String lenguaje) {
+    	CargarLenguaje(null,lenguaje);
+    }
     /**
      * Metodo que carga se encarga de llenar el glosario para el idioma del ST
      * @param lenguaje idioma para el ST, Ej. <code>SPANISH</code>
      */
-    public void CargarLenguaje(String lenguaje) {
+    public void CargarLenguaje(String directory,String lenguaje) {
         Language.glossary = new Hashtable<String,messageStructure>();
         try {
             SAXBuilder builder = new SAXBuilder(false);
-            
-            Document doc = builder.build(this.getClass().getResource("/language.xml"));
+            Document doc= null;
+            if (directory==null) {
+            	doc= builder.build(this.getClass().getResource("/language.xml"));
+            }
+            else {
+            	doc= builder.build(directory+"/language.xml");
+            }
             Element raiz = doc.getRootElement();
             List palabras = raiz.getChildren("sentence");
             Iterator i = palabras.iterator();

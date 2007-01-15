@@ -27,6 +27,7 @@ import java.util.Hashtable;
 public class GenericParameters {
 
     public static Hashtable <String,String>parameters = new Hashtable<String,String>();
+    private static String jarDirectoryTemplates = new String();
     
     /**
      * Este metodo se utiliza para comparar el valor de un parametro recibido, 
@@ -69,4 +70,12 @@ public class GenericParameters {
             return "";
         }
     }
+
+	public static String getJarDirectoryTemplates() {
+		return jarDirectoryTemplates;
+	}
+
+	public static void setJarDirectoryTemplates(String jarDirectoryTemplates) {
+		GenericParameters.jarDirectoryTemplates = jarDirectoryTemplates;
+	}
 }

@@ -190,6 +190,8 @@ public class Connection {
 				
 	            connect.start();
 	            
+	            GenericParameters.removeParameter("dataBase");
+	            GenericParameters.addParameter("dataBase",JPAutenticacion.getBaseDatos());
 	            GenericParameters.removeParameter("userLogin");
 	            GenericParameters.addParameter("userLogin",JPAutenticacion.getUsuario());
 	            SocketChannel socket = SocketConnector.getSock();
@@ -200,7 +202,6 @@ public class Connection {
 				                            JPAutenticacion.getBaseDatos(),
 				                            JPAutenticacion.getUsuario(),
 				                            md5.getDigest().toCharArray()));
-
 			} catch (ConnectException CEe){
 				JOptionPane.showMessageDialog(
 	                    JFConexion,Language.getWord("ERR_CONNECT")+"\n"+

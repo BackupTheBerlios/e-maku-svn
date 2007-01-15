@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Vector;
 
@@ -61,7 +62,7 @@ public class MainWindow extends JFrame {
     private static Vector Vtoolbar1;
     private static JFrame refWindow = null;
     
-    public MainWindow(String title) {
+    public MainWindow(String jarDirectory,String title) {
     	
         setTitle(title);
 
@@ -79,15 +80,23 @@ public class MainWindow extends JFrame {
         /**
          * Creando e Instanciando del Menu y la Barras de herramientas 
          */
-        URL url = this.getClass().getResource("/client/xml-midas/menu.xml");
-        MenuLoader menu = new MenuLoader(url);
-        menu.Loading();
-        menu.setDisabledAll();
-        url = this.getClass().getResource("/client/xml-midas/toolbar.xml");
-        ToolbarLoader toolbar1 = new ToolbarLoader(url);
+        URL url= null;
+        MenuLoader menu=null;
+        ToolbarLoader toolbar1=null;
+        try {
+			url = new URL(jarDirectory+"/menu.xml");
+	        menu = new MenuLoader(url);
+	        menu.Loading();
+	        menu.setDisabledAll();
+	        url = new URL(jarDirectory+"/toolbar.xml");
+	        toolbar1 = new ToolbarLoader(url);
+	        Vtoolbar1 = toolbar1.Loading();
+	        setDisabledAll();
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
-        Vtoolbar1 = toolbar1.Loading();
-        setDisabledAll();
 
         /**
          * Adicionando componentes al panel central

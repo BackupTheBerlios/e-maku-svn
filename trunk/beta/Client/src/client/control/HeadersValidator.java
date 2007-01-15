@@ -13,11 +13,13 @@ import org.jdom.output.XMLOutputter;
 import client.gui.components.MainWindow;
 import client.gui.forms.Connection;
 import client.gui.forms.Splash;
+import client.misc.settings.ConfigFile;
 
 import common.comunications.ArrivePackageEvent;
 import common.comunications.ArrivePackageListener;
 import common.comunications.SocketConnector;
 import common.control.ClientHeaderValidator;
+import common.misc.parameters.GenericParameters;
 import common.transactions.STResultSet;
 
 /**
@@ -85,11 +87,17 @@ public class HeadersValidator implements ArrivePackageListener {
 	            String company = raiz.getChildText("companyName");
 	            String companyID = raiz.getChildText("companyID");
 	            String title = "Emaku - Qhatu Ltda";
-	            
+
+	            /*
+	             * Cargando configuración dependiendo de la empresa ...
+	             */
+	            String bd = GenericParameters.getParameter("dataBase");
+	            ConfigFile.loadJarFile(bd);
+
 	            if(company != null && companyID != null)
 	            	title = company + " - Nit: " + companyID;
 	            
-	            new MainWindow(title);
+	            new MainWindow(ConfigFile.getJarDirectory()+"/misc",title);
 	        }
 	        
 	        else if(nombre.equals("ACPZip")) {

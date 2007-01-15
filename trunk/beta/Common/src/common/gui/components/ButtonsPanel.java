@@ -39,6 +39,7 @@ import common.gui.forms.GenericForm;
 import common.gui.forms.NotFoundComponentException;
 import common.misc.Icons;
 import common.misc.language.Language;
+import common.misc.parameters.GenericParameters;
 import common.pdf.pdfviewer.PDFViewer;
 import common.printer.PlainManager;
 import common.printer.PostScriptManager;
@@ -337,7 +338,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 	    			try {
 						SAXBuilder sax = new SAXBuilder(false);
 						Document template = null;
-						URL url = this.getClass().getResource(pathTemplate);
+						URL url = new URL(GenericParameters.getJarDirectoryTemplates()+pathTemplate);
 						if (url!=null){
 							template = sax.build(url);
 							Element rootTemplate= template.getRootElement();

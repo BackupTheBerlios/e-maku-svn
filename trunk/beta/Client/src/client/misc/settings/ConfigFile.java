@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -47,12 +48,12 @@ public class ConfigFile extends GenericParameters {
     private static Document doc;
     private static Element raiz;
     private static Language idioma = new Language();
-    private static Icons icons = new Icons();
     private static int serverport;
     private static String host;
     private static String language;
     private static String logMode;
     private static Hashtable<String,String> boxID = new Hashtable<String,String>();
+    private static String jarDirectory;
 
     /**
      * Este metodo sirve para crear un nuevo archivo de configuracion
@@ -77,8 +78,6 @@ public class ConfigFile extends GenericParameters {
         doc.getRootElement().addContent(new Element("log").setText(log));
         doc.getRootElement().addContent(new Element("cash").setText(cash));
         
-        icons.loadIcons();
-
         XMLOutputter out = new XMLOutputter();
         out.setFormat(Format.getPrettyFormat());
         
@@ -119,7 +118,7 @@ public class ConfigFile extends GenericParameters {
             builder = new SAXBuilder(false);
             doc = builder.build(ClientConst.CONF+"client.conf");
             raiz = doc.getRootElement();
-            java.util.List Lconfig = raiz.getChildren();
+            List Lconfig = raiz.getChildren();
             Iterator i = Lconfig.iterator();
 
             /**
@@ -133,7 +132,6 @@ public class ConfigFile extends GenericParameters {
                 String nombre = datos.getName(); 
                 if (nombre.equals("language")) {
                 	language = datos.getValue();
-                    idioma.CargarLenguaje(language);
                 } 
                 else if (nombre.equals("host")) {
                     host = datos.getValue();
@@ -147,7 +145,7 @@ public class ConfigFile extends GenericParameters {
                 GenericParameters.addParameter(nombre,datos.getValue());
             }
             
-            icons.loadIcons();
+            idioma.CargarLenguaje(language);
         }
         catch (FileNotFoundException FNFEe) {
 
@@ -162,6 +160,48 @@ public class ConfigFile extends GenericParameters {
         }
     }
 
+    public static void loadJarFile(String nameCompany) {
+    	Iterator i = raiz.getChildren("Company").iterator();
+        
+
+        boolean isCompany = false;
+        String jarFile = null;
+        String directory = "";
+        
+        while (i.hasNext()) {
+            Element datos = (Element) i.next();
+            Iterator j = datos.getChildren().iterator();
+            while (j.hasNext()) {
+                Element config = (Element) j.next();
+                String nombre = config.getName();
+                String value = config.getValue();
+	            if (nombre.equals("name") && value.equals(nameCompany)) {
+	            	isCompany = true;
+	            } 
+	            if (nombre.equals("jarFile")) {
+	            	jarFile = config.getValue();
+	            } 
+	            if (nombre.equals("directory")) {
+	            	directory = config.getValue();
+	            } 
+            }
+            if (isCompany) {
+            	
+            	break;
+            }
+        }
+
+		String jar = "jar:file:/usr/local/emaku/lib/emaku/"+jarFile+"!/";
+		System.out.println("jarFile: "+jar);
+		jarDirectory = jar+directory;
+        GenericParameters.setJarDirectoryTemplates(jarDirectory+"/printer-templates/");
+
+		idioma.CargarLenguaje(jarDirectory+"/misc",language);
+        /*
+         * Cargando iconos
+         */
+        new Icons().loadIcons(jarDirectory+"/misc");
+    }
     /**
      * Este metodo retorna el host servidor
      * 
@@ -206,4 +246,8 @@ public class ConfigFile extends GenericParameters {
     public static void setPort(int newport) {
         raiz.getChild("serverport").setText(Integer.toString(newport));
     }
+
+	public static String getJarDirectory() {
+		return jarDirectory;
+	}
 }
