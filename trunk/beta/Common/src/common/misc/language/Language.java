@@ -56,6 +56,7 @@ public class Language  {
         Language.glossary = new Hashtable<String,messageStructure>();
         try {
             SAXBuilder builder = new SAXBuilder(false);
+            
             Document doc = builder.build(this.getClass().getResource("/language.xml"));
             Element raiz = doc.getRootElement();
             List palabras = raiz.getChildren("sentence");
