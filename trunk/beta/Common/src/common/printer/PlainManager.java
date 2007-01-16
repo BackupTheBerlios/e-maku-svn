@@ -23,7 +23,7 @@ import common.printer.PrintManager.ImpresionType;
 
 public class PlainManager implements AbstractManager ,SuccessListener{
 	
-	private TextGenerator textGenerator = new TextGenerator();
+	private TextPrinterBuffer textPrinterBuffer = new TextPrinterBuffer();
 	private HashMap<Integer,String[]> concatData = new HashMap<Integer, String[]>(); 
 	private int currentRow = 1;
 	private String ndocument = "";
@@ -94,7 +94,7 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 				}
 			}
 			if ( countPacks > 0 ) {
-				this.in = textGenerator.getStream();
+				this.in = textPrinterBuffer.getStream();
 				this.sussceful = true;
 				calendar = Calendar.getInstance();
 				long end = calendar.getTimeInMillis();
@@ -139,10 +139,10 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 				String align	= attribs.get("align"   ).getValue();
 				for (int i=0;i < length ; i++) {
 					if ("horizontal".equals(align)) {
-						textGenerator.addString(charfill,row,col++,null);
+						textPrinterBuffer.insertString(charfill,row,col++,null);
 					}
 					else if ("vertical".equals(align)) {
-						textGenerator.addString(charfill,row++,col,null);
+						textPrinterBuffer.insertString(charfill,row++,col,null);
 					}
 				}
 				passed = true;
@@ -150,19 +150,19 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 			else if ("field".equals(name)) {
 				String value = e.getTextTrim();
 				value = " ".equals(value) || "".equals(value) ? "  " : value;
-				textGenerator.addString(value,row,col,null);
+				textPrinterBuffer.insertString(value,row,col,null);
 				passed = true;
 
 			}
 			else if ("ndocument".equals(name)) {
 				String value = ndocument;
-				textGenerator.addString(value,row,col,null);
+				textPrinterBuffer.insertString(value,row,col,null);
 				passed = true;
 			}
 			else if ("abstract".equals(name)) {
 				String  value = e.getText();
 				int height = attribs.get("height").getIntValue();
-				textGenerator.addTextArea(value,row,col,null,height,false);
+				textPrinterBuffer.insertTextArea(value,row,col,null,height,false);
 				passed = true;
 			}
 			else if ("scp".equals(name)) {
@@ -170,8 +170,8 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 				Object[] scpCode = new Object[3];
 				scpCode[0] = row;
 				scpCode[1] = col;
-				scpCode[2] = textGenerator.Convert(value);
-				textGenerator.addScpCode(scpCode);
+				scpCode[2] = textPrinterBuffer.Convert(value);
+				textPrinterBuffer.addScpCode(scpCode);
 				passed = true;
 			}
 			if (isValidate && passed) {
@@ -281,18 +281,18 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 		if ("TEXT".equals(type)) {
 			int width = attribs.get("width").getIntValue();
 			int height = attribs.get("height").getIntValue();
-			textGenerator.addTextArea(value,row,col,width,height,true);
+			textPrinterBuffer.insertTextArea(value,row,col,width,height,true);
 		}
 		else if ("STRING".equals(type)) {
 			/*value = " ".equals(value) || "".equals(value) ? "   " : value.trim();
-			textGenerator.addString(value,row,col,null);*/
+			textPrinterBuffer.addString(value,row,col,null);*/
 			if (!"".equals(value.trim())) {
-				textGenerator.addString(value,row,col,null);
+				textPrinterBuffer.insertString(value,row,col,null);
 			}
 			if (attribs.containsKey("separatorchar")){
 				Attribute att = attribs.get("separatorchar");
 				int colCharSeparator = attribs.get("separatorcol").getIntValue();
-				textGenerator.addString(att.getValue(),row,colCharSeparator,null);
+				textPrinterBuffer.insertString(att.getValue(),row,colCharSeparator,null);
 			}
 		}
 		else if ("DATE".equals(type)) {
@@ -316,14 +316,14 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 				}
 			}
 			/*value = " ".equals(value) || "".equals(value) ? "   " : value.trim();
-			textGenerator.addString(value,row,col,null);*/
+			textPrinterBuffer.addString(value,row,col,null);*/
 			if (!"".equals(value.trim())) {
-				textGenerator.addString(value,row,col,null);
+				textPrinterBuffer.insertString(value,row,col,null);
 			}
 			if (attribs.containsKey("separatorchar")){
 				Attribute att = attribs.get("separatorchar");
 				int colCharSeparator = attribs.get("separatorcol").getIntValue();
-				textGenerator.addString(att.getValue(),row,colCharSeparator,null);
+				textPrinterBuffer.insertString(att.getValue(),row,colCharSeparator,null);
 			}
 		}
 		else if ("STRINGCONCAT".equals(type)) {
@@ -331,13 +331,13 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 				String[] acumString = concatData.get(row);
 				if (acumString[0].equals(attribs.get("link").getValue())) {
 					String addVal = attribs.get("char").getValue()+value;
-					textGenerator.addString(addVal,row,acumString[1].length()+2,null);
+					textPrinterBuffer.insertString(addVal,row,acumString[1].length()+2,null);
 					acumString[1] +=  addVal;
 					concatData.put(row,acumString);
 				}
 			}
 			else {
-				textGenerator.addString(value,row,col,null);
+				textPrinterBuffer.insertString(value,row,col,null);
 				concatData.put(row, new String[]{String.valueOf(col),value});
 			}
 		}
@@ -345,16 +345,16 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 			String mask = attribs.get("mask").getValue();
 			NumberFormat formatter = new DecimalFormat(mask);
 			value = !"NULL".equals(value) && !"".equals(value) ? formatter.format(Double.parseDouble(value)):"";
-			textGenerator.addString(value,row,col,attribs.get("width").getIntValue());
+			textPrinterBuffer.insertString(value,row,col,attribs.get("width").getIntValue());
 			if (attribs.containsKey("separatorchar")){
 				Attribute att = attribs.get("separatorchar");
 				int colCharSeparator = attribs.get("separatorcol").getIntValue();
-				textGenerator.addString(att.getValue(),row,colCharSeparator,null);
+				textPrinterBuffer.insertString(att.getValue(),row,colCharSeparator,null);
 			}
 		}
 		else if ("ABSTRACT".equals(type)) {
 			int height = attribs.get("height").getIntValue();
-			textGenerator.addTextArea(value,row,col,null,height,false);
+			textPrinterBuffer.insertTextArea(value,row,col,null,height,false);
 		}
         else if ("NUMTOLETTERS".equals(type)) {
             try {
@@ -365,7 +365,7 @@ public class PlainManager implements AbstractManager ,SuccessListener{
                 String letters = String.valueOf(d.intValue());
                 letters = NumberToLetterConversor.letters(letters, null);
                 
-                textGenerator.addTextArea(letters,row,col,width,height,true);
+                textPrinterBuffer.insertTextArea(letters,row,col,width,height,true);
             } catch (NumberFormatException NFE) {
                 // Pendiente por traducir
                 System.out.printf("No se puede convertir %s  a letras\n%s",value,NFE.getMessage());
@@ -374,11 +374,11 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 	}
 	
 	public String getBufferString() {
-		return textGenerator.getBufferString();
+		return textPrinterBuffer.getBufferString();
 	}
 	
 	public String toString() {
-		return textGenerator.getBufferString();
+		return textPrinterBuffer.getBufferString();
 	}
 
 	public synchronized void cathSuccesEvent(SuccessEvent e) {

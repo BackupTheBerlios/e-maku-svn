@@ -6,19 +6,43 @@ import java.util.Vector;
 
 import common.misc.CommonConst;
 
-public class TextGenerator {
+/**
+ * Esta clase se encarga de crear un buffer de texto para acceso aleatorio, el 
+ * buffer está representado en forma de una matriz.
+ * 
+ * @author cristian@qhatu.net
+ */
+public class TextPrinterBuffer {
 	
 	private ArrayList<StringBuilder> buffer;
-	private Vector<Object[]> ScpCodes  = new Vector<Object[]>(); 
-	public TextGenerator() {
+	private Vector<Object[]> scpCodes  = new Vector<Object[]>(); 
+	
+	/**
+	 * Constructor que inicializa el buffer
+	 */
+	public TextPrinterBuffer() {
 		buffer = new ArrayList<StringBuilder>();
 	}
 	
+	/**
+	 * Adiciona los codigos de escape para manejar impresoras sin filtro
+	 * @param scpCode
+	 */
 	public void addScpCode(Object[] scpCode) {
-		ScpCodes.add(scpCode);
+		scpCodes.add(scpCode);
 	}
 	
-	public void addTextArea(String text,int row, int col, Integer width, Integer height, boolean trim) {
+	/**
+	 * Metodo que se encarga de adicionar texto multinea
+	 * 
+	 * @param text Texto a insertar
+	 * @param row fila
+	 * @param col columna
+	 * @param width ancho para ajuste del texto.
+	 * @param height alto
+	 * @param trim si es true limpia espacios al inicio y al final del texto
+	 */
+	public void insertTextArea(String text,int row, int col, Integer width, Integer height, boolean trim) {
 		if (trim) {
 			text = text.replaceAll("\n", " ");
 		}
@@ -56,11 +80,18 @@ public class TextGenerator {
 			String tok = st.nextToken();
 			//tok = "".equals(tok) ? " " : tok;
 			//System.out.println(":-) {" + tok+ "}= " +height );
-			addString(tok,row++,col,null);
+			insertString(tok,row++,col,null);
 		}
 	}
 	
-	public void addString(String str, int row, int col,Integer width) {
+	/**
+	 * Inserta un texto de una sola linea
+	 * @param str
+	 * @param row
+	 * @param col
+	 * @param width
+	 */
+	public void insertString(String str, int row, int col,Integer width) {
 		if (row==0 || col ==0 || "".equals(str)) { return; }
 		if (row > buffer.size() ) {
 			while (row > buffer.size()) {
@@ -89,6 +120,10 @@ public class TextGenerator {
 		}
 	}
 	
+	/**
+	 * Retorna el contenido del buffer
+	 * @return
+	 */
 	public String getBufferString() {
 		StringBuilder string = new StringBuilder();
 		int i=0;
@@ -99,8 +134,12 @@ public class TextGenerator {
 		return string.toString();
 	}
 	
+	/**
+	 * Retorna un flujo de entrada para ser procesado con el PlainManager
+	 * @return
+	 */
 	public ByteArrayInputStream getStream() {
-		for (Object[] scpCode :ScpCodes) {
+		for (Object[] scpCode :scpCodes) {
 			int row = (Integer)scpCode[0];
 			int col = (Integer)scpCode[1];
 			String val = (String)scpCode[2];
@@ -115,6 +154,11 @@ public class TextGenerator {
 		return new ByteArrayInputStream(getBufferString().getBytes()); 
 	}
 	
+	/**
+	 * Convierte los nombres de los codigos de escape a entero
+	 * @param key cadena con el codigo de escape en formato numerico
+	 * @return
+	 */
 	public String Convert(String key) {
 		try {
 			int Int = 	CommonConst.ScpCodes.containsKey(key)?
@@ -125,6 +169,5 @@ public class TextGenerator {
 			NFEe.printStackTrace();
 			return null;
 		}
-		
 	}
 }

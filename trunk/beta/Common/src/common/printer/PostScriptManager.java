@@ -41,15 +41,29 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 	private int width;
 	private int height;
 	private Element rootTransact;
+	
+	/**
+	 * 
+	 * @param rootTemplate
+	 * @param rootTransact
+	 */
 	public void load(Element rootTemplate,Element rootTransact) {
 		this.rootTemplate = rootTemplate;
 		this.rootTransact = rootTransact;
 	}
 	 
+	/**
+	 * 
+	 *
+	 */
 	public PostScriptManager() {
 		ClientHeaderValidator.addSuccessListener(this);
 	}
 
+	/**
+	 * 
+	 *
+	 */
 	public void process() {
 		try {
 			Attribute ATTRequesNumeration = rootTemplate.getAttribute("requestNumeration");
@@ -108,6 +122,11 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 		}
 	}
 	
+	/**
+	 * 
+	 * @param element
+	 * @throws DataConversionException
+	 */
 	private void processMetadata(Element element) throws DataConversionException {
 
 		Iterator it = element.getChildren().iterator();
@@ -147,6 +166,12 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 		}
 	}
 	
+	/**
+	 * 
+	 * @param pack_template
+	 * @param pack_transaction
+	 * @throws DataConversionException
+	 */
 	private void processElement(Element pack_template, Element pack_transaction) throws DataConversionException {
 
 		Iterator it_template = pack_template.getChildren().iterator();
@@ -201,6 +226,12 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 		}
 	}
 	
+	/**
+	 * 
+	 * @param value
+	 * @param attribs
+	 * @throws DataConversionException
+	 */
 	private void addValue(String value,HashMap<String,Attribute> attribs) throws DataConversionException {
 		
 		int row =  attribs.get("row").getIntValue();
@@ -275,6 +306,9 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 		}
 	}
 
+	/**
+	 * 
+	 */
 	public synchronized void cathSuccesEvent(SuccessEvent e) {
 		String numeration = e.getNdocument();
 		if (numeration!=null && !"".equals(numeration)) {
@@ -283,16 +317,28 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	public ImpresionType getImpresionType() {
 		return this.impresionType;
 	}
 
+	/**
+	 * 
+	 */
 	public ByteArrayInputStream getStream() { return null; }
 
+	/**
+	 * 
+	 */
 	public boolean isSusseful() {
 		return this.sussceful;
 	}
 
+	/**
+	 * 
+	 */
 	public int print(Graphics graphics, PageFormat pf, int pageIndex) throws PrinterException {
 		Paper p = pf.getPaper();
 		p.setImageableArea( 0, 0, width,height);
