@@ -2,6 +2,8 @@ package server.control;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
 import java.sql.ResultSet;
@@ -16,12 +18,13 @@ import org.jdom.output.XMLOutputter;
 
 import server.comunications.SocketServer;
 import server.database.connection.PoolConexiones;
-import server.database.sql.LinkingCache;
 import server.database.sql.CloseSQL;
+import server.database.sql.LinkingCache;
 import server.database.sql.RunQuery;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
 
+import com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException;
 import common.comunications.SocketWriter;
 import common.misc.ZipHandler;
 
@@ -58,6 +61,8 @@ public class SendACP extends Thread{
 	private ResultSet rs;
 	private Statement st;
 	private SocketChannel sock;
+	private XMLOutputter xmlout = new XMLOutputter();
+	
 	public SendACP(SocketChannel sock, String bd, String login) {
         this.sock = sock;
 		this.bd = bd;
@@ -158,6 +163,10 @@ public class SendACP extends Thread{
 	                
 	                SocketWriter.writing(sock,compressDocument(doc,driver.getValue()));
                 }
+                catch (MalformedByteSequenceException e) {
+                	e.printStackTrace();
+                    System.out.println("Buffer:"+rs.getString("perfil"));
+                }
                 catch (JDOMException e) {
                     e.printStackTrace();
                     System.out.println("Buffer:"+rs.getString("perfil"));
@@ -178,12 +187,11 @@ public class SendACP extends Thread{
 		CloseSQL.close(rs);
         CloseSQL.close(st);
 	}
+	
 	public Document compressDocument(Document doc, String item) throws IOException {
     	
 		Document docZip = new Document();
-		
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLOutputter xmlout = new XMLOutputter();
         xmlout.output(doc,baos);
         baos.close();
         

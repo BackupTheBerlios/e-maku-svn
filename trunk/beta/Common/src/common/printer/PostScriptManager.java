@@ -36,7 +36,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 	private boolean sussceful;
 	private ImpresionType impresionType = ImpresionType.POSTSCRIPT;;
 	private String ndocument = "";
-	private boolean sucess = false;
+	private boolean success = false;
 	private Element rootTemplate;
 	private int width;
 	private int height;
@@ -69,7 +69,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 			Attribute ATTRequesNumeration = rootTemplate.getAttribute("requestNumeration");
 			if (ATTRequesNumeration!=null && ATTRequesNumeration.getBooleanValue()) {
 				int times = 0;
-				while (!sucess) {
+				while (!success) {
 					try {
 						if (times<=100) {
 							Thread.sleep(100);
@@ -312,7 +312,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 	public synchronized void cathSuccesEvent(SuccessEvent e) {
 		String numeration = e.getNdocument();
 		if (numeration!=null && !"".equals(numeration)) {
-			sucess = true;
+			success = true;
 			ndocument = numeration;
 		}
 	}

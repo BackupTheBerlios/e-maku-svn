@@ -27,7 +27,7 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 	private HashMap<Integer,String[]> concatData = new HashMap<Integer, String[]>(); 
 	private int currentRow = 1;
 	private String ndocument = "";
-	private boolean sucess = false;
+	private boolean success = false;
     private String idTransaction="";
 
 	/*private int width;
@@ -47,7 +47,7 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 			Attribute ATTRequesNumeration = rootTemplate.getAttribute("requestNumeration");
 			if (ATTRequesNumeration!=null && ATTRequesNumeration.getBooleanValue()) {
 				int times = 0;
-				while (!sucess) {
+				while (!success) {
 					try {
 						if (times<=100) {
 							Thread.sleep(100);
@@ -385,7 +385,7 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 		String numeration = e.getNdocument();
 		
 		if (numeration!=null && !"".equals(numeration) && idTransaction.equals(e.getIdPackage())) {
-			sucess = true;
+			success = true;
 			ndocument = numeration;
 		}
 	}
