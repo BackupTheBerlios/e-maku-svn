@@ -83,6 +83,8 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	private String addAttribute = null;
 	private String sendRecord;
 	private boolean sendQuery;
+	private boolean queryOnInit;
+	private boolean withOutArgsQuery;
 	
 	public XMLTextField(String label, int length, int chars) {
 		super(length);
@@ -369,7 +371,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 		return false;
 	}
 
-	public String[] getImportValue() {
+	public String[] getImportValues() {
 		try {
 			return importValue.toArray(new String[importValue.size()]);
 		} catch (NullPointerException NPEe) {
@@ -583,6 +585,22 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 
 	public void setSendQuery(boolean sendQuery) {
 		this.sendQuery = sendQuery;
+	}
+
+	public boolean isQueryOnInit() {
+		return queryOnInit;
+	}
+
+	public void setQueryOnInit(boolean queryOnInit) {
+		this.queryOnInit = queryOnInit;
+	}
+
+	public boolean isWithOutArgsQuery() {
+		return withOutArgsQuery;
+	}
+
+	public void setWithOutArgsQuery(boolean withOutArgsQuery) {
+		this.withOutArgsQuery = withOutArgsQuery;
 	}
 
 }

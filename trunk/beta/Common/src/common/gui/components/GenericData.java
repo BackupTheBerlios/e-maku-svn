@@ -206,6 +206,8 @@ public class GenericData extends JPanel implements DateListener,
 				String addAttribute = null;
 				String sendRecord = null;
 				String cname = null;
+				boolean queryOnInit = false;
+				boolean withOutArgsQuery = false;
 				
 				while (j.hasNext()) {
 					final Element elm = (Element) j.next();
@@ -328,6 +330,10 @@ public class GenericData extends JPanel implements DateListener,
 					} else if ("sendRecord".equals(elm
 							.getAttributeValue("attribute"))) {
 						sendRecord = elm.getValue();
+					} else if ("queryOnInit".equals(elm.getAttributeValue("attribute"))) {
+						queryOnInit = Boolean.parseBoolean(elm.getValue());
+					} else if ("withOutArgsQuery".equals(elm.getAttributeValue("attribute"))) {
+						withOutArgsQuery = Boolean.parseBoolean(elm.getValue());
 					}
 				}
 
@@ -350,7 +356,9 @@ public class GenericData extends JPanel implements DateListener,
 				XMLText.setSendRecord(sendRecord);
 				XMLText.setCalculateBSExportValue(calculateBSExportValue);
 				XMLText.setName(cname);
-
+				XMLText.setQueryOnInit(queryOnInit);
+				XMLText.setWithOutArgsQuery(withOutArgsQuery);
+				
 				if (exportValue != null) {
 					XMLText.setExportvalue(exportValue);
 				}
@@ -434,16 +442,15 @@ public class GenericData extends JPanel implements DateListener,
 				XMLText.addFocusListener(new FocusAdapter() {
 					public void focusLost(FocusEvent e) {
 						
-						XMLTextField XMLRefText = (XMLTextField) e.getSource();
-						String text = XMLRefText.getText();
-						
-						if (XMLTextField.NUMERIC.equals(XMLRefText.getType())) {
+						XMLTextField field = (XMLTextField) e.getSource();
+						String text = field.getText();
+						if ("NUMERIC".equals(field.getType())) {
 							try {
 								NumberFormat nf = NumberFormat.getNumberInstance();
 			        			DecimalFormat form = (DecimalFormat) nf;
 			        			form.applyPattern("###,###,##0.00");
-								XMLRefText.setText(nf.format(Double.parseDouble(text)));
-								XMLRefText.setNumberValue(nf.parse(text).doubleValue());
+			        			field.setText(nf.format(Double.parseDouble(text)));
+			        			field.setNumberValue(nf.parse(text).doubleValue());
 							} catch (NumberFormatException NFEe) {
 								//NFEe.printStackTrace();
 							}
@@ -451,9 +458,9 @@ public class GenericData extends JPanel implements DateListener,
 								//Pe.printStackTrace();
 							}
 						}
-						if (!"".equals(XMLRefText.getText()) &&
-							(XMLRefText.isExportvalue() || XMLRefText.getKeyExternalValue() != null)) {
-							exportar(XMLRefText);
+						if (!"".equals(text) &&
+							(field.isExportvalue() || field.getKeyExternalValue() != null)) {
+							exportar(field);
 						}
 					}
 				});
@@ -477,65 +484,12 @@ public class GenericData extends JPanel implements DateListener,
 							 * exportar(XMLText); } Comentado por que se lo
 							 * envio al primer focusLost de XMLTextField
 							 */
-							
-							XMLTextField XMLRefText = (XMLTextField) e.getSource();
-							XMLRefText.setSendQuery(true);
-							if (sqlCode.size() > 0 || sqlLocal != null) {
-								/*
-								 * El primer elemento del vector sql siempre
-								 * sera la consulta que almacenara la
-								 * informacion del objeto local
-								 */
-								if (search) {
-									String[] impValues = null;
-									if (sqlLocal != null) {
-										int argumentos = XMLRefText
-												.getImportValue().length
-												+ XMLRefText.getConstantSize();
-										impValues = new String[argumentos];
-										int i = 0;
-										for (; i < XMLRefText.getConstantSize(); i++) {
-											impValues[i] = XMLRefText
-													.getConstantValue(i);
-										}
-										for (; i < XMLRefText.getImportValue().length; i++) {
-											impValues[i] = GFforma
-													.getExteralValuesString(XMLRefText
-															.getImportValue()[i]);
-										}
-
-										GFforma.cleanExternalValues();
-										if (!"".equals(XMLRefText.getText())) {
-											new GenericDataFiller(GFforma,
-													namebutton, enablebutton,
-													sqlLocal, impValues,
-													XMLRefText.getText(),
-													VFields).start();
-										}
-
-									}
-									/*
-									 * Las demas consultas seran para almacenar
-									 * la informacion de los demas objetos que
-									 * lo requieran
-									 */
-									searchOthersSqls(XMLRefText);
-									search = false;
-								}
-							}
-							if (XMLRefText.isSendRecord()) {
-								String value = null;
-								if ("NUMERIC".equals(XMLRefText.getType())) {
-									value = String.valueOf(XMLRefText.getNumberValue());
-								} else {
-									value = XMLRefText.getText();
-								}
-								notificando(XMLRefText, value);
-							}
+							XMLTextField field = (XMLTextField) e.getSource();
+							processQuery(field);
 						}
 					});
 				}
-				if (XMLText.getType().equals("NUMERIC")) {
+				if ("NUMERIC".equals(XMLText.getType())) {
 					XMLText.setText("0.00");
 					XMLText.setNumberValue(0.00);
 					if (XMLText.isExportvalue()) {
@@ -553,9 +507,70 @@ public class GenericData extends JPanel implements DateListener,
 
 		if (disableAll)
 			Disabled(0);
-
+		for (XMLTextField field : VFields) {
+			if (field.isQueryOnInit()) {
+				processQuery(field);
+			}
+		}
 	}
 
+	private String[] getArgsForQuery(XMLTextField field) {
+		if (field.isWithOutArgsQuery()) { return null; }
+		String[] impValues = null;
+		String[] imps = field.getImportValues();
+		int argumentos = imps.length + field.getConstantSize();
+		impValues = new String[argumentos];
+		int i = 0;
+		for (; i < field.getConstantSize(); i++) {
+			impValues[i] = field.getConstantValue(i);
+		}
+		for (; i < imps.length; i++) {
+			impValues[i] = GFforma.getExteralValuesString(imps[i]);
+		}
+		return impValues;
+	}
+	
+	private void processQuery(XMLTextField field) {
+
+		String text = field.getText();
+		field.setSendQuery(true);
+		if (sqlCode.size() > 0 || sqlLocal != null) {
+			/*
+			 * El primer elemento del vector sql siempre
+			 * sera la consulta que almacenara la
+			 * informacion del objeto local
+			 */
+			if (search) {
+				if (sqlLocal != null) {
+					String[] imps = getArgsForQuery(field);
+					GFforma.cleanExternalValues();
+					
+					if (!"".equals(text)) {
+						new GenericDataFiller(GFforma,
+								namebutton, enablebutton,
+								sqlLocal, imps,
+								text,
+								VFields).start();
+					}
+
+				}
+				/*
+				 * Las demas consultas seran para almacenar
+				 * la informacion de los demas objetos que
+				 * lo requieran
+				 */
+				searchOthersSqls(field);
+				search = false;
+			}
+		}
+		if (field.isSendRecord()) {
+			if ("NUMERIC".equals(field.getType())) {
+				text = String.valueOf(field.getNumberValue());
+			}
+			notificando(field, text);
+		}
+	}
+	
 	/**
 	 * Este metodo retorna un objeto color, apartir de los argumentos recibidos
 	 * 
@@ -628,16 +643,16 @@ public class GenericData extends JPanel implements DateListener,
 			}
 		}
 		/*-----------------------------------------------------------*/
-		String[] argumentos = new String[xmltf.getImportValue().length
+		String[] argumentos = new String[xmltf.getImportValues().length
 				+ xmltf.getConstantSize() + 1];
-		String[] XMLimpValues = xmltf.getImportValue();
+		String[] XMLimpValues = xmltf.getImportValues();
 
 		int i = 0;
 		for (i = 0; i < xmltf.getConstantSize(); i++) {
 			argumentos[i] = xmltf.getConstantValue(i);
 		}
 
-		for (; i < xmltf.getImportValue().length; i++) {
+		for (; i < xmltf.getImportValues().length; i++) {
 			argumentos[i] = GFforma.getExteralValuesString(XMLimpValues[i]);
 		}
 		argumentos[i] = xmltf.getText();
@@ -952,6 +967,7 @@ public class GenericData extends JPanel implements DateListener,
 		try {
 			callAddAnswerListener();
 			GFforma.addChangeExternalValueListener(this);
+			
 		} catch (NotFoundComponentException NFCEe) {
 			NFCEe.printStackTrace();
 		} catch (InvocationTargetException ITEe) {
@@ -1067,7 +1083,7 @@ public class GenericData extends JPanel implements DateListener,
 					new GenericDataFiller(GFforma, namebutton, enablebutton,
 							sqlLocal, new String[] {
 													GFforma.getExteralValuesString(
-							                                                        xmltf.getImportValue()[0]) }, null,
+							                                                        xmltf.getImportValues()[0]) }, null,
 							                                                        VFields).start();
 				}
 			}

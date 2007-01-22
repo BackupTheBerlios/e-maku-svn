@@ -147,8 +147,8 @@ public class TableDataFields extends GenericData implements InitiateFinishListen
 				 	 if (xmltf.isExportvalue()) {
 				 		 GFforma.setExternalValues(xmltf.getExportvalue(),xmltf.getNumberValue());
 				 	 }
-				 	 xmltf.setText(formatear(GFforma.getExteralValues(xmltf.getImportValue()[0])));
-				 	 xmltf.setNumberValue(GFforma.getExteralValues(xmltf.getImportValue()));
+				 	 xmltf.setText(formatear(GFforma.getExteralValues(xmltf.getImportValues()[0])));
+				 	 xmltf.setNumberValue(GFforma.getExteralValues(xmltf.getImportValues()));
 				}
 		    }
         }
