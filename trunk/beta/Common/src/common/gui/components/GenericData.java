@@ -208,7 +208,7 @@ public class GenericData extends JPanel implements DateListener,
 				String cname = null;
 				boolean queryOnInit = false;
 				boolean withOutArgsQuery = false;
-				
+				String sqlInit = null;
 				while (j.hasNext()) {
 					final Element elm = (Element) j.next();
 					if ("sqlCode".equals(elm.getAttributeValue("attribute"))) {
@@ -332,9 +332,12 @@ public class GenericData extends JPanel implements DateListener,
 						sendRecord = elm.getValue();
 					} else if ("queryOnInit".equals(elm.getAttributeValue("attribute"))) {
 						queryOnInit = Boolean.parseBoolean(elm.getValue());
+						searchQuery = true;
 					} else if ("withOutArgsQuery".equals(elm.getAttributeValue("attribute"))) {
 						withOutArgsQuery = Boolean.parseBoolean(elm.getValue());
-					}
+					} else if ("sqlInit".equals(elm.getAttributeValue("attribute"))) {
+						sqlInit = elm.getValue();
+					} 
 				}
 
 				if (mask == null) {
@@ -358,6 +361,7 @@ public class GenericData extends JPanel implements DateListener,
 				XMLText.setName(cname);
 				XMLText.setQueryOnInit(queryOnInit);
 				XMLText.setWithOutArgsQuery(withOutArgsQuery);
+				XMLText.setSqlInit(sqlInit);
 				
 				if (exportValue != null) {
 					XMLText.setExportvalue(exportValue);
@@ -507,11 +511,38 @@ public class GenericData extends JPanel implements DateListener,
 
 		if (disableAll)
 			Disabled(0);
-		for (XMLTextField field : VFields) {
-			if (field.isQueryOnInit()) {
-				processQuery(field);
+		Thread t = new Thread () {
+			public void run() {
+				for (XMLTextField field : VFields) {
+					if (field.isQueryOnInit()) try {
+						Document doc = null; 
+						doc = STResultSet.getResultSetST(field.getSqlInit(),getArgsForQuery(field));
+						Iterator i = doc.getRootElement().getChildren("row").iterator();
+			            while (i.hasNext()) {
+			                Element e = (Element) i.next();
+		                    Iterator j = e.getChildren().iterator();
+	                        Element f = (Element)j.next();
+	                        String text = f.getValue();
+	                        if ("NUMERIC".equals(field.getType())) {
+	                        	NumberFormat nf = NumberFormat.getNumberInstance();
+			        			DecimalFormat form = (DecimalFormat) nf;
+			        			form.applyPattern("###,###,##0.00");
+			        			field.setText(nf.format(Double.parseDouble(text)));
+			        			field.setNumberValue(nf.parse(text).doubleValue());
+	                        }
+	                        else {
+	                        	field.setText(text);
+	                        }
+			            }
+					} catch (STException STEe) {
+						//STEe.printStackTrace();
+					} catch (ParseException PSe) {
+						//PEe.printStackTrace();
+					}
+				}
 			}
-		}
+		};
+		t.start();
 	}
 
 	private String[] getArgsForQuery(XMLTextField field) {
@@ -540,14 +571,14 @@ public class GenericData extends JPanel implements DateListener,
 			 * sera la consulta que almacenara la
 			 * informacion del objeto local
 			 */
-			if (search) {
+			if (search || field.isQueryOnInit()) {
 				if (sqlLocal != null) {
 					String[] imps = getArgsForQuery(field);
 					GFforma.cleanExternalValues();
-					
-					if (!"".equals(text)) {
+					if (!"".equals(text) || field.isQueryOnInit() ) {
+						
 						new GenericDataFiller(GFforma,
-								namebutton, enablebutton,
+								namebutton, false,
 								sqlLocal, imps,
 								text,
 								VFields).start();
