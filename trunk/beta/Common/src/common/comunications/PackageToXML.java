@@ -91,16 +91,26 @@ public class PackageToXML {
                 for (int i = 0; i < vbuffer.size(); i++) {
  //                   String sbuff = "";
                     ByteArrayOutputStream docStream = new ByteArrayOutputStream();
+                    ByteArrayInputStream bufferIn = null;
                     try {
                         builder = new SAXBuilder(false);
                         docStream = (ByteArrayOutputStream) vbuffer.get(i);
-                        ByteArrayInputStream bufferIn = new ByteArrayInputStream(
-                                docStream.toByteArray());
+                        bufferIn = new ByteArrayInputStream(docStream.toByteArray());
  //                       sbuff = new String(docStream.toByteArray());
                         doc = builder.build(bufferIn);
+        	            ArrivePackageEvent event = new ArrivePackageEvent(this,doc);
+        	            notifyArrivePackage(event);
+
+                    }
+                    catch (NullPointerException NPEe) {
+                    	try {
+	                    	Document doc = builder.build(bufferIn);
 	        	            ArrivePackageEvent event = new ArrivePackageEvent(this,doc);
 	        	            notifyArrivePackage(event);
-
+                    	}
+                    	catch (JDOMException e1) {
+                            bufferTmp.write(docStream.toByteArray());
+                        }
                     }
                     catch (JDOMException e1) {
                         // En caso de un paquete invalido
