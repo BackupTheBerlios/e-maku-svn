@@ -91,4 +91,11 @@
 		<es_ES></es_ES>
 		<en_US>Exit aplication?</en_US>
 	</sentence>
+        <sentence>
+                <key>LOADING</key>
+                <es_CO>Cargando...</es_CO>
+                <es_EC></es_EC>
+                <es_ES></es_ES>
+                <en_US>Loading...</en_US>
+        </sentence>
 </language>

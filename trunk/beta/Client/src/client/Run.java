@@ -16,8 +16,8 @@ import client.misc.ClientConst;
 import client.misc.settings.ConfigFile;
 import client.misc.settings.ConfigFileNotLoadException;
 
-import com.nilo.plaf.nimrod.NimRODLookAndFeel;
-import com.nilo.plaf.nimrod.NimRODTheme;
+//import com.nilo.plaf.nimrod.NimRODLookAndFeel;
+//import com.nilo.plaf.nimrod.NimRODTheme;
 import common.comunications.SocketConnector;
 import common.misc.language.Language;
 
@@ -50,25 +50,6 @@ public class Run {
 	public static void main(String[] args) {
 
         try {
-        	
-            /*
-             * Al patron no le gusto pero a nosotros si, el dijo 
-             * el programa perdia seriedad y que mas bien parecia
-             * una caricatura de dragon ball Z, por tanto si quieres
-             * que el skin sea algo diferente, como argumentos debes poner:
-             * DRAGON BALL Z
-             * 
-             * PD: No se lo digas a nadie .... ;)
-             */
-        	if (args.length==3 && 
-        		args[0].toUpperCase().equals("DRAGON") &&
-        		args[1].toUpperCase().equals("BALL") &&
-        		args[2].toUpperCase().equals("Z")) {
-	        	NimRODLookAndFeel look = new NimRODLookAndFeel();
-	        	NimRODTheme theme = new NimRODTheme();
-	        	NimRODLookAndFeel.setCurrentTheme(theme);
-	        	UIManager.setLookAndFeel(look);
-        	}
         	
 //        	InputStream is = new FileInputStream(new File("/home/felipe/bionic.ttf"));
 //	        Font fo = Font.createFont(

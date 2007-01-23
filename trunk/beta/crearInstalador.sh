@@ -13,4 +13,4 @@ if [ "$COMPILE" == "" ] ; then
   exit
 fi
 
-compile $ROOT/instalador.xml -b . -o $ROOT/instalador-midas.jar -k standard
+compile $ROOT/instalador.xml -b . -o $ROOT/instalador-emaku.jar -k standard

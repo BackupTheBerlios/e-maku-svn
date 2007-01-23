@@ -4,7 +4,7 @@
     Created at : 28 de junio de 2004, 16:48
     Author     : pastuxso / xtingray
     Description:
-    Translation support for Midas app
+    Translation support for eMaku app
 -->
 <language>
     <sentence>
@@ -209,8 +209,8 @@
     </sentence>
     <sentence>
         <key>SOCKET_SERVER_OPEN</key>
-        <es_CO>INFO: Servidor Midas escuchando por el puerto</es_CO>
-        <en_US>INFO: Midas server listening on port</en_US>
+        <es_CO>INFO: Servidor eMaku escuchando por el puerto</es_CO>
+        <en_US>INFO: eMaku server listening on port</en_US>
     </sentence>
     <sentence>
         <key errorCode="120">ERR_IO_SOCKET</key>

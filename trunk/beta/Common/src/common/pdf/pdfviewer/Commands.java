@@ -537,7 +537,7 @@ public class Commands {
 		
 		while(!finished){
 			JFileChooser chooser = new JFileChooser(commonValues.getInputDir());
-			chooser.setSelectedFile(new File(commonValues.getInputDir()+"/jmidas_report.pdf"));
+			chooser.setSelectedFile(new File(commonValues.getInputDir()+"/emaku_report.pdf"));
 			chooser.addChoosableFileFilter(new FileFilterer(new String[]{"pdf"}, "Pdf (*.pdf)"));
 			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			

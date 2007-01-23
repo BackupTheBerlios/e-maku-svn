@@ -59,7 +59,7 @@ public class About extends JInternalFrame {
         JTPpestanas = new JTabbedPane();
         JTPpestanas.addTab(Language.getWord("ABOUT"),new PanelAbout());
         JTPpestanas.addTab(Language.getWord("LICENSE"),new HTMLdoc(this.getClass().getResource("/LICENSE-GNU")));
-        JTPpestanas.addTab(Language.getWord("CREDITS"),new HTMLdoc(this.getClass().getResource("/STAFF-MIDAS")));
+        JTPpestanas.addTab(Language.getWord("CREDITS"),new HTMLdoc(this.getClass().getResource("/STAFF-QHATU")));
 
         this.getContentPane().add(JTPpestanas,BorderLayout.CENTER);
 

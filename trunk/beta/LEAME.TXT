@@ -1,6 +1,6 @@
 
   ************************************************************
-  PROYECTO MIDAS: Estandar Abierto para desarrollo de Software 
+  PROYECTO QHATU: Estandar Abierto para desarrollo de Software 
   Administrativo Financiero para Empresas Comerciales y de 
   Servicios
   ************************************************************
@@ -8,7 +8,7 @@
   CONTENIDO
   =========
 
-  1. Que es Midas?
+  1. Que es el estandar Qhatu?
   2. Que es E-Maku?
   3. Terminos de Licenciamiento
   4. Requerimientos minimos de E-Maku (Hardware y Software)
@@ -19,22 +19,22 @@
 
   ------------------------------------------------------------
 
-  1. Que es Midas?
+  1. Que es el estandar Qhatu?
 
-  El proyecto MIDAS  consiste en  un conjunto  abierto de 
+  El proyecto QHATU  consiste en  un conjunto  abierto de 
   especificaciones tecnicas que definen un modelo generico 
   orientado a la implementacion de Software Administrativo  
   Financiero (SAF)  para empresas  de tipo Comercial y/o de 
   Servicios.
 
-  En otras palabras, MIDAS es un repositorio de  documentacion 
+  En otras palabras, QHATU es un repositorio de  documentacion 
   tecnica referida al disen~o de una herramienta SAF. Dado 
   que solo se trata de un disen~o (a manera de estandar), la 
   intencion de este proyecto es fomentar multiples 
   implementaciones (en diversos lenguajes de Programacion, por  
   ejemplo: Java, Php, Perl, etc) de  aplicativos parciales 
   (ej: componentes) o comprensivos de las funcionalidades 
-  comunes incluidas en la definicion de Midas.
+  comunes incluidas en la definicion de Qhatu.
 
   Las implementaciones seran independientes de la plataforma 
   en la medida en que los lenguajes de programacion que se  
@@ -44,19 +44,19 @@
   por defecto.
 
   Repositorio oficial de documentacion:
-  http://www.kazak.ws/midas/doc.php
+  http://comunidad.qhatu.net
 
   ------------------------------------------------------------
 
   2. Que es E-Maku?
  
-  Es una implementacion de las especificaciones de MIDAS en 
+  Es una implementacion de las especificaciones de QHATU en 
   lenguaje Java.
   E-Maku consta de un Servidor de Transacciones, un Programa 
   Cliente y un Programa Administrador. 
 
   Mas detalles sobre la implementacion en:
-  http://www.kazak.ws/midas/documentos/arquitectura.php
+  http://comunidad.qhatu.net
 
   ------------------------------------------------------------
 
@@ -118,7 +118,7 @@
     "mi_empresa" (Este valor puede ser cambiado a consideracion
     del administrador del sistema).
   - Un Servidor de Transacciones (ST): Es un servicio escrito 
-    en Java que hace la interfaz entre los Clientes Midas y las
+    en Java que hace la interfaz entre los Clientes Qhatu y las
     bases de datos.
   - Un Programa Cliente: Es una interfaz diseñada para realizar
     todas las operaciones sobre el sistema admin/financiero.
@@ -207,7 +207,7 @@
 
      % su - postgres
 
-   - Cree un usuario de bases de datos con el nombre "midas", con
+   - Cree un usuario de bases de datos con el nombre "emaku", con
      permisos para crear bases de datos (el nombre del usuario puede
      ser modificado a consideracion del administrador del sistema).
 
@@ -244,7 +244,7 @@
 
        % pg_ctl restart 
 
-     - Cargue las instrucciones SQL de Midas en la base de datos que
+     - Cargue las instrucciones SQL de Qhatu en la base de datos que
        acaba de crear. Para ello, ingrese al directorio "sql" del
        codigo fuente de E-Maku:
 
@@ -258,7 +258,7 @@
        todas las advertencias o errores generados al cargar la base
        de datos "mi_empresa".
        Es importante tener en cuenta que el archivo "postgresql.sql"
-       contiene la estructura de tablas del estandar Midas y 
+       contiene la estructura de tablas del estandar Qhatu y 
        adicionalmente algunos registros de prueba que usted puede
        modificar segun sus necesidades.
 
@@ -329,7 +329,7 @@
    - Tipo de almacenamiento para mensajes del sistema (Logs):
      Consola/Archivo/Ninguno
 
-   El sistema creara un archivo en la ruta "/home/usuario/.midas/client.conf"
+   El sistema creara un archivo en la ruta "/home/usuario/.qhatu/client.conf"
    dentro del directorio del usuario que ejecuta la aplicacion, en donde 
    quedara almacenada la configuracion por defecto para ese usuario.
 
@@ -429,7 +429,7 @@
    - Tipo de almacenamiento para mensajes del sistema (Logs):
      Consola/Archivo/Ninguno
 
-   El sistema creara un archivo en la ruta "/home/usuario/.midas/client.conf"
+   El sistema creara un archivo en la ruta "/home/usuario/.qhatu/client.conf"
    dentro del directorio del usuario que ejecuta la aplicacion, en donde
    quedara almacenada la configuracion por defecto para ese usuario.
 
@@ -625,6 +625,6 @@
 
   Correo Electronico:  comunidad@qhatu.net
   Pagina Web:          http://comunidad.qhatu.net
-  IRC:                 irc.freenode.net / #midas
+  IRC:                 irc.freenode.net / #qhatu
 
   ------------------------------------------------------------

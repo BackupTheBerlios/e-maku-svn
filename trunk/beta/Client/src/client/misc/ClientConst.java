@@ -30,7 +30,7 @@ public interface ClientConst {
 	public final String HOME = System.getProperty("user.home");
     public final String SEPARATOR = System.getProperty("file.separator");
     public final String TMP = System.getProperty("java.io.tmpdir");
-	public final String CONF = HOME+SEPARATOR+".midas"+SEPARATOR;
+	public final String CONF = HOME+SEPARATOR+".qhatu"+SEPARATOR;
 
     public final int ERROR = 0;
 

@@ -70,7 +70,7 @@ import javax.swing.KeyStroke;
 
 import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
-import org.jpedal.io.StatusBar;
+//import org.jpedal.io.StatusBar;
 import org.jpedal.objects.PdfPageData;
 import org.w3c.dom.Node;
 
@@ -87,6 +87,7 @@ import common.pdf.pdfviewer.gui.swing.SwingMenuItem;
 import common.pdf.pdfviewer.gui.swing.SwingOutline;
 import common.pdf.pdfviewer.utils.Printer;
 import common.pdf.pdfviewer.utils.SwingWorker;
+import common.pdf.pdfviewer.gui.popups.BarProgressDialog;
 
 /**
  * Scope:<b>(All)</b>
@@ -123,14 +124,16 @@ public class SwingGUI extends GUI implements GUIFactory {
 	private final Font headFont=new Font("SansSerif",Font.BOLD,14);
 	
 	private final Font textFont=new Font("Serif",Font.PLAIN,12);
-	private Color color = new Color(200,200,255);
+	//private Color color = new Color(200,200,255);
 
 	/**Interactive display object - needs to be added to PdfDecoder*/
-	private StatusBar statusBar=new StatusBar(color);
+	//private StatusBar statusBar=new StatusBar(color);
 	
 	public JTextField pageCounter2 = new JTextField(4);
 	
-	private JLabel pageCounter3;	
+	private JLabel pageCounter3;
+	
+	private BarProgressDialog dialog;
 			
 	public SwingGUI(PdfDecoder decode_pdf,Values commonValues){
 	
@@ -566,7 +569,8 @@ public class SwingGUI extends GUI implements GUIFactory {
 				
 				try {
 					
-					statusBar.updateStatus("Decoding Page",0);
+					//statusBar.updateStatus("Decoding Page",0);
+					dialog.resetBar();
 					
 					/**
 					 * make sure screen fits display nicely
@@ -606,7 +610,9 @@ public class SwingGUI extends GUI implements GUIFactory {
 						cropY = page_data.getCropBoxY(commonValues.getCurrentPage());
 						cropW = page_data.getCropBoxWidth(commonValues.getCurrentPage());
 						cropH = page_data.getCropBoxHeight(commonValues.getCurrentPage());
-						statusBar.updateStatus("Displaying Page",0); 
+						//statusBar.updateStatus("Displaying Page",0); 
+						dialog.updateStatusMessage("Displaying Page", 0);
+						dialog.setStatusProgress(80);
 						
 					} catch (Exception e) {
 						System.err.println("Exception " + e + " decoding page");
@@ -636,6 +642,7 @@ public class SwingGUI extends GUI implements GUIFactory {
 						showMessageDialog("Page contains embedded fonts which may not display correctly using Font substitution."); 
 						
 					}
+					
 					//make sure fully drawn
 					decode_pdf.repaint();
 					
@@ -644,11 +651,12 @@ public class SwingGUI extends GUI implements GUIFactory {
 
 				}
 				
-				statusBar.setProgress(100);
+				//statusBar.setProgress(100);
+				dialog.setStatusProgress(100);
+				dialog.close();
 
 				//reanable user changing scaling 
 				resetComboBoxes(true);
-				
 				
 				//<start-forms>
 				addFormsListeners();
@@ -801,14 +809,16 @@ public class SwingGUI extends GUI implements GUIFactory {
 	//<end-forms>
 	
 	public void initStatus() {
-		decode_pdf.setStatusBarObject(statusBar);
 		resetStatus();
+		decode_pdf.setStatusBarObject(dialog.getStatusBar());
 	}
 	
 
 	public void resetStatus() {
-		statusBar.setColorForSubroutines(Color.blue);
-		bottomNavButtons.add(statusBar.getStatusObject());
+		//statusBar.setColorForSubroutines(Color.blue);
+		//bottomNavButtons.add(statusBar.getStatusObject());
+		dialog = new BarProgressDialog(frame);
+		dialog.resetStatusBar();
 	}
 	
 	
@@ -999,15 +1009,12 @@ public class SwingGUI extends GUI implements GUIFactory {
 	}
 	
 	public void updateStatusMessage(String message) {
-		statusBar.updateStatus(message,0);
 	}
 	
 	public void resetStatusMessage(String message) {
-		statusBar.resetStatus(message);
 	}
 	
-	public void setStatusProgress(int size) {
-		statusBar.setProgress(size);	
+	public void setStatusProgress(int size) {	
 	}
 	
 	public void close() {

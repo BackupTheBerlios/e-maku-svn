@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
 
 <!-- 
-    Archivo de configuracion / Instalador Suite Midas
+    Archivo de configuracion / Instalador Suite eMaku 
     Para crear el instalador, ejecute: 
-    % compile install.xml -b . -o instalador-midas.jar -k standard
+    % compile install.xml -b . -o instalador-emaku.jar -k standard
 
     Dependencia: Izpack
 -->
@@ -79,7 +79,7 @@
 
     <!-- 
         Seccion de Paquetes
-        En esta seccion se especifican los componentes en los que se divide la Suite Midas 
+        En esta seccion se especifican los componentes en los que se divide la Suite eMaku 
     -->
     <packs>
         <pack name="Librerías" required="yes">
