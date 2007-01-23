@@ -139,6 +139,7 @@ public class TextPrinterBuffer {
 	 * @return
 	 */
 	public ByteArrayInputStream getStream() {
+		/*
 		for (Object[] scpCode :scpCodes) {
 			int row = (Integer)scpCode[0];
 			int col = (Integer)scpCode[1];
@@ -150,7 +151,7 @@ public class TextPrinterBuffer {
 			}
 			buffer.get(row-1).insert(col-1,val);
 		}
-
+		*/
 		return new ByteArrayInputStream(getBufferString().getBytes()); 
 	}
 	

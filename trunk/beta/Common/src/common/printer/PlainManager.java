@@ -172,6 +172,7 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 				scpCode[1] = col;
 				scpCode[2] = textPrinterBuffer.Convert(value);
 				textPrinterBuffer.addScpCode(scpCode);
+				textPrinterBuffer.insertString(scpCode[2].toString(),row,col,null);
 				passed = true;
 			}
 			if (isValidate && passed) {
