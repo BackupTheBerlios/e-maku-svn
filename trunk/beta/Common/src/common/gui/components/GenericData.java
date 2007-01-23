@@ -419,6 +419,7 @@ public class GenericData extends JPanel implements DateListener,
 
 				if (foreground != null) {
 					XMLText.setForeground(foreground);
+					XMLText.setDisabledTextColor(foreground);
 				}
 
 				if (font != null) {
