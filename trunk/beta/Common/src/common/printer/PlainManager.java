@@ -35,7 +35,10 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 	private ByteArrayInputStream in;
 	private boolean sussceful;
 	private ImpresionType impresionType;
-
+	private boolean withHeader;
+	private Element header;
+	private int rowPageSeparator;
+	
 	public PlainManager(String ndocument) {
 		ClientHeaderValidator.addSuccessListener(this);
 		impresionType = ImpresionType.PLAIN;
@@ -120,18 +123,25 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 				Attribute attribute = (Attribute) itAttribs.next();
 				attribs.put(attribute.getName(),attribute);
 			}
-			Attribute attr = attribs.get("row");
+			Attribute attrRow = attribs.get("row");
+			Attribute attrCol = attribs.get("col");
 			int row = -1;
 			boolean isValidate = false;
 			boolean passed = false;
-			if (attr.getValue().equals("last")) {
+			if (attrRow!=null) {
+				if (attrRow.getValue().equals("last")) {
+					row = currentRow;
+					isValidate = true;
+				}
+				else {
+					row = attrRow.getIntValue();
+				}
+			}
+			if (withHeader) {
 				row = currentRow;
 				isValidate = true;
 			}
-			else {
-				row = attr.getIntValue();
-			}
-			int col =  attribs.get("col").getIntValue();
+			int col =  attrCol!=null? attrCol.getIntValue() : -1;
 			
 			if ("line".equals(name)) {
 				int length		= attribs.get("length"  ).getIntValue();
@@ -167,12 +177,14 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 			}
 			else if ("scp".equals(name)) {
 				String  value = e.getValue();
-				Object[] scpCode = new Object[3];
-				scpCode[0] = row;
-				scpCode[1] = col;
-				scpCode[2] = textPrinterBuffer.Convert(value);
-				textPrinterBuffer.addScpCode(scpCode);
-				textPrinterBuffer.insertString(scpCode[2].toString(),row,col,null);
+				textPrinterBuffer.insertString( textPrinterBuffer.Convert(value),row,col,null);
+				passed = true;
+			}
+			else  if ("header".equals(name)) {
+				withHeader = true;
+				header = (Element) e.clone();
+				rowPageSeparator =  attribs.get("repeatEach").getIntValue();
+				processMetadata(header);
 				passed = true;
 			}
 			if (isValidate && passed) {
@@ -234,9 +246,15 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 						i++;
 					}
 					rowInit++;
-				}
-				if (isValidate) {
-					currentRow = rowInit + 1;
+					if (isValidate) {
+						currentRow = rowInit + 1;
+					}
+					if (withHeader) {
+						if (currentRow==rowPageSeparator) {
+							processMetadata(header);
+							rowInit = currentRow;
+						}
+					}
 				}
 			}
 			else {

@@ -349,12 +349,12 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 							
 							boolean silent = ATSilent!=null ? ATSilent.getBooleanValue() : false;
 							int copies     = ATCopies!=null ? ATCopies.getIntValue() : 1;
-							String _type   = ATType.getValue();
+							String typePrinter   = ATType.getValue();
 							String printer = ATprinter!=null && 
 											 !ATprinter.getValue().trim().equals("") ?  
 											 ATprinter.getValue() : 
 											 null ;
-							if ("PLAIN".equals(_type) ) {
+							if ("PLAIN".equals(typePrinter) ) {
 								plainManager.process(rootTemplate,printJob);
 								if (plainManager.isSusseful()) {
 									System.out.println("================================");
@@ -366,7 +366,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 									plainManager = new PlainManager(plainManager.getNdocument());
 								}
 							}
-							if ("GRAPHIC".equals(_type) ) {
+							if ("GRAPHIC".equals(typePrinter) ) {
 								postScriptManager.load(rootTemplate,printJob);
 								new PrintManager(postScriptManager,silent, copies,printer);
 								postScriptManager = new PostScriptManager();
@@ -378,6 +378,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 							JOptionPane.showInternalMessageDialog(GFforma,"NO SE ENCONTRO LA PLANTILLA DE IMPRESION");
 						}
 					} catch (FileNotFoundException e) {
+						JOptionPane.showInternalMessageDialog(GFforma,"NO SE ENCONTRO LA PLANTILLA DE IMPRESION");
 						e.printStackTrace();
 					} catch (PrintException e) {
 						e.printStackTrace();

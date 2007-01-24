@@ -2,7 +2,6 @@ package common.printer;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 import common.misc.CommonConst;
 
@@ -15,21 +14,12 @@ import common.misc.CommonConst;
 public class TextPrinterBuffer {
 	
 	private ArrayList<StringBuilder> buffer;
-	private Vector<Object[]> scpCodes  = new Vector<Object[]>(); 
 	
 	/**
 	 * Constructor que inicializa el buffer
 	 */
 	public TextPrinterBuffer() {
 		buffer = new ArrayList<StringBuilder>();
-	}
-	
-	/**
-	 * Adiciona los codigos de escape para manejar impresoras sin filtro
-	 * @param scpCode
-	 */
-	public void addScpCode(Object[] scpCode) {
-		scpCodes.add(scpCode);
 	}
 	
 	/**
@@ -139,19 +129,6 @@ public class TextPrinterBuffer {
 	 * @return
 	 */
 	public ByteArrayInputStream getStream() {
-		/*
-		for (Object[] scpCode :scpCodes) {
-			int row = (Integer)scpCode[0];
-			int col = (Integer)scpCode[1];
-			String val = (String)scpCode[2];
-			if (row > buffer.size() ) {
-				while (row > buffer.size()) {
-					buffer.add(new StringBuilder());
-				}
-			}
-			buffer.get(row-1).insert(col-1,val);
-		}
-		*/
 		return new ByteArrayInputStream(getBufferString().getBytes()); 
 	}
 	
