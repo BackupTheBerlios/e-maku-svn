@@ -71,29 +71,34 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 			
 			super.width  = settings.getAttribute("width").getIntValue();
 			super.height = settings.getAttribute("height").getIntValue();*/
-			
-			
-			processMetadata(rootTemplate.getChild("metadata"));
-			
-			Iterator itTemplate = rootTemplate.getChildren("package").iterator();
+			Iterator itTemplate = rootTemplate.getChildren().iterator();
 			Iterator itTransact = rootTransact.getChildren("package").iterator();
 			int countPacks = 0;
-			while(itTemplate.hasNext() && itTransact.hasNext()) {
+			while(itTemplate.hasNext()) {
 				Element elmTemplate = (Element)itTemplate.next();
-				Element elmTransact = (Element)itTransact.next();
-				Attribute attr = elmTemplate.getAttribute("validate");
-				Attribute attrInv = elmTemplate.getAttribute("invalidate");
-				if (attrInv==null || (attrInv!=null && !attrInv.getBooleanValue()) ) {
-					countPacks += elmTransact.getChildren().size();
+				String name = elmTemplate.getName();
+				if ("metadata".equals(name)) {
+					processMetadata(elmTemplate);	
 				}
-				boolean validate = attr != null ? attr.getBooleanValue() : false;
-				if (validate) {
-					if (elmTransact.getChildren().size() > 0) {
+				else if ("package".equals(name) && itTransact.hasNext()) {
+					Element elmTransact = (Element)itTransact.next();
+					Attribute attr = elmTemplate.getAttribute("validate");
+					Attribute attrInv = elmTemplate.getAttribute("invalidate");
+					if (attrInv==null || (attrInv!=null && !attrInv.getBooleanValue()) ) {
+						countPacks += elmTransact.getChildren().size();
+					}
+					boolean validate = attr != null ? attr.getBooleanValue() : false;
+					if (validate) {
+						if (elmTransact.getChildren().size() > 0) {
+							processElement(elmTemplate,elmTransact);
+						}
+					}
+					else {
 						processElement(elmTemplate,elmTransact);
 					}
 				}
 				else {
-					processElement(elmTemplate,elmTransact);
+					processSingleTag(elmTemplate);
 				}
 			}
 			if ( countPacks > 0 ) {
@@ -110,92 +115,92 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 	}
 	
 	private void processMetadata(Element element) throws DataConversionException {
-
 		Iterator it = element.getChildren().iterator();
 		while (it.hasNext()) {
-			
 			Element e = (Element) it.next();
-			String name = e.getName();
-			Iterator itAttribs = e.getAttributes().iterator();
-			HashMap<String,Attribute> attribs = new HashMap<String,Attribute>();
-			
-			while(itAttribs.hasNext()) {
-				Attribute attribute = (Attribute) itAttribs.next();
-				attribs.put(attribute.getName(),attribute);
-			}
-			Attribute attrRow = attribs.get("row");
-			Attribute attrCol = attribs.get("col");
-			int row = -1;
-			boolean isValidate = false;
-			boolean passed = false;
-			if (attrRow!=null) {
-				if (attrRow.getValue().equals("last")) {
-					row = currentRow;
-					isValidate = true;
-				}
-				else {
-					row = attrRow.getIntValue();
-				}
-			}
-			if (withHeader) {
+			processSingleTag(e);
+		}
+	}
+	private void processSingleTag(Element e) throws DataConversionException {
+		String name = e.getName();
+		Iterator itAttribs = e.getAttributes().iterator();
+		HashMap<String,Attribute> attribs = new HashMap<String,Attribute>();
+		
+		while(itAttribs.hasNext()) {
+			Attribute attribute = (Attribute) itAttribs.next();
+			attribs.put(attribute.getName(),attribute);
+		}
+		Attribute attrRow = attribs.get("row");
+		Attribute attrCol = attribs.get("col");
+		int row = -1;
+		boolean isValidate = false;
+		boolean passed = false;
+		if (attrRow!=null) {
+			if (attrRow.getValue().equals("last")) {
 				row = currentRow;
 				isValidate = true;
 			}
-			int col =  attrCol!=null? attrCol.getIntValue() : -1;
-			
-			if ("line".equals(name)) {
-				int length		= attribs.get("length"  ).getIntValue();
-				String charfill = attribs.get("charfill").getValue();
-				String align	= attribs.get("align"   ).getValue();
-				for (int i=0;i < length ; i++) {
-					if ("horizontal".equals(align)) {
-						textPrinterBuffer.insertString(charfill,row,col++,null);
-					}
-					else if ("vertical".equals(align)) {
-						textPrinterBuffer.insertString(charfill,row++,col,null);
-					}
-				}
-				passed = true;
+			else {
+				row = attrRow.getIntValue();
 			}
-			else if ("field".equals(name)) {
-				String value = e.getTextTrim();
-				value = " ".equals(value) || "".equals(value) ? "  " : value;
-				textPrinterBuffer.insertString(value,row,col,null);
-				passed = true;
+		}
+		if (withHeader) {
+			row = currentRow;
+			isValidate = true;
+		}
+		int col =  attrCol!=null? attrCol.getIntValue() : -1;
+		
+		if ("line".equals(name)) {
+			int length		= attribs.get("length"  ).getIntValue();
+			String charfill = attribs.get("charfill").getValue();
+			String align	= attribs.get("align"   ).getValue();
+			for (int i=0;i < length ; i++) {
+				if ("horizontal".equals(align)) {
+					textPrinterBuffer.insertString(charfill,row,col++,null);
+				}
+				else if ("vertical".equals(align)) {
+					textPrinterBuffer.insertString(charfill,row++,col,null);
+				}
+			}
+			passed = true;
+		}
+		else if ("field".equals(name)) {
+			String value = e.getTextTrim();
+			value = " ".equals(value) || "".equals(value) ? "  " : value;
+			textPrinterBuffer.insertString(value,row,col,null);
+			passed = true;
 
-			}
-			else if ("ndocument".equals(name)) {
-				String value = ndocument;
-				textPrinterBuffer.insertString(value,row,col,null);
-				passed = true;
-			}
-			else if ("abstract".equals(name)) {
-				String  value = e.getText();
-				int height = attribs.get("height").getIntValue();
-				textPrinterBuffer.insertTextArea(value,row,col,null,height,false);
-				passed = true;
-			}
-			else if ("scp".equals(name)) {
-				String  value = e.getValue();
-				textPrinterBuffer.insertString( textPrinterBuffer.Convert(value),row,col,null);
-				passed = true;
-			}
-			else  if ("header".equals(name)) {
-				withHeader = true;
-				header = (Element) e.clone();
-				rowPageSeparator =  attribs.get("repeatEach").getIntValue();
-				processMetadata(header);
-				passed = true;
-			}
-			if (isValidate && passed) {
-				Attribute incrementRow = attribs.get("incrementRow");
-				if (incrementRow== null || incrementRow.getBooleanValue()) {
-					currentRow++;
-				}
+		}
+		else if ("ndocument".equals(name)) {
+			String value = ndocument;
+			textPrinterBuffer.insertString(value,row,col,null);
+			passed = true;
+		}
+		else if ("abstract".equals(name)) {
+			String  value = e.getText();
+			int height = attribs.get("height").getIntValue();
+			textPrinterBuffer.insertTextArea(value,row,col,null,height,false);
+			passed = true;
+		}
+		else if ("scp".equals(name)) {
+			String  value = e.getValue();
+			textPrinterBuffer.insertString( textPrinterBuffer.Convert(value),row,col,null);
+			passed = true;
+		}
+		else  if ("header".equals(name)) {
+			withHeader = true;
+			header = (Element) e.clone();
+			rowPageSeparator =  attribs.get("repeatEach").getIntValue();
+			processMetadata(header);
+			passed = true;
+		}
+		if (isValidate && passed) {
+			Attribute incrementRow = attribs.get("incrementRow");
+			if (incrementRow== null || incrementRow.getBooleanValue()) {
+				currentRow++;
 			}
 		}
 	}
-	
 	private void processElement(Element pack_template, Element pack_transaction) throws DataConversionException {
 
 		Iterator it_template = pack_template.getChildren().iterator();
@@ -251,6 +256,11 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 					}
 					if (withHeader) {
 						if (currentRow==rowPageSeparator) {
+							Element ff = new Element("scp");
+							ff.setText("FF");
+							ff.setAttribute("row","last");
+							ff.setAttribute("col","2");
+							processSingleTag(ff);
 							processMetadata(header);
 							rowInit = currentRow;
 						}
@@ -269,10 +279,10 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 				}
 				addValue(el_transaction.getValue(),attribs);
 			}
-			if (currentRow<rowInit)
+			/*if (currentRow<rowInit)
 				currentRow = rowInit;
 			else
-				currentRow++;
+				currentRow++;*/
 		}
 	}
 	
