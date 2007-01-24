@@ -310,6 +310,7 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 		if ("TEXT".equals(type)) {
 			int width = attribs.get("width").getIntValue();
 			int height = attribs.get("height").getIntValue();
+			currentRow+=height;
 			textPrinterBuffer.insertTextArea(value,row,col,width,height,true);
 		}
 		else if ("STRING".equals(type)) {

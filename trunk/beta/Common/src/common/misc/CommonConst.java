@@ -42,7 +42,7 @@ public class CommonConst {
     	printServices = PrintServiceLookup.lookupPrintServices(null, null);
     	ScpCodes = new HashMap<String, Integer>();
     	ScpCodes.put("ESC",27); // Escape
-    	ScpCodes.put("FF",10);  // Fin de Pagina 
+    	ScpCodes.put("FF",12);  // Fin de Pagina 
     	ScpCodes.put("EOT",7);  // Final de Transmision 
     	ScpCodes.put("DC2",18); // No Condensada
     	ScpCodes.put("ETB",23); // Fin de Comando
