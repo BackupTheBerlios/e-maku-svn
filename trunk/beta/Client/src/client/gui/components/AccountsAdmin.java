@@ -3,6 +3,7 @@ package client.gui.components;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -22,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.Box;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -77,10 +79,16 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 	private XMLCheckBox XMLCBnaturaleza;
 	private XMLCheckBox XMLCBcentro;
 	private XMLCheckBox XMLCBajuste;
+	private XMLCheckBox XMLCBdeprecia;
+	private XMLComboBox XMLCBtarifasDepre;
 	private XMLCheckBox XMLCBterceros;
 	private XMLCheckBox XMLCBinventarios;
 	private XMLCheckBox XMLCBretencion;
 	private XMLTextField XMLTFbase;
+	private XMLTextField XMLTFcontraAjuste;
+	private XMLTextField XMLTFctaAjuste;
+	private XMLTextField XMLTFcontraDepre;
+	private XMLTextField XMLTFctaDepre;
 	private XMLTextField XMLTFporcentaje;
 	private XMLComboBox XMLCBmoneda;
 	private JSplitPane JSsur;
@@ -222,11 +230,11 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		JSsur.addHierarchyBoundsListener(new HierarchyBoundsListener() {
 
 			public void ancestorResized(HierarchyEvent e) {
-				JSsur.setDividerLocation(JSsur.getMaximumDividerLocation());
+				JSsur.setDividerLocation(JSsur.getMaximumDividerLocation()-50);
 			}
 
 			public void ancestorMoved(HierarchyEvent e) {
-				JSsur.setDividerLocation(JSsur.getMaximumDividerLocation());
+				JSsur.setDividerLocation(JSsur.getMaximumDividerLocation()-50);
 			}
 		});
 
@@ -474,22 +482,65 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		XMLCBnaturaleza = new XMLCheckBox("NATURALEZA");
 		XMLCBcentro = new XMLCheckBox("CENTRO");
 		XMLCBajuste = new XMLCheckBox("AJUSTE");
+		
+		XMLTFctaAjuste = new XMLTextField("CTAAJUSTE", 9, 10, XMLTextField.NUMERIC);
+		XMLTFcontraAjuste = new XMLTextField("CONTRAPARTIDA", 9, 10, XMLTextField.NUMERIC);
+		
+		JPanel JPdeprecia = new JPanel(new BorderLayout());
+		XMLCBdeprecia = new XMLCheckBox("DEPRECIACIONES");
+		XMLCBtarifasDepre = new XMLComboBox(GFforma,"SCS0058","TARIFAS");
+		JPdeprecia.add(XMLCBdeprecia.getJPcheck(),BorderLayout.WEST);
+		JPdeprecia.add(XMLCBtarifasDepre.getLabel(),BorderLayout.CENTER);
+		JPdeprecia.add(XMLCBtarifasDepre.getJPcombo(),BorderLayout.EAST);
+		
+		XMLTFctaDepre = new XMLTextField("CTADEPRE", 9, 10, XMLTextField.NUMERIC);
+		XMLTFcontraDepre = new XMLTextField("CONTRAPARTIDA", 9, 10, XMLTextField.NUMERIC);
+		
 		XMLCBterceros = new XMLCheckBox("TERCEROS_CTA");
 		XMLCBinventarios = new XMLCheckBox("INVENTARIOS_CTA");
 		XMLCBretencion = new XMLCheckBox("RETENCION");
 		XMLTFbase = new XMLTextField("BASE", 9, 10, XMLTextField.NUMERIC);
-		XMLTFporcentaje = new XMLTextField("PORCENTAJE", 9, 10,
-				XMLTextField.NUMERIC);
+		XMLTFporcentaje = new XMLTextField("PORCENTAJE", 9, 10,	XMLTextField.NUMERIC);
 		XMLCBmoneda = new XMLComboBox(GFforma, "SCS0012", "MONEDA");
 
 		XMLTFbase.setHorizontalAlignment(SwingConstants.RIGHT);
-		XMLTFporcentaje.setHorizontalAlignment(SwingConstants.RIGHT);
-		JPanel JPchecks = new JPanel(new GridLayout(7, 1));
+		XMLTFcontraAjuste.setHorizontalAlignment(SwingConstants.RIGHT);
+		
+		JPanel JPctaAjuste = new JPanel(new BorderLayout());
+		JPctaAjuste.add(Box.createRigidArea(new Dimension(20,0)),BorderLayout.WEST);
+		JPctaAjuste.add(XMLTFctaAjuste.getLabel(),BorderLayout.CENTER);
+		JPctaAjuste.add(XMLTFctaAjuste.getJPtext(),BorderLayout.EAST);
+
+		JPanel JPcontraAjuste = new JPanel(new BorderLayout());
+		JPcontraAjuste.add(XMLTFcontraAjuste.getLabel(),BorderLayout.WEST);
+		JPcontraAjuste.add(XMLTFcontraAjuste.getJPtext(),BorderLayout.CENTER);
+		
+		JPanel JPajuste = new JPanel(new BorderLayout());
+		JPajuste.add(JPctaAjuste,BorderLayout.CENTER);
+		JPajuste.add(JPcontraAjuste,BorderLayout.EAST);
+		
+		JPanel JPctaDepre = new JPanel(new BorderLayout());
+		JPctaDepre.add(Box.createRigidArea(new Dimension(20,0)),BorderLayout.WEST);
+		JPctaDepre.add(XMLTFctaDepre.getLabel(),BorderLayout.CENTER);
+		JPctaDepre.add(XMLTFctaDepre.getJPtext(),BorderLayout.EAST);
+
+		JPanel JPcontraDepre = new JPanel(new BorderLayout());
+		JPcontraDepre.add(XMLTFcontraDepre.getLabel(),BorderLayout.WEST);
+		JPcontraDepre.add(XMLTFcontraDepre.getJPtext(),BorderLayout.CENTER);
+
+		JPanel JPdepre = new JPanel(new BorderLayout());
+		JPdepre.add(JPctaDepre,BorderLayout.CENTER);
+		JPdepre.add(JPcontraDepre,BorderLayout.EAST);
+		
+		JPanel JPchecks = new JPanel(new GridLayout(10, 1));
 
 		JPchecks.add(XMLBGgroup);
 		JPchecks.add(XMLCBnaturaleza.getJPcheck());
 		JPchecks.add(XMLCBcentro.getJPcheck());
 		JPchecks.add(XMLCBajuste.getJPcheck());
+		JPchecks.add(JPajuste);
+		JPchecks.add(JPdeprecia);
+		JPchecks.add(JPdepre);
 		JPchecks.add(XMLCBterceros.getJPcheck());
 		JPchecks.add(XMLCBinventarios.getJPcheck());
 		JPchecks.add(XMLCBretencion.getJPcheck());
@@ -536,12 +587,26 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		XMLCBnaturaleza.setEnabled(flag);
 		XMLCBcentro.setEnabled(flag);
 		XMLCBajuste.setEnabled(flag);
+		XMLTFctaAjuste.setEnabled(flag);
+		XMLTFctaAjuste.getLabel().setEnabled(flag);
+		XMLTFcontraAjuste.setEnabled(flag);
+		XMLTFcontraAjuste.getLabel().setEnabled(flag);
+		XMLCBdeprecia.setEnabled(flag);
+		XMLCBtarifasDepre.setEnabled(flag);
+		XMLCBtarifasDepre.getLabel().setEnabled(flag);
+		XMLTFctaDepre.setEnabled(flag);
+		XMLTFctaDepre.getLabel().setEnabled(flag);
+		XMLTFcontraDepre.setEnabled(flag);
+		XMLTFcontraDepre.getLabel().setEnabled(flag);
 		XMLCBterceros.setEnabled(flag);
 		XMLCBinventarios.setEnabled(flag);
 		XMLCBretencion.setEnabled(flag);
 		XMLTFbase.setEnabled(flag);
+		XMLTFbase.getLabel().setEnabled(flag);
 		XMLTFporcentaje.setEnabled(flag);
+		XMLTFporcentaje.getLabel().setEnabled(flag);
 		XMLCBmoneda.setEnabled(flag);
+		XMLCBmoneda.getLabel().setEnabled(flag);
 
 	}
 
@@ -665,7 +730,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 	 * @throws VoidPackageException
 	 */
 	public Element[] getMultiPackage() throws VoidPackageException {
-		Element pack[] = new Element[2];
+		Element pack[] = new Element[4];
 
 		Element pack1 = new Element("package");
 		Element Eid = new Element("field");
@@ -690,8 +755,11 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 			throw new VoidPackageException(Language.getWord("NOMBRE"));
 
 		Element pack2 = new Element("package");
+		Element pack3 = new Element("package");
+		Element pack4 = new Element("package");
 
 		if (XMLBGgroup.getText().equals("DETALLE")) {
+			System.out.println("Es una cuenta de detalle");
 			Etipo.setText("0");
 			Eactiva.setText("1");
 			pack2.addContent(XMLCBterceros.getElementCheck());
@@ -699,8 +767,53 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 			pack2.addContent(XMLCBnaturaleza.getElementCheck());
 			pack2.addContent(XMLCBcentro.getElementCheck());
 			pack2.addContent(XMLCBajuste.getElementCheck());
+			pack2.addContent(XMLCBdeprecia.getElementCheck());
 			pack2.addContent(XMLCBretencion.getElementCheck());
 
+			/*
+			 * Validando cuentas de ajuste
+			 */
+			if (XMLCBajuste.getTextCheck().equals("1")) {
+				String idAjuste = getIdCta(XMLTFctaAjuste.getText());
+				String idContrapartida = getIdCta(XMLTFcontraAjuste.getText());
+				if (idAjuste==null) {
+					throw new VoidPackageException(Language.getWord("CTAAJUSTE"));
+				} 
+				if (idContrapartida==null) {
+					throw new VoidPackageException(Language.getWord("CONTRAPARTIDA"));
+				}
+				else {
+					pack3.addContent(new Element("field").addContent(String.valueOf(idAjuste)));
+					pack3.addContent(new Element("field").addContent(String.valueOf(idContrapartida)));
+					System.out.println("Ajuste: "+idAjuste+" contrapartida: "+idContrapartida);
+				}
+			}
+			
+			/*
+			 * Validando cuentas de depreciacion
+			 */
+			if (XMLCBdeprecia.getTextCheck().equals("1")) {
+				String idDepreciacion = getIdCta(XMLTFctaDepre.getText());
+				String idContrapartida = getIdCta(XMLTFcontraDepre.getText());
+				if (XMLCBtarifasDepre.getStringCombo() != null) {
+					pack4.addContent(XMLCBtarifasDepre.getElementCombo());
+				}
+				else {
+					throw new VoidPackageException(XMLCBmoneda.getLabel().getName());
+				}
+				if (idDepreciacion==null) {
+					throw new VoidPackageException(Language.getWord("CTADEPRE"));
+				} 
+				if (idContrapartida==null) {
+					throw new VoidPackageException(Language.getWord("CONTRAPARTIDA"));
+				}
+				else {
+					pack4.addContent(new Element("field").addContent(String.valueOf(idDepreciacion)));
+					pack4.addContent(new Element("field").addContent(String.valueOf(idContrapartida)));
+					System.out.println("Tarifa: "+XMLCBtarifasDepre.getElementCombo()+"Depreciacion: "+idDepreciacion+" contrapartida: "+idContrapartida);
+				}
+			}
+			
 			/*
 			 * Se valida si el campo retencion esta vacio envie un 0
 			 */
@@ -737,10 +850,47 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 
 		pack[0] = pack1;
 		pack[1] = pack2;
+		pack[2] = pack3;
+		pack[3] = pack4;
 
 		return pack;
 	}
 
+	/**
+	 * Este metodo se encarga de devolver el identificador de una cuenta contable
+	 * apartir de su codigo
+	 * @param charCta codigo de la cuenta
+	 * @return retorna el identificador de la cuenta, si este no es encontrado retorna -1
+	 */
+	private String getIdCta(String charCta) {
+
+		/*
+		 * Se consulta si la cuenta digitada ya existe
+		 */
+		Document doc;
+		try {
+			doc = STResultSet.getResultSetST("SCS0013", new String[] { charCta });
+			List row = doc.getRootElement().getChild("row").getChildren();
+			String idCta = ((Element)row.get(0)).getText();
+			String estado = ((Element)row.get(4)).getText();
+			String tipo = ((Element)row.get(5)).getText();
+
+			if (tipo.equals("t") || tipo.equals("1")) { 
+				return null;
+			}
+			if (estado.equals("f") || estado.equals("0")) {
+				return null;
+			}
+			return idCta;
+			
+		} catch (STException e) {
+			e.printStackTrace();
+			return null;
+		} catch (NullPointerException NPEe) {
+			return null;
+		}
+	}
+	
 	public void actionPerformed(ActionEvent e) {
 		if (!exists) {
 			if (((IDRadioButton) e.getSource()).getId().equals("MAYOR")) {

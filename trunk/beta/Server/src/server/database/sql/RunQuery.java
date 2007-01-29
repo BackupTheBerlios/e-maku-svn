@@ -89,7 +89,7 @@ public class RunQuery extends Element {
         this.cod_sql = cod_sql;
         sql = InstruccionesSQL.getSentencia(bd,cod_sql,args);
         st = PoolConexiones.getConnection(bd).createStatement();
-//        System.out.println("SENTENCIA SQL :: "+sql);
+        //System.out.println("SENTENCIA SQL :: "+sql);
         boolean status = st.execute(sql);
         st.close();
         return status;

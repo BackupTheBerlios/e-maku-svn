@@ -131,10 +131,28 @@ public class LNAdminPUC {
 	                    }
 	                }
 	                /*
+	                 * Se adiciona la informacion a la tabla cta_ajustes
+	                 */
+	                else if (k==2 && detalle) {
+	                    subpack = (Element)j.next();
+	                    if (subpack.getContentSize()>0) {
+	                        getTransaction(arg.getValue(),subpack);
+	                    }
+	                }
+	                /*
+	                 * Se adiciona la informacion a la tabla cta_ajustes
+	                 */
+	                else if (k==3 && detalle) {
+	                    subpack = (Element)j.next();
+	                    if (subpack.getContentSize()>0) {
+	                        getTransaction(arg.getValue(),subpack);
+	                    }
+	                }
+	                /*
 	                 * Se almacena el codigo de la sentencia que consulta los padres
 	                 * de las cuentas
 	                 */
-	                else if (k==2) {
+	                else if (k==4) {
 	                    SQLpadre = arg.getValue();
 	                }
 	                /*
@@ -142,16 +160,17 @@ public class LNAdminPUC {
 	                 *  la cuenta actual
 	                 */
 	                
-	                else if (k==3) {
+	                else if (k==5) {
 	                    SQLhijo = arg.getValue();
 	                }
 		            /*
 		             * Se activa las cuentas padres, en el caso de que
 		             * la cuenta creada hubiece sido una cuenta de detalle
 		             */
-	                else if (k==4) {
+	                else if (k==6) {
 	                    if (detalle) {
 	                        enableAccount(arg.getValue(),SQLpadre,SQLhijo);
+	                        
 	                    }
 	                }
 	            }
