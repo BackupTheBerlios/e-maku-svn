@@ -802,10 +802,19 @@ public class GenericForm extends JInternalFrame{
         }
         else {
         	if (Hcomps.containsKey(key)) {
-                JOptionPane.showInternalMessageDialog(JDPpanel,
-                        Language.getWord("WARNING_EQUALS_COMPONENT")+key, 
-                        Language.getWord("WARNING_MESSAGE"),
-                        JOptionPane.WARNING_MESSAGE);
+        		class message extends Thread {
+        			private String key;
+        			message(String key) {
+        				this.key=key;
+        			}
+        			public void run() {
+		                JOptionPane.showInternalMessageDialog(JDPpanel,
+		                        Language.getWord("WARNING_EQUALS_COMPONENT")+key, 
+		                        Language.getWord("WARNING_MESSAGE"),
+		                        JOptionPane.WARNING_MESSAGE);
+        			}
+        		}
+        		new message(key).start();
         	}
         	Hcomps.put(key,componente);	
         }

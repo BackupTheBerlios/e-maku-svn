@@ -671,9 +671,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 	public void loadInfo(Element query) {
 
 		try {
-			String id_cta = ((Element) query.getChildren().get(0))
-					.getTextTrim();
-			System.out.println("consultanto informacion de una cuenta de detalle, id_cta: "+id_cta);
+			String id_cta = ((Element) query.getChildren().get(0)).getTextTrim();
 			Document Dperfil = STResultSet.getResultSetST("SCS0021", new String[] { id_cta });
 			Element pack = Dperfil.getRootElement().getChild("row");
 			XMLCBnaturaleza.setSelected(getBoolean(pack, 0));
