@@ -230,11 +230,11 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		JSsur.addHierarchyBoundsListener(new HierarchyBoundsListener() {
 
 			public void ancestorResized(HierarchyEvent e) {
-				JSsur.setDividerLocation(JSsur.getMaximumDividerLocation()-50);
+				JSsur.setDividerLocation(JSsur.getMaximumDividerLocation()-30);
 			}
 
 			public void ancestorMoved(HierarchyEvent e) {
-				JSsur.setDividerLocation(JSsur.getMaximumDividerLocation()-50);
+				JSsur.setDividerLocation(JSsur.getMaximumDividerLocation()-30);
 			}
 		});
 
@@ -315,7 +315,6 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 						} else {
 							XMLBGgroup.setSelected("MAYOR");
 						}
-
 						if (valueArgs.equals("NEW"))
 							GFforma.setEnabledButton(nameButton, false);
 						else
@@ -482,12 +481,14 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		XMLCBnaturaleza = new XMLCheckBox("NATURALEZA");
 		XMLCBcentro = new XMLCheckBox("CENTRO");
 		XMLCBajuste = new XMLCheckBox("AJUSTE");
+		XMLCBajuste.addActionListener(this);
 		
 		XMLTFctaAjuste = new XMLTextField("CTAAJUSTE", 9, 10, XMLTextField.NUMERIC);
 		XMLTFcontraAjuste = new XMLTextField("CONTRAPARTIDA", 9, 10, XMLTextField.NUMERIC);
 		
 		JPanel JPdeprecia = new JPanel(new BorderLayout());
 		XMLCBdeprecia = new XMLCheckBox("DEPRECIACIONES");
+		XMLCBdeprecia.addActionListener(this);
 		XMLCBtarifasDepre = new XMLComboBox(GFforma,"SCS0058","TARIFAS");
 		JPdeprecia.add(XMLCBdeprecia.getJPcheck(),BorderLayout.WEST);
 		JPdeprecia.add(XMLCBtarifasDepre.getLabel(),BorderLayout.CENTER);
@@ -504,6 +505,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		XMLCBmoneda = new XMLComboBox(GFforma, "SCS0012", "MONEDA");
 
 		XMLTFbase.setHorizontalAlignment(SwingConstants.RIGHT);
+		XMLTFporcentaje.setHorizontalAlignment(SwingConstants.RIGHT);
 		XMLTFcontraAjuste.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		JPanel JPctaAjuste = new JPanel(new BorderLayout());
@@ -587,17 +589,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		XMLCBnaturaleza.setEnabled(flag);
 		XMLCBcentro.setEnabled(flag);
 		XMLCBajuste.setEnabled(flag);
-		XMLTFctaAjuste.setEnabled(flag);
-		XMLTFctaAjuste.getLabel().setEnabled(flag);
-		XMLTFcontraAjuste.setEnabled(flag);
-		XMLTFcontraAjuste.getLabel().setEnabled(flag);
 		XMLCBdeprecia.setEnabled(flag);
-		XMLCBtarifasDepre.setEnabled(flag);
-		XMLCBtarifasDepre.getLabel().setEnabled(flag);
-		XMLTFctaDepre.setEnabled(flag);
-		XMLTFctaDepre.getLabel().setEnabled(flag);
-		XMLTFcontraDepre.setEnabled(flag);
-		XMLTFcontraDepre.getLabel().setEnabled(flag);
 		XMLCBterceros.setEnabled(flag);
 		XMLCBinventarios.setEnabled(flag);
 		XMLCBretencion.setEnabled(flag);
@@ -608,8 +600,27 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		XMLCBmoneda.setEnabled(flag);
 		XMLCBmoneda.getLabel().setEnabled(flag);
 
+		if (!flag) {
+			enabledAjustes(flag);
+			enabledDepreciaciones(flag);
+		}
 	}
 
+	private void enabledAjustes(boolean flag) {
+		XMLTFctaAjuste.setEnabled(flag);
+		XMLTFctaAjuste.getLabel().setEnabled(flag);
+		XMLTFcontraAjuste.setEnabled(flag);
+		XMLTFcontraAjuste.getLabel().setEnabled(flag);
+	}
+	
+	private void enabledDepreciaciones(boolean flag) {
+		XMLCBtarifasDepre.setEnabled(flag);
+		XMLCBtarifasDepre.getLabel().setEnabled(flag);
+		XMLTFctaDepre.setEnabled(flag);
+		XMLTFctaDepre.getLabel().setEnabled(flag);
+		XMLTFcontraDepre.setEnabled(flag);
+		XMLTFcontraDepre.getLabel().setEnabled(flag);
+	}
 	/**
 	 * Este metodo se encarga de limpiar el valor de los componentes de la forma
 	 */
@@ -629,11 +640,18 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		XMLCBnaturaleza.setSelected(false);
 		XMLCBcentro.setSelected(false);
 		XMLCBajuste.setSelected(false);
+		XMLCBdeprecia.setSelected(false);
 		XMLCBterceros.setSelected(false);
 		XMLCBinventarios.setSelected(false);
 		XMLCBretencion.setSelected(false);
 		XMLCBmoneda.setSelectedIndex(0);
 
+		XMLTFctaAjuste.setText("");
+		XMLTFcontraAjuste.setText("");
+
+		XMLCBtarifasDepre.setSelectedIndex(0);
+		XMLTFctaDepre.setText("");
+		XMLTFcontraDepre.setText("");
 	}
 
 	/**
@@ -655,18 +673,44 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		try {
 			String id_cta = ((Element) query.getChildren().get(0))
 					.getTextTrim();
+			System.out.println("consultanto informacion de una cuenta de detalle, id_cta: "+id_cta);
 			Document Dperfil = STResultSet.getResultSetST("SCS0021", new String[] { id_cta });
 			Element pack = Dperfil.getRootElement().getChild("row");
 			XMLCBnaturaleza.setSelected(getBoolean(pack, 0));
 			XMLCBcentro.setSelected(getBoolean(pack, 1));
 			XMLCBajuste.setSelected(getBoolean(pack, 2));
-			XMLCBterceros.setSelected(getBoolean(pack, 3));
-			XMLCBinventarios.setSelected(getBoolean(pack, 4));
-			XMLCBretencion.setSelected(getBoolean(pack, 5));
-			XMLTFbase.setText(getString(pack, 6));
-			XMLTFporcentaje.setText(getString(pack, 7));
-			XMLCBmoneda.setSelectedItem(getString(pack, 8) + " "
-					+ getString(pack, 9));
+			XMLCBdeprecia.setSelected(getBoolean(pack, 3));
+			XMLCBterceros.setSelected(getBoolean(pack, 4));
+			XMLCBinventarios.setSelected(getBoolean(pack, 5));
+			XMLCBretencion.setSelected(getBoolean(pack,6));
+			XMLTFbase.setText(getString(pack, 7));
+			XMLTFporcentaje.setText(getString(pack, 8));
+			XMLCBmoneda.setSelectedItem(getString(pack, 9));
+			
+			/*
+			 * Consultando informacion de ajustes por inflacion
+			 */
+			
+			Document Dajuste = STResultSet.getResultSetST("SCS0059", new String[] { id_cta });
+			Element pack1 = Dajuste.getRootElement().getChild("row");
+
+			if (pack1!=null) {
+				XMLTFctaAjuste.setText(getString(pack1, 0));
+				XMLTFcontraAjuste.setText(getString(pack1, 1));
+			}
+			
+			/*
+			 * Consultando informacion de depreciaciones
+			 */
+			
+			Document Ddepreciaciones = STResultSet.getResultSetST("SCS0060", new String[] { id_cta });
+			Element pack2 = Ddepreciaciones.getRootElement().getChild("row");
+			
+			if (pack2!=null) {
+				XMLCBtarifasDepre.setSelectedItem(getString(pack2, 0));
+				XMLTFctaDepre.setText(getString(pack2, 2));
+				XMLTFcontraDepre.setText(getString(pack2, 3));
+			}
 		} catch (STException STe) {
 			JOptionPane.showInternalMessageDialog(GFforma, Language
 					.getWord("ERROR_PERFIL_CTA"), Language
@@ -892,13 +936,24 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		if (!exists) {
+		if (!exists && e.getSource() instanceof IDRadioButton) {
 			if (((IDRadioButton) e.getSource()).getId().equals("MAYOR")) {
 				enabledForm(false);
 			} else {
 				enabledForm(true);
 			}
 			XMLBGgroup.selected(e);
+		}
+		
+		if (e.getSource() instanceof XMLCheckBox) {
+			XMLCheckBox box = (XMLCheckBox)e.getSource();
+			if (box.getName().equals("AJUSTE")) {
+				enabledAjustes(box.isSelected());
+				
+			}
+			if (box.getName().equals("DEPRECIACIONES")) {
+				enabledDepreciaciones(box.isSelected());
+			}
 		}
 	}
 

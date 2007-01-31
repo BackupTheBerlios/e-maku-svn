@@ -297,6 +297,44 @@ public class LNAdminPUC {
 	                        getTransaction(arg.getValue(),subpack);
 	                    }
 	                }
+	                /*
+	                 * Se elimina el registro de 
+	                 * cuentas de ajustes... 
+	                 */
+	                
+	                else if(k==9) {
+	                    getTransaction(arg.getValue(),new String[]{LNGtransaccion.getKey(0)});
+	                    
+	                }
+	                /*
+	                 * se adiciona argumentos si es cuenta de ajuste
+	                 */
+	                
+	                else if(k==10) {
+	                    subpack = (Element)j.next();
+	                    if (subpack.getContentSize()>0) {
+	                        getTransaction(arg.getValue(),subpack);
+	                    }
+	                }
+	                /*
+	                 * Se elimina el registro de 
+	                 * cuentas de depreciacion ... 
+	                 */
+	                
+	                else if(k==11) {
+	                    getTransaction(arg.getValue(),new String[]{LNGtransaccion.getKey(0)});
+	                    
+	                }
+	                /*
+	                 * se adiciona argumentos si es cuenta depreciable
+	                 */
+	                
+	                else if(k==12) {
+	                    subpack = (Element)j.next();
+	                    if (subpack.getContentSize()>0) {
+	                        getTransaction(arg.getValue(),subpack);
+	                    }
+	                }
 	            }
 	            if (detalle) {
 	                LinkingCache.loadPerfilCta(SocketServer.getBd(sock),"SCS0057",new String[]{LNGtransaccion.getKey(0)});
@@ -334,9 +372,21 @@ public class LNAdminPUC {
 	                    getTransaction(arg.getValue(),subpack);
 	                }
 	                /*
-	                 * Se procede a eliminar la cuenta de la tabla cuentas
+	                 * Se procede a eliminar la cuenta de la tabla cta_ajustes
 	                 */
 	                else if (k==2) {
+	                    getTransaction(arg.getValue(),subpack);
+	                }
+	                /*
+	                 * Se procede a eliminar la cuenta de la tabla ctas_depreciaciones
+	                 */
+	                else if (k==3) {
+	                    getTransaction(arg.getValue(),subpack);
+	                }
+	                /*
+	                 * Se procede a eliminar la cuenta de la tabla cuentas
+	                 */
+	                else if (k==4) {
 	                    try {
 	                        getTransaction(arg.getValue(),subpack);
 	                    }
@@ -351,7 +401,7 @@ public class LNAdminPUC {
 	                /*
 	                 * Se adiciona el codigo de la sentencia sql de herencia
 	                 */
-	                else if(k==3) {
+	                else if(k==5) {
 	                    SQLpadre = arg.getValue();
 	                }
 	                
@@ -359,7 +409,7 @@ public class LNAdminPUC {
 	                 * Se desactivan las cuentas mayores en el caso que la
 	                 * cuenta eliminada hubiera sido su unico hijo
 	                 */
-	                else if (k==4) {
+	                else if (k==6) {
 		                disableAccount(LNGtransaccion.getArg(0),arg.getValue(),SQLpadre);
 	                    
 	                }

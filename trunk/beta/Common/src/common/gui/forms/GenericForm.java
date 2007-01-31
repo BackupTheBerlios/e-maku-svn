@@ -801,7 +801,13 @@ public class GenericForm extends JInternalFrame{
         	GFforma.setComps(key,componente);
         }
         else {
-        	Hcomps.put(key,componente);		
+        	if (Hcomps.containsKey(key)) {
+                JOptionPane.showInternalMessageDialog(JDPpanel,
+                        Language.getWord("WARNING_EQUALS_COMPONENT")+key, 
+                        Language.getWord("WARNING_MESSAGE"),
+                        JOptionPane.WARNING_MESSAGE);
+        	}
+        	Hcomps.put(key,componente);	
         }
 	}
 

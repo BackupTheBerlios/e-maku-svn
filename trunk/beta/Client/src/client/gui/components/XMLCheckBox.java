@@ -60,7 +60,8 @@ public class XMLCheckBox extends JCheckBox implements ActionListener, AnswerList
     private String driverEvent;
     private String keySQL;
 	private String exportValue = null;
-
+	private String name = null;
+	
     public XMLCheckBox(GenericForm GFforma, Document doc) {
     	this.GFforma = GFforma;
         keySQL = new String();
@@ -82,6 +83,7 @@ public class XMLCheckBox extends JCheckBox implements ActionListener, AnswerList
 		            	this.setEnabled(Boolean.parseBoolean(value));
 		            }
 		            else if ("label".equals(subargs.getAttributeValue("attribute"))) {
+		            	this.name=value;
 		            	if (!Language.getWord(value).equals("")) {
 		            		this.setText(Language.getWord(value));
 		            	}
@@ -127,6 +129,7 @@ public class XMLCheckBox extends JCheckBox implements ActionListener, AnswerList
     public XMLCheckBox(String label) {
 
         super(Language.getWord(label));
+        this.name=label;
         JPcheck = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPcheck.add(this);
 
@@ -248,6 +251,14 @@ public class XMLCheckBox extends JCheckBox implements ActionListener, AnswerList
         }
     	return pack;
     }
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	
 }
