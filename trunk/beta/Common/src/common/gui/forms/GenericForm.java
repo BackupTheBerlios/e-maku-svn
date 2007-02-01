@@ -810,11 +810,11 @@ public class GenericForm extends JInternalFrame{
         			public void run() {
 		                JOptionPane.showInternalMessageDialog(JDPpanel,
 		                        Language.getWord("WARNING_EQUALS_COMPONENT")+key, 
-		                        Language.getWord("WARNING_MESSAGE"),
+		                        Language.getWord("WARNING_MESSAGE")+" "+idTransaction,
 		                        JOptionPane.WARNING_MESSAGE);
         			}
         		}
-        		new message(key).start();
+        		//new message(key).start();
         	}
         	Hcomps.put(key,componente);	
         }

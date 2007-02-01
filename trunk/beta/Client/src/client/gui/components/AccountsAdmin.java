@@ -457,7 +457,6 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 
 		JPanel JPcomps = new JPanel(new BorderLayout());
 		JPcomps.add(getChecks(), BorderLayout.NORTH);
-		JPcomps.add(getFields(), BorderLayout.CENTER);
 		JPdetalle.add(JPcta, BorderLayout.NORTH);
 		JPdetalle.add(JPcomps, BorderLayout.CENTER);
 		enabledForm(false);
@@ -500,6 +499,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		XMLCBterceros = new XMLCheckBox("TERCEROS_CTA");
 		XMLCBinventarios = new XMLCheckBox("INVENTARIOS_CTA");
 		XMLCBretencion = new XMLCheckBox("RETENCION");
+		XMLCBretencion.addActionListener(this);
 		XMLTFbase = new XMLTextField("BASE", 9, 10, XMLTextField.NUMERIC);
 		XMLTFporcentaje = new XMLTextField("PORCENTAJE", 9, 10,	XMLTextField.NUMERIC);
 		XMLCBmoneda = new XMLComboBox(GFforma, "SCS0012", "MONEDA");
@@ -518,8 +518,9 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		JPcontraAjuste.add(XMLTFcontraAjuste.getJPtext(),BorderLayout.CENTER);
 		
 		JPanel JPajuste = new JPanel(new BorderLayout());
-		JPajuste.add(JPctaAjuste,BorderLayout.CENTER);
-		JPajuste.add(JPcontraAjuste,BorderLayout.EAST);
+		JPajuste.add(JPctaAjuste,BorderLayout.WEST);
+		JPajuste.add(JPcontraAjuste,BorderLayout.CENTER);
+		JPajuste.add(Box.createRigidArea(new Dimension(50,0)),BorderLayout.EAST);
 		
 		JPanel JPctaDepre = new JPanel(new BorderLayout());
 		JPctaDepre.add(Box.createRigidArea(new Dimension(20,0)),BorderLayout.WEST);
@@ -529,12 +530,31 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		JPanel JPcontraDepre = new JPanel(new BorderLayout());
 		JPcontraDepre.add(XMLTFcontraDepre.getLabel(),BorderLayout.WEST);
 		JPcontraDepre.add(XMLTFcontraDepre.getJPtext(),BorderLayout.CENTER);
+		JPcontraDepre.add(Box.createRigidArea(new Dimension(50,0)),BorderLayout.EAST);
 
 		JPanel JPdepre = new JPanel(new BorderLayout());
 		JPdepre.add(JPctaDepre,BorderLayout.CENTER);
 		JPdepre.add(JPcontraDepre,BorderLayout.EAST);
-		
-		JPanel JPchecks = new JPanel(new GridLayout(10, 1));
+
+		JPanel JPbaseRetencion = new JPanel(new BorderLayout());
+		JPbaseRetencion.add(Box.createRigidArea(new Dimension(20,0)),BorderLayout.WEST);
+		JPbaseRetencion.add(XMLTFbase.getLabel(),BorderLayout.CENTER);
+		JPbaseRetencion.add(XMLTFbase.getJPtext(),BorderLayout.EAST);
+
+		JPanel JPporcentajeRetencion = new JPanel(new BorderLayout());
+		JPporcentajeRetencion.add(XMLTFporcentaje.getLabel(),BorderLayout.WEST);
+		JPporcentajeRetencion.add(XMLTFporcentaje.getJPtext(),BorderLayout.CENTER);
+
+		JPanel JPretenciones = new JPanel(new BorderLayout());
+		JPretenciones.add(JPbaseRetencion,BorderLayout.WEST);
+		JPretenciones.add(JPporcentajeRetencion,BorderLayout.CENTER);
+		JPretenciones.add(Box.createRigidArea(new Dimension(50,0)),BorderLayout.EAST);
+
+		JPanel JPmoneda = new JPanel(new BorderLayout());
+		JPmoneda.add(XMLCBmoneda.getLabel(),BorderLayout.WEST);
+		JPmoneda.add(XMLCBmoneda.getJPcombo(),BorderLayout.CENTER);
+
+		JPanel JPchecks = new JPanel(new GridLayout(12, 1));
 
 		JPchecks.add(XMLBGgroup);
 		JPchecks.add(XMLCBnaturaleza.getJPcheck());
@@ -546,35 +566,11 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		JPchecks.add(XMLCBterceros.getJPcheck());
 		JPchecks.add(XMLCBinventarios.getJPcheck());
 		JPchecks.add(XMLCBretencion.getJPcheck());
+		JPchecks.add(JPretenciones);
+		JPchecks.add(JPmoneda);
 		return JPchecks;
 	}
 
-	/**
-	 * Este metodo retorna un panel con los ultimos 3 componenetes de la forma
-	 * 
-	 * @return
-	 */
-	public JPanel getFields() {
-
-		JPanel JPbase = new JPanel(new BorderLayout());
-		JPanel JPlabel = new JPanel(new GridLayout(3, 1));
-		JPanel JPfields = new JPanel(new GridLayout(3, 1));
-		JPanel JPValues = new JPanel(new BorderLayout());
-
-		JPlabel.add(XMLTFbase.getLabel());
-		JPlabel.add(XMLTFporcentaje.getLabel());
-		JPlabel.add(XMLCBmoneda.getLabel());
-
-		JPfields.add(XMLTFbase.getJPtext());
-		JPfields.add(XMLTFporcentaje.getJPtext());
-		JPfields.add(XMLCBmoneda.getJPcombo());
-
-		JPbase.add(JPlabel, BorderLayout.WEST);
-		JPbase.add(JPfields, BorderLayout.CENTER);
-		JPValues.add(JPbase, BorderLayout.NORTH);
-
-		return JPValues;
-	}
 
 	/**
 	 * Este metodo se encarga de habilitar los componentes de la forma, segun su
@@ -593,16 +589,13 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		XMLCBterceros.setEnabled(flag);
 		XMLCBinventarios.setEnabled(flag);
 		XMLCBretencion.setEnabled(flag);
-		XMLTFbase.setEnabled(flag);
-		XMLTFbase.getLabel().setEnabled(flag);
-		XMLTFporcentaje.setEnabled(flag);
-		XMLTFporcentaje.getLabel().setEnabled(flag);
 		XMLCBmoneda.setEnabled(flag);
 		XMLCBmoneda.getLabel().setEnabled(flag);
 
 		if (!flag) {
 			enabledAjustes(flag);
 			enabledDepreciaciones(flag);
+			enabledRetenciones(flag);
 		}
 	}
 
@@ -621,6 +614,14 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		XMLTFcontraDepre.setEnabled(flag);
 		XMLTFcontraDepre.getLabel().setEnabled(flag);
 	}
+
+	private void enabledRetenciones(boolean flag) {
+		XMLTFbase.setEnabled(flag);
+		XMLTFbase.getLabel().setEnabled(flag);
+		XMLTFporcentaje.setEnabled(flag);
+		XMLTFporcentaje.getLabel().setEnabled(flag);
+	}
+
 	/**
 	 * Este metodo se encarga de limpiar el valor de los componentes de la forma
 	 */
@@ -634,8 +635,6 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 	 */
 	public void cleanData() {
 		XMLTFnombre.setText("");
-		XMLTFbase.setText("");
-		XMLTFporcentaje.setText("");
 		XMLBGgroup.setSelected("MAYOR");
 		XMLCBnaturaleza.setSelected(false);
 		XMLCBcentro.setSelected(false);
@@ -645,15 +644,27 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		XMLCBinventarios.setSelected(false);
 		XMLCBretencion.setSelected(false);
 		XMLCBmoneda.setSelectedIndex(0);
+		cleanAjustes();
+		cleanDepreciaciones();
+		cleanRetenciones();
+	}
 
+	private void cleanAjustes() {
 		XMLTFctaAjuste.setText("");
 		XMLTFcontraAjuste.setText("");
-
+	}
+	
+	private void cleanDepreciaciones() {
 		XMLCBtarifasDepre.setSelectedIndex(0);
 		XMLTFctaDepre.setText("");
 		XMLTFcontraDepre.setText("");
 	}
-
+	
+	private void cleanRetenciones() {
+		XMLTFbase.setText("");
+		XMLTFporcentaje.setText("");
+	}
+	
 	/**
 	 * Este metodo retorna una referencia de si mismo
 	 * 
@@ -947,10 +958,15 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 			XMLCheckBox box = (XMLCheckBox)e.getSource();
 			if (box.getName().equals("AJUSTE")) {
 				enabledAjustes(box.isSelected());
-				
+				cleanAjustes();
 			}
-			if (box.getName().equals("DEPRECIACIONES")) {
+			else if (box.getName().equals("DEPRECIACIONES")) {
 				enabledDepreciaciones(box.isSelected());
+				cleanDepreciaciones();
+			}
+			else if (box.getName().equals("RETENCION")) {
+				enabledRetenciones(box.isSelected());
+				cleanRetenciones();
 			}
 		}
 	}

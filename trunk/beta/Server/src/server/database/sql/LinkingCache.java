@@ -69,6 +69,7 @@ public class LinkingCache {
      */
     public static void cargar() throws SQLBadArgumentsException {
 
+    	
         ResultSet rs = null;
         /** Obtengo el numero de conexiones que maneja el ST */
         int max = ConfigFile.getDBSize();
@@ -351,6 +352,7 @@ public class LinkingCache {
                                 		  		rs.getBoolean("inventarios"),
                                 		  		rs.getBoolean("centro"),
                                 		  		rs.getBoolean("ajuste"),
+                                		  		rs.getBoolean("depreciacion"),
                                 		  		rs.getDouble("base"),
                                 		  		rs.getDouble("porcentaje")));
         }
@@ -914,16 +916,18 @@ class PerfilCta {
 	private boolean inventarios;
 	private boolean centro;
 	private boolean ajuste;
+	private boolean depreciacion;
 	private double base=0;
 	private double porcentaje=0;
 	
-	public PerfilCta(String id_cta,boolean naturaleza,boolean terceros,boolean inventarios,boolean centro,boolean ajuste,double base,double porcentaje) {
+	public PerfilCta(String id_cta,boolean naturaleza,boolean terceros,boolean inventarios,boolean centro,boolean ajuste,boolean depreciacion,double base,double porcentaje) {
 		this.id_cta=id_cta;
 		this.naturaleza=naturaleza;
 		this.terceros=terceros;
 		this.inventarios=inventarios;
 		this.centro=centro;
 		this.ajuste=ajuste;
+		this.depreciacion=depreciacion;
 		this.base=base;
 		this.porcentaje=porcentaje;
 		
@@ -992,6 +996,14 @@ class PerfilCta {
 
 	public void setId_cta(String id_cta) {
 		this.id_cta = id_cta;
+	}
+
+	public boolean isDepreciacion() {
+		return depreciacion;
+	}
+
+	public void setDepreciaciones(boolean depreciacion) {
+		this.depreciacion = depreciacion;
 	}
 }
 
