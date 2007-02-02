@@ -191,7 +191,6 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 			withHeader = true;
 			header = (Element) e.clone();
 			rowPageSeparator =  attribs.get("repeatEach").getIntValue();
-			processMetadata(header);
 			passed = true;
 		}
 		if (isValidate && passed) {

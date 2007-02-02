@@ -42,6 +42,7 @@ public class Splash {
     public static void ShowSplash() {
         
         window = new JWindow();
+        window.setAlwaysOnTop(false);
         window.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         JPanel pe = new JPanel();
         pe.setLayout(new BorderLayout());
