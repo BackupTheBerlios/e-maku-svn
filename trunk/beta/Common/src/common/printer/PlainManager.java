@@ -258,7 +258,7 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 						currentRow = rowInit + 1;
 					}
 					if (withHeader) {
-						if (currentRow==rowPageSeparator) {
+						if ((currentRow%rowPageSeparator)==0) {
 							pageNumeration ++;
 							Element ff = new Element("scp");
 							ff.setText("FF");
@@ -314,7 +314,6 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 		if ("TEXT".equals(type)) {
 			int width = attribs.get("width").getIntValue();
 			int height = attribs.get("height").getIntValue();
-			currentRow+=height;
 			textPrinterBuffer.insertTextArea(value,row,col,width,height,true);
 		}
 		else if ("STRING".equals(type)) {
