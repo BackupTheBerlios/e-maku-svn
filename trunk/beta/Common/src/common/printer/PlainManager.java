@@ -38,7 +38,7 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 	private boolean withHeader;
 	private Element header;
 	private int rowPageSeparator;
-	
+	private int pageNumeration = 1;
 	public PlainManager(String ndocument) {
 		ClientHeaderValidator.addSuccessListener(this);
 		impresionType = ImpresionType.PLAIN;
@@ -193,6 +193,10 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 			rowPageSeparator =  attribs.get("repeatEach").getIntValue();
 			passed = true;
 		}
+		else  if ("pageNumeration".equals(name)) {
+			textPrinterBuffer.insertString(String.valueOf(pageNumeration),row,col,null);
+			passed = true;
+		}
 		if (isValidate && passed) {
 			Attribute incrementRow = attribs.get("incrementRow");
 			if (incrementRow== null || incrementRow.getBooleanValue()) {
@@ -255,6 +259,7 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 					}
 					if (withHeader) {
 						if (currentRow==rowPageSeparator) {
+							pageNumeration ++;
 							Element ff = new Element("scp");
 							ff.setText("FF");
 							ff.setAttribute("row","last");
