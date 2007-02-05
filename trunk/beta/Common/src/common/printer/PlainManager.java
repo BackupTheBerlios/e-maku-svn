@@ -281,6 +281,18 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 					Attribute attribute = (Attribute) itAttribs.next();
 					attribs.put(attribute.getName(),attribute);
 				}
+				if (withHeader) {
+					if ((currentRow%rowPageSeparator)==0) {
+						pageNumeration ++;
+						Element ff = new Element("scp");
+						ff.setText("FF");
+						ff.setAttribute("row","last");
+						ff.setAttribute("col","2");
+						processSingleTag(ff);
+						processMetadata(header);
+						rowInit = currentRow;
+					}
+				}
 				addValue(el_transaction.getValue(),attribs);
 			}
 			/*if (currentRow<rowInit)
