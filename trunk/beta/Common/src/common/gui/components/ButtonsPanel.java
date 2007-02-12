@@ -356,7 +356,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 											 null ;
 							if ("PLAIN".equals(typePrinter) ) {
 								plainManager.process(rootTemplate,printJob);
-								if (plainManager.isSusseful()) {
+								if (plainManager.isSuccessful()) {
 									System.out.println("================================");
 									System.out.println(plainManager.toString());
 									System.out.println("================================");

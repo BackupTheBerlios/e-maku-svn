@@ -33,7 +33,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 	private static final long serialVersionUID = 3641816256967941893L;
 	private Graphics2D g2d;
 	
-	private boolean sussceful;
+	private boolean successful;
 	private ImpresionType impresionType = ImpresionType.POSTSCRIPT;;
 	private String ndocument = "";
 	private boolean success = false;
@@ -111,7 +111,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 				}
 			}
 			if ( countPacks > 0 ) {
-				this.sussceful = true;
+				this.successful = true;
 				calendar = Calendar.getInstance();
 				long end = calendar.getTimeInMillis();
 				System.out.println("Generador en " + (end-init) + " milisegundos ");
@@ -332,8 +332,8 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 	/**
 	 * 
 	 */
-	public boolean isSusseful() {
-		return this.sussceful;
+	public boolean isSuccessful() {
+		return this.successful;
 	}
 
 	/**

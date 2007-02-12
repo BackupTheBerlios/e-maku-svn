@@ -21,6 +21,10 @@ import common.control.SuccessListener;
 import common.misc.text.NumberToLetterConversor;
 import common.printer.PrintManager.ImpresionType;
 
+/**
+ * Esta clase se encarga de manejar las plantillas de impresion de documentos
+ * planos.
+ */
 public class PlainManager implements AbstractManager ,SuccessListener{
 	
 	private TextPrinterBuffer textPrinterBuffer = new TextPrinterBuffer();
@@ -28,12 +32,12 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 	private int currentRow = 1;
 	private String ndocument = "";
 	private boolean success = false;
-    private String idTransaction="";
+	private String idTransaction="";
 
 	/*private int width;
 	private int height;*/
 	private ByteArrayInputStream in;
-	private boolean sussceful;
+	private boolean successful;
 	private ImpresionType impresionType;
 	private boolean withHeader;
 	private Element header;
@@ -103,7 +107,7 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 			}
 			if ( countPacks > 0 ) {
 				this.in = textPrinterBuffer.getStream();
-				this.sussceful = true;
+				this.successful = true;
 				calendar = Calendar.getInstance();
 				long end = calendar.getTimeInMillis();
 				System.out.println("Generador en " + (end-init) + " milisegundos ");
@@ -443,8 +447,8 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 		return this.in;
 	}
 
-	public boolean isSusseful() {
-		return this.sussceful;
+	public boolean isSuccessful() {
+		return this.successful;
 	}
 
 	public String getNdocument() {
