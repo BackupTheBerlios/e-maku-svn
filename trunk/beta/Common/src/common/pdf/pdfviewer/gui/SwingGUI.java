@@ -654,7 +654,6 @@ public class SwingGUI extends GUI implements GUIFactory {
 				//statusBar.setProgress(100);
 				dialog.setStatusProgress(100);
 				dialog.close();
-				dialog.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
 				//reanable user changing scaling 
 				resetComboBoxes(true);
@@ -819,7 +818,6 @@ public class SwingGUI extends GUI implements GUIFactory {
 		//statusBar.setColorForSubroutines(Color.blue);
 		//bottomNavButtons.add(statusBar.getStatusObject());
 		dialog = new BarProgressDialog(frame);
-		dialog.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		dialog.resetStatusBar();
 	}
 	
