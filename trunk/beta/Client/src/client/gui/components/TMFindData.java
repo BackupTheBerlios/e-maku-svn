@@ -603,13 +603,13 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
         /* Recorriendo cada formula */
         String key=var.substring(0,1);
         String newVar=reemplazarFormula(var,rowIndex,valueOld);
-    		Object result = null;
-    		int col= getColIndex(key);
+        Object result = null;
+        int col= getColIndex(key);
         if (tipoFormula) {
-        		result = FormulaCalculator.operar(newVar);	
+        	result = FormulaCalculator.operar(newVar);	
         }
         else {
-        		result = Run.shellScript.eval(newVar);
+        	result = Run.shellScript.eval(newVar);
         }
         if ("INTEGER".equals(ATFDargs[col].getType())) {
 	        	Integer resultado;
@@ -664,132 +664,143 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
     }
     
     private String reemplazarFormula(String var, int rowIndex, Hashtable valueOld) {
-    		String newVar="";
-        String key=var.substring(0,1);
-    		for (int j=2;j<var.length();j++) {
-            /*
-             * se numerara las columnas en letras con un rango maximo de 10 columnas
-             */
-            
-            if ((var.charAt(j)>=65 && var.charAt(j)<=90) || (var.charAt(j)>=97 && var.charAt(j)<=122)) {
-                /*
-                 * Este try/catch se utiliza para verificar que la columna introducida no existe en la tabla, 
-                 * si es asi, es porque podria ser correspondiente a un valor de un componente externo,
-                 * entonces se pasa a traer el valor de dicho componente, si el valor no se encuentra en
-                 * la hash externalValue, se procede a lanzar un mensaje de error confirmando la no existencia
-                 * de la columna introducida
-                 * 
-                 */
-                try {
-	                /*
-	                 * Se verifica si el valor no fue anteriormente calculado, en caso de que si, entonces
-	                 * se almacena en la formula el resultado del calculo anterior, si no se trae el valor
-	                 * de la celda correspondiente
-	                 */
-	                if (valueOld!=null && valueOld.containsKey(key)) {
-	                    newVar+=((Double)valueOld.get(key)).doubleValue();
-	                }
-	                else {
-		                int col;
-		                /*
-		                 * Se verifica si en el contenido existe una funcion
-		                 * de totalizacion
-		                 */
-		                if (var.substring(2,var.length()).startsWith("ROUND")) {
-		                	String args = var.substring(6,var.length()-1);
-		                	int sep = args.indexOf(',');
-		                	String arg1  = args.substring(0,sep);
-		                	String arg2  = args.substring(sep+1,args.length());
-		                	newVar+= round(arg1, arg2, rowIndex);
-		                	j+=var.length();
-		                }
-		                else if (var.length()>=j+5 && var.substring(j,j+3).toUpperCase().equals("SUM")) {
-		                	newVar+=sum(var.substring(j+4,j+5));
-		                	j+=5;
-		                }
-		                /* A�adido metodo equals para las formulas */
-		                else if (var.length()>=j+8 && var.substring(j,j+6).equals("equals")) {
-		                	int colind = getColIndex(var.substring(j+7,j+8));
-		                	newVar+="equals(\""+getValueAt(rowIndex,colind)+"\")";
-		                	j+=8;
-		                }
-		                /* Aqui se evalua si contiene palabras reservadas */
-		                else if (var.length()>=j+3 && var.substring(j,j+3).equals("int")) {
-		                	newVar+=var.substring(j,j+3);
-		                	j+=2;
-		                }
-		                else if (var.length()>=j+6 && var.substring(j,j+6).equals("double")) {
-		                	newVar+=var.substring(j,j+6);
-		                	j+=5;
-		                }
-		                /* A�adida palabra reservada null, pendiente para analizar */
-		                else if (var.length()>=j+4 && var.substring(j,j+4).equals("null")) {
-		                	newVar+="\"\"";
-		                	j+=3;
-		                }
-		                else {
-		                	/* cuando la letra es mayuscula */
-			                
-			                if (var.charAt(j)<=90) {
-			                    col = var.charAt(j)-65;
-			                }
-			                /* cuando es minuscula */
-			                else {
-			                    col = var.charAt(j)-97;
-			                }
-			                
-			                /* Codigo pendiente para analizar */
-			                String txt = getValueAt(rowIndex,col).toString();
-			                if ("STRING".equals(ATFDargs[col].getType()) || 
-			                	"COMBOSQL".equals(ATFDargs[col].getType())) {
-			                	newVar+="".equals(txt)?"\"\"":"\""+txt+"\"";
-			                }
-			                else {
-			                	newVar += txt;
-			                }
-			                /**/
-		                }
-	                }
-                }
-		        catch(ArrayIndexOutOfBoundsException AIOOBEe) {
-		            String keyExternalValue = var.substring(j,j+1);
-		            if (externalValues.containsKey(keyExternalValue)) {
-		                try {
-			    		    Double val = (Double)GFforma.invokeMethod((String)externalValues.get(keyExternalValue),
-			    		            								  "getDoubleValue",
-			    		            								  new Class[]{String.class},
-			    		            								  new Object[]{keyExternalValue});
-		    		        newVar+=val.doubleValue();
-		                }
-		                catch(InvocationTargetException ITEe) {
-				            message("ERR_FORMULA");
-				            ITEe.printStackTrace();
-				            errFormula=true;
-		                }
-		                catch(NullPointerException NPEe) {
-				            message("ERR_FORMULA");
-				            NPEe.printStackTrace();
-				            errFormula=true;
-		                }
-		                catch (NotFoundComponentException NFCEe) {
-		                    NFCEe.printStackTrace();
-		                }
+    	int j = var.substring(1,2).equals("=") && 
+    			!var.substring(2,3).equals("=") ? 2 : 0;
+    	String newVar="";
+    	String key= j ==2 ? var.substring(0,1) : "";
+    	 
+    	for (;j<var.length();j++) {
+    		/*
+    		 * se numerara las columnas en letras con un rango maximo de 10 columnas
+    		 */
 
-		            }
-		            else if (importTotalCol.containsKey(keyExternalValue.toUpperCase())){
-		            	newVar+=GFforma.getExteralValues(importTotalCol.get(keyExternalValue.toUpperCase()));
-		            }
-		            else {
-			            message("ERR_FORMULA");
-			            errFormula=true;
-		            }
-		        }
-            }
+    		if ((var.charAt(j)>=65 && var.charAt(j)<=90) || (var.charAt(j)>=97 && var.charAt(j)<=122)) {
+    			/*
+    			 * Este try/catch se utiliza para verificar que la columna introducida no existe en la tabla, 
+    			 * si es asi, es porque podria ser correspondiente a un valor de un componente externo,
+    			 * entonces se pasa a traer el valor de dicho componente, si el valor no se encuentra en
+    			 * la hash externalValue, se procede a lanzar un mensaje de error confirmando la no existencia
+    			 * de la columna introducida
+    			 * 
+    			 */
+    			try {
+    				/*
+    				 * Se verifica si el valor no fue anteriormente calculado, en caso de que si, entonces
+    				 * se almacena en la formula el resultado del calculo anterior, si no se trae el valor
+    				 * de la celda correspondiente
+    				 */
+    				if (valueOld!=null && valueOld.containsKey(key)) {
+    					newVar+=((Double)valueOld.get(key)).doubleValue();
+    				}
+    				else {
+    					int col;
+    					/*
+    					 * Se verifica si en el contenido existe una funcion
+    					 * de totalizacion
+    					 */
+    					if (var.substring(2,var.length()).startsWith("ROUND")) {
+    						String args = var.substring(6,var.length()-1);
+    						int sep = args.indexOf(',');
+    						String arg1  = args.substring(0,sep);
+    						String arg2  = args.substring(sep+1,args.length());
+    						newVar+= round(arg1, arg2, rowIndex);
+    						j+=var.length();
+    					}
+    					else if (var.length()>=j+5 && var.substring(j,j+3).toUpperCase().equals("SUM")) {
+    						newVar+=sum(var.substring(j+4,j+5));
+    						j+=5;
+    					}
+    					/* A�adido metodo equals para las formulas */
+    					else if (var.length()>=j+8 && var.substring(j,j+6).equals("equals")) {
+    						int colind = getColIndex(var.substring(j+7,j+8));
+    						newVar+="equals(\""+getValueAt(rowIndex,colind)+"\")";
+    						j+=8;
+    					}
+    					/* Aqui se evalua si contiene palabras reservadas */
+    					else if (var.length()>=j+3 && var.substring(j,j+3).equals("int")) {
+    						newVar+=var.substring(j,j+3);
+    						j+=2;
+    					}
+    					else if (var.length()>=j+6 && var.substring(j,j+6).equals("double")) {
+    						newVar+=var.substring(j,j+6);
+    						j+=5;
+    					}
+    					/* Añaadida palabra reservada null, pendiente para analizar */
+    					else if (var.length()>=j+4 && var.substring(j,j+4).equals("null")) {
+    						newVar+="\"\"";
+    						j+=3;
+    					}
+    					else if (var.length()>=j+4 && var.substring(j,j+4).equals("true")) {
+    						newVar+="true";
+    						j+=3;
+    					}
+    					else if (var.length()>=j+5 && var.substring(j,j+5).equals("false")) {
+    						newVar+="false";
+    						j+=4;
+    					}
+    					else {
+    						/* cuando la letra es mayuscula */
 
-            else {
-                newVar+=var.substring(j,j+1);
-            }
-        }
+    						if (var.charAt(j)<=90) {
+    							col = var.charAt(j)-65;
+    						}
+    						/* cuando es minuscula */
+    						else {
+    							col = var.charAt(j)-97;
+    						}
+
+    						/* Codigo pendiente para analizar */
+    						String txt = getValueAt(rowIndex,col).toString();
+    						if ("STRING".equals(ATFDargs[col].getType()) || 
+    								"COMBOSQL".equals(ATFDargs[col].getType())) {
+    							newVar+="".equals(txt)?"\"\"":"\""+txt+"\"";
+    						}
+    						else {
+    							newVar += txt;
+    						}
+    						/**/
+    					}
+    				}
+    			}
+    			catch(ArrayIndexOutOfBoundsException AIOOBEe) {
+    				String keyExternalValue = var.substring(j,j+1);
+    				if (externalValues.containsKey(keyExternalValue)) {
+    					try {
+    						Double val = (Double)GFforma.invokeMethod((String)externalValues.get(keyExternalValue),
+    								"getDoubleValue",
+    								new Class[]{String.class},
+    								new Object[]{keyExternalValue});
+    						newVar+=val.doubleValue();
+    					}
+    					catch(InvocationTargetException ITEe) {
+    						message("ERR_FORMULA");
+    						ITEe.printStackTrace();
+    						errFormula=true;
+    					}
+    					catch(NullPointerException NPEe) {
+    						message("ERR_FORMULA");
+    						NPEe.printStackTrace();
+    						errFormula=true;
+    					}
+    					catch (NotFoundComponentException NFCEe) {
+    						NFCEe.printStackTrace();
+    					}
+
+    				}
+    				else if (importTotalCol.containsKey(keyExternalValue.toUpperCase())){
+    					newVar+=GFforma.getExteralValues(importTotalCol.get(keyExternalValue.toUpperCase()));
+    				}
+    				else {
+    					message("ERR_FORMULA");
+    					errFormula=true;
+    				}
+    			}
+    		}
+
+    		else {
+    			newVar+=var.substring(j,j+1);
+    		}
+    	}
     	return newVar;
     }
     
@@ -1643,7 +1654,77 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
         }
         return pack;
     }
-    @SuppressWarnings("unchecked")
+    
+    private Element createXMLField(String value) {
+    	Element element = new Element("field");
+    	element.setText(value);
+    	return element;
+    }
+    
+    public boolean evaluate(String formula) {
+		String formulaFinal = GFforma.parseFormula(formula);
+		try {
+			Boolean val = (Boolean)GFforma.eval(formulaFinal);
+			return val;
+		} catch (EvalError e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+    
+    public Element getPrintPackage(Element args) {
+        Element pack = new Element("package");
+        
+        ArrayList<String> evaluates = new ArrayList<String>();
+        Iterator it = args.getChildren().iterator();
+        
+        while (it.hasNext()) {
+			Element arg = (Element) it.next();
+			if ("evaluate".equals(arg.getAttributeValue("attribute"))) {
+				evaluates.add(arg.getValue());
+			}
+        }
+        
+        for (int i=0;i<VdataRows.size(); i++) {
+            Element subpack = new Element("subpackage");
+            boolean add = true;
+    		int max = evaluates.size();
+    		if (max  > 0) {
+    			for(String var:evaluates) {
+    				Object valueAt = getValueAt(i,0);
+    				if (valueAt==null || "".equals(valueAt)) { break; } 
+    				String calc = reemplazarFormula(var,i,null);
+    				try {
+    					add = (Boolean) Run.shellScript.eval(calc);
+    				} catch (EvalError e) {
+    					add = false;
+    					e.printStackTrace();
+    				}
+    			}
+    		}
+            for (int j=0;j<getColumnCount() && add;j++) {
+            	Object valueAt = getValueAt(i,j);
+            	if (ATFDargs[j].isPrintable()) {
+            		if (valueAt==null || "".equals(valueAt)) {
+                		i=rows;
+                		break;
+                	}
+            		if (ATFDargs[j].getType().equals("DATE")) {
+            			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            			valueAt = sdf.format(valueAt);
+            		}
+           			subpack.addContent(createXMLField(valueAt.toString()));	
+            	}
+            }
+            if (subpack.getContentSize()>0) {
+            	pack.addContent(subpack);
+            }
+        }
+        return pack;
+    }
+    
+    
+	@SuppressWarnings("unchecked")
 	public Element getAgrupedPrintPackage(Element arguments) {
     	
     	Element pack = new Element("package");

@@ -456,7 +456,6 @@ public class PlainManager implements AbstractManager ,SuccessListener{
 	}
 
 	public void setIdTransaction(String idTransaction) {
-		System.out.println("Asignando codigo de transaccion ejecutada: "+idTransaction);
 		this.idTransaction = idTransaction;
 	}
 }

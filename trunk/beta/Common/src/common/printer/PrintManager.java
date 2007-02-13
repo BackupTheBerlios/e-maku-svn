@@ -20,7 +20,7 @@ import common.misc.CommonConst;
 
 public class PrintManager {
 	
-	public static enum ImpresionType {PLAIN,POSTSCRIPT,PDF};
+	public static enum ImpresionType {PLAIN,POSTSCRIPT,PDF};	
 	private ImpresionType type;
 	private DocFlavor docFlavor;
 	private static boolean lastError = false;
@@ -116,7 +116,7 @@ public class PrintManager {
 				print(ps,postScriptManager,pras);
 			}
 			else {
-				System.out.println("Impresora "+printer+"no econtrada");
+				System.out.println("Impresora "+printer+" no econtrada");
 			}
 		}
 	}
@@ -125,7 +125,7 @@ public class PrintManager {
 		DocPrintJob job = ps.createPrintJob();
 		Doc doc = new SimpleDoc(printData, docFlavor, null);
 		job.print(doc, pras);
-}
+	}
 	
 	private PrintService selectPrinservice(String printer) {
 		for (PrintService ps : jps) {

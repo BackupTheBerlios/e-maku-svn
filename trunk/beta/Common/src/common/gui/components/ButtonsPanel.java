@@ -29,8 +29,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
 
 import common.control.ClientHeaderValidator;
 import common.control.SuccessEvent;
@@ -322,7 +320,6 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
         			Componentes comp = loadComponent((Element) it.next());
             		vector.add(comp);
     			}
-    			System.out.println("Generando transaccion tipo: "+type);
 	    		if ("transaction".equals(type)) {
             		builTransaction(vector,action,null,null);
 	    		}
@@ -575,14 +572,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
         for (int i = 0; i < pack.size(); i++) {
             transaction.getRootElement().addContent((Element) pack.elementAt(i));
         }
-        XMLOutputter out = new XMLOutputter();
-        out.setFormat(Format.getPrettyFormat());
-        try {
-			out.output(transaction,System.out);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        
         GFforma.sendTransaction(transaction);
 
         int times = 0;
