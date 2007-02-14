@@ -61,6 +61,7 @@ implements KeyListener, DocumentListener, AnswerListener, InitiateFinishListener
 	private Vector<String> importValue = null;
 	private String exportValue = null;
 	private JPanel panel;
+	private String dateFormatString="yyyy/MM/dd HH:mm:ss";
 	private JTextFieldDateEditor editor;
 	private boolean onPanel = true;
 	private Vector<String> sqlCode = null;
@@ -80,6 +81,15 @@ implements KeyListener, DocumentListener, AnswerListener, InitiateFinishListener
         while (i.hasNext()) {
             Element subargs = (Element) i.next();
             String value = subargs.getValue();
+            if ("dateFormatString".equals(subargs.getAttributeValue("attribute"))) {
+            	dateFormatString=value;
+            }
+            else if ("maskPattern".equals(subargs.getAttributeValue("attribute"))) {
+            
+            }
+            else if ("placeholder".equals(subargs.getAttributeValue("attribute"))) {
+            	
+            }
             if ("enabled".equals(subargs.getAttributeValue("attribute"))) {
             	this.setEnabled(Boolean.parseBoolean(value));
             }
@@ -144,7 +154,7 @@ implements KeyListener, DocumentListener, AnswerListener, InitiateFinishListener
         Element pack = new Element("package");
         if (!this.getDate().equals("")) {
             Element field = new Element("field");
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat(this.getDateFormatString());
             field.setText(sdf.format(this.getDate()));
             pack.addContent(field);
         }
@@ -168,7 +178,7 @@ implements KeyListener, DocumentListener, AnswerListener, InitiateFinishListener
     private void exportar() {
 		if (exportValue!=null) {
 			try {
-	            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	            SimpleDateFormat sdf = new SimpleDateFormat(dateFormatString);
 				GFforma.setExternalValues(exportValue,sdf.format(this.getDate()));
 			}
 			catch(NullPointerException NPEe) {}
@@ -250,7 +260,7 @@ implements KeyListener, DocumentListener, AnswerListener, InitiateFinishListener
 		for (; i < importValue.size(); i++) {
 			argumentos[i] = GFforma.getExteralValuesString(XMLimpValues[i]);
 		}
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormatString);
 
         if (this.getDate()!=null) {
 			argumentos[i] = sdf.format(this.getDate());
