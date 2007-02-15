@@ -159,7 +159,8 @@ public class SendACP extends Thread{
 	                transaction.addContent(form.detachRootElement());
 	                element.addContent(transaction);
 	                
-	                SocketWriter.writing(sock,compressDocument(doc,driver.getValue()));
+	                boolean b = SocketWriter.writing(sock,compressDocument(doc,driver.getValue()));
+	                if (!b) {break;}
                 }
                 catch (MalformedByteSequenceException e) {
                 	e.printStackTrace();

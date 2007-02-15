@@ -38,7 +38,7 @@ import common.misc.log.LogAdmin;
 public class SocketWriter {
 
     
-    public static void writing(SocketChannel sock,Document doc) {
+    public static boolean writing(SocketChannel sock,Document doc) {
         synchronized(sock) {
 	        try {
 	            ByteArrayOutputStream bufferOut = new ByteArrayOutputStream();
@@ -50,13 +50,15 @@ public class SocketWriter {
 	            
 	            ByteArrayInputStream bufferIn = new ByteArrayInputStream(bufferOut.toByteArray());
 	            bufferOut.close();
-	            sendBuffer(sock,bufferIn);
+	            return sendBuffer(sock,bufferIn);
 	        }
 	        catch (FileNotFoundException e) {
 	            e.printStackTrace();
+	            return false;
 	        }
 	        catch (IOException e) {
 	            e.printStackTrace();
+	            return false;
 	        }
         }
     }
@@ -70,7 +72,7 @@ public class SocketWriter {
         ByteArrayInputStream bufferIn = new ByteArrayInputStream(data.toByteArray());
         sendBuffer(sock,bufferIn);
     }
-    private static void sendBuffer(SocketChannel sock,ByteArrayInputStream buffer) {
+    private static boolean sendBuffer(SocketChannel sock,ByteArrayInputStream buffer) {
         
         try {
             ByteBuffer buf = ByteBuffer.allocate(8192);
@@ -94,10 +96,12 @@ public class SocketWriter {
                     sock.write(buf);
                 
             }
+            return true;
         }
         catch (IOException IOEe) {
             LogAdmin.setMessage(Language.getWord("ERR_WRITING_SOCKET") + "\n"
                     + IOEe.getMessage(), CommonConst.ERROR);
+            return false;
         }
     }
 }
