@@ -379,6 +379,14 @@ public class SQLComboBox extends JComboBox implements
 		this.addPopupMenuListener(this);
 		this.GFforma.addInitiateFinishListener(this);
 		generar();
+		SwingUtilities.invokeLater(new Thread() {
+			public void run() {
+				if (preferredLength>0) {
+					setPreferredSize(new Dimension(preferredLength,getHeight()));
+				}
+				updateUI();
+			}
+		});
 	}
 
 	private void generar() {
@@ -477,9 +485,6 @@ public class SQLComboBox extends JComboBox implements
 				this.addItem(name+" "+code);
 			}
 		}
-		SwingUtilities.invokeLater(new Thread() {
-			public void run() {updateUI();}
-		});
 	}
 
 	/**
@@ -671,9 +676,7 @@ public class SQLComboBox extends JComboBox implements
 			if (driverEvent!=null) {
 			   GFforma.invokeMethod(driverEvent,"addAnswerListener",new Class[]{AnswerListener.class},new Object[]{this});
 			}
-			if (preferredLength>0) {
-				setPreferredSize(new Dimension(preferredLength,getHeight()));
-			}
+			
 		}
 		catch(NotFoundComponentException NFCEe) {
 			NFCEe.printStackTrace();
