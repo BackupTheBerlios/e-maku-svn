@@ -126,7 +126,7 @@ public class JButtonXML extends JButton implements ActionListener,ACPFormListene
     		public void run() {
 			    	if (ClassName!=null) {
 				        try {
-				            Class cls = Class.forName(ClassName);
+				            Class<?> cls = Class.forName(ClassName);
 				            if (method==null) {
 				                if (TypeArgConstructor!=null)
 				                    validarArgumentos();

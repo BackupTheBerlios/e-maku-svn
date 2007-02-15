@@ -705,7 +705,7 @@ public class GenericForm extends JInternalFrame{
 
         try {
             if (driver != null) {
-                Class cls = Class.forName(driver);
+                Class<?> cls = Class.forName(driver);
                 if (args_constructor.length > 1) {
                     type_args = new Class[] { GenericForm.class, Document.class };
                 } else {
@@ -790,7 +790,7 @@ public class GenericForm extends JInternalFrame{
         return null;
     }
 
-    private void setComps(String key, Componentes componente) {
+    private void setComps(final String key, Componentes componente) {
         /*
          * Antes de adicionar los componentes en una tabla, debemos verificar
          * si la forma generada es una forma principal o es una forma hija,
@@ -803,10 +803,6 @@ public class GenericForm extends JInternalFrame{
         else {
         	if (Hcomps.containsKey(key)) {
         		class message extends Thread {
-        			private String key;
-        			message(String key) {
-        				this.key=key;
-        			}
         			public void run() {
 		                JOptionPane.showInternalMessageDialog(JDPpanel,
 		                        Language.getWord("WARNING_EQUALS_COMPONENT")+key, 
@@ -847,7 +843,7 @@ public class GenericForm extends JInternalFrame{
             Class[] type_args_method, Object[] args_method)
             throws InvocationTargetException,NotFoundComponentException {
         if (driver.equals("this") || containsComponent(driver)) {
-            Class cls;
+            Class<?> cls;
             Object obj;
                 
             if (driver.equals("this")) {

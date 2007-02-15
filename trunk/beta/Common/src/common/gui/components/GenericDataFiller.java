@@ -46,7 +46,7 @@ public class GenericDataFiller extends Thread {
     private Vector Vfields=null;
     
     private Object[] obj;
-    private Class[] clase;
+    private Class<?>[] clase;
     private String[] method;
     
     public GenericDataFiller(GenericForm GFforma,String namebutton,boolean ok_search,

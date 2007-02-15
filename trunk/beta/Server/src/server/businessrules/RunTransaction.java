@@ -103,7 +103,7 @@ public class RunTransaction {
             			    String id_transaction) {
         try {
             if (CLDdriver.getDriver() != null) {
-                Class cls = Class.forName(CLDdriver.getDriver());
+                Class<?> cls = Class.forName(CLDdriver.getDriver());
                 if (CLDdriver.getArg_driver()!=null) {
                     type_args_constructor = new Class[] { SocketChannel.class,
                             							  Document.class,

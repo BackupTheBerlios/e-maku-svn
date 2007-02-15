@@ -1937,7 +1937,8 @@ implements ChangeValueListener,InitiateFinishListener, ChangeExternalValueListen
             }
             else {
                 try {
-                    Constructor cons = ATFDargs[j].getColumnClass().getConstructor(new Class[]{String.class});
+                	Class<?> c = ATFDargs[j].getColumnClass();
+                    Constructor cons = c.getConstructor(new Class[]{String.class});
                     Object object = cons.newInstance(new Object[]{newValue});
                     obj = object;
                 }

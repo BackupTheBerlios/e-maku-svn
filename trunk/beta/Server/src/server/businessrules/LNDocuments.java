@@ -723,7 +723,7 @@ public class LNDocuments {
     private static void validExternalClass(String driver,String method,Element parameters,Element pack) 
     throws ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, 
     InstantiationException, IllegalAccessException, InvocationTargetException {
-        Class cls = Class.forName(driver);
+        Class<?> cls = Class.forName(driver);
         Class[] type_args_constructor = null;
         Object[] args_constructor = null;
         Constructor cons;

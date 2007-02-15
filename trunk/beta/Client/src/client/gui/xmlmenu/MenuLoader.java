@@ -470,7 +470,7 @@ class JMenuItemXML extends JMenuItem implements ActionListener , ACPFormListener
     		public void run() {
 		        if (ClassName!=null) {
 			        try {
-			            Class cls = Class.forName(ClassName);
+			            Class<?> cls = Class.forName(ClassName);
 			            if (method == null) {
 			                if (TypeArgConstructor != null)
 			                    validarArgumentos();
@@ -544,7 +544,7 @@ class JMenuItemXML extends JMenuItem implements ActionListener , ACPFormListener
 			setVisible(true);
 			JPopupMenu popup = (JPopupMenu)getParent();
 			if (popup.isVisible()) {
-				popup.pack();	
+				popup.pack();
 			}
 	     //   ACPHandler.removeACPFormListener(this);
 		}
