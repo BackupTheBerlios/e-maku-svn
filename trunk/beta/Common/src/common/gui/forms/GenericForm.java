@@ -1037,17 +1037,11 @@ public class GenericForm extends JInternalFrame{
 
     public void setEnabledButton(String name,boolean bool) {
         try {
-            if (bool)
-	            invokeMethod("common.gui.components.ButtonsPanel", 
-                			 "setEnabled",
-                			 new Class[] {String.class,boolean.class},
-                			 new Object[] {name,Boolean.TRUE});
-            else
-                invokeMethod("common.gui.components.ButtonsPanel", 
-		           			 "setEnabled",
-		           			 new Class[] {String.class,boolean.class},
-		           			 new Object[] {name,Boolean.FALSE});
-
+        	if (name!=null)
+            invokeMethod("common.gui.components.ButtonsPanel", 
+            			 "setEnabled",
+            			 new Class[] {String.class,boolean.class},
+            			 new Object[] {name,new Boolean(bool)});
         }
         catch (InvocationTargetException ITEe) {
             JOptionPane.showInternalMessageDialog(getDesktopPane(),

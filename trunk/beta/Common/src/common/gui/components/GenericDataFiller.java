@@ -5,12 +5,12 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.jdom.Document;
+import org.jdom.Element;
+
 import common.gui.forms.GenericForm;
 import common.transactions.STException;
 import common.transactions.STResultSet;
-
-import org.jdom.Document;
-import org.jdom.Element;
 
 /**
  * GenericDataFiller.java Creado el 27-ene-2005
@@ -126,14 +126,9 @@ public class GenericDataFiller extends Thread {
 	            Iterator i = doc.getRootElement().getChildren("row").iterator();
 	            int row = doc.getRootElement().getChildren("row").size();
 	            
-                boolean enable_button=false;
-                
-
+                boolean enable_button = false;
                 if (row>0) {
-                    if (ok_search )
-                        enable_button=false;
-                    else
-                        enable_button=true;
+                	enable_button = ok_search ? false : true;
 		            while (i.hasNext()) {
 		                Element e = (Element) i.next();
 	                    Iterator j = e.getChildren().iterator();
@@ -146,20 +141,13 @@ public class GenericDataFiller extends Thread {
 		            }
                 }
                 else {
-                    if (ok_search) {
-                        enable_button=true;
-                    }
-                    else {
-                        enable_button=false;
-                    }
+                	enable_button = ok_search ? true : false;
                     setClean();
                 }
-                if (namebutton!=null)
-                    GFforma.setEnabledButton(namebutton, enable_button);
+                GFforma.setEnabledButton(namebutton, enable_button);
             }
             else {
-                if (namebutton!=null)
-                    GFforma.setEnabledButton(namebutton, false);
+            	GFforma.setEnabledButton(namebutton, false);
                 return false;
             }
         }
@@ -167,6 +155,7 @@ public class GenericDataFiller extends Thread {
             e.printStackTrace();
             return false;
         }
+        
         return true;
     }
 

@@ -579,7 +579,7 @@ public class GenericData extends JPanel implements DateListener,
 					if (!"".equals(text) || field.isQueryOnInit() ) {
 						
 						new GenericDataFiller(GFforma,
-								namebutton, false,
+								namebutton, enablebutton,
 								sqlLocal, imps,
 								text,
 								VFields).start();
