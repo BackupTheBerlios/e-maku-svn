@@ -395,7 +395,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 
 	private void propertiesTable() {
 
-		JTtabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		JTtabla.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		//JTtabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		JTtabla.setEnabled(enabled);
 
 		JTtabla.getSelectionModel().addListSelectionListener(
@@ -448,22 +449,26 @@ public class TableFindData extends JPanel implements AnswerListener,
 		 */
 		for (int k = 0; k < ATFDargs.length; k++) {
 			try {
-				JTtabla.getColumn(JTtabla.getColumnName(k)).setMinWidth(0);
-				JTtabla.getColumn(JTtabla.getColumnName(k)).setPreferredWidth(ATFDargs[k].getLengthCol());
+				String cname = JTtabla.getColumnName(k);
+				TableColumn tc = JTtabla.getColumn(cname);
+				int lengthCol = ATFDargs[k].getLengthCol();
+				tc.setMinWidth(0);
+				if (lengthCol>=0) {
+					tc.setPreferredWidth(lengthCol);
+				}
 				if (ATFDargs[k].getType().equals("COMBOSQL")) {
-					TableColumn comboColumn = JTtabla.getColumn(JTtabla.getColumnName(k));
 					// Use the combo box as the editor in the "Favorite Color"
 					// column.
 					String exportValue = ATFDargs[k].getExportValueCombo();
 
 					if (ATFDargs[k].isImportValueCombo()) {
 						if (ATFDargs[k].isExporValueCombo()) {
-							comboColumn.setCellEditor(new DefaultCellEditor(
+							tc.setCellEditor(new DefaultCellEditor(
 									new SQLComboBox(GFforma, ATFDargs[k]
 											.getSqlCombo(), ATFDargs[k]
 											.getImportCombos(), exportValue,false)));
 						} else {
-							comboColumn.setCellEditor(new DefaultCellEditor(
+							tc.setCellEditor(new DefaultCellEditor(
 									new SQLComboBox(
 									                GFforma,
 									                ATFDargs[k].getSqlCombo(),
@@ -471,10 +476,10 @@ public class TableFindData extends JPanel implements AnswerListener,
 						}
 					} else {
 						if (ATFDargs[k].isExporValueCombo()) {
-							comboColumn.setCellEditor(new DefaultCellEditor(
+							tc.setCellEditor(new DefaultCellEditor(
 									new SQLComboBox(GFforma, ATFDargs[k].getSqlCombo(), exportValue,false)));
 						} else {
-							comboColumn.setCellEditor(new DefaultCellEditor(
+							tc.setCellEditor(new DefaultCellEditor(
 									new SQLComboBox(GFforma, ATFDargs[k].getSqlCombo(),false)));
 						}
 					}

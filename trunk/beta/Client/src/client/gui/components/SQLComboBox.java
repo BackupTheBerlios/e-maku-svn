@@ -209,7 +209,7 @@ public class SQLComboBox extends JComboBox implements
 		this.saveKey=saveKey;
 		this.GFforma = GFforma;
         this.GFforma.addChangeExternalValueListener(this);
-    		this.addPopupMenuListener(this);
+        this.addPopupMenuListener(this);
         generar();
 	}
 
@@ -447,7 +447,6 @@ public class SQLComboBox extends JComboBox implements
 					setSelectedIndex(0);
 				}
 			}
-
 		}
 		new buildCombo(noDataMessage,dataBeep).start();
 	}
