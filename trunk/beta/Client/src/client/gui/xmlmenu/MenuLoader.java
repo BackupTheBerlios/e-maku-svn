@@ -20,6 +20,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
 import client.control.ACPFormEvent;
@@ -143,7 +144,7 @@ public class MenuLoader extends JMenuBar {
 	                if (subdatos.getName().equals("JMenuItem")) {
 	                    JMenuItemXML JMItmp = CargarJMenuItem(k);
 	                    if (JMItmp != null) {
-	                        JMtmp.add(JMItmp); 
+	                        JMtmp.add(JMItmp);
 	                        if (JMItmp.getTransaction()!= null) {
 	                        	JMtmp.setTransaction(JMItmp.getTransaction());
 	                        }
@@ -359,6 +360,10 @@ class JMenuXML extends JMenu implements ACPFormListener {
 		if (transactions.containsKey(e.getTransaction())) {
 			setEnabled(true);
 			setVisible(true);
+			Object parent = this.getParent();
+			if (parent instanceof JPopupMenu) {
+				((JPopupMenu)parent).pack();
+			}
 			//ACPHandler.removeACPFormListener(this);
 
 		}
@@ -535,6 +540,7 @@ class JMenuItemXML extends JMenuItem implements ActionListener , ACPFormListener
 		if (e.getTransaction().equals(transaction)) {
 			setEnabled(true);
 			setVisible(true);
+			((JPopupMenu)getParent()).pack();
 	     //   ACPHandler.removeACPFormListener(this);
 		}
 	}
