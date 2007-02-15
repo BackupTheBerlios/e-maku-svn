@@ -39,6 +39,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.swing.JComboBox;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -227,7 +228,7 @@ public class SQLComboBox extends JComboBox implements
 		this.GFforma = GFforma;
 		this.exportValue=exportValue;
         this.GFforma.addChangeExternalValueListener(this);
-    		this.addPopupMenuListener(this);
+        this.addPopupMenuListener(this);
         generar();
 	}
 
@@ -476,6 +477,9 @@ public class SQLComboBox extends JComboBox implements
 				this.addItem(name+" "+code);
 			}
 		}
+		SwingUtilities.invokeLater(new Thread() {
+			public void run() {updateUI();}
+		});
 	}
 
 	/**
