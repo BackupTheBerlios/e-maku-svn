@@ -23,19 +23,20 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+
 import client.control.ACPFormEvent;
 import client.control.ACPFormListener;
 import client.control.ACPHandler;
 import client.gui.components.MainWindow;
 import client.misc.ClientConst;
+
 import common.gui.forms.GenericForm;
 import common.misc.Icons;
 import common.misc.language.Language;
-
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
 /**
  * 
  * MenuLoader.java Creado el 35-mar-2004
@@ -362,13 +363,14 @@ class JMenuXML extends JMenu implements ACPFormListener {
 			setVisible(true);
 			Object parent = this.getParent();
 			if (parent instanceof JPopupMenu) {
-				((JPopupMenu)parent).pack();
+				JPopupMenu popup = (JPopupMenu)parent;
+				if (popup.isVisible()) {
+					popup.pack();	
+				}
 			}
 			//ACPHandler.removeACPFormListener(this);
-
 		}
 	}
-	
 }
 
 /**
@@ -540,7 +542,10 @@ class JMenuItemXML extends JMenuItem implements ActionListener , ACPFormListener
 		if (e.getTransaction().equals(transaction)) {
 			setEnabled(true);
 			setVisible(true);
-			((JPopupMenu)getParent()).pack();
+			JPopupMenu popup = (JPopupMenu)getParent();
+			if (popup.isVisible()) {
+				popup.pack();	
+			}
 	     //   ACPHandler.removeACPFormListener(this);
 		}
 	}
