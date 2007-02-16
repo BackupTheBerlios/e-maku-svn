@@ -385,9 +385,6 @@ public class SQLComboBox extends JComboBox implements
 									cleanArgs=true;
 								}
 							}
-							if (!blankArgs && "".equals(args[i].trim())) {
-								cleanArgs=true;
-							}
 						}
 					}
 					
