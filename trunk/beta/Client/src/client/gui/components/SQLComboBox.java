@@ -74,6 +74,7 @@ public class SQLComboBox extends JComboBox implements
 	private int selected;
 	private String key;
 	private Font font;
+	private boolean blankArgs;
 	private Vector<String> keysCombo = new Vector<String>();
 
 	private boolean saveKey = true;
@@ -122,22 +123,6 @@ public class SQLComboBox extends JComboBox implements
         generar();
 	}
 
-	/**
-	 * Este constructor parametriza el una consulta y el valor exportable por su seleccion 
-	 * @param GFforma
-	 * @param sqlCombo
-	 * @param exportValue
-	 */
-	
-	public SQLComboBox(GenericForm GFforma,String sqlCombo,String exportValue) {
-		super();
-		this.sqlCombo = sqlCombo;
-		this.GFforma = GFforma;
-		this.exportValue=exportValue;
-        this.GFforma.addChangeExternalValueListener(this);
-    		this.addPopupMenuListener(this);
-        generar();
-	}
 
 	/**
 	 * Este constructor parametriza el una consulta y el valor exportable por su seleccion 
@@ -175,26 +160,24 @@ public class SQLComboBox extends JComboBox implements
         generar();
 	}
 
-	/**
-	 * Este constructor parametriza una consulta con argumentos
-	 * @param GFforma
-	 * @param sqlCombo
-	 * @param args
-	 */
-	
-	public SQLComboBox(GenericForm GFforma,String sqlCombo, String[] args,boolean dataBeep,int selected,String noDataMessage) {
+	public SQLComboBox(GenericForm GFforma,String sqlCombo, String[] args,boolean blankArgs,boolean dataBeep,int selected,String noDataMessage) {
 		super();
 		this.sqlCombo = sqlCombo;
 		this.keys = args;
 		this.GFforma = GFforma;
+		this.blankArgs=blankArgs;
 		this.dataBeep=dataBeep;
 		this.noDataMessage=noDataMessage;
 		this.selected=selected;
         this.GFforma.addChangeExternalValueListener(this);
     		this.addPopupMenuListener(this);
+		System.out.println("contenido ..");
+		for (int i=0;i<keys.length;i++) {
+			System.out.println("valor total: "+keys[i]);
+		}
+
         generar();
 	}
-
 	/**
 	 * Este constructor parametriza una consulta con argumentos
 	 * @param GFforma
@@ -213,23 +196,6 @@ public class SQLComboBox extends JComboBox implements
         generar();
 	}
 
-	/**
-	 * Este constructor parametriza una consulta con argumentos y exporta su valor por seleccion
-	 * @param GFforma
-	 * @param sqlCombo
-	 * @param args
-	 * @param exportValue
-	 */
-	public SQLComboBox(GenericForm GFforma,String sqlCombo, String[] args,String exportValue) {
-		super();
-		this.sqlCombo = sqlCombo;
-		this.keys = args;
-		this.GFforma = GFforma;
-		this.exportValue=exportValue;
-        this.GFforma.addChangeExternalValueListener(this);
-        this.addPopupMenuListener(this);
-        generar();
-	}
 
 	/**
 	 * Este constructor parametriza una consulta con argumentos y exporta su valor por seleccion
@@ -409,10 +375,17 @@ public class SQLComboBox extends JComboBox implements
 					boolean cleanArgs = false;
 					if (keys!=null) {
 						args= new String[keys.length];
-					
 						for (int i = 0 ; i < args.length ; i++ ) {
 							args[i] = GFforma.getExteralValuesString(keys[i]);
-							if (args[i]==null || "".equals(args[i].trim())) {
+							if (args[i]==null) {
+								if (blankArgs) {
+									args[i]="";
+								}
+								else {
+									cleanArgs=true;
+								}
+							}
+							if (!blankArgs && "".equals(args[i].trim())) {
 								cleanArgs=true;
 							}
 						}
@@ -589,9 +562,7 @@ public class SQLComboBox extends JComboBox implements
        		}
 		}
 		if (exportTextValue!=null) {
-			System.out.println("Exportando valor del texto ....");
 			GFforma.setExternalValues(exportTextValue,this.getSelectedItem().toString());
-			System.out.println("valor exportado --");
 		}
 		if (sqlCode!=null && getSelectedIndex() > 0) {
 			class SearchingSQL extends Thread {

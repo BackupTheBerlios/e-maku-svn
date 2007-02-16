@@ -56,7 +56,9 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 	
 	public EmakuDataSearch(GenericForm GFforma,
 						   String sql,
+						   String[] externalValues,
 						   String keyValue,
+						   boolean blankArgs,
 						   boolean dataBeep,
 						   String dataMessage,
 						   int selected,
@@ -67,11 +69,19 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 		this.keyValue=keyValue;
 		XMLTFkey = new XMLTextField("KEY", 16, 50);
 		XMLTFkey.addFocusListener(this);
-		String[] args = new String[repeatData];
-		for (int i=0;i<args.length;i++) {
-			args[i]=keyValue;
+		String[] args = new String[repeatData+externalValues.length];
+		
+		for (int i=0;i<externalValues.length;i++) {
+			args[i]=externalValues[i];
+			System.out.println("valor: "+args[i]);
 		}
-		SQLCBselection = new SQLComboBox(GFforma,sql,args,dataBeep,selected,dataMessage);
+		for (int i=externalValues.length;i<args.length;i++) {
+			args[i]=keyValue;
+			System.out.println("valor: "+args[i]);
+		}
+		
+		
+		SQLCBselection = new SQLComboBox(GFforma,sql,args,blankArgs,dataBeep,selected,dataMessage);
 		SQLCBselection.addPopupMenuListener(this);
 		SQLCBselection.setPreferredSize(new Dimension(100,20)); 
 		JPMpopup = new JPopupMenu() {

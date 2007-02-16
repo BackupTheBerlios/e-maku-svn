@@ -79,7 +79,7 @@ public class RunQuery extends Element {
      */
     public ResultSet ejecutarSELECT() throws SQLException{
         st = PoolConexiones.getConnection(bd).createStatement();
-//        System.out.println("SENTENCIA SQL :: "+sql);
+        System.out.println("SENTENCIA SQL :: "+sql);
         ResultSet rs = st.executeQuery(sql);
         return rs;
     }

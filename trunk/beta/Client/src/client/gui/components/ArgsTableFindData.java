@@ -54,6 +54,7 @@ public class ArgsTableFindData {
     private String keyDataSearch;
     private int repeatData;
 	private boolean dataBeep;
+	private boolean blankArgs;
 	private String noDataMessage;
 	private int selected;
 
@@ -186,11 +187,14 @@ public class ArgsTableFindData {
 	                	repeatData = 1;
 	                }
 	        	}
-		        else if (value.equals("keyDataSearch")) {
+		        else if ("keyDataSearch".equals(attrib)) {
 		        	keyDataSearch = value; 
 		        }
 	         	else if ("noDataBeep".equals(attrib)) {
 	                dataBeep = Boolean.parseBoolean(value);
+	         	}
+	         	else if ("blankArgs".equals(attrib)) {
+	                blankArgs = Boolean.parseBoolean(value);
 	         	}
 	         	else if ("noDataMessage".equals(attrib)) {
 	                noDataMessage = value;
@@ -395,4 +399,9 @@ public class ArgsTableFindData {
 	public int getSelected() {
 		return selected;
 	}
+
+	public boolean isBlankArgs() {
+		return blankArgs;
+	}
+
 }

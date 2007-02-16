@@ -42,12 +42,14 @@ implements TableCellEditor {
 
 	public EmakuDataSearchCellEditor(GenericForm gfforma, 
 									 String sql, 
+									 String[] externalValues,
 									 String keyValue, 
+									 boolean blankArgs,
 									 boolean dataBeep,
 									 String noDataMessage,
 									 int selected,
 									 int repeatData) {
-		dataSearch = new EmakuDataSearch(gfforma,sql,keyValue,dataBeep,noDataMessage,selected,repeatData);
+		dataSearch = new EmakuDataSearch(gfforma,sql,externalValues,keyValue,blankArgs,dataBeep,noDataMessage,selected,repeatData);
 		this.clickCountToStart = 2;
 	}
 
@@ -67,7 +69,6 @@ implements TableCellEditor {
 	}
 
 	public Object getCellEditorValue() {
-		System.out.println("retornando valor de la celda: "+dataSearch.getValue());
 		return dataSearch.getValue();
 	}
 
