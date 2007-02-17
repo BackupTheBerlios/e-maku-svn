@@ -190,22 +190,20 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 	public void keyReleased(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 		Object s = e.getSource();
-		if(keyCode==KeyEvent.VK_ESCAPE) {
-			dataSelected = true;
-			JPMpopup.setVisible(false);
-		}
-		
-		if((s.equals(SQLCBselection)) && ((keyCode==KeyEvent.VK_ENTER))) {
-			if (JPMpopup.isVisible()) {
-				storeData();
-			}
-		}
-		
-		if(keyCode==KeyEvent.VK_F2) {
-			showDataSearch();
+		switch(keyCode) {
+			case KeyEvent.VK_ESCAPE:
+				dataSelected = true;
+				JPMpopup.setVisible(false);
+				break;
+			case KeyEvent.VK_ENTER:
+				if((s.equals(SQLCBselection)) && JPMpopup.isVisible()) {
+					storeData();
+				}
+			case KeyEvent.VK_F2:
+				showDataSearch();
+				break;
 		}
 	}
-
 	public void keyTyped(KeyEvent e) {}
 	public void keyPressed(KeyEvent e) {}
 }
