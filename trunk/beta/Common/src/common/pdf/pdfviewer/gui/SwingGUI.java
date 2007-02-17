@@ -87,7 +87,7 @@ import common.pdf.pdfviewer.gui.swing.SwingMenuItem;
 import common.pdf.pdfviewer.gui.swing.SwingOutline;
 import common.pdf.pdfviewer.utils.Printer;
 import common.pdf.pdfviewer.utils.SwingWorker;
-import common.pdf.pdfviewer.gui.popups.BarProgressDialog;
+import common.pdf.pdfviewer.gui.popups.ProgressBarDialog;
 
 /**
  * Scope:<b>(All)</b>
@@ -133,7 +133,7 @@ public class SwingGUI extends GUI implements GUIFactory {
 	
 	private JLabel pageCounter3;
 	
-	private BarProgressDialog dialog;
+	private ProgressBarDialog dialog;
 			
 	public SwingGUI(PdfDecoder decode_pdf,Values commonValues){
 	
@@ -818,7 +818,7 @@ public class SwingGUI extends GUI implements GUIFactory {
 	public void resetStatus() {
 		//statusBar.setColorForSubroutines(Color.blue);
 		//bottomNavButtons.add(statusBar.getStatusObject());
-		dialog = new BarProgressDialog(frame);
+		dialog = new ProgressBarDialog(frame);
 		dialog.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		dialog.resetStatusBar();
 	}
