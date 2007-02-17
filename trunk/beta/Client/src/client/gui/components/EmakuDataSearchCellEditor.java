@@ -50,7 +50,7 @@ implements TableCellEditor {
 									 int selected,
 									 int repeatData) {
 		dataSearch = new EmakuDataSearch(gfforma,sql,externalValues,keyValue,blankArgs,dataBeep,noDataMessage,selected,repeatData);
-		this.clickCountToStart = 2;
+		//this.clickCountToStart = 2;
 	}
 
 	public void setClickCountToStart(int count) {
@@ -71,6 +71,14 @@ implements TableCellEditor {
 	public Object getCellEditorValue() {
 		return dataSearch.getValue();
 	}
+	
+	public boolean shouldSelectCell(EventObject anEvent) { 
+        if (anEvent instanceof MouseEvent) { 
+            MouseEvent e = (MouseEvent)anEvent;
+            return e.getID() != MouseEvent.MOUSE_DRAGGED;
+        }
+        return true;
+    }
 
 	public Component getTableCellEditorComponent(JTable table, Object value,
 			boolean isSelected, int row, int column) {

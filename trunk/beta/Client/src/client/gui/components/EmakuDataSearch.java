@@ -6,6 +6,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -41,9 +43,6 @@ import common.gui.forms.GenericForm;
 
 public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenuListener,FocusListener {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 246103248621691834L;
 
 	private JPanel JPNorth;
@@ -53,7 +52,7 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 	private GenericForm GFforma;
 	private boolean dataSelected;
 	private String keyValue;
-	
+
 	public EmakuDataSearch(GenericForm GFforma,
 						   String sql,
 						   String[] externalValues,
@@ -69,6 +68,8 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 		this.keyValue=keyValue;
 		XMLTFkey = new XMLTextField("KEY", 16, 50);
 		XMLTFkey.addFocusListener(this);
+		XMLTFkey.addKeyListener(this);
+		
 		String[] args = new String[repeatData+externalValues.length];
 		
 		for (int i=0;i<externalValues.length;i++) {
@@ -80,26 +81,31 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 			System.out.println("valor: "+args[i]);
 		}
 		
-		
 		SQLCBselection = new SQLComboBox(GFforma,sql,args,blankArgs,dataBeep,selected,dataMessage);
 		SQLCBselection.addPopupMenuListener(this);
+		SQLCBselection.addKeyListener(this);
+		SQLCBselection.addFocusListener(this);
 		SQLCBselection.setPreferredSize(new Dimension(100,20)); 
 		JPMpopup = new JPopupMenu() {
 			private static final long serialVersionUID = -6078272560337577761L;
-
+			
 			public void setVisible(boolean b) {
 				Boolean isCanceled = (Boolean) getClientProperty("JPopupMenu.firePopupMenuCanceled");
 				if (b
 						|| (!b && dataSelected)
-						|| ((isCanceled != null) && !b && isCanceled
-								.booleanValue())) {
+						|| ((isCanceled != null) && !b && isCanceled.booleanValue()) ) {
 					super.setVisible(b);
 				}
+					
 			}
 		};
 		JPMpopup.setLightWeightPopupEnabled(true);
 		JPMpopup.add(dataSearch());
-
+		this.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				showDataSearch();
+			}
+		});
 	}
 
 	private JPanel dataSearch() {
@@ -127,7 +133,7 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 	 * @return retorna el codigo consultado
 	 */
 	protected String getValue() {
-		return this.getText();
+		return this.getText().trim();
 	}
 
 	/**
@@ -143,8 +149,7 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 		dataSelected = false;
 	}
 	
-	public void popupMenuCanceled(PopupMenuEvent e) {
-	}
+	public void popupMenuCanceled(PopupMenuEvent e) {}
 
 	/**
 	 * Este metodo se genera al terminar el evento de seleccion en el combo
@@ -153,17 +158,12 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 	
 	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
 		if (JPMpopup.isVisible()) {
-			dataSelected = true;
-			this.setText(SQLCBselection.getStringCombo());
-			JPMpopup.setVisible(false);
+			storeData();
 		}
 	}
 
-	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-	}
-
-	public void focusGained(FocusEvent e) {
-	}
+	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
+	public void focusGained(FocusEvent e) {}
 
 	/**
 	 * Este metodo se genera cuando el field de consulta por palabra clave pierde
@@ -172,22 +172,40 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 	 */
 	public void focusLost(FocusEvent e) {
 		GFforma.setExternalValues(keyValue,XMLTFkey.getText());
+		Object s = e.getSource();
+		if(s.equals(SQLCBselection)) {
+			if (JPMpopup.isVisible()) {
+				storeData();
+				this.requestFocus();
+			}
+		}
 	}
-
-	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode()==KeyEvent.VK_F3) {
+	
+	private void storeData() {
+		dataSelected = true;
+		this.setText( SQLCBselection.getStringCombo());
+		JPMpopup.setVisible(false);
+	}
+	
+	public void keyReleased(KeyEvent e) {
+		int keyCode = e.getKeyCode();
+		Object s = e.getSource();
+		if(keyCode==KeyEvent.VK_ESCAPE) {
+			dataSelected = true;
+			JPMpopup.setVisible(false);
+		}
+		
+		if((s.equals(SQLCBselection)) && ((keyCode==KeyEvent.VK_ENTER))) {
+			if (JPMpopup.isVisible()) {
+				storeData();
+			}
+		}
+		
+		if(keyCode==KeyEvent.VK_F2) {
 			showDataSearch();
 		}
 	}
 
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void keyTyped(KeyEvent e) {}
+	public void keyPressed(KeyEvent e) {}
 }
