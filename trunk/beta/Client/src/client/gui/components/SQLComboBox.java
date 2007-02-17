@@ -171,11 +171,6 @@ public class SQLComboBox extends JComboBox implements
 		this.selected=selected;
         this.GFforma.addChangeExternalValueListener(this);
     		this.addPopupMenuListener(this);
-		System.out.println("contenido ..");
-		for (int i=0;i<keys.length;i++) {
-			System.out.println("valor total: "+keys[i]);
-		}
-
         generar();
 	}
 	/**
@@ -299,7 +294,6 @@ public class SQLComboBox extends JComboBox implements
          	}
          	else if ("saveKey".equals(element.getAttributeValue("attribute"))) {
                 saveKey = Boolean.parseBoolean(value);
-         		System.out.println("saveKey: "+saveKey);
          	}
          	else if ("preferredLength".equals(element.getAttributeValue("attribute"))) {
                 preferredLength = Integer.parseInt(value);

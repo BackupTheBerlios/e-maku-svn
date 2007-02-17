@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -43,7 +45,7 @@ import common.gui.forms.NotFoundComponentException;
  * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  */
-public class XMLTextArea extends JTextArea implements AnswerListener, InitiateFinishListener {
+public class XMLTextArea extends JTextArea implements AnswerListener, FocusListener, InitiateFinishListener {
 
     private static final long serialVersionUID = -1097007812890286286L;
     private JScrollPane JSPpanel;
@@ -51,6 +53,9 @@ public class XMLTextArea extends JTextArea implements AnswerListener, InitiateFi
     private Vector <String>driverEvent;
     private Vector <String>keySQL;
     private Element printPack;
+    private String mode;
+	private String namebutton = "SAVE";
+    private String exportValue;
     
     public XMLTextArea(GenericForm GFforma) {
     	this.GFforma = GFforma;
@@ -108,11 +113,28 @@ public class XMLTextArea extends JTextArea implements AnswerListener, InitiateFi
 					font = null;
 				}
 			} 
+            else if ("mode".equals(subargs.getAttributeValue("attribute"))) {
+				mode = value;
+				if (mode.equals("NEW")) {
+					namebutton="SAVE";
+				}
+				else if (mode.equals("EDIT")) {
+					namebutton="SAVEAS";
+				}
+				else if (mode.equals("DELETE")){
+					namebutton="DELETE";
+				}
+			} 
+			else if ("exportValue".equals(subargs.getAttributeValue("attribute"))) {
+				exportValue = value;
+			}
+
         }
         if (font!=null) {
         	this.setFont(font);
         }
         this.GFforma.addInitiateFinishListener(this);
+        this.addFocusListener(this);
     }
     
     /**
@@ -193,12 +215,32 @@ public class XMLTextArea extends JTextArea implements AnswerListener, InitiateFi
                             printPack.addContent(field);
 			        		this.append(val+"\n");
 			        	}
+						if (mode != null) {
+							if ("NEW".equals(mode)) {
+								GFforma.setEnabledButton(namebutton, false);
+							} else {
+								GFforma.setEnabledButton(namebutton, true);
+								// clean();
+							}
+						}
+						if (exportValue!=null) {
+							GFforma.setExternalValues(exportValue,this.getText());
+						}
+
 			        }
 				}
 				catch (NullPointerException NPEe) {
 			        if (AEe.getSqlCode().equals(keySQL.get(i)) && i==0) {
 			        	clean();
 			        }
+					if (mode != null) {
+						if ("NEW".equals(mode)) {
+							GFforma.setEnabledButton(namebutton, true);
+						} else {
+							GFforma.setEnabledButton(namebutton, false);
+							// clean();
+						}
+					}
 				}
 			}
 		}
@@ -226,4 +268,15 @@ public class XMLTextArea extends JTextArea implements AnswerListener, InitiateFi
                             RenderingHints.VALUE_ANTIALIAS_ON);
         super.paintComponent(g);
     }
+
+	public void focusGained(FocusEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void focusLost(FocusEvent e) {
+		if (exportValue!=null) {
+			GFforma.setExternalValues(exportValue,this.getText());
+		}
+	}
 }
