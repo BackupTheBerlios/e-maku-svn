@@ -23,7 +23,6 @@ public class PrintManager {
 	public static enum ImpresionType {PLAIN,POSTSCRIPT,PDF};	
 	private ImpresionType type;
 	private DocFlavor docFlavor;
-	private static boolean lastError = false;
 	private PrintService[] jps;
 
 	public PrintManager (
@@ -38,16 +37,7 @@ public class PrintManager {
 		pras.add(new Copies(copies));
 		jps = CommonConst.printServices;
 		if ((jps==null ) || (jps.length == 0)) {
-			if (!lastError) {
-				JOptionPane.showMessageDialog(
-					null,
-					"No existen medios de impresion\n"+
-					"disponibles, debe configurar una\n"+
-					"impresora en su sistema, y reiniciar\n"+
-					"el programa para que se apliquen los cambios"
-					);
-				lastError = true;
-			}
+			showErroDialog();
 			return;
 		}
 		PrintService defaultService =null;
@@ -65,7 +55,6 @@ public class PrintManager {
 				CommonConst.printSelect = defaultService;
 				print(defaultService,is,pras);
 			}
-
 		}
 		else {
 			PrintService ps = selectPrinservice(printer);
@@ -88,16 +77,7 @@ public class PrintManager {
 		pras.add(new Copies(copies));
 		jps = CommonConst.printServices;
 		if ((jps==null ) || jps.length == 0) {
-			if (!lastError) {
-				JOptionPane.showMessageDialog(
-						null,
-						"No existen medios de impresion\n"+
-						"disponibles, debe configurar una\n"+
-						"impresora en su sistema, y reiniciar\n"+
-						"el programa para que se apliquen los cambios"
-						);
-				lastError = true;
-			}
+			showErroDialog();
 			return;
 		}
 		PrintService defaultService = null;
@@ -134,5 +114,14 @@ public class PrintManager {
 			}
 		}
 		return PrintServiceLookup.lookupDefaultPrintService();
+	}
+	private void showErroDialog() {
+		JOptionPane.showMessageDialog(
+				null,
+				"No existen medios de impresion\n"+
+				"disponibles, debe configurar una\n"+
+				"impresora en su sistema, y reiniciar\n"+
+				"el programa para que se apliquen los cambios"
+				);
 	}
 }
