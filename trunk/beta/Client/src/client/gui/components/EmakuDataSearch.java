@@ -74,11 +74,9 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 		
 		for (int i=0;i<externalValues.length;i++) {
 			args[i]=externalValues[i];
-			System.out.println("valor: "+args[i]);
 		}
 		for (int i=externalValues.length;i<args.length;i++) {
 			args[i]=keyValue;
-			System.out.println("valor: "+args[i]);
 		}
 		
 		SQLCBselection = new SQLComboBox(GFforma,sql,args,blankArgs,dataBeep,selected,dataMessage);
@@ -173,11 +171,9 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 	public void focusLost(FocusEvent e) {
 		GFforma.setExternalValues(keyValue,XMLTFkey.getText());
 		Object s = e.getSource();
-		if(s.equals(SQLCBselection)) {
-			if (JPMpopup.isVisible()) {
-				storeData();
-				this.requestFocus();
-			}
+		if(s.equals(SQLCBselection) && JPMpopup.isVisible()) {
+			storeData();
+			this.requestFocus();
 		}
 	}
 	
