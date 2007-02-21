@@ -19,9 +19,9 @@ import org.jdom.Element;
 import common.gui.components.AnswerEvent;
 import common.gui.components.AnswerListener;
 import common.gui.components.VoidPackageException;
-import common.gui.forms.FinishEvent;
+import common.gui.forms.EndEventGenerator;
 import common.gui.forms.GenericForm;
-import common.gui.forms.InitiateFinishListener;
+import common.gui.forms.InstanceFinishingListener;
 import common.gui.forms.NotFoundComponentException;
 import common.misc.language.Language;
 
@@ -46,7 +46,7 @@ import common.misc.language.Language;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
-public class XMLCheckBox extends JCheckBox implements ActionListener, AnswerListener, InitiateFinishListener {
+public class XMLCheckBox extends JCheckBox implements ActionListener, AnswerListener, InstanceFinishingListener {
 
     /**
 	 * 
@@ -191,7 +191,7 @@ public class XMLCheckBox extends JCheckBox implements ActionListener, AnswerList
 		
 	}
 
-	public void initiateFinishEvent(FinishEvent e) {
+	public void initiateFinishEvent(EndEventGenerator e) {
 		try {
 			if (driverEvent!=null) {
 			   GFforma.invokeMethod(driverEvent,"addAnswerListener",new Class[]{AnswerListener.class},new Object[]{this});

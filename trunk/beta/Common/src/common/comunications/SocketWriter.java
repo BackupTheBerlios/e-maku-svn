@@ -10,7 +10,7 @@ import java.nio.channels.SocketChannel;
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 
-import common.misc.CommonConst;
+import common.misc.CommonConstants;
 import common.misc.language.Language;
 import common.misc.log.LogAdmin;
 
@@ -100,7 +100,7 @@ public class SocketWriter {
         }
         catch (IOException IOEe) {
             LogAdmin.setMessage(Language.getWord("ERR_WRITING_SOCKET") + "\n"
-                    + IOEe.getMessage(), CommonConst.ERROR);
+                    + IOEe.getMessage(), CommonConstants.ERROR);
             return false;
         }
     }

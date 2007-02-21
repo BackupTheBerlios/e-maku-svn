@@ -45,8 +45,8 @@ import common.gui.components.XMLTextField;
 import common.gui.forms.GenericForm;
 import common.gui.forms.NotFoundComponentException;
 import common.misc.language.Language;
-import common.transactions.STException;
-import common.transactions.STResultSet;
+import common.transactions.TransactionServerException;
+import common.transactions.TransactionServerResultSet;
 
 /**
  * AdminCtas2.java Creado el 21-oct-2004
@@ -270,7 +270,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 					/*
 					 * Se consulta si la cuenta digitada ya existe
 					 */
-					doc = STResultSet.getResultSetST("SCS0013", new String[] { texto });
+					doc = TransactionServerResultSet.getResultSetST("SCS0013", new String[] { texto });
 
 					row = doc.getRootElement().getChild("row");
 
@@ -339,7 +339,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 						 * consulta retorna 1 si la cuenta a crear tiene padre y
 						 * 0 si no lo tiene
 						 */
-						Document doc2 = STResultSet.getResultSetST("SCS0014",
+						Document doc2 = TransactionServerResultSet.getResultSetST("SCS0014",
 								new String[] { texto.substring(0, fin) });
 						cleanData();
 
@@ -371,7 +371,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 
 						exists = false;
 					}
-				} catch (STException e1) {
+				} catch (TransactionServerException e1) {
 					e1.printStackTrace();
 				}
 
@@ -398,7 +398,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 			}
 
 			public void run() {
-				JTpuc.setModel(new QueryTableData(sql));
+				JTpuc.setModel(new TableRenderer(sql));
 				JTpuc.getColumnModel().setColumnMargin(5);
 				JTpuc.getColumn(JTpuc.getColumnName(0)).setPreferredWidth(
 						(JTpuc.getWidth() * 20) / 100);
@@ -683,7 +683,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 
 		try {
 			String id_cta = ((Element) query.getChildren().get(0)).getTextTrim();
-			Document Dperfil = STResultSet.getResultSetST("SCS0021", new String[] { id_cta });
+			Document Dperfil = TransactionServerResultSet.getResultSetST("SCS0021", new String[] { id_cta });
 			Element pack = Dperfil.getRootElement().getChild("row");
 			XMLCBnaturaleza.setSelected(getBoolean(pack, 0));
 			XMLCBcentro.setSelected(getBoolean(pack, 1));
@@ -700,7 +700,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 			 * Consultando informacion de ajustes por inflacion
 			 */
 			
-			Document Dajuste = STResultSet.getResultSetST("SCS0059", new String[] { id_cta });
+			Document Dajuste = TransactionServerResultSet.getResultSetST("SCS0059", new String[] { id_cta });
 			Element pack1 = Dajuste.getRootElement().getChild("row");
 
 			if (pack1!=null) {
@@ -712,7 +712,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 			 * Consultando informacion de depreciaciones
 			 */
 			
-			Document Ddepreciaciones = STResultSet.getResultSetST("SCS0060", new String[] { id_cta });
+			Document Ddepreciaciones = TransactionServerResultSet.getResultSetST("SCS0060", new String[] { id_cta });
 			Element pack2 = Ddepreciaciones.getRootElement().getChild("row");
 			
 			if (pack2!=null) {
@@ -720,7 +720,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 				XMLTFctaDepre.setText(getString(pack2, 2));
 				XMLTFcontraDepre.setText(getString(pack2, 3));
 			}
-		} catch (STException STe) {
+		} catch (TransactionServerException STe) {
 			JOptionPane.showInternalMessageDialog(GFforma, Language
 					.getWord("ERROR_PERFIL_CTA"), Language
 					.getWord("ERROR_MESSAGE"), JOptionPane.ERROR_MESSAGE);
@@ -922,7 +922,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		 */
 		Document doc;
 		try {
-			doc = STResultSet.getResultSetST("SCS0013", new String[] { charCta });
+			doc = TransactionServerResultSet.getResultSetST("SCS0013", new String[] { charCta });
 			List row = doc.getRootElement().getChild("row").getChildren();
 			String idCta = ((Element)row.get(0)).getText();
 			String estado = ((Element)row.get(4)).getText();
@@ -936,7 +936,7 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 			}
 			return idCta;
 			
-		} catch (STException e) {
+		} catch (TransactionServerException e) {
 			e.printStackTrace();
 			return null;
 		} catch (NullPointerException NPEe) {

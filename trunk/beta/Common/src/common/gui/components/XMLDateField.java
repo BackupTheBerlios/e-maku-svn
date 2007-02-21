@@ -20,12 +20,12 @@ import org.jdom.Element;
 
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
-import common.gui.forms.FinishEvent;
+import common.gui.forms.EndEventGenerator;
 import common.gui.forms.GenericForm;
-import common.gui.forms.InitiateFinishListener;
+import common.gui.forms.InstanceFinishingListener;
 import common.gui.forms.NotFoundComponentException;
-import common.transactions.STException;
-import common.transactions.STResultSet;
+import common.transactions.TransactionServerException;
+import common.transactions.TransactionServerResultSet;
 
 /**
  * XMLTextField.java Creado el 13-nov-2006
@@ -49,7 +49,7 @@ import common.transactions.STResultSet;
  */
 
 public class XMLDateField extends JDateChooser 
-implements KeyListener, DocumentListener, AnswerListener, InitiateFinishListener,FocusListener {
+implements KeyListener, DocumentListener, AnswerListener, InstanceFinishingListener,FocusListener {
 
 	/**
 	 * 
@@ -185,7 +185,7 @@ implements KeyListener, DocumentListener, AnswerListener, InitiateFinishListener
 		}
 	}
 
-	public void initiateFinishEvent(FinishEvent e) {
+	public void initiateFinishEvent(EndEventGenerator e) {
 		try {
 			for (int i=0 ; i < driverEvent.size() ; i++) {
 				GFforma.invokeMethod(
@@ -233,8 +233,8 @@ implements KeyListener, DocumentListener, AnswerListener, InitiateFinishListener
 					Document doc = null;
 					sql = (String) sqlCode.get(i);
 					try {
-						doc = STResultSet.getResultSetST(sql, args);
-					} catch (STException e) {
+						doc = TransactionServerResultSet.getResultSetST(sql, args);
+					} catch (TransactionServerException e) {
 						e.printStackTrace();
 					}
 					AnswerEvent event = new AnswerEvent(this, sql, doc);

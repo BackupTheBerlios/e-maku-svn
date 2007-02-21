@@ -10,11 +10,14 @@ public class ReportEvent extends EventObject {
 	private String report;
 	private Element data;
 	private String titleReport;
-	public ReportEvent(Object source,String report, String titleReport, Element data) {
+	private boolean plainReport;
+	
+	public ReportEvent(Object source,String report, String titleReport, Element data,boolean plainReport) {
 		super(source);
 		this.report = report;
 		this.data = data;
 		this.titleReport = titleReport;
+		this.plainReport=plainReport;
 	}
 
 	public String getIdReport() {
@@ -27,5 +30,9 @@ public class ReportEvent extends EventObject {
 
 	public String getTitleReport() {
 		return titleReport;
+	}
+
+	public boolean isPlainReport() {
+		return plainReport;
 	}
 }

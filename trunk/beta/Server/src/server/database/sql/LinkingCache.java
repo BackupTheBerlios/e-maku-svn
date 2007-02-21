@@ -14,11 +14,11 @@ import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
-import server.comunications.SocketServer;
-import server.control.SendUPDATECODE;
-import server.database.connection.PoolConexiones;
-import server.misc.ServerConst;
-import server.misc.settings.ConfigFile;
+import server.comunications.EmakuServerSocket;
+import server.control.UPDATECODESender;
+import server.database.connection.ConnectionsPool;
+import server.misc.ServerConstants;
+import server.misc.settings.ConfigFileHandler;
 
 import common.comunications.SocketWriter;
 import common.misc.language.Language;
@@ -57,7 +57,7 @@ public class LinkingCache {
     private static Hashtable <String,Object>Hctas_asientos = new Hashtable<String,Object>();
     private static Hashtable <String,Object>Hlibro_aux = new Hashtable<String,Object>();
     
-    private static Hashtable <String,ClassLogicDriver>Hlogica_drivers = new Hashtable<String,ClassLogicDriver>();
+    private static Hashtable <String,BusinessRulesStructure>Hlogica_drivers = new Hashtable<String,BusinessRulesStructure>();
     private static Hashtable <String,InfoInventario>Hinventarios = new Hashtable<String,InfoInventario>();
     private static Hashtable <String,String>Hconsecutive = new Hashtable<String,String>();
     private static Hashtable <String,PerfilCta>Hperfil_cta = new Hashtable<String,PerfilCta>();
@@ -72,10 +72,10 @@ public class LinkingCache {
     	
         ResultSet rs = null;
         /** Obtengo el numero de conexiones que maneja el ST */
-        int max = ConfigFile.getDBSize();
+        int max = ConfigFileHandler.getDBSize();
 
         LogAdmin.setMessage(Language.getWord("LOADING_SL"),
-                ServerConst.MESSAGE);
+                ServerConstants.MESSAGE);
 
         /**
          * Este ciclo recorre todas las bases de datos configuradas en el
@@ -87,16 +87,16 @@ public class LinkingCache {
             try {
 
                 LogAdmin.setMessage(Language.getWord("LOADING_CACHE") + " "
-                        + ConfigFile.getDBName(i), ServerConst.MESSAGE);
+                        + ConfigFileHandler.getDBName(i), ServerConstants.MESSAGE);
 
                 /**
                  * Establezco la conexion con la base de datos
                  */
 
-                st = PoolConexiones.getConnection(ConfigFile.getDBName(i)).createStatement();
+                st = ConnectionsPool.getConnection(ConfigFileHandler.getDBName(i)).createStatement();
 
-                LogAdmin.setMessage(Language.getWord("INIT_BDS"), ServerConst.MESSAGE);
-                LogAdmin.setMessage(Language.getWord("LOADING_ST") + " " + ConfigFile.getDBName( i ) , ServerConst.MESSAGE);
+                LogAdmin.setMessage(Language.getWord("INIT_BDS"), ServerConstants.MESSAGE);
+                LogAdmin.setMessage(Language.getWord("LOADING_ST") + " " + ConfigFileHandler.getDBName( i ) , ServerConstants.MESSAGE);
 
                 /*
                  * Esta es la unica maldita sentencia que encontraras en el codigo de emaku
@@ -110,7 +110,7 @@ public class LinkingCache {
                  */
                 
                 while(rs.next()){
-                    Hinstrucciones.put("K-"+ConfigFile.getDBName(i)+"-"+
+                    Hinstrucciones.put("K-"+ConfigFileHandler.getDBName(i)+"-"+
 			                           rs.getString("codigo"),
 				                       rs.getString("sentencia"));
                 }                
@@ -120,21 +120,21 @@ public class LinkingCache {
                  * los usuarios
                  */
                 
-                Htransacciones.putAll(loadCache(ConfigFile.getDBName(i),"SCS0001", new String[]{"login","codigo","password"},"ok"));
+                Htransacciones.putAll(loadCache(ConfigFileHandler.getDBName(i),"SCS0001", new String[]{"login","codigo","password"},"ok"));
 
                 /*
                  * Esta consulta carga las sentencias a las que tienen permisos
                  * los usuarios 
                  */
 
-                Hpermisos.putAll(loadCache(ConfigFile.getDBName(i),"SCS0002", new String[]{"login","codigo","password"},"ok"));
+                Hpermisos.putAll(loadCache(ConfigFileHandler.getDBName(i),"SCS0002", new String[]{"login","codigo","password"},"ok"));
                 
                 /*
                  * Se realiza la consulta para obtener los drivers de la tabla
                  * transacciones
                  */
 
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),
+                rs = st.executeQuery(SQLFormatAgent.getSentencia(ConfigFileHandler.getDBName(i),
                 					 "SCS0015"));
 
                 /*
@@ -160,22 +160,22 @@ public class LinkingCache {
 		                docMth = builder.build(bufferInMth);
 	                }
 	                catch(NullPointerException NPEe) {}
-	                Hlogica_drivers.put("K-" + ConfigFile.getDBName(i) + "-"
+	                Hlogica_drivers.put("K-" + ConfigFileHandler.getDBName(i) + "-"
                             + rs.getString("codigo").trim(), 
-                            new ClassLogicDriver(rs.getString("driver"),
+                            new BusinessRulesStructure(rs.getString("driver"),
                                     			  docDrv,
                                     			  rs.getString("metodo"),
                                     			  docMth));
                     }
                     catch(IOException IOEe) {
                         LogAdmin.setMessage(Language.getWord("ERR_LOADING_LG") + " "
-                                + ConfigFile.getDBName(i) + " "+rs.getString("codigo")+" "+IOEe.getMessage(),
-                                ServerConst.ERROR);
+                                + ConfigFileHandler.getDBName(i) + " "+rs.getString("codigo")+" "+IOEe.getMessage(),
+                                ServerConstants.ERROR);
                     }
                     catch(JDOMException JDOMEe) {
                         LogAdmin.setMessage(Language.getWord("ERR_LOADING_LG") + " "
-                                + ConfigFile.getDBName(i) + " "+rs.getString("codigo")+" " + JDOMEe.getMessage(),
-                                ServerConst.ERROR);
+                                + ConfigFileHandler.getDBName(i) + " "+rs.getString("codigo")+" " + JDOMEe.getMessage(),
+                                ServerConstants.ERROR);
                     }
                 }
                 
@@ -183,12 +183,12 @@ public class LinkingCache {
                  * Esta consulta captura el nombre de la empresa y su Nit
                  */
                 
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SCS0054"));
+                rs = st.executeQuery(SQLFormatAgent.getSentencia(ConfigFileHandler.getDBName(i),"SCS0054"));
 
                 while (rs.next()) {                	
-                    HcompanyData.put("K-" + ConfigFile.getDBName(i) + "-company",
+                    HcompanyData.put("K-" + ConfigFileHandler.getDBName(i) + "-company",
                     		         String.valueOf(rs.getString("nombre")));
-                    HcompanyData.put("K-" + ConfigFile.getDBName(i) + "-companyID",
+                    HcompanyData.put("K-" + ConfigFileHandler.getDBName(i) + "-companyID",
                     		         String.valueOf(rs.getString("id_char")));
                 }
                 
@@ -199,11 +199,11 @@ public class LinkingCache {
                  * a este se le suma un uno.
                  */
 
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SCS0023"));
+                rs = st.executeQuery(SQLFormatAgent.getSentencia(ConfigFileHandler.getDBName(i),"SCS0023"));
 
 				while (rs.next()) {
-                    Hconsecutive.put("K-" + ConfigFile.getDBName(i) + "-"
-                            + rs.getString("codigo_tipo").trim(), consecutive(ConfigFile.getDBName(i),
+                    Hconsecutive.put("K-" + ConfigFileHandler.getDBName(i) + "-"
+                            + rs.getString("codigo_tipo").trim(), consecutive(ConfigFileHandler.getDBName(i),
                                                                   rs.getString("max")));
 				}
                 
@@ -212,7 +212,7 @@ public class LinkingCache {
                  * de la tabla inventarios
                  */
 
-                rs = st.executeQuery(InstruccionesSQL.getSentencia(ConfigFile.getDBName(i),"SCS0037"));
+                rs = st.executeQuery(SQLFormatAgent.getSentencia(ConfigFileHandler.getDBName(i),"SCS0037"));
 
                 /*
                  * Se almacena la informaci�n en un objeto InfoInventario y luego en la
@@ -220,7 +220,7 @@ public class LinkingCache {
                  */
 
                 while (rs.next()) {
-                    Hinventarios.put("K-" + ConfigFile.getDBName(i) + "-"
+                    Hinventarios.put("K-" + ConfigFileHandler.getDBName(i) + "-"
                                           + rs.getInt("id_bodega")+ "-"
                                           + rs.getInt("id_prod_serv"),
                                           new InfoInventario(rs.getDouble("pinventario"),
@@ -232,70 +232,70 @@ public class LinkingCache {
                  * Esta metodo carga el perfil de todas las cuentas contables generadas.
                  */
 
-                loadPerfilCta(ConfigFile.getDBName(i),"SCS0038",null);
+                loadPerfilCta(ConfigFileHandler.getDBName(i),"SCS0038",null);
 
                 /*
                  * Este metodo carga la informacion relacionada a asientos prefedinidos
                  */
                 
-                loadAsientosPredefinidos(ConfigFile.getDBName(i));
+                loadAsientosPredefinidos(ConfigFileHandler.getDBName(i));
 
                 /*
                  * Se realiza la consulta para obtener los saldos de la tabla
                  * libro_aux
                  */
 
-                Hlibro_aux.putAll(loadCache(ConfigFile.getDBName(i),"SCS0041", new String[]{"centro","id_cta","id_tercero","id_prod_serv"},"saldo"));
+                Hlibro_aux.putAll(loadCache(ConfigFileHandler.getDBName(i),"SCS0041", new String[]{"centro","id_cta","id_tercero","id_prod_serv"},"saldo"));
             }
             catch (SQLException SQLEe) {
             	SQLEe.printStackTrace();
                 LogAdmin.setMessage(Language.getWord("ERROR_LOADING_SL") + " "
-                        + ConfigFile.getDBName(i) + SQLEe.getMessage(),
-                        ServerConst.ERROR);
+                        + ConfigFileHandler.getDBName(i) + SQLEe.getMessage(),
+                        ServerConstants.ERROR);
             }
             catch (SQLNotFoundException SQLNFEe) {
             	SQLNFEe.printStackTrace();
                 LogAdmin.setMessage(Language.getWord("ERROR_LOADING_SL") + " "
-                        + ConfigFile.getDBName(i) + SQLNFEe.getMessage(),
-                        ServerConst.ERROR);
+                        + ConfigFileHandler.getDBName(i) + SQLNFEe.getMessage(),
+                        ServerConstants.ERROR);
             }
             
-        CloseSQL.close(st);
-        CloseSQL.close(rs);
+        StatementsClosingHandler.close(st);
+        StatementsClosingHandler.close(rs);
 
     }
     
     public static void removePerfilCta(String bd,String[] args) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
-        ResultSet rs= st.executeQuery(InstruccionesSQL.getSentencia(bd,"SCS0057",args));
+        ResultSet rs= st.executeQuery(SQLFormatAgent.getSentencia(bd,"SCS0057",args));
         
         while (rs.next()) {
         	String key = "K-"+bd+"-"+rs.getString(1).trim();
         	Hperfil_cta.remove(key);
         }
-        CloseSQL.close(rs);
+        StatementsClosingHandler.close(rs);
     }
 
     public static void removeAsientosPr(String bd,String[] args) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
-        ResultSet rs= st.executeQuery(InstruccionesSQL.getSentencia(bd,"SCS0056",args));
+        ResultSet rs= st.executeQuery(SQLFormatAgent.getSentencia(bd,"SCS0056",args));
         
         while (rs.next()) {
         	String key = "K-"+bd+"-"+rs.getString(1).trim()+"-"+rs.getString(2).trim();
         	Hasientos_pr.remove(key);
         }
-        CloseSQL.close(rs);
+        StatementsClosingHandler.close(rs);
     }
     
     public static void removeCtasAsientos(String bd,String[] args) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
-        ResultSet rs= st.executeQuery(InstruccionesSQL.getSentencia(bd,"SCS0055",args));
+        ResultSet rs= st.executeQuery(SQLFormatAgent.getSentencia(bd,"SCS0055",args));
         
         while (rs.next()) {
         	String key = "K-"+bd+"-"+rs.getString(1).trim()+"-"+rs.getString(2).trim();
         	Hctas_asientos.remove(key);
         }
-        CloseSQL.close(rs);
+        StatementsClosingHandler.close(rs);
     }
 
     public static void reloadAsientosPr(String bd,String[] args) 
@@ -331,12 +331,12 @@ public class LinkingCache {
      */
     public static void loadPerfilCta(String bd,String sqlPerfil,String[] args) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
-    	Statement st = PoolConexiones.getConnection(bd).createStatement();
+    	Statement st = ConnectionsPool.getConnection(bd).createStatement();
         ResultSet rs;
         if (args==null)
-        	rs = st.executeQuery(InstruccionesSQL.getSentencia(bd,sqlPerfil));
+        	rs = st.executeQuery(SQLFormatAgent.getSentencia(bd,sqlPerfil));
         else
-        	rs = st.executeQuery(InstruccionesSQL.getSentencia(bd,sqlPerfil,args));
+        	rs = st.executeQuery(SQLFormatAgent.getSentencia(bd,sqlPerfil,args));
         
         /*
          * Se almacena la informacion en un objeto PerfilCta y luego en la
@@ -356,8 +356,8 @@ public class LinkingCache {
                                 		  		rs.getDouble("base"),
                                 		  		rs.getDouble("porcentaje")));
         }
-        CloseSQL.close(st);
-        CloseSQL.close(rs);
+        StatementsClosingHandler.close(st);
+        StatementsClosingHandler.close(rs);
     }
     
     private static synchronized Hashtable<String,Object> loadCache(String bd,String sql,String key[],String rsValue) 
@@ -369,10 +369,10 @@ public class LinkingCache {
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
         ResultSet rs;
         if (args!=null) {
-        	rs= st.executeQuery(InstruccionesSQL.getSentencia(bd,sql,args));
+        	rs= st.executeQuery(SQLFormatAgent.getSentencia(bd,sql,args));
         }
         else {
-        	rs= st.executeQuery(InstruccionesSQL.getSentencia(bd,sql));
+        	rs= st.executeQuery(SQLFormatAgent.getSentencia(bd,sql));
         }
         Hashtable<String,Object> tabla = new Hashtable<String,Object>();
         while (rs.next()) {
@@ -393,7 +393,7 @@ public class LinkingCache {
         }
 //        rs.last();
 //        System.out.println("Numero de registros: "+rs.getRow());
-        CloseSQL.close(rs);
+        StatementsClosingHandler.close(rs);
         return tabla;
     }
 
@@ -418,7 +418,7 @@ public class LinkingCache {
             catch (NumberFormatException NFEe){
                 LogAdmin.setMessage(Language.getWord("ERR_CONSECUTIVE") + " "
                         + nombreBD + NFEe.getMessage(),
-                        ServerConst.ERROR);
+                        ServerConstants.ERROR);
                 return "0000000000";
             }
         }
@@ -608,7 +608,7 @@ public class LinkingCache {
      * @return retorna la clase ClassLoadDriver con sus respectivos parametros
      */
 
-    public static ClassLogicDriver getDriver(String bd, String id_transaction){
+    public static BusinessRulesStructure getDriver(String bd, String id_transaction){
         return Hlogica_drivers.get("K-"+bd+"-"+id_transaction);
     }
 
@@ -672,9 +672,9 @@ public class LinkingCache {
      */
     public static void reloadConsecutive(String bd,String key) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
-        Connection cn = PoolConexiones.getConnection(bd);
+        Connection cn = ConnectionsPool.getConnection(bd);
         Statement st = cn.createStatement();
-        ResultSet rs = st.executeQuery(InstruccionesSQL.getSentencia(bd,"SCS0046",new String[]{key}));
+        ResultSet rs = st.executeQuery(SQLFormatAgent.getSentencia(bd,"SCS0046",new String[]{key}));
         String consecutive="";
 		while (rs.next()) {
 			consecutive = rs.getString(1);
@@ -682,8 +682,8 @@ public class LinkingCache {
 		Hconsecutive.remove("K-"+bd+"-"+key);
 		Hconsecutive.put("K-"+bd+"-"+key,consecutive);
 		incrementeConsecutive(bd,key);
-        CloseSQL.close(st);
-        CloseSQL.close(rs);
+        StatementsClosingHandler.close(st);
+        StatementsClosingHandler.close(rs);
     }
     
     /**
@@ -700,13 +700,13 @@ public class LinkingCache {
             long nextValue = Long.parseLong(consecutive.trim())+1;
             String sNextValue = "0000000000"+nextValue;
             setConsecutive(bd,key,sNextValue.substring(sNextValue.length()-10));
-            Hashtable clientes = SocketServer.getHchannelclients();
+            Hashtable clientes = EmakuServerSocket.getHchannelclients();
             Enumeration sockets = clientes.keys();
             while (sockets.hasMoreElements()) {
                 SocketChannel sock = (SocketChannel)sockets.nextElement();
-                if (SocketServer.getBd(sock).equals(bd)) {
+                if (EmakuServerSocket.getBd(sock).equals(bd)) {
 		            SocketWriter.writing(sock,
-		                    SendUPDATECODE.getPackage(key,
+		                    UPDATECODESender.getPackage(key,
 		                                              LinkingCache.getConsecutive(bd,key)));
                 }
             }
@@ -714,7 +714,7 @@ public class LinkingCache {
         catch (NumberFormatException NFEe){
             LogAdmin.setMessage(Language.getWord("ERR_CONSECUTIVE") + " "
                     + bd + NFEe.getMessage(),
-                    ServerConst.ERROR);
+                    ServerConstants.ERROR);
         }
         
     }

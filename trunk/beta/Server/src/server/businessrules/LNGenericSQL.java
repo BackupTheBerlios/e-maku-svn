@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Vector;
 
 import common.misc.language.Language;
-import server.comunications.SocketServer;
-import server.database.sql.RunQuery;
+import server.comunications.EmakuServerSocket;
+import server.database.sql.QueryRunner;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
 
@@ -41,7 +41,7 @@ public class LNGenericSQL {
 
 	private Element pack;
 
-	private RunQuery RQtransaction;
+	private QueryRunner RQtransaction;
 
 	private String args[];
 
@@ -57,7 +57,7 @@ public class LNGenericSQL {
 
 	public LNGenericSQL(SocketChannel sock) {
 		keyvalue = new LinkedHashMap<String,String>();
-		RQtransaction = new RunQuery(SocketServer.getBd(sock));
+		RQtransaction = new QueryRunner(EmakuServerSocket.getBd(sock));
 	}
 
 	public LNGenericSQL(SocketChannel sock, Document doc, Element sn_pack,
@@ -71,7 +71,7 @@ public class LNGenericSQL {
 		 * Esta variable almacena el codigo sql de la instruccion que sera
 		 * ejecutada
 		 */
-		RQtransaction = new RunQuery(SocketServer.getBd(sock));
+		RQtransaction = new QueryRunner(EmakuServerSocket.getBd(sock));
 		compactarArgumentos();
 		setAutoCommit(false);
 		try {

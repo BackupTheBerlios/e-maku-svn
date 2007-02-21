@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.zip.GZIPOutputStream;
 
-import client.misc.ClientConst;
+import client.misc.ClientConstants;
 
 
 /**
@@ -67,7 +67,7 @@ public class LogAdmin {
      * @param prioridad
      */
     public static void setMessage(String mensaje, int prioridad) {
-        if (ValueLog.equals("Default") && (prioridad == ClientConst.ERROR)) {
+        if (ValueLog.equals("Default") && (prioridad == ClientConstants.ERROR)) {
             System.out.println(mensaje);
         } else if (ValueLog.equals("Verbose")) {
             System.out.println(mensaje);
@@ -75,7 +75,7 @@ public class LogAdmin {
             System.out.println(mensaje);
             EscribirArchivo(mensaje);
         } else if (ValueLog.equals("LogFile")) {
-            if (prioridad == ClientConst.ERROR)
+            if (prioridad == ClientConstants.ERROR)
                 System.out.println(mensaje);
             EscribirArchivo(mensaje);
         }
@@ -91,12 +91,12 @@ public class LogAdmin {
             long max = Flog.length();
             Date now = new Date();
             SimpleDateFormat format = null;
-            if (max >= ClientConst.MAX_SIZE_FILE_LOG) {
+            if (max >= ClientConstants.MAX_SIZE_FILE_LOG) {
                 byte[] Blog = new byte[(int) max];
                 
                 format = new SimpleDateFormat("yyyy-MM-dd");
                 
-                File Ffile = new File(ClientConst.TMP, "emaku-client-"+format.format(now)+".gz");
+                File Ffile = new File(ClientConstants.TMP, "emaku-client-"+format.format(now)+".gz");
                 FileOutputStream FOSfile = new FileOutputStream(Ffile);
                 GZIPOutputStream gzipfile = new GZIPOutputStream(FOSfile);
                 RAFlog.seek(0);
@@ -118,7 +118,7 @@ public class LogAdmin {
     
     private static void newFile() {
         try {
-            Flog = new File(ClientConst.TMP, "emaku-client.log");
+            Flog = new File(ClientConstants.TMP, "emaku-client.log");
             RAFlog = new RandomAccessFile(Flog, "rw");
             RAFlog.seek(RAFlog.length());
         } catch (FileNotFoundException FNFEe) {

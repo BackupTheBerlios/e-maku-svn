@@ -19,10 +19,10 @@ import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
-import server.comunications.SocketServer;
+import server.comunications.EmakuServerSocket;
 import server.database.sql.LinkingCache;
 import server.database.sql.DontHaveKeyException;
-import server.database.sql.RunQuery;
+import server.database.sql.QueryRunner;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
 
@@ -116,7 +116,7 @@ public class LNDocuments {
         /*
          * Se procede a validar la informacion de la parametrizacion
          */
-        bd = SocketServer.getBd(sock);
+        bd = EmakuServerSocket.getBd(sock);
         Iterator i = doc.getRootElement().getChildren().iterator();
         Iterator j = pack.getChildren().iterator();
         LNGtransaccion = new LNGenericSQL(sock);
@@ -180,10 +180,10 @@ public class LNDocuments {
 		    	                Element infoDocumentPack = new Element("package");
 		                        infoDocumentPack.addContent(new Element("field").setText(getDocumentKey(linkDocument,consecutiveLinkDocument)));
 		                        infoDocumentPack.addContent(new Element("field").setText(keyDocument));
-		                        infoDocumentPack.addContent(new Element("field").setText(SocketServer.getLoging(sock)));
+		                        infoDocumentPack.addContent(new Element("field").setText(EmakuServerSocket.getLoging(sock)));
 		                        
 		                        if (cash) {
-			                        infoDocumentPack.addContent(new Element("field").setText(SocketServer.getLoging(sock)));
+			                        infoDocumentPack.addContent(new Element("field").setText(EmakuServerSocket.getLoging(sock)));
 		                            getTransaction(LNGtransaccion,"SCI0016",infoDocumentPack);
 		                        }
 		                        else {
@@ -211,14 +211,14 @@ public class LNDocuments {
 	    	                 */
 	    	                
 	    	                Element infoDocumentPack = new Element("package");
-	                        infoDocumentPack.addContent(new Element("field").setText(SocketServer.getLoging(sock)));
+	                        infoDocumentPack.addContent(new Element("field").setText(EmakuServerSocket.getLoging(sock)));
 	                        
 	                        /*
 	                         * Se verifica si para el almacenamiento de la transaccion se adicionara el campo caja 
 	                         */
 	                        
 	                        if (cash) {
-		                        infoDocumentPack.addContent(new Element("field").setText(SocketServer.getLoging(sock)));
+		                        infoDocumentPack.addContent(new Element("field").setText(EmakuServerSocket.getLoging(sock)));
 	                            getTransaction(LNGtransaccion,"SCI00O3",infoDocumentPack);
 	                        }
 	                        else {
@@ -272,7 +272,7 @@ public class LNDocuments {
         	             */
         	            
         	            if ((rfDocument != null) && !rfDocument.equals("")) {
-        	            	RunQuery RQrfkey = new RunQuery(bd,"SCS0053",new String[]{primaryKey});
+        	            	QueryRunner RQrfkey = new QueryRunner(bd,"SCS0053",new String[]{primaryKey});
             	            ResultSet RSrfkey = RQrfkey.ejecutarSELECT();
         	            	String rfKey = "";
             	            while (RSrfkey.next()) {
@@ -570,7 +570,7 @@ public class LNDocuments {
     private static boolean isAnnullDocument(String keyDocument) 
     throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
         boolean annul = true;
-        RunQuery RQkey = new RunQuery(bd,"SCS0045",new String[]{keyDocument});
+        QueryRunner RQkey = new QueryRunner(bd,"SCS0045",new String[]{keyDocument});
         ResultSet RSdatos = RQkey.ejecutarSELECT();
         while (RSdatos.next()) {
             annul=RSdatos.getBoolean(1);
@@ -582,7 +582,7 @@ public class LNDocuments {
     
     private static String getPrimaryKey(String numero) throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
         String primaryKey=null;
-        RunQuery RQkey = new RunQuery(bd,"SCS0024",new String[]{idDocument,numero});
+        QueryRunner RQkey = new QueryRunner(bd,"SCS0024",new String[]{idDocument,numero});
         ResultSet RSdatos = RQkey.ejecutarSELECT();
         while (RSdatos.next()) {
             primaryKey=RSdatos.getString(1);
@@ -668,7 +668,7 @@ public class LNDocuments {
          */
         
         if ("LNInventarios".equals(driver)) {
-            LNInventarios LNIprocesar = new LNInventarios(parameters,SocketServer.getBd(sock));
+            LNInventarios LNIprocesar = new LNInventarios(parameters,EmakuServerSocket.getBd(sock));
             if (method.equals("movimientos")) {
             	LNIprocesar.movimientos(pack);
             }
@@ -680,7 +680,7 @@ public class LNDocuments {
             }
         }
         else if ("LNContabilidad".equals(driver)) {
-        	LNContabilidad LNCprocesar = new LNContabilidad(parameters,SocketServer.getBd(sock)); 
+        	LNContabilidad LNCprocesar = new LNContabilidad(parameters,EmakuServerSocket.getBd(sock)); 
             if ("columnData".equals(method)) {
             	partidaDoble += LNCprocesar.columnData(pack);
             	
@@ -708,7 +708,7 @@ public class LNDocuments {
 		    catch(NumberFormatException NFEe) {}
         }
         else if("LNSelectedField".equals(driver)) {
-        	LNSelectedField LNSprocesar = new LNSelectedField(parameters,SocketServer.getBd(sock));
+        	LNSelectedField LNSprocesar = new LNSelectedField(parameters,EmakuServerSocket.getBd(sock));
         	//if ("getSubpackage".equals(method)) {
         		LNSprocesar.getFields(pack);
         		
@@ -733,7 +733,7 @@ public class LNDocuments {
         if (method!=null) {
             type_args_constructor = new Class[] { Element.class,String.class };
             
-            args_constructor = new Object[] { parameters,SocketServer.getBd(sock)};
+            args_constructor = new Object[] { parameters,EmakuServerSocket.getBd(sock)};
         } 
         
         cons = cls.getConstructor(type_args_constructor);
@@ -762,7 +762,7 @@ public class LNDocuments {
     private static String getDocumentKey(String idDocument,String consecutive) 
     throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
         String primaryKey=null;
-        RunQuery RQkey = new RunQuery(bd,"SCS0024",new String[]{idDocument,consecutive});
+        QueryRunner RQkey = new QueryRunner(bd,"SCS0024",new String[]{idDocument,consecutive});
         ResultSet RSdatos = RQkey.ejecutarSELECT();
         while (RSdatos.next()) {
             primaryKey=RSdatos.getString(1);
@@ -845,7 +845,7 @@ public class LNDocuments {
             // consecutive
             
             else if (subpackage.getAttributeValue("attribute").equals("consecutive")) {
-                String bd = SocketServer.getBd(sock);
+                String bd = EmakuServerSocket.getBd(sock);
                 LNDocuments.consecutive = LinkingCache.getConsecutive(bd,idDocument);
             }
             

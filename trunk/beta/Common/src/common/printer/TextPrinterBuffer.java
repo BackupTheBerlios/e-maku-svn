@@ -3,7 +3,7 @@ import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import common.misc.CommonConst;
+import common.misc.CommonConstants;
 
 /**
  * Esta clase se encarga de crear un buffer de texto para acceso aleatorio, el 
@@ -139,8 +139,8 @@ public class TextPrinterBuffer {
 	 */
 	public String Convert(String key) {
 		try {
-			int Int = 	CommonConst.ScpCodes.containsKey(key)?
-						CommonConst.ScpCodes.get(key):
+			int Int = 	CommonConstants.ScpCodes.containsKey(key)?
+						CommonConstants.ScpCodes.get(key):
 						Integer.parseInt(key);
 			return String.valueOf((char)Int);
 		} catch (NumberFormatException NFEe) {

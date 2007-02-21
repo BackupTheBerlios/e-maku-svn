@@ -47,7 +47,7 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 
 	private JPanel JPNorth;
 	private XMLTextField XMLTFkey;
-	private SQLComboBox SQLCBselection;
+	private ComboBoxFiller SQLCBselection;
 	private JPopupMenu JPMpopup;
 	private GenericForm GFforma;
 	private boolean dataSelected;
@@ -79,7 +79,7 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 			args[i]=keyValue;
 		}
 		
-		SQLCBselection = new SQLComboBox(GFforma,sql,args,blankArgs,dataBeep,selected,dataMessage);
+		SQLCBselection = new ComboBoxFiller(GFforma,sql,args,blankArgs,dataBeep,selected,dataMessage);
 		SQLCBselection.addPopupMenuListener(this);
 		SQLCBselection.addKeyListener(this);
 		SQLCBselection.addFocusListener(this);

@@ -18,11 +18,11 @@ import javax.swing.JPanel;
 import client.Run;
 import client.gui.forms.Splash;
 import client.gui.xmlmenu.MenuLoader;
-import client.gui.xmltoolbar.JButtonXML;
-import client.gui.xmltoolbar.ToolbarLoader;
-import client.misc.ClientConst;
+import client.gui.xmltoolbar.EmakuButtonGroup;
+import client.gui.xmltoolbar.ToolBarLoader;
+import client.misc.ClientConstants;
 
-import common.misc.CommonConst;
+import common.misc.CommonConstants;
 import common.misc.language.Language;
 
 /**
@@ -66,8 +66,8 @@ public class MainWindow extends JFrame {
     	
         setTitle(title);
 
-        this.setBounds(0, 0, ClientConst.MAX_WIN_SIZE_WIDTH,
-                ClientConst.MAX_WIN_SIZE_HEIGHT);
+        this.setBounds(0, 0, ClientConstants.MAX_WIN_SIZE_WIDTH,
+                ClientConstants.MAX_WIN_SIZE_HEIGHT);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         
         /**
@@ -82,14 +82,14 @@ public class MainWindow extends JFrame {
          */
         URL url= null;
         MenuLoader menu=null;
-        ToolbarLoader toolbar1=null;
+        ToolBarLoader toolbar1=null;
         try {
 			url = new URL(jarDirectory+"/menu.xml");
 	        menu = new MenuLoader(url);
 	        menu.Loading();
 	        menu.setDisabledAll();
 	        url = new URL(jarDirectory+"/toolbar.xml");
-	        toolbar1 = new ToolbarLoader(url);
+	        toolbar1 = new ToolBarLoader(url);
 	        Vtoolbar1 = toolbar1.Loading();
 	        setDisabledAll();
 		} catch (MalformedURLException e1) {
@@ -139,7 +139,7 @@ public class MainWindow extends JFrame {
         /**
          * Inicializando servicio de impresion
          */
-        CommonConst.lookupDefaultPrintService();
+        CommonConstants.lookupDefaultPrintService();
         
 	    /**
 	     * Ventana Visible
@@ -157,7 +157,7 @@ public class MainWindow extends JFrame {
 
     public void setDisabledAll() {
         for (int i = 0; i < Vtoolbar1.size(); i++) {
-        	JButtonXML button = (JButtonXML) Vtoolbar1.elementAt(i); 
+        	EmakuButtonGroup button = (EmakuButtonGroup) Vtoolbar1.elementAt(i); 
             if (!button.getActivo()) {
                 button.setEnabled(false);
             }

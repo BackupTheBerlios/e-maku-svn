@@ -45,9 +45,9 @@ import common.gui.components.VoidPackageException;
 import common.gui.components.XMLTabbedPane;
 import common.misc.Icons;
 import common.misc.language.Language;
-import common.misc.parameters.GenericParameters;
-import common.transactions.STException;
-import common.transactions.STResultSet;
+import common.misc.parameters.EmakuParametersStructure;
+import common.transactions.TransactionServerException;
+import common.transactions.TransactionServerResultSet;
 
 /**
  * GenericForm.java Creado el 22-sep-2004
@@ -96,7 +96,7 @@ public class GenericForm extends JInternalFrame{
      * por referencia y almacenado en esta variable
      */
     private String password = null;
-    private Vector <InitiateFinishListener>initiateFinishListener = new Vector<InitiateFinishListener>();
+    private Vector <InstanceFinishingListener>initiateFinishListener = new Vector<InstanceFinishingListener>();
 
     /*
      * variables encargadas de solicitar un paquete sea de fecha o un 
@@ -130,7 +130,7 @@ public class GenericForm extends JInternalFrame{
      */
     
     //private ChangeExternalValueEvent CEVevent;
-    private Vector <ChangeExternalValueListener>changeExternalValueListener = new Vector<ChangeExternalValueListener>();
+    private Vector <ExternalValueChangeListener>changeExternalValueListener = new Vector<ExternalValueChangeListener>();
     private Hashtable <Integer,String>exportFields;
 	private boolean visible = true;
 	private Interpreter shellScript; 
@@ -153,7 +153,7 @@ public class GenericForm extends JInternalFrame{
         form.setRootElement(e);
         generar(form);
         
-        FinishEvent event = new FinishEvent(this);
+        EndEventGenerator event = new EndEventGenerator(this);
         notificando(event);
     }
     
@@ -177,7 +177,7 @@ public class GenericForm extends JInternalFrame{
         this.password = password;
         this.externalValues = new HashMap<Object,Object>();
         generar(doc);
-        FinishEvent event = new FinishEvent(this);
+        EndEventGenerator event = new EndEventGenerator(this);
         notificando(event);
     }
 
@@ -200,7 +200,7 @@ public class GenericForm extends JInternalFrame{
         this.externalValues = new HashMap<Object,Object>();
         new InitShell();
         generar(doc);
-        FinishEvent event = new FinishEvent(this);
+        EndEventGenerator event = new EndEventGenerator(this);
         notificando(event);
     }
 
@@ -537,7 +537,7 @@ public class GenericForm extends JInternalFrame{
                 }
                 
                 if ("USER".equals(e.getAttributeValue("arg"))) {
-                    arg = GenericParameters.getParameter("userLogin");
+                    arg = EmakuParametersStructure.getParameter("userLogin");
                 }
                 else {
                     arg = e.getAttributeValue("arg");
@@ -549,10 +549,10 @@ public class GenericForm extends JInternalFrame{
                     try {
 	    	            Document doc = null;
 	    	            if (arg == null) {
-	        	            doc = STResultSet.getResultSetST(e.getValue());
+	        	            doc = TransactionServerResultSet.getResultSetST(e.getValue());
 	    	            }
 	    	            else {
-	        	            doc = STResultSet.getResultSetST(e.getValue(),new String[]{arg.trim()});
+	        	            doc = TransactionServerResultSet.getResultSetST(e.getValue(),new String[]{arg.trim()});
 	        	        }
 	    	            
 	    	            
@@ -572,20 +572,20 @@ public class GenericForm extends JInternalFrame{
 				                        valueQuery=g.getValue();
 				                    }
 					            }
-					            return GenericParameters.equals(keyLocal,valueQuery);
+					            return EmakuParametersStructure.equals(keyLocal,valueQuery);
 		    	            }
 		    	            else {
 		    	                return false;
 		    	            }
 	    	            }
                     }
-                    catch(STException STEe) {
+                    catch(TransactionServerException STEe) {
                         STEe.printStackTrace();
                         return false;
                     }
                 }
                 else {
-                    return GenericParameters.equals(keyLocal,e.getValue());
+                    return EmakuParametersStructure.equals(keyLocal,e.getValue());
                 }
             }
         }
@@ -1123,19 +1123,19 @@ public class GenericForm extends JInternalFrame{
         return password;
     }
     
-    public synchronized void addInitiateFinishListener(InitiateFinishListener listener ) {
+    public synchronized void addInitiateFinishListener(InstanceFinishingListener listener ) {
    		initiateFinishListener.addElement(listener);
     }
 
-    public synchronized void removeInitiateFinishListener(InitiateFinishListener listener ) {
+    public synchronized void removeInitiateFinishListener(InstanceFinishingListener listener ) {
    		initiateFinishListener.removeElement(listener);
     }
 
-    private synchronized void notificando(FinishEvent event) {
+    private synchronized void notificando(EndEventGenerator event) {
         Vector lista;
         lista = (Vector)initiateFinishListener.clone();
         for (int i=0; i<lista.size();i++) {
-            InitiateFinishListener listener = (InitiateFinishListener)lista.elementAt(i);
+            InstanceFinishingListener listener = (InstanceFinishingListener)lista.elementAt(i);
             listener.initiateFinishEvent(event);
         }
         
@@ -1153,7 +1153,7 @@ public class GenericForm extends JInternalFrame{
         }
     }
 
-    public synchronized void addChangeExternalValueListener(ChangeExternalValueListener listener ) {
+    public synchronized void addChangeExternalValueListener(ExternalValueChangeListener listener ) {
     	if (child) {
     		GFforma.addChangeExternalValueListener(listener);
         }
@@ -1163,7 +1163,7 @@ public class GenericForm extends JInternalFrame{
         
     }
 
-    public synchronized void removeChangeExternalValueListener(ChangeExternalValueListener listener ) {
+    public synchronized void removeChangeExternalValueListener(ExternalValueChangeListener listener ) {
     	if (child) {
     		GFforma.removeChangeExternalValueListener(listener);
         }
@@ -1172,11 +1172,11 @@ public class GenericForm extends JInternalFrame{
         }
     }
 
-    private void notificandoExternalValue(ChangeExternalValueEvent event) {
+    private void notificandoExternalValue(ExternalValueChangeEvent event) {
     		class notificacionExterna extends Thread {
-    			private ChangeExternalValueEvent event;
+    			private ExternalValueChangeEvent event;
     			
-    			public notificacionExterna(ChangeExternalValueEvent event) {
+    			public notificacionExterna(ExternalValueChangeEvent event) {
     				this.event=event;
     			}
     			
@@ -1184,7 +1184,7 @@ public class GenericForm extends JInternalFrame{
     				Vector lista;
     				lista = (Vector)changeExternalValueListener.clone();
 			        for (int i=0; i<lista.size();i++) {
-			            ChangeExternalValueListener listener = (ChangeExternalValueListener)lista.elementAt(i);
+			            ExternalValueChangeListener listener = (ExternalValueChangeListener)lista.elementAt(i);
 			            listener.changeExternalValue(event);
 			        }
     			}
@@ -1268,7 +1268,7 @@ public class GenericForm extends JInternalFrame{
         		externalValues.remove(key);
         	}
         	externalValues.put(key,new Double(value));
-        	ChangeExternalValueEvent CEVevent = new ChangeExternalValueEvent(this);
+        	ExternalValueChangeEvent CEVevent = new ExternalValueChangeEvent(this);
         	CEVevent.setExternalValue(String.valueOf(key));
             notificandoExternalValue(CEVevent);
         }
@@ -1283,7 +1283,7 @@ public class GenericForm extends JInternalFrame{
         		externalValues.remove(key);
         	}
         	externalValues.put(key,value);
-        	ChangeExternalValueEvent CEVevent = new ChangeExternalValueEvent(this);
+        	ExternalValueChangeEvent CEVevent = new ExternalValueChangeEvent(this);
         	CEVevent.setExternalValue(String.valueOf(key));
         	notificandoExternalValue(CEVevent);
         }

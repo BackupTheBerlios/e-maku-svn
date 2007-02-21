@@ -16,12 +16,12 @@ import common.gui.components.AnswerEvent;
 import common.gui.components.AnswerListener;
 import common.gui.components.ChangeValueEvent;
 import common.gui.components.ChangeValueListener;
-import common.gui.components.GenericDataFiller;
+import common.gui.components.EmakuUIFieldFiller;
 import common.gui.components.VoidPackageException;
 import common.gui.components.XMLTextField;
 import common.gui.forms.GenericForm;
-import common.transactions.STException;
-import common.transactions.STResultSet;
+import common.transactions.TransactionServerException;
+import common.transactions.TransactionServerResultSet;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -177,7 +177,7 @@ public class AdminProdServ extends JPanel implements FocusListener {
      * Este metodo se encarga de consultar un producto
      */
     private void searchQuery() {
-        GenericDataFiller QDsearch = new GenericDataFiller( 
+        EmakuUIFieldFiller QDsearch = new EmakuUIFieldFiller( 
                 						   GFforma,
                 						   namebutton, 
                 						   enablebutton, 
@@ -197,7 +197,7 @@ public class AdminProdServ extends JPanel implements FocusListener {
         			      XMLCBgrupoImp).start();
 
         if (QDsearch.searchQuery()) {
-            new QueryCheckBox(GFforma, 
+            new CheckBoxRenderer(GFforma, 
 		      		  sqlCode.get(2),
 		      		  XMLTFcodigo.getText(), 
 		      		  XMLCBestado).start();
@@ -227,9 +227,9 @@ public class AdminProdServ extends JPanel implements FocusListener {
             Document doc = null;
             sql = sqlCode.get(i);
             try {
-                doc = STResultSet.getResultSetST(sql,new String[]{XMLTFcodigo.getText()});
+                doc = TransactionServerResultSet.getResultSetST(sql,new String[]{XMLTFcodigo.getText()});
             }
-            catch (STException e) {
+            catch (TransactionServerException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }

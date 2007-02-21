@@ -41,7 +41,7 @@ import common.misc.language.Language;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David
  *         Cepeda </A>
  */
-public class XMLComboBox extends SQLComboBox {
+public class XMLComboBox extends ComboBoxFiller {
 
 	private static final long serialVersionUID = -6189985727776478913L;
 

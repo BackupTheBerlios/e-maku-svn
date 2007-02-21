@@ -15,13 +15,13 @@ import javax.swing.JPanel;
 
 import common.gui.components.AnswerEvent;
 import common.gui.components.AnswerListener;
-import common.gui.components.GenericDataFiller;
+import common.gui.components.EmakuUIFieldFiller;
 import common.gui.components.VoidPackageException;
 import common.gui.components.XMLTextField;
 import common.gui.forms.GenericForm;
 import common.misc.language.Language;
-import common.transactions.STException;
-import common.transactions.STResultSet;
+import common.transactions.TransactionServerException;
+import common.transactions.TransactionServerResultSet;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -163,7 +163,7 @@ public class Third extends JPanel {
                 class SearchQuery extends Thread {
                     public void run() {
                         try {
-                            GenericDataFiller QDsearch = new GenericDataFiller(
+                            EmakuUIFieldFiller QDsearch = new EmakuUIFieldFiller(
                                     GFforma,
                                     namebutton, enablebutton, "SCS0016",
                                     new String[] { returnValue }, XMLTFnitcc
@@ -174,14 +174,14 @@ public class Third extends JPanel {
 
                             	 // Consultado Estados
 
-                                Document Destados = STResultSet.getResultSetST(
+                                Document Destados = TransactionServerResultSet.getResultSetST(
                                         "SCS0020",
                                         new String[] { XMLTFnitcc.getText() });
 
                                 updateCheckBox(Destados);
 
                                 // Consultado Establecimiento
-                                new GenericDataFiller(
+                                new EmakuUIFieldFiller(
                                         GFforma,
                                         "SCS0017",
                                         XMLTFnitcc.getText(),
@@ -207,7 +207,7 @@ public class Third extends JPanel {
                             }
 
                         }
-                        catch (STException e1) {
+                        catch (TransactionServerException e1) {
                             e1.printStackTrace();
                         }
                     }
@@ -403,9 +403,9 @@ public class Third extends JPanel {
 		            Document doc = null;
                     sql = sqlCode.get(i);
                     try {
-                        doc = STResultSet.getResultSetST(sql,args);
+                        doc = TransactionServerResultSet.getResultSetST(sql,args);
                     }
-                    catch (STException e) {
+                    catch (TransactionServerException e) {
                         e.printStackTrace();
                     }
                     AnswerEvent event = new AnswerEvent(this,sql,doc);

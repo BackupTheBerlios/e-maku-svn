@@ -16,13 +16,13 @@ import javax.swing.JPanel;
 
 import common.gui.components.AnswerEvent;
 import common.gui.components.AnswerListener;
-import common.gui.components.GenericDataFiller;
+import common.gui.components.EmakuUIFieldFiller;
 import common.gui.components.VoidPackageException;
 import common.gui.components.XMLTextField;
 import common.gui.forms.GenericForm;
 import common.misc.language.Language;
-import common.transactions.STException;
-import common.transactions.STResultSet;
+import common.transactions.TransactionServerException;
+import common.transactions.TransactionServerResultSet;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -196,7 +196,7 @@ public class Employees extends JPanel {
                 class SearchQuery extends Thread {
                     public void run() {
                         //try {
-                            GenericDataFiller QDsearch = new GenericDataFiller(
+                            EmakuUIFieldFiller QDsearch = new EmakuUIFieldFiller(
                                     GFforma,
                                     namebutton, enablebutton, "SCS0016",
                                     new String[] { returnValue }, XMLTFnitcc
@@ -208,7 +208,7 @@ public class Employees extends JPanel {
 
                                 // Consultado info_empleado
                                 
-                                new GenericDataFiller(
+                                new EmakuUIFieldFiller(
                                         GFforma,
                                         "SCS0035",
                                         XMLTFnitcc.getText(),
@@ -275,7 +275,7 @@ public class Employees extends JPanel {
         class Sexo extends Thread {
             public void run(){
                 try {
-                    Document doc = STResultSet.getResultSetST("SCS0036",new String[]{XMLTFnitcc.getText()});
+                    Document doc = TransactionServerResultSet.getResultSetST("SCS0036",new String[]{XMLTFnitcc.getText()});
                     Iterator i = doc.getRootElement().getChildren("row").iterator();
                     int row = doc.getRootElement().getChildren("row").size();
                         
@@ -304,7 +304,7 @@ public class Employees extends JPanel {
                         JCBsexo.setSelectedIndex(0);
                     }
                 }
-                catch (STException e) {
+                catch (TransactionServerException e) {
                     e.printStackTrace();
                 }
             }
@@ -519,9 +519,9 @@ public class Employees extends JPanel {
 		            Document doc = null;
                     sql = sqlCode.get(i);
                     try {
-                        doc = STResultSet.getResultSetST(sql,args);
+                        doc = TransactionServerResultSet.getResultSetST(sql,args);
                     }
-                    catch (STException e) {
+                    catch (TransactionServerException e) {
                         e.printStackTrace();
                     }
                     AnswerEvent event = new AnswerEvent(this,sql,doc);

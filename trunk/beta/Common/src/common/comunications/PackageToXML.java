@@ -39,7 +39,7 @@ public class PackageToXML {
     private static Document doc;
     private ByteBuffer buf;
     private SAXBuilder builder;
-    private Vector <ArrivePackageListener>arrivePackageListener = new Vector<ArrivePackageListener>();
+    private Vector <ArrivedPackageListener>arrivePackageListener = new Vector<ArrivedPackageListener>();
     
     public PackageToXML() {
         //this.setPriority(Thread.MIN_PRIORITY);
@@ -98,14 +98,14 @@ public class PackageToXML {
                         bufferIn = new ByteArrayInputStream(docStream.toByteArray());
  //                       sbuff = new String(docStream.toByteArray());
                         doc = builder.build(bufferIn);
-        	            ArrivePackageEvent event = new ArrivePackageEvent(this,doc);
+        	            ArrivedPackageEvent event = new ArrivedPackageEvent(this,doc);
         	            notifyArrivePackage(event);
 
                     }
                     catch (NullPointerException NPEe) {
                     	try {
 	                    	Document doc = builder.build(bufferIn);
-	        	            ArrivePackageEvent event = new ArrivePackageEvent(this,doc);
+	        	            ArrivedPackageEvent event = new ArrivedPackageEvent(this,doc);
 	        	            notifyArrivePackage(event);
                     	}
                     	catch (JDOMException e1) {
@@ -137,19 +137,19 @@ public class PackageToXML {
         }
     }
 
-    public synchronized void addArrivePackageistener(ArrivePackageListener listener ) {
+    public synchronized void addArrivePackageistener(ArrivedPackageListener listener ) {
         arrivePackageListener.addElement(listener);
     }
 
-    public synchronized void removeSuccessListener(ArrivePackageListener listener ) {
+    public synchronized void removeSuccessListener(ArrivedPackageListener listener ) {
         arrivePackageListener.removeElement(listener);
     }
 
-    private synchronized void notifyArrivePackage(ArrivePackageEvent event) {
+    private synchronized void notifyArrivePackage(ArrivedPackageEvent event) {
         Vector lista;
         lista = (Vector)arrivePackageListener.clone();
         for (int i=0; i<lista.size();i++) {
-            ArrivePackageListener listener = (ArrivePackageListener)lista.elementAt(i);
+            ArrivedPackageListener listener = (ArrivedPackageListener)lista.elementAt(i);
             listener.validPackage(event);
         }
     }

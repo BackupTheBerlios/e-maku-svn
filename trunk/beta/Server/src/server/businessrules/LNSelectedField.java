@@ -11,8 +11,8 @@ import java.util.StringTokenizer;
 import org.jdom.Document;
 import org.jdom.Element;
 
-import server.comunications.SocketServer;
-import server.database.sql.RunQuery;
+import server.comunications.EmakuServerSocket;
+import server.database.sql.QueryRunner;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
 
@@ -54,12 +54,12 @@ public class LNSelectedField {
 	private String fields;
 	private String conditional;
 	private int[] cols;
-	private RunQuery RQfields;
+	private QueryRunner RQfields;
 
 
     public LNSelectedField(SocketChannel sock,Document doc,Element pack, String idTransaction) {
     	try {
-            analizar(doc.getRootElement(),pack,SocketServer.getBd(sock),false);
+            analizar(doc.getRootElement(),pack,EmakuServerSocket.getBd(sock),false);
 	    	RQfields.commit();
 	        RunTransaction.successMessage(sock,
 		          	  idTransaction,
@@ -163,7 +163,7 @@ public class LNSelectedField {
 			}
 		}
 
-		RQfields = new RunQuery(bd, sql);
+		RQfields = new QueryRunner(bd, sql);
 
 		/*
 		 * Se obtiene las columnas validas del objeto fields;

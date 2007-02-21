@@ -11,12 +11,12 @@ import common.comunications.SocketWriter;
 import common.misc.language.Language;
 import common.misc.log.LogAdmin;
 import server.comunications.ErrorXML;
-import server.comunications.SocketServer;
+import server.comunications.EmakuServerSocket;
 import server.comunications.SuccessXML;
 import server.database.sql.LinkingCache;
-import server.database.sql.ClassLogicDriver;
-import server.database.sql.InstruccionesSQL;
-import server.misc.ServerConst;
+import server.database.sql.BusinessRulesStructure;
+import server.database.sql.SQLFormatAgent;
+import server.misc.ServerConstants;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -84,11 +84,11 @@ public class RunTransaction {
          * permisos para efectuar la transaccion
          */
         
-        String bd = SocketServer.getBd(sock);
-        String login = SocketServer.getLoging(sock);
+        String bd = EmakuServerSocket.getBd(sock);
+        String login = EmakuServerSocket.getLoging(sock);
         
         
-        if (InstruccionesSQL.permisoTransaccion(bd,login,transaction_code,password)){
+        if (SQLFormatAgent.permisoTransaccion(bd,login,transaction_code,password)){
         		System.out.println("bd: "+bd+" transaction_code: "+transaction_code+" Driver: "+LinkingCache.getDriver(bd,transaction_code));
 	        callDriver(LinkingCache.getDriver(bd,transaction_code),
 	                   id_transaction);
@@ -99,7 +99,7 @@ public class RunTransaction {
 	                  	 Language.getWord("TRANSACTION_ACCESS_DENIED"));
     }
 
-    private void callDriver(ClassLogicDriver CLDdriver,
+    private void callDriver(BusinessRulesStructure CLDdriver,
             			    String id_transaction) {
         try {
             if (CLDdriver.getDriver() != null) {
@@ -197,10 +197,10 @@ public class RunTransaction {
             					     String id_transaction,
             					     String message) {
         ErrorXML error = new ErrorXML();
-        LogAdmin.setMessage(message, ServerConst.ERROR);
+        LogAdmin.setMessage(message, ServerConstants.ERROR);
         SocketWriter.writing(sock, 
-                		    error.returnError(ServerConst.ERROR,
-                		            	      SocketServer.getBd(sock),
+                		    error.returnError(ServerConstants.ERROR,
+                		            	      EmakuServerSocket.getBd(sock),
                 		            	      id_transaction,
                 		            	      message));
 
@@ -210,7 +210,7 @@ public class RunTransaction {
 									  String id_transaction,
 									  String message) {
 		SuccessXML success = new SuccessXML();
-		LogAdmin.setMessage(message, ServerConst.MESSAGE);
+		LogAdmin.setMessage(message, ServerConstants.MESSAGE);
 		SocketWriter.writing(sock, 
 			    		    success.returnSuccess(id_transaction,message));
     }
@@ -221,7 +221,7 @@ public class RunTransaction {
     							String message,
     							Element element) {
 		SuccessXML success = new SuccessXML();
-		LogAdmin.setMessage(message,ServerConst.MESSAGE);
+		LogAdmin.setMessage(message,ServerConstants.MESSAGE);
 		SocketWriter.writing(sock,success.returnSuccess(id_transaction,message,element));
     }
 

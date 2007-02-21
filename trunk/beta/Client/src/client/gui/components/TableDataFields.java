@@ -7,9 +7,9 @@ import java.util.Vector;
 
 import common.gui.components.GenericData;
 import common.gui.components.XMLTextField;
-import common.gui.forms.FinishEvent;
+import common.gui.forms.EndEventGenerator;
 import common.gui.forms.GenericForm;
-import common.gui.forms.InitiateFinishListener;
+import common.gui.forms.InstanceFinishingListener;
 import common.gui.forms.NotFoundComponentException;
 import common.misc.formulas.FormulaCalculator;
 
@@ -37,13 +37,13 @@ import org.jdom.Document;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
 
-public class TableDataFields extends GenericData implements InitiateFinishListener,TableTotalListener {
+public class TableDataFields extends GenericData implements InstanceFinishingListener,TableTotalListener {
 
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 5109883440180571978L;
-	private TMFindData TMFDtabla;
+	private EmakuTableModel TMFDtabla;
     private GenericForm GFforma;
 
 
@@ -114,7 +114,7 @@ public class TableDataFields extends GenericData implements InitiateFinishListen
      * todos sus componentes ya son diferentes de null
      */
     
-    public void initiateFinishEvent(FinishEvent e) {
+    public void initiateFinishEvent(EndEventGenerator e) {
     	class addTotalClass extends Thread {
 	    
     		public void run() {
@@ -127,7 +127,7 @@ public class TableDataFields extends GenericData implements InitiateFinishListen
     
     private void addTotalEvent() {
 		try {
-          	TMFDtabla = (TMFindData) GFforma.invokeMethod("client.gui.components.TableFindData"+getEnlaceTabla(),
+          	TMFDtabla = (EmakuTableModel) GFforma.invokeMethod("client.gui.components.TableFindData"+getEnlaceTabla(),
 	        "getTMFDtabla");
 	        TMFDtabla.addTotalEventListener(this);
         	callAddAnswerListener();

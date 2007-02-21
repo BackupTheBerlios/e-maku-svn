@@ -34,7 +34,7 @@ import org.jdom.Element;
 
 import server.database.sql.LinkingCache;
 import server.database.sql.DontHaveKeyException;
-import server.database.sql.RunQuery;
+import server.database.sql.QueryRunner;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
 
@@ -544,7 +544,7 @@ public class LNContabilidad {
 											new Double(nsaldo));
 			}
 		
-			new RunQuery(bd, "SCI0014", asiento).ejecutarSQL();
+			new QueryRunner(bd, "SCI0014", asiento).ejecutarSQL();
 		}
 
 		return partidaDoble;
@@ -990,16 +990,16 @@ public class LNContabilidad {
 		}
 		asiento[7] = String.valueOf(nsaldo);
 
-		RunQuery RQsalidas;
+		QueryRunner RQsalidas;
 
 		if (tipo == LIBRO_AUX_INV) {
 			LinkingCache.setSaldoLibroAux(bd, "", idCta, "", idTipo, new Double(
 					nsaldo));
-			RQsalidas = new RunQuery(bd, "SCI00O7", asiento);
+			RQsalidas = new QueryRunner(bd, "SCI00O7", asiento);
 		} else {
 			LinkingCache.setSaldoLibroAux(bd, "", idCta, idTipo, "", new Double(
 					nsaldo));
-			RQsalidas = new RunQuery(bd, "SCI00O6", asiento);
+			RQsalidas = new QueryRunner(bd, "SCI00O6", asiento);
 		}
 
 		/*
@@ -1083,7 +1083,7 @@ public class LNContabilidad {
 		 * System.out.println("Datos a almacenar"); for (int i=0;i<asiento.length;i++) {
 		 * System.out.println("Campo "+i+": "+asiento[i]); }
 		 */
-		RunQuery RQsalidas = new RunQuery(bd, "SCI00O5", asiento);
+		QueryRunner RQsalidas = new QueryRunner(bd, "SCI00O5", asiento);
 		RQsalidas.ejecutarSQL();
 
 	}
@@ -1101,7 +1101,7 @@ public class LNContabilidad {
 			SQLException {
 
 		String idDocumento = CacheKeys.getKey("ndocumento");
-		RunQuery RQdocumento = new RunQuery(bd, "SCS0052",
+		QueryRunner RQdocumento = new QueryRunner(bd, "SCS0052",
 				new String[] { idDocumento });
 		ResultSet RSdatos = RQdocumento.ejecutarSELECT();
 		/*
@@ -1109,7 +1109,7 @@ public class LNContabilidad {
 		 * id_tercero id_prod_serv debe haber
 		 */
 
-		RunQuery RQanular = new RunQuery(bd, "SCI0015");
+		QueryRunner RQanular = new QueryRunner(bd, "SCI0015");
 		double saldo = 0;
 
 		while (RSdatos.next()) {

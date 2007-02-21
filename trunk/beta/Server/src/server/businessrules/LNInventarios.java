@@ -9,7 +9,7 @@ import java.util.Vector;
 import org.jdom.Element;
 
 import server.database.sql.LinkingCache;
-import server.database.sql.RunQuery;
+import server.database.sql.QueryRunner;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
 
@@ -89,10 +89,10 @@ public class LNInventarios {
          * 
          * Si tiene un solo registro entonces
          */
-    	RunQuery RQmovimiento = null;
+    	QueryRunner RQmovimiento = null;
     	System.out.print("tipo Movimiento: "+tipoMovimiento);
     	if (ENTRADA.equals(tipoMovimiento)) {
-        	RQmovimiento = new RunQuery(bd,"SCI00O8");
+        	RQmovimiento = new QueryRunner(bd,"SCI00O8");
         	String record[] = movimientoInventario(pack);
         	/*
         	 * Se valida que no se genere un asiento de inventario con cantidad 0
@@ -109,7 +109,7 @@ public class LNInventarios {
         	}
     	}
     	else if (SALIDA.equals(tipoMovimiento)) {
-        	RQmovimiento = new RunQuery(bd,"SCI00O4");
+        	RQmovimiento = new QueryRunner(bd,"SCI00O4");
         	String record[] = movimientoInventario(pack);
         	if (!(record[4].equals("0") || record[4].equals("0.0"))) {
 /*        		System.out.print("Registros: ");
@@ -143,13 +143,13 @@ public class LNInventarios {
     private void ajustes(Element pack) 
     throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
     	String record[] = movimientoInventario(pack);
-    	RunQuery RQmovimiento = null;
+    	QueryRunner RQmovimiento = null;
     	System.out.println("tipo de movimiento "+tipoMovimiento);
     	if (SALIDA.equals(tipoMovimiento)) {
-        	RQmovimiento = new RunQuery(bd,"SCI00O4");
+        	RQmovimiento = new QueryRunner(bd,"SCI00O4");
         }
     	else if (ENTRADA.equals(tipoMovimiento)) {
-        	RQmovimiento = new RunQuery(bd,"SCI00O8");
+        	RQmovimiento = new QueryRunner(bd,"SCI00O8");
     	}
     	
     	if (!(record[4].equals("0") || record[4].equals("0.0"))) {
@@ -164,17 +164,17 @@ public class LNInventarios {
     
     public void traslados(Element pack) throws LNErrorProcecuteException, 
     SQLBadArgumentsException,SQLBadArgumentsException, SQLNotFoundException, SQLException {
-    	RunQuery RQentrada = null;
-    	RunQuery RQsalida = null;
+    	QueryRunner RQentrada = null;
+    	QueryRunner RQsalida = null;
         try {
         	tipoMovimiento=SALIDA;
         	String[] records = movimientoInventario(pack);
-        	RQsalida = new RunQuery(bd,"SCI00O4");
+        	RQsalida = new QueryRunner(bd,"SCI00O4");
         	RQsalida.ejecutarSQL(records);
         	CacheKeys.setKey("valorEntrada",records[6]);
         	tipoMovimiento=ENTRADA;
         	String[] ventradas = movimientoInventario(pack);
-        	RQentrada = new RunQuery(bd,"SCI00O8");
+        	RQentrada = new QueryRunner(bd,"SCI00O8");
         	RQentrada.ejecutarSQL(ventradas);
         	RQentrada.closeStatement();
         	RQsalida.closeStatement();
@@ -348,7 +348,7 @@ public class LNInventarios {
 	        	}
         	}
         }
-		RunQuery RQmovimiento = new RunQuery(bd,"SCI0013");
+		QueryRunner RQmovimiento = new QueryRunner(bd,"SCI0013");
 		
 		if (gastos.size()>0) {
 			for (int j=0;j<gastos.size();j++) {
@@ -461,7 +461,7 @@ public class LNInventarios {
     private void anular() 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
     	String idDocumento = CacheKeys.getKey("ndocumento");
-        RunQuery RQdocumento = new RunQuery(bd,"SCS0051",new String[]{idDocumento});
+        QueryRunner RQdocumento = new QueryRunner(bd,"SCS0051",new String[]{idDocumento});
         ResultSet RSdatos = RQdocumento.ejecutarSELECT();
         /*
          * La anterior consulta nos retorna las siguientes columnas
@@ -480,7 +480,7 @@ public class LNInventarios {
         while (RSdatos.next()) {
         	Vector<String> record = new Vector<String>();
         	String[] ponderado = null;
-        	RunQuery RQanular = null;
+        	QueryRunner RQanular = null;
         	
         	record.addElement(CacheKeys.getDate());
         	record.addElement(idDocumento);
@@ -529,7 +529,7 @@ public class LNInventarios {
         	 * es una entrada
         	 */
         	if (RSdatos.getDouble(4)!= 0) {
-            	RQanular = new RunQuery(bd,"SCI00O4");
+            	RQanular = new QueryRunner(bd,"SCI00O4");
 
             	record.addElement(RSdatos.getString(4));
             	record.addElement(RSdatos.getString(5));
@@ -549,7 +549,7 @@ public class LNInventarios {
         	 * anular es una salida 
         	 */
         	else if (RSdatos.getDouble(6)!=0) {
-            	RQanular = new RunQuery(bd,"SCI00O8");
+            	RQanular = new QueryRunner(bd,"SCI00O8");
             	record.addElement(RSdatos.getString(6));
             	record.addElement(RSdatos.getString(7));
             	ponderado = ponderar(RSdatos.getString(2),

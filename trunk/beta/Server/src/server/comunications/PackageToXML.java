@@ -12,9 +12,9 @@ import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
-import server.control.ValidHeaders;
-import server.misc.ServerConst;
-import server.misc.settings.ConfigFile;
+import server.control.HeadersValidator;
+import server.misc.ServerConstants;
+import server.misc.settings.ConfigFileHandler;
 
 import common.misc.language.Language;
 import common.misc.log.LogAdmin;
@@ -66,8 +66,8 @@ public class PackageToXML extends Thread {
             while (numRead > 0) {
  
                 ByteArrayOutputStream bufferOut = new ByteArrayOutputStream();
-                bufferOut.write((SocketServer.getBufferTmp(channel)).toByteArray());
-                SocketServer.setBufferTmp(channel,new ByteArrayOutputStream());
+                bufferOut.write((EmakuServerSocket.getBufferTmp(channel)).toByteArray());
+                EmakuServerSocket.setBufferTmp(channel,new ByteArrayOutputStream());
 
                 Vector <ByteArrayOutputStream>vbuffer = new Vector<ByteArrayOutputStream>();
                 vbuffer.addElement(bufferOut);
@@ -104,16 +104,16 @@ public class PackageToXML extends Thread {
                                     docStream.toByteArray());
                             doc = builder.build(bufferIn);
 
-                            if (channel.socket().getLocalPort() == ConfigFile
+                            if (channel.socket().getLocalPort() == ConfigFileHandler
                                     .getAdminSocket())
-                                ValidHeaders.ValidAdmin(doc, channel);
+                                HeadersValidator.ValidAdmin(doc, channel);
                             else
-                                ValidHeaders.ValidClient(doc, channel);
+                                HeadersValidator.ValidClient(doc, channel);
                         }
                     }
                     catch (JDOMException e1) {
                     	
-                        SocketServer.getBufferTmp(channel).write(docStream.toByteArray());
+                        EmakuServerSocket.getBufferTmp(channel).write(docStream.toByteArray());
                         //System.out.println("Paqute: ");
                         //System.out.println(docStream.toString());
                        /* File file = new File("/home/felipe/emaku.log");
@@ -121,7 +121,7 @@ public class PackageToXML extends Thread {
                         rfile.write(docStream.toByteArray());*/
                         String tmp = Language.getWord("ERR_FORMAT_PROTOCOL")
                         + " " + channel.socket();
-                        LogAdmin.setMessage(tmp+"\n"+docStream.toString(), ServerConst.ERROR);
+                        LogAdmin.setMessage(tmp+"\n"+docStream.toString(), ServerConstants.ERROR);
                         /*
                         ErrorXML error = new ErrorXML();
                         SocketWriter.writing(channel, error.returnError(

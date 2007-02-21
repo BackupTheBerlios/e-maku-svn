@@ -49,18 +49,18 @@ import org.jdom.Element;
 import com.toedter.calendar.JDateChooser;
 import common.gui.components.AnswerEvent;
 import common.gui.components.AnswerListener;
-import common.gui.components.ErrorDataException;
+import common.gui.components.DataErrorException;
 import common.gui.components.RecordEvent;
 import common.gui.components.RecordListener;
 import common.gui.components.VoidPackageException;
-import common.gui.forms.ChangeExternalValueEvent;
-import common.gui.forms.ChangeExternalValueListener;
-import common.gui.forms.FinishEvent;
+import common.gui.forms.ExternalValueChangeEvent;
+import common.gui.forms.ExternalValueChangeListener;
+import common.gui.forms.EndEventGenerator;
 import common.gui.forms.GenericForm;
-import common.gui.forms.InitiateFinishListener;
+import common.gui.forms.InstanceFinishingListener;
 import common.gui.forms.NotFoundComponentException;
-import common.transactions.STException;
-import common.transactions.STResultSet;
+import common.transactions.TransactionServerException;
+import common.transactions.TransactionServerResultSet;
 
 /**
  * TableFindData.java Creado el 06-abr-2005
@@ -84,13 +84,13 @@ import common.transactions.STResultSet;
  */
 
 public class TableFindData extends JPanel implements AnswerListener,
-		ChangeExternalValueListener, RecordListener, InitiateFinishListener {
+		ExternalValueChangeListener, RecordListener, InstanceFinishingListener {
 
 	private static final long serialVersionUID = 3348132353954885841L;
 	private GenericForm GFforma;
 	private JTable JTtabla;
-	private TMFindData TMFDtabla;
-	private ArgsTableFindData[] ATFDargs;
+	private EmakuTableModel TMFDtabla;
+	private ColumnsArgsGenerator[] ATFDargs;
 	private int rows;
 	private String sqlCode = "";
 	private ArrayList<Formula> formulas;
@@ -270,12 +270,12 @@ public class TableFindData extends JPanel implements AnswerListener,
 		}
 		List Lsubarg = parameters.getChildren("subarg");
 		int col = Lsubarg.size();
-		ATFDargs = new ArgsTableFindData[col];
+		ATFDargs = new ColumnsArgsGenerator[col];
 		Iterator j = Lsubarg.iterator();
 
 		for (int k = 0; j.hasNext(); k++) {
 			Element args = (Element) j.next();
-			ATFDargs[k] = new ArgsTableFindData(args);
+			ATFDargs[k] = new ColumnsArgsGenerator(args);
 		}
 
 		if (initSQL != null) {
@@ -313,11 +313,11 @@ public class TableFindData extends JPanel implements AnswerListener,
 			loadingQuery();
 		} else {
 			if (valideLink > 0) {
-				TMFDtabla = new TMFindData(GFforma, sqlCode, rows, formulas,
+				TMFDtabla = new EmakuTableModel(GFforma, sqlCode, rows, formulas,
 						exportTotalCols, importTotalCol, impValues, totales,
 						externalValues, ATFDargs, valideLink, keyLink);
 			} else {
-				TMFDtabla = new TMFindData(GFforma, sqlCode, rows, formulas,
+				TMFDtabla = new EmakuTableModel(GFforma, sqlCode, rows, formulas,
 						exportTotalCols, importTotalCol, impValues, totales,
 						externalValues, ATFDargs);
 			}
@@ -464,12 +464,12 @@ public class TableFindData extends JPanel implements AnswerListener,
 					if (ATFDargs[k].isImportValueCombo()) {
 						if (ATFDargs[k].isExporValueCombo()) {
 							tc.setCellEditor(new DefaultCellEditor(
-									new SQLComboBox(GFforma, ATFDargs[k]
+									new ComboBoxFiller(GFforma, ATFDargs[k]
 											.getSqlCombo(), ATFDargs[k]
 											.getImportCombos(), exportValue,false)));
 						} else {
 							tc.setCellEditor(new DefaultCellEditor(
-									new SQLComboBox(
+									new ComboBoxFiller(
 									                GFforma,
 									                ATFDargs[k].getSqlCombo(),
 									                ATFDargs[k].getImportCombos(),false)));
@@ -477,10 +477,10 @@ public class TableFindData extends JPanel implements AnswerListener,
 					} else {
 						if (ATFDargs[k].isExporValueCombo()) {
 							tc.setCellEditor(new DefaultCellEditor(
-									new SQLComboBox(GFforma, ATFDargs[k].getSqlCombo(), exportValue,false)));
+									new ComboBoxFiller(GFforma, ATFDargs[k].getSqlCombo(), exportValue,false)));
 						} else {
 							tc.setCellEditor(new DefaultCellEditor(
-									new SQLComboBox(GFforma, ATFDargs[k].getSqlCombo(),false)));
+									new ComboBoxFiller(GFforma, ATFDargs[k].getSqlCombo(),false)));
 						}
 					}
 				}
@@ -533,13 +533,13 @@ public class TableFindData extends JPanel implements AnswerListener,
 			public void run() {
 				Document doc = null;
 				try {
-					doc = STResultSet.getResultSetST(initSQL, initArgs);
-					TMFDtabla = new TMFindData(GFforma, sqlCode, doc, formulas,
+					doc = TransactionServerResultSet.getResultSetST(initSQL, initArgs);
+					TMFDtabla = new EmakuTableModel(GFforma, sqlCode, doc, formulas,
 							exportTotalCols, totales, externalValues, ATFDargs);
 					JTtabla.setModel(TMFDtabla);
 					propertiesTable();
 
-				} catch (STException e) {
+				} catch (TransactionServerException e) {
 					e.printStackTrace();
 				}
 
@@ -708,10 +708,10 @@ public class TableFindData extends JPanel implements AnswerListener,
 	 * venta
 	 * 
 	 * @return retorna un <package/>
-	 * @throws ErrorDataException
+	 * @throws DataErrorException
 	 *             en caso de que exista algun dato incorrecto
 	 */
-	public Element getUVPackage() throws ErrorDataException {
+	public Element getUVPackage() throws DataErrorException {
 		return TMFDtabla.getUVPackage();
 	}
 
@@ -719,10 +719,10 @@ public class TableFindData extends JPanel implements AnswerListener,
 	 * Metodo utilizado solo para la forma asientos predefinidos
 	 * 
 	 * @return retorna un <package/>
-	 * @throws ErrorDataException
+	 * @throws DataErrorException
 	 *             en caso de que exista algun dato incorrecto
 	 */
-	public Element getAPPackage() throws ErrorDataException {
+	public Element getAPPackage() throws DataErrorException {
 		return TMFDtabla.getAPPackage();
 	}
 
@@ -730,7 +730,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 	 * Metodo utilizado solo para el componente asignacion de asientos
 	 * 
 	 * @return retorna un <package/>
-	 * @throws ErrorDataException
+	 * @throws DataErrorException
 	 *             en caso de que exista algun dato incorrecto
 	 */
 	public Element getAAPackage() {
@@ -799,7 +799,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 			JTtabla.changeSelection(0, 0, false, false);
 	}
 
-	public TMFindData getTMFDtabla() {
+	public EmakuTableModel getTMFDtabla() {
 		while(TMFDtabla==null){
 			try {
 				Thread.sleep(30);
@@ -820,7 +820,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 		}
 	}
 
-	public void changeExternalValue(ChangeExternalValueEvent e) {
+	public void changeExternalValue(ExternalValueChangeEvent e) {
 		if (TMFDtabla.impValuesSize() > 0 && e.getExternalValue()!= null) {
 			reloadData();
 		}
@@ -928,7 +928,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 		}
 	}
 
-	public void initiateFinishEvent(FinishEvent e) {
+	public void initiateFinishEvent(EndEventGenerator e) {
 
 		if (driverEvent != null && keySQL != null) {
 			for (int n = 0; n < driverEvent.size(); n++) {

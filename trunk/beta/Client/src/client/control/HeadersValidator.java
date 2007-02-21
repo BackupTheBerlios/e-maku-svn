@@ -13,14 +13,14 @@ import org.jdom.output.XMLOutputter;
 import client.gui.components.MainWindow;
 import client.gui.forms.Connection;
 import client.gui.forms.Splash;
-import client.misc.settings.ConfigFile;
+import client.misc.settings.ConfigFileHandler;
 
-import common.comunications.ArrivePackageEvent;
-import common.comunications.ArrivePackageListener;
+import common.comunications.ArrivedPackageEvent;
+import common.comunications.ArrivedPackageListener;
 import common.comunications.SocketConnector;
 import common.control.ClientHeaderValidator;
-import common.misc.parameters.GenericParameters;
-import common.transactions.STResultSet;
+import common.misc.parameters.EmakuParametersStructure;
+import common.transactions.TransactionServerResultSet;
 
 /**
  * ClientHeaderValidator.java Creado el 22-jul-2004
@@ -45,7 +45,7 @@ import common.transactions.STResultSet;
  *         Cepeda </A>
  */
 
-public class HeadersValidator implements ArrivePackageListener {
+public class HeadersValidator implements ArrivedPackageListener {
 
     private static Element raiz;
 
@@ -61,7 +61,7 @@ public class HeadersValidator implements ArrivePackageListener {
     	
     }
     
-    public void validPackage(ArrivePackageEvent APe) {
+    public void validPackage(ArrivedPackageEvent APe) {
     	
     		Document doc = APe.getDoc();
 
@@ -91,13 +91,13 @@ public class HeadersValidator implements ArrivePackageListener {
 	            /*
 	             * Cargando configuración dependiendo de la empresa ...
 	             */
-	            String bd = GenericParameters.getParameter("dataBase");
-	            ConfigFile.loadJarFile(bd);
+	            String bd = EmakuParametersStructure.getParameter("dataBase");
+	            ConfigFileHandler.loadJarFile(bd);
 
 	            if(company != null && companyID != null)
 	            	title = company + " - Nit: " + companyID;
 	            
-	            new MainWindow(ConfigFile.getJarDirectory()+"/misc",title);
+	            new MainWindow(ConfigFileHandler.getJarDirectory()+"/misc",title);
 	        }
 	        
 	        else if(nombre.equals("ACPZip")) {
@@ -138,7 +138,7 @@ public class HeadersValidator implements ArrivePackageListener {
 	                /*
 	                 * si fue una consulta entonces ...
 	                 */
-                    STResultSet.putSpoolQuery(id,doc);
+                    TransactionServerResultSet.putSpoolQuery(id,doc);
 	            }
 				displayError();
 	        }

@@ -6,16 +6,16 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import server.comunications.SocketServer;
+import server.comunications.EmakuServerSocket;
 import server.control.ReportsStore;
-import server.database.connection.PoolConexiones;
-import server.database.connection.PoolNotLoadException;
+import server.database.connection.ConnectionsPool;
+import server.database.connection.ConnectionsPoolException;
 import server.database.sql.LinkingCache;
 import server.database.sql.SQLBadArgumentsException;
-import server.misc.ServerConst;
-import server.misc.settings.ConfigFile;
+import server.misc.ServerConstants;
+import server.misc.settings.ConfigFileHandler;
 import server.misc.settings.ConfigFileNotLoadException;
-import server.reports.MakeReport;
+import server.reports.ReportMaker;
 
 import common.misc.formulas.BeanShell;
 import common.misc.language.Language;
@@ -61,17 +61,17 @@ public class Run {
 			}
 		}
 		
-		String emakuConfigFile = ServerConst.CONF + ServerConst.SEPARATOR + "server.conf";
+		String emakuConfigFile = ServerConstants.CONF + ServerConstants.SEPARATOR + "server.conf";
 		boolean existsConfigFile = (new File(emakuConfigFile)).exists();
 		
 		if (!existsConfigFile) {
-        	ConfigFile.newConfigFile(emakuConfigFile);			
+        	ConfigFileHandler.newConfigFile(emakuConfigFile);			
         	System.out.println("INFO: Archivo de configuracion no encontrado... creando uno nuevo...");
 		}
 		
 		try {						
-			ConfigFile.loadConfigFile(emakuConfigFile);
-			PoolConexiones.CargarBD();
+			ConfigFileHandler.loadConfigFile(emakuConfigFile);
+			ConnectionsPool.CargarBD();
 			ReportsStore.Load(this.getClass().getResource("/reports"));
 			try {
 				LinkingCache.cargar();
@@ -83,11 +83,11 @@ public class Run {
 			Thread t = new Thread() {
 				public void run() {
 					try {
-						new SocketServer();
+						new EmakuServerSocket();
 					} catch (IOException IOEe) {
 					    
 			            LogAdmin.setMessage(Language.getWord("UNLOADING_ST") + " "
-			                    + IOEe.getMessage(), ServerConst.MESSAGE);
+			                    + IOEe.getMessage(), ServerConstants.MESSAGE);
 			            killServer();
 			            
 			        }
@@ -97,20 +97,20 @@ public class Run {
 			
 		} catch (ConfigFileNotLoadException e) {
 
-        	ConfigFile.newConfigFile(emakuConfigFile);
+        	ConfigFileHandler.newConfigFile(emakuConfigFile);
         	
         	if (os.startsWith("Windows")) {
         		JOptionPane.showMessageDialog(new JFrame(),"El archivo de configuracion estaba corrupto y ha sido corregido. Por favor, revise el archivo server.conf y reinicie el servicio.","Error!",
         				JOptionPane.ERROR_MESSAGE);
         	} else {
         		System.out.println("ERROR #003: El archivo de configuracion estaba corrupto y ha sido corregido. Por favor, revise el archivo server.conf y reinicie el servicio.\n"
-        		+ "("+ServerConst.CONF+ServerConst.SEPARATOR+"server.conf)\n");
+        		+ "("+ServerConstants.CONF+ServerConstants.SEPARATOR+"server.conf)\n");
         	}
         	killServer();
         	
-        } catch (PoolNotLoadException e) {
+        } catch (ConnectionsPoolException e) {
         	
-			LogAdmin.setMessage(e.getErrorCode(),e.getMessage(),Language.getWord("NODEBUG"),ServerConst.ERROR);
+			LogAdmin.setMessage(e.getErrorCode(),e.getMessage(),Language.getWord("NODEBUG"),ServerConstants.ERROR);
 			killServer();
 		} 
 	}
@@ -125,6 +125,6 @@ public class Run {
 	 */
 	public static void main(String[] args) {	    
 		new Run();
-		new MakeReport();
+		new ReportMaker();
 	}
 }

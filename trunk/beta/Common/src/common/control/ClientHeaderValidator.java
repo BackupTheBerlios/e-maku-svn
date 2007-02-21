@@ -1,12 +1,15 @@
 package common.control;
 
+import java.io.IOException;
 import java.util.Vector;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
 import common.transactions.Cache;
-import common.transactions.STResultSet;
+import common.transactions.TransactionServerResultSet;
 
 /**
  * ClientHeaderValidator.java Creado el 22-jul-2004
@@ -55,6 +58,14 @@ public class ClientHeaderValidator {
          */
         raiz = doc.getRootElement();
         String nombre = raiz.getName();
+    	XMLOutputter out = new XMLOutputter();
+    	out.setFormat(Format.getPrettyFormat());
+    	try {
+			out.output(raiz, System.out);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
         
         /*
@@ -62,7 +73,7 @@ public class ClientHeaderValidator {
          */
         if(nombre.equals("ANSWER")) {
             String id = raiz.getChildText("id");
-            STResultSet.putSpoolQuery(id,doc);
+            TransactionServerResultSet.putSpoolQuery(id,doc);
             return true;
         }
         
@@ -98,18 +109,27 @@ public class ClientHeaderValidator {
             notifyDate(event);
             return true;
         }
-        else if(nombre.equals("REPORT")) {
+        else if(nombre.equals("PLAINREPORT") || nombre.equals("REPORT")) {
 			// Aqui se debe notificar que llego el reporte
         	Element element = null;
         	element = raiz.getChild("data");
-			ReportEvent report = new ReportEvent(
-										new ClientHeaderValidator(),
-										raiz.getChildText("idReport"),
-										raiz.getChildText("titleReport"),
-										element);
+			ReportEvent report;
+			boolean plain = false;
+
+			if(nombre.equals("PLAINREPORT")) {
+				plain = true;
+			}
+
+			report= new ReportEvent(
+					new ClientHeaderValidator(),
+					raiz.getChildText("idReport"),
+					raiz.getChildText("titleReport"),
+					element,
+					plain);
+
 			notifyReport(report);
 			return true;
-        }
+        }        
         /*
          *  Validación paquetes SUCCESS
          */
@@ -120,7 +140,7 @@ public class ClientHeaderValidator {
             String message  = "";
             
             if ("Q".equals(id.substring(0,1))) {
-                STResultSet.putSpoolQuery(id,doc);
+                TransactionServerResultSet.putSpoolQuery(id,doc);
             }
             
             /*

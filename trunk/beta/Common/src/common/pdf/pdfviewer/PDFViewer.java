@@ -211,8 +211,9 @@ public class PDFViewer implements ReportListener {
 	 * por medio del evento ReportEvent
 	 */
 	public void arriveReport(ReportEvent e) {
-		if (e.getIdReport().equals(idReport)) {
-			try {
+
+		if (e.getIdReport().equals(idReport) && !e.isPlainReport()) {
+			try {				
 				data = e.getData();
 				Cursor cursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 				currentGUI.getFrame().setCursor(cursor);

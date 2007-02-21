@@ -7,7 +7,7 @@ import java.util.Iterator;
 import org.jdom.Document;
 import org.jdom.Element;
 
-import server.comunications.SocketServer;
+import server.comunications.EmakuServerSocket;
 import server.database.sql.LinkingCache;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
@@ -44,18 +44,18 @@ public class LNProdServ {
 					   new Document((Element)doc.getRootElement().getChild("subarg").clone()),
 					   (Element)sn_pack.clone(),
 					   id_transaction);
-			LinkingCache.reloadAsientosPr(SocketServer.getBd(sock),new String[]{code});
+			LinkingCache.reloadAsientosPr(EmakuServerSocket.getBd(sock),new String[]{code});
 		}
 		else if (action.equals("edit")) {
-			LinkingCache.removeAsientosPr(SocketServer.getBd(sock),new String[]{code});
+			LinkingCache.removeAsientosPr(EmakuServerSocket.getBd(sock),new String[]{code});
 			new LNMultiPackage(sock,
 					   new Document((Element)doc.getRootElement().getChild("subarg").clone()),
 					   (Element)sn_pack.clone(),
 					   id_transaction);
-			LinkingCache.reloadAsientosPr(SocketServer.getBd(sock),new String[]{code});
+			LinkingCache.reloadAsientosPr(EmakuServerSocket.getBd(sock),new String[]{code});
 		}
 		else if (action.equals("delete")) {
-			LinkingCache.removeAsientosPr(SocketServer.getBd(sock),new String[]{code});
+			LinkingCache.removeAsientosPr(EmakuServerSocket.getBd(sock),new String[]{code});
 			new LNGenericSQL(sock,
 					   new Document((Element)doc.getRootElement().getChild("subarg").clone()),
 					   (Element)sn_pack.clone(),

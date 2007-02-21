@@ -29,18 +29,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import client.Run;
-import client.comunications.SendCNX;
+import client.comunications.CNXSender;
 import client.control.HeadersValidator;
-import client.gui.components.panels.PAutentication;
-import client.misc.ClientConst;
+import client.gui.components.panels.AuthenticationPanel;
+import client.misc.ClientConstants;
 import client.misc.MD5;
-import client.misc.settings.ConfigFile;
+import client.misc.settings.ConfigFileHandler;
 
 import common.comunications.PackageToXML;
 import common.comunications.SocketConnector;
 import common.comunications.SocketWriter;
 import common.misc.language.Language;
-import common.misc.parameters.GenericParameters;
+import common.misc.parameters.EmakuParametersStructure;
 
 /**
  * Connection.java Creado el 03-ago-2004
@@ -68,7 +68,7 @@ import common.misc.parameters.GenericParameters;
 public class Connection {
 
     private static JFrame JFConexion;
-    private PAutentication JPAutenticacion;
+    private AuthenticationPanel JPAutenticacion;
     private static JButton JBconectar;
     
     public Connection() {
@@ -82,7 +82,7 @@ public class Connection {
         JPanel imgPanel = new JPanel();
         imgPanel.add(imgLabel);
         
-        JPAutenticacion = new PAutentication(PAutentication.ALL);
+        JPAutenticacion = new AuthenticationPanel(AuthenticationPanel.ALL);
        
         JPanel JPsur = new JPanel();
         JBconectar = new JButton();
@@ -117,7 +117,7 @@ public class Connection {
         
         JBsettings.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent AEe) { 
-                FirstDialog dialogo = new FirstDialog(new JFrame(),ClientConst.KeyClient, FirstDialog.EDIT);
+                SettingsDialog dialogo = new SettingsDialog(new JFrame(),ClientConstants.KeyClient, SettingsDialog.EDIT);
                 dialogo.setLocationRelativeTo(dialogo.getParent());
                 dialogo.pack();
                 dialogo.setVisible(true);
@@ -139,7 +139,7 @@ public class Connection {
         Properties Phistory = new Properties();
         boolean history = false;
          try {
-			FIShistory = new FileInputStream(new File(ClientConst.CONF+"history"));
+			FIShistory = new FileInputStream(new File(ClientConstants.CONF+"history"));
 			Phistory.load(FIShistory);
 			JPAutenticacion.setBaseDatos(Phistory.getProperty("database"));
 			JPAutenticacion.setUsuario(Phistory.getProperty("user"));
@@ -169,8 +169,8 @@ public class Connection {
        
         JFConexion.pack();
         JFConexion.setLocation(
-                (ClientConst.MAX_WIN_SIZE_WIDTH / 2) - JFConexion.getWidth() / 2,
-                (ClientConst.MAX_WIN_SIZE_HEIGHT / 2) - JFConexion.getHeight() / 2);
+                (ClientConstants.MAX_WIN_SIZE_WIDTH / 2) - JFConexion.getWidth() / 2,
+                (ClientConstants.MAX_WIN_SIZE_HEIGHT / 2) - JFConexion.getHeight() / 2);
         JFConexion.setVisible(true);
         if (history) 
         	JPAutenticacion.getJPFclave().requestFocus();
@@ -185,28 +185,28 @@ public class Connection {
 				PackageToXML packageXML = new PackageToXML();
 				HeadersValidator valid = new HeadersValidator();
 				packageXML.addArrivePackageistener(valid);
-				connect = new SocketConnector(ConfigFile.getHost(),
-						  ConfigFile.getServerPort(),packageXML);
+				connect = new SocketConnector(ConfigFileHandler.getHost(),
+						  ConfigFileHandler.getServerPort(),packageXML);
 				
 	            connect.start();
 	            
-	            GenericParameters.removeParameter("dataBase");
-	            GenericParameters.addParameter("dataBase",JPAutenticacion.getBaseDatos());
-	            GenericParameters.removeParameter("userLogin");
-	            GenericParameters.addParameter("userLogin",JPAutenticacion.getUsuario());
+	            EmakuParametersStructure.removeParameter("dataBase");
+	            EmakuParametersStructure.addParameter("dataBase",JPAutenticacion.getBaseDatos());
+	            EmakuParametersStructure.removeParameter("userLogin");
+	            EmakuParametersStructure.addParameter("userLogin",JPAutenticacion.getUsuario());
 	            SocketChannel socket = SocketConnector.getSock();
 	            String password = new String(JPAutenticacion.getClave());
 	    		MD5 md5 = new MD5(password);
 	            SocketWriter.writing(socket,
-				                    SendCNX.getPackage(
+				                    CNXSender.getPackage(
 				                            JPAutenticacion.getBaseDatos(),
 				                            JPAutenticacion.getUsuario(),
 				                            md5.getDigest().toCharArray()));
 			} catch (ConnectException CEe){
 				JOptionPane.showMessageDialog(
 	                    JFConexion,Language.getWord("ERR_CONNECT")+"\n"+
-	                    Language.getWord("HOST")+" "+ConfigFile.getHost()+"\n"+
-	                    Language.getWord("PORT")+" "+ConfigFile.getServerPort(),
+	                    Language.getWord("HOST")+" "+ConfigFileHandler.getHost()+"\n"+
+	                    Language.getWord("PORT")+" "+ConfigFileHandler.getServerPort(),
 	                    Language.getWord("ERR_TITLE_CONNECT"),
 	                    JOptionPane.ERROR_MESSAGE,
 	                    new ImageIcon(this.getClass().getResource("/icons/ico_database.png")));
@@ -216,8 +216,8 @@ public class Connection {
 				JOptionPane.showMessageDialog(
 	                    JFConexion,
 	                    Language.getWord("ERR_UNRESOLVED_ADDRESS")+"\n"+
-	                    Language.getWord("HOST")+" "+ConfigFile.getHost()+ 
-	                    Language.getWord("PORT")+" "+ConfigFile.getServerPort(),
+	                    Language.getWord("HOST")+" "+ConfigFileHandler.getHost()+ 
+	                    Language.getWord("PORT")+" "+ConfigFileHandler.getServerPort(),
 	                    Language.getWord("ERR_TITLE_CONNECT"),
 	                    JOptionPane.ERROR_MESSAGE,
 	                    new ImageIcon(this.getClass().getResource("/icons/ico_database.png")));
@@ -234,7 +234,7 @@ public class Connection {
 			 */
 			
 			try {
-				FileOutputStream FOShistory = new FileOutputStream(new File(ClientConst.CONF+"history"));
+				FileOutputStream FOShistory = new FileOutputStream(new File(ClientConstants.CONF+"history"));
 				String database="database="+JPAutenticacion.getBaseDatos()+"\n";
 				String user="user="+JPAutenticacion.getUsuario()+"\n";
 				FOShistory.write(database.getBytes());

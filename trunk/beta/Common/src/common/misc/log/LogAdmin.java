@@ -19,7 +19,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
-import common.misc.CommonConst;
+import common.misc.CommonConstants;
 //import common.misc.exception.SuperException;
 import common.misc.language.Language;
 
@@ -97,11 +97,11 @@ public class LogAdmin {
 	
 	    String os = System.getProperty("os.name");
 
-	    if (priority == CommonConst.ERROR) {
+	    if (priority == CommonConstants.ERROR) {
     		
     		printConsoleError(key,message,debug);	    	
 	    
-	    	if (os.startsWith("Windows") && (priority == CommonConst.ERROR)) {  
+	    	if (os.startsWith("Windows") && (priority == CommonConstants.ERROR)) {  
 	    
 	    		showWindowsMessage(key,message,debug);
 	    		
@@ -216,12 +216,12 @@ public class LogAdmin {
 			long max = logFile.length();
 			Date now = new Date();
 			SimpleDateFormat format = null;
-			if (max >= CommonConst.MAX_SIZE_FILE_LOG) {
+			if (max >= CommonConstants.MAX_SIZE_FILE_LOG) {
 				byte[] Blog = new byte[(int) max];
 
 				format = new SimpleDateFormat("yyyy-MM-dd");
 
-				File dateFile = new File(CommonConst.TMP, fileName + "-"
+				File dateFile = new File(CommonConstants.TMP, fileName + "-"
 						+ format.format(now) + ".gz");
 				FileOutputStream FOSfile = new FileOutputStream(dateFile);
 				GZIPOutputStream gzipfile = new GZIPOutputStream(FOSfile);
@@ -249,7 +249,7 @@ public class LogAdmin {
 
 	private static void newFile() {
 		try {
-			logFile = new File(CommonConst.TMP, fileName + ".log");
+			logFile = new File(CommonConstants.TMP, fileName + ".log");
 			RAFlog  = new RandomAccessFile(logFile, "rw");
 			RAFlog.seek(RAFlog.length());
 		} catch (IOException FNFEe) {
@@ -258,7 +258,7 @@ public class LogAdmin {
 			
 			if (reason.contains("Permission denied")) { 
 			    try {
-			    	logFile = new File(CommonConst.TMP, fileName + "." + user + ".log");
+			    	logFile = new File(CommonConstants.TMP, fileName + "." + user + ".log");
 			    	RAFlog = new RandomAccessFile(logFile, "rw");
 			    	RAFlog.seek(RAFlog.length());
 			    } catch(IOException ex) {

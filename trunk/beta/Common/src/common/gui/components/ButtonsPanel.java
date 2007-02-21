@@ -37,13 +37,14 @@ import common.gui.forms.GenericForm;
 import common.gui.forms.NotFoundComponentException;
 import common.misc.Icons;
 import common.misc.language.Language;
-import common.misc.parameters.GenericParameters;
+import common.misc.parameters.EmakuParametersStructure;
 import common.pdf.pdfviewer.PDFViewer;
-import common.printer.PlainManager;
+import common.printer.PlainPrintingManager;
 import common.printer.PostScriptManager;
-import common.printer.PrintManager;
-import common.printer.PrintManager.ImpresionType;
-import common.transactions.STResultSet;
+import common.printer.PrintingManager;
+import common.printer.PrintingManager.ImpresionType;
+import common.printer.plainViewer.TextReportViewer;
+import common.transactions.TransactionServerResultSet;
 
 /**
  * ButtonsPanel.java Creado el 22-sep-2004
@@ -77,7 +78,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
     private String idTransaction;
     private String accel = "";
 	private String idReport;
-    private PlainManager plainManager = new PlainManager("");
+    private PlainPrintingManager plainManager = new PlainPrintingManager("");
     private PostScriptManager postScriptManager = new PostScriptManager();
 	private String typePackage = "TRANSACTION";
 	private String lastNumber;
@@ -239,7 +240,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
         Iterator i = elm.getChildren().iterator();
 
         String key = "";
-        Vector<Componentes> componentes = new Vector<Componentes>();
+        Vector<Components> componentes = new Vector<Components>();
         Vector<Element> actions = new Vector<Element>();
         Vector<Element> formularios = new Vector<Element>();
         while (i.hasNext()) {
@@ -269,10 +270,10 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
         }
     }
 
-    private Componentes loadComponent(Element elm) {
+    private Components loadComponent(Element elm) {
         Iterator i = elm.getChildren().iterator();
 
-        Componentes comp = new Componentes();
+        Components comp = new Components();
 
         while (i.hasNext()) {
             Element e = (Element) i.next();
@@ -305,7 +306,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
     	
     	Vector vec = Heventos.get(action);
         Object obj = vec.get(0);
-        if (obj instanceof Componentes) {
+        if (obj instanceof Components) {
         	builTransaction(vec,action,null,null);
         }
         else if (obj instanceof Element) {
@@ -315,9 +316,9 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 	    		String type = element.getChildText("type");
 	    		String idManualTransaction = element.getChildText("idManualTransaction");
 	    		Iterator it = element.getChildren("component").iterator();
-    			Vector<Componentes> vector = new Vector<Componentes>();
+    			Vector<Components> vector = new Vector<Components>();
     			while (it.hasNext()) {
-        			Componentes comp = loadComponent((Element) it.next());
+        			Components comp = loadComponent((Element) it.next());
             		vector.add(comp);
     			}
 	    		if ("transaction".equals(type)) {
@@ -335,7 +336,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 	    			try {
 						SAXBuilder sax = new SAXBuilder(false);
 						Document template = null;
-						URL url = new URL(GenericParameters.getJarDirectoryTemplates()+pathTemplate);
+						URL url = new URL(EmakuParametersStructure.getJarDirectoryTemplates()+pathTemplate);
 						if (url!=null){
 							template = sax.build(url);
 							Element rootTemplate= template.getRootElement();
@@ -359,13 +360,13 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 									System.out.println("================================");
 									ImpresionType        IType     = plainManager.getImpresionType();
 									ByteArrayInputStream IStream   = plainManager.getStream();
-									new PrintManager(IType,IStream, silent, copies,printer);
-									plainManager = new PlainManager(plainManager.getNdocument());
+									new PrintingManager(IType,IStream, silent, copies,printer);
+									plainManager = new PlainPrintingManager(plainManager.getNdocument());
 								}
 							}
 							if ("GRAPHIC".equals(typePrinter) ) {
 								postScriptManager.load(rootTemplate,printJob);
-								new PrintManager(postScriptManager,silent, copies,printer);
+								new PrintingManager(postScriptManager,silent, copies,printer);
 								postScriptManager = new PostScriptManager();
 							}
 							System.gc();
@@ -389,13 +390,13 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
         }
     }
     
-    private synchronized void builTransaction(Vector<Componentes> vec,String action,Element printJob,String idManualTransaction) 
+    private synchronized void builTransaction(Vector<Components> vec,String action,Element printJob,String idManualTransaction) 
     throws InvocationTargetException, NotFoundComponentException, IOException {
         Vector <Element>pack = new Vector<Element>();
     	Element multielementos[] = null;
         Element elementos = null;
     	for (int i = 0; i < vec.size(); i++) {
-    		Componentes comp = vec.get(i);
+    		Components comp = vec.get(i);
     		if ("getMultiPackage".equals(comp.getMethod())) {
             	if (comp.isContainsArgs()) {
             		multielementos = (Element[]) GFforma.invokeMethod(comp.getDriver(), 
@@ -535,10 +536,30 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
         	}
         }
         else if ("REPORTREQUEST".equals(packageName)) {
+
         	if (idReport!=null) { 
         		driver.setText(idReport);
         		PDFViewer pdf = new PDFViewer(GFforma,idReport);
             	JInternalFrame jiframe = pdf.getGUI().getFrame();
+				GFforma.getJDPpanel().add(jiframe);
+				try {
+					jiframe.setVisible(true);
+					jiframe.setSelected(true);
+				} catch (java.beans.PropertyVetoException PVEe) {
+					PVEe.printStackTrace();
+				}
+        	}
+        	else {
+        		throw new MalformedProfileException(Language.getWord("MALFORMED_PROFILE")+GFforma.getIdTransaction());
+        	}
+        }
+        else if ("PLAINREPORTREQUEST".equals(packageName)) {
+        	
+        	if (idReport!=null) { 
+        		driver.setText(idReport);        	    	
+        		TextReportViewer plainViewer = new TextReportViewer(GFforma,idReport);
+        		plainViewer.openViewer();
+        		JInternalFrame jiframe = plainViewer;
 				GFforma.getJDPpanel().add(jiframe);
 				try {
 					jiframe.setVisible(true);
@@ -556,7 +577,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
         }
         
         Element id = new Element("id");
-        idTransaction = "T"+STResultSet.getId();
+        idTransaction = "T"+TransactionServerResultSet.getId();
         id.setText(idTransaction);
         plainManager.setIdTransaction(idTransaction);
 
@@ -643,7 +664,6 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
     }
 
     public Element getLastNumber() {
-    	System.out.println("Valor de lastNumber: "+lastNumber);
         Element pack = new Element("package");
         if (lastNumber!=null && !lastNumber.equals("")) {
             Element field = new Element("field");
@@ -663,7 +683,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 	}
 }
 
-class Componentes {
+class Components {
 
     private String driver;
     private String method;

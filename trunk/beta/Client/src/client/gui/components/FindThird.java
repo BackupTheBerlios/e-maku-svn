@@ -39,14 +39,14 @@ import common.gui.components.AnswerEvent;
 import common.gui.components.AnswerListener;
 import common.gui.components.VoidPackageException;
 import common.gui.components.XMLTextField;
-import common.gui.forms.FinishEvent;
+import common.gui.forms.EndEventGenerator;
 import common.gui.forms.GenericForm;
-import common.gui.forms.InitiateFinishListener;
+import common.gui.forms.InstanceFinishingListener;
 import common.gui.forms.NotFoundComponentException;
 import common.misc.Icons;
 import common.misc.language.Language;
-import common.transactions.STException;
-import common.transactions.STResultSet;
+import common.transactions.TransactionServerException;
+import common.transactions.TransactionServerResultSet;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -76,7 +76,7 @@ import org.jdom.Element;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  */
 
-public class FindThird extends JTabbedPane implements AnswerListener, InitiateFinishListener {
+public class FindThird extends JTabbedPane implements AnswerListener, InstanceFinishingListener {
 
 	private static final long serialVersionUID = 716651304487269232L;
     private XMLTextField XMLTFfind;
@@ -460,11 +460,11 @@ public class FindThird extends JTabbedPane implements AnswerListener, InitiateFi
     
     private void fined(String[] args) {
         try {
-        	Document doc = STResultSet.getResultSetST(sqlSizeRecords,args);
+        	Document doc = TransactionServerResultSet.getResultSetST(sqlSizeRecords,args);
         	
  	        int row = Integer.parseInt(doc.getRootElement().getChild("row").getChildText("col"));
  	        if (row < maxRecords) {
-		        doc = STResultSet.getResultSetST(sqlRecords,args);
+		        doc = TransactionServerResultSet.getResultSetST(sqlRecords,args);
 		        LoadDocument(doc);
 	            asignExternalQuery();
 	            searchOthersSQL();
@@ -474,7 +474,7 @@ public class FindThird extends JTabbedPane implements AnswerListener, InitiateFi
  	        }
  	        doc = null;
         }
-        catch(STException STEe) {
+        catch(TransactionServerException STEe) {
            STEe.printStackTrace();
         }
     }
@@ -573,9 +573,9 @@ public class FindThird extends JTabbedPane implements AnswerListener, InitiateFi
             String sql = sqlCode.get(i);
          
             try {
-                doc = STResultSet.getResultSetST(sql,new String[] {keyFind});
+                doc = TransactionServerResultSet.getResultSetST(sql,new String[] {keyFind});
             }
-            catch (STException e) {
+            catch (TransactionServerException e) {
                 e.printStackTrace();
             }
             AnswerEvent event = new AnswerEvent(this,sql,doc);
@@ -586,9 +586,9 @@ public class FindThird extends JTabbedPane implements AnswerListener, InitiateFi
     				Document doc = null;
 	            String sql = sqlCodeWT.get(i);
 	            try {
-	                doc = STResultSet.getResultSetST(sql,new String[] {keyFind,typeDocument});
+	                doc = TransactionServerResultSet.getResultSetST(sql,new String[] {keyFind,typeDocument});
 	            }
-	            catch (STException e) {
+	            catch (TransactionServerException e) {
 	                e.printStackTrace();
 	            }
 	            AnswerEvent event = new AnswerEvent(this,sql,doc);
@@ -651,7 +651,7 @@ public class FindThird extends JTabbedPane implements AnswerListener, InitiateFi
             /*
              * Consultando direcciones
              */
-	        Document doc = STResultSet.getResultSetST(sqlAddress,args);
+	        Document doc = TransactionServerResultSet.getResultSetST(sqlAddress,args);
 
 			Iterator i = doc.getRootElement().getChildren("row").iterator();
 			int row = doc.getRootElement().getChildren("row").size();
@@ -696,7 +696,7 @@ public class FindThird extends JTabbedPane implements AnswerListener, InitiateFi
              * Consultando telefonos
              */
 	        
-			doc = STResultSet.getResultSetST(sqlPhones,args);
+			doc = TransactionServerResultSet.getResultSetST(sqlPhones,args);
 
 			i = doc.getRootElement().getChildren("row").iterator();
 			row = doc.getRootElement().getChildren("row").size();
@@ -730,7 +730,7 @@ public class FindThird extends JTabbedPane implements AnswerListener, InitiateFi
 			}
             Hphones.put(key, Vphones);
         }
-        catch(STException STEe) {
+        catch(TransactionServerException STEe) {
             STEe.printStackTrace();
         }
         catch(ArrayIndexOutOfBoundsException AIOOBEe) {
@@ -897,7 +897,7 @@ public class FindThird extends JTabbedPane implements AnswerListener, InitiateFi
 		}
 	}
 
-	public void initiateFinishEvent(FinishEvent e) {
+	public void initiateFinishEvent(EndEventGenerator e) {
 		try {
 			if (driverEvent!=null)
 				GFforma.invokeMethod(driverEvent,"addAnswerListener",new Class[]{AnswerListener.class},new Object[]{this});

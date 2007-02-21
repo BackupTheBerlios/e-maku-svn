@@ -32,7 +32,7 @@ import client.control.ACPFormEvent;
 import client.control.ACPFormListener;
 import client.control.ACPHandler;
 import client.gui.components.MainWindow;
-import client.misc.ClientConst;
+import client.misc.ClientConstants;
 
 import common.gui.forms.GenericForm;
 import common.misc.Icons;
@@ -510,7 +510,7 @@ class JMenuItemXML extends JMenuItem implements ActionListener , ACPFormListener
 		            
 		            new GenericForm(ACPHandler.getDocForm(transaction),
 		                    						   MainWindow.getJDPanel(),
-		                    						   ClientConst.KeyClient,
+		                    						   ClientConstants.KeyClient,
 		                    						   size,
 		                    						   transaction);
 		        }

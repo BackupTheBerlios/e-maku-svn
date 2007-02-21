@@ -8,9 +8,9 @@ import java.util.Iterator;
 import org.jdom.Document;
 import org.jdom.Element;
 
-import server.comunications.SocketServer;
+import server.comunications.EmakuServerSocket;
 import server.database.sql.LinkingCache;
-import server.database.sql.RunQuery;
+import server.database.sql.QueryRunner;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
 
@@ -179,7 +179,7 @@ public class LNAdminPUC {
 	             * a los caches
 	             */
 	            if (detalle) {
-	                LinkingCache.loadPerfilCta(SocketServer.getBd(sock),"SCS0057",new String[]{LNGtransaccion.getKey(0)});
+	                LinkingCache.loadPerfilCta(EmakuServerSocket.getBd(sock),"SCS0057",new String[]{LNGtransaccion.getKey(0)});
 	            }
 	        }
 	        /*
@@ -272,7 +272,7 @@ public class LNAdminPUC {
 	                     */
 	                    else {
 	                        enableAccount(SQLenableAccount,SQLenableFather,SQLhijo);
-		                    LinkingCache.removePerfilCta(SocketServer.getBd(sock),new String[]{LNGtransaccion.getKey(0)});
+		                    LinkingCache.removePerfilCta(EmakuServerSocket.getBd(sock),new String[]{LNGtransaccion.getKey(0)});
 	                        detalle = true;
 	                    }
 	                }
@@ -337,7 +337,7 @@ public class LNAdminPUC {
 	                }
 	            }
 	            if (detalle) {
-	                LinkingCache.loadPerfilCta(SocketServer.getBd(sock),"SCS0057",new String[]{LNGtransaccion.getKey(0)});
+	                LinkingCache.loadPerfilCta(EmakuServerSocket.getBd(sock),"SCS0057",new String[]{LNGtransaccion.getKey(0)});
 	            }
 	        }
 
@@ -363,7 +363,7 @@ public class LNAdminPUC {
 	    	               		 LNGtransaccion.rollback();
 	    	               		 break;
 	    	            }
-	                    LinkingCache.removePerfilCta(SocketServer.getBd(sock),new String[]{key});
+	                    LinkingCache.removePerfilCta(EmakuServerSocket.getBd(sock),new String[]{key});
                     }
 	                /*
 	                 * Se procede a eliminar la cuenta de la tabla perfiles
@@ -473,8 +473,8 @@ public class LNAdminPUC {
     
 	private boolean haveChildren(String SQLpadre,String key) 
 	throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
-        String bd = SocketServer.getBd(sock);
-        RunQuery RQpadre = new RunQuery(bd,SQLpadre,
+        String bd = EmakuServerSocket.getBd(sock);
+        QueryRunner RQpadre = new QueryRunner(bd,SQLpadre,
      		   new String[]{key});
 		ResultSet RSpadre = RQpadre.ejecutarSELECT();
 		RSpadre.next();
@@ -497,8 +497,8 @@ public class LNAdminPUC {
 	
     private void enableAccount(String arg,String SQLpadre,String SQLhijo) 
     throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
-        String bd = SocketServer.getBd(sock);
-        RunQuery RQpadre = new RunQuery(bd,SQLhijo,
+        String bd = EmakuServerSocket.getBd(sock);
+        QueryRunner RQpadre = new QueryRunner(bd,SQLhijo,
                 		   new String[]{LNGtransaccion.getKey(0)});
         ResultSet RSpadre = RQpadre.ejecutarSELECT();
         RSpadre.next();
@@ -508,7 +508,7 @@ public class LNAdminPUC {
         while (!padre.equals("0")) {
             argUpdate[1]=padre;
             getTransaction(arg,argUpdate);
-            RQpadre = new RunQuery(bd,SQLpadre,
+            RQpadre = new QueryRunner(bd,SQLpadre,
                          new String[]{padre});
             
             RSpadre = RQpadre.ejecutarSELECT();
@@ -529,12 +529,12 @@ public class LNAdminPUC {
     
     private void disableAccount(String padre,String arg,String SQLpadre) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
-        String bd = SocketServer.getBd(sock);
+        String bd = EmakuServerSocket.getBd(sock);
         String argUpdate[] = new String[2];
         argUpdate[0]="false";
-        RunQuery RQpadre;
+        QueryRunner RQpadre;
         String descendencia;
-        RQpadre = new RunQuery(bd,SQLpadre,
+        RQpadre = new QueryRunner(bd,SQLpadre,
      		   new String[]{padre});
          ResultSet RSpadre = RQpadre.ejecutarSELECT();
          RSpadre.next();
@@ -565,7 +565,7 @@ public class LNAdminPUC {
             else if (padre.length()>0)
                 break;
             
-            RQpadre = new RunQuery(bd,SQLpadre,
+            RQpadre = new QueryRunner(bd,SQLpadre,
             		   new String[]{padre});
             RSpadre = RQpadre.ejecutarSELECT();
             RSpadre.next();

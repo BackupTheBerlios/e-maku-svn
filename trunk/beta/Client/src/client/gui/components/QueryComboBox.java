@@ -3,8 +3,8 @@ package client.gui.components;
 import java.util.Iterator;
 
 import common.gui.forms.GenericForm;
-import common.transactions.STException;
-import common.transactions.STResultSet;
+import common.transactions.TransactionServerException;
+import common.transactions.TransactionServerResultSet;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -51,7 +51,7 @@ public class QueryComboBox extends Thread {
     
     public boolean searchQuery() {
         try {
-            Document doc = STResultSet.getResultSetST(sql,new String[]{arg});
+            Document doc = TransactionServerResultSet.getResultSetST(sql,new String[]{arg});
             Iterator i = doc.getRootElement().getChildren("row").iterator();
             int row = doc.getRootElement().getChildren("row").size();
                 
@@ -77,7 +77,7 @@ public class QueryComboBox extends Thread {
 	            XMLCBout.setSelectedItem("");
             }
         }
-        catch (STException e) {
+        catch (TransactionServerException e) {
             e.printStackTrace();
             return false;
         }

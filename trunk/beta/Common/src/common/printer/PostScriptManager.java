@@ -25,7 +25,7 @@ import org.jdom.Element;
 import common.control.ClientHeaderValidator;
 import common.control.SuccessEvent;
 import common.control.SuccessListener;
-import common.printer.PrintManager.ImpresionType;
+import common.printer.PrintingManager.ImpresionType;
 
 
 public class PostScriptManager implements AbstractManager, SuccessListener, Printable {

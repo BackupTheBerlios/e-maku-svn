@@ -20,9 +20,9 @@ import javax.swing.JTextArea;
 import org.jdom.Document;
 import org.jdom.Element;
 
-import common.gui.forms.FinishEvent;
+import common.gui.forms.EndEventGenerator;
 import common.gui.forms.GenericForm;
-import common.gui.forms.InitiateFinishListener;
+import common.gui.forms.InstanceFinishingListener;
 import common.gui.forms.NotFoundComponentException;
 
 /**
@@ -45,7 +45,7 @@ import common.gui.forms.NotFoundComponentException;
  * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  */
-public class XMLTextArea extends JTextArea implements AnswerListener, FocusListener, InitiateFinishListener {
+public class XMLTextArea extends JTextArea implements AnswerListener, FocusListener, InstanceFinishingListener {
 
     private static final long serialVersionUID = -1097007812890286286L;
     private JScrollPane JSPpanel;
@@ -246,7 +246,7 @@ public class XMLTextArea extends JTextArea implements AnswerListener, FocusListe
 		}
 	}
 
-	public void initiateFinishEvent(FinishEvent e) {
+	public void initiateFinishEvent(EndEventGenerator e) {
 		try {
 			for (int i=0 ; i < driverEvent.size() ; i++) {
 				GFforma.invokeMethod(

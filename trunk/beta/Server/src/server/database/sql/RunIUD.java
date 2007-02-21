@@ -3,8 +3,8 @@ package server.database.sql;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import server.database.connection.PoolConexiones;
-import server.misc.ServerConst;
+import server.database.connection.ConnectionsPool;
+import server.misc.ServerConstants;
 import common.misc.language.Language;
 import common.misc.log.LogAdmin;
 
@@ -53,24 +53,24 @@ public class RunIUD {
      */
     public String ejecutarIUD() {
         try {
-            Statement st = PoolConexiones.getConnection(bd).createStatement();
+            Statement st = ConnectionsPool.getConnection(bd).createStatement();
             try {
                 st.execute(sql);
             } 
             catch(SQLException SQLEe) {
                 LogAdmin.setMessage(
                 		Language.getWord("EXECUTE_IUD_ERR") + " " + SQLEe.getMessage(),
-						ServerConst.ERROR);
+						ServerConstants.ERROR);
                 return Language.getWord("EXECUTE_IUD_ERR");
             }
-            CloseSQL.close(st);
-            LogAdmin.setMessage(Language.getWord("EXECUTE_IUD_OK"), ServerConst.MESSAGE);
+            StatementsClosingHandler.close(st);
+            LogAdmin.setMessage(Language.getWord("EXECUTE_IUD_OK"), ServerConstants.MESSAGE);
             return Language.getWord("EXECUTE_IUD_OK");
         } 
         catch(SQLException SQLEe) {
             LogAdmin.setMessage(
             		Language.getWord("ERR_ST") + " " + SQLEe.getMessage(),
-					ServerConst.ERROR);
+					ServerConstants.ERROR);
             return Language.getWord("ERR_ST");
         }
     }

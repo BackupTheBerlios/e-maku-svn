@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import client.gui.components.HTMLdoc;
+import client.gui.components.HTMLViewer;
 import client.gui.components.MainWindow;
 import common.misc.language.Language;
 
@@ -58,8 +58,8 @@ public class About extends JInternalFrame {
         this.setClosable(true);
         JTPpestanas = new JTabbedPane();
         JTPpestanas.addTab(Language.getWord("ABOUT"),new PanelAbout());
-        JTPpestanas.addTab(Language.getWord("LICENSE"),new HTMLdoc(this.getClass().getResource("/LICENSE-GNU")));
-        JTPpestanas.addTab(Language.getWord("CREDITS"),new HTMLdoc(this.getClass().getResource("/STAFF-QHATU")));
+        JTPpestanas.addTab(Language.getWord("LICENSE"),new HTMLViewer(this.getClass().getResource("/LICENSE-GNU")));
+        JTPpestanas.addTab(Language.getWord("CREDITS"),new HTMLViewer(this.getClass().getResource("/STAFF-QHATU")));
 
         this.getContentPane().add(JTPpestanas,BorderLayout.CENTER);
 

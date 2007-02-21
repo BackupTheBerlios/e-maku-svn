@@ -7,7 +7,7 @@ import java.util.Iterator;
 import org.jdom.Document;
 import org.jdom.Element;
 
-import server.comunications.SocketServer;
+import server.comunications.EmakuServerSocket;
 import server.database.sql.LinkingCache;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
@@ -45,18 +45,18 @@ public class LNAsientosPredefinidos {
 					   new Document((Element)doc.getRootElement().getChild("subarg").clone()),
 					   (Element)sn_pack.clone(),
 					   id_transaction);
-			LinkingCache.reloadCtasAsientos(SocketServer.getBd(sock),new String[]{code});
+			LinkingCache.reloadCtasAsientos(EmakuServerSocket.getBd(sock),new String[]{code});
 		}
 		else if (action.equals("edit")) {
-			LinkingCache.removeCtasAsientos(SocketServer.getBd(sock),new String[]{code});
+			LinkingCache.removeCtasAsientos(EmakuServerSocket.getBd(sock),new String[]{code});
 			new LNMultiPackage(sock,
 					   new Document((Element)doc.getRootElement().getChild("subarg").clone()),
 					   (Element)sn_pack.clone(),
 					   id_transaction);
-			LinkingCache.reloadCtasAsientos(SocketServer.getBd(sock),new String[]{code});
+			LinkingCache.reloadCtasAsientos(EmakuServerSocket.getBd(sock),new String[]{code});
 		}
 		else if (action.equals("delete")) {
-			LinkingCache.removeCtasAsientos(SocketServer.getBd(sock),new String[]{code});
+			LinkingCache.removeCtasAsientos(EmakuServerSocket.getBd(sock),new String[]{code});
 			new LNGenericSQL(sock,
 					   new Document((Element)doc.getRootElement().getChild("subarg").clone()),
 					   (Element)sn_pack.clone(),

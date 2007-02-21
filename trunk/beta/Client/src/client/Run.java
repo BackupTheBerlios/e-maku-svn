@@ -11,9 +11,9 @@ import javax.swing.UIManager;
 import bsh.Interpreter;
 import client.gui.components.MainWindow;
 import client.gui.forms.Connection;
-import client.gui.forms.FirstDialog;
-import client.misc.ClientConst;
-import client.misc.settings.ConfigFile;
+import client.gui.forms.SettingsDialog;
+import client.misc.ClientConstants;
+import client.misc.settings.ConfigFileHandler;
 import client.misc.settings.ConfigFileNotLoadException;
 
 //import com.nilo.plaf.nimrod.NimRODLookAndFeel;
@@ -75,14 +75,14 @@ public class Run {
         	UIManager.put("TabbedPane.font",	f);
         	UIManager.put("DesktopColor.color",	Color.GRAY);
            
-            ConfigFile.loadSettings();
+            ConfigFileHandler.loadSettings();
             
             new Connection();
 
         }
 
         catch (ConfigFileNotLoadException e) {
-            FirstDialog dialogo = new FirstDialog(new JFrame(),ClientConst.KeyClient,FirstDialog.CREATE);
+            SettingsDialog dialogo = new SettingsDialog(new JFrame(),ClientConstants.KeyClient,SettingsDialog.CREATE);
             dialogo.setLocationRelativeTo(dialogo.getParent());
             dialogo.pack();
             dialogo.setVisible(true);

@@ -3,7 +3,7 @@ import java.io.ByteArrayInputStream;
 
 import org.jdom.Element;
 
-import common.printer.PrintManager.ImpresionType;
+import common.printer.PrintingManager.ImpresionType;
 
 public interface AbstractManager {
 	public ByteArrayInputStream getStream();

@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
 
-import client.misc.ClientConst;
+import client.misc.ClientConstants;
 
 /**
  * Splash.java Creado el 22-abr-2005
@@ -49,8 +49,8 @@ public class Splash {
         JLabel labelx = new JLabel(new ImageIcon(window.getClass().getResource("/icons/e-maku_splash.png")),JLabel.CENTER);
         pe.add(labelx,BorderLayout.CENTER);
         window.getContentPane().add(pe);
-        window.setBounds(((int)ClientConst.MAX_WIN_SIZE_WIDTH/2)-150,
-                		(int)(ClientConst.MAX_WIN_SIZE_HEIGHT/2)-143,300,341);
+        window.setBounds(((int)ClientConstants.MAX_WIN_SIZE_WIDTH/2)-150,
+                		(int)(ClientConstants.MAX_WIN_SIZE_HEIGHT/2)-143,300,341);
         window.setVisible(true);
     }
     
