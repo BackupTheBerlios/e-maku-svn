@@ -101,7 +101,8 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 		JPMpopup.add(dataSearch());
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				showDataSearch();
+				//Aqui queda pendiente desplegar
+				//El popup con la parametrizacion.
 			}
 		});
 	}
@@ -139,12 +140,14 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 	 */
 	
 	private void showDataSearch() {
-		updateUI();
-		int x = this.getWidth() - (int) JPMpopup.getPreferredSize().getWidth();
-		int y = this.getHeight();
-		JPMpopup.show(this,x,y);
-		XMLTFkey.requestFocusInWindow();
-		dataSelected = false;
+		if (!JPMpopup.isVisible()) {
+			updateUI();
+			int x = this.getWidth() - (int) JPMpopup.getPreferredSize().getWidth();
+			int y = this.getHeight();
+			JPMpopup.show(this,x,y);
+			XMLTFkey.requestFocusInWindow();
+			dataSelected = false;
+		}
 	}
 	
 	public void popupMenuCanceled(PopupMenuEvent e) {}
@@ -182,7 +185,7 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 		this.setText( SQLCBselection.getStringCombo());
 		JPMpopup.setVisible(false);
 	}
-	
+
 	public void keyReleased(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 		Object s = e.getSource();

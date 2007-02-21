@@ -50,6 +50,7 @@ implements TableCellEditor {
 									 int selected,
 									 int repeatData) {
 		dataSearch = new EmakuDataSearch(gfforma,sql,externalValues,keyValue,blankArgs,dataBeep,noDataMessage,selected,repeatData);
+		//dataSearch.setEditable(false);
 		//this.clickCountToStart = 2;
 	}
 
