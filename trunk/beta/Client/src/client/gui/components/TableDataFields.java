@@ -61,18 +61,26 @@ public class TableDataFields extends GenericData implements InstanceFinishingLis
     public void totalColEvent(TableTotalEvent e) {
         Vector fields = this.getVFields();
         for (int i=0;i<fields.size();i++) {
-            String totalValue = ((XMLTextField)fields.get(i)).getTotalCol();
+        	XMLTextField xmltf = (XMLTextField)fields.get(i); 
+            String totalValue = xmltf.getTotalCol();
+            double total=0;
             if (totalValue!=null) {
-            	double total = calcule(totalValue);
+            	total = calcule(totalValue);
                 NumberFormat nf = NumberFormat.getNumberInstance(); 
                 DecimalFormat form = (DecimalFormat)nf;
                 form.applyPattern("###,###,##0.00");
-                ((XMLTextField)fields.get(i)).setText(form.format(total));
-                ((XMLTextField)fields.get(i)).setNumberValue(total);
-                if (((XMLTextField)fields.get(i)).isExportvalue()) {
-                	GFforma.setExternalValues(((XMLTextField)fields.get(i)).getExportvalue(),((XMLTextField)fields.get(i)).getNumberValue());
+                xmltf.setText(form.format(total));
+                xmltf.setNumberValue(total);
+                if (xmltf.isExportvalue()) {
+                	GFforma.setExternalValues(xmltf.getExportvalue(),xmltf.getNumberValue());
                 }
-               
+               /*
+                * si sendRecord ...
+                */
+				if (xmltf.isSendRecord()) {
+					notificando(xmltf, String.valueOf(total));
+				}
+
             }
         }
     }

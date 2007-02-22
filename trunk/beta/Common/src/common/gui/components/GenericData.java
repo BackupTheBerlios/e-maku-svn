@@ -1185,7 +1185,7 @@ public class GenericData extends JPanel implements DateListener,
 		recordListener.removeElement(listener);
 	}
 
-	private synchronized void notificando(XMLTextField XMLTFtext, String value) {
+	protected synchronized void notificando(XMLTextField XMLTFtext, String value) {
 		Element element = new Element("table");
 		Element row = new Element("row");
 		element.addContent(row);
