@@ -66,11 +66,8 @@ public class TextReportGenerator {
       while (varTypes.hasMoreTokens()) {
     	  String type = varTypes.nextToken();
     	  fieldsTypes.add(type); 
-    	  System.out.println("Tipo: " + type);
       }
-      System.out.println("Linea 0: " + line);
       
-      System.out.println("Numero de Columnas: " + columnsNum);
 	  int[] maxColumnsLength = new int[columnsNum];
 	  maxlong = new int[columnsNum];
 	  
@@ -79,9 +76,7 @@ public class TextReportGenerator {
            
     	    lineNumber++;
     	    line = tokens.nextToken();
-    	    System.out.println("Linea 1: " + line);
     	    
-           	//if ((line.startsWith("Página")) && (line.indexOf("de")==-1)) {
     	    if (lineNumber == 1) {
            		// Processing company name
            		data = tools.getLineVars(line,2);
@@ -89,14 +84,12 @@ public class TextReportGenerator {
            	
            		// Processing Nit
            		line = tokens.nextToken();
-           		System.out.println("Linea 2: " + line);
            		data = tools.getLineVars(line,1);
            		header += data[0] + "\n";
            		nit = data[0];
            	
            		// Processing Date
            		line = tokens.nextToken();
-           		System.out.println("Linea 3: " + line);
            		String date = getDate();
            		today = date;
            		header += date + "\n";
@@ -106,7 +99,6 @@ public class TextReportGenerator {
        	    
            		// Processing Title
            		line = tokens.nextToken();
-           		System.out.println("Linea 4: " + line);
            		data = tools.getLineVars(line,1);
            		reportTitle = data[0];
        	    
@@ -115,14 +107,12 @@ public class TextReportGenerator {
        	    
            		// Processing Columns
            		line = tokens.nextToken();
-           		System.out.println("Linea 5: " + line);
            		
            		columnsNames = tools.getColumnNames(line);
            		columnsNum = columnsNames.size();
        	    
            		for(int i=0;i<columnsNum;i++){
            			String columnName = (String) columnsNames.get(i);
-           			System.out.println("Columna: " + columnName);
            			maxColumnsLength[i] = columnName.length();  
            		}	       	           	    
            	}
@@ -131,7 +121,6 @@ public class TextReportGenerator {
            			if (line.contains("eMaku")) {
            				data = tools.getLineVars(line,3);
           				totalPages = Integer.valueOf(data[2].trim());
-           				System.out.println("Total paginas: " + totalPages);
            				
            				break;
            			} 
@@ -139,7 +128,6 @@ public class TextReportGenerator {
            					// Process the report records
            					data = tools.getLineVars(line,columnsNum);
            					for(int i=0;i<columnsNum;i++) {  	  
-           						System.out.println("i: " + i + " - " + "columnsNum: " + columnsNum);
            						// processing length of fields to find max values
            						if (data[i].length()>maxlong[i]) {
            							maxlong[i] = data[i].length(); 
@@ -179,11 +167,15 @@ public class TextReportGenerator {
 	   StringTokenizer tokens = new StringTokenizer(input,"\n");
 	   line = tokens.nextToken();
 	   
+	   int lineNumber = 0;
+	   pagesNum = 0;
+	   
        while (tokens.hasMoreTokens()) { 
   
+   	       lineNumber++;
    	       line = tokens.nextToken();
     	   
-    	   if ((line.startsWith("Pagina")) && (line.indexOf("de")==-1)) {       	                 
+    	   if (lineNumber == 1) {       	                 
     		   // Processing Header
     		   for(int i=0;i<4;i++) {
     			   line = tokens.nextToken();
@@ -229,13 +221,14 @@ public class TextReportGenerator {
     	   	}
     	   		else {
     	   				// Process the footer page message
-    	   				if (line.startsWith("Pagina")) {
+    	   				if (line.contains("eMaku")) {
     	   					
     	   					printStringToReportViewer("</table>");
         		  
-    	   					data = tools.getLineVars(line,2);
+    	   					/* data = tools.getLineVars(line,2);
     	   					data[1] = data[1].substring(1,data[1].length()); 
-    	   					String pageFooter = tools.getRightAlignedString(data[0] + data[1], charactersPerLine);
+    	   					String pageFooter = tools.getRightAlignedString(data[0] + data[1], charactersPerLine); */
+    	   					String pageFooter = "plop!";
                   
     	   					printerViews.addStringToPrinterView(pageFooter + "\n\n");
     	   					printerViews.startNewPage();
@@ -246,8 +239,9 @@ public class TextReportGenerator {
     	   					// Closing a report page of the array
     	   					reportViews[pagesNum].close();
     	   					printerViews.closePrinterPage();
-        		  
+    	   				    System.out.println("*** Fin de Pagina " + pagesNum);  
     	   					pagesNum++;
+    	   					lineNumber=0;
     	   				} 
     	   				else {
     	   						// Process the report records
@@ -295,8 +289,6 @@ public class TextReportGenerator {
   
   public void printStringToReportViewer(String textString) {
 		  try {
-			  
-			    System.out.println("pagesNum: " + pagesNum);
 			    System.out.println("textString: " + textString);
 			    
 			   	final StringBuffer buffer = new StringBuffer("");

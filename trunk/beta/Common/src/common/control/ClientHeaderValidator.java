@@ -58,15 +58,6 @@ public class ClientHeaderValidator {
          */
         raiz = doc.getRootElement();
         String nombre = raiz.getName();
-    	XMLOutputter out = new XMLOutputter();
-    	out.setFormat(Format.getPrettyFormat());
-    	try {
-			out.output(raiz, System.out);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
         
         /*
          *  Validacion paquete ANSWER 

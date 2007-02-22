@@ -439,24 +439,15 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 
 		if (e.getIdReport().equals(idReport) && e.isPlainReport()) {
 			try {
-			    //System.out.println("Cargando pagina 1 - " + e.getIdReport());
 				data = e.getData();
 				//Cursor cursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 				// currentGUI.getFrame().setCursor(cursor);
 				if (data != null) {
-					// System.out.println("Descomprimiendo ...");
 					bytes = zip.getDataDecode(data.getValue());
-					// System.out.println("zip descomprimido...");
 					reportName = e.getTitleReport();
-					// Process bytes and convert them to plain reports
-					// Set reportViews and printerViews
-					// Set the view area with first 
-					// Vector <String>fieldsTypes = new Vector<String>();
-					//System.out.println("descomprimidos: \n"+new String(bytes));
 					TextReportGenerator parser = new TextReportGenerator(80,bytes);
 				    reportViews = parser.getReportViews();
 				    printerViews = parser.getPrinterViews();
-				    //System.out.println("Datos pre-procesados...");
 				    setReportPage(0);
 				} 
 				
