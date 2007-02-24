@@ -1,12 +1,12 @@
 package common.control;
 
-import java.io.IOException;
+//import java.io.IOException;
 import java.util.Vector;
 
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
+//import org.jdom.output.Format;
+//import org.jdom.output.XMLOutputter;
 
 import common.transactions.Cache;
 import common.transactions.TransactionServerResultSet;
@@ -59,6 +59,15 @@ public class ClientHeaderValidator {
         raiz = doc.getRootElement();
         String nombre = raiz.getName();
         
+        /* XMLOutputter out = new XMLOutputter();
+        out.setFormat(Format.getPrettyFormat());
+        try {
+			out.output(raiz,System.out);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+        
         /*
          *  Validacion paquete ANSWER 
          */
@@ -102,6 +111,8 @@ public class ClientHeaderValidator {
         }
         else if(nombre.equals("PLAINREPORT") || nombre.equals("REPORT")) {
 			// Aqui se debe notificar que llego el reporte
+        	
+        	System.out.println("Entrando a PlainReport desde ClientHeaderValidator...");
         	Element element = null;
         	element = raiz.getChild("data");
 			ReportEvent report;
@@ -167,6 +178,7 @@ public class ClientHeaderValidator {
     }
     
     private static synchronized void notifyReport(ReportEvent event) {
+    	System.out.println("*** Notificando evento...");
     	Vector lista;
         lista = (Vector)reportListener.clone();
         for (int i=0; i<lista.size();i++) {

@@ -44,6 +44,7 @@ public class TextReportGenerator {
 
   public TextReportGenerator(int charactersPerLine, byte[] bytes){
 	  this.charactersPerLine = charactersPerLine;
+	  System.out.println("*** Instanciando TextReportGenerator...");
 	  input = new String(bytes);
 	  scanFirstPage();
 	  processCsv();
@@ -152,7 +153,6 @@ public class TextReportGenerator {
 	        blankLine +=  "<td> </td><td> </td>";
 	     }
 	    blankLine += "</tr>";
-  	    
   }
   
   // Process the csv input file
@@ -177,6 +177,7 @@ public class TextReportGenerator {
     	   
     	   if (lineNumber == 1) {       	                 
     		   // Processing Header
+    		   
     		   for(int i=0;i<4;i++) {
     			   line = tokens.nextToken();
     		   }
@@ -226,9 +227,8 @@ public class TextReportGenerator {
     	   					printStringToReportViewer("</table>");
         		  
     	   					/* data = tools.getLineVars(line,2);
-    	   					data[1] = data[1].substring(1,data[1].length()); 
-    	   					String pageFooter = tools.getRightAlignedString(data[0] + data[1], charactersPerLine); */
-    	   					String pageFooter = "plop!";
+    	   					data[1] = data[1].substring(1,data[1].length());*/ 
+    	   					String pageFooter = tools.getRightAlignedString("Pagina " + (pagesNum + 1) + " de " + totalPages, charactersPerLine);
                   
     	   					printerViews.addStringToPrinterView(pageFooter + "\n\n");
     	   					printerViews.startNewPage();
@@ -238,8 +238,7 @@ public class TextReportGenerator {
         		  
     	   					// Closing a report page of the array
     	   					reportViews[pagesNum].close();
-    	   					printerViews.closePrinterPage();
-    	   				    System.out.println("*** Fin de Pagina " + pagesNum);  
+    	   					printerViews.closePrinterPage();  
     	   					pagesNum++;
     	   					lineNumber=0;
     	   				} 
@@ -253,7 +252,10 @@ public class TextReportGenerator {
     	   							String htmlValue = "";
     	   							String type = fieldsTypes.get(i);
     	   							int maxlength = maxlong[i];
-        	        	  
+    	   							if(data[i] == null) {
+    	   								data[i] = "";
+    	   							}
+    	   							        	        	      	   							
     	   							if (type.equals("java.lang.String")) {
     	   								// align to left relative
     	   								if (data[i].length()>maxlength) {
@@ -283,14 +285,13 @@ public class TextReportGenerator {
    catch(IOException ex){
 	 System.out.println("Error: No se pudo leer el archivo");   
    }
+   
   }  
    
   // Write a String to report viewer
   
   public void printStringToReportViewer(String textString) {
 		  try {
-			    System.out.println("textString: " + textString);
-			    
 			   	final StringBuffer buffer = new StringBuffer("");
 			    buffer.append(textString);
 			    final byte[] text = buffer.toString().getBytes();

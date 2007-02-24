@@ -561,6 +561,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
         		plainViewer.openViewer();
         		JInternalFrame jiframe = plainViewer;
 				GFforma.getJDPpanel().add(jiframe);
+
 				try {
 					jiframe.setVisible(true);
 					jiframe.setSelected(true);

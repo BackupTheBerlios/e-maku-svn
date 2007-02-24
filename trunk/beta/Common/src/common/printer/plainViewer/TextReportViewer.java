@@ -70,18 +70,8 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 		this.GFforma = GFforma;
 		this.idReport = idReport;
 		ClientHeaderValidator.addReportListener(this);
-		this.zip = new ZipHandler();
-		
+		this.zip = new ZipHandler();		
 		openReport();
-		
-/*		this.reportViews = reportViews;
-		this.printerViews = printerViews;
-		pages = reportViews.length;
-
-		if (pages == 0) {
-			currentPage = 0;
-		}
-		total.setText("de " + pages); */
 	}
 	
 	// Sets the graphic interface for the viewer
@@ -98,7 +88,7 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
         setDefaultCloseOperation(JInternalFrame.EXIT_ON_CLOSE);
         setContentPane(global);
         pack();
-        setSize(500,650);
+        setSize(900,400);
 	}
 
 	// Sets the top panel 
@@ -110,7 +100,6 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 		
 		printerButton.setIcon(new ImageIcon(this.getClass().getResource("/icons/ico_impresora.png")));
 		closeButton.setIcon(new ImageIcon(this.getClass().getResource("/icons/ico_cancelar.png")));
-		
 		closeButton.addActionListener(this);
 		closeButton.setActionCommand("CLOSE");
 		printerButton.addActionListener(this);
@@ -121,15 +110,16 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 
 		Border border = BorderFactory.createEtchedBorder();
 		container.setBorder(border);
-		
 		buttons.add(container);
+		
 		return buttons;	
 	}
 	
 	// Sets the botton panel
 	public JPanel setNavigationPanel() {
 		JPanel navigation = new JPanel();
-		JLabel page = new JLabel("Pagina ");
+		JLabel page = new JLabel("Página ");
+		
 		currentPageTF.setText("" + currentPage);
 		currentPageTF.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
@@ -191,7 +181,7 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 		JPanel mainArea = new JPanel();
 		mainArea.setLayout(new BorderLayout());
 		        
-        reportArea = new JEditorPane("text/html","");
+        reportArea = new JEditorPane("text/html","<br><br><br><b><center>Loading report...</center></b>");
         reportArea.setFont(new Font("Mono", Font.PLAIN, 12));
         reportArea.setEditable(false);
         
@@ -281,6 +271,7 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 		// Go forward 1 page
 		if (e.getActionCommand().equals("FWD_ONE")) {
 			currentPage++;
+			System.out.println("Avanzando una pagina: " + currentPage);
 			if (currentPage == 2) {
 				firstPage.setEnabled(true);
     			backOnePage.setEnabled(true);		
@@ -299,6 +290,7 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 			             }
 			}
 			setReportPage(currentPage-1);
+			System.out.println("Visualizando: " + (currentPage-1));
 			return;
 		}
 		// Go forward 10 pages
@@ -346,17 +338,6 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 		return i;
 	}
 	
-	/* 
-    // Returns a string variable with a report page 
-	public String getReportPage(int i) {	
-        int j = checkIndexRange(i);		
-		String page1 = reportViews[j].toString();
-		if (page1 == null) {
-			return "";
-		} 
-		return page1;
-	} */
-
 	// Shows a report page in the viewer
 	public void setReportPage(int i) {		
 		int j = checkIndexRange(i);
@@ -431,31 +412,52 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
     public void openViewer() {
         setVisible(true);
     }
+    
+    
+    private void loadReport(String name) {
+		class Chambonada extends Thread {
+			private String name;
+			Chambonada(String name) {
+				this.name=name;
+			}
+			
+			public void run() {
+				try {
+					System.out.println("*** Inicializando el generador de reportes...");
+					bytes = zip.getDataDecode(data.getValue());
+					reportName = name;
+					TextReportGenerator parser = new TextReportGenerator(80,bytes);
+				    reportViews = parser.getReportViews();
+				    printerViews = parser.getPrinterViews();
+				    pages = reportViews.length;
+				    System.out.println("*** Cargando pagina 1 en reporte plano...");
+				    setReportPage(0);
+				}
+				catch (IOException IOEe) {
+					IOEe.printStackTrace();
+				}
+			}
+		}
+		new Chambonada(name).start();
+    	
+    } 
 
 	/**
 	 * This method receives a report through the ReportEvent object
 	 */
 	public void arriveReport(ReportEvent e) {
 
+		System.out.println("*** arriveReport...");
+		
 		if (e.getIdReport().equals(idReport) && e.isPlainReport()) {
-			try {
 				data = e.getData();
 				//Cursor cursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 				// currentGUI.getFrame().setCursor(cursor);
 				if (data != null) {
-					bytes = zip.getDataDecode(data.getValue());
-					reportName = e.getTitleReport();
-					TextReportGenerator parser = new TextReportGenerator(80,bytes);
-				    reportViews = parser.getReportViews();
-				    printerViews = parser.getPrinterViews();
-				    setReportPage(0);
+					loadReport(e.getTitleReport());
 				} 
 				
 			}
-			catch (IOException IOEe) {
-				IOEe.printStackTrace();
-			}
-		}
 	}
 
 } // Class end 

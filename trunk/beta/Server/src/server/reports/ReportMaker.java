@@ -214,12 +214,12 @@ public class ReportMaker extends Thread {
 			root.addContent(titleReport);
 			root.addContent(zip.getElementDataEncode("data"));
 	    	docZip.setRootElement(root);
-/*	    	System.out.println("escribiendo paquete ....");
+	    	/* System.out.println("escribiendo paquete ....");
 	    	XMLOutputter out = new XMLOutputter(); 
 	    	out.setFormat(Format.getPrettyFormat());
 	    	out.output(docZip, System.out); */
 			SocketWriter.writing(this.socket,docZip);
-			//System.out.println("paquete escrito ...");
+			//System.out.println("paquete escrito ..."); 
 	        rs.close();
 
 		} catch (SQLException e) {
