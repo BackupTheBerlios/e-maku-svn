@@ -113,6 +113,7 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
 	private ArrayList<String> sqlCode;
 	private ArrayList<String> sqlCodeWT;
 	private String typeDocument;
+	private Vector<String> constantValue;
 	
     public FindThird(GenericForm GFforma,Document doc) {
         
@@ -179,6 +180,13 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
             else if("sqlCodeWT".equals(e.getAttributeValue("attribute"))) {
             		sqlCodeWT.add(e.getValue());
             }
+            else if ("constantValue".equals(e.getAttributeValue("attribute"))) {
+				if (constantValue == null) {
+					constantValue = new Vector<String>();
+				}
+				System.out.println("Adicionando valor constante: "+e.getValue());
+				constantValue.addElement(e.getValue());
+			}           
             else if("typeDocument".equals(e.getAttributeValue("attribute"))) {
             		typeDocument = e.getValue();
             }
@@ -567,13 +575,28 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
     		int ind = JCBfined.getSelectedIndex();
     		if (ind < 0)
     			return;
+    		String[] args = null;
+    		if (constantValue!=null) {
+    			args = new String[constantValue.size()+1];
+    			int i=0;
+    			for (;i<constantValue.size();i++) {
+        			args[i]= constantValue.get(i);
+        			System.out.println("argumento "+i+" "+args[i]);
+        		}
+        		args[i]=Vkeys.get(ind);
+    			System.out.println("argumento "+i+" "+args[i]);
+    		}
+    		else {
+    			args = new String[1];
+    			args[0]=Vkeys.get(ind);
+    		}
     		String keyFind = Vkeys.get(ind);
     		for (int i=0; i < sqlCode.size() ; i++) {
     			Document doc = null;
             String sql = sqlCode.get(i);
          
             try {
-                doc = TransactionServerResultSet.getResultSetST(sql,new String[] {keyFind});
+                doc = TransactionServerResultSet.getResultSetST(sql,args);
             }
             catch (TransactionServerException e) {
                 e.printStackTrace();

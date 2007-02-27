@@ -455,70 +455,83 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
     }
 
     private void actionEvent(String action) {
-        if (action.equals("EXIT")) {
-            close();
-        } else {
-            try {
-            	if (Heventos.containsKey(action)) {
-            		callEvent(action);
-            	}
-            	if (Hform.containsKey(action)) {
-            		Vector vforms = Hform.get(action);
-            		for (int i=0 ; i< vforms.size() ; i++) {
-            			new GenericForm(GFforma,(Element)vforms.get(i));
-            		}
-            	}
-                JButton button = null;
-                
-                if (action.equals("NEW")) {
+    	actionThread(action);
+    }
+    
+    private void actionThread(String action) {
+    	class ActionThread extends Thread {
+    		String action;
+    		ActionThread(String action){
+    			this.action=action;
+    		}
+    		
+    		public void run() {
+    	        if (action.equals("EXIT")) {
+    	            close();
+    	        } else {
+    	            try {
+    	            	if (Heventos.containsKey(action)) {
+    	            		callEvent(action);
+    	            	}
+    	            	if (Hform.containsKey(action)) {
+    	            		Vector vforms = Hform.get(action);
+    	            		for (int i=0 ; i< vforms.size() ; i++) {
+    	            			new GenericForm(GFforma,(Element)vforms.get(i));
+    	            		}
+    	            	}
+    	                JButton button = null;
+    	                
+    	                if (action.equals("NEW")) {
 
-                    button = (JButton) Hbuttons.get("SAVE");
-                    if (button != null) {
-                        button.setEnabled(true);
-                    }
-                    button = (JButton) Hbuttons.get("SAVEAS");
-                    if (button != null) {
-                        button.setEnabled(true);
-                    }
-                    
-                    button = (JButton) Hbuttons.get(action);
-//                    button.setEnabled(false);
+    	                    button = (JButton) Hbuttons.get("SAVE");
+    	                    if (button != null) {
+    	                        button.setEnabled(true);
+    	                    }
+    	                    button = (JButton) Hbuttons.get("SAVEAS");
+    	                    if (button != null) {
+    	                        button.setEnabled(true);
+    	                    }
+    	                    
+    	                    button = (JButton) Hbuttons.get(action);
+//    	                    button.setEnabled(false);
 
-                } else if (action.equals("SAVE") || action.equals("SAVEAS")) {
+    	                } else if (action.equals("SAVE") || action.equals("SAVEAS")) {
 
-                    button = (JButton) Hbuttons.get("NEW");
-                    if (button != null) {
-                        button.setEnabled(true);
-                    }
-                    button = (JButton) Hbuttons.get("SAVEAS");
-                    if (button != null) {
-                        button.setEnabled(true);
-                    }
-                    button = (JButton) Hbuttons.get("PRINT");
-                    if (button != null) {
-                        button.setEnabled(true);
-                    }
-                    button = (JButton) Hbuttons.get(action);
-                    button.setEnabled(false);
-                }
-                
-            }
-            catch (InvocationTargetException ITEe) {
-                ITEe.printStackTrace();
-                JOptionPane.showInternalMessageDialog(GFforma.getDesktopPane(),
-                        ITEe.getCause().getMessage(), Language
-                                .getWord("ERROR_MESSAGE"),
-                        JOptionPane.ERROR_MESSAGE);
-                Hbuttons.get(action).setEnabled(true);
-            }
-            catch (NotFoundComponentException NFCEe) {
-                NFCEe.printStackTrace();
-            } catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }
-
+    	                    button = (JButton) Hbuttons.get("NEW");
+    	                    if (button != null) {
+    	                        button.setEnabled(true);
+    	                    }
+    	                    button = (JButton) Hbuttons.get("SAVEAS");
+    	                    if (button != null) {
+    	                        button.setEnabled(true);
+    	                    }
+    	                    button = (JButton) Hbuttons.get("PRINT");
+    	                    if (button != null) {
+    	                        button.setEnabled(true);
+    	                    }
+    	                    button = (JButton) Hbuttons.get(action);
+    	                    button.setEnabled(false);
+    	                }
+    	                
+    	            }
+    	            catch (InvocationTargetException ITEe) {
+    	                ITEe.printStackTrace();
+    	                JOptionPane.showInternalMessageDialog(GFforma.getDesktopPane(),
+    	                        ITEe.getCause().getMessage(), Language
+    	                                .getWord("ERROR_MESSAGE"),
+    	                        JOptionPane.ERROR_MESSAGE);
+    	                Hbuttons.get(action).setEnabled(true);
+    	            }
+    	            catch (NotFoundComponentException NFCEe) {
+    	                NFCEe.printStackTrace();
+    	            } catch (IOException e) {
+    					// TODO Auto-generated catch block
+    					e.printStackTrace();
+    				}
+    	        }
+    		}
+    	}
+    	new ActionThread(action).start();
     }
     
     private void formatPackageStructure(Vector pack,String packageName,String idManualTransaction) 
