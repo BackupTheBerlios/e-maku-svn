@@ -89,6 +89,7 @@ public class ComboBoxFiller extends JComboBox implements
 	private boolean dataBeep;
 	private String noDataMessage;
     private Vector<AnswerListener> AnswerListener = new Vector<AnswerListener>();
+	private Vector<String> constantValue;
     
 	/**
 	 * Este constructor es invocado desde un componente
@@ -234,7 +235,13 @@ public class ComboBoxFiller extends JComboBox implements
 			if ("sqlCombo".equals(element.getAttributeValue("attribute"))) {
 				sqlCombo = value;
 			}
-			if ("sqlCode".equals(element.getAttributeValue("attribute"))) {
+			else if ("constantValue".equals(element.getAttributeValue("attribute"))) {
+				if (constantValue == null) {
+					constantValue = new Vector<String>();
+				}
+				constantValue.addElement(element.getValue());
+			}			
+			else if ("sqlCode".equals(element.getAttributeValue("attribute"))) {
 				sqlCode.add(value);
 			}
 			else if ("label".equals(element.getAttributeValue("attribute"))) {
@@ -582,13 +589,23 @@ public class ComboBoxFiller extends JComboBox implements
 	        }
 	        /*-----------------------------------------------------------*/
 	        Object [] XMLimpValues = importValueCode.toArray();
-			String [] impValues = new String[XMLimpValues.length+1];
-			int i = 0;
-			for ( i = 0; i < impValues.length -1 ; i++) {
-				impValues[i] =  GFforma.getExteralValuesString((String)XMLimpValues[i]);
+	        
+    		String[] args = null;
+			int i=0;
+    		if (constantValue!=null) {
+    			args = new String[constantValue.size()+XMLimpValues.length+1];
+    			for (;i<constantValue.size();i++) {
+        			args[i]= constantValue.get(i);
+        		}
+    		}
+    		else {
+    			args = new String[XMLimpValues.length+1];
+    		}
+			for (; i < args.length -1 ; i++) {
+				args[i] =  GFforma.getExteralValuesString((String)XMLimpValues[i]);
 			}
-			impValues[i] =  (String) getItemAt(getSelectedIndex());
-	        new SearchingSQL(impValues).start();
+			args[i] =  (String) getItemAt(getSelectedIndex());
+	        new SearchingSQL(args).start();
 		}
 	}
 	

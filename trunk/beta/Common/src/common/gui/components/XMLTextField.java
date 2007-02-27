@@ -460,7 +460,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 		                    for (int i = 0; i < s.length(); i++) {
 			                    try {
 		                            Snum = Snum + s.substring(i, i + 1);
-		                            if (!"-".equals(Snum))
+		                            if (!("-".equals(Snum) || ".".equals(Snum)))
 		                            	Integer.parseInt(Snum);
 			                        super.insertString(offset, s, attributeSet);
 			                    }

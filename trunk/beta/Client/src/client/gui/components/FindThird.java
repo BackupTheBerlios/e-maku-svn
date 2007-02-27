@@ -184,7 +184,6 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
 				if (constantValue == null) {
 					constantValue = new Vector<String>();
 				}
-				System.out.println("Adicionando valor constante: "+e.getValue());
 				constantValue.addElement(e.getValue());
 			}           
             else if("typeDocument".equals(e.getAttributeValue("attribute"))) {
@@ -581,10 +580,8 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
     			int i=0;
     			for (;i<constantValue.size();i++) {
         			args[i]= constantValue.get(i);
-        			System.out.println("argumento "+i+" "+args[i]);
         		}
         		args[i]=Vkeys.get(ind);
-    			System.out.println("argumento "+i+" "+args[i]);
     		}
     		else {
     			args = new String[1];
