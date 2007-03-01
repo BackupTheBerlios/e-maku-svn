@@ -487,10 +487,17 @@ public class TableFindData extends JPanel implements AnswerListener,
 				/*
 				 * Si el tipo de Editor es para consulta entonces ....
 				 */
-				if (ATFDargs[k].getType().equals("DATASEARCH")) {
+				else if (ATFDargs[k].getType().equals("DATASEARCH")) {
 					TableColumn dataColumn = JTtabla.getColumn(JTtabla.getColumnName(k));
 					EmakuDataSearchCellEditor cellEditor =  null; 
 					cellEditor = new EmakuDataSearchCellEditor(GFforma,k,ATFDargs);
+					dataColumn.setCellEditor(cellEditor);
+				}
+				
+				else if (ATFDargs[k].getType().equals("DETAILEDPRODUCT")) {
+					TableColumn dataColumn = JTtabla.getColumn(JTtabla.getColumnName(k));
+					EmakuDetailedProductCellEditor cellEditor =  null; 
+					cellEditor = new EmakuDetailedProductCellEditor();
 					dataColumn.setCellEditor(cellEditor);
 				}
 				
@@ -598,7 +605,17 @@ public class TableFindData extends JPanel implements AnswerListener,
 					String value = ((Element)dataCol.get(j)).getValue();
 					if (typeData.equals("column")) {
 						try {
-							concept+= TMFDtabla.getValueAt(i,Integer.parseInt(value));
+							Object obj = TMFDtabla.getValueAt(i,Integer.parseInt(value));
+							if (ATFDargs[j].getType().equals("DECIMAL")) {
+								NumberFormat nf = NumberFormat.getNumberInstance();
+								DecimalFormat form = (DecimalFormat) nf;
+								form.applyPattern("###,####,###.00");
+								concept+=form.format(obj);
+							}
+							else {
+								concept+=obj;
+							}
+							 
 						}
 						catch(NumberFormatException NFEe) {
 							

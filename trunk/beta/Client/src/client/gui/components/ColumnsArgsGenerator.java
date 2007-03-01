@@ -139,6 +139,10 @@ public class ColumnsArgsGenerator {
 			        	typeDate = new String();
 			        	ColumnClass = String.class;
 			        }
+			        else if (value.equals("DETAILEDPRODUCT")) {
+			        	typeDate = new String();
+			        	ColumnClass = String.class;
+			        }
 	    		}
 	    		else if (attrib.equals("defaultValue")) {
 	    			tmpDefaultValue = value;
