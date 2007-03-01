@@ -1,9 +1,5 @@
 package common.printer.plainViewer;
-//import java.io.FileInputStream;
 import java.io.IOException;
-//import java.io.BufferedReader;
-//import java.io.InputStreamReader;
-//import java.io.RandomAccessFile;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.io.ByteArrayOutputStream;
@@ -18,33 +14,33 @@ import common.printer.plainViewer.PrinterViewsArray;
 
 public class TextReportGenerator {
 	
-  int charactersPerLine = 80;
-  int columnsNum = 0;
-  int pagesNum = 0;
-  Vector <String>fieldsTypes = new Vector<String>();
-  ByteArrayOutputStream[] reportViews;
+  private int charactersPerLine = 80;
+  private int columnsNum = 0;
+  private int pagesNum = 0;
+  private Vector <String>fieldsTypes = new Vector<String>();
+  private ByteArrayOutputStream[] reportViews;
   
-  String header     = "";
-  String htmlHeader = "";
-  String blankLine  = "";
-  String title      = "";
-  String nit        = "";
-  String today      = "";
-  String bar        = "";
-  Vector <String>columnsNames = new Vector<String>();
-  int[] maxlong;
-  String columnsTitle     = "";
-  String htmlColumnsTitle = "";
-  String reportTitle      = "";
-  String company          = "";
-  int totalPages          = 0;
-  TextReportUtils tools = new TextReportUtils(charactersPerLine);
-  PrinterViewsArray printerViews;
-  String input = "";
+  private String header     = "";
+  private String htmlHeader = "";
+  private String blankLine  = "";
+  // private String title      = "";
+  private String nit        = "";
+  private String today      = "";
+  private String bar        = "";
+  private Vector <String>columnsNames = new Vector<String>();
+  private int[] maxlong;
+  private String columnsTitle     = "";
+  private String htmlColumnsTitle = "";
+  private String reportTitle      = "";
+  private String company          = "";
+  private int totalPages          = 0;
+  private TextReportUtils tools = new TextReportUtils(charactersPerLine);
+  private PrinterViewsArray printerViews;
+  private String input = "";
 
+  // Constructor
   public TextReportGenerator(int charactersPerLine, byte[] bytes){
 	  this.charactersPerLine = charactersPerLine;
-	  System.out.println("*** Instanciando TextReportGenerator...");
 	  input = new String(bytes);
 	  scanFirstPage();
 	  processCsv();
@@ -156,7 +152,7 @@ public class TextReportGenerator {
   }
   
   // Process the csv input file
-  public void processCsv() {
+  private void processCsv() {
 	  
    try {    
 	   reportViews  = new ByteArrayOutputStream[totalPages];
@@ -182,7 +178,7 @@ public class TextReportGenerator {
     			   line = tokens.nextToken();
     		   }
        
-    		   String pageLabel = "Pagina ";
+    		   String pageLabel = "Página ";
     		   if (pagesNum < 10) {
     			   pageLabel += " ";
     		   }	 
@@ -228,7 +224,7 @@ public class TextReportGenerator {
         		  
     	   					/* data = tools.getLineVars(line,2);
     	   					data[1] = data[1].substring(1,data[1].length());*/ 
-    	   					String pageFooter = tools.getRightAlignedString("Pagina " + (pagesNum + 1) + " de " + totalPages, charactersPerLine);
+    	   					String pageFooter = tools.getRightAlignedString("Página " + (pagesNum + 1) + " de " + totalPages, charactersPerLine);
                   
     	   					printerViews.addStringToPrinterView(pageFooter + "\n\n");
     	   					printerViews.startNewPage();
@@ -290,7 +286,7 @@ public class TextReportGenerator {
    
   // Write a String to report viewer
   
-  public void printStringToReportViewer(String textString) {
+  private void printStringToReportViewer(String textString) {
 		  try {
 			   	final StringBuffer buffer = new StringBuffer("");
 			    buffer.append(textString);
@@ -314,7 +310,7 @@ public class TextReportGenerator {
   }
  
   // Gets current date and returns it as string var
-  public String getDate() {
+  private String getDate() {
 	  String newDate = "Fecha: ";
 	  Date now = new Date();
 	  SimpleDateFormat textDate = new SimpleDateFormat("dd/MM/yyyy");

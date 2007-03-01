@@ -28,8 +28,8 @@ import net.sf.jasperreports.engine.export.JRCsvExporterParameter;
 
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
+//import org.jdom.output.Format;
+//import org.jdom.output.XMLOutputter;
 
 import server.comunications.EmakuServerSocket;
 import server.control.ReportsStore;
@@ -105,11 +105,12 @@ public class ReportMaker extends Thread {
 			Document docZip = new Document();
 			Element titleReport;
 			if (next) {
-				XMLOutputter xmout = new XMLOutputter();
+				
+				/* XMLOutputter xmout = new XMLOutputter();
 				xmout.setFormat(Format.getPrettyFormat());
 				xmout.output(element,System.out);
-				//System.out.println("Generando reporte No. " + codigo);
-				//InputStream iosTemplate = rs.getAsciiStream(1);
+				System.out.println("Generando reporte No. " + codigo);
+				InputStream iosTemplate = rs.getAsciiStream(1); */
 				title = rs.getString(1);
 				sql = rs.getString(2);
 			

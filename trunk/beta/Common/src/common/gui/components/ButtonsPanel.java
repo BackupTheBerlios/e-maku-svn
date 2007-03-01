@@ -569,7 +569,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
         else if ("PLAINREPORTREQUEST".equals(packageName)) {
         	
         	if (idReport!=null) { 
-        		driver.setText(idReport);        	    	
+        		driver.setText(idReport);   
         		TextReportViewer plainViewer = new TextReportViewer(GFforma,idReport);
         		plainViewer.openViewer();
         		JInternalFrame jiframe = plainViewer;

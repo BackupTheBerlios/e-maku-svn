@@ -17,9 +17,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.io.ByteArrayOutputStream;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-//import java.util.Vector;
 
 import org.jdom.Element;
 import common.misc.ZipHandler;
@@ -29,38 +27,37 @@ import common.control.ReportEvent;
 import common.control.ReportListener;
 import common.gui.forms.GenericForm;
 
+import common.misc.language.Language;
+
 // This class shows a text report view 
 
 public class TextReportViewer extends JInternalFrame implements ActionListener,ReportListener {
 		
 	private static final long serialVersionUID = 7423353291901251301L;
 	
-	GenericForm GFforma;
-	String idReport;
+	private GenericForm GFforma;
+	private String idReport;
 	
-	ByteArrayOutputStream[] reportViews;
-	ByteArrayOutputStream[] printerViews;
+	private ByteArrayOutputStream[] reportViews;
+	private ByteArrayOutputStream[] printerViews;
 	
-	ByteArrayInputStream textFile;
-	String reportName = "";
-	byte[] bytes;
-	int pages = 0;
+	private byte[] bytes;
+	private int pages = 0;
 	
-	JEditorPane reportArea;
-	JButton printerButton   = new JButton();
-	JButton closeButton     = new JButton();
+	private JEditorPane reportArea;
+	private JButton printerButton   = new JButton();
+	private JButton closeButton     = new JButton();
 	
-	JButton firstPage       = new JButton();
-	JButton backTenPages    = new JButton();
-	JButton backOnePage     = new JButton();
-	JButton forwardOnePage  = new JButton();
-	JButton forwardTenPages = new JButton();
-	JButton lastPage        = new JButton();
+	private JButton firstPage       = new JButton();
+	private JButton backTenPages    = new JButton();
+	private JButton backOnePage     = new JButton();
+	private JButton forwardOnePage  = new JButton();
+	private JButton forwardTenPages = new JButton();
+	private JButton lastPage        = new JButton();
 	
-	JTextField currentPageTF = new JTextField(4);
-	JLabel total = new JLabel("");
-	int currentPage = 1;
-	int currentIndex = 0;
+	private JTextField currentPageTF = new JTextField(4);
+	private JLabel total = new JLabel("");
+	private int currentPage = 1;
 	
 	private Element data;
 	private ZipHandler zip;
@@ -75,11 +72,12 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 	}
 	
 	// Sets the graphic interface for the viewer
-	public void openReport() {
-		setTitle("Text File Report Viewer");
+	private void openReport() {
+		setClosable(true);
+		setIconifiable(true);
+		setResizable(true);
 		
 		JPanel global = new JPanel();
-		
 		global.setLayout(new BorderLayout());		
         global.add(setButtonsPanel(), BorderLayout.NORTH);        
         global.add(setViewerArea(), BorderLayout.CENTER);
@@ -92,7 +90,7 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 	}
 
 	// Sets the top panel 
-	public JPanel setButtonsPanel() {
+	private JPanel setButtonsPanel() {
 		
 		JPanel buttons = new JPanel();
 		JPanel container = new JPanel();
@@ -116,9 +114,9 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 	}
 	
 	// Sets the botton panel
-	public JPanel setNavigationPanel() {
+	private JPanel setNavigationPanel() {
 		JPanel navigation = new JPanel();
-		JLabel page = new JLabel("Página ");
+		JLabel page = new JLabel(Language.getWord("PAGE"));
 		
 		currentPageTF.setText("" + currentPage);
 		currentPageTF.addActionListener(new ActionListener(){
@@ -176,12 +174,12 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 	}	
 
 	// Set the viewer area
-	public JPanel setViewerArea() {
+	private JPanel setViewerArea() {
 		
 		JPanel mainArea = new JPanel();
 		mainArea.setLayout(new BorderLayout());
 		        
-        reportArea = new JEditorPane("text/html","<br><br><br><b><center>Loading report...</center></b>");
+        reportArea = new JEditorPane("text/html","<br><br><br><b><center>" + Language.getWord("LOAD_REPORT") + "</center></b>");
         reportArea.setFont(new Font("Mono", Font.PLAIN, 12));
         reportArea.setEditable(false);
         
@@ -203,7 +201,6 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 
 		// Print text plain file
 		if (e.getActionCommand().equals("PRINT")) {
-			System.out.println("Printing file...");
 			PrinterDialog dialog = new PrinterDialog(GFforma,pages,printerViews);
             dialog.setVisible(true);
             
@@ -271,7 +268,7 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 		// Go forward 1 page
 		if (e.getActionCommand().equals("FWD_ONE")) {
 			currentPage++;
-			System.out.println("Avanzando una pagina: " + currentPage);
+			
 			if (currentPage == 2) {
 				firstPage.setEnabled(true);
     			backOnePage.setEnabled(true);		
@@ -290,7 +287,7 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 			             }
 			}
 			setReportPage(currentPage-1);
-			System.out.println("Visualizando: " + (currentPage-1));
+
 			return;
 		}
 		// Go forward 10 pages
@@ -327,7 +324,7 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 	}
 	
 	// Checks if the index page is into the range
-	public int checkIndexRange(int i) {
+	private int checkIndexRange(int i) {
 		if (i >= pages) {
 			return pages-1;
 		} else {
@@ -339,7 +336,7 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 	}
 	
 	// Shows a report page in the viewer
-	public void setReportPage(int i) {		
+	private void setReportPage(int i) {		
 		int j = checkIndexRange(i);
 		String page1 = reportViews[j].toString();
 		if (page1 != null) {
@@ -352,21 +349,21 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 	}
 	
 	// Enables/Disables Back Navigation Buttons
-	public void setBackControls(boolean flag) {
+	private void setBackControls(boolean flag) {
 		firstPage.setEnabled(flag);
 		backTenPages.setEnabled(flag);
 		backOnePage.setEnabled(flag);		
 	}
 
 	// Enables/Disables Forward Navigation Buttons
-	public void setFwdControls(boolean flag) {
+	private void setFwdControls(boolean flag) {
 		lastPage.setEnabled(flag);
 		forwardTenPages.setEnabled(flag);
 		forwardOnePage.setEnabled(flag);		
 	}
 	
 	// Checks if a string var has a numeric value
-	public boolean isANumber(String s) {
+	private boolean isANumber(String s) {
 		for (int i = 0; i < s.length(); i++) {
 		     char c = s.charAt(i);
 		     if (!Character.isDigit(c))
@@ -376,7 +373,7 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 	}
 	
 	// Sets navigation buttons state 
-	public void setControls(int pageIndex) {
+	private void setControls(int pageIndex) {
 		if (pageIndex == 0) {
 			setBackControls(false);
 			setFwdControls(true);
@@ -413,24 +410,23 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
         setVisible(true);
     }
     
-    
+    // Set a new report in the viewer area
     private void loadReport(String name) {
-		class Chambonada extends Thread {
+		class PlainReportThread extends Thread {
 			private String name;
-			Chambonada(String name) {
+			PlainReportThread(String name) {
 				this.name=name;
 			}
 			
 			public void run() {
 				try {
-					System.out.println("*** Inicializando el generador de reportes...");
 					bytes = zip.getDataDecode(data.getValue());
-					reportName = name;
 					TextReportGenerator parser = new TextReportGenerator(80,bytes);
 				    reportViews = parser.getReportViews();
 				    printerViews = parser.getPrinterViews();
 				    pages = reportViews.length;
-				    System.out.println("*** Cargando pagina 1 en reporte plano...");
+				    setTitle(name);
+				    total.setText(Language.getWord("OF") + " " + pages + " ");
 				    setReportPage(0);
 				}
 				catch (IOException IOEe) {
@@ -438,25 +434,19 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 				}
 			}
 		}
-		new Chambonada(name).start();
-    	
+		new PlainReportThread(name).start();
     } 
 
 	/**
 	 * This method receives a report through the ReportEvent object
 	 */
 	public void arriveReport(ReportEvent e) {
-
-		System.out.println("*** arriveReport...");
 		
 		if (e.getIdReport().equals(idReport) && e.isPlainReport()) {
 				data = e.getData();
-				//Cursor cursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-				// currentGUI.getFrame().setCursor(cursor);
 				if (data != null) {
 					loadReport(e.getTitleReport());
 				} 
-				
 			}
 	}
 
