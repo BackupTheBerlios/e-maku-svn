@@ -398,12 +398,11 @@ public class TableFindData extends JPanel implements AnswerListener,
 		JTtabla.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		//JTtabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		JTtabla.setEnabled(enabled);
-
 		JTtabla.getSelectionModel().addListSelectionListener(
 				new ListSelectionListener() {
 					public void valueChanged(ListSelectionEvent e) {
+						int sel = JTtabla.getSelectedRow();
 						if (protectSelected) {
-							int sel = JTtabla.getSelectedRow();
 							if (sel > 0) {
 								if (TMFDtabla.getValueAt(sel - 1, 0)==null || "".equals(TMFDtabla.getValueAt(sel - 1, 0))) {
 									JTtabla.changeSelection(sel - 1, 0, false,false);
@@ -490,15 +489,9 @@ public class TableFindData extends JPanel implements AnswerListener,
 				 */
 				if (ATFDargs[k].getType().equals("DATASEARCH")) {
 					TableColumn dataColumn = JTtabla.getColumn(JTtabla.getColumnName(k));
-					dataColumn.setCellEditor(new EmakuDataSearchCellEditor(GFforma,
-																		   ATFDargs[k].getSqlCombo(),
-																		   ATFDargs[k].getImportCombos(),
-																		   ATFDargs[k].getKeyDataSearch(),
-																		   ATFDargs[k].isBlankArgs(),
-																		   ATFDargs[k].isDataBeep(),
-																		   ATFDargs[k].getNoDataMessage(),
-																		   ATFDargs[k].getSelected(),
-																		   ATFDargs[k].getRepeatData()));
+					EmakuDataSearchCellEditor cellEditor =  null; 
+					cellEditor = new EmakuDataSearchCellEditor(GFforma,k,ATFDargs);
+					dataColumn.setCellEditor(cellEditor);
 				}
 				
 			} catch (IllegalArgumentException IAEe) {

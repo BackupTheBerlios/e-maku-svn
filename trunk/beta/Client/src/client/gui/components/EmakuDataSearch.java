@@ -2,6 +2,7 @@ package client.gui.components;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.IllegalComponentStateException;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
@@ -52,7 +53,7 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 	private GenericForm GFforma;
 	private boolean dataSelected;
 	private String keyValue;
-
+	
 	public EmakuDataSearch(GenericForm GFforma,
 						   String sql,
 						   String[] externalValues,
@@ -86,7 +87,6 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 		SQLCBselection.setPreferredSize(new Dimension(100,20)); 
 		JPMpopup = new JPopupMenu() {
 			private static final long serialVersionUID = -6078272560337577761L;
-			
 			public void setVisible(boolean b) {
 				Boolean isCanceled = (Boolean) getClientProperty("JPopupMenu.firePopupMenuCanceled");
 				if (b
@@ -94,15 +94,15 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 						|| ((isCanceled != null) && !b && isCanceled.booleanValue()) ) {
 					super.setVisible(b);
 				}
-					
 			}
 		};
 		JPMpopup.setLightWeightPopupEnabled(true);
 		JPMpopup.add(dataSearch());
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				//Aqui queda pendiente desplegar
-				//El popup con la parametrizacion.
+				if (!isEditable() && e.getClickCount() == 2) {
+					showDataSearch();
+				}
 			}
 		});
 	}
@@ -139,14 +139,18 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 	 * Este metodo visualiza el menu emergente con sus coordenadas respectivas
 	 */
 	
-	private void showDataSearch() {
+	public void showDataSearch() {
 		if (!JPMpopup.isVisible()) {
 			updateUI();
-			int x = this.getWidth() - (int) JPMpopup.getPreferredSize().getWidth();
+			int psize = (int) JPMpopup.getPreferredSize().getWidth();
+			int x = this.getWidth() - psize;
 			int y = this.getHeight();
-			JPMpopup.show(this,x,y);
-			XMLTFkey.requestFocusInWindow();
-			dataSelected = false;
+			try {
+				JPMpopup.show(this,x,y);
+				XMLTFkey.requestFocusInWindow();
+				dataSelected = false;
+			}
+			catch (IllegalComponentStateException e) {}
 		}
 	}
 	
@@ -176,16 +180,15 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 		Object s = e.getSource();
 		if(s.equals(SQLCBselection) && JPMpopup.isVisible()) {
 			storeData();
-			this.requestFocus();
 		}
 	}
 	
 	private void storeData() {
 		dataSelected = true;
-		this.setText( SQLCBselection.getStringCombo());
+		this.setText(SQLCBselection.getStringCombo());
 		JPMpopup.setVisible(false);
 	}
-
+	
 	public void keyReleased(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 		Object s = e.getSource();
@@ -198,11 +201,19 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 				if((s.equals(SQLCBselection)) && JPMpopup.isVisible()) {
 					storeData();
 				}
+				break;
 			case KeyEvent.VK_F2:
 				showDataSearch();
 				break;
+			default :
+				if (!this.isEditable() &&
+					((keyCode >=60 &&  keyCode<=71) ||  keyCode >=65 &&  keyCode<=126)) {
+					showDataSearch();
+				}
+				break;
 		}
 	}
+	
 	public void keyTyped(KeyEvent e) {}
 	public void keyPressed(KeyEvent e) {}
 }

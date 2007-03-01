@@ -39,19 +39,20 @@ implements TableCellEditor {
 
 	private EmakuDataSearch dataSearch;
 	protected int clickCountToStart = 1;
-
-	public EmakuDataSearchCellEditor(GenericForm gfforma, 
-									 String sql, 
-									 String[] externalValues,
-									 String keyValue, 
-									 boolean blankArgs,
-									 boolean dataBeep,
-									 String noDataMessage,
-									 int selected,
-									 int repeatData) {
-		dataSearch = new EmakuDataSearch(gfforma,sql,externalValues,keyValue,blankArgs,dataBeep,noDataMessage,selected,repeatData);
-		//dataSearch.setEditable(false);
-		//this.clickCountToStart = 2;
+	private ColumnsArgsGenerator[] ATFDargs;
+	public EmakuDataSearchCellEditor(GenericForm gfforma,int index,ColumnsArgsGenerator[] ATFDargs) {
+		this.ATFDargs = ATFDargs;
+		dataSearch = new EmakuDataSearch(
+								gfforma,
+								ATFDargs[index].getSqlCombo(),
+								ATFDargs[index].getImportCombos(),
+								ATFDargs[index].getKeyDataSearch(),
+								ATFDargs[index].isBlankArgs(),
+								ATFDargs[index].isDataBeep(),
+								ATFDargs[index].getNoDataMessage(),
+								ATFDargs[index].getSelected(),
+								ATFDargs[index].getRepeatData());
+		this.clickCountToStart = 2;
 	}
 
 	public void setClickCountToStart(int count) {
@@ -73,17 +74,25 @@ implements TableCellEditor {
 		return dataSearch.getValue();
 	}
 	
-	public boolean shouldSelectCell(EventObject anEvent) { 
+	/*public boolean shouldSelectCell(EventObject anEvent) {
+		System.out.println("Test");
         if (anEvent instanceof MouseEvent) { 
             MouseEvent e = (MouseEvent)anEvent;
             return e.getID() != MouseEvent.MOUSE_DRAGGED;
         }
+        if (!dataSearch.isEditable()) {
+        	dataSearch.showDataSearch();
+        }
         return true;
-    }
+    }*/
 
 	public Component getTableCellEditorComponent(JTable table, Object value,
 			boolean isSelected, int row, int column) {
 		dataSearch.clean();
+		table.addKeyListener(dataSearch);
+		if (isSelected) {
+			dataSearch.setEditable(ATFDargs[column].isSpecializedCellEditable());	
+		}
 		return dataSearch;
 	}
 }

@@ -57,7 +57,8 @@ public class ColumnsArgsGenerator {
 	private boolean blankArgs;
 	private String noDataMessage;
 	private int selected;
-
+	private boolean specializedCellEditable = true;
+	
     public boolean isDataBeep() {
 		return dataBeep;
 	}
@@ -150,6 +151,9 @@ public class ColumnsArgsGenerator {
 	    		}
 	    		else if (attrib.equals("enabled")) {
 	    			editable = Boolean.parseBoolean(value);
+	    		}
+	    		else if (attrib.equals("specializedCellEditable")) {
+	    			specializedCellEditable = Boolean.parseBoolean(value);
 	    		}
 	    		else if (attrib.equals("printable")) {
 	    			printable = Boolean.parseBoolean(value);
@@ -402,6 +406,10 @@ public class ColumnsArgsGenerator {
 
 	public boolean isBlankArgs() {
 		return blankArgs;
+	}
+
+	public boolean isSpecializedCellEditable() {
+		return specializedCellEditable;
 	}
 
 }
