@@ -432,7 +432,8 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 			try {
 				setNumberValue(Double.parseDouble(s));
 			}
-			catch (NumberFormatException NFEe) {}
+			catch (NumberFormatException NFEe) {
+			}
 		}
 		super.setText(s);
 	}

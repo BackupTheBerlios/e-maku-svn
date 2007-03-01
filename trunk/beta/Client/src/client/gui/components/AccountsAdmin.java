@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.HierarchyBoundsListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.KeyAdapter;
@@ -68,8 +69,7 @@ import common.transactions.TransactionServerResultSet;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez </A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda </A>
  */
-public class AccountsAdmin extends JPanel implements ActionListener,
-		SuccessListener {
+public class AccountsAdmin extends JPanel implements ActionListener,FocusListener,SuccessListener {
 
 	private static final long serialVersionUID = -8164365878390790722L;
 
@@ -568,6 +568,9 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		JPchecks.add(XMLCBretencion.getJPcheck());
 		JPchecks.add(JPretenciones);
 		JPchecks.add(JPmoneda);
+		
+		XMLTFbase.addFocusListener(this);
+		XMLTFporcentaje.addFocusListener(this);
 		return JPchecks;
 	}
 
@@ -812,7 +815,6 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		Element pack4 = new Element("package");
 
 		if (XMLBGgroup.getText().equals("DETALLE")) {
-			System.out.println("Es una cuenta de detalle");
 			Etipo.setText("0");
 			Eactiva.setText("1");
 			pack2.addContent(XMLCBterceros.getElementCheck());
@@ -838,7 +840,6 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 				else {
 					pack3.addContent(new Element("field").addContent(String.valueOf(idAjuste)));
 					pack3.addContent(new Element("field").addContent(String.valueOf(idContrapartida)));
-					System.out.println("Ajuste: "+idAjuste+" contrapartida: "+idContrapartida);
 				}
 			}
 			
@@ -863,7 +864,6 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 				else {
 					pack4.addContent(new Element("field").addContent(String.valueOf(idDepreciacion)));
 					pack4.addContent(new Element("field").addContent(String.valueOf(idContrapartida)));
-					System.out.println("Tarifa: "+XMLCBtarifasDepre.getElementCombo()+"Depreciacion: "+idDepreciacion+" contrapartida: "+idContrapartida);
 				}
 			}
 			
@@ -983,6 +983,19 @@ public class AccountsAdmin extends JPanel implements ActionListener,
 		} catch (InvocationTargetException ITEe) {
 		} catch (NotFoundComponentException NFCEe) {
 		}
+	}
+
+	public void focusGained(FocusEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void focusLost(FocusEvent e) {
+		XMLTextField XMLTFtmp = (XMLTextField)e.getComponent();
+		try {
+			XMLTFtmp.setNumberValue(Double.parseDouble(XMLTFtmp.getText()));
+		}
+		catch(NumberFormatException NFEe){}
 	}
 
 }
