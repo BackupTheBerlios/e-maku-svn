@@ -47,7 +47,6 @@ import common.misc.log.LogAdmin;
 
 public class LinkingCache {
 
-    private static Statement st = null;
     private static Hashtable <String,String>HcompanyData = new Hashtable<String,String>();
 	
     private static Hashtable <String,Object>Hinstrucciones = new Hashtable<String,Object>();
@@ -70,6 +69,7 @@ public class LinkingCache {
     public static void cargar() throws SQLBadArgumentsException {
 
     	
+        Statement st = null;
         ResultSet rs = null;
         /** Obtengo el numero de conexiones que maneja el ST */
         int max = ConfigFileHandler.getDBSize();
@@ -83,7 +83,7 @@ public class LinkingCache {
          */
 
        
-        for (int i = 0; i < max; i++)
+        for (int i = 0; i < max; i++) {
             try {
 
                 LogAdmin.setMessage(Language.getWord("LOADING_CACHE") + " "
@@ -260,42 +260,59 @@ public class LinkingCache {
                         ServerConstants.ERROR);
             }
             
-        StatementsClosingHandler.close(st);
-        StatementsClosingHandler.close(rs);
-
+            
+	        StatementsClosingHandler.close(st);
+	        StatementsClosingHandler.close(rs);
+	        st=null;
+	        rs=null;
+    	}
     }
     
     public static void removePerfilCta(String bd,String[] args) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+    	System.out.println("Base de datos: "+bd);
+    	Statement st = ConnectionsPool.getConnection(bd).createStatement();
         ResultSet rs= st.executeQuery(SQLFormatAgent.getSentencia(bd,"SCS0057",args));
+        
         
         while (rs.next()) {
         	String key = "K-"+bd+"-"+rs.getString(1).trim();
         	Hperfil_cta.remove(key);
         }
+        StatementsClosingHandler.close(st);
         StatementsClosingHandler.close(rs);
+        st=null;
+        rs=null;
     }
 
     public static void removeAsientosPr(String bd,String[] args) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+    	Statement st = ConnectionsPool.getConnection(bd).createStatement();
         ResultSet rs= st.executeQuery(SQLFormatAgent.getSentencia(bd,"SCS0056",args));
         
         while (rs.next()) {
         	String key = "K-"+bd+"-"+rs.getString(1).trim()+"-"+rs.getString(2).trim();
         	Hasientos_pr.remove(key);
         }
+        StatementsClosingHandler.close(st);
         StatementsClosingHandler.close(rs);
+        st=null;
+        rs=null;
     }
     
     public static void removeCtasAsientos(String bd,String[] args) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+    	Statement st = ConnectionsPool.getConnection(bd).createStatement();
         ResultSet rs= st.executeQuery(SQLFormatAgent.getSentencia(bd,"SCS0055",args));
         
         while (rs.next()) {
         	String key = "K-"+bd+"-"+rs.getString(1).trim()+"-"+rs.getString(2).trim();
         	Hctas_asientos.remove(key);
         }
+        StatementsClosingHandler.close(st);
         StatementsClosingHandler.close(rs);
+        st=null;
+        rs=null;
     }
 
     public static void reloadAsientosPr(String bd,String[] args) 
@@ -358,6 +375,8 @@ public class LinkingCache {
         }
         StatementsClosingHandler.close(st);
         StatementsClosingHandler.close(rs);
+        st=null;
+        rs=null;
     }
     
     private static synchronized Hashtable<String,Object> loadCache(String bd,String sql,String key[],String rsValue) 
@@ -368,6 +387,7 @@ public class LinkingCache {
     private static synchronized Hashtable<String,Object> loadCache(String bd,String sql,String args[],String key[],String rsValue) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
         ResultSet rs;
+    	Statement st = ConnectionsPool.getConnection(bd).createStatement();
         if (args!=null) {
         	rs= st.executeQuery(SQLFormatAgent.getSentencia(bd,sql,args));
         }
@@ -393,7 +413,10 @@ public class LinkingCache {
         }
 //        rs.last();
 //        System.out.println("Numero de registros: "+rs.getRow());
+        StatementsClosingHandler.close(st);
         StatementsClosingHandler.close(rs);
+        st=null;
+        rs=null;
         return tabla;
     }
 
@@ -684,6 +707,8 @@ public class LinkingCache {
 		incrementeConsecutive(bd,key);
         StatementsClosingHandler.close(st);
         StatementsClosingHandler.close(rs);
+        st=null;
+        rs=null;
     }
     
     /**
