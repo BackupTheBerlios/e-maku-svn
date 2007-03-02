@@ -1062,6 +1062,14 @@ public class GenericData extends JPanel implements DateListener,
 			XMLTextField xmltf = ((XMLTextField) fields.get(i));
 			synchronized (xmltf) {
 				String oldValue = xmltf.getText();
+				if (xmltf.getImportValues()!=null) {
+					for (String valor:xmltf.getImportValues()) {
+						if (valor.equals(e.getExternalValue())){
+							xmltf.setText(GFforma.getExteralValuesString(valor));
+						}
+					}
+				}
+				
 				if (xmltf.isCalculateExportvalue()) {
 					String formula = xmltf.getCalculateExportValue();
 					double valor = formulaHandler(formula);
