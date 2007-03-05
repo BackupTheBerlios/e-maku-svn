@@ -115,6 +115,7 @@ public class PackageToXML {
                     catch (JDOMException e1) {
                         // En caso de un paquete invalido
                         bufferTmp.write(docStream.toByteArray());
+                        System.out.println(new String(bufferTmp.toByteArray()));
                     }
                 }
 

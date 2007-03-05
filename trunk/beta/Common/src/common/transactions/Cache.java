@@ -42,7 +42,7 @@ public class Cache {
      */
     
     public Cache(Document cache_answer) {
-        
+        System.out.println("llego un cache...");
         Element raiz = cache_answer.getRootElement();
         List Lcache_answer = raiz.getChildren();
         Iterator i = Lcache_answer.iterator();
@@ -95,7 +95,7 @@ public class Cache {
         
         cacheanswer.setHeader(header);
         cacheanswer.setValue(values);
-
+        System.out.println("Consulta cacheada: "+sql);
         Hsql.put(sql,cacheanswer);
     }
 

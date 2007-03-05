@@ -45,7 +45,7 @@ public class TransactionServerResultSet {
          */
         String sql = doc.getRootElement().getChildText("sql");
         Document doc_cache = null;
-         
+         System.out.println("Verificando existencia de la sql: "+sql);
         if (Cache.containsKey(sql)) {
             /*
              * Dado el caso de que exista se la retorna desde la cache de tablas

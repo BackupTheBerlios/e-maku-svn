@@ -141,13 +141,6 @@ public class ACPSender extends Thread{
             rs.close();
             rs = null;
             
-            Document prueba = new Document();
-            prueba.setRootElement(new Element("ACPData"));
-    		Element el = new Element("CACHE-QUERY").setText("CH00001");
-    		prueba.getRootElement().addContent(el);
-//    		SocketChannel socket = SocketConnector.getSock();
-            SocketWriter.writing(sock,compressDocument(prueba,"cache"));
-//    		SocketWriter.writing(socket, prueba);
             
             runquery = new QueryRunner(bd,"SCS0004",Arrlogin);
             rs = runquery.ejecutarSELECT();
@@ -186,6 +179,23 @@ public class ACPSender extends Thread{
 					e.printStackTrace();
 				}
             }
+    		StatementsClosingHandler.close(rs);
+            StatementsClosingHandler.close(st);
+            rs=null;
+            st=null;
+            
+        	System.gc();
+        	/*
+            Document prueba = new Document();
+            prueba.setRootElement(new Element("ACPData"));
+    		Element el = new Element("CACHE-QUERY").setText("CH00003");
+    		prueba.getRootElement().addContent(el);
+//    		SocketChannel socket = SocketConnector.getSock();
+            SocketWriter.writing(sock,compressDocument(prueba,"cache"));
+//    		SocketWriter.writing(socket, prueba);
+ *
+ */
+
         }
         catch (SQLException e) {
 			e.printStackTrace();
@@ -196,10 +206,6 @@ public class ACPSender extends Thread{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		StatementsClosingHandler.close(rs);
-        StatementsClosingHandler.close(st);
-        rs=null;
-        st=null;
 	}
 	
 	public Document compressDocument(Document doc, String item) throws IOException {

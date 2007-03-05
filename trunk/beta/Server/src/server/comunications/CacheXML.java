@@ -59,6 +59,7 @@ public class CacheXML extends Document {
      */
     public void transmition(SocketChannel sock) {
         try {            
+        	System.out.println("transmitiendo cache..");
             QueryRunner rselect;
             
             /*
@@ -114,6 +115,7 @@ public class CacheXML extends Document {
                  * 		<header>
                  */
                 
+            	System.out.println("primera cabecera ...");
                 
                 SocketWriter.writing(sock,
                         ServerConstants.CONTEN_TYPE+
@@ -121,7 +123,7 @@ public class CacheXML extends Document {
                         ServerConstants.TAGS_SQL[0]+ SQL +
                         ServerConstants.TAGS_SQL[1]+
                         ServerConstants.TAGS_HEAD[0]);
-                
+                System.out.println("columnas: "+columnas);
                 for (int i = 1; i <= columnas; i++) {
                     /*
                      * Se escribe las cabeceras diferentes a las llaves
@@ -153,11 +155,12 @@ public class CacheXML extends Document {
                 String new_key_data="";
                 String old_key_data="";
                 boolean close_tags=true;
-                
+                System.out.println("Adicionando datos, numero de llaves: "+num_col_keys);
                 while (RSdatos.next()) {
                     new_key_data="";
                     for (int j = 1; j <= num_col_keys; j++) {
                         new_key_data+=RSdatos.getString(j).trim();
+                        System.out.println("new_key_data: "+new_key_data);
 
                     }
                     
@@ -204,7 +207,8 @@ public class CacheXML extends Document {
                 			
                         
                 SocketWriter.writing(sock,ServerConstants.TAGS_CACHE_ANSWER[1]);
-                
+            	System.out.println("cabeceras cerradas ....");
+
                 StatementsClosingHandler.close(RSdatos);
                 LogAdmin.setMessage(Language.getWord("OK_CREATING_XML"),
                         ServerConstants.MESSAGE);
