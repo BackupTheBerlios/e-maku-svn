@@ -94,6 +94,7 @@ public class CacheXML extends Document {
 	            }
 	            
 	            StatementsClosingHandler.close(RSdatos);
+	            
 	            /*
 	             * A medida que se empieza a generar el paquete CACHE-ANSWER, se empieza
 	             * a transmitir 

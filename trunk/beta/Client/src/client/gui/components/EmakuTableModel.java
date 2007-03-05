@@ -1823,87 +1823,100 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     }
     
     public synchronized void setQuery(Document doc,boolean search) {
-    	loadingQuery = true;
-        List Lrows = doc.getRootElement().getChildren("row");
-        Iterator Irows = Lrows.iterator();
-        int max = Lrows.size();
-        
-        if (tagDataColumn==-1 && max > 0) {
-            /*
-             * Se limpia la tabla antes de desplegar la consulta nueva
-             */
-            clean();
-            /*
-             * Cargando informacion
-             */
-            
-            //for (int i=0;Irows.hasNext() && i<rows;i++) {
-            int i=0;
-            for (;Irows.hasNext();i++) {
-                Element Erow = (Element) Irows.next();
-                List Lcol = Erow.getChildren();
-            	//try {
-                if (VdataRows.size() <= i) {
-    				Vector<Object> col = new Vector<Object>();
-        			for (int k=0;k<ATFDargs.length;k++) {
-        			    col.add(addCols(k,Lcol));
-        			}
-        			/* Se adiciona la nueva fila al vector de filas */
-        			VdataRows.add(col);
-        			this.rows++;
-        			fireTableDataChanged();
-    			}
-        		for (int j=0;j<ATFDargs.length;j++) {
-        			updateCells(addCols(j,Lcol),i,j);
-        		}
-            	/*}
-            	catch (ArrayIndexOutOfBoundsException IAOBEe) {
-            		
-                }*/
-                
-	            if (formulas!=null) {
-                    calcular(i,0,false);
-                }
-            }
-        }
-        else if (tagDataColumn>-1 && max > 0) {
-        	Element Erow = null;
-        	String tagDataValue = null;
-        	Erow = (Element) Lrows.get(0);
-        	Element element = (Element) Erow.getChildren().get(tagDataColumn);
-        	tagDataValue = element.getValue().trim();
-        	
-        	for(int i=0; i < VdataRows.size(); i++) {
-        		Object strData = getValueAt(i,tagDataColumn);
-        		if (tagDataValue.equals(strData.toString().trim())){
-        			deleteRow(i);
-       				i --;
-        		}
-        	}
-        	/*Aqui va la llenada de datos.*/
-        	int currentRow = currentIndex;
-        	for (int i=0;  i < max ; i++) {
-        		Element RowQuery = (Element) Lrows.get(i);
-        		List Lcol = RowQuery.getChildren();
-        		for (int j=0;j<ATFDargs.length;j++) {
-        			if (search && j==0){
-        				setValueAt(addCols(j,Lcol), currentRow,0);
-        			}
-        			else {
-        				updateCells(addCols(j,Lcol),currentRow,j);
-        			}
-	            }
-        		currentRow++;
-	            if (formulas!=null) {
-                    calcular(i,0,false);
-                }
-        	}
-        }
-        else if (max==0) {
-        	clean();
-        }
-        totalizar();
-        loadingQuery = false;
+//    	Thread t = new Thread() {public void }
+    	class LoadData extends Thread {
+    		private Document doc;
+    		private boolean search;
+    		LoadData(Document doc,boolean search) {
+    			this.doc=doc;
+    			this.search=search;
+    		}
+    		public void run() {
+    			
+		    	loadingQuery = true;
+		        List Lrows = doc.getRootElement().getChildren("row");
+		        Iterator Irows = Lrows.iterator();
+		        int max = Lrows.size();
+		        
+		        if (tagDataColumn==-1 && max > 0) {
+		            /*
+		             * Se limpia la tabla antes de desplegar la consulta nueva
+		             */
+		            clean();
+		            /*
+		             * Cargando informacion
+		             */
+		            
+		            //for (int i=0;Irows.hasNext() && i<rows;i++) {
+		            int i=0;
+		            for (;Irows.hasNext();i++) {
+		                Element Erow = (Element) Irows.next();
+		                List Lcol = Erow.getChildren();
+		            	//try {
+		                if (VdataRows.size() <= i) {
+		    				Vector<Object> col = new Vector<Object>();
+		        			for (int k=0;k<ATFDargs.length;k++) {
+		        			    col.add(addCols(k,Lcol));
+		        			}
+		        			/* Se adiciona la nueva fila al vector de filas */
+		        			VdataRows.add(col);
+		        			rows++;
+		        			fireTableDataChanged();
+		    			}
+		        		for (int j=0;j<ATFDargs.length;j++) {
+		        			updateCells(addCols(j,Lcol),i,j);
+		        		}
+		            	/*}
+		            	catch (ArrayIndexOutOfBoundsException IAOBEe) {
+		            		
+		                }*/
+		                
+			            if (formulas!=null) {
+		                    calcular(i,0,false);
+		                }
+		            }
+		        }
+		        else if (tagDataColumn>-1 && max > 0) {
+		        	Element Erow = null;
+		        	String tagDataValue = null;
+		        	Erow = (Element) Lrows.get(0);
+		        	Element element = (Element) Erow.getChildren().get(tagDataColumn);
+		        	tagDataValue = element.getValue().trim();
+		        	
+		        	for(int i=0; i < VdataRows.size(); i++) {
+		        		Object strData = getValueAt(i,tagDataColumn);
+		        		if (tagDataValue.equals(strData.toString().trim())){
+		        			deleteRow(i);
+		       				i --;
+		        		}
+		        	}
+		        	/*Aqui va la llenada de datos.*/
+		        	int currentRow = currentIndex;
+		        	for (int i=0;  i < max ; i++) {
+		        		Element RowQuery = (Element) Lrows.get(i);
+		        		List Lcol = RowQuery.getChildren();
+		        		for (int j=0;j<ATFDargs.length;j++) {
+		        			if (search && j==0){
+		        				setValueAt(addCols(j,Lcol), currentRow,0);
+		        			}
+		        			else {
+		        				updateCells(addCols(j,Lcol),currentRow,j);
+		        			}
+			            }
+		        		currentRow++;
+			            if (formulas!=null) {
+		                    calcular(i,0,false);
+		                }
+		        	}
+		        }
+		        else if (max==0) {
+		        	clean();
+		        }
+		        totalizar();
+		        loadingQuery = false;
+    		}
+    	}
+    	new LoadData(doc,search).start();
     }
 
     private Object addCols(int j,List Lcol) {

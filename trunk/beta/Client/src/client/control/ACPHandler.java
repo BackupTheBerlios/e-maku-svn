@@ -99,7 +99,7 @@ public class ACPHandler {
 
 			else if (e.getName().equals("CACHE-QUERY")) {
 				SocketChannel socket = SocketConnector.getSock();
-				SocketWriter.writing(socket, new Document(e));
+				SocketWriter.writing(socket, new Document((Element)e.clone()));
 			}
 		}
 	}

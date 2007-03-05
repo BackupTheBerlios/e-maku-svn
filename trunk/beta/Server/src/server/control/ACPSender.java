@@ -23,6 +23,8 @@ import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
 
 import com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException;
+
+import common.comunications.SocketConnector;
 import common.comunications.SocketWriter;
 import common.misc.ZipHandler;
 
@@ -113,6 +115,8 @@ public class ACPSender extends Thread{
 		}
         StatementsClosingHandler.close(rs);
         StatementsClosingHandler.close(st);
+        rs=null;
+        st=null;
 	}
 	
 	public void run() {
@@ -136,6 +140,15 @@ public class ACPSender extends Thread{
             SocketWriter.writing(sock,compressDocument(doc,query.getName()));
             rs.close();
             rs = null;
+            
+            Document prueba = new Document();
+            prueba.setRootElement(new Element("ACPData"));
+    		Element el = new Element("CACHE-QUERY").setText("CH00001");
+    		prueba.getRootElement().addContent(el);
+//    		SocketChannel socket = SocketConnector.getSock();
+            SocketWriter.writing(sock,compressDocument(prueba,"cache"));
+//    		SocketWriter.writing(socket, prueba);
+            
             runquery = new QueryRunner(bd,"SCS0004",Arrlogin);
             rs = runquery.ejecutarSELECT();
             
@@ -185,6 +198,8 @@ public class ACPSender extends Thread{
 		}
 		StatementsClosingHandler.close(rs);
         StatementsClosingHandler.close(st);
+        rs=null;
+        st=null;
 	}
 	
 	public Document compressDocument(Document doc, String item) throws IOException {
