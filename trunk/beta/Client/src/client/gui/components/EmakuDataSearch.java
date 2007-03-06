@@ -154,6 +154,10 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 		}
 	}
 	
+	public JPopupMenu getPopup() {
+		return JPMpopup;
+	}
+	
 	public void popupMenuCanceled(PopupMenuEvent e) {}
 
 	/**
@@ -183,7 +187,7 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 		}
 	}
 	
-	private void storeData() {
+	public void storeData() {
 		dataSelected = true;
 		this.setText(SQLCBselection.getStringCombo());
 		JPMpopup.setVisible(false);
@@ -216,4 +220,12 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 	
 	public void keyTyped(KeyEvent e) {}
 	public void keyPressed(KeyEvent e) {}
+
+	public XMLTextField getXMLTFkey() {
+		return XMLTFkey;
+	}
+
+	public void setDataSelected(boolean b) {
+			dataSelected = b;
+	}
 }

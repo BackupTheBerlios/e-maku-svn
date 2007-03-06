@@ -53,9 +53,9 @@ import common.gui.components.DataErrorException;
 import common.gui.components.RecordEvent;
 import common.gui.components.RecordListener;
 import common.gui.components.VoidPackageException;
+import common.gui.forms.EndEventGenerator;
 import common.gui.forms.ExternalValueChangeEvent;
 import common.gui.forms.ExternalValueChangeListener;
-import common.gui.forms.EndEventGenerator;
 import common.gui.forms.GenericForm;
 import common.gui.forms.InstanceFinishingListener;
 import common.gui.forms.NotFoundComponentException;
@@ -490,14 +490,14 @@ public class TableFindData extends JPanel implements AnswerListener,
 				else if (ATFDargs[k].getType().equals("DATASEARCH")) {
 					TableColumn dataColumn = JTtabla.getColumn(JTtabla.getColumnName(k));
 					EmakuDataSearchCellEditor cellEditor =  null; 
-					cellEditor = new EmakuDataSearchCellEditor(GFforma,k,ATFDargs);
+					cellEditor = new EmakuDataSearchCellEditor(GFforma,k,ATFDargs,JTtabla);
 					dataColumn.setCellEditor(cellEditor);
 				}
 				
 				else if (ATFDargs[k].getType().equals("DETAILEDPRODUCT")) {
 					TableColumn dataColumn = JTtabla.getColumn(JTtabla.getColumnName(k));
 					EmakuDetailedProductCellEditor cellEditor =  null; 
-					cellEditor = new EmakuDetailedProductCellEditor();
+					cellEditor = new EmakuDetailedProductCellEditor(GFforma,k,ATFDargs,JTtabla);
 					dataColumn.setCellEditor(cellEditor);
 				}
 				

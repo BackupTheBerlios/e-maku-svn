@@ -40,7 +40,7 @@ implements TableCellEditor {
 	private EmakuDataSearch dataSearch;
 	protected int clickCountToStart = 1;
 	private ColumnsArgsGenerator[] ATFDargs;
-	public EmakuDataSearchCellEditor(GenericForm gfforma,int index,ColumnsArgsGenerator[] ATFDargs) {
+	public EmakuDataSearchCellEditor(GenericForm gfforma,int index,ColumnsArgsGenerator[] ATFDargs,JTable table) {
 		this.ATFDargs = ATFDargs;
 		dataSearch = new EmakuDataSearch(
 								gfforma,
@@ -52,6 +52,7 @@ implements TableCellEditor {
 								ATFDargs[index].getNoDataMessage(),
 								ATFDargs[index].getSelected(),
 								ATFDargs[index].getRepeatData());
+		table.addKeyListener(dataSearch);
 		this.clickCountToStart = 2;
 	}
 
@@ -89,7 +90,6 @@ implements TableCellEditor {
 	public Component getTableCellEditorComponent(JTable table, Object value,
 			boolean isSelected, int row, int column) {
 		dataSearch.clean();
-		table.addKeyListener(dataSearch);
 		if (isSelected) {
 			dataSearch.setEditable(ATFDargs[column].isSpecializedCellEditable());	
 		}
