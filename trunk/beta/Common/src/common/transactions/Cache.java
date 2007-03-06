@@ -116,6 +116,8 @@ public class Cache {
         String key = "";
         //Objeto
         Document answer = new Document();
+        Element query = new Element("ANSWER");
+        query.addContent(new Element("row"));
         
         while (i.hasNext()) {
 
@@ -137,10 +139,11 @@ public class Cache {
              *  en el Documento answer
              */
     
-            else if (Nelement.equals("answer")) {
-                answer.setRootElement(datos);
+            else if (Nelement.equals("ANSWER")) {
+            	query = (Element)datos.clone();
             }
         }
+        answer.setRootElement(query);
 
         values.put(key,answer);
         return values;
@@ -178,7 +181,7 @@ public class Cache {
         CacheAnswer cacheanswer = Hsql.get(sql);
         Element header = cacheanswer.getheader();
         Document answer = (Document)(cacheanswer.getValue()).get(key);
-        answer.getRootElement().addContent(header);
+        answer.getRootElement().addContent((Element)header.clone());
         return answer;
     }
 }

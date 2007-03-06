@@ -154,18 +154,18 @@ public class CacheXML extends Document {
                 
                 String new_key_data="";
                 String old_key_data="";
-                boolean close_tags=true;
+                boolean close_tags=false;
                 System.out.println("Adicionando datos, numero de llaves: "+num_col_keys);
                 while (RSdatos.next()) {
                     new_key_data="";
                     for (int j = 1; j <= num_col_keys; j++) {
                         new_key_data+=RSdatos.getString(j).trim();
                         System.out.println("new_key_data: "+new_key_data);
-
+                        close_tags=true;
                     }
                     
                     
-                    if (!new_key_data.equals(old_key_data)) {
+                    if (!new_key_data.equals(old_key_data) || !close_tags==false) {
                         SocketWriter.writing(sock,ServerConstants.TAGS_VALUE[0]+
                                 			ServerConstants.TAGS_KEY[0]+
                                 			new_key_data+

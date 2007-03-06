@@ -378,7 +378,7 @@ public class ComboBoxFiller extends JComboBox implements
 						args= new String[keys.length];
 						for (int i = 0 ; i < args.length ; i++ ) {
 							args[i] = GFforma.getExteralValuesString(keys[i]);
-							if (args[i]==null) {
+							if (args[i]==null || args[i].equals("")) {
 								if (blankArgs) {
 									args[i]="";
 								}
