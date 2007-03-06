@@ -650,35 +650,11 @@ public class GenericData extends JPanel implements DateListener,
 	 * Metodo encargado de generar sentencias sql de otros componentes
 	 */
 	public void searchOthersSqls(XMLTextField xmltf) {
-		class SearchingSQL extends Thread {
-
-			private String[] args;
-
-			public SearchingSQL(String[] args) {
-				this.args = args;
-			}
-
-			public void run() {
-
-				String sql;
-				for (int i = 0; i < sqlCode.size(); i++) {
-					Document doc = null;
-					sql = (String) sqlCode.get(i);
-					try {
-						doc = TransactionServerResultSet.getResultSetST(sql, args);
-					} catch (TransactionServerException e) {
-						e.printStackTrace();
-					}
-					AnswerEvent event = new AnswerEvent(this, sql, doc);
-					notificando(event);
-				}
-			}
-		}
 		/*-----------------------------------------------------------*/
-		String[] argumentos = new String[xmltf.getImportValues().length
+		final String[] argumentos = new String[xmltf.getImportValues().length
 				+ xmltf.getConstantSize() + 1];
 		String[] XMLimpValues = xmltf.getImportValues();
-
+		
 		int i = 0;
 		for (i = 0; i < xmltf.getConstantSize(); i++) {
 			argumentos[i] = xmltf.getConstantValue(i);
@@ -688,7 +664,32 @@ public class GenericData extends JPanel implements DateListener,
 			argumentos[i] = GFforma.getExteralValuesString(XMLimpValues[i]);
 		}
 		argumentos[i] = xmltf.getText();
-		new SearchingSQL(argumentos).run();
+		
+		for (int j = 0; j < sqlCode.size(); j++) {
+			class SearchingSQL extends Thread {
+
+				private int j;
+
+				public SearchingSQL(int j) {
+					this.j=j;
+				}
+
+				public void run() {
+					Document doc = null;
+					String sql = (String) sqlCode.get(j);
+					try {
+						doc = TransactionServerResultSet.getResultSetST(sql, argumentos);
+					} catch (TransactionServerException e) {
+						e.printStackTrace();
+					}
+					AnswerEvent event = new AnswerEvent(this, sql, doc);
+					notificando(event);
+				}
+			}
+			new SearchingSQL(j).start();
+		}
+		
+		
 
 	}
 
