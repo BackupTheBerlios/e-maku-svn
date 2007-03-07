@@ -16,15 +16,13 @@ import org.jdom.output.XMLOutputter;
 
 import server.comunications.EmakuServerSocket;
 import server.database.connection.ConnectionsPool;
-import server.database.sql.StatementsClosingHandler;
 import server.database.sql.LinkingCache;
 import server.database.sql.QueryRunner;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
+import server.database.sql.StatementsClosingHandler;
 
 import com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException;
-
-import common.comunications.SocketConnector;
 import common.comunications.SocketWriter;
 import common.misc.ZipHandler;
 

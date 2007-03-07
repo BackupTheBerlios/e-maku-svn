@@ -86,6 +86,8 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	private boolean queryOnInit;
 	private boolean withOutArgsQuery;
 	private String sqlInit = null;
+	private String sqlLocal = null;
+	private Vector<String> sqlCode = null;
 	
 	public XMLTextField(String label, int length, int chars) {
 		super(length);
@@ -611,6 +613,22 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 
 	public void setSqlInit(String sqlInit) {
 		this.sqlInit = sqlInit;
+	}
+
+	public Vector<String> getSqlCode() {
+		return sqlCode;
+	}
+
+	public void setSqlCode(Vector<String> sqlCode) {
+		this.sqlCode = sqlCode;
+	}
+
+	public String getSqlLocal() {
+		return sqlLocal;
+	}
+
+	public void setSqlLocal(String sqlLocal) {
+		this.sqlLocal = sqlLocal;
 	}
 
 }

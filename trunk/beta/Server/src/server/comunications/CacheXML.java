@@ -120,7 +120,6 @@ public class CacheXML extends Document {
                         ServerConstants.TAGS_SQL[0]+ SQL +
                         ServerConstants.TAGS_SQL[1]+
                         ServerConstants.TAGS_HEAD[0]);
-                System.out.println("columnas: "+columnas);
                 for (int i = 1; i <= columnas; i++) {
                     /*
                      * Se escribe las cabeceras diferentes a las llaves

@@ -73,7 +73,6 @@ public class GenericData extends JPanel implements DateListener,
 	private static final long serialVersionUID = 3911530078319143164L;
 	private GenericForm GFforma;
 	private String Sargs;
-	private String sqlLocal = null;
 	private String enlaceTabla = "";
 	private String namebutton = "SAVE";
 	private String driverEvent;
@@ -86,7 +85,6 @@ public class GenericData extends JPanel implements DateListener,
 	private ChangeValueEvent CVEevent;
 	private Vector<XMLTextField> VFields;
 	private Vector<String> sql;
-	private Vector<String> sqlCode = null;
 	private Vector<String> keySQL;
 	private Vector<AnswerListener> AnswerListener = new Vector<AnswerListener>();
 	private Vector<ChangeValueListener> changeValueListener = new Vector<ChangeValueListener>();
@@ -100,7 +98,6 @@ public class GenericData extends JPanel implements DateListener,
 		this.GFforma.addInitiateFinishListener(this);
 		this.setLayout(new BorderLayout());
 		this.VFields = new Vector<XMLTextField>();
-		sqlCode = new Vector<String>();
 		boolean key = false;
 		CVEevent = new ChangeValueEvent(this);
 		Element parameters = doc.getRootElement();
@@ -209,13 +206,19 @@ public class GenericData extends JPanel implements DateListener,
 				boolean queryOnInit = false;
 				boolean withOutArgsQuery = false;
 				String sqlInit = null;
+				String sqlLocal = null;
+				Vector<String> sqlCode = null;
+				
 				while (j.hasNext()) {
 					final Element elm = (Element) j.next();
 					if ("sqlCode".equals(elm.getAttributeValue("attribute"))) {
-						this.sqlCode.add(elm.getValue());
+						if (sqlCode==null) {
+							sqlCode = new Vector<String>();
+						}
+						sqlCode.add(elm.getValue());
 						searchQuery = true;
 					} else if ("sqlLocal".equals(elm.getAttributeValue("attribute"))) {
-						this.sqlLocal = elm.getValue();
+						sqlLocal = elm.getValue();
 						searchQuery = true;
 					} else if ("label".equals(elm.getAttributeValue("attribute"))) {
 						lab = elm.getValue();
@@ -348,6 +351,8 @@ public class GenericData extends JPanel implements DateListener,
 				if (key) {
 					XMLText.isKey(true);
 				}
+				XMLText.setSqlCode(sqlCode);
+				XMLText.setSqlLocal(sqlLocal);
 				XMLText.setKeyExternalValue(keyExternalValue);
 				// XMLText.setEditable(enabled);
 				XMLText.setEnabled(enabled);
@@ -566,6 +571,9 @@ public class GenericData extends JPanel implements DateListener,
 
 		String text = field.getText();
 		field.setSendQuery(true);
+		Vector<String> sqlCode = field.getSqlCode();
+		String sqlLocal = field.getSqlLocal();
+		
 		if (sqlCode.size() > 0 || sqlLocal != null) {
 			/*
 			 * El primer elemento del vector sql siempre
@@ -664,19 +672,21 @@ public class GenericData extends JPanel implements DateListener,
 			argumentos[i] = GFforma.getExteralValuesString(XMLimpValues[i]);
 		}
 		argumentos[i] = xmltf.getText();
+		Vector<String> sqlCode = xmltf.getSqlCode();
 		
 		for (int j = 0; j < sqlCode.size(); j++) {
 			class SearchingSQL extends Thread {
 
 				private int j;
-
-				public SearchingSQL(int j) {
+				private Vector<String> sqlCode;
+				public SearchingSQL(Vector<String> sqlCode,int j) {
 					this.j=j;
+					this.sqlCode=sqlCode;
 				}
 
 				public void run() {
 					Document doc = null;
-					String sql = (String) sqlCode.get(j);
+					String sql = sqlCode.get(j);
 					try {
 						doc = TransactionServerResultSet.getResultSetST(sql, argumentos);
 					} catch (TransactionServerException e) {
@@ -686,7 +696,7 @@ public class GenericData extends JPanel implements DateListener,
 					notificando(event);
 				}
 			}
-			new SearchingSQL(j).start();
+			new SearchingSQL(sqlCode,j).start();
 		}
 		
 		
@@ -1120,9 +1130,9 @@ public class GenericData extends JPanel implements DateListener,
 
 					}
 				}
-				if (sqlLocal != null) {
+				if (xmltf.getSqlLocal() != null) {
 					new EmakuUIFieldFiller(GFforma, namebutton, enablebutton,
-							sqlLocal, new String[] {
+							xmltf.getSqlLocal(), new String[] {
 													GFforma.getExteralValuesString(
 							                                                        xmltf.getImportValues()[0]) }, null,
 							                                                        VFields).start();
