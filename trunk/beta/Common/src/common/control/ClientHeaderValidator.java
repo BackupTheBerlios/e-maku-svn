@@ -169,7 +169,6 @@ public class ClientHeaderValidator {
          */
         
         else if (nombre.equals("CACHE-ANSWER")) {
-        	System.out.println("llego un paquete de cache ...");
             new Cache(doc);
             return true;
         }

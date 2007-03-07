@@ -2,14 +2,12 @@ package common.transactions;
 
 import java.nio.channels.SocketChannel;
 import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-
-import common.comunications.SocketConnector;
-import common.comunications.SocketWriter;
 
 import org.jdom.Document;
 import org.jdom.Element;
+
+import common.comunications.SocketConnector;
+import common.comunications.SocketWriter;
 
 /**
  * STResultSet.java Creado el 30-ago-2004
@@ -38,38 +36,18 @@ public class TransactionServerResultSet {
     private static Hashtable <String,Document>HspoolTransactions = new Hashtable<String,Document>();
     private static long id = 0;
 
-    public static Document getResultSetSTCache(Document doc) throws TransactionServerException  {
+    public static Document getResultSetSTCache(String sql, String [] args) throws TransactionServerException  {
         
         /*
          *  Se verifica que la consulta solicitada no exista en cache
          */
-        String sql = doc.getRootElement().getChildText("sql");
-        Document doc_cache = null;
-        if (Cache.containsKey(sql)) {
-            /*
-             * Dado el caso de que exista se la retorna desde la cache de tablas
-             */
-            Element raiz = doc.getRootElement();
-            List Lparametros = raiz.getChildren("param");
-            Iterator i = Lparametros.iterator();
-            String key_sql="";
-            while (i.hasNext()) {
-                Element datos = (Element) i.next();
-                key_sql+=datos.getValue();
-            }
-            
-            doc_cache = Cache.getAnswer(sql,key_sql);
-            
-            if (doc_cache!=null)
-                return doc_cache;
-            else
-                return getResultSetST(doc);
-            
-            
+        String total_argumentos="";
+        if (args!=null) {
+	        for (String argumento:args) {
+	        	total_argumentos+=argumento;
+	        }
         }
-        else {
-            return getResultSetST(doc);
-        }
+        return Cache.getAnswer(sql,total_argumentos);
     }
      
     /**
@@ -90,9 +68,9 @@ public class TransactionServerResultSet {
         while (!HspoolTransactions.containsKey(id)) {
             try {
             	//System.out.print(".");
-                Thread.sleep(100);
+                Thread.sleep(10);
                 i++;
-                if (i>300) {
+                if (i>3000) {
                     throw new TransactionServerException();
                 }
             }
@@ -116,18 +94,24 @@ public class TransactionServerResultSet {
     
     public static Document getResultSetST(String codigo, String [] args)
     throws TransactionServerException {
-        Document doc = new Document();
-        doc.setRootElement(new Element("QUERY"));
-        doc.getRootElement().addContent(new Element("sql").setText(codigo));
-        
-        if( args != null ) {
-            Element params = new Element("params");
-            for (int i=0; i< args.length ; i++) {
-                params.addContent(new Element("arg").setText(args[i]));
-            }
-            doc.getRootElement().addContent(params);
+    	
+        if (Cache.containsKey(codigo)) {
+        	return getResultSetSTCache(codigo, args);
         }
-        return getResultSetSTCache(doc);
+        else {
+	        Document doc = new Document();
+	        doc.setRootElement(new Element("QUERY"));
+	        doc.getRootElement().addContent(new Element("sql").setText(codigo));
+	        
+	        if( args != null ) {
+	            Element params = new Element("params");
+	            for (String argumento:args) {
+	                params.addContent(new Element("arg").setText(argumento));
+	            }
+	            doc.getRootElement().addContent(params);
+	        }
+            return getResultSetST(doc);
+        }
     }
     /**
      * Este metodo adiciona retorno paquetes answer, success o error provenientes de la

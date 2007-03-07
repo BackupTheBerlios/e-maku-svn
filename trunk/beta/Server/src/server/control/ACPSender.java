@@ -190,10 +190,17 @@ public class ACPSender extends Thread{
             prueba.setRootElement(new Element("ACPData"));
     		Element el = new Element("CACHE-QUERY").setText("CH00003");
     		prueba.getRootElement().addContent(el);
-//    		SocketChannel socket = SocketConnector.getSock();
-            SocketWriter.writing(sock,compressDocument(prueba,"cache"));
-//    		SocketWriter.writing(socket, prueba);
+    		//SocketChannel socket = SocketConnector.getSock();
+           SocketWriter.writing(sock,compressDocument(prueba,"cache"));
+    		//SocketWriter.writing(socket, prueba);
  
+            Document prueba2 = new Document();
+            prueba2.setRootElement(new Element("ACPData"));
+    		Element el2 = new Element("CACHE-QUERY").setText("CH00004");
+    		prueba2.getRootElement().addContent(el2);
+    		//SocketChannel socket = SocketConnector.getSock();
+            SocketWriter.writing(sock,compressDocument(prueba2,"cache"));
+    		///SocketWriter.writing(socket, prueba);
 
         }
         catch (SQLException e) {

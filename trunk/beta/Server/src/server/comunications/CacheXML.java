@@ -59,7 +59,6 @@ public class CacheXML extends Document {
      */
     public void transmition(SocketChannel sock) {
         try {            
-        	System.out.println("transmitiendo cache..");
             QueryRunner rselect;
             
             /*
@@ -115,8 +114,6 @@ public class CacheXML extends Document {
                  * 		<header>
                  */
                 
-            	System.out.println("primera cabecera ...");
-                
                 SocketWriter.writing(sock,
                         ServerConstants.CONTEN_TYPE+
                         ServerConstants.TAGS_CACHE_ANSWER[0]+
@@ -143,7 +140,6 @@ public class CacheXML extends Document {
                 /*
                  * Generacion de etiquetas
                  * 		</header>
-                 * 		<value>
                  */
                 SocketWriter.writing(sock,ServerConstants.TAGS_HEAD[1]);
                         	                
@@ -153,61 +149,59 @@ public class CacheXML extends Document {
                  */
                 
                 String new_key_data="";
-                String old_key_data="";
-                boolean close_tags=false;
-                System.out.println("Adicionando datos, numero de llaves: "+num_col_keys);
-                while (RSdatos.next()) {
-                    new_key_data="";
-                    for (int j = 1; j <= num_col_keys; j++) {
-                        new_key_data+=RSdatos.getString(j).trim();
-                        System.out.println("new_key_data: "+new_key_data);
-                        close_tags=true;
-                    }
-                    
-                    
-                    if (!new_key_data.equals(old_key_data) || !close_tags==false) {
-                        SocketWriter.writing(sock,ServerConstants.TAGS_VALUE[0]+
-                                			ServerConstants.TAGS_KEY[0]+
-                                			new_key_data+
-                                			ServerConstants.TAGS_KEY[1]+
-                                			ServerConstants.TAGS_ANSWER[0]
-                                			);
-                    }
-                    /*
-                     * <row>
-                     * 	<col>value</col>
-                     */
-                    SocketWriter.writing(sock,ServerConstants.TAGS_ROW[0]);
-                    for (int j = num_col_keys+1; j <= columnas; j++) {
-                        SocketWriter.writing(sock,ServerConstants.TAGS_COL[0] + 
-                                RSdatos.getString(j).trim()+
-                                ServerConstants.TAGS_COL[1]
-                            );
-                    }
-                    SocketWriter.writing(sock,ServerConstants.TAGS_ROW[1]);
-                    /*
-                     * </row>
-                     */
-                    
-                    if (!new_key_data.equals(old_key_data) && !old_key_data.equals("")) {
-                        SocketWriter.writing(sock,ServerConstants.TAGS_ANSWER[1]+
-                                			ServerConstants.TAGS_VALUE[1]
-                                			);
-                        close_tags=false;
-                    } else
-                        close_tags=true;
-
-                    old_key_data=new_key_data;
-                    
+                String old_key_data=null;
+                if (num_col_keys==0) {
+    				SocketWriter.writing(sock,ServerConstants.TAGS_VALUE[0]+
+							  				  ServerConstants.TAGS_KEY[0]+
+							  				  ServerConstants.TAGS_KEY[1]+
+							  				  ServerConstants.TAGS_ANSWER[0]);
                 }
                 
-                if (close_tags)
-                    SocketWriter.writing(sock,ServerConstants.TAGS_ANSWER[1]+
-                			ServerConstants.TAGS_VALUE[1]);
-                			
-                        
-                SocketWriter.writing(sock,ServerConstants.TAGS_CACHE_ANSWER[1]);
-            	System.out.println("cabeceras cerradas ....");
+                while (RSdatos.next()) {
+                	new_key_data="";
+                	for (int j=1;j<=columnas;j++) {
+                		if (j<=num_col_keys) {
+                			new_key_data+=RSdatos.getString(j).trim();
+                			if (j==num_col_keys) {
+                				if (!new_key_data.equals(old_key_data) && old_key_data!=null){
+                					SocketWriter.writing(sock,ServerConstants.TAGS_ANSWER[1]+
+                											  ServerConstants.TAGS_VALUE[1]);
+                				}
+
+                				if (!new_key_data.equals(old_key_data))
+                					SocketWriter.writing(sock,ServerConstants.TAGS_VALUE[0]+
+                											  ServerConstants.TAGS_KEY[0]+
+				                            			      new_key_data+
+				                            			      ServerConstants.TAGS_KEY[1]+
+				                            			      ServerConstants.TAGS_ANSWER[0]);
+                			}
+                		}
+                		else {
+                			if (j==num_col_keys+1) {
+                                /*
+                                 * <row>
+                                 */
+                                SocketWriter.writing(sock,ServerConstants.TAGS_ROW[0]);
+                				
+                			}
+                            SocketWriter.writing(sock,ServerConstants.TAGS_COL[0] + 
+					                                    RSdatos.getString(j).trim()+
+					                                    ServerConstants.TAGS_COL[1]
+                                );
+                			if (j==columnas) {
+                                /*
+                                 * <row>
+                                 */
+                                SocketWriter.writing(sock,ServerConstants.TAGS_ROW[1]);
+                			}
+                		}
+                	}
+       				old_key_data=new_key_data;
+                }
+                SocketWriter.writing(sock,ServerConstants.TAGS_ANSWER[1]+
+                						  ServerConstants.TAGS_VALUE[1]+
+                						  ServerConstants.TAGS_CACHE_ANSWER[1]+"\n");
+                SocketWriter.writing(sock,new String ("\n\r\f"));
 
                 StatementsClosingHandler.close(RSdatos);
                 LogAdmin.setMessage(Language.getWord("OK_CREATING_XML"),

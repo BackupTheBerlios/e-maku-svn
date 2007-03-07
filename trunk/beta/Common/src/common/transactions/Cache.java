@@ -42,7 +42,6 @@ public class Cache {
      */
     
     public Cache(Document cache_answer) {
-        System.out.println("llego un cache...");
         Element raiz = cache_answer.getRootElement();
         List Lcache_answer = raiz.getChildren();
         Iterator i = Lcache_answer.iterator();
@@ -50,7 +49,7 @@ public class Cache {
         String sql = null;
         CacheAnswer cacheanswer = new CacheAnswer();
         Element header = null;
-        Hashtable values = null;
+        Hashtable<String,Document> values = new Hashtable<String,Document>();
         
         /*
          * Ciclo encargado de leer las primeras del paquete cache-answer
@@ -83,7 +82,7 @@ public class Cache {
             else if (Nelement.equals("value")) {
                 List Lvalue = datos.getChildren();
                 Iterator k = Lvalue.iterator();
-                values = getValues(k);
+                getValues(values,k);
             }
             
         }
@@ -95,7 +94,6 @@ public class Cache {
         
         cacheanswer.setHeader(header);
         cacheanswer.setValue(values);
-        System.out.println("Consulta cacheada: "+sql);
         Hsql.put(sql,cacheanswer);
     }
 
@@ -104,9 +102,8 @@ public class Cache {
      * @param i contiene la llave y el contenido de la consulta
      * @return retorna la hash con los valores formateados
      */
-    private Hashtable getValues(Iterator i) {
+    private void getValues(Hashtable<String,Document> values,Iterator i) {
         
-        Hashtable <String,Document>values = new Hashtable<String,Document>();
         
         /*
          *  Componentes de la Hash
@@ -118,7 +115,6 @@ public class Cache {
         Document answer = new Document();
         Element query = new Element("ANSWER");
         query.addContent(new Element("row"));
-        
         while (i.hasNext()) {
 
             Element datos = (Element) i.next();
@@ -143,11 +139,9 @@ public class Cache {
             	query = (Element)datos.clone();
             }
         }
+
         answer.setRootElement(query);
-
         values.put(key,answer);
-        return values;
-
     }
     
     /**
@@ -180,7 +174,7 @@ public class Cache {
     public static Document getAnswer(String sql,String key) {
         CacheAnswer cacheanswer = Hsql.get(sql);
         Element header = cacheanswer.getheader();
-        Document answer = (Document)(cacheanswer.getValue()).get(key);
+        Document answer = (Document)((Document)(cacheanswer.getValue()).get(key)).clone();
         answer.getRootElement().addContent((Element)header.clone());
         return answer;
     }
@@ -212,7 +206,7 @@ public class Cache {
 class CacheAnswer {
     
     private Element header = null;
-    private Hashtable value = null;
+    private Hashtable<String,Document> value = null;
    
     public CacheAnswer() {
         
@@ -230,7 +224,7 @@ class CacheAnswer {
         return value;
     }
     
-    public void setValue(Hashtable value) {
+    public void setValue(Hashtable<String,Document> value) {
         this.value=value;
     }
     
