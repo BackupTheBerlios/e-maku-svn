@@ -137,7 +137,6 @@ public class HeadersValidator {
             
             else if (nom_raiz.equals("CACHE-QUERY")) {
                 String codigo = raiz.getValue();
-                System.out.println(codigo);
                 String bd = EmakuServerSocket.getBd(sock);
                 CacheXML cache_answer = new CacheXML(bd,codigo);
                 cache_answer.transmition(sock);

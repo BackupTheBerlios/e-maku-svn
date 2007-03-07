@@ -17,6 +17,7 @@ import common.misc.log.LogAdmin;
 import common.comunications.SocketWriter;
 
 import org.jdom.Document;
+import org.jdom.output.XMLOutputter;
 
 /**
  * CacheXML.java Creado el 06-sep-2004
@@ -60,7 +61,8 @@ public class CacheXML extends Document {
     public void transmition(SocketChannel sock) {
         try {            
             QueryRunner rselect;
-            
+            XMLOutputter XMLformat = new XMLOutputter();
+
             /*
              * Se obtiene las llaves del cache que se va a generar
              * la consulta para obtener las llaves es la SCS0006,
@@ -117,7 +119,7 @@ public class CacheXML extends Document {
                 SocketWriter.writing(sock,
                         ServerConstants.CONTEN_TYPE+
                         ServerConstants.TAGS_CACHE_ANSWER[0]+
-                        ServerConstants.TAGS_SQL[0]+ SQL +
+                        ServerConstants.TAGS_SQL[0]+ XMLformat.escapeAttributeEntities(SQL) +
                         ServerConstants.TAGS_SQL[1]+
                         ServerConstants.TAGS_HEAD[0]);
                 for (int i = 1; i <= columnas; i++) {
@@ -130,9 +132,9 @@ public class CacheXML extends Document {
                     if (!keys.containsKey(RSMDinfo.getColumnName(i)))
 	                    SocketWriter.writing(sock,
 	                            ServerConstants.TAGS_COL_HEAD[0]+
-	                            RSMDinfo.getColumnTypeName(i)+
+	                            XMLformat.escapeAttributeEntities(RSMDinfo.getColumnTypeName(i))+
 	                            ServerConstants.TAGS_COL_HEAD[1]+
-	                            RSMDinfo.getColumnName(i)+
+	                            XMLformat.escapeAttributeEntities(RSMDinfo.getColumnName(i))+
 	                            ServerConstants.TAGS_COL[1]);
                 }
 
@@ -184,7 +186,7 @@ public class CacheXML extends Document {
                 				
                 			}
                             SocketWriter.writing(sock,ServerConstants.TAGS_COL[0] + 
-					                                    RSdatos.getString(j).trim()+
+                            		XMLformat.escapeAttributeEntities(RSdatos.getString(j).trim())+
 					                                    ServerConstants.TAGS_COL[1]
                                 );
                 			if (j==columnas) {
