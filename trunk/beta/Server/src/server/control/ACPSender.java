@@ -182,7 +182,7 @@ public class ACPSender extends Thread{
             rs=null;
             st=null;
             
-        	System.gc();
+  /*      	System.gc();
         	
             Document prueba = new Document();
             prueba.setRootElement(new Element("ACPData"));
@@ -199,7 +199,7 @@ public class ACPSender extends Thread{
     		//SocketChannel socket = SocketConnector.getSock();
             SocketWriter.writing(sock,compressDocument(prueba2,"cache"));
     		///SocketWriter.writing(socket, prueba);
-
+*/
         }
         catch (SQLException e) {
 			e.printStackTrace();

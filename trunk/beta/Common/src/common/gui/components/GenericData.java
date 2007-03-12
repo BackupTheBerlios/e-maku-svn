@@ -207,14 +207,11 @@ public class GenericData extends JPanel implements DateListener,
 				boolean withOutArgsQuery = false;
 				String sqlInit = null;
 				String sqlLocal = null;
-				Vector<String> sqlCode = null;
+				Vector<String> sqlCode = new Vector<String>();
 				
 				while (j.hasNext()) {
 					final Element elm = (Element) j.next();
 					if ("sqlCode".equals(elm.getAttributeValue("attribute"))) {
-						if (sqlCode==null) {
-							sqlCode = new Vector<String>();
-						}
 						sqlCode.add(elm.getValue());
 						searchQuery = true;
 					} else if ("sqlLocal".equals(elm.getAttributeValue("attribute"))) {

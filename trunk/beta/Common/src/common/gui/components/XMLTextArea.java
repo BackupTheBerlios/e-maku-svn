@@ -22,7 +22,6 @@ import org.jdom.Element;
 
 import common.gui.forms.EndEventGenerator;
 import common.gui.forms.GenericForm;
-import common.gui.forms.InstanceFinishingListener;
 import common.gui.forms.NotFoundComponentException;
 
 /**
@@ -45,7 +44,7 @@ import common.gui.forms.NotFoundComponentException;
  * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  */
-public class XMLTextArea extends JTextArea implements AnswerListener, FocusListener, InstanceFinishingListener {
+public class XMLTextArea extends JTextArea implements Couplable, FocusListener {
 
     private static final long serialVersionUID = -1097007812890286286L;
     private JScrollPane JSPpanel;
@@ -278,5 +277,20 @@ public class XMLTextArea extends JTextArea implements AnswerListener, FocusListe
 		if (exportValue!=null) {
 			GFforma.setExternalValues(exportValue,this.getText());
 		}
+	}
+
+	public boolean containData() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public Element getPackage(Element args) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void validPackage(Element args) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 }

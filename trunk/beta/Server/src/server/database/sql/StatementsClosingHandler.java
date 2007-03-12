@@ -60,6 +60,7 @@ public class StatementsClosingHandler {
         catch(SQLException SQLEe) {
             SQLEe.printStackTrace();
         }
+        catch(NullPointerException NPEe) {}
     }
     
     /**
@@ -74,5 +75,6 @@ public class StatementsClosingHandler {
         catch(SQLException SQLEe) {
             SQLEe.printStackTrace();
         }
+        catch(NullPointerException NPEe) {}
     }
 }

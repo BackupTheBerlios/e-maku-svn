@@ -259,13 +259,13 @@ public class LinkingCache {
                         + ConfigFileHandler.getDBName(i) + SQLNFEe.getMessage(),
                         ServerConstants.ERROR);
             }
-            
-            
-	        StatementsClosingHandler.close(st);
-	        StatementsClosingHandler.close(rs);
-	        st=null;
-	        rs=null;
     	}
+        
+        
+        StatementsClosingHandler.close(st);
+        StatementsClosingHandler.close(rs);
+        st=null;
+        rs=null;
     }
     
     public static void removePerfilCta(String bd,String[] args) 
