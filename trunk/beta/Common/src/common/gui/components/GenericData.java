@@ -339,15 +339,8 @@ public class GenericData extends JPanel implements DateListener,
 						sqlInit = elm.getValue();
 					} 
 				}
-
-				if (mask == null) {
-					XMLText = new XMLTextField(lab, width, nroChars, format);
-				} else {
-					XMLText = new XMLTextField(lab, width, nroChars, format,mask);
-				}
-				if (key) {
-					XMLText.isKey(true);
-				}
+				XMLText = new XMLTextField(lab, width, nroChars, format,mask);
+				XMLText.isKey(key);
 				XMLText.setSqlCode(sqlCode);
 				XMLText.setSqlLocal(sqlLocal);
 				XMLText.setKeyExternalValue(keyExternalValue);

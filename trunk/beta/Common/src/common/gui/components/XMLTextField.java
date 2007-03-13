@@ -55,6 +55,8 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	public static final String TEXT = "TEXT";
 	private JPanel JPtext;
 	private JLabel JLlabel;
+	private String stringLabel;
+	private String mask;
 	private boolean key;
 	private boolean returnValue = true;
 	private boolean nullValue;
@@ -73,7 +75,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	private String maxValue = null;
 	private String type;
 	private String formatDate;
-	private int chars;
+	private int nChars;
 	private boolean typed;
 	private String nameField = null;
 	private boolean cleaning;
@@ -89,46 +91,47 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	private String sqlLocal = null;
 	private Vector<String> sqlCode = null;
 	
+	public XMLTextField() {}
 	public XMLTextField(String label, int length, int chars) {
 		super(length);
-		this.chars = chars;
-		Generar(label, length);
+		String name = Language.getWord(label);
+		stringLabel = !name.equals("")?name:label;
+		this.nChars = chars;
+		generar();
 		this.setDocument(new TextDataValidator(chars));
 	}
 
 	public XMLTextField(String label, int length, int chars, String TYPE) {
 		super(length);
-		this.chars = chars;
-		Generar(label, length);
-		if (TYPE.equals(NUMERIC)) {
-			this.setDocument(new LimitDocument(chars));
-		} else {
-			this.setDocument(new TextDataValidator(chars));
-		}
+		this.nChars = chars;
+		String name = Language.getWord(label);
+		stringLabel = !name.equals("")?name:label;
 		type = TYPE;
+		generar();
 	}
 
 	public XMLTextField(String label, int length, int chars, String TYPE,String Mask) {
 		super(length);
-		this.chars = chars;
-		Generar(label, length);
-		if (TYPE.equals(NUMERIC)) {
-			this.setDocument(new LimitDocument(chars));
-		} else {
-			if (Mask.equals("NUMERIC")) {
-				this.setDocument(new LimitDocument(chars));
-			}
-			else {
-				this.setDocument(new TextDataValidator(chars));
-			}
-		}
+		this.nChars = chars;
+		String name = Language.getWord(label);
+		stringLabel = !name.equals("")?name:label;
+		this.mask = Mask;
 		type = TYPE;
+		generar();
 	}
 
-	private void Generar(String label, int length) {
-		String name = Language.getWord(label);
-		
-		JLlabel = new JLabel(!name.equals("")?name:label) {
+	void generar() {
+		if (type!=null && type.equals(NUMERIC)) {
+			this.setDocument(new LimitDocument(nChars));
+		} else {
+			if (mask!=null && mask.equals("NUMERIC")) {
+				this.setDocument(new LimitDocument(nChars));
+			}
+			else {
+				this.setDocument(new TextDataValidator(nChars));
+			}
+		}
+		JLlabel = new JLabel(stringLabel) {
 			
 			private static final long serialVersionUID = -8298738505192648533L;
 			public void paintComponent(Graphics g) {
@@ -139,7 +142,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 		    }
 		
 		};
-		JLlabel.setName(Language.getWord(label));
+		JLlabel.setName(stringLabel);
 		JPtext = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPtext.add(this);
 		
@@ -426,7 +429,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	}
 
 	public int getChars() {
-		return chars;
+		return nChars;
 	}
 	
 	public void setText(String s) {
@@ -629,6 +632,31 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 
 	public void setSqlLocal(String sqlLocal) {
 		this.sqlLocal = sqlLocal;
+	}
+	public String getStringLabel() {
+		return stringLabel;
+	}
+	
+	public void setStringLabel(String label) {
+		String name = Language.getWord(label);
+		stringLabel = !name.equals("")?name:label;
+	}
+	
+	public void setType(String type) {
+		this.type = type;
+	}
+	public String getMask() {
+		return mask;
+	}
+	public void setMask(String mask) {
+		this.mask = mask;
+	}
+	
+	public int getNChars() {
+		return nChars;
+	}
+	public void setNChars(int chars) {
+		nChars = chars;
 	}
 
 }

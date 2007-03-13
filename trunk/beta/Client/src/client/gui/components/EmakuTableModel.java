@@ -432,6 +432,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 			        	updateCells(ATFDargs[0].getTypeDate(),rowIndex,0);
 			        	updateCells(ATFDargs[2].getTypeDate(),rowIndex,2);
 			        	message("ERR_NOCODE");
+			        	currentIndex--;
 		        }
 		        
 		        /* Y ni que decir de este mundo de excepciones */

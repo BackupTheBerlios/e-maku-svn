@@ -113,6 +113,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 	private HashMap<String, String> importTotalCol;
 	private String sendRecord;
 	private Vector<RecordListener> recordListener = new Vector<RecordListener>();
+	private int rowHeight = -1;
 
 	/**
 	 * Constructor ...
@@ -266,6 +267,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 				} catch (NoSuchElementException NSEEe) {
 					NSEEe.printStackTrace();
 				}
+			}  else if (args.getAttributeValue("attribute").equals("rowHeight")) {
+				rowHeight = Integer.parseInt(args.getValue());
 			}
 		}
 		List Lsubarg = parameters.getChildren("subarg");
@@ -395,9 +398,13 @@ public class TableFindData extends JPanel implements AnswerListener,
 
 	private void propertiesTable() {
 
-		JTtabla.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		//JTtabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		//JTtabla.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		JTtabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		if (rowHeight>0) {
+			JTtabla.setRowHeight(rowHeight);	
+		}
 		JTtabla.setEnabled(enabled);
+		
 		JTtabla.getSelectionModel().addListSelectionListener(
 				new ListSelectionListener() {
 					public void valueChanged(ListSelectionEvent e) {
@@ -412,6 +419,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 					}
 				});
 		JTtabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		JTtabla.setAutoscrolls(true);
 		JTtabla.setColumnSelectionAllowed(true);
 		JTtabla.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent e) {
@@ -935,6 +943,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 		if (element.getChildren().size() > 0) {
 			doc.setRootElement(element);
 			TMFDtabla.setQuery(doc, true);
+			JTtabla.scrollRectToVisible(JTtabla.getCellRect(TMFDtabla.getCurrentIndex(),0,false));
+			JTtabla.updateUI();
 		}
 	}
 
