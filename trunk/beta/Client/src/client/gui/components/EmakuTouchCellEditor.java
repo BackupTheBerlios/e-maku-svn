@@ -1,6 +1,7 @@
 package client.gui.components;
 
 import java.awt.Component;
+import java.awt.IllegalComponentStateException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -24,7 +25,22 @@ public class EmakuTouchCellEditor  extends AbstractCellEditor implements TableCe
 		Element root = new Element("parameters");
 		root.addContent(e.cloneContent());
 		Document doc = new Document(root);
-		emakuTouchCell = new EmakuTouchCell(gfforma,doc);
+		emakuTouchCell = new EmakuTouchCell(gfforma,doc) {
+			private static final long serialVersionUID = 1L;
+			public void displayButtons() {
+				setNotified(false);
+				if (!popupTouch.isVisible()) {
+					updateUI();
+					int psize = (int) popupTouch.getPreferredSize().getHeight();
+					int x = this.getX();
+					int y = this.getY() - psize - this.getHeight();
+					try {
+						popupTouch.show(this,x,y);
+					}
+					catch (IllegalComponentStateException ex) {}
+				}
+			}
+		};
 		emakuTouchCell.getJButtonOk().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selected = true;
@@ -41,7 +57,7 @@ public class EmakuTouchCellEditor  extends AbstractCellEditor implements TableCe
 	
 	public Component getTableCellEditorComponent(
 			JTable table, Object value, boolean isSelected, int row, int column) {
-		emakuTouchCell.setText("");
+		emakuTouchCell.setText(String.valueOf(value));
 		selected = false;
 		return emakuTouchCell.getJPtext();
 	}

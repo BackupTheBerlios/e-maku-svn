@@ -43,7 +43,7 @@ KeyListener, FocusListener, AnswerListener {
 	private static final long serialVersionUID = -8059783384089564101L;
 	private TouchButtons touchButtons;
 	private JButton JBTouch;
-	private JPopupMenu popupTouch;
+	protected JPopupMenu popupTouch;
 	private Font font;
 	private Vector<RecordListener> recordListener = new Vector<RecordListener>();
 	private Vector<AnswerListener> AnswerListener = new Vector<AnswerListener>();
@@ -161,7 +161,7 @@ KeyListener, FocusListener, AnswerListener {
 
 	public void clean() {
 		this.setText("");
-		notified = false;
+		setNotified(false);
 	}
 
 	public boolean containData() {
@@ -218,17 +218,21 @@ KeyListener, FocusListener, AnswerListener {
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if ("display".equals(command)) {
-			notified = false;
-			if (!popupTouch.isVisible()) {
-				updateUI();
-				int psize = (int) popupTouch.getPreferredSize().getWidth();
-				int x = this.getWidth() - psize;
-				int y = this.getHeight();
-				try {
-					popupTouch.show(this,x,y);
-				}
-				catch (IllegalComponentStateException ex) {}
+			displayButtons();
+		}
+	}
+	
+	public void displayButtons() {
+		setNotified(false);
+		if (!popupTouch.isVisible()) {
+			updateUI();
+			int psize = (int) popupTouch.getPreferredSize().getWidth();
+			int x = this.getWidth() - psize;
+			int y = this.getHeight();
+			try {
+				popupTouch.show(this,x,y);
 			}
+			catch (IllegalComponentStateException ex) {}
 		}
 	}
 	
@@ -357,7 +361,7 @@ KeyListener, FocusListener, AnswerListener {
 				text = String.valueOf(getNumberValue());
 			}
 			notificando(this, text);
-			this.notified = notified;
+			setNotified(notified);
 			searchOthersSqls(this);
 			this.setText("");
 		}
@@ -369,13 +373,25 @@ KeyListener, FocusListener, AnswerListener {
 
 	public void focusLost(FocusEvent e) {
 		//Object next = e.getOppositeComponent();
-		if (notified) {
+		if (isNotified()) {
 			requestFocus();
-			notified = false;
+			setNotified(false);
 		}
 	}
 	
 	public JButton getJButtonOk() {
 		return touchButtons.getJBOk();
+	}
+	
+	public int getHeightPopup() {
+		return popupTouch.getHeight();
+	}
+
+	public boolean isNotified() {
+		return notified;
+	}
+
+	public void setNotified(boolean notified) {
+		this.notified = notified;
 	}
 }
