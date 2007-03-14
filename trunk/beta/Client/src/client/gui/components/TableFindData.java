@@ -501,14 +501,18 @@ public class TableFindData extends JPanel implements AnswerListener,
 					cellEditor = new EmakuDataSearchCellEditor(GFforma,k,ATFDargs,JTtabla);
 					dataColumn.setCellEditor(cellEditor);
 				}
-				
 				else if (ATFDargs[k].getType().equals("DETAILEDPRODUCT")) {
 					TableColumn dataColumn = JTtabla.getColumn(JTtabla.getColumnName(k));
 					EmakuDetailedProductCellEditor cellEditor =  null; 
 					cellEditor = new EmakuDetailedProductCellEditor(GFforma,k,ATFDargs,JTtabla);
 					dataColumn.setCellEditor(cellEditor);
 				}
-				
+				else if (ATFDargs[k].getType().equals("TOUCHBUTTONS")) {
+					TableColumn dataColumn = JTtabla.getColumn(JTtabla.getColumnName(k));
+					EmakuTouchCellEditor cellEditor =  null; 
+					cellEditor = new EmakuTouchCellEditor(GFforma,ATFDargs[k].getElement());
+					dataColumn.setCellEditor(cellEditor);
+				}
 			} catch (IllegalArgumentException IAEe) {
 				IAEe.printStackTrace();
 			}

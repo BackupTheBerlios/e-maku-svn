@@ -60,6 +60,7 @@ KeyListener, FocusListener, AnswerListener {
 		popupTouch = new JPopupMenu();
 		Vector<String> sqlCode = new Vector<String>();
 		this.getCaret().setBlinkRate(500);
+		URL url = null;
 		while (args.hasNext()) {
 			final Element elm = (Element) args.next();
 			if ("sqlCode".equals(elm.getAttributeValue("attribute"))) {
@@ -126,16 +127,16 @@ KeyListener, FocusListener, AnswerListener {
 					keySQL = new Vector<String>();
 				}
 				keySQL.add(elm.getValue());
+			} else if ("iconButton".equals(elm.getAttributeValue("attribute"))) {
+				url = this.getClass().getResource(elm.getValue());
 			} 
 		}
 		setSqlCode(sqlCode);
 		generar();
 		touchButtons = new TouchButtons(this,font);
-		URL url = this.getClass().getResource("/icons/icon_touch_64x64.png");
-		ImageIcon icon = new ImageIcon(url);
-		JBTouch = new JButton(icon);
+		ImageIcon icon = url!=null ? new ImageIcon(url) : null;
+		JBTouch = icon!=null ? new JButton(icon) : new JButton("X");
 		JBTouch.setFocusable(false);
-		//JBTouch = new JButton("X");
 		JBTouch.setActionCommand("display");
 		JBTouch.addActionListener(this);
 		popupTouch.add(touchButtons);
@@ -372,5 +373,9 @@ KeyListener, FocusListener, AnswerListener {
 			requestFocus();
 			notified = false;
 		}
+	}
+	
+	public JButton getJButtonOk() {
+		return touchButtons.getJBOk();
 	}
 }

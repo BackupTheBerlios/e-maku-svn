@@ -13,11 +13,12 @@ import javax.swing.text.BadLocationException;
 public class TouchButtons extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 5953946428251386838L;
+	private JButton JBOk = new JButton("OK");
 	private JButton[][] buttons = {{new JButton("7"),new JButton("8"),new JButton("9")},
 								   {new JButton("4"),new JButton("5"),new JButton("6")},
 								   {new JButton("1"),new JButton("2"),new JButton("3")},
 								   {new JButton("0"),new JButton("00"),new JButton("000")},
-								   {new JButton("CLEAN"),new JButton("<<"),new JButton("OK")}};
+								   {new JButton("C"),new JButton("<<"),JBOk}};
 	private EmakuTouchField touchField;
 
 	public TouchButtons(EmakuTouchField emakuTouchField, Font font){
@@ -39,7 +40,7 @@ public class TouchButtons extends JPanel implements ActionListener {
 		if ("OK".equals(value)) {
 			touchField.doFormat();
 		}
-		else if ("CLEAN".equals(value)) {
+		else if ("C".equals(value)) {
 			touchField.setText("");
 		}
 		else if ("<<".equals(value)) {
@@ -58,5 +59,8 @@ public class TouchButtons extends JPanel implements ActionListener {
 				ex.printStackTrace();
 			}
 		}
+	}
+	public JButton getJBOk() {
+		return JBOk;
 	}
 }

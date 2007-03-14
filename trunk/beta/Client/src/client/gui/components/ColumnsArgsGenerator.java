@@ -58,6 +58,7 @@ public class ColumnsArgsGenerator {
 	private String noDataMessage;
 	private int selected;
 	private boolean specializedCellEditable = true;
+	private Element args;
 	
     public boolean isDataBeep() {
 		return dataBeep;
@@ -74,186 +75,191 @@ public class ColumnsArgsGenerator {
      * 
      */
     public ColumnsArgsGenerator(Element sargs) {
+    	this.args = sargs;
+    	importValues = new Vector<String>();
+    	importValueCombo = new Vector<String>();
+    	Iterator it = sargs.getChildren().iterator();
+    	BigDecimal bd = new BigDecimal(0.00);
+    	while (it.hasNext()) {
+    		Element arg = (Element) it.next();
+    		String attrib = arg.getAttributeValue("attribute");
+    		String value = arg.getValue();
 
-	    	importValues = new Vector<String>();
-	    	importValueCombo = new Vector<String>();
-	    	Iterator it = sargs.getChildren().iterator();
-	    	BigDecimal bd = new BigDecimal(0.00);
-	    	while (it.hasNext()) {
-	    		Element arg = (Element) it.next();
-	    		String attrib = arg.getAttributeValue("attribute");
-	    		String value = arg.getValue();
-	    		
-	    		if (attrib.equals("name")) {
-	    			name = value;
-	    		} 
-	    		else if (attrib.equals("returnBlankCol")) {
-	    			returnBlankCol = Boolean.parseBoolean(value);
-	    		}
-	    		else if (attrib.equals("returnNullCol")) {
-	    			returnNullCol = Boolean.parseBoolean(value);
-	    		}
-	    		else if (attrib.equals("length")) {
-	    			lengthCol = Integer.parseInt(value);
-	    		}
-	    		else if (attrib.equals("exportValue")) {
-	    			exportValue = value;
-	    		}
-	    		else if (attrib.equals("importValue")) {
-	    			importValues.add(value);
-	    		}
-	    		else if (attrib.equals("exportValueCombo")) {
-	    			exportValueCombo = value;
-	    		}
-	    		else if (attrib.equals("importValueCombo")) {
-	    			importValueCombo.add(value);
-	    		}
-	    		else if (attrib.equals("type")) {
-	    			type = value;
-	    	        defaultValue = new Double(0.00);
-	    	        if (value.equals("STRING")) { 
-			            typeDate = new String();
-			            ColumnClass = String.class;
-	    	        }
-			        else if (value.equals("BOOLEAN")) {
-			           typeDate = new Boolean(false);
-			           ColumnClass = Boolean.class;
-			        }
-			        else if (value.equals("INT") || type.equals("INTEGER")) {
-			            typeDate = new Integer(0);
-			            ColumnClass = Integer.class;
-			        }
-			        else if (value.equals("DECIMAL")) {
-			            typeDate = bd.setScale(decimals,BigDecimal.ROUND_HALF_UP);
-			            ColumnClass = BigDecimal.class;
-			        }
-			        else if (value.equals("COMBOSQL")) {
-			            typeDate = new String();
-			            ColumnClass = String.class;
-			        }
-			        else if (value.equals("DATE")) {
-			            typeDate = null;
-			            ColumnClass = Date.class;
-			        }
-			        else if (value.equals("DATASEARCH")) {
-			        	typeDate = new String();
-			        	ColumnClass = String.class;
-			        }
-			        else if (value.equals("DETAILEDPRODUCT")) {
-			        	typeDate = new String();
-			        	ColumnClass = String.class;
-			        }
-	    		}
-	    		else if (attrib.equals("defaultValue")) {
-	    			tmpDefaultValue = value;
-	    		}
-	    		else if (attrib.equals("roundDecimal")) {
-	    			decimals = Integer.parseInt(value);
-	    			if (typeDate!=null) {
-	    				typeDate = bd.setScale(decimals,BigDecimal.ROUND_HALF_UP);
-	    			}
-	    		}
-	    		else if (attrib.equals("enabled")) {
-	    			editable = Boolean.parseBoolean(value);
-	    		}
-	    		else if (attrib.equals("specializedCellEditable")) {
-	    			specializedCellEditable = Boolean.parseBoolean(value);
-	    		}
-	    		else if (attrib.equals("printable")) {
-	    			printable = Boolean.parseBoolean(value);
-	    		}
-	    		else if (attrib.equals("queryCol")) {
-	    			try {
-	    				orderQuery = Integer.parseInt(value);
-	    			}
-	    			catch(NumberFormatException NFEe) {
-	    				orderQuery = -1;
-	    			}
-	    		}
-	    		else if (attrib.equals("returnCol")) {
-	    			try {
-		    			orderReturn = Integer.parseInt(value);
-	    			}
-	    			catch(NumberFormatException NFEe) {
-	    				orderReturn = -1;
-	    			}
-	    		}
-	    		else if (attrib.equals("clean")) {
-	    			clean = Boolean.parseBoolean(value);
-	    		}
-	    		else if (attrib.equals("sqlCombo")) {
-	    			sqlCombo = value;
-	    		}
-	    		else if ("nameField".equals(attrib)) {
-	                nameField = value;
-	        	}
-	    		else if ("repeatData".equals(attrib)) {
-	                try {
-	                	repeatData = Integer.parseInt(value);
-	                }
-	                catch(NumberFormatException NFEe) {
-	                	repeatData = 1;
-	                }
-	        	}
-		        else if ("keyDataSearch".equals(attrib)) {
-		        	keyDataSearch = value; 
-		        }
-	         	else if ("noDataBeep".equals(attrib)) {
-	                dataBeep = Boolean.parseBoolean(value);
-	         	}
-	         	else if ("blankArgs".equals(attrib)) {
-	                blankArgs = Boolean.parseBoolean(value);
-	         	}
-	         	else if ("noDataMessage".equals(attrib)) {
-	                noDataMessage = value;
-	         	}
-	         	else if ("noDataMessage".equals(attrib)) {
-	                noDataMessage = value;
-	         	}
-				else if ("selectedIndex".equals(attrib)) {
-	                try {
-						selected = Integer.parseInt(value);
-	                }
-	                catch(NumberFormatException NFEe) {
-	                	selected = 1;
-	                }
-				}
-	    	}
-    	
-	    	if (type.equals("INT") || type.equals("INTEGER")) { 
-	    		if (defaultValue!=null) {
-	    			try {
-	    				defaultValue = new Integer(tmpDefaultValue);
-	    			}
-	    			catch(NumberFormatException NFEe) {
-	        			defaultValue = new Integer(0);
-	        	        
-	    			}
-				catch(NullPointerException NPEe) {
-	            		defaultValue = new Integer(0);
-				}
-	    		}
-	    		else {
-	    			defaultValue = new Integer(0);
-	    		}
-	    		
-	    	} else  if (type.equals("DECIMAL")) {
-	    		if (defaultValue!=null) {
-	    			try {
-	    				defaultValue = new BigDecimal(tmpDefaultValue).setScale(decimals);
-	    			}
-	    			catch(NumberFormatException NFEe) {
-	            		defaultValue = bd.setScale(decimals);
-	    			}
-	    			catch(NullPointerException NPEe) {
-	            		defaultValue = bd.setScale(decimals);
-	    			}
-	    		}
-	    		else {
-	            	defaultValue = bd.setScale(decimals);
-	            	
-	    		}
-	    	}
+    		if (attrib.equals("name")) {
+    			name = value;
+    		} 
+    		else if (attrib.equals("returnBlankCol")) {
+    			returnBlankCol = Boolean.parseBoolean(value);
+    		}
+    		else if (attrib.equals("returnNullCol")) {
+    			returnNullCol = Boolean.parseBoolean(value);
+    		}
+    		else if (attrib.equals("length")) {
+    			lengthCol = Integer.parseInt(value);
+    		}
+    		else if (attrib.equals("exportValue")) {
+    			exportValue = value;
+    		}
+    		else if (attrib.equals("importValue")) {
+    			importValues.add(value);
+    		}
+    		else if (attrib.equals("exportValueCombo")) {
+    			exportValueCombo = value;
+    		}
+    		else if (attrib.equals("importValueCombo")) {
+    			importValueCombo.add(value);
+    		}
+    		else if (attrib.equals("type")) {
+    			type = value;
+    			defaultValue = new Double(0.00);
+    			if (value.equals("STRING")) { 
+    				typeDate = new String();
+    				ColumnClass = String.class;
+    			}
+    			else if (value.equals("BOOLEAN")) {
+    				typeDate = new Boolean(false);
+    				ColumnClass = Boolean.class;
+    			}
+    			else if (value.equals("INT") || type.equals("INTEGER")) {
+    				typeDate = new Integer(0);
+    				ColumnClass = Integer.class;
+    			}
+    			else if (value.equals("DECIMAL")) {
+    				typeDate = bd.setScale(decimals,BigDecimal.ROUND_HALF_UP);
+    				ColumnClass = BigDecimal.class;
+    			}
+    			else if (value.equals("COMBOSQL")) {
+    				typeDate = new String();
+    				ColumnClass = String.class;
+    			}
+    			else if (value.equals("DATE")) {
+    				typeDate = null;
+    				ColumnClass = Date.class;
+    			}
+    			else if (value.equals("DATASEARCH")) {
+    				typeDate = new String();
+    				ColumnClass = String.class;
+    			}
+    			else if (value.equals("DETAILEDPRODUCT")) {
+    				typeDate = new String();
+    				ColumnClass = String.class;
+
+    			}
+    			else if (value.equals("TOUCHBUTTONS")) {
+    				typeDate = new Integer(0);
+    				ColumnClass = Integer.class;
+    			}
+    		}
+    		else if (attrib.equals("defaultValue")) {
+    			tmpDefaultValue = value;
+    		}
+    		else if (attrib.equals("roundDecimal")) {
+    			decimals = Integer.parseInt(value);
+    			if (typeDate!=null) {
+    				typeDate = bd.setScale(decimals,BigDecimal.ROUND_HALF_UP);
+    			}
+    		}
+    		else if (attrib.equals("enabled")) {
+    			editable = Boolean.parseBoolean(value);
+    		}
+    		else if (attrib.equals("specializedCellEditable")) {
+    			specializedCellEditable = Boolean.parseBoolean(value);
+    		}
+    		else if (attrib.equals("printable")) {
+    			printable = Boolean.parseBoolean(value);
+    		}
+    		else if (attrib.equals("queryCol")) {
+    			try {
+    				orderQuery = Integer.parseInt(value);
+    			}
+    			catch(NumberFormatException NFEe) {
+    				orderQuery = -1;
+    			}
+    		}
+    		else if (attrib.equals("returnCol")) {
+    			try {
+    				orderReturn = Integer.parseInt(value);
+    			}
+    			catch(NumberFormatException NFEe) {
+    				orderReturn = -1;
+    			}
+    		}
+    		else if (attrib.equals("clean")) {
+    			clean = Boolean.parseBoolean(value);
+    		}
+    		else if (attrib.equals("sqlCombo")) {
+    			sqlCombo = value;
+    		}
+    		else if ("nameField".equals(attrib)) {
+    			nameField = value;
+    		}
+    		else if ("repeatData".equals(attrib)) {
+    			try {
+    				repeatData = Integer.parseInt(value);
+    			}
+    			catch(NumberFormatException NFEe) {
+    				repeatData = 1;
+    			}
+    		}
+    		else if ("keyDataSearch".equals(attrib)) {
+    			keyDataSearch = value; 
+    		}
+    		else if ("noDataBeep".equals(attrib)) {
+    			dataBeep = Boolean.parseBoolean(value);
+    		}
+    		else if ("blankArgs".equals(attrib)) {
+    			blankArgs = Boolean.parseBoolean(value);
+    		}
+    		else if ("noDataMessage".equals(attrib)) {
+    			noDataMessage = value;
+    		}
+    		else if ("noDataMessage".equals(attrib)) {
+    			noDataMessage = value;
+    		}
+    		else if ("selectedIndex".equals(attrib)) {
+    			try {
+    				selected = Integer.parseInt(value);
+    			}
+    			catch(NumberFormatException NFEe) {
+    				selected = 1;
+    			}
+    		}
+    	}
+
+    	if (type.equals("INT") || type.equals("INTEGER")) { 
+    		if (defaultValue!=null) {
+    			try {
+    				defaultValue = new Integer(tmpDefaultValue);
+    			}
+    			catch(NumberFormatException NFEe) {
+    				defaultValue = new Integer(0);
+
+    			}
+    			catch(NullPointerException NPEe) {
+    				defaultValue = new Integer(0);
+    			}
+    		}
+    		else {
+    			defaultValue = new Integer(0);
+    		}
+
+    	} else  if (type.equals("DECIMAL")) {
+    		if (defaultValue!=null) {
+    			try {
+    				defaultValue = new BigDecimal(tmpDefaultValue).setScale(decimals);
+    			}
+    			catch(NumberFormatException NFEe) {
+    				defaultValue = bd.setScale(decimals);
+    			}
+    			catch(NullPointerException NPEe) {
+    				defaultValue = bd.setScale(decimals);
+    			}
+    		}
+    		else {
+    			defaultValue = bd.setScale(decimals);
+
+    		}
+    	}
     }
 
     public int getLengthCol() {
@@ -414,6 +420,10 @@ public class ColumnsArgsGenerator {
 
 	public boolean isSpecializedCellEditable() {
 		return specializedCellEditable;
+	}
+	
+	public Element getElement() {
+		return args;
 	}
 
 }
