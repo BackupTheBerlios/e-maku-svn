@@ -12,16 +12,17 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import org.jdom.Document;
+import org.jdom.Element;
 
 import common.gui.forms.EndEventGenerator;
 import common.gui.forms.GenericForm;
 import common.gui.forms.NotFoundComponentException;
 import common.misc.language.Language;
-
-import org.jdom.Document;
-import org.jdom.Element;
 
 /**
  * XMLLabel.java Creado el 16-may-2005
@@ -92,6 +93,9 @@ public class XMLLabel extends JLabel implements Couplable {
             }
             else if ("mode".equals(e.getAttributeValue("attribute"))) {
             	mode=e.getValue(); 
+            }
+            else if ("image".equals(e.getAttributeValue("attribute"))) {
+            	setIcon(new ImageIcon(this.getClass().getResource(e.getValue()))); 
             }
             else if ("arg".equals(name) && e.getAttributeValue("attribute").equals("font")) {
             	try {

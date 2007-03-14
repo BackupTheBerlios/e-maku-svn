@@ -2,6 +2,7 @@ package client.gui.forms;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -46,11 +47,18 @@ public class Splash {
         window.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         JPanel pe = new JPanel();
         pe.setLayout(new BorderLayout());
-        JLabel labelx = new JLabel(new ImageIcon(window.getClass().getResource("/icons/e-maku_splash.png")),JLabel.CENTER);
+        URL url = window.getClass().getResource("/icons/e-maku_splash.png");
+        ImageIcon icon = new ImageIcon(url);
+        JLabel labelx = new JLabel(icon,JLabel.CENTER);
         pe.add(labelx,BorderLayout.CENTER);
         window.getContentPane().add(pe);
-        window.setBounds(((int)ClientConstants.MAX_WIN_SIZE_WIDTH/2)-150,
-                		(int)(ClientConstants.MAX_WIN_SIZE_HEIGHT/2)-143,300,341);
+        int width = icon.getIconWidth();
+        int height = icon.getIconHeight();
+        int x = ((int)ClientConstants.MAX_WIN_SIZE_WIDTH/2)-(width/2);
+        int y = ((int)ClientConstants.MAX_WIN_SIZE_HEIGHT/2)-(height/2);
+        window.setLocationByPlatform(true);
+        window.setLocation(x, y);
+        window.setSize(width,height);
         window.setVisible(true);
     }
     

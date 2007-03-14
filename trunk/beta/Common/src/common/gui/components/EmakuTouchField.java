@@ -11,6 +11,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -19,6 +20,7 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
@@ -129,7 +131,11 @@ KeyListener, FocusListener, AnswerListener {
 		setSqlCode(sqlCode);
 		generar();
 		touchButtons = new TouchButtons(this,font);
-		JBTouch = new JButton("X");
+		URL url = this.getClass().getResource("/icons/icon_touch_64x64.png");
+		ImageIcon icon = new ImageIcon(url);
+		JBTouch = new JButton(icon);
+		JBTouch.setFocusable(false);
+		//JBTouch = new JButton("X");
 		JBTouch.setActionCommand("display");
 		JBTouch.addActionListener(this);
 		popupTouch.add(touchButtons);
@@ -153,8 +159,8 @@ KeyListener, FocusListener, AnswerListener {
 	}
 
 	public void clean() {
-		// TODO Auto-generated method stub
-		
+		this.setText("");
+		notified = false;
 	}
 
 	public boolean containData() {
@@ -357,16 +363,12 @@ KeyListener, FocusListener, AnswerListener {
 	}
 	
 	public void keyReleased(KeyEvent e) {}
-
 	public void keyTyped(KeyEvent e) {}
-
-	public void focusGained(FocusEvent e) {
-		
-	}
+	public void focusGained(FocusEvent e) {}
 
 	public void focusLost(FocusEvent e) {
-		Object next = e.getOppositeComponent();
-		if (notified && JBTouch.equals(next)) {
+		//Object next = e.getOppositeComponent();
+		if (notified) {
 			requestFocus();
 			notified = false;
 		}
