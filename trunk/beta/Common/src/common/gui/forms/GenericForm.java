@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -981,6 +983,19 @@ public class GenericForm extends JInternalFrame{
             String nombre = e.getName();
             String name = e.getAttributeValue("name");
             String icon = e.getAttributeValue("icon");
+            String font = e.getAttributeValue("font");
+            if (font!=null) {
+				try {
+					StringTokenizer STfont = new StringTokenizer(font, ",");
+					Font f = new Font(
+			                STfont.nextToken(),
+			                Integer.parseInt(STfont.nextToken()),
+			                Integer.parseInt(STfont.nextToken()));
+					JTPtab.setFont(f);
+				}
+				catch (NumberFormatException NFEe) {}
+				catch (NoSuchElementException NSEEe) {}
+			}
             if (nombre.equals("panel")) {
 	            if (icon != null)
 	                try {
