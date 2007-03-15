@@ -1123,6 +1123,9 @@ public class TableFindData extends JPanel implements AnswerListener,
 				NumberFormat nf = NumberFormat.getNumberInstance();
 				DecimalFormat form = (DecimalFormat) nf;
 				form.applyPattern(mascara);
+				if (value instanceof String ) {
+					value = Integer.parseInt(value.toString());
+				}
 				super.setValue(value!=null?form.format(value):null);
 			}
 			else if (Date.class.equals(_class)) {

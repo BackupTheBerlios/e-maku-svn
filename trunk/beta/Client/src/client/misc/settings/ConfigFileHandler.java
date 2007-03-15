@@ -54,7 +54,8 @@ public class ConfigFileHandler extends EmakuParametersStructure {
     private static String logMode;
     private static Hashtable<String,String> boxID = new Hashtable<String,String>();
     private static String jarDirectory;
-
+    private static String classLookAndFeel;
+    private static String URLJarLookAndFeel;
     /**
      * Este metodo sirve para crear un nuevo archivo de configuracion
      * 
@@ -77,6 +78,8 @@ public class ConfigFileHandler extends EmakuParametersStructure {
         doc.getRootElement().addContent(new Element("serverport").setText(Port));
         doc.getRootElement().addContent(new Element("log").setText(log));
         doc.getRootElement().addContent(new Element("cash").setText(cash));
+        doc.getRootElement().addContent(new Element("classLookAndFeel").setText(""));
+        doc.getRootElement().addContent(new Element("jarLookAndFeel").setText(""));
         
         XMLOutputter out = new XMLOutputter();
         out.setFormat(Format.getPrettyFormat());
@@ -141,6 +144,12 @@ public class ConfigFileHandler extends EmakuParametersStructure {
                 	logMode = datos.getValue();
                 } else if (nombre.equals("cash")) {
                     boxID.put(datos.getValue(),"");
+	            }
+                else if (nombre.equals("classLookAndFeel")) {
+                    classLookAndFeel = datos.getValue();
+	            }
+                else if (nombre.equals("jarLookAndFeel")) {
+                    URLJarLookAndFeel = datos.getValue();
 	            }
                 EmakuParametersStructure.addParameter(nombre,datos.getValue());
             }
@@ -246,5 +255,13 @@ public class ConfigFileHandler extends EmakuParametersStructure {
 
 	public static String getJarDirectory() {
 		return jarDirectory;
+	}
+
+	public static String getClassForLookAndFeel() {
+		return classLookAndFeel;
+	}
+	
+	public static String getURLJarForLookAndFeel() {
+		return URLJarLookAndFeel;
 	}
 }

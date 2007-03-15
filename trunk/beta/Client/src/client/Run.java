@@ -3,6 +3,9 @@ package client;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -16,8 +19,6 @@ import client.misc.ClientConstants;
 import client.misc.settings.ConfigFileHandler;
 import client.misc.settings.ConfigFileNotLoadException;
 
-//import com.nilo.plaf.nimrod.NimRODLookAndFeel;
-//import com.nilo.plaf.nimrod.NimRODTheme;
 import common.comunications.SocketConnector;
 import common.misc.language.Language;
 
@@ -50,7 +51,18 @@ public class Run {
 	public static void main(String[] args) {
 
         try {
-        	
+        	ConfigFileHandler.loadSettings();
+        	String look = ConfigFileHandler.getClassForLookAndFeel();
+        	String pathjar = ConfigFileHandler.getURLJarForLookAndFeel();
+        	if (look!=null && pathjar!=null && !"".equals(look) && !"".equals(pathjar)) {
+        		System.out.println("Cargando Look And Feel "+look);
+        		URL urls [] = {};
+                JarFileLoader cl = new JarFileLoader (urls);
+                cl.addFile (pathjar);
+                cl.loadClass (look);
+            	ConfigFileHandler.getClassForLookAndFeel();
+            	UIManager.setLookAndFeel(look);	
+        	}        	
 //        	InputStream is = new FileInputStream(new File("/home/felipe/bionic.ttf"));
 //	        Font fo = Font.createFont(
 //	                               Font.TRUETYPE_FONT, is);
@@ -75,7 +87,7 @@ public class Run {
         	UIManager.put("TabbedPane.font",	f);
         	UIManager.put("DesktopColor.color",	Color.GRAY);
            
-            ConfigFileHandler.loadSettings();
+            
             
             new Connection();
 
@@ -110,5 +122,16 @@ public class Run {
         		System.exit(0);
         	}
         }
+    }
+}
+
+class JarFileLoader extends URLClassLoader {
+    public JarFileLoader (URL[] urls) {
+        super (urls);
+    }
+
+    public void addFile (String path) throws MalformedURLException {
+        String urlPath = "jar:file://" + path + "!/";
+        addURL (new URL (urlPath));
     }
 }
