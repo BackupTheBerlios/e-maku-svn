@@ -25,12 +25,11 @@ package client.gui.components;
  */
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -38,7 +37,12 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -48,9 +52,9 @@ import org.jdom.Element;
 
 import common.gui.components.AnswerEvent;
 import common.gui.components.AnswerListener;
+import common.gui.forms.EndEventGenerator;
 import common.gui.forms.ExternalValueChangeEvent;
 import common.gui.forms.ExternalValueChangeListener;
-import common.gui.forms.EndEventGenerator;
 import common.gui.forms.GenericForm;
 import common.gui.forms.InstanceFinishingListener;
 import common.gui.forms.NotFoundComponentException;
@@ -78,19 +82,19 @@ public class ComboBoxFiller extends JComboBox implements
 	private Vector<String> keysCombo = new Vector<String>();
 
 	private boolean saveKey = true;
-	private boolean clean = false;
+	private boolean clean;
 	private String nameField = null;
 	private String driverEvent;
 	private String keySQL;
 	private boolean whitPanel = true;
 	private int preferredLength =0;
-	private boolean returnNullValue = false;
+	private boolean returnNullValue;
 	private String name = "";
 	private boolean dataBeep;
 	private String noDataMessage;
     private Vector<AnswerListener> AnswerListener = new Vector<AnswerListener>();
 	private Vector<String> constantValue;
-    
+	private boolean displayIcons;
 	/**
 	 * Este constructor es invocado desde un componente
 	 * @param GFforma
@@ -208,7 +212,7 @@ public class ComboBoxFiller extends JComboBox implements
 		this.exportValue=exportValue;
 		this.saveKey=saveKey;
         this.GFforma.addChangeExternalValueListener(this);
-    		this.addPopupMenuListener(this);
+        this.addPopupMenuListener(this);
         generar();
 	}
 
@@ -313,7 +317,11 @@ public class ComboBoxFiller extends JComboBox implements
          	}
          	else if ("noDataMessage".equals(element.getAttributeValue("attribute"))) {
                 noDataMessage = value;
-         	} 
+         	}
+         	else if ("displayIcon".equals(element.getAttributeValue("attribute"))) {
+                displayIcons = Boolean.parseBoolean(value);
+                setRenderer(new ComboBoxRenderer());
+         	}
          	else if ("font".equals(element.getAttributeValue("attribute"))) {
 				try {
 					StringTokenizer STfont = new StringTokenizer(element.getValue(), ",");
@@ -419,7 +427,8 @@ public class ComboBoxFiller extends JComboBox implements
 				}
 			}
 		}
-		new buildCombo(noDataMessage,dataBeep).start();
+		SwingUtilities.invokeLater(new buildCombo(noDataMessage,dataBeep));
+		//new buildCombo(noDataMessage,dataBeep).start();
 	}
 	
 	private void setData(String data) {
@@ -443,10 +452,22 @@ public class ComboBoxFiller extends JComboBox implements
 			Element e = (Element) i.next();
 			Iterator j = e.getChildren().iterator();
 			String code = ((Element) j.next()).getValue();
-			String name = ((Element) j.next()).getValue().trim();
+			Object name = ((Element) j.next()).getValue().trim();
 			if (saveKey) {
 				keysCombo.addElement(code);
-				this.addItem(name);
+				if (displayIcons) {
+					URL url = this.getClass().getResource(name.toString());
+					if (url!=null) {
+						ImageIcon icon = new ImageIcon(url);
+						this.addItem(icon);
+					}
+					else {
+						this.addItem(name);
+					}
+				}
+				else {
+					this.addItem(name);
+				}
 			}
 			else {
 				this.addItem(name+" "+code);
@@ -671,12 +692,6 @@ public class ComboBoxFiller extends JComboBox implements
 	public boolean isReturnNullValue() {
 		return returnNullValue;
 	}
-	public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                            RenderingHints.VALUE_ANTIALIAS_ON);
-        super.paintComponent(g);
-    }
 
 	public String getExportValue() {
 		return exportValue;
@@ -713,4 +728,40 @@ public class ComboBoxFiller extends JComboBox implements
 	public Font getFont() {
 		return font;
 	}
+}
+
+class ComboBoxRenderer implements ListCellRenderer {
+    
+	private static final long serialVersionUID = 1L;
+	private JLabel label;
+	public ComboBoxRenderer() {
+		label = new JLabel();
+        label.setOpaque(true);
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setVerticalAlignment(JLabel.CENTER);
+    }
+	
+    public synchronized  Component getListCellRendererComponent(
+        JList list,
+        Object value,
+        int index,
+        boolean isSelected,
+        boolean cellHasFocus)
+    {
+			if (isSelected) {
+				label.setBackground(list.getSelectionBackground());
+				label.setForeground(list.getSelectionForeground());
+	        } else {
+	        	label.setBackground(list.getBackground());
+	        	label.setForeground(list.getForeground());
+	        }
+	        if (value instanceof String) {
+	        	label.setText(value.toString());
+	        }
+	        else {
+		        ImageIcon icon = (ImageIcon)value;
+		        label.setIcon(icon);
+	        }
+	        return label;		
+    }
 }

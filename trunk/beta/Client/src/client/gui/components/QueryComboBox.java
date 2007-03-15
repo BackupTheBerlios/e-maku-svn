@@ -2,12 +2,12 @@ package client.gui.components;
 
 import java.util.Iterator;
 
+import org.jdom.Document;
+import org.jdom.Element;
+
 import common.gui.forms.GenericForm;
 import common.transactions.TransactionServerException;
 import common.transactions.TransactionServerResultSet;
-
-import org.jdom.Document;
-import org.jdom.Element;
 
 /**
  * QueryComboBox.java Creado el 25-feb-2005
