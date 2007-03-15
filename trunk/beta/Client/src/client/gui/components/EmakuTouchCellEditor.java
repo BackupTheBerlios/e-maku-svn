@@ -36,6 +36,7 @@ public class EmakuTouchCellEditor  extends AbstractCellEditor implements TableCe
 					int y = this.getY() - psize - this.getHeight();
 					try {
 						popupTouch.show(this,x,y);
+						this.setText("");
 					}
 					catch (IllegalComponentStateException ex) {}
 				}

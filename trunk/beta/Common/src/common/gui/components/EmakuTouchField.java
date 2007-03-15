@@ -194,6 +194,12 @@ KeyListener, FocusListener, AnswerListener {
 	
 	
 	public void doFormat() {
+		format();
+		sendData(false);
+		disposePopup();
+	}
+	
+	public void format() {
 		if ("NUMERIC".equals(getType())) {
 			String text = getText();
 			try {
@@ -206,8 +212,6 @@ KeyListener, FocusListener, AnswerListener {
 			catch (NumberFormatException NFEe) {}
 			catch (ParseException Pe) {}
 		}
-		sendData(false);
-		disposePopup();
 	}
 
 	public void disposePopup() {
@@ -231,6 +235,9 @@ KeyListener, FocusListener, AnswerListener {
 			int y = this.getHeight();
 			try {
 				popupTouch.show(this,x,y);
+				if ("NUMERIC".equals(getType())) {
+					this.setText(String.valueOf((int)getNumberValue()));
+				}
 			}
 			catch (IllegalComponentStateException ex) {}
 		}
@@ -349,6 +356,7 @@ KeyListener, FocusListener, AnswerListener {
 		switch(keyCode) {
 		case KeyEvent.VK_ENTER:
 		case KeyEvent.VK_TAB:
+			format();
 			sendData(true);
 			break;
 		}
