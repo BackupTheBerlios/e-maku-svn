@@ -6,6 +6,7 @@ import java.nio.channels.SocketChannel;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -92,6 +93,9 @@ public class ReportMaker extends Thread {
 	
 	public void run() {
 		try {
+			Calendar calendar = Calendar.getInstance();
+			long init = calendar.getTimeInMillis();
+
 			ResultSet rs;
 			codigo = element.getChildText("driver");
 			rs = new QueryRunner(
@@ -105,11 +109,11 @@ public class ReportMaker extends Thread {
 			Document docZip = new Document();
 			Element titleReport;
 			if (next) {
+				System.out.println("Generando reporte No. " + codigo);
 				
 				/* XMLOutputter xmout = new XMLOutputter();
 				xmout.setFormat(Format.getPrettyFormat());
 				xmout.output(element,System.out);
-				System.out.println("Generando reporte No. " + codigo);
 				InputStream iosTemplate = rs.getAsciiStream(1); */
 				title = rs.getString(1);
 				sql = rs.getString(2);
@@ -205,22 +209,34 @@ public class ReportMaker extends Thread {
 				fileType = "PLAINREPORT";
 				fileName = "report.csv";
 			} 
-			
+			System.out.println("Empaquetando Reporte...");
 			Element root = new Element(fileType);
 			Element id = new Element("id").setText(this.id);
 			Element idReport = new Element("idReport").setText(codigo);
-			ZipHandler zip = new ZipHandler(os,fileName);
 			root.addContent(id);
 			root.addContent(idReport);
 			root.addContent(titleReport);
+			
+			ZipHandler zip = new ZipHandler(os,fileName);
+			System.out.println("Reporte empaquetado...");
+			
 			root.addContent(zip.getElementDataEncode("data"));
 	    	docZip.setRootElement(root);
-	    	/* System.out.println("escribiendo paquete ....");
+			calendar = Calendar.getInstance();
+			long end = calendar.getTimeInMillis();
+			System.out.println("Generador en " + (end-init)/1000 + " segundos ");
+	    	
+	    	System.out.println("escribiendo paquete ....");
+			calendar = Calendar.getInstance();
+			init = calendar.getTimeInMillis();
+	    	/* 
 	    	XMLOutputter out = new XMLOutputter(); 
 	    	out.setFormat(Format.getPrettyFormat());
 	    	out.output(docZip, System.out); */
 			SocketWriter.writing(this.socket,docZip);
-			//System.out.println("paquete escrito ..."); 
+			calendar = Calendar.getInstance();
+			end = calendar.getTimeInMillis();
+			System.out.println("paquete escrito en "+((end-init)/1000)+" segundos"); 
 	        rs.close();
 
 		} catch (SQLException e) {

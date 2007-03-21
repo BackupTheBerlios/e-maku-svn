@@ -35,15 +35,14 @@ import org.jdom.input.SAXBuilder;
  */
 public class PackageToXML {
 
-    private static ByteArrayOutputStream bufferTmp;
+    private static ByteArrayOutputStream bufferOut;
     private static Document doc;
     private ByteBuffer buf;
     private SAXBuilder builder;
     private Vector <ArrivedPackageListener>arrivePackageListener = new Vector<ArrivedPackageListener>();
     
     public PackageToXML() {
-        //this.setPriority(Thread.MIN_PRIORITY);
-        bufferTmp = new ByteArrayOutputStream();
+        bufferOut = new ByteArrayOutputStream();
     }
 
 
@@ -56,13 +55,6 @@ public class PackageToXML {
 
             while (numRead > 0) {
 
-                ByteArrayOutputStream bufferOut = new ByteArrayOutputStream();
-                bufferOut.write(bufferTmp.toByteArray());
-                bufferTmp = new ByteArrayOutputStream();
-
-                Vector <ByteArrayOutputStream>vbuffer = new Vector<ByteArrayOutputStream>();
-                vbuffer.add(bufferOut);
-
                 buf.rewind();
                 
                 numRead = socket.read(buf);
@@ -70,68 +62,40 @@ public class PackageToXML {
                 
                 buf.rewind();
 
-                int j = 0;
-
                 for (int i = 0; i < numRead; i++) {
                     int character = buf.get(i);
                     if (character != 12) {
-                        if (character!=0)
-                            vbuffer.get(j).write(character);
+                        if (character!=0) {
+                        	bufferOut.write(character);
+                        }
                     }
                     else {
-                        if (i != (numRead - 1)) {
-                            // Nuevo Paquete
-                            bufferOut = new ByteArrayOutputStream();
-                            vbuffer.add(bufferOut);
-                            j++;
-                        }
-                    }
-                }
-
-                for (int i = 0; i < vbuffer.size(); i++) {
- //                   String sbuff = "";
-                    ByteArrayOutputStream docStream = new ByteArrayOutputStream();
-                    ByteArrayInputStream bufferIn = null;
-                    try {
+                        ByteArrayInputStream bufferIn = null;
                         builder = new SAXBuilder(false);
-                        docStream = (ByteArrayOutputStream) vbuffer.get(i);
-                        bufferIn = new ByteArrayInputStream(docStream.toByteArray());
- //                       sbuff = new String(docStream.toByteArray());
-                        doc = builder.build(bufferIn);
+                        bufferIn = new ByteArrayInputStream(bufferOut.toByteArray());
+                        try {
+							doc = builder.build(bufferIn);
+						} catch (JDOMException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
         	            ArrivedPackageEvent event = new ArrivedPackageEvent(this,doc);
         	            notifyArrivePackage(event);
+                    	bufferOut.close();
+                        bufferOut = new ByteArrayOutputStream();
+                    }
 
-                    }
-                    catch (NullPointerException NPEe) {
-                    	try {
-	                    	Document doc = builder.build(bufferIn);
-	        	            ArrivedPackageEvent event = new ArrivedPackageEvent(this,doc);
-	        	            notifyArrivePackage(event);
-                    	}
-                    	catch (JDOMException e1) {
-                            bufferTmp.write(docStream.toByteArray());
-                        }
-                    }
-                    catch (JDOMException e1) {
-                        // En caso de un paquete invalido
-                        bufferTmp.write(docStream.toByteArray());
-                        //System.out.println(new String(bufferTmp.toByteArray()));
-                    }
                 }
-
                 if (numRead == -1) {
-                    bufferOut.close();
                     socket.close();
                     socket = null;
                     return;
                 }
-
             }
 
         }
         catch (ClosedChannelException e) {
         	socket = null;
-            //e.printStackTrace();
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -147,12 +111,9 @@ public class PackageToXML {
     }
 
     private synchronized void notifyArrivePackage(ArrivedPackageEvent event) {
-        Vector lista;
-        lista = (Vector)arrivePackageListener.clone();
-        for (int i=0; i<lista.size();i++) {
-            ArrivedPackageListener listener = (ArrivedPackageListener)lista.elementAt(i);
+        for (int i=0; i<arrivePackageListener.size();i++) {
+            ArrivedPackageListener listener = (ArrivedPackageListener)arrivePackageListener.elementAt(i);
             listener.validPackage(event);
         }
     }
-
 }
