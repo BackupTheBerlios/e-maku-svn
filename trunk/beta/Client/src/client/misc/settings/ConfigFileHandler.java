@@ -99,7 +99,7 @@ public class ConfigFileHandler extends EmakuParametersStructure {
         		outFile.close();
         		ConfigFileHandler.host = Host;
         		ConfigFileHandler.serverport = Integer.parseInt(Port);
-        		idioma.CargarLenguaje(Language);
+        		idioma.loadLanguage(Language);
         	}
         }
         catch (FileNotFoundException e) {
@@ -154,7 +154,7 @@ public class ConfigFileHandler extends EmakuParametersStructure {
                 EmakuParametersStructure.addParameter(nombre,datos.getValue());
             }
             
-            idioma.CargarLenguaje(language);
+            idioma.loadLanguage(language);
         }
         catch (FileNotFoundException FNFEe) {
 
@@ -202,7 +202,7 @@ public class ConfigFileHandler extends EmakuParametersStructure {
 		jarDirectory = jar+directory;
         EmakuParametersStructure.setJarDirectoryTemplates(jarDirectory+"/printer-templates");
 
-		idioma.CargarLenguaje(jarDirectory+"/misc",language);
+		idioma.loadLanguage(jarDirectory+"/misc",language);
         /*
          * Cargando iconos
          */

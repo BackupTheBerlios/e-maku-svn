@@ -105,7 +105,7 @@ public class LogAdmin {
 	    
 	    		showWindowsMessage(key,message,debug);
 	    		
-	    		if (Language.getCodeError(key).equals("002")) {
+	    		if (Language.getErrorCode(key).equals("002")) {
 	//    			new SuperException(SuperException.PANIC);
 	    		} 
 	    	}
@@ -184,7 +184,7 @@ public class LogAdmin {
 		contentPane.add(panel2,BorderLayout.CENTER);
 		contentPane.setSize(400,600);
 		
-		JOptionPane.showMessageDialog(new JFrame(),contentPane,Language.getWord("ERROR") + " #" + Language.getCodeError(key),
+		JOptionPane.showMessageDialog(new JFrame(),contentPane,Language.getWord("ERROR") + " #" + Language.getErrorCode(key),
 				JOptionPane.ERROR_MESSAGE);
     }
 
@@ -199,7 +199,7 @@ public class LogAdmin {
 	 */
     
     private static void printConsoleError(String key,String message,String debug) {
-  	 System.out.println(Language.getWord("ERROR") + " #" + Language.getCodeError(key));
+  	 System.out.println(Language.getWord("ERROR") + " #" + Language.getErrorCode(key));
 	 System.out.println(message);
 	 System.out.println(debug);
 	}   

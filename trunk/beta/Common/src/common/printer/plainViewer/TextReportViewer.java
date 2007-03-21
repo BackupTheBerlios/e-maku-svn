@@ -13,11 +13,11 @@ import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
-//import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Vector;
 
 import org.jdom.Element;
 import common.misc.ZipHandler;
@@ -38,8 +38,8 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 	private GenericForm GFforma;
 	private String idReport;
 	
-	private ByteArrayOutputStream[] reportViews;
-	private ByteArrayOutputStream[] printerViews;
+	private Vector <ByteArrayOutputStream>reportViews = new Vector<ByteArrayOutputStream>();
+	private Vector <ByteArrayOutputStream>printerViews = new Vector<ByteArrayOutputStream>();;
 	
 	private byte[] bytes;
 	private int pages = 0;
@@ -62,8 +62,17 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 	private Element data;
 	private ZipHandler zip;
 	
-	// Constructor
+	private int charactersPerline = 80;
+	
+	// Class Constructor
 	public TextReportViewer(GenericForm GFforma, String idReport) {
+
+		setClosable(true);
+		setIconifiable(true);
+		setResizable(true);
+		setMaximizable(true);
+		setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+				
 		this.GFforma = GFforma;
 		this.idReport = idReport;
 		ClientHeaderValidator.addReportListener(this);
@@ -72,18 +81,13 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 	}
 	
 	// Sets the graphic interface for the viewer
-	private void openReport() {
-		setClosable(true);
-		setIconifiable(true);
-		setResizable(true);
-		
+	private void openReport() {		
 		JPanel global = new JPanel();
 		global.setLayout(new BorderLayout());		
         global.add(setButtonsPanel(), BorderLayout.NORTH);        
         global.add(setViewerArea(), BorderLayout.CENTER);
         global.add(setNavigationPanel(), BorderLayout.SOUTH);
-
-        setDefaultCloseOperation(JInternalFrame.EXIT_ON_CLOSE);
+        
         setContentPane(global);
         pack();
         setSize(900,400);
@@ -201,9 +205,9 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 
 		// Print text plain file
 		if (e.getActionCommand().equals("PRINT")) {
-			PrinterDialog dialog = new PrinterDialog(GFforma,pages,printerViews);
-            dialog.setVisible(true);
-            
+			PlainReportPrinterDialog dialog = new PlainReportPrinterDialog(GFforma,pages,printerViews,charactersPerline);
+    		dialog.setLocationRelativeTo(this);
+			dialog.setVisible(true);
 			return;
 		}
 		
@@ -338,11 +342,15 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 	// Shows a report page in the viewer
 	private void setReportPage(int i) {		
 		int j = checkIndexRange(i);
-		String page1 = reportViews[j].toString();
+		ByteArrayOutputStream tmp = reportViews.elementAt(i);
+		String page1 = tmp.toString();
+
 		if (page1 != null) {
 		    reportArea.setText(page1);
 		    currentPage = j + 1;
-		    currentPageTF.setText("" + currentPage);
+		    currentPageTF.setText("" + currentPage);		    
+		    String pageFooter = Language.getWord("PAGE") + " " + currentPage + " " + Language.getWord("OF") + " " + pages;
+			page1 += "<p align=\"right\">" + pageFooter + "&nbsp;&nbsp;&nbsp;<br></p></td></tr></table></center><br><br>";		    
 		    reportArea.setText(page1);
 		    reportArea.setCaretPosition(0);
 		} 
@@ -421,10 +429,10 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 			public void run() {
 				try {
 					bytes = zip.getDataDecode(data.getValue());
-					TextReportGenerator parser = new TextReportGenerator(80,bytes);
-				    reportViews = parser.getReportViews();
+					TextReportGenerator parser = new TextReportGenerator(charactersPerline,bytes);
+					reportViews = parser.getReportViews();
 				    printerViews = parser.getPrinterViews();
-				    pages = reportViews.length;
+				    pages = reportViews.size();
 				    setTitle(name);
 				    total.setText(Language.getWord("OF") + " " + pages + " ");
 				    setReportPage(0);

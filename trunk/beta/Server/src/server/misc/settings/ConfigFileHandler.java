@@ -83,7 +83,7 @@ public class ConfigFileHandler {
                     loadConnectionsPool(records.getChildren());
                 } else if (records.getName().equals("Lenguaje")) {
                 	local = records.getValue();
-                    appLang.CargarLenguaje(local);
+                    appLang.loadLanguage(local);
                 } else if (records.getName().equals("Log")) {
                     new LogAdmin(records.getValue(),ServerConstants.KeyServer);
                 } else if (records.getName().equals("SocketJClient")) {

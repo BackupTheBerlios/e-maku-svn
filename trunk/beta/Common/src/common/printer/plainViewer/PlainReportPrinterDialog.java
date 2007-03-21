@@ -29,7 +29,11 @@ import common.misc.CommonConstants;
 import common.printer.PrintingManager;
 import common.printer.PrintingManager.ImpresionType;
 
-public class PrinterDialog extends JFrame implements ActionListener {
+import common.misc.language.Language;
+
+// Printer Dialog for plain text reports
+
+public class PlainReportPrinterDialog extends JFrame implements ActionListener {
 	
 	private static final long serialVersionUID = -2549815723035494574L;
 	JComboBox printers;
@@ -38,16 +42,21 @@ public class PrinterDialog extends JFrame implements ActionListener {
 	JTextField copiesTF;
 	JRadioButton all;
 	JRadioButton range;
-	ByteArrayOutputStream[] printerViews;
+	Vector <ByteArrayOutputStream>printerViews;
 	int pagesTotal = 0;
 	int copiesTotal = 0;
 	String printer;
+	int charactersPerLine;
 	
-	public PrinterDialog(GenericForm parent, int pagesTotal, ByteArrayOutputStream[] printerViews) {
+	
+	// Class Constructor
+	public PlainReportPrinterDialog(GenericForm parent, int pagesTotal, Vector <ByteArrayOutputStream>printerViews, int charactersPerLine) {
 	    this.printerViews = printerViews;
 	    this.pagesTotal = pagesTotal;
-		this.setTitle("Printer Options");
+	    this.charactersPerLine = charactersPerLine;
+		this.setTitle(Language.getWord("PRINTER_OP"));
 		this.setAlwaysOnTop(true);
+		
 		printerNames = new Vector<String>();
 				
 		for (PrintService ps : PrintServiceLookup.lookupPrintServices(null,null)) {
@@ -59,25 +68,25 @@ public class PrinterDialog extends JFrame implements ActionListener {
          */
         CommonConstants.lookupDefaultPrintService();
          
-		JLabel printerName = new JLabel("Printer Name:");
+		JLabel printerName = new JLabel(Language.getWord("PRINTER_NAME"));
 		printers = new JComboBox(printerNames);
-		JButton accept = new JButton("Accept");
+		JButton accept = new JButton(Language.getWord("ACCEPT"));
 		accept.addActionListener(this);
 		accept.setActionCommand("PRINT");
 		
-		JButton cancel = new JButton("Cancel");
+		JButton cancel = new JButton(Language.getWord("CANCEL"));
 		cancel.addActionListener(this);
 		cancel.setActionCommand("CLOSE");
 		
 	    ButtonGroup rangeGroup = new ButtonGroup();
-		all = new JRadioButton("All");
+		all = new JRadioButton(Language.getWord("ALL"));
 		all.setSelected(true);
-		range = new JRadioButton("Range");
+		range = new JRadioButton(Language.getWord("RANGE"));
 		rangeGroup.add(all);
 		rangeGroup.add(range);
 		
 		pages = new JTextField(14);
-		JLabel copies = new JLabel("Copies:");
+		JLabel copies = new JLabel(Language.getWord("COPIES"));
         copiesTF = new JTextField("1",2);		
 		
 		JPanel base = new JPanel();
@@ -131,7 +140,7 @@ public class PrinterDialog extends JFrame implements ActionListener {
 		center.setBorder(
 	            BorderFactory.createCompoundBorder(
 	                BorderFactory.createCompoundBorder(
-	                                BorderFactory.createTitledBorder("Printing Area"),
+	                                BorderFactory.createTitledBorder(Language.getWord("PRINTING_AREA")),
 	                                BorderFactory.createEmptyBorder(5,5,5,5)),
 	                center.getBorder()));
 		
@@ -165,8 +174,8 @@ public class PrinterDialog extends JFrame implements ActionListener {
 		// Print selected pages
 		if (e.getActionCommand().equals("PRINT")) {
 
+			String errorMessage = Language.getWord("BAD_RANGE");
 			printer = (String) printers.getSelectedItem();
-			System.out.println("Printer: " + printer);
 			
 			// Getting number of copies
 			String copiesNum = copiesTF.getText();
@@ -176,12 +185,10 @@ public class PrinterDialog extends JFrame implements ActionListener {
             else {
             	  copiesTF.setText("1");
             	  copiesTF.requestFocus();
-            	  JOptionPane.showMessageDialog(this,"El numero de copias de impresion debe ser un valor numerico.","Error!",
+            	  JOptionPane.showMessageDialog(this,Language.getWord("BAD_COPIES"),Language.getWord("ERROR"),
                         JOptionPane.ERROR_MESSAGE);
             	  return;
             }
-
-            System.out.println("Printing...");
             
             if (all.isSelected()) {
             	// Print all the pages
@@ -196,7 +203,7 @@ public class PrinterDialog extends JFrame implements ActionListener {
             		if (secuence.length() == 0) {
             			pages.setText("");
             			pages.requestFocus();
-            			JOptionPane.showMessageDialog(this,"1. El rango de paginas a imprimir debe ser de la forma A-B,C-D,F,G-H","Error!",
+            			JOptionPane.showMessageDialog(this,errorMessage,Language.getWord("ERROR"),
             					JOptionPane.ERROR_MESSAGE);
             			return;            		
             		}
@@ -204,8 +211,6 @@ public class PrinterDialog extends JFrame implements ActionListener {
             				StringTokenizer tokens = new StringTokenizer(secuence,",");
             				int parameters = tokens.countTokens();
             				Vector<int[]> pairs = new Vector<int[]>();
-            	    
-            				System.out.println("Parametros: " + parameters);
             				
             				if (parameters > 0) {
             					while(tokens.hasMoreTokens()){
@@ -223,45 +228,42 @@ public class PrinterDialog extends JFrame implements ActionListener {
             								    		numbers[j] = Integer.parseInt(limit);
             								    		j++;
             								    	} else {
-            								    			JOptionPane.showMessageDialog(this,"2. El rango de paginas a imprimir debe ser de la forma A-B,C-D,F,G-H"
-            								    					,"Error!", JOptionPane.ERROR_MESSAGE);
+            								    			JOptionPane.showMessageDialog(this,errorMessage
+            								    					,Language.getWord("ERROR"), JOptionPane.ERROR_MESSAGE);
             								    			return;            									
             								    	}
             								    } else {
-            								    		JOptionPane.showMessageDialog(this,"3. El rango de paginas a imprimir debe ser de la forma A-B,C-D,F,G-H"
-            								    				,"Error!", JOptionPane.ERROR_MESSAGE);
+            								    		JOptionPane.showMessageDialog(this,errorMessage
+            								    				,Language.getWord("ERROR"), JOptionPane.ERROR_MESSAGE);
             								    		return;
             								    }
             							  } // while end
             							  if (j>2) {
-            								  JOptionPane.showMessageDialog(this,"4. El rango de paginas a imprimir debe ser de la forma A-B,C-D,F,G-H"
-            										  ,"Error!", JOptionPane.ERROR_MESSAGE);
+            								  JOptionPane.showMessageDialog(this,errorMessage
+            										  ,Language.getWord("ERROR"), JOptionPane.ERROR_MESSAGE);
             								  return;
             							  }
             							  if (numbers[0] > numbers[1]) {
-            								  JOptionPane.showMessageDialog(this,"5. El rango de paginas a imprimir debe ser de la forma A-B,C-D,F,G-H"
-            										  ,"Error!", JOptionPane.ERROR_MESSAGE);
+            								  JOptionPane.showMessageDialog(this,errorMessage
+            										  ,Language.getWord("ERROR"), JOptionPane.ERROR_MESSAGE);
             								  return;            							
             							  }
             							  pairs.add(numbers); 
             					} 
             					else {
             						    // One page process
-            						    System.out.println("Una hoja: " + miniRange);
             							if (TextReportUtils.isNumber(miniRange)) {
             								int index = Integer.parseInt(miniRange);
             								numbers[0] = index;
             								numbers[1] = index;
             								pairs.add(numbers);
             							} else {
-                							JOptionPane.showMessageDialog(this,"6. El rango de paginas a imprimir debe ser de la forma A-B,C-D,F,G-H"
-                               	        		  ,"Error!", JOptionPane.ERROR_MESSAGE);
+                							JOptionPane.showMessageDialog(this,errorMessage
+                               	        		  ,Language.getWord("ERROR"), JOptionPane.ERROR_MESSAGE);
                   							return;            								
             							}
             					}
             				} // While end
-            					
-                      		System.out.println("*** Printing pages...");
                       		
                       		for(int i=0;i<pairs.size();i++) {
                       		    int[] indexes = (int[]) pairs.get(i);
@@ -272,8 +274,8 @@ public class PrinterDialog extends JFrame implements ActionListener {
                       		}
             			} // if end
             				else {
-            						JOptionPane.showMessageDialog(this,"6. El rango de paginas a imprimir debe ser de la forma A-B,C-D,F,G-H"
-            								,"Error!", JOptionPane.ERROR_MESSAGE);
+            						JOptionPane.showMessageDialog(this,errorMessage
+            								,Language.getWord("ERROR"), JOptionPane.ERROR_MESSAGE);
         							return;            								
             				}		
             		} // else end
@@ -287,20 +289,18 @@ public class PrinterDialog extends JFrame implements ActionListener {
 	// Print a range of pages
 	public void printPagesRange(int firstPage,int lastPage) {
     	for (int i=firstPage;i<=lastPage;i++) {
-    		ByteArrayInputStream currentPage = new ByteArrayInputStream(printerViews[i].toByteArray());
-    		try {
-				 new PrintingManager(ImpresionType.PLAIN,currentPage,true,1,printer);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (PrintException e) {
-				e.printStackTrace();
-			}
+    		 printOnePage(i);
     	}
 	}
 	
 	// Print one page
     public void printOnePage(int index) {
-    	ByteArrayInputStream currentPage = new ByteArrayInputStream(printerViews[index].toByteArray());
+    	ByteArrayOutputStream byteArray = (ByteArrayOutputStream) printerViews.elementAt(index);
+    	String text = byteArray.toString();
+    	String pageFooter = TextReportUtils.getRightAlignedString(Language.getWord("PAGE") + " " + (index + 1) + " " + Language.getWord("OF") + " " + pagesTotal,charactersPerLine);
+        text += pageFooter;
+    	
+    	ByteArrayInputStream currentPage = new ByteArrayInputStream(text.getBytes());
 		try {
 			 new PrintingManager(ImpresionType.PLAIN,currentPage,true,1,printer);
 		} catch (FileNotFoundException e) {
@@ -309,4 +309,6 @@ public class PrinterDialog extends JFrame implements ActionListener {
 			e.printStackTrace();
 		}
     }
+
+
 }

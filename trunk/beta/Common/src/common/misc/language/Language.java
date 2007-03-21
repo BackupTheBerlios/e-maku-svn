@@ -11,51 +11,40 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 /**
- * Disponible en http://www.kazak.ws
+ * Language.java Creado el 17-jun-2005
+ * 
+ * Este archivo es parte de E-Maku
+ * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
  *
- * Desarrollado por Soluciones KAZAK
- * Grupo de Investigacion y Desarrollo de Software Libre
- * Santiago de Cali/Republica de Colombia 2001
+ * E-Maku es Software Libre; usted puede redistribuirlo y/o realizar
+ * modificaciones bajo los terminos de la Licencia Publica General
+ * GNU GPL como esta publicada por la Fundacion del Software Libre (FSF);
+ * tanto en la version 2 de la licencia, o cualquier version posterior.
  *
- * CLASS Language v 0.1
- * Descripcion:
- * Esta clase se encarga de cargar la Tabla Hash con los valores
- * de las etiquetas del programa, segun el idioma que el usuario haya
- * seleccionado.
- *
- * Preguntas, Comentarios y Sugerencias: xpg@kazak.ws
- *
- * Fecha: 2001/10/01
- *
- * Autores: Beatriz Florián  - bettyflor@kazak.ws
- *          Gustavo Gonzalez - xtingray@kazak.ws
- *
- * 2004/03/23
- * Esta clase fue modificada para almacenar la llave y sus correspondientes traducciones en un
- * archivo xml, eliminando las clases EnglishGlossary y SpanishGlossary.
- *
- * Modificacion: Luis Felipe Hernandez Z. felipe@qhatu.net
- *
- * 2004/06/28
- * Se modifico los metodos y la tabla hashtable como estaticos para no tener que instanciar
- * esta clase cada que se la necesita, sino simplemente llamar al metodo que se necesite de
- * forma similar a como se manejan las interfaces.
- *
- * @author Beatriz Flori�n, Gustavo Gonzalez, Luis Felipe Hernandez, Cristian David Cepeda.
- *
+ * E-Maku es distribuido con la expectativa de ser util, pero
+ * SIN NINGUNA GARANTIA; sin ninguna garantia aun por COMERCIALIZACION
+ * o por un PROPOSITO PARTICULAR. Consulte la Licencia Publica General
+ * GNU GPL para mas detalles.
+ * <br>
+ * Informacion de la clase
+ * <br>
+ * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
+ * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
+ * @author <A href='mailto:cristian@qhatu.net'>Gustavo Gonzalez</A>
  */
+
 public class Language  {
     
     private static Hashtable <String,messageStructure>glossary;
     
-    public void CargarLenguaje(String lenguaje) {
-    	CargarLenguaje(null,lenguaje);
+    public void loadLanguage(String lang) {
+    	loadLanguage(null,lang);
     }
     /**
      * Metodo que carga se encarga de llenar el glosario para el idioma del ST
-     * @param lenguaje idioma para el ST, Ej. <code>SPANISH</code>
+     * @param lang idioma para el ST, Ej. <code>SPANISH</code>
      */
-    public void CargarLenguaje(String directory,String lenguaje) {
+    public void loadLanguage(String directory,String lang) {
         Language.glossary = new Hashtable<String,messageStructure>();
         try {
             SAXBuilder builder = new SAXBuilder(false);
@@ -66,18 +55,18 @@ public class Language  {
             else {
             	doc= builder.build(directory+"/language.xml");
             }
-            Element raiz = doc.getRootElement();
-            List palabras = raiz.getChildren("sentence");
-            Iterator i = palabras.iterator();
+            Element root = doc.getRootElement();
+            List words = root.getChildren("sentence");
+            Iterator i = words.iterator();
             while (i.hasNext()) {
-                Element campos = (Element)i.next();
-            	String message = campos.getChildText(lenguaje);
-                if (campos.getChild("key").getAttribute("errorCode")!=null) {
-                	String codeError = campos.getChild("key").getAttribute("errorCode").getValue();
-                	glossary.put(campos.getChildText("key"),new messageStructure(codeError,message));
+                Element fields = (Element)i.next();
+            	String message = fields.getChildText(lang);
+                if (fields.getChild("key").getAttribute("errorCode")!=null) {
+                	String codeError = fields.getChild("key").getAttribute("errorCode").getValue();
+                	glossary.put(fields.getChildText("key"),new messageStructure(codeError,message));
                 }
                 else {
-                	glossary.put(campos.getChildText("key"),new messageStructure(null,message));
+                	glossary.put(fields.getChildText("key"),new messageStructure(null,message));
                 }
         		
             }
@@ -99,7 +88,7 @@ public class Language  {
     	if (glossary.containsKey(key))
     		return glossary.get(key).getMessage();
     	else
-    		return "";
+    		return "Null String: " + key;
     }
     
     public static char getNemo(String key) {   
@@ -107,24 +96,24 @@ public class Language  {
         return nemo;
     }
     
-    public static String getCodeError(String key) {
+    public static String getErrorCode(String key) {
     	if (glossary.containsKey(key))
-    		return glossary.get(key).getCodeError();
+    		return glossary.get(key).getErrorCode();
     	else
-    		return "";
+    		return "Null String: " + key;
     }
     
     class messageStructure {
     	private String message = null;
-    	private String codeError = null;
+    	private String errorCode = null;
     	
-    	private messageStructure(String codeError,String message){
-    		this.codeError=codeError;
+    	private messageStructure(String errorCode,String message){
+    		this.errorCode=errorCode;
     		this.message=message;
     	}
     	
-		public String getCodeError() {
-			return codeError;
+		public String getErrorCode() {
+			return errorCode;
 		}
 		public String getMessage() {
 			return message;

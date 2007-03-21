@@ -50,6 +50,13 @@
 		<en_US>Cancel</en_US>
 	</sentence>
 	<sentence>
+		<key>ACCEPT</key>
+		<es_CO>Aceptar</es_CO>
+		<es_EC></es_EC>
+		<es_ES></es_ES>
+		<en_US>Accept</en_US>
+	</sentence>	
+	<sentence>
 		<key>ERR_CONNECT</key>
 		<es_CO>Error 235: No se pudo establecer comunicación con el servidor</es_CO>
 		<es_EC></es_EC>
@@ -105,18 +112,81 @@
         <es_ES></es_ES>
         <en_US>Page</en_US>
     </sentence>
-     <sentence>
+    <sentence>
         <key>OF</key>
         <es_CO>de</es_CO>
         <es_EC></es_EC>
         <es_ES></es_ES>
         <en_US>of</en_US>
     </sentence>   
-     <sentence>
+    <sentence>
         <key>LOAD_REPORT</key>
         <es_CO>Cargando reporte...</es_CO>
         <es_EC></es_EC>
         <es_ES></es_ES>
         <en_US>Loading report...</en_US>
-    </sentence>      
+    </sentence>
+    <sentence>
+        <key>PRINTER_OP</key>
+        <es_CO>Opciones de Impresión</es_CO>
+        <es_EC></es_EC>
+        <es_ES></es_ES>
+        <en_US>Printer Options</en_US>
+    </sentence>   
+    <sentence>
+        <key>PRINTER_NAME</key>
+        <es_CO>Nombre de Impresora:</es_CO>
+        <es_EC></es_EC>
+        <es_ES></es_ES>
+        <en_US>Printer Name:</en_US>
+    </sentence> 
+    <sentence>
+        <key>ALL</key>
+        <es_CO>Todo</es_CO>
+        <es_EC></es_EC>
+        <es_ES></es_ES>
+        <en_US>All</en_US>
+    </sentence>
+    <sentence>
+        <key>RANGE</key>
+        <es_CO>Rango</es_CO>
+        <es_EC></es_EC>
+        <es_ES></es_ES>
+        <en_US>Range</en_US>
+    </sentence>  
+    <sentence>
+        <key>COPIES</key>
+        <es_CO>Copias:</es_CO>
+        <es_EC></es_EC>
+        <es_ES></es_ES>
+        <en_US>Copies:</en_US>
+    </sentence>       
+     <sentence>
+        <key>PRINTING_AREA</key>
+        <es_CO>Area de Impresión</es_CO>
+        <es_EC></es_EC>
+        <es_ES></es_ES>
+        <en_US>Printing Area</en_US>
+    </sentence>
+    <sentence>
+        <key>ERROR</key>
+        <es_CO>Error!</es_CO>
+        <es_EC></es_EC>
+        <es_ES></es_ES>
+        <en_US>Error!</en_US>
+    </sentence>
+    <sentence>
+        <key>BAD_RANGE</key>
+        <es_CO>El rango de paginas a imprimir debe ser de la forma A-B,C-D,F,G-H</es_CO>
+        <es_EC></es_EC>
+        <es_ES></es_ES>
+        <en_US>The pages range to print must be in the way A-B,C-D,F,G-H</en_US>
+    </sentence>              
+    <sentence>
+        <key>BAD_COPIES</key>
+        <es_CO>El número de copias de impresión debe ser un valor númerico</es_CO>
+        <es_EC></es_EC>
+        <es_ES></es_ES>
+        <en_US>The printing copies number must be a numeric value</en_US>
+    </sentence>       
 </language>

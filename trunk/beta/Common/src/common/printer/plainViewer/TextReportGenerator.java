@@ -5,7 +5,7 @@ import java.util.Vector;
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import common.printer.plainViewer.TextReportUtils;
+//import common.printer.plainViewer.TextReportUtils;
 import common.printer.plainViewer.PrinterViewsArray;
 
 /*
@@ -18,12 +18,12 @@ public class TextReportGenerator {
   private int columnsNum = 0;
   private int pagesNum = 0;
   private Vector <String>fieldsTypes = new Vector<String>();
-  private ByteArrayOutputStream[] reportViews;
+  private Vector <ByteArrayOutputStream>reportViews = new Vector<ByteArrayOutputStream>();
+  ByteArrayOutputStream byteArray;
   
   private String header     = "";
   private String htmlHeader = "";
   private String blankLine  = "";
-  // private String title      = "";
   private String nit        = "";
   private String today      = "";
   private String bar        = "";
@@ -34,11 +34,11 @@ public class TextReportGenerator {
   private String reportTitle      = "";
   private String company          = "";
   private int totalPages          = 0;
-  private TextReportUtils tools = new TextReportUtils(charactersPerLine);
   private PrinterViewsArray printerViews;
   private String input = "";
+  private int linesPerPage = 52;
 
-  // Constructor
+  // Class Constructor
   public TextReportGenerator(int charactersPerLine, byte[] bytes){
 	  this.charactersPerLine = charactersPerLine;
 	  input = new String(bytes);
@@ -53,7 +53,7 @@ public class TextReportGenerator {
 	  StringTokenizer tokens = new StringTokenizer(input,"\n");
    	  String line = "";
    	  String data[];
-   	  bar = tools.getBar() + "\n";
+   	  bar = TextReportUtils.getBar(charactersPerLine) + "\n";
    	
    	  // Capturing columns data types 
    	  line = tokens.nextToken();
@@ -76,12 +76,12 @@ public class TextReportGenerator {
     	    
     	    if (lineNumber == 1) {
            		// Processing company name
-           		data = tools.getLineVars(line,2);
+           		data = TextReportUtils.getLineVars(line,2);
            		company = data[1];
            	
            		// Processing Nit
            		line = tokens.nextToken();
-           		data = tools.getLineVars(line,1);
+           		data = TextReportUtils.getLineVars(line,1);
            		header += data[0] + "\n";
            		nit = data[0];
            	
@@ -96,16 +96,16 @@ public class TextReportGenerator {
        	    
            		// Processing Title
            		line = tokens.nextToken();
-           		data = tools.getLineVars(line,1);
+           		data = TextReportUtils.getLineVars(line,1);
            		reportTitle = data[0];
        	    
-           		header += tools.getCenteredString(data[0]);
+           		header += TextReportUtils.getCenteredString(data[0],charactersPerLine);
            		htmlHeader += "<center><b>" + reportTitle + "</b></center>";
        	    
            		// Processing Columns
            		line = tokens.nextToken();
            		
-           		columnsNames = tools.getColumnNames(line);
+           		columnsNames = TextReportUtils.getColumnNames(line);
            		columnsNum = columnsNames.size();
        	    
            		for(int i=0;i<columnsNum;i++){
@@ -116,14 +116,14 @@ public class TextReportGenerator {
            	else {
            			// Process the footer page message
            			if (line.contains("eMaku")) {
-           				data = tools.getLineVars(line,3);
+           				data = TextReportUtils.getLineVars(line,3);
           				totalPages = Integer.valueOf(data[2].trim());
            				
            				break;
            			} 
            			else {
            					// Process the report records
-           					data = tools.getLineVars(line,columnsNum);
+           					data = TextReportUtils.getLineVars(line,columnsNum);
            					for(int i=0;i<columnsNum;i++) {  	  
            						// processing length of fields to find max values
            						if (data[i].length()>maxlong[i]) {
@@ -142,8 +142,8 @@ public class TextReportGenerator {
  
   	    blankLine = "<tr>";
 	    for(int i=0;i<columnsNum;i++) {
-	        String value = tools.getLeftAlignedString((String) columnsNames.get(i),maxColumnsLength[i]);
-	        String htmlValue = tools.getLeftAlignedHTMLString((String) columnsNames.get(i),maxColumnsLength[i]);
+	        String value = TextReportUtils.getLeftAlignedString((String) columnsNames.get(i),maxColumnsLength[i]);
+	        String htmlValue = (String) columnsNames.get(i);
 	        columnsTitle += value + "   ";
 	        htmlColumnsTitle += "<td><b>" + htmlValue + "</b></td><td> </td>";
 	        blankLine +=  "<td> </td><td> </td>";
@@ -155,134 +155,160 @@ public class TextReportGenerator {
   private void processCsv() {
 	  
    try {    
-	   reportViews  = new ByteArrayOutputStream[totalPages];
-	   printerViews = new PrinterViewsArray(totalPages);
-	          
-       String line  = "";
+	   printerViews = new PrinterViewsArray();	             
+	   String line  = "";
 	   String[] data;
 	   StringTokenizer tokens = new StringTokenizer(input,"\n");
 	   line = tokens.nextToken();
-	   
-	   int lineNumber = 0;
-	   pagesNum = 0;
-	   
-       while (tokens.hasMoreTokens()) { 
-  
-   	       lineNumber++;
-   	       line = tokens.nextToken();
-    	   
-    	   if (lineNumber == 1) {       	                 
-    		   // Processing Header
-    		   
-    		   for(int i=0;i<4;i++) {
-    			   line = tokens.nextToken();
-    		   }
-       
-    		   String pageLabel = "Página ";
-    		   if (pagesNum < 10) {
-    			   pageLabel += " ";
-    		   }	 
-          
-    		   pageLabel += pagesNum + 1;
-        
-    		   int length = charactersPerLine - (company.length() + pageLabel.length());
-    		   String space = "";
-    		   for (int i=0;i<length;i++) {
-    			   space += " ";
-    		   }
-        
-    		   reportViews[pagesNum] = new ByteArrayOutputStream();
-    		   printerViews.initPrinterPage(pagesNum);
-        
-    		   // Printing header
-    		   // For the viewer
-    		   // Note: #808080
-    		   printStringToReportViewer("<body bgcolor=\"#FFFFFF\"><center><table border=\"0\" bgcolor=\"#FFFFFF\" width=\"900\"><tr></td>" 
-        		                   + "<br>" + bar + "<br><table border=\"0\" width=\"882\"><tr><td>" + company + "</td><td align=\"right\">" 
-        		                   + pageLabel + "</td></tr><tr><td>" + nit + "</td><td> </td></tr><tr><td>" + today 
-        		                   + "</td><td> </td></tr></table>\n" + htmlHeader  
-        		                   + bar + "<table border=0><tr>" + htmlColumnsTitle + "</tr>" + blankLine);
 
-    		   // For the printer
-    		   printerViews.addStringToPrinterView(bar + company + space + pageLabel + "\n");
-    		   printerViews.addStringToPrinterView(header);
-    		   printerViews.activeBold();        
-    		   printerViews.addStringToPrinterView(reportTitle);
-    		   printerViews.disableBold();
-    		   printerViews.addStringToPrinterView("\n" + bar + "\n");
-    		   printerViews.activeBold();
-    		   printerViews.addStringToPrinterView(columnsTitle);
-    		   printerViews.disableBold();
-    		   printerViews.addStringToPrinterView("\n\n");
-        
-    	   	}
-    	   		else {
-    	   				// Process the footer page message
-    	   				if (line.contains("eMaku")) {
-    	   					
-    	   					printStringToReportViewer("</table>");
-        		  
-    	   					/* data = tools.getLineVars(line,2);
-    	   					data[1] = data[1].substring(1,data[1].length());*/ 
-    	   					String pageFooter = tools.getRightAlignedString("Página " + (pagesNum + 1) + " de " + totalPages, charactersPerLine);
-                  
-    	   					printerViews.addStringToPrinterView(pageFooter + "\n\n");
-    	   					printerViews.startNewPage();
-        		  
-    	   					printStringToReportViewer("<p align=\"right\">" + pageFooter 
-    	   							                  + "&nbsp;&nbsp;&nbsp;<br></p></td></tr></table></center><br><br>");
-        		  
-    	   					// Closing a report page of the array
-    	   					reportViews[pagesNum].close();
-    	   					printerViews.closePrinterPage();  
-    	   					pagesNum++;
-    	   					lineNumber=0;
-    	   				} 
-    	   				else {
-    	   						// Process the report records
-    	   						data = tools.getLineVars(line,columnsNum);
-    	   						printStringToReportViewer("<tr>");
-    	   						
-    	   						for(int i=0;i<columnsNum;i++) {
-    	   							String value = "";
-    	   							String htmlValue = "";
-    	   							String type = fieldsTypes.get(i);
-    	   							int maxlength = maxlong[i];
-    	   							if(data[i] == null) {
-    	   								data[i] = "";
-    	   							}
-    	   							        	        	      	   							
-    	   							if (type.equals("java.lang.String")) {
-    	   								// align to left relative
-    	   								if (data[i].length()>maxlength) {
-    	   									data[i] = data[i].substring(0, maxlength);
-    	   								}
-    	   								value = tools.getLeftAlignedString(data[i],maxlength);
-    	   								htmlValue = tools.getLeftAlignedHTMLString(data[i],maxlength);
-    	   							}
-    	   							if (type.equals("java.lang.Integer") || type.equals("java.lang.Float")) {
-    	   								// align to right relative
-    	   								value = tools.getRightAlignedString(data[i],maxlength);
-    	   								htmlValue = tools.getRightAlignedHTMLString(data[i],maxlength);
-    	   							}
-    	   							printStringToReportViewer("<td>");
-    	   							printStringToReportViewer(htmlValue + "&nbsp;&nbsp;&nbsp;");
-    	   							printStringToReportViewer("</td><td>|</td>");
-    	   							printerViews.addStringToPrinterView(value + " | ");
-               	       
-    	   						}
-    	   						printStringToReportViewer("</tr>");
-    	   						printStringToReportViewer("<br>\n");
-    	   						printerViews.addStringToPrinterView("\n");
-    	   				}
-    	   		}
-       }
+	   int lineNumber = 0;
+	   int currentInputPage=0;
+	   pagesNum = 0;
+
+	   int currentLines=0;
+	   printPageHeader();
+
+	   while (tokens.hasMoreTokens()) { 
+
+		   lineNumber++;
+		   line = tokens.nextToken();
+
+		   if (lineNumber == 1) {       	                 
+			   // Processing Header
+			   for(int i=0;i<4;i++) {
+				   line = tokens.nextToken();
+			   }
+			   lineNumber = 4;
+			   currentInputPage++;
+
+		   } else {
+			   // Process the footer page message
+			   if (line.contains("eMaku")) {
+				   
+				   lineNumber=0;
+				   
+				   if (currentInputPage == totalPages) {
+					   
+					   if (currentLines < linesPerPage) {
+						   int blankSpaces = linesPerPage - currentLines;
+						   for(int i=0;i<blankSpaces;i++) {
+							   	printStringToReportViewer("<tr>");
+							   	printerViews.addStringToPrinterView("\n");
+							   	for(int j=0;j<columnsNum;j++) {
+							   		printStringToReportViewer("<td>");
+							   		printStringToReportViewer("&nbsp;");
+							   		printStringToReportViewer("</td><td>&nbsp;</td>");
+							   	}
+							   	printStringToReportViewer("</tr>\n");
+						   }
+					   }
+					   printStringToReportViewer("</table>");
+					   byteArray.close();
+					   reportViews.add(pagesNum,byteArray);
+					   printerViews.closePrinterPage();
+					   break;
+				   }				   				   
+			   } 
+			   else {
+				   	// Process the report records
+				   	currentLines++;
+
+				   	data = TextReportUtils.getLineVars(line,columnsNum);
+				   	printStringToReportViewer("<tr>");
+
+				   	for(int i=0;i<columnsNum;i++) {
+				   		String value = "";
+				   		String htmlValue = "";
+				   		String type = fieldsTypes.get(i);
+				   		int maxlength = maxlong[i];
+				   		if(data[i] == null) {
+				   			data[i] = "";
+				   		}
+
+				   		if (type.equals("java.lang.String")) {
+				   			// align to left relative
+				   			if (data[i].length()>maxlength) {
+				   				data[i] = data[i].substring(0, maxlength);
+				   			}
+				   			value = TextReportUtils.getLeftAlignedString(data[i],maxlength);
+				   			htmlValue = TextReportUtils.getLeftAlignedHTMLString(data[i],maxlength);
+				   		}
+				   		if (type.equals("java.lang.Integer") || type.equals("java.lang.Float")) {
+				   			// align to right relative
+				   			value = TextReportUtils.getRightAlignedString(data[i],maxlength);
+				   			htmlValue = TextReportUtils.getRightAlignedHTMLString(data[i],maxlength);
+				   		}
+				   		printStringToReportViewer("<td>");
+				   		printStringToReportViewer(htmlValue + "&nbsp;&nbsp;&nbsp;");
+				   		printStringToReportViewer("</td><td>|</td>");
+				   		printerViews.addStringToPrinterView(value + " | ");
+				   	}
+				   	printStringToReportViewer("</tr>\n");
+				   	printerViews.addStringToPrinterView("\n");
+
+				   	if (currentLines == linesPerPage) {
+				   		// Closing a report page of the array
+				   		printStringToReportViewer("</table>");
+				   		currentLines = 0;
+				   		byteArray.close();
+				   		reportViews.add(pagesNum,byteArray);
+				   		printerViews.closePrinterPage();  
+				   		pagesNum++;
+
+				   		printPageHeader();
+				   }
+			   }
+		   }
+
+	   }
    }
    catch(IOException ex){
 	 System.out.println("Error: No se pudo leer el archivo");   
    }
    
   }  
+  
+  // Write a header report page
+  
+  private void printPageHeader() {
+	  
+		   String pageLabel = "Página ";
+   		   if (pagesNum < 10) {
+   			   pageLabel += " ";
+   		   }	 
+         
+   		   pageLabel += pagesNum + 1;
+       
+   		   int length = charactersPerLine - (company.length() + pageLabel.length());
+   		   String space = "";
+   		   for (int i=0;i<length;i++) {
+   			   space += " ";
+   		   }
+       
+   		   byteArray = new ByteArrayOutputStream();
+   		   printerViews.initPrinterPage(pagesNum);
+       
+   		   // Printing header
+   		   // For the viewer
+   		   // Note: #808080
+   		   printStringToReportViewer("<body bgcolor=\"#FFFFFF\"><center><table border=\"0\" bgcolor=\"#FFFFFF\" width=\"900\"><tr></td>" 
+       		                   + "<br>" + bar + "<br><table border=\"0\" width=\"882\"><tr><td>" + company + "</td><td align=\"right\">" 
+       		                   + pageLabel + "</td></tr><tr><td>" + nit + "</td><td> </td></tr><tr><td>" + today 
+       		                   + "</td><td> </td></tr></table>\n" + htmlHeader  
+       		                   + bar + "<table border=0><tr>" + htmlColumnsTitle + "</tr>" + blankLine);
+
+   		   // For the printer
+   		   printerViews.addStringToPrinterView(bar + company + space + pageLabel + "\n");
+   		   printerViews.addStringToPrinterView(header);
+   		   printerViews.activeBold();        
+   		   printerViews.addStringToPrinterView(reportTitle);
+   		   printerViews.disableBold();
+   		   printerViews.addStringToPrinterView("\n" + bar + "\n");
+   		   printerViews.activeBold();
+   		   printerViews.addStringToPrinterView(columnsTitle);
+   		   printerViews.disableBold();
+   		   printerViews.addStringToPrinterView("\n\n");    	   							  
+  }
    
   // Write a String to report viewer
   
@@ -291,21 +317,21 @@ public class TextReportGenerator {
 			   	final StringBuffer buffer = new StringBuffer("");
 			    buffer.append(textString);
 			    final byte[] text = buffer.toString().getBytes();
-			    reportViews[pagesNum].write(text, 0, text.length);
+			    byteArray.write(text, 0, text.length);
 	        }
 	      catch (Exception e) {
-	    		//System.out.println("ERROR: No se pudo escribir la linea en el arreglo[" + pagesNum + "]: " + textString);
 	    		e.printStackTrace();
 	    	} 	
 	}
     
   // Returns the Report Pages as an ByteArrayOutputStream
- 
-  public ByteArrayOutputStream[] getReportViews() {
+  public Vector<ByteArrayOutputStream> getReportViews() {
 	  return reportViews;
   }
   
-  public ByteArrayOutputStream[] getPrinterViews() {
+ 
+  // Returns the Rerport Pages to printer output
+  public Vector<ByteArrayOutputStream> getPrinterViews() {  
 	  return printerViews.getReportFile();
   }
  

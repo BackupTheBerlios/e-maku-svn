@@ -5,14 +5,15 @@ import java.util.Vector;
 
 public class TextReportUtils {
 	
-	int charactersPerLine;
+	//int charactersPerLine;
 
+	/*
     public TextReportUtils(int charactersPerLine) {
     	this.charactersPerLine = charactersPerLine;
-	}
+	}*/
 	
 	// Captures variables from a String
-	public String[] getLineVars(String line, int items) {
+	public static String[] getLineVars(String line, int items) {
 	    String[] array = new String[items];	   
 	    StringTokenizer tokens = new StringTokenizer(line,"\t");
 	    int i=0;
@@ -24,7 +25,7 @@ public class TextReportUtils {
 	}  
 
 	// Get the Report Column Names
-	public Vector<String> getColumnNames(String line) {
+	public static Vector<String> getColumnNames(String line) {
 		Vector <String>columns = new Vector<String>();	   
 		StringTokenizer tokens = new StringTokenizer(line,"\t");
 		while(tokens.hasMoreTokens()){
@@ -34,10 +35,10 @@ public class TextReportUtils {
 	}
 	  
 	// Return Centered Aligned String
-	public String getCenteredString(String text) {
+	public static String getCenteredString(String text, int maxWidth) {
 		String centered = "";
 		int titleLength = text.length();
-		int spaces      = (charactersPerLine - titleLength)/2;
+		int spaces      = (maxWidth - titleLength)/2;
 		  
 		for (int i=0;i<spaces;i++) {
 			   centered += " ";
@@ -48,7 +49,7 @@ public class TextReportUtils {
 	}
 	  
 	// Return Right Aligned String
-	public String getRightAlignedString(String text, int maxWidth) {
+	public static String getRightAlignedString(String text, int maxWidth) {
 		String right = "";
 		int wordLength = text.length();
 		int spaces = maxWidth - wordLength;
@@ -62,7 +63,7 @@ public class TextReportUtils {
 	}
 	  
 	// Return Left Aligned String
-	public String getLeftAlignedString(String text, int maxWidth) {
+	public static String getLeftAlignedString(String text, int maxWidth) {
 		String left="";
 		int wordLength = text.length();
 		int spaces = maxWidth - wordLength;
@@ -75,24 +76,8 @@ public class TextReportUtils {
 		return left;
 	} 
 
-	/*
-	// Return Centered Aligned String
-	public String getCenteredHTMLString(String text) {
-		String centered = "";
-		int titleLength = text.length();
-		int spaces      = (charactersPerLine - titleLength)/2;
-		  
-		for (int i=0;i<spaces;i++) {
-			   centered += "&nbsp;";
-		}
-		//centered += text;
-		  
-		return centered;
-	}
-	*/
-	
 	// Return Right Aligned String
-	public String getRightAlignedHTMLString(String text, int maxWidth) {
+	public static String getRightAlignedHTMLString(String text, int maxWidth) {
 		String right = "";
 		int wordLength = text.length();
 		int spaces = maxWidth - wordLength;
@@ -106,7 +91,7 @@ public class TextReportUtils {
 	}
 	  
 	// Return Left Aligned String
-	public String getLeftAlignedHTMLString(String text, int maxWidth) {
+	public static String getLeftAlignedHTMLString(String text, int maxWidth) {
 		String left="";
 		int wordLength = text.length();
 		int spaces = maxWidth - wordLength;
@@ -119,7 +104,7 @@ public class TextReportUtils {
 		return left;
 	} 	
 	
-	public String getBar(){
+	public static String getBar(int charactersPerLine){
 		String bar = "";
 		for (int i=0;i<charactersPerLine;i++) {
 			bar += "=";
@@ -140,4 +125,5 @@ public class TextReportUtils {
          }
         return true;
       }
+
 }
