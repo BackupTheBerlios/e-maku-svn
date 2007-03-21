@@ -79,7 +79,7 @@ public class MenuLoader extends JMenuBar {
     /**
      * Metodo encargado de cargar el menu
      */
-    public void Loading() {
+    public boolean Loading() {
         try {
             SAXBuilder builder = new SAXBuilder(false);
             Document doc = builder.build(this.FileXML);
@@ -104,12 +104,15 @@ public class MenuLoader extends JMenuBar {
                 
                 this.add(CargarJMenu(j));
             }
+            return true;
         }
         catch (JDOMException JDOMEe) {
             System.out.println(JDOMEe.getMessage());
+            return false;
         }
         catch (IOException IOEe) {
-            System.out.println(IOEe.getMessage());
+           System.out.println(IOEe.getMessage());
+           return false;
         }
     }
 

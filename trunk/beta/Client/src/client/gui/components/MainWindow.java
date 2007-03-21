@@ -69,6 +69,7 @@ public class MainWindow extends JFrame {
         this.setBounds(0, 0, ClientConstants.MAX_WIN_SIZE_WIDTH,
                 ClientConstants.MAX_WIN_SIZE_HEIGHT);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.getContentPane().setLayout(new BorderLayout());
         
         /**
          * Creando el panel central
@@ -85,12 +86,15 @@ public class MainWindow extends JFrame {
         ToolBarLoader toolbar1=null;
         try {
 			url = new URL(jarDirectory+"/menu.xml");
-	        menu = new MenuLoader(url);
-	        menu.Loading();
-	        menu.setDisabledAll();
+			menu = new MenuLoader(url);
+			if (menu.Loading()) {
+		        menu.setDisabledAll();
+		        this.setJMenuBar(menu);
+			}
 	        url = new URL(jarDirectory+"/toolbar.xml");
 	        toolbar1 = new ToolBarLoader(url);
 	        Vtoolbar1 = toolbar1.Loading();
+	        this.getContentPane().add(toolbar1, BorderLayout.NORTH);
 	        setDisabledAll();
 		} catch (MalformedURLException e1) {
 			// TODO Auto-generated catch block
@@ -118,9 +122,8 @@ public class MainWindow extends JFrame {
 		};
         JPcentral.add(JDPpanel,BorderLayout.CENTER);
         JDPpanel.setBackground(Color.LIGHT_GRAY);
-        this.setJMenuBar(menu);
-        this.getContentPane().setLayout(new BorderLayout());
-        this.getContentPane().add(toolbar1, BorderLayout.NORTH);
+        
+        
         this.getContentPane().add(JPcentral, BorderLayout.CENTER);
         this.getContentPane().add(statusBar, BorderLayout.SOUTH);
 
@@ -156,7 +159,8 @@ public class MainWindow extends JFrame {
      */
 
     public void setDisabledAll() {
-        for (int i = 0; i < Vtoolbar1.size(); i++) {
+    	int max = Vtoolbar1!=null ? Vtoolbar1.size() : 0;
+        for (int i = 0; i < max; i++) {
         	EmakuButtonGroup button = (EmakuButtonGroup) Vtoolbar1.elementAt(i); 
             if (!button.getActivo()) {
                 button.setEnabled(false);

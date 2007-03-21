@@ -55,14 +55,13 @@ public class Run {
         	String look = ConfigFileHandler.getClassForLookAndFeel();
         	String pathjar = ConfigFileHandler.getURLJarForLookAndFeel();
         	if (look!=null && pathjar!=null && !"".equals(look) && !"".equals(pathjar)) {
-        		System.out.println("Cargando Look And Feel "+look);
+        		System.out.println("Cargando LookAndFeel "+look);
         		URL urls [] = {};
                 JarFileLoader cl = new JarFileLoader (urls);
-                cl.addFile (pathjar);
-                cl.loadClass (look);
-            	ConfigFileHandler.getClassForLookAndFeel();
+                cl.addFile(pathjar);
+                cl.loadClass(look);
             	UIManager.setLookAndFeel(look);	
-        	}        	
+        	}
 //        	InputStream is = new FileInputStream(new File("/home/felipe/bionic.ttf"));
 //	        Font fo = Font.createFont(
 //	                               Font.TRUETYPE_FONT, is);
