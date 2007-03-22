@@ -40,6 +40,25 @@ public class Language  {
     public void loadLanguage(String lang) {
     	loadLanguage(null,lang);
     }
+    
+    private void loadWorks(Document doc,String lang) {
+        Element root = doc.getRootElement();
+        List words = root.getChildren("sentence");
+        Iterator i = words.iterator();
+        while (i.hasNext()) {
+            Element fields = (Element)i.next();
+        	String message = fields.getChildText(lang);
+            if (fields.getChild("key").getAttribute("errorCode")!=null) {
+            	String codeError = fields.getChild("key").getAttribute("errorCode").getValue();
+            	glossary.put(fields.getChildText("key"),new messageStructure(codeError,message));
+            }
+            else {
+            	glossary.put(fields.getChildText("key"),new messageStructure(null,message));
+            }
+    		
+        }
+    }
+    
     /**
      * Metodo que carga se encarga de llenar el glosario para el idioma del ST
      * @param lang idioma para el ST, Ej. <code>SPANISH</code>
@@ -48,28 +67,8 @@ public class Language  {
         Language.glossary = new Hashtable<String,messageStructure>();
         try {
             SAXBuilder builder = new SAXBuilder(false);
-            Document doc= null;
-            if (directory==null) {
-            	doc= builder.build(this.getClass().getResource("/language.xml"));
-            }
-            else {
-            	doc= builder.build(directory+"/language.xml");
-            }
-            Element root = doc.getRootElement();
-            List words = root.getChildren("sentence");
-            Iterator i = words.iterator();
-            while (i.hasNext()) {
-                Element fields = (Element)i.next();
-            	String message = fields.getChildText(lang);
-                if (fields.getChild("key").getAttribute("errorCode")!=null) {
-                	String codeError = fields.getChild("key").getAttribute("errorCode").getValue();
-                	glossary.put(fields.getChildText("key"),new messageStructure(codeError,message));
-                }
-                else {
-                	glossary.put(fields.getChildText("key"),new messageStructure(null,message));
-                }
-        		
-            }
+            loadWorks(builder.build(this.getClass().getResource("/language.xml")),lang);
+            loadWorks(builder.build(directory+"/language.xml"),lang);
         }
         catch (JDOMException JDOMEe) {
             System.out.println(JDOMEe.getMessage());
