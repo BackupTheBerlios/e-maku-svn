@@ -34,6 +34,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -948,7 +949,12 @@ public class TableFindData extends JPanel implements AnswerListener,
 			doc.setRootElement(element);
 			TMFDtabla.setQuery(doc, true);
 			JTtabla.scrollRectToVisible(JTtabla.getCellRect(TMFDtabla.getCurrentIndex(),0,false));
-			JTtabla.updateUI();
+			Thread t = new Thread() {
+				public void run() {
+					JTtabla.updateUI();
+				}
+			};
+			SwingUtilities.invokeLater(t);
 		}
 	}
 
