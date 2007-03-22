@@ -93,8 +93,7 @@ public class SocketConnector extends Thread {
                         iterador.remove();
                         
                         if (clave.isReadable()) {
-                        		packageXML.work(socket);
-//                            new PackageToXML(key,socket).work();
+                        	packageXML.work(socket);
                         } else if(clave.isValid()){
                             socket.close();
                             socket=null;

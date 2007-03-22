@@ -60,8 +60,6 @@ public class EmakuServerSocket {
      */
 
     public EmakuServerSocket() throws IOException{
-        try {
-
             SSCcanal1 = ServerSocketChannel.open();
             SSCcanal1.configureBlocking(false);
             ServerSocket SSclient = SSCcanal1.socket();
@@ -112,26 +110,19 @@ public class EmakuServerSocket {
                                             + (setIncrementSocketsCount()),
                                             ServerConstants.MESSAGE);
                                 }
-                                Thread.sleep(50);
+                                //Thread.sleep(50);
 
                             } else if (clave.isReadable()) {
                                 SocketChannel canalsocket = (SocketChannel) clave.channel();
-                                PackageToXML packageXML2 = new PackageToXML(canalsocket);
-                                packageXML2.start();
-                                Thread.sleep(70);
+                                PackageToXML.work(canalsocket);
                             }
                             iterador.remove();
                         }
                         catch (CancelledKeyException e) {
-                            Thread.sleep(50);
                         }
                     }
                 }
             }
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     /**

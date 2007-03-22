@@ -41,82 +41,72 @@ import common.misc.log.LogAdmin;
  */
 public class PackageToXML extends Thread {
 
-    private ByteBuffer buf;
-    private SAXBuilder builder;
     
     private static Document doc;
 
-    private SocketChannel channel;
-
-    public PackageToXML(SocketChannel channel) {
-        this.channel = channel;
-        this.setPriority(Thread.MIN_PRIORITY);
-        
-    }
-
-    public void run() {
-
-        buf = ByteBuffer.allocateDirect(8192);
-        
-        try {
-
-            
-            int numRead = 1;
- 
-            while (numRead > 0) {
-
-                buf.rewind();
-                numRead = channel.read(buf);
-                buf.rewind();
-
-                for (int i = 0; i < numRead; i++) {
-                    int character = buf.get(i);
-                    if (character != 12) {
-                        if (character!=0) {
-                        	EmakuServerSocket.getBufferTmp(channel).write(buf.get(i));
-                        }
-                    }
-                    else {
-
-                        try {
-                            builder = new SAXBuilder();
-                            ByteArrayInputStream bufferIn = new ByteArrayInputStream(EmakuServerSocket.getBufferTmp(channel).toByteArray());
-                            doc = builder.build(bufferIn);
-                            if (channel.socket().getLocalPort() == ConfigFileHandler.getAdminSocket()) {
-                                HeadersValidator.ValidAdmin(doc, channel);
-                            }
-                            else {
-                                HeadersValidator.ValidClient(doc, channel);
-                            }
-                        }
-                        catch (JDOMException e1) {
-                            EmakuServerSocket.getBufferTmp(channel).write(EmakuServerSocket.getBufferTmp(channel).toByteArray());
-                            String tmp = Language.getWord("ERR_FORMAT_PROTOCOL")
-                            + " " + channel.socket();
-                            LogAdmin.setMessage(tmp+"\n"+EmakuServerSocket.getBufferTmp(channel).toString(), ServerConstants.ERROR);
-                        }
-                        finally {
-                        	EmakuServerSocket.getBufferTmp(channel).close();
-                        	EmakuServerSocket.setBufferTmp(channel,new ByteArrayOutputStream());
-
-                        }
-                    }
-                    
-                }
-
-                if (numRead == -1) {
-                	EmakuServerSocket.getBufferTmp(channel).close();
-                    channel.close();
-                    return;
-                }
-            }
-
-        }
-        catch (ClosedChannelException e) {
-            //
-        }
-        catch (IOException e) {
-            //
-        }
+    public static void work(SocketChannel channel) {
+    	 synchronized (channel) {
+	        ByteBuffer buf = ByteBuffer.allocateDirect(8192);
+	        
+	        try {
+	
+	            
+	            int numRead = 1;
+	 
+	            while (numRead > 0) {
+	
+	                buf.rewind();
+	                numRead = channel.read(buf);
+	                buf.rewind();
+	
+	                for (int i = 0; i < numRead; i++) {
+	                    int character = buf.get(i);
+	                    if (character != 12) {
+	                        if (character!=0) {
+	                        	EmakuServerSocket.getBufferTmp(channel).write(buf.get(i));
+	                        }
+	                    }
+	                    else {
+	
+	                        try {
+	                            SAXBuilder builder = new SAXBuilder();
+	                            ByteArrayInputStream bufferIn = new ByteArrayInputStream(EmakuServerSocket.getBufferTmp(channel).toByteArray());
+	                            doc = builder.build(bufferIn);
+	                            if (channel.socket().getLocalPort() == ConfigFileHandler.getAdminSocket()) {
+	                                HeadersValidator.ValidAdmin(doc, channel);
+	                            }
+	                            else {
+	                                HeadersValidator.ValidClient(doc, channel);
+	                            }
+	                        }
+	                        catch (JDOMException e1) {
+	                            String tmp = Language.getWord("ERR_FORMAT_PROTOCOL")
+	                            + " " + channel.socket();
+	                            LogAdmin.setMessage("\n--------------------\n"+tmp+"\n"+new String(EmakuServerSocket.getBufferTmp(channel).toByteArray())+"\n------------------\n", ServerConstants.ERROR);
+	                        }
+	                        finally {
+	                        	EmakuServerSocket.getBufferTmp(channel).close();
+	                        	EmakuServerSocket.setBufferTmp(channel,new ByteArrayOutputStream());
+	
+	                        }
+	                    }
+	                    
+	                }
+	
+	                if (numRead == -1) {
+	                	EmakuServerSocket.getBufferTmp(channel).close();
+	                    channel.close();
+	                    return;
+	                }
+	            }
+	
+	        }
+	        catch (ClosedChannelException e) {
+	            //
+	        }
+	        catch (IOException e) {
+	            //
+	        }
+    	 }
     }
 }

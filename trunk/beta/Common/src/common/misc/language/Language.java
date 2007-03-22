@@ -1,5 +1,6 @@
 package common.misc.language;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -72,6 +73,9 @@ public class Language  {
         }
         catch (JDOMException JDOMEe) {
             System.out.println(JDOMEe.getMessage());
+        }
+        catch (FileNotFoundException FNFEe) {
+        	
         }
         catch (IOException IOEe) {
             System.out.println(IOEe.getMessage());
