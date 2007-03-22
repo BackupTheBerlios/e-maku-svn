@@ -88,7 +88,7 @@ public class Language  {
     	if (glossary.containsKey(key))
     		return glossary.get(key).getMessage();
     	else
-    		return "Null String: " + key;
+    		return key;
     }
     
     public static char getNemo(String key) {   
@@ -100,7 +100,7 @@ public class Language  {
     	if (glossary.containsKey(key))
     		return glossary.get(key).getErrorCode();
     	else
-    		return "Null String: " + key;
+    		return key;
     }
     
     class messageStructure {
