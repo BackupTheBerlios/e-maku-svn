@@ -63,43 +63,43 @@ public class ACPHandler {
 			e.printStackTrace();
 		}
 		
-		List lista = doc.getRootElement().getChildren();
-		++countData;
-		// List query = doc.getRootElement().getChildren("query");
-		Iterator i = lista.iterator();
-		// Iterator j = query.iterator();
-
+		Iterator i = doc.getRootElement().getChildren().iterator();
 		while (i.hasNext()) {
-			Element e = (Element) i.next();
-
-			/*
-			 * Si el elemento es una transaccion entonces se procede a cargarla
-			 * en una tabla
-			 */
-			if (e.getName().equals("transaction")) {
-				List Lsubdatos = e.getChildren();
-				Iterator j = Lsubdatos.iterator();
-				transactions(j);
-			}
-
-			/*
-			 * Si el elemento es un query entonces se procede a cargar todas las
-			 * consultas en una hash
-			 */
-			else if (e.getName().equals("query")) {
-				List Lsubdatos = e.getChildren();
-				Iterator j = Lsubdatos.iterator();
-				query(j);
-			}
-
-			/*
-			 * Si el elemento es un cache, se procede a solicitar dicho cache al
-			 * ST
-			 */
-
-			else if (e.getName().equals("CACHE-QUERY")) {
-				SocketChannel socket = SocketConnector.getSock();
-				SocketWriter.writing(socket, new Document((Element)e.clone()));
+			Element elm =(Element)i.next();
+			Iterator j = elm.getChildren().iterator();
+			countData++;
+			while (j.hasNext()) {
+				Element e = (Element) j.next();
+	
+				/*
+				 * Si el elemento es una transaccion entonces se procede a cargarla
+				 * en una tabla
+				 */
+				if (e.getName().equals("transaction")) {
+					List Lsubdatos = e.getChildren();
+					Iterator k = Lsubdatos.iterator();
+					transactions(k);
+				}
+	
+				/*
+				 * Si el elemento es un query entonces se procede a cargar todas las
+				 * consultas en una hash
+				 */
+				else if (e.getName().equals("query")) {
+					List Lsubdatos = e.getChildren();
+					Iterator k = Lsubdatos.iterator();
+					query(k);
+				}
+	
+				/*
+				 * Si el elemento es un cache, se procede a solicitar dicho cache al
+				 * ST
+				 */
+	
+				else if (e.getName().equals("CACHE-QUERY")) {
+					SocketChannel socket = SocketConnector.getSock();
+					SocketWriter.writing(socket, new Document((Element)e.clone()));
+				}
 			}
 		}
 	}

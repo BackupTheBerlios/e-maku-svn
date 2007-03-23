@@ -125,8 +125,10 @@ public class ACPSender extends Thread{
             rs = runquery.ejecutarSELECT();
             
             /* Transmision de setencias SQL*/
-            Document doc = new Document();
-            doc.setRootElement(new Element("ACPData"));
+            Document cnx = new Document();
+        	Element selement = new Element("SACPData");
+
+        	Element qdata = new Element("ACPData");
             Element query = new Element("query");
             while(rs.next()){
                 Element sql = new Element("sql");
@@ -134,19 +136,17 @@ public class ACPSender extends Thread{
                 sql.setAttribute("type",validPass(rs.getString("password")));
                 query.addContent(sql);
             }
-            doc.getRootElement().addContent(query);
-            SocketWriter.writing(sock,compressDocument(doc,query.getName()));
+            qdata.addContent(query);
+            selement.addContent(qdata);
             rs.close();
             rs = null;
             
             
             runquery = new QueryRunner(bd,"SCS0004",Arrlogin);
             rs = runquery.ejecutarSELECT();
-            
+        	
             while(rs.next()){
-            	doc = new Document();
                 Element element = new Element("ACPData");
-            	doc.setRootElement(element);
                 try {
 	                Element transaction = new Element("transaction");
 	
@@ -162,9 +162,7 @@ public class ACPSender extends Thread{
 	                transaction.addContent(driver);
 	                transaction.addContent(form.detachRootElement());
 	                element.addContent(transaction);
-	                
-	                boolean b = SocketWriter.writing(sock,compressDocument(doc,driver.getValue()));
-	                if (!b) {break;}
+	                selement.addContent(element);
                 }
                 catch (MalformedByteSequenceException e) {
                 	e.printStackTrace();
@@ -177,6 +175,9 @@ public class ACPSender extends Thread{
 					e.printStackTrace();
 				}
             }
+            
+        	cnx.setRootElement(selement);
+            SocketWriter.writing(sock,compressDocument(cnx));
     		StatementsClosingHandler.close(rs);
             StatementsClosingHandler.close(st);
             rs=null;
@@ -212,16 +213,15 @@ public class ACPSender extends Thread{
 		}
 	}
 	
-	public Document compressDocument(Document doc, String item) throws IOException {
-    	
+	private Document compressDocument(Document data) throws IOException {
 		Document docZip = new Document();
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        xmlout.output(doc,baos);
+		xmlout.output(data,baos);
         baos.close();
-        
-        ZipHandler zip = new ZipHandler(baos,item+".xml");
+        ZipHandler zip = new ZipHandler(baos,"data.xml");
     	docZip.setRootElement(zip.getElementDataEncode("ACPZip"));
 
         return docZip;
-	}
+		
+	}	
 }
