@@ -67,7 +67,7 @@ public class TransactionServerResultSet {
         int i=0;
         while (!HspoolTransactions.containsKey(id)) {
             try {
-            	System.out.print(".");
+            	//System.out.print(".");
                 Thread.sleep(10);
                 i++;
                 if (i>3000) {

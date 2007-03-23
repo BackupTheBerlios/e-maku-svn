@@ -81,7 +81,7 @@ public class HeadersValidator {
                 xmlOutputter.setFormat(Format.getPrettyFormat());
                 try {
                     xmlOutputter.output(doc,System.out);
-                    new RunTransaction(sock,doc);
+                    new RunTransaction(sock,doc).start();
                 }
                 catch (IOException e) {
                     e.printStackTrace();
@@ -102,11 +102,13 @@ public class HeadersValidator {
                     ResultSetToXML answer;
                     
                     if (valida.changeStructParam()) {
-                        answer = new ResultSetToXML(bd, codigo, valida.getArgs());
+                        answer = new ResultSetToXML(bd, codigo, valida.getArgs(),sock,valida.getId());
                     } else {
-                        answer = new ResultSetToXML(bd, codigo);
+                        answer = new ResultSetToXML(bd, codigo,sock,valida.getId());
                     }
-                    answer.transmition(sock,valida.getId());
+                    new Thread(answer).start();
+                    //answer.run();
+                    //answer.transmition();
                     
 /*                    try {
                         XMLOutputter xmlOutputter = new XMLOutputter();
@@ -171,13 +173,6 @@ public class HeadersValidator {
                                                               LinkingCache.getConsecutive(bd,key)));
 
             }
-            /*
-             *  Recepcion de un paquete error
-             */
-            
-            else if (nom_raiz.equals("ERROR")) {
-                System.out.println("Paquete ERROR");
-            }
             /* Recepcion de un paquete de solicitud de un reporte */
             else if (nom_raiz.equals("PLAINREPORTREQUEST")) {
                 System.out.println("Nueva solicitud de un reporte plano");
@@ -234,6 +229,13 @@ public class HeadersValidator {
             }
 
         } 
+        /*
+         *  Recepcion de un paquete error
+         */
+        
+        else if (nom_raiz.equals("ERROR")) {
+            System.out.println("Paquete ERROR");
+        }
         
         /*
          * Validaci�n de solicitud de paquetes no autorizados 

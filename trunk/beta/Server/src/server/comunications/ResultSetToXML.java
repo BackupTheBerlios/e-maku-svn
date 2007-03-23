@@ -7,18 +7,18 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-import server.database.sql.StatementsClosingHandler;
+import org.jdom.Document;
+import org.jdom.output.XMLOutputter;
+
 import server.database.sql.QueryRunner;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
+import server.database.sql.StatementsClosingHandler;
 import server.misc.ServerConstants;
 
+import common.comunications.SocketWriter;
 import common.misc.language.Language;
 import common.misc.log.LogAdmin;
-import common.comunications.SocketWriter;
-
-import org.jdom.Document;
-import org.jdom.output.XMLOutputter;
 
 /**
  * ResultSetToXML.java Creado el 14-jul-2004
@@ -42,7 +42,7 @@ import org.jdom.output.XMLOutputter;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
-public class ResultSetToXML extends Document {
+public class ResultSetToXML extends Document implements Runnable {
 
     /**
 	 * 
@@ -51,6 +51,8 @@ public class ResultSetToXML extends Document {
 	private String bd;
     private String sql;
     private String [] args;
+    private SocketChannel sock;
+    private String id;
     
     private ByteArrayOutputStream bufferSocket = null;
 
@@ -64,26 +66,31 @@ public class ResultSetToXML extends Document {
      *            Sentencia SQL
      */
 
-    public ResultSetToXML(String bd, String sql) {
+    public ResultSetToXML(String bd, String sql,SocketChannel sock, String id) {
         this.bd = bd;
         this.sql = sql;
+        this.sock = sock;
+        this.id=id;
     }
-    public ResultSetToXML(String bd, String sql, String [] args) {
+    public ResultSetToXML(String bd, String sql, String [] args,SocketChannel sock, String id) {
         this.bd = bd;
         this.sql = sql;
         this.args = args; 
+        this.sock = sock;
+        this.id=id;
     }
 
     /**
      * Metodo encargado de ejcutar y transmitir la sentencia sql
      */
-    public void transmition(SocketChannel sock, String id) {
+    public void run() {
 
         synchronized(sock) {
-	        try {
+        	QueryRunner rselect = null;
+        	try {
 	            bufferSocket = new ByteArrayOutputStream();
                 XMLOutputter XMLformat = new XMLOutputter();
-	            QueryRunner rselect;
+	            
 	
 	            if(args==null ) {
 	                rselect = new QueryRunner(bd, sql);
@@ -94,69 +101,53 @@ public class ResultSetToXML extends Document {
 	            
 	            ResultSet RSdatos = rselect.ejecutarSELECT();
 	
-	            try {
-	
-	                ResultSetMetaData RSMDinfo = RSdatos.getMetaData();
-	                int columnas = RSMDinfo.getColumnCount();
-	                writeBufferSocket(sock,
-	                        ServerConstants.CONTEN_TYPE+
-	                        ServerConstants.TAGS_ANSWER[0]+
-	                        ServerConstants.TAGS_ID[0]+id+ServerConstants.TAGS_ID[1]+
-	                        ServerConstants.TAGS_HEAD[0]);
-	                
-	                for (int i = 1; i <= columnas; i++) {
-	                    writeBufferSocket(sock,
-	                            ServerConstants.TAGS_COL_HEAD[0]+
-	                            XMLformat.escapeAttributeEntities(RSMDinfo.getColumnTypeName(i))+
-	                            ServerConstants.TAGS_COL_HEAD[1]+
-	                            XMLformat.escapeAttributeEntities(RSMDinfo.getColumnName(i))+
-	                            ServerConstants.TAGS_COL[1]);
-	                }
-	                writeBufferSocket(sock,ServerConstants.TAGS_HEAD[1]);
-	                
-	                /**
-	                 * Se recorre el resulset para a�adir los datos que contenga, y
-	                 * se escriben directamente en el socket en formato XML
-	                 */
-	                byte [] res;
-	                while (RSdatos.next()) {
-	                    writeBufferSocket(sock,ServerConstants.TAGS_ROW[0]);
-	                    for (int j = 1; j <= columnas; j++) {
-	                        
-	                        res = RSdatos.getBytes(j);
-	                        
-	                        if (res==null)
-	                            res= new String("").getBytes();
-	                        
-	                        writeBufferSocket(sock,ServerConstants.TAGS_COL[0] + 
-	                                XMLformat.escapeAttributeEntities(new String(res))+
-	                                ServerConstants.TAGS_COL[1]
-	                                );
-	                    }
-	                    writeBufferSocket(sock,ServerConstants.TAGS_ROW[1]);
-	                }
-	                writeBufferSocket(sock,ServerConstants.TAGS_ANSWER[1]);
-	                bufferSocket.write(new String ("\n\r\f").getBytes());
-	                SocketWriter.writing(sock,bufferSocket);
-	                bufferSocket.close();
-	                StatementsClosingHandler.close(RSdatos);
+                ResultSetMetaData RSMDinfo = RSdatos.getMetaData();
+                int columnas = RSMDinfo.getColumnCount();
+                writeBufferSocket(sock,
+                        ServerConstants.CONTEN_TYPE+
+                        ServerConstants.TAGS_ANSWER[0]+
+                        ServerConstants.TAGS_ID[0]+id+ServerConstants.TAGS_ID[1]+
+                        ServerConstants.TAGS_HEAD[0]);
+                
+                for (int i = 1; i <= columnas; i++) {
+                    writeBufferSocket(sock,
+                            ServerConstants.TAGS_COL_HEAD[0]+
+                            XMLformat.escapeAttributeEntities(RSMDinfo.getColumnTypeName(i))+
+                            ServerConstants.TAGS_COL_HEAD[1]+
+                            XMLformat.escapeAttributeEntities(RSMDinfo.getColumnName(i))+
+                            ServerConstants.TAGS_COL[1]);
+                }
+                writeBufferSocket(sock,ServerConstants.TAGS_HEAD[1]);
+                
+                /**
+                 * Se recorre el resulset para a�adir los datos que contenga, y
+                 * se escriben directamente en el socket en formato XML
+                 */
+                byte [] res;
+                while (RSdatos.next()) {
+                    writeBufferSocket(sock,ServerConstants.TAGS_ROW[0]);
+                    for (int j = 1; j <= columnas; j++) {
+                        
+                        res = RSdatos.getBytes(j);
+                        
+                        if (res==null)
+                            res= new String("").getBytes();
+                        
+                        writeBufferSocket(sock,ServerConstants.TAGS_COL[0] + 
+                                XMLformat.escapeAttributeEntities(new String(res))+
+                                ServerConstants.TAGS_COL[1]
+                                );
+                    }
+                    writeBufferSocket(sock,ServerConstants.TAGS_ROW[1]);
+                }
+                writeBufferSocket(sock,ServerConstants.TAGS_ANSWER[1]);
+                bufferSocket.write(new String ("\n\r\f").getBytes());
+                SocketWriter.writing(sock,bufferSocket);
+                bufferSocket.close();
+                StatementsClosingHandler.close(RSdatos);
 //	                LogAdmin.setMessage(Language.getWord("OK_CREATING_XML"),
 //	                        ServerConst.MESSAGE);
-	
-	            }
-	            catch (SQLException SQLEe) {
-	                String err =
-	                    Language.getWord("ERR_RS") + " " +sql+" "+SQLEe.getMessage();
-	                LogAdmin.setMessage(err, ServerConstants.ERROR);
-	                ErrorXML error = new ErrorXML();
-	                SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR, bd, id,err));
-	                SQLEe.printStackTrace();
-	            }
-	            catch (IOException e) {
-	                // TODO Auto-generated catch block
-	                e.printStackTrace();
-	            }
-	            rselect.closeStatement();
+
 	        }
 	        catch (SQLNotFoundException QNFEe) {
 	            String err = QNFEe.getMessage();
@@ -166,19 +157,27 @@ public class ResultSetToXML extends Document {
 	            QNFEe.printStackTrace();
 	
 	        } 
-	        catch (SQLException SQLEe) {
-	            String err = Language.getWord("ERR_ST") + " "+sql+" "+ SQLEe.getMessage();
-	            LogAdmin.setMessage(err, ServerConstants.ERROR);
-	            ErrorXML error = new ErrorXML();
-	            SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR, bd, id,err));
-	            SQLEe.printStackTrace();
-	        }
+            catch (SQLException SQLEe) {
+                String err =
+                    Language.getWord("ERR_RS") + " " +sql+" "+SQLEe.getMessage();
+                LogAdmin.setMessage(err, ServerConstants.ERROR);
+                ErrorXML error = new ErrorXML();
+                SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR, bd, id,err));
+                SQLEe.printStackTrace();
+            }
+            catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 	        catch (SQLBadArgumentsException QBAEe) {
 	            String err = QBAEe.getMessage();
 	            LogAdmin.setMessage(err, ServerConstants.ERROR);
 	            ErrorXML error = new ErrorXML();
 	            SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR, bd, id,err));
 	            QBAEe.printStackTrace();
+	        }
+	        finally {
+	            rselect.closeStatement();
 	        }
         }
     }

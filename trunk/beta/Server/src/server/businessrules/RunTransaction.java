@@ -42,7 +42,7 @@ import org.jdom.Element;
  * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  */
-public class RunTransaction {
+public class RunTransaction extends Thread {
 
     private String transaction_code;
     private String id_transaction;
@@ -52,12 +52,16 @@ public class RunTransaction {
     private Object[] args_constructor;
     private Object[] args_method;
     private Element pack = null;
-    
+    private Document transaction;
     private SocketChannel sock;
     
     public RunTransaction(SocketChannel sock,Document transaction) {
 
         this.sock=sock;
+        this.transaction=transaction; 
+    }
+    
+    public void run() {
         Element elm = transaction.getRootElement();
         List listaRaiz = elm.getChildren();
         Iterator i = listaRaiz.iterator();
