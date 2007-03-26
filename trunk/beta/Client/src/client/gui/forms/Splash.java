@@ -1,13 +1,13 @@
 package client.gui.forms;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Font;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JLayeredPane;
 import javax.swing.JProgressBar;
 import javax.swing.JWindow;
 import javax.swing.border.BevelBorder;
@@ -50,24 +50,37 @@ public class Splash {
         window = new JWindow();
         window.setAlwaysOnTop(false);
         window.setLayout(new BorderLayout());
+        
+        JLayeredPane lpane = new JLayeredPane();
+        
         window.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        JPanel pe = new JPanel();
-        pe.setLayout(new BorderLayout());
+        
         URL url = window.getClass().getResource("/icons/e-maku_splash.png");
         ImageIcon icon = new ImageIcon(url);
-        JLabel labelx = new JLabel(icon,JLabel.CENTER);
-        pe.add(labelx,BorderLayout.CENTER);
-        window.add(pe,BorderLayout.CENTER);
-        window.add(JPBbarra,BorderLayout.SOUTH);
-        JPBbarra.setFont(new Font("Monospace",Font.PLAIN,10));
-        
         int width = icon.getIconWidth();
         int height = icon.getIconHeight();
+        
         int x = ((int)ClientConstants.MAX_WIN_SIZE_WIDTH/2)-(width/2);
         int y = ((int)ClientConstants.MAX_WIN_SIZE_HEIGHT/2)-(height/2);
-        window.setLocationByPlatform(true);
+        
         window.setLocation(x, y);
         window.setSize(width,height);
+        
+        JLabel labelx = new JLabel(icon,JLabel.CENTER);
+        labelx.setBounds(0, 0, width, height);
+        JPBbarra.setOpaque(false);
+        JPBbarra.setBorderPainted(false);
+        JPBbarra.setBounds(0,window.getHeight()-10, width,10);
+        JPBbarra.setStringPainted(false);
+        JPBbarra.setString("");
+        
+        JPBbarra.setForeground(new Color(255,162,0));
+        
+        lpane.add(labelx,JLayeredPane.PALETTE_LAYER);
+        lpane.add(JPBbarra,JLayeredPane.MODAL_LAYER);
+        
+        window.add(lpane,BorderLayout.CENTER);
+        window.setLocationByPlatform(true);
         window.setVisible(true);
     }
     
