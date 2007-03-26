@@ -7,15 +7,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import client.gui.components.StatusBar;
-import common.comunications.SocketConnector;
-import common.comunications.SocketWriter;
-import common.misc.ZipHandler;
-
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+
+import client.gui.components.MainWindow;
+import client.gui.forms.Splash;
+
+import common.comunications.SocketConnector;
+import common.comunications.SocketWriter;
+import common.misc.ZipHandler;
 
 /**
  * ACPHandler.java Creado el 13-ago-2004
@@ -48,7 +50,8 @@ public class ACPHandler {
 
 	public static void ACPBegin(Document doc) {
 		numTrans = Integer.parseInt(doc.getRootElement().getChild("transactions").getValue());
-		StatusBar.setProgresRank(0, numTrans + 1);
+		Splash.ShowSplash();
+		Splash.setProgresRank(0, numTrans + 1);
 	}
 
 	public static void ACPData(Document documento) {
@@ -102,6 +105,8 @@ public class ACPHandler {
 				}
 			}
 		}
+		Splash.DisposeSplash();
+		MainWindow.getRefWindow().setVisible(true);
 	}
 
 	/**
@@ -126,10 +131,9 @@ public class ACPHandler {
 				}
 			}
 			Htransactions.put(id, valores);
+			Splash.incrementProgresValue();
 			ACPFormEvent event = new ACPFormEvent(new ACPHandler(), id);
 			notifyACPForm(event);
-			StatusBar.incrementProgresValue();
-			
 	}
 
 	private static void notifyACPForm(ACPFormEvent event) {
@@ -162,7 +166,7 @@ public class ACPHandler {
 			Element e = (Element) j.next();
 			Hquery.put(e.getValue(), e.getAttributeValue("type"));
 		}
-		StatusBar.incrementProgresValue();
+		Splash.incrementProgresValue();
 	}
 
 	/**

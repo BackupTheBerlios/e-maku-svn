@@ -53,6 +53,7 @@ import common.gui.components.AnswerListener;
 import common.gui.components.DataErrorException;
 import common.gui.components.RecordEvent;
 import common.gui.components.RecordListener;
+import common.gui.components.TableSorter;
 import common.gui.components.VoidPackageException;
 import common.gui.forms.EndEventGenerator;
 import common.gui.forms.ExternalValueChangeEvent;
@@ -326,7 +327,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 						externalValues, ATFDargs);
 			}
 			TMFDtabla.setTagDataColumn(tagDataColumn);
-			JTtabla = new JTable(TMFDtabla) {
+			TableSorter sorter = new TableSorter(TMFDtabla);
+			JTtabla = new JTable(sorter) {
 
 				private static final long serialVersionUID = -8579166961142646633L;
 
@@ -358,6 +360,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 					super.paintComponent(g);
 				}
 			};
+			sorter.setTableHeader(JTtabla.getTableHeader());
 			propertiesTable();
 		}
 

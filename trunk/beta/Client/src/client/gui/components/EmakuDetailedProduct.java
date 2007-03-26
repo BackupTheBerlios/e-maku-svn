@@ -13,21 +13,23 @@ import java.awt.event.MouseEvent;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
+import javax.swing.JTable;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
+import javax.swing.text.JTextComponent;
 
 import common.gui.components.XMLTextField;
 import common.gui.forms.GenericForm;
 import common.misc.Icons;
 import common.misc.language.Language;
 
-public class EmakuDetailedProduct extends JComponent implements KeyListener, ActionListener  {
+public class EmakuDetailedProduct extends JTextComponent implements KeyListener, ActionListener  {
 
 	private static final long serialVersionUID = 8386003217712730190L;
 	private JPanel contentPane;
@@ -46,9 +48,12 @@ public class EmakuDetailedProduct extends JComponent implements KeyListener, Act
 	private JLabel statusLabel;
 	private EmakuDataSearch dataSearch;
 	private GenericForm genericForm;
-	private boolean subPopup;
 	private JButton JBAccept;
 	private JButton JBCancel;
+	private JTable table;
+	private int rowIndex;
+	protected int columnIndex;
+	
 	
 	public EmakuDetailedProduct(GenericForm GFforma,
 							   String sql,
@@ -58,8 +63,9 @@ public class EmakuDetailedProduct extends JComponent implements KeyListener, Act
 							   boolean dataBeep,
 							   String dataMessage,
 							   int selected,
-							   int repeatData) {
+							   int repeatData,final JTable table) {
 		this.genericForm = GFforma;
+		this.table = table;
 		dataSearch = new EmakuDataSearch(
 							genericForm,sql,externalValues,
 							keyValue,blankArgs,dataBeep,
@@ -68,13 +74,24 @@ public class EmakuDetailedProduct extends JComponent implements KeyListener, Act
 			public void storeData() {
 				super.storeData();
 				XMLTFCode.setText(getValue());
-				subPopup = false;
-				showDetailed();
+				forceFocus();
+				
 			}
 		};
 		dataSearch.addKeyListener(this);
 		this.addKeyListener(this);
 		initComps();
+	}
+	
+	public void forceFocus() {
+		Thread t = new Thread () {
+			public void run() {
+				table.requestFocus();
+				table.changeSelection(rowIndex, columnIndex, true,false);
+				showDetailed();
+			}
+		};
+		SwingUtilities.invokeLater(t);
 	}
 	
 	private void initComps() {
@@ -88,19 +105,7 @@ public class EmakuDetailedProduct extends JComponent implements KeyListener, Act
 		JPFields = new JPanel(new GridLayout(7,1));
 		JPLabels = new JPanel(new GridLayout(7,1));
 
-		JPMpopup = new JPopupMenu() {
-			private static final long serialVersionUID = 1L;
-			public void setVisible(boolean b) {
-				//System.out.println("Visible: " +b);
-				if (subPopup) {
-					super.setVisible(true);
-				}
-				else{
-					if (!b) { this.requestFocusInWindow(); }
-					super.setVisible(b);
-				}
-			}
-		};
+		JPMpopup = new JPopupMenu();
 		JPMpopup.setLayout(new BorderLayout());
 		JPMpopup.setLightWeightPopupEnabled(true);
 		JPMpopup.setBorderPainted(true);
@@ -184,7 +189,7 @@ public class EmakuDetailedProduct extends JComponent implements KeyListener, Act
 			try { JPMpopup.show(this,x,y); }
 			catch (IllegalComponentStateException e) { e.printStackTrace(); }
 		}
-		XMLTFCode.requestFocusInWindow();
+		XMLTFCode.requestFocus();
 	}
 
 	public String getValue() {
@@ -204,7 +209,7 @@ public class EmakuDetailedProduct extends JComponent implements KeyListener, Act
 			int y = this.getHeight();
 			try {
 				dataSearch.getPopup().show(this,x,y);
-				dataSearch.getXMLTFkey().requestFocusInWindow();
+				dataSearch.getXMLTFkey().requestFocus();
 				dataSearch.setDataSelected(false);
 			}
 			catch (IllegalComponentStateException e) {}
@@ -220,7 +225,6 @@ public class EmakuDetailedProduct extends JComponent implements KeyListener, Act
 				break;
 			case KeyEvent.VK_F2:
 				if (s.equals(XMLTFCode)) {
-					subPopup = true;
 					showDataSearch();
 				} else {
 					showDetailed();
@@ -246,5 +250,13 @@ public class EmakuDetailedProduct extends JComponent implements KeyListener, Act
 			JPMpopup.setVisible(false);
 		}
 		
+	}
+
+	public void setColumnIndex(int columnIndex) {
+		this.columnIndex = columnIndex;
+	}
+
+	public void setRowIndex(int rowIndex) {
+		this.rowIndex = rowIndex;
 	}
 }

@@ -22,13 +22,15 @@ public class EmakuDetailedProductCellEditor  extends AbstractCellEditor implemen
 								ATFDargs[index].isDataBeep(),
 								ATFDargs[index].getNoDataMessage(),
 								ATFDargs[index].getSelected(),
-								ATFDargs[index].getRepeatData());
+								ATFDargs[index].getRepeatData(),table);
 		table.addKeyListener(detailedProduc);
 	}
 	
 	public Component getTableCellEditorComponent(
 			JTable table, Object value, boolean isSelected, int row, int column) {
 		detailedProduc.setCode(value.toString());
+		detailedProduc.setRowIndex(row);
+		detailedProduc.setColumnIndex(column);
 		return detailedProduc;
 	}
 

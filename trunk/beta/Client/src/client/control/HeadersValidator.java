@@ -12,7 +12,6 @@ import org.jdom.output.XMLOutputter;
 
 import client.gui.components.MainWindow;
 import client.gui.forms.Connection;
-import client.gui.forms.Splash;
 import client.misc.settings.ConfigFileHandler;
 
 import common.comunications.ArrivedPackageEvent;
@@ -48,6 +47,7 @@ import common.transactions.TransactionServerResultSet;
 public class HeadersValidator implements ArrivedPackageListener {
 
     private static Element raiz;
+    private String title;
 
     /**
      * Este metodo se encarga de revisar toda las raices de los documentos que
@@ -81,12 +81,11 @@ public class HeadersValidator implements ArrivedPackageListener {
 	         *  Validacion paquete ACP
 	         */
 	        if(nombre.equals("ACPBegin")) {
-	            Connection.dispose();
-	            Splash.ShowSplash();
+	            Connection.dispose();          
 	            ACPHandler.ACPBegin(doc);
 	            String company = raiz.getChildText("companyName");
 	            String companyID = raiz.getChildText("companyID");
-	            String title = "Emaku - Qhatu Ltda";
+	            title = "Emaku - Qhatu Ltda";
 
 	            /*
 	             * Cargando configuración dependiendo de la empresa ...
@@ -96,8 +95,7 @@ public class HeadersValidator implements ArrivedPackageListener {
 
 	            if(company != null && companyID != null)
 	            	title = company + " - Nit: " + companyID;
-	            
-	            new MainWindow(ConfigFileHandler.getJarDirectory()+"/misc",title);
+           		new MainWindow(ConfigFileHandler.getJarDirectory()+"/misc",title);
 	        }
 	        
 	        else if(nombre.equals("ACPZip")) {

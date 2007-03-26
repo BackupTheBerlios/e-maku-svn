@@ -22,7 +22,6 @@
 
 package client.gui.components;
 
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -42,6 +41,7 @@ public class StatusBar extends JToolBar implements SuccessListener {
 
     
 	private static final long serialVersionUID = 5107890638919072678L;
+	public static JProgressBar JPBbarra = new JProgressBar(); 
 	
 	public static JLabel JLetiqueta1 = new JLabel("         ") {
 		private static final long serialVersionUID = 3440825260214310311L;
@@ -72,7 +72,7 @@ public class StatusBar extends JToolBar implements SuccessListener {
 	        super.paintComponent(g);
 	    }
 	};
-    public static JProgressBar JPBbarra = new JProgressBar(); 
+   
 
     /** Creates new StatusBar */
     public StatusBar() {
@@ -85,7 +85,8 @@ public class StatusBar extends JToolBar implements SuccessListener {
         this.add(JLetiqueta2);
         this.add(JLetiqueta3);
         this.add(JPBbarra);
-        JPBbarra.setFont(new Font("Monospace",Font.PLAIN,10));
+        JPBbarra.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
+        resetProgresValue();
         ClientHeaderValidator.addSuccessListener(this);
     }
     
@@ -109,17 +110,11 @@ public class StatusBar extends JToolBar implements SuccessListener {
     	JPBbarra.setStringPainted(true);
     }
     
-    public static void  incrementProgresValue() {
-    	JPBbarra.setValue(JPBbarra.getValue()+1);
-    	if (JPBbarra.getValue() == JPBbarra.getMaximum()) {
-    		resetProgresValue();
-    		JPBbarra.setStringPainted(false);
-    	}
-    } 
-    
     public static void resetProgresValue() {
     	JLetiqueta3.setText("         ");
     	JPBbarra.setValue(0);
+    	JPBbarra.setMinimum(0);
+    	JPBbarra.setMaximum(0);
     }
 
 	public void cathSuccesEvent(SuccessEvent e) {

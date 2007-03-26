@@ -2,12 +2,16 @@ package client.gui.forms;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JWindow;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.SoftBevelBorder;
 
 import client.misc.ClientConstants;
 
@@ -36,6 +40,7 @@ import client.misc.ClientConstants;
 public class Splash {
 
     private static JWindow window;
+    public static JProgressBar JPBbarra = new JProgressBar(); 
     
     /**
      * 
@@ -44,6 +49,7 @@ public class Splash {
         
         window = new JWindow();
         window.setAlwaysOnTop(false);
+        window.setLayout(new BorderLayout());
         window.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         JPanel pe = new JPanel();
         pe.setLayout(new BorderLayout());
@@ -51,7 +57,10 @@ public class Splash {
         ImageIcon icon = new ImageIcon(url);
         JLabel labelx = new JLabel(icon,JLabel.CENTER);
         pe.add(labelx,BorderLayout.CENTER);
-        window.getContentPane().add(pe);
+        window.add(pe,BorderLayout.CENTER);
+        window.add(JPBbarra,BorderLayout.SOUTH);
+        JPBbarra.setFont(new Font("Monospace",Font.PLAIN,10));
+        
         int width = icon.getIconWidth();
         int height = icon.getIconHeight();
         int x = ((int)ClientConstants.MAX_WIN_SIZE_WIDTH/2)-(width/2);
@@ -65,4 +74,30 @@ public class Splash {
     public static void DisposeSplash() {
         window.dispose();
     }
+    
+    public static void  incrementProgresValue() {
+    	Thread t = new Thread() {
+    		public void run() {
+    			JPBbarra.setValue(JPBbarra.getValue()+1);
+    	    	if (JPBbarra.getValue() == JPBbarra.getMaximum()) {
+    	    		resetProgresValue();
+    	    		JPBbarra.setStringPainted(false);
+    	    	}
+    		}
+    	};
+    	t.start();
+    } 
+    
+    public static void setProgresRank(int min, int max) {
+        JPBbarra.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
+    	JPBbarra.setMinimum(min);
+    	JPBbarra.setMaximum(max);
+    	JPBbarra.setStringPainted(true);
+    }
+    
+    public static void resetProgresValue() {
+    	JPBbarra.setValue(0);
+    }
+    
 }
+

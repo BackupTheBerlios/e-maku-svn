@@ -16,7 +16,6 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 import client.Run;
-import client.gui.forms.Splash;
 import client.gui.xmlmenu.MenuLoader;
 import client.gui.xmltoolbar.EmakuButtonGroup;
 import client.gui.xmltoolbar.ToolBarLoader;
@@ -62,10 +61,9 @@ public class MainWindow extends JFrame {
     private static Vector Vtoolbar1;
     private static JFrame refWindow = null;
     
-    public MainWindow(String jarDirectory,String title) {
-    	
+    public MainWindow(final String jarDirectory,String title) {
         setTitle(title);
-
+        MainWindow.refWindow = this;
         this.setBounds(0, 0, ClientConstants.MAX_WIN_SIZE_WIDTH,
                 ClientConstants.MAX_WIN_SIZE_HEIGHT);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -81,26 +79,30 @@ public class MainWindow extends JFrame {
         /**
          * Creando e Instanciando del Menu y la Barras de herramientas 
          */
-        URL url= null;
-        MenuLoader menu=null;
-        ToolBarLoader toolbar1=null;
-        try {
-			url = new URL(jarDirectory+"/menu.xml");
-			menu = new MenuLoader(url);
-			if (menu.Loading()) {
-		        menu.setDisabledAll();
-		        this.setJMenuBar(menu);
-			}
-	        url = new URL(jarDirectory+"/toolbar.xml");
-	        toolbar1 = new ToolBarLoader(url);
-	        Vtoolbar1 = toolbar1.Loading();
-	        this.getContentPane().add(toolbar1, BorderLayout.NORTH);
-	        setDisabledAll();
-		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
+        Thread t = new Thread () {
+        	public void run() {
+        		URL url= null;
+                MenuLoader menu=null;
+                ToolBarLoader toolbar1=null;
+                try {
+        			url = new URL(jarDirectory+"/menu.xml");
+        			menu = new MenuLoader(url);
+        			if (menu.Loading()) {
+        		        menu.setDisabledAll();
+        		        refWindow.setJMenuBar(menu);
+        			}
+        	        url = new URL(jarDirectory+"/toolbar.xml");
+        	        toolbar1 = new ToolBarLoader(url);
+        	        Vtoolbar1 = toolbar1.Loading();
+        	        refWindow.getContentPane().add(toolbar1, BorderLayout.NORTH);
+        	        setDisabledAll();
+        		} catch (MalformedURLException e1) {
+        			// TODO Auto-generated catch block
+        			e1.printStackTrace();
+        		}
+        	}
+        };
+        t.start();
 
         /**
          * Adicionando componentes al panel central
@@ -147,10 +149,10 @@ public class MainWindow extends JFrame {
 	    /**
 	     * Ventana Visible
 	     */
-        this.setVisible(true);
-        Splash.DisposeSplash();
+        //this.setVisible(true);
+        
         this.setExtendedState(JFrame.NORMAL);
-        MainWindow.refWindow = this;
+        
    }
 
     /**
