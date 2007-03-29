@@ -116,6 +116,7 @@ public class EmakuDetailedProduct extends JTextComponent implements KeyListener,
 		
 		XMLTFCode 		 = new XMLTextField("CODE", 9, 10, XMLTextField.TEXT);
 		XMLTFDescription = new XMLTextField("DESCRIPCION", 9, 10, XMLTextField.TEXT);
+		//Compra,Inventario,Catalogos
 		XMLTFPrice		 = new XMLTextField("PRICE", 9, 10, XMLTextField.TEXT);
 		XMLTFAmount		 = new XMLTextField("CANTIDAD", 9, 10, XMLTextField.TEXT);
 		XMLTFValue		 = new XMLTextField("VALOR", 9, 10, XMLTextField.TEXT);

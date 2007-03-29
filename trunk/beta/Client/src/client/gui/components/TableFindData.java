@@ -4,9 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
@@ -308,12 +305,6 @@ public class TableFindData extends JPanel implements AnswerListener,
 					return c;
 				}
 
-				public void paintComponent(Graphics g) {
-					Graphics2D g2 = (Graphics2D) g;
-					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-							RenderingHints.VALUE_ANTIALIAS_ON);
-					super.paintComponent(g);
-				}
 			};
 			loadingQuery();
 		} else {
@@ -351,13 +342,6 @@ public class TableFindData extends JPanel implements AnswerListener,
 						}
 					}
 					return c;
-				}
-
-				public void paintComponent(Graphics g) {
-					Graphics2D g2 = (Graphics2D) g;
-					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-							RenderingHints.VALUE_ANTIALIAS_ON);
-					super.paintComponent(g);
 				}
 			};
 			sorter.setTableHeader(JTtabla.getTableHeader());
@@ -951,10 +935,11 @@ public class TableFindData extends JPanel implements AnswerListener,
 		if (element.getChildren().size() > 0) {
 			doc.setRootElement(element);
 			TMFDtabla.setQuery(doc, true);
-			JTtabla.scrollRectToVisible(JTtabla.getCellRect(TMFDtabla.getCurrentIndex(),0,false));
 			Thread t = new Thread() {
 				public void run() {
+					JTtabla.scrollRectToVisible(JTtabla.getCellRect(TMFDtabla.getCurrentIndex(),0,false));
 					JTtabla.updateUI();
+					
 				}
 			};
 			SwingUtilities.invokeLater(t);
