@@ -176,13 +176,9 @@ public class ClientHeaderValidator {
         return false;
     }
     
-    private static synchronized void notifyReport(ReportEvent event) {
-    	//System.out.println("*** Notificando evento...");
-    	Vector lista;
-        lista = (Vector)reportListener.clone();
-        for (int i=0; i<lista.size();i++) {
-        	ReportListener listener = reportListener.get(i);
-            listener.arriveReport(event);
+    private static void notifyReport(ReportEvent event) {
+        for (ReportListener l : reportListener) {
+            l.arriveReport(event);
         }
     }
     
@@ -190,59 +186,52 @@ public class ClientHeaderValidator {
         reportListener.add(listener);
     }
 
-	public synchronized static void removeReportListener(ReportListener listener ) {
+	public static void removeReportListener(ReportListener listener ) {
         reportListener.add(listener);
     }
 	
 
-    public static synchronized void addDateListener(DateListener listener ) {
+    public static void addDateListener(DateListener listener ) {
         dateListener.addElement(listener);
     }
 
-    public static synchronized void removeDateListener(DateListener listener ) {
+    public static void removeDateListener(DateListener listener ) {
         dateListener.removeElement(listener);
     }
 
-    private static synchronized void notifyDate(DateEvent event) {
-        Vector lista;
-        lista = (Vector)dateListener.clone();
-        for (int i=0; i<lista.size();i++) {
-            DateListener listener = (DateListener)lista.elementAt(i);
-            listener.cathDateEvent(event);
-        }
+    private static void notifyDate(DateEvent event) {
+    	synchronized (dateListener) {
+	    	for (DateListener l : dateListener) {
+	            l.cathDateEvent(event);
+	        }
+    	}
     }
 
-    public static synchronized void addUpdateCodeListener(UpdateCodeListener listener ) {
+    public static void addUpdateCodeListener(UpdateCodeListener listener ) {
         updateCodeListener.addElement(listener);
     }
 
-    public static synchronized void removeUpdateCodeListener(UpdateCodeListener listener ) {
+    public static void removeUpdateCodeListener(UpdateCodeListener listener ) {
         updateCodeListener.removeElement(listener);
     }
 
-    private static synchronized void notifyUpdateCode(UpdateCodeEvent event) {
-        Vector lista;
-        lista = (Vector)updateCodeListener.clone();
-        for (int i=0; i<lista.size();i++) {
-            UpdateCodeListener listener = (UpdateCodeListener)lista.elementAt(i);
-            listener.cathUpdateCodeEvent(event);
+    private static void notifyUpdateCode(UpdateCodeEvent event) {
+        for (UpdateCodeListener l : updateCodeListener) {
+            l.cathUpdateCodeEvent(event);
         }
     }
 
-    public static synchronized void addSuccessListener(SuccessListener listener ) {
+    public static void addSuccessListener(SuccessListener listener ) {
         successListener.addElement(listener);
     }
 
-    public static synchronized void removeSuccessListener(SuccessListener listener ) {
+    public static void removeSuccessListener(SuccessListener listener ) {
         successListener.removeElement(listener);
     }
 
-    private static synchronized void notifySuccess(SuccessEvent event) {
-        /*Vector lista;
-        lista = (Vector)successListener.clone();*/
-        for (int i=0; i<successListener.size();i++) {
-            SuccessListener listener = successListener.elementAt(i);
-            listener.cathSuccesEvent(event);
+    private static void notifySuccess(SuccessEvent event) {
+        for (SuccessListener l : successListener) {
+            l.cathSuccesEvent(event);
         }
     }
 }

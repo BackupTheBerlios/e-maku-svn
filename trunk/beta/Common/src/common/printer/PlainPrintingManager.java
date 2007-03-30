@@ -43,8 +43,13 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 	private Element header;
 	private int rowPageSeparator;
 	private int pageNumeration = 1;
-	public PlainPrintingManager(String ndocument) {
+	
+	public PlainPrintingManager() {
 		ClientHeaderValidator.addSuccessListener(this);
+	}
+	
+	public PlainPrintingManager(String ndocument) {
+		this();
 		impresionType = ImpresionType.PLAIN;
 		this.ndocument = ndocument;
 	}

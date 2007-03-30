@@ -78,7 +78,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
     private String idTransaction;
     private String accel = "";
 	private String idReport;
-    private PlainPrintingManager plainManager = new PlainPrintingManager("");
+    private PlainPrintingManager plainManager = new PlainPrintingManager();
     private PostScriptManager postScriptManager = new PostScriptManager();
 	private String typePackage = "TRANSACTION";
 	private String lastNumber;
@@ -352,6 +352,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 											 !ATprinter.getValue().trim().equals("") ?  
 											 ATprinter.getValue() : 
 											 null ;
+											 
 							if ("PLAIN".equals(typePrinter) ) {
 								plainManager.process(rootTemplate,printJob);
 								if (plainManager.isSuccessful()) {
