@@ -95,8 +95,10 @@ public class Language  {
     }
     
     public static char getNemo(String key) {   
-        char nemo = glossary.get(key).getMessage().charAt(0); 
-        return nemo;
+        if (glossary.containsKey(key)) {
+        	return glossary.get(key).getMessage().charAt(0);	
+        } 
+        return 32;
     }
     
     public static String getErrorCode(String key) {

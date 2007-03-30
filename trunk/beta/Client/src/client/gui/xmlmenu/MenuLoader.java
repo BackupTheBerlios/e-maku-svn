@@ -129,10 +129,14 @@ public class MenuLoader extends JMenuBar {
 	        while (j.hasNext()) {
 	            Element subdatos = (Element) j.next();
 	            value=subdatos.getValue();
-	            if (subdatos.getName().equals("Text"))
-	                JMtmp.setText(Language.getWord(subdatos.getValue()));
-	            else if (subdatos.getName().equals("Mnemonic"))
-	                JMtmp.setMnemonic(Language.getNemo(value));
+	            if (subdatos.getName().equals("Text")){
+	            	String text = "".equals(Language.getWord(subdatos.getValue()))?subdatos.getValue():Language.getWord(subdatos.getValue());
+	                JMtmp.setText(Language.getWord(text));
+	            }
+	            else if (subdatos.getName().equals("Mnemonic")) {
+	            	char nemo = ' '==Language.getNemo(subdatos.getValue())?subdatos.getValue().charAt(0):Language.getNemo(subdatos.getValue());
+	                JMtmp.setMnemonic(nemo);
+	            }
 	            else if (subdatos.getName().equals("Icon"))
 	            	try {
 	            		JMtmp.setIcon(new ImageIcon(this.getClass().getResource(Icons.getIcon(value))));

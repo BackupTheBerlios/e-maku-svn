@@ -215,7 +215,7 @@ public class GenericForm extends JInternalFrame{
      *            forma en tiempo de ejecucion
      */
 
-    private void generar(Document doc) {
+    private synchronized void generar(Document doc) {
     	exportFields = new Hashtable<Integer,String>();
         Hcomps = new Hashtable<String,Componentes>();
         

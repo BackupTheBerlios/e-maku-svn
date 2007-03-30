@@ -561,7 +561,7 @@ public class ComboBoxFiller extends JComboBox implements
        	exportar();
 	}
 	
-	protected void exportar() {
+	protected synchronized void exportar() {
 		if (exportValue!=null) {
        		if (!saveKey) {
 				StringTokenizer stk = new StringTokenizer((String) getSelectedItem()," ");
@@ -592,7 +592,6 @@ public class ComboBoxFiller extends JComboBox implements
 	            }
 	            
 	            public void run() {
-
 	                String sql;
 			        for (int i=0;i<sqlCode.size();i++) {
 			            Document doc = null;
@@ -603,17 +602,17 @@ public class ComboBoxFiller extends JComboBox implements
 	                    catch (TransactionServerException e) {
 	                        e.printStackTrace();
 	                    }
-	                    AnswerEvent event = new AnswerEvent(this,sql,doc);
+                        AnswerEvent event = new AnswerEvent(this,sql,doc);
 	                    notificando(event);
-			        }
-	            }
+                    }
+			    }
 	        }
 	        /*-----------------------------------------------------------*/
-	        Object [] XMLimpValues = importValueCode.toArray();
+			Object [] XMLimpValues = importValueCode.toArray();
 	        
     		String[] args = null;
 			int i=0;
-    		if (constantValue!=null) {
+			if (constantValue!=null) {
     			args = new String[constantValue.size()+XMLimpValues.length+1];
     			for (;i<constantValue.size();i++) {
         			args[i]= constantValue.get(i);
@@ -626,8 +625,8 @@ public class ComboBoxFiller extends JComboBox implements
 				args[i] =  GFforma.getExteralValuesString((String)XMLimpValues[i]);
 			}
 			args[i] =  (String) getItemAt(getSelectedIndex());
-	        new SearchingSQL(args).start();
-		}
+			SwingUtilities.invokeLater(new SearchingSQL(args));		
+	        }
 	}
 	
 	/*public void setEnabled(boolean enabled) {

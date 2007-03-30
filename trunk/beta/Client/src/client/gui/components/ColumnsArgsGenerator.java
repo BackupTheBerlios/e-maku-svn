@@ -364,6 +364,7 @@ public class ColumnsArgsGenerator {
 
 	public String [] getImportCombos() {
 		String [] argsret = new String[importValueCombo.size()];
+		
 		for (int i=0; i< argsret.length;i++) {
 			argsret[i]=importValueCombo.get(i);
 		}
