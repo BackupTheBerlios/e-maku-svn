@@ -696,17 +696,19 @@ public class ComboBoxFiller extends JComboBox implements
 		return exportValue;
 	}
 	
-	public synchronized void addAnswerListener(AnswerListener listener ) {
+	public void addAnswerListener(AnswerListener listener ) {
         AnswerListener.addElement(listener);
     }
 
-    public synchronized void removeAnswerListener(AnswerListener listener ) {
+    public void removeAnswerListener(AnswerListener listener ) {
         AnswerListener.removeElement(listener);
     }
-    private synchronized void notificando(AnswerEvent event) {
-        for (AnswerListener l : AnswerListener) {
-            l.arriveAnswerEvent(event);
-        }
+    private void notificando(AnswerEvent event) {
+    	synchronized(AnswerListener) {
+	        for (AnswerListener l : AnswerListener) {
+	            l.arriveAnswerEvent(event);
+	        }
+    	}
     }
 
     public String getStringCombo() {

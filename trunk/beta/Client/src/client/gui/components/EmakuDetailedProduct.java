@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -22,14 +23,13 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
-import javax.swing.text.JTextComponent;
 
 import common.gui.components.XMLTextField;
 import common.gui.forms.GenericForm;
 import common.misc.Icons;
 import common.misc.language.Language;
 
-public class EmakuDetailedProduct extends JTextComponent implements KeyListener, ActionListener  {
+public class EmakuDetailedProduct extends JComponent implements KeyListener, ActionListener  {
 
 	private static final long serialVersionUID = 8386003217712730190L;
 	private JPanel contentPane;

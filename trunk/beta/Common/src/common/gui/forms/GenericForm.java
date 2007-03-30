@@ -1139,18 +1139,20 @@ public class GenericForm extends JInternalFrame{
         return password;
     }
     
-    public synchronized void addInitiateFinishListener(InstanceFinishingListener listener ) {
+    public void addInitiateFinishListener(InstanceFinishingListener listener ) {
    		initiateFinishListener.addElement(listener);
     }
 
-    public synchronized void removeInitiateFinishListener(InstanceFinishingListener listener ) {
+    public void removeInitiateFinishListener(InstanceFinishingListener listener ) {
    		initiateFinishListener.removeElement(listener);
     }
 
-    private synchronized void notificando(EndEventGenerator event) {
-        for (InstanceFinishingListener l : initiateFinishListener) {
-            l.initiateFinishEvent(event);
-        }
+    private void notificando(EndEventGenerator event) {
+    	synchronized(initiateFinishListener) {
+	        for (InstanceFinishingListener l : initiateFinishListener) {
+	            l.initiateFinishEvent(event);
+	        }
+    	}
         
         /*
          * Una vez notificados los componentes, se procede a solicitar los paquetes
@@ -1166,7 +1168,7 @@ public class GenericForm extends JInternalFrame{
         }
     }
 
-    public synchronized void addChangeExternalValueListener(ExternalValueChangeListener listener ) {
+    public void addChangeExternalValueListener(ExternalValueChangeListener listener ) {
     	if (child) {
     		GFforma.addChangeExternalValueListener(listener);
         }
@@ -1176,7 +1178,7 @@ public class GenericForm extends JInternalFrame{
         
     }
 
-    public synchronized void removeChangeExternalValueListener(ExternalValueChangeListener listener ) {
+    public void removeChangeExternalValueListener(ExternalValueChangeListener listener ) {
     	if (child) {
     		GFforma.removeChangeExternalValueListener(listener);
         }
@@ -1186,6 +1188,7 @@ public class GenericForm extends JInternalFrame{
     }
 
     private void notificandoExternalValue(ExternalValueChangeEvent event) {
+    		/*
     		class notificacionExterna extends Thread {
     			private ExternalValueChangeEvent event;
     			
@@ -1203,6 +1206,13 @@ public class GenericForm extends JInternalFrame{
     			}
     		}
     		new notificacionExterna(event).start();
+    		*/
+    	synchronized(changeExternalValueListener) {
+	        for (ExternalValueChangeListener l:changeExternalValueListener) {
+	            l.changeExternalValue(event);
+	        }
+    	}
+
     }
 
     
@@ -1272,30 +1282,34 @@ public class GenericForm extends JInternalFrame{
         }
 	}
 	
-	public synchronized void setExternalValues(Object key,double value) {
+	public void setExternalValues(Object key,double value) {
 		if (child) {
         	GFforma.setExternalValues(key,value);
         }
         else {
-        	if (externalValues.containsKey(key)) {
-        		externalValues.remove(key);
+        	synchronized(externalValues) {
+	        	if (externalValues.containsKey(key)) {
+	        		externalValues.remove(key);
+	        	}
+	        	externalValues.put(key,new Double(value));
         	}
-        	externalValues.put(key,new Double(value));
         	ExternalValueChangeEvent CEVevent = new ExternalValueChangeEvent(this);
         	CEVevent.setExternalValue(String.valueOf(key));
             notificandoExternalValue(CEVevent);
         }
 	}
 	
-	public synchronized void setExternalValues(Object key,String value) {
+	public void setExternalValues(Object key,String value) {
 		if (child) {
         	GFforma.setExternalValues(key,value);
         }
         else {
-        	if (externalValues.containsKey(key)) {
-        		externalValues.remove(key);
+        	synchronized(externalValues) {
+	        	if (externalValues.containsKey(key)) {
+	        		externalValues.remove(key);
+	        	}
+	        	externalValues.put(key,value);
         	}
-        	externalValues.put(key,value);
         	ExternalValueChangeEvent CEVevent = new ExternalValueChangeEvent(this);
         	CEVevent.setExternalValue(String.valueOf(key));
         	notificandoExternalValue(CEVevent);
