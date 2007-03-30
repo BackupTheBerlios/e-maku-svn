@@ -946,16 +946,16 @@ public class TableFindData extends JPanel implements AnswerListener,
 		}
 	}
 
-	public void initiateFinishEvent(EndEventGenerator e) {
+	public synchronized void initiateFinishEvent(EndEventGenerator e) {
 
+		Class[] ac = new Class[]{AnswerListener.class};
+		Class[] rc = new Class[]{RecordListener.class};
+		Object[] o = new Object[]{this};
 		if (driverEvent != null && keySQL != null) {
+			
 			for (int n = 0; n < driverEvent.size(); n++) {
 				try {
-					GFforma.invokeMethod(
-					                     driverEvent.get(n),
-					                     "addAnswerListener",
-					                     new Class[] { AnswerListener.class },
-					                     new Object[] { this });
+					GFforma.invokeMethod(driverEvent.get(n),"addAnswerListener",ac,o);
 				} catch (InvocationTargetException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -965,14 +965,11 @@ public class TableFindData extends JPanel implements AnswerListener,
 				}
 			}
 		}
-		
+
+
 		for (int n = 0; n < recordEvent.size(); n++) {
 			try {
-				GFforma.invokeMethod(
-									recordEvent.get(n),
-				                    "addRecordListener",
-				                     new Class[] { RecordListener.class },
-				                     new Object[] { this});
+				GFforma.invokeMethod(recordEvent.get(n),"addRecordListener",rc,o);
 			} catch (InvocationTargetException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

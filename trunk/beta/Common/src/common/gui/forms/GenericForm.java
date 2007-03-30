@@ -29,6 +29,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
 import org.jdom.Attribute;
@@ -376,7 +377,7 @@ public class GenericForm extends JInternalFrame{
     	        setComps(e.getChild("preferences").getChildText("id"),new Componentes(GenericForm.class,GFforma));
     		}
     	}
-    	new MakeSubForm(this,e).start();
+    	SwingUtilities.invokeLater(new MakeSubForm(this,e));
 	}
 
 	/**
@@ -1147,11 +1148,8 @@ public class GenericForm extends JInternalFrame{
     }
 
     private synchronized void notificando(EndEventGenerator event) {
-        Vector lista;
-        lista = (Vector)initiateFinishListener.clone();
-        for (int i=0; i<lista.size();i++) {
-            InstanceFinishingListener listener = (InstanceFinishingListener)lista.elementAt(i);
-            listener.initiateFinishEvent(event);
+        for (InstanceFinishingListener l : initiateFinishListener) {
+            l.initiateFinishEvent(event);
         }
         
         /*
