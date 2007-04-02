@@ -51,6 +51,29 @@ import com.lowagie.text.pdf.PdfWriter;
 import common.comunications.SocketWriter;
 import common.misc.ZipHandler;
 import common.misc.text.DateValidator;
+import common.misc.language.Language;
+
+/**
+ * ReportMaker.java Creado el 29-jun-2004
+ * 
+ * Este archivo es parte de E-Maku
+ * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
+ *
+ * E-Maku es Software Libre; usted puede redistribuirlo y/o realizar
+ * modificaciones bajo los terminos de la Licencia Publica General
+ * GNU GPL como esta publicada por la Fundacion del Software Libre (FSF);
+ * tanto en la version 2 de la licencia, o cualquier version posterior.
+ *
+ * E-Maku es distribuido con la expectativa de ser util, pero
+ * SIN NINGUNA GARANTIA; sin ninguna garantia aun por COMERCIALIZACION
+ * o por un PROPOSITO PARTICULAR. Consulte la Licencia Publica General
+ * GNU GPL para mas detalles.
+ * <br>
+ * 
+ * <br>
+ * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
+ * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
+ */
 
 public class ReportMaker extends Thread {
 
@@ -105,9 +128,10 @@ public class ReportMaker extends Thread {
 			boolean next = rs.next();
 			String title = null;
 			String sql = null;
+			Element titleReport;
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			Document docZip = new Document();
-			Element titleReport;
+			
 			if (next) {
 				System.out.println("Generando reporte No. " + codigo);
 				
@@ -136,70 +160,62 @@ public class ReportMaker extends Thread {
 				
 				// TODO: Si rs es un conjunto vacio... imprima una hoja con el mensaje "Este reporte no contiene registros"
 				
-				JRResultSetDataSource jrRS = new JRResultSetDataSource(rs);
-				
-				Map <String,String>parameters = new HashMap<String,String>();
-				
-				String company = LinkingCache.getCompanyData(EmakuServerSocket.getCompanyNameKey(socket));
-				String companyID = LinkingCache.getCompanyData(EmakuServerSocket.getCompanyIDKey(socket));
-				
-				if (company == null)
-					company = "Dato no encontrado";
-				
-				if (companyID == null)
-					companyID = "Dato no encontrado";
-				
-				parameters.put("Empresa", company);
-				parameters.put("Nit", companyID);
-				parameters.put("Fecha", DateValidator.getFormattedDate());
-				parameters.put("Qhatu", ServerConstants.QHATU);
-				parameters.put("Url", ServerConstants.QHATU_URL);
-				
-				JRBaseFiller filler = createFiller(ReportsStore.getReportClass(codigo));
-				JasperPrint jasperPrint = filler.fill(parameters,jrRS);
-						
-				if (reportType) {
+				int resultSize = rs.getFetchSize();
+				if (resultSize == 0) {
+					os = paintPDFMessage(os, "/reports/images/report_noresult_",false);
+				} 
+				else {
 					
-					ResultSetMetaData rsmd = rs.getMetaData();
-					int cols = rsmd.getColumnCount();
-					String headers ="";
-					for (int i=1;i <= cols;i++){
-						headers+=rsmd.getColumnClassName(i)+"\t";
-					}
-					headers+="\n";
-					os.write(headers.getBytes());
-									
-				    JRCsvExporter exporter = new JRCsvExporter();
-				    exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-				    exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, os);
-				    exporter.setParameter(JRCsvExporterParameter.FIELD_DELIMITER,"\t");
-				    exporter.exportReport();
+					  JRResultSetDataSource jrRS = new JRResultSetDataSource(rs);
 
-				} else {
-					JasperExportManager.exportReportToPdfStream(jasperPrint,os);
+					  Map <String,String>parameters = new HashMap<String,String>();
+
+					  String company = LinkingCache.getCompanyData(EmakuServerSocket.getCompanyNameKey(socket));
+					  String companyID = LinkingCache.getCompanyData(EmakuServerSocket.getCompanyIDKey(socket));
+
+					  if (company == null) {
+						  company = Language.getWord("DATANOTFOUND");
+					  }
+
+					  if (companyID == null) {
+						  companyID = Language.getWord("DATANOTFOUND");
+					  }
+
+					  parameters.put("Empresa", company);
+					  parameters.put("Nit", companyID);
+					  parameters.put("Fecha", DateValidator.getFormattedDate());
+					  parameters.put("Qhatu", ServerConstants.QHATU);
+					  parameters.put("Url", ServerConstants.QHATU_URL);
+
+					  JRBaseFiller filler = createFiller(ReportsStore.getReportClass(codigo));
+					  JasperPrint jasperPrint = filler.fill(parameters,jrRS);
+
+					  if (reportType) {
+
+						  ResultSetMetaData rsmd = rs.getMetaData();
+						  int cols = rsmd.getColumnCount();
+						  String headers ="";
+						  for (int i=1;i <= cols;i++){
+							  headers+=rsmd.getColumnClassName(i)+"\t";
+						  }
+						  headers+="\n";
+						  os.write(headers.getBytes());
+
+						  JRCsvExporter exporter = new JRCsvExporter();
+						  exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+						  exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, os);
+						  exporter.setParameter(JRCsvExporterParameter.FIELD_DELIMITER,"\t");
+						  exporter.exportReport();
+
+					  } else {
+						  JasperExportManager.exportReportToPdfStream(jasperPrint,os);
+					  }
 				}
-				
 				titleReport = new Element("titleReport").setText(title);
 			}
 			else {
-				com.lowagie.text.Document pdfDoc;
-				pdfDoc = new com.lowagie.text.Document(new Rectangle(400,200),10,10,10,10);
-
-				PdfWriter.getInstance(pdfDoc,os);
-				pdfDoc.open();
-				Chunk chunck = new Chunk(codigo);
-				chunck.setFont(new Font(Font.HELVETICA, 12));
-				Paragraph p = new Paragraph();
-				p.setAlignment(Paragraph.ALIGN_CENTER);
-				p.add(chunck);
-				Image png = Image.getInstance(
-						ServerConstants.EMAKU_HOME+"/reports/images/report_nf_"+
-						ConfigFileHandler.getLocal()+".png");
-				png.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
-				pdfDoc.add(png);
-				pdfDoc.add(p);
-				pdfDoc.close();
-				titleReport = new Element("titleReport").setText("Error");
+				os = paintPDFMessage(os, "/reports/images/report_nf_",true);
+				titleReport = new Element("titleReport").setText(Language.getWord("REP_ERROR"));
 			}
 			os.close();
 			String fileType = "REPORT";
@@ -226,7 +242,7 @@ public class ReportMaker extends Thread {
 			long end = calendar.getTimeInMillis();
 			System.out.println("Generador en " + (end-init)/1000 + " segundos ");
 	    	
-	    	System.out.println("escribiendo paquete ....");
+	    	System.out.println("Escribiendo paquete ....");
 			calendar = Calendar.getInstance();
 			init = calendar.getTimeInMillis();
 	    	/* 
@@ -249,10 +265,41 @@ public class ReportMaker extends Thread {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (DocumentException e) {
-			e.printStackTrace();
 		}
 	}
+
+	public ByteArrayOutputStream paintPDFMessage(ByteArrayOutputStream os, String path, boolean flag) {
+		com.lowagie.text.Document pdfDoc;
+		pdfDoc = new com.lowagie.text.Document(new Rectangle(400,200),10,10,10,10);
+
+		try {
+			PdfWriter.getInstance(pdfDoc,os);
+			pdfDoc.open();
+			Image png = Image.getInstance(
+			ServerConstants.EMAKU_HOME + path + ConfigFileHandler.getLocal()+".png");
+			png.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+			pdfDoc.add(png);
+			
+			if (flag) {
+				Chunk chunck = new Chunk(Language.getWord("REFERENCE") + " " + codigo);
+				chunck.setFont(new Font(Font.HELVETICA, 12));
+				Paragraph p = new Paragraph();
+				p.setAlignment(Paragraph.ALIGN_CENTER);
+				p.add(chunck);			
+				pdfDoc.add(p);
+			}
+			
+			pdfDoc.close();
+		} 
+		catch (DocumentException e) {
+			e.printStackTrace();
+		}
+		catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		return os;
+	}
+	
 	
 	public JRBaseFiller createFiller(JasperReport jasperReport) throws JRException {
 		JRBaseFiller filler = null;

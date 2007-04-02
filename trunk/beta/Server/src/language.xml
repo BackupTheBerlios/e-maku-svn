@@ -30,8 +30,31 @@
     <sentence>
         <key>ERROR</key>
         <es_CO>ERROR</es_CO>
+        <es_EC></es_EC>
+        <es_ES></es_ES>
         <en_US>ERROR</en_US>
-    </sentence>    
+    </sentence>
+    <sentence>
+        <key>REP_ERROR</key>
+        <es_CO>Reporte No Encontrado</es_CO>
+        <es_EC></es_EC>
+        <es_ES></es_ES>
+        <en_US>Report Not Found</en_US>
+    </sentence>        
+    <sentence>
+        <key>REFERENCE</key>
+        <es_CO>Referencia:</es_CO>
+        <es_EC></es_EC>
+        <es_ES></es_ES>
+        <en_US>Reference:</en_US>
+    </sentence>
+    <sentence>
+        <key>DATANOTFOUND</key>
+        <es_CO>Dato no encontrado</es_CO>
+        <es_EC></es_EC>
+        <es_ES></es_ES>
+        <en_US>Data not found</en_US>
+    </sentence>   
     <sentence>
         <key>LOADING_CF</key>
         <es_CO>INFO: Cargando archivo de configuración...</es_CO>
