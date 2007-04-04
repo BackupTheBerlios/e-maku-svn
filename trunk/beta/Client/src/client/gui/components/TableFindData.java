@@ -764,39 +764,28 @@ public class TableFindData extends JPanel implements AnswerListener,
 	}
 
 	public void arriveAnswerEvent(AnswerEvent e) {
-
-		/*
-		 * boolean isKey = false; //System.out.println("AnswerEvent" +
-		 * e.getSqlCode()); int max = keySQL.size(); String code =
-		 * e.getSqlCode(); for (int i=0;i<max;i++) { if
-		 * (code.equals(keySQL.get(i))) { isKey = true; break; } }
-		 */
-
-		if (keySQL.contains(e.getSqlCode())) {
-			// if (isKey) {
-			Document doc = e.getDocument();
-			int size = doc.getRootElement().getChildren("row").size();
-			if ("NEW".equals(mode)) {
-				if (size > 0) {
-					GFforma.setEnabledButton("SAVE", false);
-				} else {
-					GFforma.setEnabledButton("SAVE", true);
-				}
-			} else if ("EDIT".equals(mode)) {
-				if (size == 0) {
-					GFforma.setEnabledButton("SAVEAS", false);
-				} else {
-					GFforma.setEnabledButton("SAVEAS", true);
-				}
-			} else if ("DELETE".equals(mode)) {
-				if (size > 0) {
-					GFforma.setEnabledButton("DELETE", true);
-				} else {
-					GFforma.setEnabledButton("DELETE", false);
-				}
+		Document doc = e.getDocument();
+		int size = doc.getRootElement().getChildren("row").size();
+		if ("NEW".equals(mode)) {
+			if (size > 0) {
+				GFforma.setEnabledButton("SAVE", false);
+			} else {
+				GFforma.setEnabledButton("SAVE", true);
 			}
-			TMFDtabla.setQuery(doc);
+		} else if ("EDIT".equals(mode)) {
+			if (size == 0) {
+				GFforma.setEnabledButton("SAVEAS", false);
+			} else {
+				GFforma.setEnabledButton("SAVEAS", true);
+			}
+		} else if ("DELETE".equals(mode)) {
+			if (size > 0) {
+				GFforma.setEnabledButton("DELETE", true);
+			} else {
+				GFforma.setEnabledButton("DELETE", false);
+			}
 		}
+		TMFDtabla.setQuery(doc);
 	}
 
 	/**
@@ -849,12 +838,9 @@ public class TableFindData extends JPanel implements AnswerListener,
 		recordListener.removeElement(listener);
 	}
 
-	private synchronized void notificando(RecordEvent event) {
-		Vector lista;
-		lista = (Vector) recordListener.clone();
-		for (int i = 0; i < lista.size(); i++) {
-			RecordListener listener = (RecordListener) lista.elementAt(i);
-			listener.arriveRecordEvent(event);
+	private void notificando(RecordEvent event) {
+		for (RecordListener l:recordListener) {
+			l.arriveRecordEvent(event);
 		}
 	}
 

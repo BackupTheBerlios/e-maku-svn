@@ -810,7 +810,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
      * para ser totalizadas
      */
 
-    public synchronized void totalizar() {
+    public void totalizar() {
         try {
             if (totales!=null) {
 		        for (int i=0;i<totales.length;i++) {
@@ -917,24 +917,21 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         }
     }
     
-    public synchronized void addTotalEventListener(TableTotalListener listener ) {
+    public void addTotalEventListener(TableTotalListener listener ) {
         tableTotalListener.add(listener);
         if(isInitQuery) {
         	notificando();
         }
     }
 
-    public synchronized void removeTotalEventListener(TableTotalListener listener ) {
+    public void removeTotalEventListener(TableTotalListener listener ) {
         tableTotalListener.remove(listener);
     }
 
-    public synchronized void notificando() {
+    public void notificando() {
     	TableTotalEvent event = new TableTotalEvent(this);
-        Vector lista;
-        lista = (Vector)tableTotalListener.clone();
-        for (int i=0; i<lista.size();i++) {
-            TableTotalListener listener = (TableTotalListener) lista.elementAt(i);
-            listener.totalColEvent(event);
+        for (TableTotalListener l:tableTotalListener) {
+            l.totalColEvent(event);
         }
     }
     

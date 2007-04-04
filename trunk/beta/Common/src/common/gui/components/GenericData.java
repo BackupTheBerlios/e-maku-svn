@@ -684,6 +684,7 @@ public class GenericData extends JPanel implements DateListener,
 					}
 					AnswerEvent event = new AnswerEvent(this, sql, doc);
 					notificando(event);
+					System.out.println("cado");
 				}
 			}
 			new SearchingSQL(sqlCode,j).start();
@@ -883,80 +884,75 @@ public class GenericData extends JPanel implements DateListener,
 	}
 
 	public void arriveAnswerEvent(AnswerEvent AEe) {
-		for (int ind = 0; ind < keySQL.size(); ind++)
-			if (AEe.getSqlCode().equals(keySQL.get(ind))) {
-				Document doc = AEe.getDocument();
-				Iterator i = doc.getRootElement().getChildren("row").iterator();
-				int row = doc.getRootElement().getChildren("row").size();
+			Document doc = AEe.getDocument();
+			Iterator i = doc.getRootElement().getChildren("row").iterator();
+			int row = doc.getRootElement().getChildren("row").size();
 
-				if (AEe.getSqlCode().equals(keySQL.get(ind)) && ind == 0) {
-					clean();
-				}
-				if (row > 0) {
-					while (i.hasNext()) {
-						Element e = (Element) i.next();
-						Iterator j = e.getChildren().iterator();
-						for (int k = 0; j.hasNext(); k++) {
-							Element f = (Element) j.next();
-							XMLTextField XMLRefText = ((XMLTextField) VFields
-									.get(k));
+			clean();
+			if (row > 0) {
+				while (i.hasNext()) {
+					Element e = (Element) i.next();
+					Iterator j = e.getChildren().iterator();
+					for (int k = 0; j.hasNext(); k++) {
+						Element f = (Element) j.next();
+						XMLTextField XMLRefText = ((XMLTextField) VFields
+								.get(k));
 
-							if (XMLRefText.getFormatDate() != null) {
-								try {
-									Format formatter = new SimpleDateFormat(
-											XMLRefText.getFormatDate());
-									XMLRefText.setText(formatter
-											.format(Timestamp.valueOf(f
-													.getValue().trim())));
-								} catch (IllegalArgumentException IAEe) {
-									XMLRefText.setText(f.getValue().trim());
-								}
-							} else if (XMLTextField.NUMERIC.equals(XMLRefText
-									.getType())) {
-								try {
-									XMLRefText.setNumberValue(Double
-											.parseDouble(f.getValue().trim()));
-									// XMLRefText.setText(Double.parseDouble(f.getValue().trim())));
-								} catch (NumberFormatException NFEe) {
-								}
-							} else {
+						if (XMLRefText.getFormatDate() != null) {
+							try {
+								Format formatter = new SimpleDateFormat(
+										XMLRefText.getFormatDate());
+								XMLRefText.setText(formatter
+										.format(Timestamp.valueOf(f
+												.getValue().trim())));
+							} catch (IllegalArgumentException IAEe) {
 								XMLRefText.setText(f.getValue().trim());
 							}
-							if (XMLRefText.isExportvalue()) {
-								exportar(XMLRefText);
-							}
-						}
-					}
-					if (Sargs != null) {
-						if ("NEW".equals(Sargs)) {
-							GFforma.setEnabledButton(namebutton, false);
-						} else {
-							GFforma.setEnabledButton(namebutton, true);
-							// clean();
-						}
-					}
-				} else {
-					for (int j = 0; j < VFields.size(); j++) {
-						XMLTextField XMLRefText = ((XMLTextField) VFields
-								.get(j));
-						if (XMLTextField.NUMERIC.equals(XMLRefText.getType())) {
+						} else if (XMLTextField.NUMERIC.equals(XMLRefText
+								.getType())) {
 							try {
-								XMLRefText.setNumberValue(0);
+								XMLRefText.setNumberValue(Double
+										.parseDouble(f.getValue().trim()));
+								// XMLRefText.setText(Double.parseDouble(f.getValue().trim())));
 							} catch (NumberFormatException NFEe) {
 							}
-							if (XMLRefText.isExportvalue()) {
-								exportar(XMLRefText);
-							}
-
+						} else {
+							XMLRefText.setText(f.getValue().trim());
+						}
+						if (XMLRefText.isExportvalue()) {
+							exportar(XMLRefText);
 						}
 					}
-					if (Sargs != null) {
-						if ("NEW".equals(Sargs)) {
-							GFforma.setEnabledButton(namebutton, true);
-						} else {
-							GFforma.setEnabledButton(namebutton, false);
-							// clean();
+				}
+				if (Sargs != null) {
+					if ("NEW".equals(Sargs)) {
+						GFforma.setEnabledButton(namebutton, false);
+					} else {
+						GFforma.setEnabledButton(namebutton, true);
+						// clean();
+					}
+				}
+			} else {
+				for (int j = 0; j < VFields.size(); j++) {
+					XMLTextField XMLRefText = ((XMLTextField) VFields
+							.get(j));
+					if (XMLTextField.NUMERIC.equals(XMLRefText.getType())) {
+						try {
+							XMLRefText.setNumberValue(0);
+						} catch (NumberFormatException NFEe) {
 						}
+						if (XMLRefText.isExportvalue()) {
+							exportar(XMLRefText);
+						}
+
+					}
+				}
+				if (Sargs != null) {
+					if ("NEW".equals(Sargs)) {
+						GFforma.setEnabledButton(namebutton, true);
+					} else {
+						GFforma.setEnabledButton(namebutton, false);
+						// clean();
 					}
 				}
 			}
@@ -1238,13 +1234,9 @@ public class GenericData extends JPanel implements DateListener,
 	 * @param event
 	 */
 	private void notificando(AnswerEvent event) {
-		System.out.println("notificando a: "+answerListener.size()+" oyentes");
-		synchronized(answerListener) {
-			for(AnswerListener l:answerListener) {
-				if (l.containSqlCode(event.getSqlCode())) {
-					System.out.println("notificando: "+event.getSqlCode());
-					l.arriveAnswerEvent(event);
-				}
+		for(AnswerListener l:answerListener) {
+			if (l.containSqlCode(event.getSqlCode())) {
+				l.arriveAnswerEvent(event);
 			}
 		}
 	}

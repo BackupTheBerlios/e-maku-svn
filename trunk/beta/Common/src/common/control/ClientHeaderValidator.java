@@ -1,13 +1,10 @@
 package common.control;
 
 //import java.io.IOException;
-import java.io.IOException;
 import java.util.Vector;
 
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
 
 import common.transactions.Cache;
 import common.transactions.TransactionServerResultSet;
@@ -60,7 +57,7 @@ public class ClientHeaderValidator {
         raiz = doc.getRootElement();
         String nombre = raiz.getName();
         
-        XMLOutputter out = new XMLOutputter();
+  /*      XMLOutputter out = new XMLOutputter();
         out.setFormat(Format.getPrettyFormat());
         try {
             if(!nombre.equals("ACPZip")) 
@@ -68,7 +65,7 @@ public class ClientHeaderValidator {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
         
         /*
          *  Validacion paquete ANSWER 

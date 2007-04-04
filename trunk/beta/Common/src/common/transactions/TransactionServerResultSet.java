@@ -58,7 +58,7 @@ public class TransactionServerResultSet {
      * @return returna la transaccion o query solicitado.
      * @throws TransactionServerException
      */
-    private static Document getResultSetST(Document doc) throws TransactionServerException {
+    private static synchronized Document getResultSetST(Document doc) throws TransactionServerException {
         String id = "Q"+getId();
         doc.getRootElement().addContent(new Element("id").setText(id));
         
@@ -67,7 +67,7 @@ public class TransactionServerResultSet {
         int i=0;
         while (!HspoolTransactions.containsKey(id)) {
             try {
-            	System.out.print(".");
+            	//System.out.print(".");
                 Thread.sleep(10);
                 i++;
                 if (i>3000) {
