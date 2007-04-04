@@ -236,4 +236,11 @@ public class XMLLabel extends JLabel implements Couplable {
 			ITEe.printStackTrace();
 		}
 	}
+
+	public boolean containSqlCode(String sqlCode) {
+		if (keySQL.contains(sqlCode))
+			return true;
+		else
+			return false;
+	}
 }

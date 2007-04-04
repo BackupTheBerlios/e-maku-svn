@@ -972,22 +972,7 @@ public class GenericData extends JPanel implements DateListener,
 		return pack;
 	}
 
-	/**
-	 * Metodo encargado de notificar la llegada de un paquete <answer/>
-	 * 
-	 * @param event
-	 */
-	private void notificando(AnswerEvent event) {
-		System.out.println("notificando a: "+answerListener.size()+" oyentes");
-		synchronized(answerListener) {
-			for(AnswerListener l:answerListener) {
-				if (l.containSqlCode(event.getSqlCode())) {
-					System.out.println("notificando: "+event.getSqlCode());
-					l.arriveAnswerEvent(event);
-				}
-			}
-		}
-	}
+	
 
 	public void callAddAnswerListener() throws InvocationTargetException,
 			NotFoundComponentException {
@@ -1245,5 +1230,22 @@ public class GenericData extends JPanel implements DateListener,
 			return true;
 		else
 			return false;
+	}
+	
+	/**
+	 * Metodo encargado de notificar la llegada de un paquete <answer/>
+	 * 
+	 * @param event
+	 */
+	private void notificando(AnswerEvent event) {
+		System.out.println("notificando a: "+answerListener.size()+" oyentes");
+		synchronized(answerListener) {
+			for(AnswerListener l:answerListener) {
+				if (l.containSqlCode(event.getSqlCode())) {
+					System.out.println("notificando: "+event.getSqlCode());
+					l.arriveAnswerEvent(event);
+				}
+			}
+		}
 	}
 }

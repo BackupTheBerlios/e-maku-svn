@@ -260,5 +260,10 @@ public class XMLCheckBox extends JCheckBox implements ActionListener, AnswerList
 		this.name = name;
 	}
 
-	
+	public boolean containSqlCode(String sqlCode) {
+		if (keySQL.contains(sqlCode))
+			return true;
+		else
+			return false;
+	}
 }

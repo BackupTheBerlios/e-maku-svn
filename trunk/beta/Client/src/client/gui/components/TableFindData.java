@@ -841,11 +841,11 @@ public class TableFindData extends JPanel implements AnswerListener,
 		TMFDtabla.setQuery(sqlCode);
 	}
 
-	public synchronized void addRecordListener(RecordListener listener) {
+	public void addRecordListener(RecordListener listener) {
 		recordListener.addElement(listener);
 	}
 
-	public synchronized void removeRecordListener(RecordListener listener) {
+	public void removeRecordListener(RecordListener listener) {
 		recordListener.removeElement(listener);
 	}
 
@@ -1126,4 +1126,10 @@ public class TableFindData extends JPanel implements AnswerListener,
 		}
 	}
 
+	public boolean containSqlCode(String sqlCode) {
+		if (keySQL.contains(sqlCode))
+			return true;
+		else
+			return false;
+	}
 }

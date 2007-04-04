@@ -92,7 +92,7 @@ public class ComboBoxFiller extends JComboBox implements
 	private String name = "";
 	private boolean dataBeep;
 	private String noDataMessage;
-    private Vector<AnswerListener> AnswerListener = new Vector<AnswerListener>();
+    private Vector<AnswerListener> answerListener = new Vector<AnswerListener>();
 	private Vector<String> constantValue;
 	private boolean displayIcons;
 	/**
@@ -697,19 +697,29 @@ public class ComboBoxFiller extends JComboBox implements
 	}
 	
 	public void addAnswerListener(AnswerListener listener ) {
-        AnswerListener.addElement(listener);
+        answerListener.addElement(listener);
     }
 
     public void removeAnswerListener(AnswerListener listener ) {
-        AnswerListener.removeElement(listener);
+        answerListener.removeElement(listener);
     }
-    private void notificando(AnswerEvent event) {
-    	synchronized(AnswerListener) {
-	        for (AnswerListener l : AnswerListener) {
-	            l.arriveAnswerEvent(event);
-	        }
-    	}
-    }
+    
+    /**
+	 * Metodo encargado de notificar la llegada de un paquete <answer/>
+	 * 
+	 * @param event
+	 */
+	private void notificando(AnswerEvent event) {
+		System.out.println("notificando a: "+answerListener.size()+" oyentes");
+		synchronized(answerListener) {
+			for(AnswerListener l:answerListener) {
+				if (l.containSqlCode(event.getSqlCode())) {
+					System.out.println("notificando: "+event.getSqlCode());
+					l.arriveAnswerEvent(event);
+				}
+			}
+		}
+	}
 
     public String getStringCombo() {
     	return (String) getItemAt(getSelectedIndex());
@@ -725,6 +735,13 @@ public class ComboBoxFiller extends JComboBox implements
 
 	public Font getFont() {
 		return font;
+	}
+
+	public boolean containSqlCode(String sqlCode) {
+		if (keySQL.contains(sqlCode))
+			return true;
+		else
+			return false;
 	}
 }
 

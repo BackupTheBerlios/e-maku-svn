@@ -35,6 +35,9 @@ import javax.swing.UIManager;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+import org.jdom.Document;
+import org.jdom.Element;
+
 import common.gui.components.AnswerEvent;
 import common.gui.components.AnswerListener;
 import common.gui.components.VoidPackageException;
@@ -47,9 +50,6 @@ import common.misc.Icons;
 import common.misc.language.Language;
 import common.transactions.TransactionServerException;
 import common.transactions.TransactionServerResultSet;
-
-import org.jdom.Document;
-import org.jdom.Element;
 
 /**
  * FindThird.java Creado el 25-abr-2005
@@ -109,7 +109,7 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
 	private String keySwitch;
 	private HashMap<String,String> casos;
 	private String defaultSQL;
-	private Vector<AnswerListener> AnswerListener = new Vector<AnswerListener>();
+	private Vector<AnswerListener> answerListener = new Vector<AnswerListener>();
 	private ArrayList<String> sqlCode;
 	private ArrayList<String> sqlCodeWT;
 	private String typeDocument;
@@ -935,22 +935,34 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
 	    super.paintComponent(g);
 	}
 	
-	public synchronized void addAnswerListener(AnswerListener listener ) {
-		 AnswerListener.addElement(listener);
+	public void addAnswerListener(AnswerListener listener ) {
+		 answerListener.addElement(listener);
 	}
 
-	public synchronized void removeAnswerListener(AnswerListener listener ) {
-		 AnswerListener.removeElement(listener);
+	public void removeAnswerListener(AnswerListener listener ) {
+		 answerListener.removeElement(listener);
 	}
 	
-	private synchronized void notificando(AnswerEvent event) {
-        Vector lista;
-        lista = (Vector)AnswerListener.clone();
-        for (int i=0; i<lista.size();i++) {
-            AnswerListener listener = (AnswerListener)lista.elementAt(i);
-            listener.arriveAnswerEvent(event);
-        }
-    }
+	/**
+	 * Metodo encargado de notificar la llegada de un paquete <answer/>
+	 * 
+	 * @param event
+	 */
+	private void notificando(AnswerEvent event) {
+		System.out.println("notificando a: "+answerListener.size()+" oyentes");
+		synchronized(answerListener) {
+			for(AnswerListener l:answerListener) {
+				if (l.containSqlCode(event.getSqlCode())) {
+					System.out.println("notificando: "+event.getSqlCode());
+					l.arriveAnswerEvent(event);
+				}
+			}
+		}
+	}
+	
+	public boolean containSqlCode(String sqlCode) {
+		return sqlCode.equals(keySQL);
+	}
 }
 
 /**

@@ -66,7 +66,7 @@ implements KeyListener, DocumentListener, AnswerListener, InstanceFinishingListe
 	private boolean onPanel = true;
 	private Vector<String> sqlCode = null;
 	private Vector<String> constantValue = null;
-	private Vector<AnswerListener> AnswerListener = new Vector<AnswerListener>();
+	private Vector<AnswerListener> answerListener = new Vector<AnswerListener>();
 	
     public XMLDateField(GenericForm GFforma, Document doc) {
     	super("yyyy/MM/dd HH:mm:ss", "####/##/## ##:##:##",'_');
@@ -269,19 +269,22 @@ implements KeyListener, DocumentListener, AnswerListener, InstanceFinishingListe
 	}
 	
 	public synchronized void addAnswerListener(AnswerListener listener) {
-		AnswerListener.addElement(listener);
+		answerListener.addElement(listener);
 	}
 
 	public synchronized void removeAnswerListener(AnswerListener listener) {
-		AnswerListener.removeElement(listener);
+		answerListener.removeElement(listener);
 	}
 	
-	private synchronized void notificando(AnswerEvent event) {
-		Vector lista;
-		lista = (Vector) AnswerListener.clone();
-		for (int i = 0; i < lista.size(); i++) {
-			AnswerListener listener = (AnswerListener) lista.elementAt(i);
-			listener.arriveAnswerEvent(event);
+	private void notificando(AnswerEvent event) {
+		System.out.println("notificando a: "+answerListener.size()+" oyentes");
+		synchronized(answerListener) {
+			for(AnswerListener l:answerListener) {
+				if (l.containSqlCode(event.getSqlCode())) {
+					System.out.println("notificando: "+event.getSqlCode());
+					l.arriveAnswerEvent(event);
+				}
+			}
 		}
 	}
 	
@@ -309,5 +312,12 @@ implements KeyListener, DocumentListener, AnswerListener, InstanceFinishingListe
 	public void keyTyped(KeyEvent e) {}
 
 	public void changedUpdate(DocumentEvent e) {}
+
+	public boolean containSqlCode(String sqlCode) {
+		if (keySQL.contains(sqlCode))
+			return true;
+		else
+			return false;
+	}
 
 }
