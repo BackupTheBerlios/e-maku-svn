@@ -169,52 +169,44 @@ public class XMLLabel extends JLabel implements Couplable {
 	}
 
 	public void arriveAnswerEvent(AnswerEvent e) {
-		for (int i=0 ; i < keySQL.size() ; i++) {
-			if (e.getSqlCode().equals(keySQL.get(i))) {
-				try {
-					Document doc = e.getDocument();
-			        Element el = doc.getRootElement().getChild("row");
-			        int row = el.getChildren().size();
-			        if (e.getSqlCode().equals(keySQL.get(i)) && i==0) {
-			        	clean();
-			        }
-			        if (row>0) {
-			        	Element printPack = new Element("package");
-			        	Iterator it = el.getChildren().iterator();
-			        	while(it.hasNext()) {
-			        		String val = ((Element)it.next()).getValue().trim();
-			        		/*if (!"".equals(val))*/
-                            Element field = new Element("field");
-                            field.setText(val);
-                            printPack.addContent(field);
-			        		this.setText(val);
-			        	}
-						if (mode != null) {
-							if ("NEW".equals(mode)) {
-								GFforma.setEnabledButton(namebutton, false);
-							} else {
-								GFforma.setEnabledButton(namebutton, true);
-								// clean();
-							}
-						}
-						if (exportValue!=null) {
-							GFforma.setExternalValues(exportValue,this.getText());
-						}
-
-			        }
-				}
-				catch (NullPointerException NPEe) {
-			        if (e.getSqlCode().equals(keySQL.get(i)) && i==0) {
-			        	clean();
-			        }
-					if (mode != null) {
-						if ("NEW".equals(mode)) {
-							GFforma.setEnabledButton(namebutton, true);
-						} else {
-							GFforma.setEnabledButton(namebutton, false);
-							// clean();
-						}
+		try {
+			Document doc = e.getDocument();
+	        Element el = doc.getRootElement().getChild("row");
+	        int row = el.getChildren().size();
+        	clean();
+	        if (row>0) {
+	        	Element printPack = new Element("package");
+	        	Iterator it = el.getChildren().iterator();
+	        	while(it.hasNext()) {
+	        		String val = ((Element)it.next()).getValue().trim();
+	        		/*if (!"".equals(val))*/
+                    Element field = new Element("field");
+                    field.setText(val);
+                    printPack.addContent(field);
+	        		this.setText(val);
+	        	}
+				if (mode != null) {
+					if ("NEW".equals(mode)) {
+						GFforma.setEnabledButton(namebutton, false);
+					} else {
+						GFforma.setEnabledButton(namebutton, true);
+						// clean();
 					}
+				}
+				if (exportValue!=null) {
+					GFforma.setExternalValues(exportValue,this.getText());
+				}
+
+	        }
+		}
+		catch (NullPointerException NPEe) {
+        	clean();
+			if (mode != null) {
+				if ("NEW".equals(mode)) {
+					GFforma.setEnabledButton(namebutton, true);
+				} else {
+					GFforma.setEnabledButton(namebutton, false);
+					// clean();
 				}
 			}
 		}

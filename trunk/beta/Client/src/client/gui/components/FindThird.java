@@ -905,15 +905,13 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
 	}
 
 	public void arriveAnswerEvent(AnswerEvent AEe) {
-		if (AEe.getSqlCode().equals(keySQL)) {
-			try {
-				Document doc = AEe.getDocument();
-				clean();
-				LoadDocument(doc);
-				searchOthersSQL();			}
-			catch (NullPointerException NPEe) {
-	        		clean();
-			}
+		try {
+			Document doc = AEe.getDocument();
+			clean();
+			LoadDocument(doc);
+			searchOthersSQL();			}
+		catch (NullPointerException NPEe) {
+	    		clean();
 		}
 	}
 
@@ -949,13 +947,9 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
 	 * @param event
 	 */
 	private void notificando(AnswerEvent event) {
-		System.out.println("notificando a: "+answerListener.size()+" oyentes");
-		synchronized(answerListener) {
-			for(AnswerListener l:answerListener) {
-				if (l.containSqlCode(event.getSqlCode())) {
-					System.out.println("notificando: "+event.getSqlCode());
-					l.arriveAnswerEvent(event);
-				}
+		for(AnswerListener l:answerListener) {
+			if (l.containSqlCode(event.getSqlCode())) {
+				l.arriveAnswerEvent(event);
 			}
 		}
 	}

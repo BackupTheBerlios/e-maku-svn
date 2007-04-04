@@ -194,55 +194,48 @@ public class XMLTextArea extends JTextArea implements Couplable, FocusListener {
     }
 
 	public void arriveAnswerEvent(AnswerEvent AEe) {
-		for (int i=0 ; i < keySQL.size() ; i++) {
-			if (AEe.getSqlCode().equals(keySQL.get(i))) {
-				try {
-					Document doc = AEe.getDocument();
-			        Element e = doc.getRootElement().getChild("row");
-			        int row = e.getChildren().size();
-			        if (AEe.getSqlCode().equals(keySQL.get(i)) && i==0) {
-			        	clean();
-			        }
-			        if (row>0) {
-                        printPack = new Element("package");
-			        	Iterator it = e.getChildren().iterator();
-			        	while(it.hasNext()) {
-			        		String val = ((Element)it.next()).getValue().trim();
-			        		/*if (!"".equals(val))*/
-                            Element field = new Element("field");
-                            field.setText(val);
-                            printPack.addContent(field);
-			        		this.append(val+"\n");
-			        	}
-						if (mode != null) {
-							if ("NEW".equals(mode)) {
-								GFforma.setEnabledButton(namebutton, false);
-							} else {
-								GFforma.setEnabledButton(namebutton, true);
-								// clean();
-							}
-						}
-						if (exportValue!=null) {
-							GFforma.setExternalValues(exportValue,this.getText());
-						}
-
-			        }
-				}
-				catch (NullPointerException NPEe) {
-			        if (AEe.getSqlCode().equals(keySQL.get(i)) && i==0) {
-			        	clean();
-			        }
+			try {
+				Document doc = AEe.getDocument();
+		        Element e = doc.getRootElement().getChild("row");
+		        int row = e.getChildren().size();
+		        clean();
+		        if (row>0) {
+                    printPack = new Element("package");
+		        	Iterator it = e.getChildren().iterator();
+		        	while(it.hasNext()) {
+		        		String val = ((Element)it.next()).getValue().trim();
+		        		/*if (!"".equals(val))*/
+                        Element field = new Element("field");
+                        field.setText(val);
+                        printPack.addContent(field);
+		        		this.append(val+"\n");
+		        	}
 					if (mode != null) {
 						if ("NEW".equals(mode)) {
-							GFforma.setEnabledButton(namebutton, true);
-						} else {
 							GFforma.setEnabledButton(namebutton, false);
+						} else {
+							GFforma.setEnabledButton(namebutton, true);
 							// clean();
 						}
 					}
+					if (exportValue!=null) {
+						GFforma.setExternalValues(exportValue,this.getText());
+					}
+
+		        }
+			}
+			catch (NullPointerException NPEe) {
+	        	clean();
+				if (mode != null) {
+					if ("NEW".equals(mode)) {
+						GFforma.setEnabledButton(namebutton, true);
+					} else {
+						GFforma.setEnabledButton(namebutton, false);
+						// clean();
+					}
 				}
 			}
-		}
+	
 	}
 
 	public void initiateFinishEvent(EndEventGenerator e) {

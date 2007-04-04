@@ -653,16 +653,14 @@ public class ComboBoxFiller extends JComboBox implements
 	}
 
 	public void arriveAnswerEvent(AnswerEvent AEe) {
-		if (AEe.getSqlCode().equals(keySQL)) {
-			try {
-				Document doc = AEe.getDocument();
-		        String select = doc.getRootElement().getChild("row").getChildText("col");
-		        this.setSelectedItem(select);
-		        exportar();
-	        }
-			catch (NullPointerException NPEe) {
-				//this.removeAllItems();
-			}
+		try {
+			Document doc = AEe.getDocument();
+	        String select = doc.getRootElement().getChild("row").getChildText("col");
+	        this.setSelectedItem(select);
+	        exportar();
+        }
+		catch (NullPointerException NPEe) {
+			//this.removeAllItems();
 		}
 	}
 	
@@ -710,13 +708,9 @@ public class ComboBoxFiller extends JComboBox implements
 	 * @param event
 	 */
 	private void notificando(AnswerEvent event) {
-		System.out.println("notificando a: "+answerListener.size()+" oyentes");
-		synchronized(answerListener) {
-			for(AnswerListener l:answerListener) {
-				if (l.containSqlCode(event.getSqlCode())) {
-					System.out.println("notificando: "+event.getSqlCode());
-					l.arriveAnswerEvent(event);
-				}
+		for(AnswerListener l:answerListener) {
+			if (l.containSqlCode(event.getSqlCode())) {
+				l.arriveAnswerEvent(event);
 			}
 		}
 	}

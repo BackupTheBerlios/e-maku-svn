@@ -162,16 +162,14 @@ implements KeyListener, DocumentListener, AnswerListener, InstanceFinishingListe
     }
 
     public void arriveAnswerEvent(AnswerEvent AEe) {
-		if (AEe.getSqlCode().equals(keySQL)) {
-			try {
-				Document doc = AEe.getDocument();
-		        String date = doc.getRootElement().getChild("row").getChildText("col");
-		        this.setDateFormatString(date);
-		        exportar();
-	        }
-			catch (NullPointerException NPEe) {
-				//this.removeAllItems();
-			}
+		try {
+			Document doc = AEe.getDocument();
+	        String date = doc.getRootElement().getChild("row").getChildText("col");
+	        this.setDateFormatString(date);
+	        exportar();
+        }
+		catch (NullPointerException NPEe) {
+			//this.removeAllItems();
 		}
 	}
 
@@ -268,22 +266,18 @@ implements KeyListener, DocumentListener, AnswerListener, InstanceFinishingListe
         }
 	}
 	
-	public synchronized void addAnswerListener(AnswerListener listener) {
+	public void addAnswerListener(AnswerListener listener) {
 		answerListener.addElement(listener);
 	}
 
-	public synchronized void removeAnswerListener(AnswerListener listener) {
+	public void removeAnswerListener(AnswerListener listener) {
 		answerListener.removeElement(listener);
 	}
 	
 	private void notificando(AnswerEvent event) {
-		System.out.println("notificando a: "+answerListener.size()+" oyentes");
-		synchronized(answerListener) {
-			for(AnswerListener l:answerListener) {
-				if (l.containSqlCode(event.getSqlCode())) {
-					System.out.println("notificando: "+event.getSqlCode());
-					l.arriveAnswerEvent(event);
-				}
+		for(AnswerListener l:answerListener) {
+			if (l.containSqlCode(event.getSqlCode())) {
+				l.arriveAnswerEvent(event);
 			}
 		}
 	}

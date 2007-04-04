@@ -278,11 +278,11 @@ KeyListener, FocusListener, AnswerListener {
 	}
 	
 	
-	public synchronized void addRecordListener(RecordListener listener) {
+	public void addRecordListener(RecordListener listener) {
 		recordListener.addElement(listener);
 	}
 
-	public synchronized void removeRecordListener(RecordListener listener) {
+	public void removeRecordListener(RecordListener listener) {
 		recordListener.removeElement(listener);
 	}
 
@@ -341,12 +341,10 @@ KeyListener, FocusListener, AnswerListener {
 	}
 	
 	private void notificando(AnswerEvent event) {
-		synchronized(AnswerListener) {
-			for (AnswerListener l:AnswerListener) {
-				if (l.containSqlCode(event.getSqlCode())) {
-					System.out.println("notificando: "+event.getSqlCode());
-					l.arriveAnswerEvent(event);
-				}
+		for (AnswerListener l:AnswerListener) {
+			if (l.containSqlCode(event.getSqlCode())) {
+				System.out.println("notificando: "+event.getSqlCode());
+				l.arriveAnswerEvent(event);
 			}
 		}
 	}

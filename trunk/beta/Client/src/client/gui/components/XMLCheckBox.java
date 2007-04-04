@@ -171,24 +171,21 @@ public class XMLCheckBox extends JCheckBox implements ActionListener, AnswerList
     }
     
 	public void arriveAnswerEvent(AnswerEvent AEe) {
-		if (AEe.getSqlCode().equals(keySQL)) {
-			try {
-				Document doc = AEe.getDocument();
-		        String selected = doc.getRootElement().getChild("row").getChildText("col");
-		        if (selected.toLowerCase().equals("true") || 
-	        		selected.toLowerCase().equals("t") ||
-	        		selected.equals("1")) {
-		        	this.setSelected(true);
-		        }
-		        else {
-		        	this.setSelected(false);
-		        }
+		try {
+			Document doc = AEe.getDocument();
+	        String selected = doc.getRootElement().getChild("row").getChildText("col");
+	        if (selected.toLowerCase().equals("true") || 
+        		selected.toLowerCase().equals("t") ||
+        		selected.equals("1")) {
+	        	this.setSelected(true);
 	        }
-			catch (NullPointerException NPEe) {
-				this.setSelected(false);
-			}
+	        else {
+	        	this.setSelected(false);
+	        }
+        }
+		catch (NullPointerException NPEe) {
+			this.setSelected(false);
 		}
-		
 	}
 
 	public void initiateFinishEvent(EndEventGenerator e) {
