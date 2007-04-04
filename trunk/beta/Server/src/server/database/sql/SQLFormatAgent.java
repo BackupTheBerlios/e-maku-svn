@@ -44,6 +44,7 @@ public class SQLFormatAgent {
     throws SQLNotFoundException, SQLBadArgumentsException {
         
         String sentencia = "";
+        args = addSlashes(args);
     	String sql = LinkingCache.getSentenciaSQL("K-"+bd+"-"+codigo);
     	if (sql!=null) {
 	        StringTokenizer STsql = new StringTokenizer(sql,"?");
@@ -77,6 +78,13 @@ public class SQLFormatAgent {
     	else
     	    throw new SQLNotFoundException(codigo);
     	
+    }
+    
+    public  static String[] addSlashes(String[] args) {
+    	for(int i=0; i < args.length ; i++) {
+    		args[i]= args[i].replace("\'", "\\'");
+    	}
+    	return args;
     }
     
     private static String nullToken(String value,boolean nulo) {
