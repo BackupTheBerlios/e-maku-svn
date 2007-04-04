@@ -61,7 +61,16 @@ public class HeadersValidator {
          */
         Element raiz = doc.getRootElement();
         String nom_raiz = raiz.getName();
-        
+        /*
+        try {
+	        XMLOutputter xmlOutputter = new XMLOutputter();
+	        xmlOutputter.setFormat(Format.getPrettyFormat());
+	        xmlOutputter.output(doc,System.out);
+	    }
+	    catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    */
         /*
          *  Validaci�n de solicitud de paquetes, se verifica si el socket ya fue
          *  autenticado, si lo fue entonces se procede a validar la solicitud 
@@ -110,15 +119,6 @@ public class HeadersValidator {
                     //answer.run();
                     //answer.transmition();
                     
-/*                    try {
-                        XMLOutputter xmlOutputter = new XMLOutputter();
-                        xmlOutputter.setFormat(Format.getPrettyFormat());
-                        xmlOutputter.output(doc,System.out);
-                    }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                    }
-*/                    
                 } else {
                     ErrorXML error = new ErrorXML();
                     String tmp = Language.getWord("SQL_ACCESS_DENIED") + 

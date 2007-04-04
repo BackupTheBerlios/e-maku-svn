@@ -293,4 +293,12 @@ public class XMLTextArea extends JTextArea implements Couplable, FocusListener {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public boolean containSqlCode(String sqlCode) {
+		if (keySQL.contains(sqlCode))
+			return true;
+		else
+			return false;
+	}
+
 }

@@ -241,15 +241,20 @@ public class TableSorter extends AbstractTableModel {
     }
 
     private Row[] getViewToModel() {
+    	
         if (viewToModel == null) {
             int rowCount = tableModel.getRowCount();
             viewToModel = new Row[rowCount];
-            for (int row = 0; row < rowCount; row++) {
-                viewToModel[row] = new Row(row);
-            }
-
-            if (isSorting()) {
-                Arrays.sort(viewToModel);
+            synchronized(viewToModel) {
+	            for (int row = 0; row < rowCount; row++) {
+		            //System.out.println("Retornando:"+viewToModel);
+	                viewToModel[row] = new Row(row);
+	            }
+	
+	            if (isSorting()) {
+	                Arrays.sort(viewToModel);
+	            }
+	            return viewToModel;
             }
         }
         return viewToModel;
@@ -304,20 +309,13 @@ public class TableSorter extends AbstractTableModel {
     
     private class Row implements Comparable {
         private int modelIndex;
-        private boolean valid;
+        
         public Row(int index) {
             this.modelIndex = index;
-           	Object value = tableModel.getValueAt(modelIndex,0);
-           	if (value==null || "".equals(value.toString())) {
-           		valid = true;
-           	}
         }
 
         @SuppressWarnings("unchecked")
 		public int compareTo(Object o) {
-        	/*if (!valid) {
-        		return -1;
-        	}*/
             int row1 = modelIndex;
             int row2 = ((Row) o).modelIndex;
 

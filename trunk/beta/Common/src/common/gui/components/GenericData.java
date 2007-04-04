@@ -86,7 +86,7 @@ public class GenericData extends JPanel implements DateListener,
 	private Vector<XMLTextField> VFields;
 	private Vector<String> sql;
 	private Vector<String> keySQL;
-	private Vector<AnswerListener> AnswerListener = new Vector<AnswerListener>();
+	private Vector<AnswerListener> answerListener = new Vector<AnswerListener>();
 	private Vector<ChangeValueListener> changeValueListener = new Vector<ChangeValueListener>();
 	private Vector<RecordListener> recordListener = new Vector<RecordListener>();
 	
@@ -874,12 +874,12 @@ public class GenericData extends JPanel implements DateListener,
 		return pack;
 	}
 	
-	public synchronized void addAnswerListener(AnswerListener listener) {
-		AnswerListener.addElement(listener);
+	public void addAnswerListener(AnswerListener listener) {
+		answerListener.addElement(listener);
 	}
 
-	public synchronized void removeAnswerListener(AnswerListener listener) {
-		AnswerListener.removeElement(listener);
+	public void removeAnswerListener(AnswerListener listener) {
+		answerListener.removeElement(listener);
 	}
 
 	public void arriveAnswerEvent(AnswerEvent AEe) {
@@ -977,12 +977,15 @@ public class GenericData extends JPanel implements DateListener,
 	 * 
 	 * @param event
 	 */
-	private synchronized void notificando(AnswerEvent event) {
-		Vector lista;
-		lista = (Vector) AnswerListener.clone();
-		for (int i = 0; i < lista.size(); i++) {
-			AnswerListener listener = (AnswerListener) lista.elementAt(i);
-			listener.arriveAnswerEvent(event);
+	private void notificando(AnswerEvent event) {
+		System.out.println("notificando a: "+answerListener.size()+" oyentes");
+		synchronized(answerListener) {
+			for(AnswerListener l:answerListener) {
+				if (l.containSqlCode(event.getSqlCode())) {
+					System.out.println("notificando: "+event.getSqlCode());
+					l.arriveAnswerEvent(event);
+				}
+			}
 		}
 	}
 
@@ -1028,16 +1031,15 @@ public class GenericData extends JPanel implements DateListener,
 		return enlaceTabla;
 	}
 
-	public synchronized void addChangeValueListener(ChangeValueListener listener) {
+	public void addChangeValueListener(ChangeValueListener listener) {
 		changeValueListener.addElement(listener);
 	}
 
-	public synchronized void removeChangeValueListener(
-			ChangeValueListener listener) {
+	public void removeChangeValueListener(ChangeValueListener listener) {
 		changeValueListener.removeElement(listener);
 	}
 
-	private synchronized void notificando(ChangeValueEvent event) {
+	private void notificando(ChangeValueEvent event) {
 
 		/*
 		 * Vector fields = this.getVFields(); int size = fields.size(); for (int
@@ -1047,12 +1049,10 @@ public class GenericData extends JPanel implements DateListener,
 		 * (NumberFormatException NFEe) {
 		 * ((XMLTextField)fields.get(i)).setNumberValue(0); } }
 		 */
-		Vector lista;
-		lista = (Vector) changeValueListener.clone();
-		for (int i = 0; i < lista.size(); i++) {
-			ChangeValueListener listener = (ChangeValueListener) lista
-					.elementAt(i);
-			listener.changeValue(event);
+		synchronized(changeValueListener) {
+			for(ChangeValueListener l:changeValueListener) {
+				l.changeValue(event);
+			}
 		}
 	}
 
@@ -1186,15 +1186,15 @@ public class GenericData extends JPanel implements DateListener,
 		return false;
 	}
 
-	public synchronized void addRecordListener(RecordListener listener) {
+	public void addRecordListener(RecordListener listener) {
 		recordListener.addElement(listener);
 	}
 
-	public synchronized void removeRecordListener(RecordListener listener) {
+	public void removeRecordListener(RecordListener listener) {
 		recordListener.removeElement(listener);
 	}
 
-	protected synchronized void notificando(XMLTextField XMLTFtext, String value) {
+	protected void notificando(XMLTextField XMLTFtext, String value) {
 		Element element = new Element("table");
 		Element row = new Element("row");
 		element.addContent(row);
@@ -1217,11 +1217,10 @@ public class GenericData extends JPanel implements DateListener,
 
 		RecordEvent event = new RecordEvent(this, element);
 
-		Vector lista;
-		lista = (Vector) recordListener.clone();
-		for (int i = 0; i < lista.size(); i++) {
-			RecordListener listener = (RecordListener) lista.elementAt(i);
-			listener.arriveRecordEvent(event);
+		synchronized(recordListener) {
+			for(RecordListener l:recordListener) {
+				l.arriveRecordEvent(event);
+			}
 		}
 	}
 	
@@ -1239,5 +1238,12 @@ public class GenericData extends JPanel implements DateListener,
 	
 	public Component getFieldAt(int index) {
 		return VFields.get(index);
+	}
+
+	public boolean containSqlCode(String sqlCode) {
+		if (keySQL.contains(sqlCode))
+			return true;
+		else
+			return false;
 	}
 }

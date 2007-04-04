@@ -332,20 +332,22 @@ KeyListener, FocusListener, AnswerListener {
 	public void arriveAnswerEvent(AnswerEvent AEe) {
 	}
 
-	public synchronized void addAnswerListener(AnswerListener listener) {
+	public void addAnswerListener(AnswerListener listener) {
 		AnswerListener.addElement(listener);
 	}
 
-	public synchronized void removeAnswerListener(AnswerListener listener) {
+	public void removeAnswerListener(AnswerListener listener) {
 		AnswerListener.removeElement(listener);
 	}
 	
-	private synchronized void notificando(AnswerEvent event) {
-		Vector lista;
-		lista = (Vector) AnswerListener.clone();
-		for (int i = 0; i < lista.size(); i++) {
-			AnswerListener listener = (AnswerListener) lista.elementAt(i);
-			listener.arriveAnswerEvent(event);
+	private void notificando(AnswerEvent event) {
+		synchronized(AnswerListener) {
+			for (AnswerListener l:AnswerListener) {
+				if (l.containSqlCode(event.getSqlCode())) {
+					System.out.println("notificando: "+event.getSqlCode());
+					l.arriveAnswerEvent(event);
+				}
+			}
 		}
 	}
 	
@@ -402,4 +404,11 @@ KeyListener, FocusListener, AnswerListener {
 	public void setNotified(boolean notified) {
 		this.notified = notified;
 	}
+	public boolean containSqlCode(String sqlCode) {
+		if (keySQL.contains(sqlCode))
+			return true;
+		else
+			return false;
+	}
+
 }

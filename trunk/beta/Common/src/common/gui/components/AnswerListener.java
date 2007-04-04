@@ -25,4 +25,5 @@ import java.util.EventListener;
  */
 public interface AnswerListener extends EventListener {
     public void arriveAnswerEvent(AnswerEvent e);
+    public boolean containSqlCode(String sqlCode);
 }
