@@ -92,6 +92,7 @@ public class QueryRunner extends Element {
         //System.out.println("SENTENCIA SQL :: "+sql);
         boolean status = st.execute(sql);
         st.close();
+        st=null;
         return status;
     }
 
@@ -102,6 +103,7 @@ public class QueryRunner extends Element {
         //System.out.println("SENTENCIA SQL :: "+sql);
         boolean status = st.execute(sql);
         st.close();
+        st=null;
         return status;
         
     }
@@ -117,6 +119,7 @@ public class QueryRunner extends Element {
    //     System.out.println("SENTENCIA SQL :: "+sql);
         boolean status = st.execute(sql);
         st.close();
+        st=null;
         return status;
     }
     
@@ -126,6 +129,7 @@ public class QueryRunner extends Element {
      */
     public void closeStatement() {
         StatementsClosingHandler.close(st);
+        st = null;
     }
     
     public void setAutoCommit(boolean autoCommit) {

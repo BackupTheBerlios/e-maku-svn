@@ -1912,6 +1912,9 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		        }
 		        totalizar();
 		        loadingQuery = false;
+		        
+		        doc = null;
+		        System.gc();
     		}
     	}
     	new LoadData(doc,search).start();

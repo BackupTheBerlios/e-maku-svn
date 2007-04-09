@@ -116,7 +116,13 @@ public class LNMultiPackage {
             NPEe.printStackTrace();
             LNGtransaccion.rollback();
         }
+        finally {
+        	doc=null;
+        	pack=null;
+        }
         LNGtransaccion.setAutoCommit(true);
+        LNGtransaccion = null;
+    	System.gc();
     }
     
     private void getfields(String sql,Element pack) 

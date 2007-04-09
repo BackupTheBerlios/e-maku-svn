@@ -684,7 +684,6 @@ public class GenericData extends JPanel implements DateListener,
 					}
 					AnswerEvent event = new AnswerEvent(this, sql, doc);
 					notificando(event);
-					System.out.println("cado");
 				}
 			}
 			new SearchingSQL(sqlCode,j).start();

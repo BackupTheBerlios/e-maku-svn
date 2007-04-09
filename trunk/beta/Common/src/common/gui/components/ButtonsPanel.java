@@ -88,7 +88,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
     public ButtonsPanel(GenericForm GFforma, Document doc) {
 
         this.GFforma = GFforma;
-        this.setLayout(new FlowLayout());
+        this.setLayout(new FlowLayout(FlowLayout.TRAILING));
 		ClientHeaderValidator.addSuccessListener(this);
 
         Heventos = new Hashtable<String,Vector<?>>();
@@ -614,7 +614,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
         int times = 0;
 		while (!actionFinish && "TRANSACTION".equals(packageName)) {
 			try {
-				if (times<=100) {
+				if (times<=5000) {
 					Thread.sleep(100);
 				}
 				else {

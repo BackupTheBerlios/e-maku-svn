@@ -82,6 +82,10 @@ public class PackageToXML {
         	            ArrivedPackageEvent event = new ArrivedPackageEvent(this,doc);
         	            notifyArrivePackage(event);
                     	bufferOut.close();
+                    	bufferOut = null;
+                    	bufferIn.close();
+                    	bufferIn = null;
+        		        System.gc();
                         bufferOut = new ByteArrayOutputStream();
                     }
 

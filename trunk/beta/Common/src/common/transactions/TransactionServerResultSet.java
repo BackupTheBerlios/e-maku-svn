@@ -58,7 +58,7 @@ public class TransactionServerResultSet {
      * @return returna la transaccion o query solicitado.
      * @throws TransactionServerException
      */
-    private static synchronized Document getResultSetST(Document doc) throws TransactionServerException {
+    private static Document getResultSetST(Document doc) throws TransactionServerException {
         String id = "Q"+getId();
         doc.getRootElement().addContent(new Element("id").setText(id));
         

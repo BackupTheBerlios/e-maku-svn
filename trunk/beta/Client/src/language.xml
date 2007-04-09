@@ -189,4 +189,11 @@
         <es_ES></es_ES>
         <en_US>The printing copies number must be a numeric value</en_US>
     </sentence>       
+    <sentence>
+        <key>IMPORT_EXCEL_FILE</key>
+        <es_CO>Importar Archivo de Excel</es_CO>
+        <es_EC></es_EC>
+        <es_ES></es_ES>
+        <en_US>Import Excel File</en_US>
+    </sentence>       
 </language>

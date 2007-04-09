@@ -318,8 +318,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 						externalValues, ATFDargs);
 			}
 			TMFDtabla.setTagDataColumn(tagDataColumn);
-			TableSorter sorter = new TableSorter(TMFDtabla);
-			JTtabla = new JTable(sorter) {
+			//TableSorter sorter = new TableSorter(TMFDtabla);
+			JTtabla = new JTable(TMFDtabla) {
 
 				private static final long serialVersionUID = -8579166961142646633L;
 
@@ -344,7 +344,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 					return c;
 				}
 			};
-			sorter.setTableHeader(JTtabla.getTableHeader());
+			//sorter.setTableHeader(JTtabla.getTableHeader());
 			propertiesTable();
 		}
 
@@ -929,6 +929,9 @@ public class TableFindData extends JPanel implements AnswerListener,
 				}
 			};
 			SwingUtilities.invokeLater(t);
+			e = null;
+			element = null;
+			doc = null;
 		}
 	}
 

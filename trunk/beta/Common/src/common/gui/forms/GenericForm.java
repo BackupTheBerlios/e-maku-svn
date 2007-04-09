@@ -31,6 +31,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 
 import org.jdom.Attribute;
 import org.jdom.Document;
@@ -74,7 +76,7 @@ import common.transactions.TransactionServerResultSet;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez </A>
  */
 
-public class GenericForm extends JInternalFrame{
+public class GenericForm extends JInternalFrame implements InternalFrameListener {
 
     /*
      * Un evento puede llamar varios metodos de componentes distintos, estos se
@@ -151,6 +153,7 @@ public class GenericForm extends JInternalFrame{
         this.idTransaction = this.GFforma.getIdTransaction();
         this.password = this.GFforma.getPassword();
         this.child = true;
+        this.addInternalFrameListener(this);
         Element e = (Element)elm.clone();
         Document form = new Document();
         form.setRootElement(e);
@@ -179,6 +182,7 @@ public class GenericForm extends JInternalFrame{
         this.idTransaction = idTransaction;
         this.password = password;
         this.externalValues = new HashMap<Object,Object>();
+        this.addInternalFrameListener(this);
         generar(doc);
         EndEventGenerator event = new EndEventGenerator(this);
         notificando(event);
@@ -201,6 +205,7 @@ public class GenericForm extends JInternalFrame{
         this.size = size;
         this.idTransaction = idTransaction;
         this.externalValues = new HashMap<Object,Object>();
+        this.addInternalFrameListener(this);
         new InitShell();
         generar(doc);
         EndEventGenerator event = new EndEventGenerator(this);
@@ -1123,6 +1128,8 @@ public class GenericForm extends JInternalFrame{
     public void sendTransaction(Document doc) {
         SocketChannel socket = SocketConnector.getSock();
         SocketWriter.writing(socket, doc);
+        doc = null;
+        System.gc();
     }
 
     public void close() {
@@ -1579,6 +1586,62 @@ public class GenericForm extends JInternalFrame{
 		public void run() {
 			shellScript = new Interpreter();
 		}
+	}
+
+	public void internalFrameActivated(InternalFrameEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void internalFrameClosed(InternalFrameEvent e) {
+        if (!child) {
+	
+			Hcomps = null;
+		    JDPpanel = null;
+		    size = null;
+		    externalValues= null;
+		    idTransaction = null;
+		    password = null;
+		    initiateFinishListener = null;
+		    consecutive = null;
+		    keys = null;
+		    GFforma = null;
+		    importTitle = null;
+		    changeExternalValueListener = null;
+		    exportFields = null;
+			shellScript = null; 					
+			System.out.println("Antes Total Memoria:   "+Runtime.getRuntime().totalMemory()+" Memoria Libre: "+Runtime.getRuntime().freeMemory());
+			System.gc();
+			System.out.println("Despues Total Memoria: "+Runtime.getRuntime().totalMemory()+" Memoria Libre: "+Runtime.getRuntime().freeMemory());
+        }
+        else {
+        	System.out.println("Es una hija ");
+        }
+	}
+
+	public void internalFrameClosing(InternalFrameEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void internalFrameDeactivated(InternalFrameEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void internalFrameDeiconified(InternalFrameEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void internalFrameIconified(InternalFrameEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void internalFrameOpened(InternalFrameEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

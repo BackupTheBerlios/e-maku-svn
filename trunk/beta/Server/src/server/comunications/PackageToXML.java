@@ -67,10 +67,11 @@ public class PackageToXML extends Thread {
 	                        }
 	                    }
 	                    else {
-	
+	                    	SAXBuilder builder = null;
+	                    	ByteArrayInputStream bufferIn = null;
 	                        try {
-	                            SAXBuilder builder = new SAXBuilder();
-	                            ByteArrayInputStream bufferIn = new ByteArrayInputStream(EmakuServerSocket.getBufferTmp(channel).toByteArray());
+	                            builder = new SAXBuilder();
+	                            bufferIn = new ByteArrayInputStream(EmakuServerSocket.getBufferTmp(channel).toByteArray());
 	                            doc = builder.build(bufferIn);
 	                            if (channel.socket().getLocalPort() == ConfigFileHandler.getAdminSocket()) {
 	                                HeadersValidator.ValidAdmin(doc, channel);
@@ -85,7 +86,13 @@ public class PackageToXML extends Thread {
 	                            LogAdmin.setMessage("\n--------------------\n"+tmp+"\n"+new String(EmakuServerSocket.getBufferTmp(channel).toByteArray())+"\n------------------\n", ServerConstants.ERROR);
 	                        }
 	                        finally {
+                                bufferIn.close();
+                                bufferIn = null;
+                                builder = null;
+                                doc = null;
 	                        	EmakuServerSocket.getBufferTmp(channel).close();
+	                        	EmakuServerSocket.setBufferTmp(channel,null);
+                		        System.gc();
 	                        	EmakuServerSocket.setBufferTmp(channel,new ByteArrayOutputStream());
 	
 	                        }

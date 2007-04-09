@@ -86,15 +86,19 @@ public class HeadersValidator {
              */
             if (nom_raiz.equals("TRANSACTION")) {
                 System.out.println("Paquete TRANSACCION");
+                /*
                 XMLOutputter xmlOutputter = new XMLOutputter();
                 xmlOutputter.setFormat(Format.getPrettyFormat());
+                
                 try {
                     xmlOutputter.output(doc,System.out);
-                    new RunTransaction(sock,doc).start();
                 }
                 catch (IOException e) {
                     e.printStackTrace();
                 }
+                */
+                new RunTransaction(sock,doc).start();
+                
             } 
             
             /*
@@ -244,7 +248,9 @@ public class HeadersValidator {
         else {
             System.out.println("paquete no autorizado");
         }
-
+        
+        doc = null;
+        raiz = null;
     }
     
     /**
