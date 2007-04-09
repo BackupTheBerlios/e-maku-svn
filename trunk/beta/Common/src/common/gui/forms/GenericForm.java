@@ -1610,12 +1610,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 		    changeExternalValueListener = null;
 		    exportFields = null;
 			shellScript = null; 					
-			System.out.println("Antes Total Memoria:   "+Runtime.getRuntime().totalMemory()+" Memoria Libre: "+Runtime.getRuntime().freeMemory());
 			System.gc();
-			System.out.println("Despues Total Memoria: "+Runtime.getRuntime().totalMemory()+" Memoria Libre: "+Runtime.getRuntime().freeMemory());
-        }
-        else {
-        	System.out.println("Es una hija ");
         }
 	}
 

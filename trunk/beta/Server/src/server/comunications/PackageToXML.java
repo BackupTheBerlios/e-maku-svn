@@ -92,7 +92,7 @@ public class PackageToXML extends Thread {
                                 doc = null;
 	                        	EmakuServerSocket.getBufferTmp(channel).close();
 	                        	EmakuServerSocket.setBufferTmp(channel,null);
-                		        System.gc();
+                		        //System.gc();
 	                        	EmakuServerSocket.setBufferTmp(channel,new ByteArrayOutputStream());
 	
 	                        }

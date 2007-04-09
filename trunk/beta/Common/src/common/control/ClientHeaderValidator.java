@@ -162,6 +162,7 @@ public class ClientHeaderValidator {
             }
 
             notifySuccess(event);
+	        System.gc();
             return true;
         }
         /*

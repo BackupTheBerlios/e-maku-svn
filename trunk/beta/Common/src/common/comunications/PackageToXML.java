@@ -85,7 +85,6 @@ public class PackageToXML {
                     	bufferOut = null;
                     	bufferIn.close();
                     	bufferIn = null;
-        		        System.gc();
                         bufferOut = new ByteArrayOutputStream();
                     }
 
