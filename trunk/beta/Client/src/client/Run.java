@@ -7,7 +7,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
@@ -15,7 +14,7 @@ import bsh.Interpreter;
 import client.gui.components.MainWindow;
 import client.gui.forms.Connection;
 import client.gui.forms.SettingsDialog;
-import client.misc.ClientConstants;
+import client.gui.forms.Splash;
 import client.misc.settings.ConfigFileHandler;
 import client.misc.settings.ConfigFileNotLoadException;
 
@@ -85,16 +84,15 @@ public class Run {
         	UIManager.put("Table.font",			f);
         	UIManager.put("TabbedPane.font",	f);
         	UIManager.put("DesktopColor.color",	Color.GRAY);
-           
-            
-            
+        	Splash.create();
             new Connection();
 
         }
 
         catch (ConfigFileNotLoadException e) {
-            SettingsDialog dialogo = new SettingsDialog(new JFrame(),ClientConstants.KeyClient,SettingsDialog.CREATE);
-            dialogo.setLocationRelativeTo(dialogo.getParent());
+            SettingsDialog dialogo;
+            dialogo = new SettingsDialog(null,SettingsDialog.CREATE);
+            dialogo.setLocationRelativeTo(null);
             dialogo.pack();
             dialogo.setVisible(true);
         }

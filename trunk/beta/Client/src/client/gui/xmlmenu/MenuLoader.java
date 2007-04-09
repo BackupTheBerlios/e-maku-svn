@@ -1,9 +1,6 @@
 package client.gui.xmlmenu;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -20,7 +17,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
 import org.jdom.Document;
@@ -356,25 +352,18 @@ class JMenuXML extends JMenu implements ACPFormListener {
 			this.transactions.put(key,"");
 		}
 	}
-	
-	public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                            RenderingHints.VALUE_ANTIALIAS_ON);
-        super.paintComponent(g);
-    }
 
 	public void arriveACPForm(ACPFormEvent e) {
 		if (transactions.containsKey(e.getTransaction())) {
 			setEnabled(true);
 			setVisible(true);
-			Object parent = this.getParent();
+			/*Object parent = this.getParent();
 			if (parent instanceof JPopupMenu) {
 				JPopupMenu popup = (JPopupMenu)parent;
 				if (popup.isVisible()) {
 					popup.pack();	
 				}
-			}
+			}*/
 			//ACPHandler.removeACPFormListener(this);
 		}
 	}
@@ -549,19 +538,11 @@ class JMenuItemXML extends JMenuItem implements ActionListener , ACPFormListener
 		if (e.getTransaction().equals(transaction)) {
 			setEnabled(true);
 			setVisible(true);
-			JPopupMenu popup = (JPopupMenu)getParent();
+			/*JPopupMenu popup = (JPopupMenu)getParent();
 			if (popup.isVisible()) {
 				popup.pack();
-			}
+			}*/
 	     //   ACPHandler.removeACPFormListener(this);
 		}
 	}
-
-	public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                            RenderingHints.VALUE_ANTIALIAS_ON);
-        super.paintComponent(g);
-    }
-
 }

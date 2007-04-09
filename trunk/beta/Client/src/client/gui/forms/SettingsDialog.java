@@ -10,9 +10,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Hashtable;
 import java.util.TreeMap;
 
@@ -56,13 +53,8 @@ import client.misc.settings.ConfigFileNotLoadException;
  */
 public class SettingsDialog extends JDialog {
 	
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 7799638277510459773L;
 
-    private String key;    
-    
 	private JTextField JTFHost;
 
     private JTextField JTFPort;
@@ -86,12 +78,13 @@ public class SettingsDialog extends JDialog {
      *            Forma a la que pertenece el dialogo
      */
 
-    public SettingsDialog(JFrame parent, final String key, int flag) {
-
+    public SettingsDialog(JFrame parent,final int flag) {
+    	
         super(parent, true);
-        this.key = key;
         this.setTitle("Configuración");
         this.setResizable(false);
+        this.setLocationByPlatform(true);
+        this.setAlwaysOnTop(true);
         
         String host = "localhost";
         String port = "9117";
@@ -221,6 +214,9 @@ public class SettingsDialog extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 //System.exit(0);
             	setVisible(false);
+            	if (flag==CREATE) {
+            		System.exit(0);
+            	}
             }
         });
         JPsouth.add(JBCancel);
@@ -285,86 +281,45 @@ public class SettingsDialog extends JDialog {
     
     private boolean packingData() {
     
-        String serverAddress = getHost();
-        String serverPort    = getPort();  
-        String language      = getLanguage();
-        String logType       = getLog();
-        String pos           = getBox();    
-        
-        if (serverAddress.length() < 1) {
-            JOptionPane.showMessageDialog(this,"El campo servidor se encuentra vacio!\nPor favor, ingrese un valor.");
-            cleanServer();
-            return false;
-         }
-        
-        if (!isNumber(serverPort)) {
-            JOptionPane.showMessageDialog(this,"El campo puerto debe contener un valor numerico!\nPor favor, corrija el valor ingresado.");
-            cleanPort();
-            return false;     	
-        }
+    	String serverAddress = getHost();
+    	String serverPort    = getPort();  
+    	String language      = getLanguage();
+    	String logType       = getLog();
+    	String pos           = getBox();    
 
-        if (serverPort.length() < 1) {
-    	    serverPort = "9117";
-         }     
+    	if (serverAddress.length() < 1) {
+    		JOptionPane.showMessageDialog(this,"El campo servidor se encuentra vacio!\nPor favor, ingrese un valor.");
+    		cleanServer();
+    		return false;
+    	}
 
-        try {
-    	     callConfigFile(serverAddress,serverPort,language,logType,pos);
-             
-    	     if(noFile)
-    	        callConnection();
-             
-    	     dispose();
-         }
-        catch (ClassNotFoundException CNFEe) {
-            CNFEe.printStackTrace();
-            System.out.println("Exception : " + CNFEe.getMessage());
-         }
-        catch (NoSuchMethodException NSMEe) {
-            NSMEe.printStackTrace();
-            System.out.println("Exception : " + NSMEe.getMessage());
-         }
-        catch (InstantiationException IEe) {
-            IEe.printStackTrace();
-            System.out.println("Exception : " + IEe.getMessage());
-         }
-       catch (IllegalAccessException IAEe) {
-           IAEe.printStackTrace();
-           System.out.println("Exception : " + IAEe.getMessage());
-         }
-       catch (InvocationTargetException ITEe) {
-           ITEe.printStackTrace();
-           System.out.println("Exception: " + ITEe.getMessage());
-         }    
+    	if (!isNumber(serverPort)) {
+    		JOptionPane.showMessageDialog(this,"El campo puerto debe contener un valor numerico!\nPor favor, corrija el valor ingresado.");
+    		cleanPort();
+    		return false;     	
+    	}
 
-       return true;
+    	if (serverPort.length() < 1) {
+    		serverPort = "9117";
+    	}     
+
+    	callConfigFile(serverAddress,serverPort,language,logType,pos);
+
+    	if(noFile) {
+    		callConnection();
+    	}
+    	dispose();
+
+    	return true;
     }
       
     
-    private void callConfigFile(String serverAddress, String serverPort, String language, String logType, String pos) throws ClassNotFoundException,
-            SecurityException, NoSuchMethodException, IllegalArgumentException,
-            IllegalAccessException, InvocationTargetException,
-            InstantiationException {
-        
-        Class[] typeargs = { String.class, String.class, String.class,
-                String.class ,String.class};
-        
-        Object[] args = { serverAddress, serverPort, language, logType, pos };
-
-        Class<?> cls = Class.forName(key + ".misc.settings.ConfigFile");
-        Method meth = cls.getMethod("New", typeargs);
-        meth.invoke(cls.newInstance(), args);
+    private void callConfigFile(String serverAddress, String serverPort, String language, String logType, String pos) {
+        ConfigFileHandler.New(serverAddress,serverPort,language, logType,pos);
     }
 
-    private void callConnection() throws ClassNotFoundException,
-            SecurityException, NoSuchMethodException, IllegalArgumentException,
-            InstantiationException, IllegalAccessException,
-            InvocationTargetException {
-        
-        Class[] typeargs = {};
-        Object[] args = {};
-        Class<?> cls = Class.forName(key + ".gui.forms.Connection");
-        Constructor cons = cls.getConstructor(typeargs);
-        cons.newInstance(args);
+    private void callConnection()  {
+        new Connection();
     }
     
     public boolean isNumber(String s) {

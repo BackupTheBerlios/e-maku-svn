@@ -50,7 +50,7 @@ public class ACPHandler {
 
 	public static void ACPBegin(Document doc) {
 		numTrans = Integer.parseInt(doc.getRootElement().getChild("transactions").getValue());
-		Splash.ShowSplash();
+		Splash.show();
 		Splash.setProgresRank(0, numTrans + 1);
 	}
 
@@ -78,6 +78,7 @@ public class ACPHandler {
 				 * Si el elemento es una transaccion entonces se procede a cargarla
 				 * en una tabla
 				 */
+				Splash.prepareForIncrement();
 				if (e.getName().equals("transaction")) {
 					List Lsubdatos = e.getChildren();
 					Iterator k = Lsubdatos.iterator();
@@ -105,7 +106,7 @@ public class ACPHandler {
 				}
 			}
 		}
-		Splash.DisposeSplash();
+		Splash.hide();
 		MainWindow.getRefWindow().setVisible(true);
 	}
 

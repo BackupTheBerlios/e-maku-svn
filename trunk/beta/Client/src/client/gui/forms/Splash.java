@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JProgressBar;
 import javax.swing.JWindow;
+import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
@@ -31,7 +32,8 @@ import client.misc.ClientConstants;
  * o por un PROPOSITO PARTICULAR. Consulte la Licencia Publica General
  * GNU GPL para mas detalles.
  * <br>
- * Informacion de la clase
+ * This class make and display the splash window, it's contains the progress
+ * bar for indicate the load for the program
  * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
@@ -39,78 +41,75 @@ import client.misc.ClientConstants;
 
 public class Splash {
 
-    private static JWindow window;
-    public static JProgressBar JPBbarra = new JProgressBar(); 
+    private static JWindow		splashWindow= new JWindow();
+    private static JProgressBar	progressBar	= new JProgressBar(); 
     
     /**
-     * 
+     * This static method make the GUI components 
      */
-    public static void ShowSplash() {
+    public static void create() {
+    	
+    	splashWindow.setLayout(new BorderLayout());
+        JLayeredPane layeredPane = new JLayeredPane();
+        splashWindow.add(layeredPane,BorderLayout.CENTER);
         
-        window = new JWindow();
-        window.setAlwaysOnTop(false);
-        window.setLayout(new BorderLayout());
+        splashWindow.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         
-        JLayeredPane lpane = new JLayeredPane();
-        
-        window.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        
-        URL url = window.getClass().getResource("/icons/e-maku_splash.png");
+        URL url = splashWindow.getClass().getResource("/icons/e-maku_splash.png");
         ImageIcon icon = new ImageIcon(url);
-        int width = icon.getIconWidth();
+        int width  = icon.getIconWidth();
         int height = icon.getIconHeight();
         
-        int x = ((int)ClientConstants.MAX_WIN_SIZE_WIDTH/2)-(width/2);
-        int y = ((int)ClientConstants.MAX_WIN_SIZE_HEIGHT/2)-(height/2);
+        int x = (ClientConstants.MAX_WIN_SIZE_WIDTH/2)-(width/2);
+        int y = (ClientConstants.MAX_WIN_SIZE_HEIGHT/2)-(height/2);
         
-        window.setLocation(x, y);
-        window.setSize(width,height);
+        splashWindow.setLocation(x, y);
+        splashWindow.setSize(width,height);
+
+        JLabel labelIcon = new JLabel(icon,SwingConstants.CENTER);
+        labelIcon.setOpaque(false);
+        labelIcon.setBounds(0, 0, width, height);
         
-        JLabel labelx = new JLabel(icon,JLabel.CENTER);
-        labelx.setBounds(0, 0, width, height);
-        JPBbarra.setOpaque(false);
-        JPBbarra.setBorderPainted(false);
-        JPBbarra.setBounds(0,window.getHeight()-10, width,10);
-        JPBbarra.setStringPainted(false);
-        JPBbarra.setString("");
+        width  = splashWindow.getHeight()-12;
+        height = splashWindow.getWidth()-20;
         
-        JPBbarra.setForeground(new Color(255,162,0));
-        
-        lpane.add(labelx,JLayeredPane.PALETTE_LAYER);
-        lpane.add(JPBbarra,JLayeredPane.MODAL_LAYER);
-        
-        window.add(lpane,BorderLayout.CENTER);
-        window.setLocationByPlatform(true);
-        window.setVisible(true);
+        progressBar.setOpaque(false);
+        progressBar.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
+        progressBar.setBounds(10,width,height,10);
+        progressBar.setStringPainted(false);
+        progressBar.setIndeterminate(true);
+        progressBar.setForeground(new Color(255,162,0));
+
+        layeredPane.add(labelIcon,JLayeredPane.PALETTE_LAYER);
+        layeredPane.add(progressBar,JLayeredPane.MODAL_LAYER);
     }
     
-    public static void DisposeSplash() {
-        window.dispose();
+    public static void show() {
+        splashWindow.setVisible(true);
     }
     
-    public static void  incrementProgresValue() {
-    	Thread t = new Thread() {
-    		public void run() {
-    			JPBbarra.setValue(JPBbarra.getValue()+1);
-    	    	if (JPBbarra.getValue() == JPBbarra.getMaximum()) {
-    	    		resetProgresValue();
-    	    		JPBbarra.setStringPainted(false);
-    	    	}
-    		}
-    	};
-    	t.start();
-    } 
+	public static void hide() {
+        splashWindow.dispose();
+    }
+	
+    public static void prepareForIncrement() {
+    	progressBar.setIndeterminate(false);	
+    }
+	
+    public static synchronized void  incrementProgresValue() {
+    	int currentValue = progressBar.getValue();
+    	progressBar.setValue(++currentValue);
+    	if (currentValue == progressBar.getMaximum()) {
+    		Splash.resetProgresValue();
+    	}
+    }
     
     public static void setProgresRank(int min, int max) {
-        JPBbarra.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
-    	JPBbarra.setMinimum(min);
-    	JPBbarra.setMaximum(max);
-    	JPBbarra.setStringPainted(true);
+    	progressBar.setMinimum(min);
+    	progressBar.setMaximum(max);
     }
     
     public static void resetProgresValue() {
-    	JPBbarra.setValue(0);
-    }
-    
+    	progressBar.setValue(0);
+    }   
 }
-

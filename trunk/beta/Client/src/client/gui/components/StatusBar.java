@@ -22,10 +22,6 @@
 
 package client.gui.components;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.JToolBar;
@@ -43,35 +39,9 @@ public class StatusBar extends JToolBar implements SuccessListener {
 	private static final long serialVersionUID = 5107890638919072678L;
 	public static JProgressBar JPBbarra = new JProgressBar(); 
 	
-	public static JLabel JLetiqueta1 = new JLabel("         ") {
-		private static final long serialVersionUID = 3440825260214310311L;
-		public void paintComponent(Graphics g) {
-	        Graphics2D g2 = (Graphics2D)g;
-	        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-	                            RenderingHints.VALUE_ANTIALIAS_ON);
-	        super.paintComponent(g);
-	    }
-	};
-    
-	public static JLabel JLetiqueta2 = new JLabel("         "){
-		private static final long serialVersionUID = 3440825260214310311L;
-		public void paintComponent(Graphics g) {
-	        Graphics2D g2 = (Graphics2D)g;
-	        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-	                            RenderingHints.VALUE_ANTIALIAS_ON);
-	        super.paintComponent(g);
-	    }
-	};
-    
-	public static JLabel JLetiqueta3 = new JLabel("         "){
-		private static final long serialVersionUID = 3440825260214310311L;
-		public void paintComponent(Graphics g) {
-	        Graphics2D g2 = (Graphics2D)g;
-	        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-	                            RenderingHints.VALUE_ANTIALIAS_ON);
-	        super.paintComponent(g);
-	    }
-	};
+	public static JLabel JLetiqueta1 = new JLabel("         ");
+    public static JLabel JLetiqueta2 = new JLabel("         ");
+    public static JLabel JLetiqueta3 = new JLabel("         ");
    
 
     /** Creates new StatusBar */

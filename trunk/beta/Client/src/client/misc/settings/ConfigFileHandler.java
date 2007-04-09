@@ -39,8 +39,7 @@ import common.misc.parameters.EmakuParametersStructure;
  * para el common <br>
  * 
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez </A>
- * @author <A href='mailto:cristian@qhatu.net'>Cristian David
- *         Cepeda </A>
+ * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda </A>
  */
 public class ConfigFileHandler extends EmakuParametersStructure {
 
@@ -70,16 +69,24 @@ public class ConfigFileHandler extends EmakuParametersStructure {
      */
     public static void New(String Host, String Port, String Language, String log,String cash) {
         
-        doc = new Document();
-        doc.setRootElement(new Element("Configuration"));
         
-        doc.getRootElement().addContent(new Element("language").setText(Language));
-        doc.getRootElement().addContent(new Element("host").setText(Host));
-        doc.getRootElement().addContent(new Element("serverport").setText(Port));
-        doc.getRootElement().addContent(new Element("log").setText(log));
-        doc.getRootElement().addContent(new Element("cash").setText(cash));
-        doc.getRootElement().addContent(new Element("classLookAndFeel").setText(""));
-        doc.getRootElement().addContent(new Element("jarLookAndFeel").setText(""));
+        Element rootNode = new Element("Configuration");
+        doc = new Document(rootNode);
+        
+        rootNode.addContent(new Element("language").setText(Language));
+        rootNode.addContent(new Element("host").setText(Host));
+        rootNode.addContent(new Element("serverport").setText(Port));
+        rootNode.addContent(new Element("log").setText(log));
+        rootNode.addContent(new Element("cash").setText(cash));
+        rootNode.addContent(new Element("classLookAndFeel"));
+        rootNode.addContent(new Element("jarLookAndFeel"));
+        
+        Element company = new Element("Company");
+        company.addContent(new Element("name").setText("mi_empresa"));
+        company.addContent(new Element("jarFile").setText("mi_empresa.jar"));
+        company.addContent(new Element("directory").setText("mi_empresa"));
+        
+        rootNode.addContent(company);
         
         XMLOutputter out = new XMLOutputter();
         out.setFormat(Format.getPrettyFormat());
@@ -126,7 +133,7 @@ public class ConfigFileHandler extends EmakuParametersStructure {
 
             /**
              * Ciclo encargado de leer las primeras etiquetas del archivo XML,
-             * en este caso Configuraci�n
+             * en este caso Configuración
              */
 
             while (i.hasNext()) {

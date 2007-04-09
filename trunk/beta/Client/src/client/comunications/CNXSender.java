@@ -35,15 +35,15 @@ public class CNXSender {
      * @return Retorna el paquete CNX en formato XML @see org.jdom.Document
      */
     
-    public static Document getPackage(String bd, String login, char [] password ){
+    public static Document getPackage(String bd, String login, String password ){
         
-        String pass = new String(password);
-        Document doc = new Document();
-        doc.setRootElement(new Element("CNX"));
+    	Element rootNode = new Element("CNX");
+        Document doc = new Document(rootNode);
         
-        doc.getRootElement().addContent(new Element("db").setText(bd));
-        doc.getRootElement().addContent(new Element("login").setText(login));
-        doc.getRootElement().addContent(new Element("password").setText(pass));
+        rootNode.addContent(new Element("db").setText(bd));
+        rootNode.addContent(new Element("login").setText(login));
+        rootNode.addContent(new Element("password").setText(password));
+        
         return doc;
     }
     

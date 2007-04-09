@@ -45,7 +45,7 @@ import common.misc.parameters.EmakuParametersStructure;
 /**
  * Connection.java Creado el 03-ago-2004
  * 
- * Este archivo es parte de JMClient <A
+ * Este archivo es parte de Emaku <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
  * 
  * JMClient es Software Libre; usted puede redistribuirlo y/o realizar
@@ -71,12 +71,14 @@ public class Connection {
     private AuthenticationPanel JPAutenticacion;
     private static JButton JBconectar;
     
+    
     public Connection() {
                 
         JFConexion = new JFrame(Language.getWord("TITLE-CONEC"));
         JFConexion.setResizable(false);
         JFConexion.setLayout(new BorderLayout());
-
+        
+        
         JLabel imgLabel = new JLabel(new ImageIcon(JFConexion.getClass().getResource("/icons/e-maku_splash.png")),JLabel.CENTER);
         
         JPanel imgPanel = new JPanel();
@@ -113,11 +115,11 @@ public class Connection {
                 if(e.getButton() == MouseEvent.BUTTON1) { conexion(); }
             }
         });
-
         
         JBsettings.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent AEe) { 
-                SettingsDialog dialogo = new SettingsDialog(new JFrame(),ClientConstants.KeyClient, SettingsDialog.EDIT);
+            public void actionPerformed(ActionEvent AEe) {
+            	SettingsDialog dialogo;
+            	dialogo = new SettingsDialog(JFConexion,SettingsDialog.EDIT);
                 dialogo.setLocationRelativeTo(dialogo.getParent());
                 dialogo.pack();
                 dialogo.setVisible(true);
@@ -201,7 +203,7 @@ public class Connection {
 				                    CNXSender.getPackage(
 				                            JPAutenticacion.getBaseDatos(),
 				                            JPAutenticacion.getUsuario(),
-				                            md5.getDigest().toCharArray()));
+				                            md5.getDigest()));
 			} catch (ConnectException CEe){
 				JOptionPane.showMessageDialog(
 	                    JFConexion,Language.getWord("ERR_CONNECT")+"\n"+
