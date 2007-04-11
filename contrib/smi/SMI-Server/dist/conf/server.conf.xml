@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Config>
+	<!-- General -->
+    <AppOwner>Apuestas Palmira S.A</AppOwner>
+    <Lenguaje>es_CO</Lenguaje>
+    <Port>9119</Port>
+    <MainDataBase>smi</MainDataBase>
+    <SecondDataBase>oracle</SecondDataBase>
+    <!-- ================================================ -->
+	<!-- Conexion a base de datos -->
+    <synchronized>true</synchronized>
+    <PoolConnection>
+        <DataBase>
+            <name>smi</name>
+            <driver>org.postgresql.Driver</driver>
+            <url>jdbc:postgresql://localhost:5432/smi</url>
+            <username>smi</username>
+            <password></password>
+            <connectOnInit>true</connectOnInit>
+        </DataBase>
+		<DataBase>
+            <name>oracle</name>
+            <driver>oracle.jdbc.driver.OracleDriver</driver>
+            <url>jdbc:oracle:thin:@192.168.8.10:1521:palmira</url>
+            <username>consulta</username>
+            <password>opt357vi</password>
+            <connectOnInit>false</connectOnInit>
+        </DataBase>
+    </PoolConnection>
+	<!-- ================================================ -->
+    <!-- Servidor SMTP / POP3-->
+    <UserMail>smi</UserMail>
+    <PasswordMail>smi</PasswordMail>
+    <MailServer>localhost</MailServer>
+    <timeIntervalConnect>10000</timeIntervalConnect>
+	<!-- ================================================ -->    
+    <!-- Tareas Programadas -->
+    <Hour>10</Hour>
+    <Minute>0</Minute>
+    <Second>0</Second>
+    <!-- ================================================ -->
+    <!-- Mantenimiento de la Base de datos -->
+    <TimeAlifeMessageForClient>3</TimeAlifeMessageForClient>
+    <TimeAlifeMessageInDataBase>30</TimeAlifeMessageInDataBase>
+    <MaxMessagesDataBase>3000</MaxMessagesDataBase>
+    <!-- ================================================ -->
+</Config>

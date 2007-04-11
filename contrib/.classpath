@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="smi/SMI-Admin/src"/>
+	<classpathentry kind="src" path="smi/SMI-Client/src"/>
+	<classpathentry kind="src" path="smi/SMI-Lib/src"/>
+	<classpathentry kind="src" path="smi/SMI-Server/src"/>
+	<classpathentry kind="lib" path="ant.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Admin/dist/libs/jcalendar.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Admin/dist/libs/jdom.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Admin/dist/libs/synthetica.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Admin/dist/libs/syntheticaBlueIce.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Admin/dist/smiadmin.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Admin/dist/smilib.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Client/dist/libs/jdom.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Client/dist/libs/nimrodlf.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Client/dist/smiclient.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Client/dist/smilib.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Lib/dist/libs/jdom.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Lib/dist/libs/smilib.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Lib/dist/smilib.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Server/dist/libs/activation.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Server/dist/libs/jdbc-pgsql.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Server/dist/libs/jdom.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Server/dist/libs/libs/poi.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Server/dist/libs/mail.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Server/dist/libs/mailapi.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Server/dist/libs/ojdbc14.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Server/dist/libs/poi.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Server/dist/libs/pop3.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Server/dist/libs/smilib.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Server/dist/libs/smiserver.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Server/dist/libs/smtp.jar"/>
+	<classpathentry kind="lib" path="smi/SMI-Server/dist/libs/wrapper.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="smi/SMI-Server/bin"/>
+</classpath>
