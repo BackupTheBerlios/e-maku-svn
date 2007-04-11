@@ -1,0 +1,573 @@
+2007-04-02 18:55:52 INFO: Config -> /home/cristian/SMI Apuestas Palmira/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-02 18:55:53 INFO: Cargando archivo de configuración...
+2007-04-02 18:55:53 INFO: Cargando base de datos... smi
+2007-04-02 18:55:53 INFO: Cargando cache de enlace smi
+2007-04-02 18:55:54 Iniciando demonio pop3
+2007-04-02 18:55:54 Host:      localhost
+2007-04-02 18:55:54 Inciando demonio de sincronización
+2007-04-02 18:55:54 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-02 18:58:33 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=38650,localport=9119] 1
+2007-04-02 18:58:33 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-02 18:58:33 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-02 18:59:13 Los datos fueron almacenados satisfactoriamente
+2007-04-02 18:59:28 Los datos fueron almacenados satisfactoriamente
+2007-04-02 19:00:26 Los datos fueron almacenados satisfactoriamente
+2007-04-02 19:01:04 Los datos fueron almacenados satisfactoriamente
+2007-04-02 19:12:02 INFO: Config -> /home/cristian/SMI Apuestas Palmira/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-02 19:12:03 INFO: Cargando archivo de configuración...
+2007-04-02 19:12:03 INFO: Cargando base de datos... smi
+2007-04-02 19:12:05 INFO: Cargando cache de enlace smi
+2007-04-02 19:12:07 Iniciando demonio pop3
+2007-04-02 19:12:07 Host:      localhost
+2007-04-02 19:12:07 Inciando demonio de sincronización
+2007-04-02 19:12:09 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-02 19:12:17 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=51599,localport=9119] 1
+2007-04-02 19:12:17 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-02 19:12:17 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-02 19:12:31 Los datos fueron almacenados satisfactoriamente
+2007-04-02 19:15:09 INFO: Config -> /home/cristian/SMI Apuestas Palmira/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-02 19:15:10 INFO: Cargando archivo de configuración...
+2007-04-02 19:15:10 INFO: Cargando base de datos... smi
+2007-04-02 19:15:10 INFO: Cargando cache de enlace smi
+2007-04-02 19:15:11 Iniciando demonio pop3
+2007-04-02 19:15:11 Host:      localhost
+2007-04-02 19:15:11 Inciando demonio de sincronización
+2007-04-02 19:15:12 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-02 19:15:19 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=53847,localport=9119] 1
+2007-04-02 19:15:19 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-02 19:15:19 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-02 19:15:33 Los datos fueron almacenados satisfactoriamente
+2007-04-02 19:16:18 INFO: Config -> /home/cristian/SMI Apuestas Palmira/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-02 19:16:18 INFO: Cargando archivo de configuración...
+2007-04-02 19:16:18 INFO: Cargando base de datos... smi
+2007-04-02 19:16:18 INFO: Cargando cache de enlace smi
+2007-04-02 19:16:19 Iniciando demonio pop3
+2007-04-02 19:16:19 Host:      localhost
+2007-04-02 19:16:19 Inciando demonio de sincronización
+2007-04-02 19:16:19 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-02 19:16:27 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=53848,localport=9119] 1
+2007-04-02 19:16:27 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-02 19:16:27 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-02 19:16:40 Los datos fueron almacenados satisfactoriamente
+2007-04-02 19:17:03 Los datos fueron almacenados satisfactoriamente
+2007-04-04 07:13:08 INFO: Config -> /home/cristian/SMI Apuestas Palmira/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-04 07:13:10 INFO: Cargando archivo de configuración...
+2007-04-04 07:13:10 INFO: Cargando base de datos... smi
+2007-04-04 07:13:12 INFO: Cargando cache de enlace smi
+2007-04-04 07:13:13 Iniciando demonio pop3
+2007-04-04 07:13:13 Host:      localhost
+2007-04-04 07:13:13 Inciando demonio de sincronización
+2007-04-04 07:13:14 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-04 07:13:39 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=60656,localport=9119] 1
+2007-04-04 07:13:39 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-04 07:13:39 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-04 07:14:14 INFO: Config -> /home/cristian/SMI Apuestas Palmira/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-04 07:14:15 INFO: Cargando archivo de configuración...
+2007-04-04 07:14:15 INFO: Cargando base de datos... smi
+2007-04-04 07:14:15 INFO: Cargando cache de enlace smi
+2007-04-04 07:14:16 Iniciando demonio pop3
+2007-04-04 07:14:16 Host:      localhost
+2007-04-04 07:14:16 Inciando demonio de sincronización
+2007-04-04 07:14:16 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-04 07:14:35 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=60659,localport=9119] 1
+2007-04-04 07:14:35 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-04 07:14:35 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-04 07:14:41 Cargando datos actuales de la base de datos PostgreSQL
+2007-04-04 07:14:41 Sincronizando....
+2007-04-04 07:14:42 Punto de colocacion => SEMBRADOR IV almacenado
+2007-04-04 07:14:42 Colocador => JESUS REINALDO PULIDO almacenado
+2007-04-04 07:14:42 Colocador => NORY LADINO almacenado
+2007-04-04 07:14:42 Colocador => PAOLA ANDREA ORTIZ almacenado
+2007-04-04 07:14:42 Colocador => ASTRID CAROLINA CAICEDO almacenado
+2007-04-04 07:14:42 Colocador => MARITZA BECERRA almacenado
+2007-04-04 07:14:42 Colocador => ANA MILENA MULATO almacenado
+2007-04-04 07:14:42 Colocador => BILLY MARTINEZ almacenado
+2007-04-04 07:14:42 Colocador => VICTOR ADOLFO MONTENEGRO almacenado
+2007-04-04 07:14:42 Colocador => ELIZABETH VALENCIA almacenado
+2007-04-04 07:14:42 Colocador => NASLY MIRELLY MINA MINA almacenado
+2007-04-04 07:14:42 Colocador => SANDRA PIEDAD AGUIRRE almacenado
+2007-04-04 07:14:42 Colocador => NEREIDA CASTRO CASTRO CASTRO CASTRO almacenado
+2007-04-04 07:14:42 Colocador => SIRNEY HURTADO almacenado
+2007-04-04 07:14:42 Colocador => PAOLA ANDREA HERNANDEZ almacenado
+2007-04-04 07:14:42 Colocador => PATRICIA BEJARANO BEJARANO BEJARANO almacenado
+2007-04-04 07:14:42 Colocador => CONSTANZA OCHOA almacenado
+2007-04-04 07:14:42 Colocador => VIVIANA ORTIZ almacenado
+2007-04-04 07:14:42 Colocador => AIDA SALAZAR almacenado
+2007-04-04 07:14:42 Colocador => SOFIA VELEZ almacenado
+2007-04-04 07:14:42 Colocador => ELSA MARIA MARTINEZ almacenado
+2007-04-04 07:14:42 Colocador => SANDRA MILENA ORTEGA almacenado
+2007-04-04 07:14:42 Colocador => ALBA LUCIA RAMOS RAMOS almacenado
+2007-04-04 07:14:42 Colocador => SANDRA MILENA CASTAï¿½O CASTAï¿½O almacenado
+2007-04-04 07:14:42 Colocador => FIDELINA ORTIZ almacenado
+2007-04-04 07:14:42 Colocador => JOHAN CANDELO almacenado
+2007-04-04 07:14:42 Colocador => LUZ DAMARIS ROJAS almacenado
+2007-04-04 07:14:42 Colocador => LUCIA ESPERANZA GOMEZ almacenado
+2007-04-04 07:14:42 Colocador => FABIOLA NIEVA almacenado
+2007-04-04 07:14:42 Colocador => GLORIA CALERO almacenado
+2007-04-04 07:14:42 Colocador => SANDRA PATRICIA VASQUEZ VASQUEZ almacenado
+2007-04-04 07:14:42 Colocador => WILMER CAICEDO almacenado
+2007-04-04 07:14:42 Colocador => EDNA CAICEDO almacenado
+2007-04-04 07:14:42 Colocador => SURY ANDREA BOTERO almacenado
+2007-04-04 07:14:42 Colocador => MARIA TERESA MENDOZA almacenado
+2007-04-04 07:14:42 Colocador => ESILDA SOAZA almacenado
+2007-04-04 07:14:42 Colocador => SANDRA LILIANA CLAVIJO CLAVIJO almacenado
+2007-04-04 07:14:42 Colocador => ANA DEIDA ALVARADO ALVARADO ALVARADO almacenado
+2007-04-04 07:14:42 Colocador => YURLEY KARIME GARCIA almacenado
+2007-04-04 07:14:42 Colocador => LUZ DARY OROZCO almacenado
+2007-04-04 07:14:42 Colocador => ELIZABETH VERGARA almacenado
+2007-04-04 07:14:42 Colocador => JACQUELINE SOTO almacenado
+2007-04-04 07:14:42 Colocador => ADELAIDA SALCEDO SALCEDO SALCEDO almacenado
+2007-04-04 07:14:42 Colocador => SONIA CALAMBAS almacenado
+2007-04-04 07:14:42 Asignando Colocador => JESUS REINALDO PULIDO( CV694) al punto=> null(1834)
+2007-04-04 07:14:42 Asignando Colocador => NORY LADINO( CV270) al punto=> null(1826)
+2007-04-04 07:14:42 Asignando Colocador => PAOLA ANDREA ORTIZ( CV2458) al punto=> null(1799)
+2007-04-04 07:14:42 Asignando Colocador => ASTRID CAROLINA CAICEDO( CV661) al punto=> null(1822)
+2007-04-04 07:14:42 Asignando Colocador => MARITZA BECERRA( CV269) al punto=> null(1825)
+2007-04-04 07:14:42 Asignando Colocador => ANA MILENA MULATO( CV1802) al punto=> null(1809)
+2007-04-04 07:14:42 Asignando Colocador => BILLY MARTINEZ( CV644) al punto=> null(1824)
+2007-04-04 07:14:42 Asignando Colocador => VICTOR ADOLFO MONTENEGRO( CV2429) al punto=> null(1314)
+2007-04-04 07:14:42 Asignando Colocador => ELIZABETH VALENCIA( CV2422) al punto=> null(1834)
+2007-04-04 07:14:42 Asignando Colocador => NASLY MIRELLY MINA MINA( CV2420) al punto=> null(1808)
+2007-04-04 07:14:42 Asignando Colocador => SANDRA PIEDAD AGUIRRE( CV998) al punto=> null(1807)
+2007-04-04 07:14:42 Asignando Colocador => NEREIDA CASTRO CASTRO CASTRO CASTRO( CV997) al punto=> null(1818)
+2007-04-04 07:14:42 Asignando Colocador => SIRNEY HURTADO( CV2415) al punto=> null(1814)
+2007-04-04 07:14:42 Asignando Colocador => PAOLA ANDREA HERNANDEZ( CV2375) al punto=> null(1801)
+2007-04-04 07:14:42 Asignando Colocador => PATRICIA BEJARANO BEJARANO BEJARANO( CV8002) al punto=> null(1800)
+2007-04-04 07:14:42 Asignando Colocador => CONSTANZA OCHOA( CV8754) al punto=> null(1834)
+2007-04-04 07:14:42 Asignando Colocador => VIVIANA ORTIZ( CV2369) al punto=> null(1815)
+2007-04-04 07:14:42 Asignando Colocador => AIDA SALAZAR( CV1670) al punto=> null(1816)
+2007-04-04 07:14:42 Asignando Colocador => SOFIA VELEZ( CV161) al punto=> null(1802)
+2007-04-04 07:14:42 Asignando Colocador => ELSA MARIA MARTINEZ( CV554) al punto=> null(1806)
+2007-04-04 07:14:42 Asignando Colocador => SANDRA MILENA ORTEGA( CV1655) al punto=> null(1811)
+2007-04-04 07:14:42 Asignando Colocador => ALBA LUCIA RAMOS RAMOS( CV4448) al punto=> null(1804)
+2007-04-04 07:14:42 Asignando Colocador => SANDRA MILENA CASTAï¿½O CASTAï¿½O( CV936) al punto=> null(1823)
+2007-04-04 07:14:42 Asignando Colocador => FIDELINA ORTIZ( CV1639) al punto=> null(1816)
+2007-04-04 07:14:42 Asignando Colocador => JOHAN CANDELO( CV2709) al punto=> SEMBRADOR IV(1562)
+2007-04-04 07:14:42 Asignando Colocador => LUZ DAMARIS ROJAS( CV1977) al punto=> null(1476)
+2007-04-04 07:14:42 Asignando Colocador => LUCIA ESPERANZA GOMEZ( CV2251) al punto=> null(1773)
+2007-04-04 07:14:42 Asignando Colocador => FABIOLA NIEVA( CV2242) al punto=> null(1816)
+2007-04-04 07:14:42 Asignando Colocador => GLORIA CALERO( CV3319) al punto=> null(1832)
+2007-04-04 07:14:42 Asignando Colocador => SANDRA PATRICIA VASQUEZ VASQUEZ( CV1945) al punto=> null(1798)
+2007-04-04 07:14:42 Asignando Colocador => WILMER CAICEDO( CV2583) al punto=> null(1819)
+2007-04-04 07:14:42 Asignando Colocador => EDNA CAICEDO( CV2582) al punto=> null(1819)
+2007-04-04 07:14:42 Asignando Colocador => SURY ANDREA BOTERO( CV2580) al punto=> null(1829)
+2007-04-04 07:14:42 Asignando Colocador => MARIA TERESA MENDOZA( CV2184) al punto=> null(1812)
+2007-04-04 07:14:42 Asignando Colocador => ESILDA SOAZA( CV793) al punto=> null(1827)
+2007-04-04 07:14:42 Asignando Colocador => SANDRA LILIANA CLAVIJO CLAVIJO( CV772) al punto=> null(1803)
+2007-04-04 07:14:42 Asignando Colocador => ANA DEIDA ALVARADO ALVARADO ALVARADO( CV3631) al punto=> null(1809)
+2007-04-04 07:14:42 Asignando Colocador => YURLEY KARIME GARCIA( CV2556) al punto=> null(1830)
+2007-04-04 07:14:42 Asignando Colocador => LUZ DARY OROZCO( CV1909) al punto=> null(1828)
+2007-04-04 07:14:42 Asignando Colocador => ELIZABETH VERGARA( CV3609) al punto=> null(1816)
+2007-04-04 07:14:42 Asignando Colocador => JACQUELINE SOTO( CV3602) al punto=> null(1813)
+2007-04-04 07:14:42 Asignando Colocador => ADELAIDA SALCEDO SALCEDO SALCEDO( CV2528) al punto=> null(1831)
+2007-04-04 07:14:42 Asignando Colocador => SONIA CALAMBAS( CV5280) al punto=> null(1517)
+2007-04-04 07:14:42 Bases de datos sincronizada
+2007-04-04 07:14:42 Limpiano y recargando la cache de usuarios
+2007-04-04 07:15:49 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=60660,localport=9119] 2
+2007-04-04 07:15:49 Inicio de autenticación para el usuario {CV661} con la clave {9eec1ca00047c50098153d554c82a07e}
+2007-04-04 07:15:49 Colocador Autenticado {CV661} desde la ip 127.0.0.1
+2007-04-04 07:18:27 Leyendo correo del buzon de mensajes
+2007-04-04 07:18:27 Nuevo mensaje desde: cristian@cristian-desktop asunto  CV661,TEST 1
+2007-04-04 07:18:28 Enviando mensaje a 1 usuarios
+2007-04-04 07:18:28 Mensaje enviado a CV661 de cristian asunto TEST 1
+2007-04-04 07:18:28 Mensaje almacenado en la base de datos
+2007-04-04 07:18:30 Confirmada lectura del mensaje con destino: CV661, con el asunto :TEST 1, remitido por: cristian
+2007-04-04 07:18:30 Confirmada lectura del mensaje con destino: CV661, con el asunto :TEST 1, remitido por: cristian
+2007-04-04 08:43:04 INFO: Config -> /home/cristian/SMI Apuestas Palmira/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-04 08:43:07 INFO: Cargando archivo de configuración...
+2007-04-04 08:43:07 INFO: Cargando base de datos... smi
+2007-04-04 08:43:10 INFO: Cargando cache de enlace smi
+2007-04-04 08:43:11 Iniciando demonio pop3
+2007-04-04 08:43:11 Host:      localhost
+2007-04-04 08:43:11 Inciando demonio de sincronización
+2007-04-04 08:43:12 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-04 08:43:42 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=35400,localport=9119] 1
+2007-04-04 08:43:42 Inicio de autenticación para el usuario {'} con la clave {3590cb8af0bbb9e78c343b52b93773c9}
+2007-04-04 08:44:52 INFO: Config -> /home/cristian/SMI Apuestas Palmira/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-04 08:44:54 INFO: Cargando archivo de configuración...
+2007-04-04 08:44:54 INFO: Cargando base de datos... smi
+2007-04-04 08:44:57 INFO: Cargando cache de enlace smi
+2007-04-04 08:44:57 SENTENCIA SQL :: SELECT codigo,driver,args FROM transacciones;
+2007-04-04 08:44:58 Iniciando demonio pop3
+2007-04-04 08:44:58 Host:      localhost
+2007-04-04 08:44:58 Inciando demonio de sincronización
+2007-04-04 08:44:59 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-04 08:45:10 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=35401,localport=9119] 1
+2007-04-04 08:45:10 Inicio de autenticación para el usuario {'} con la clave {3590cb8af0bbb9e78c343b52b93773c9}
+2007-04-04 08:45:10 SENTENCIA SQL :: SELECT count(*) FROM usuarios where login=''' AND clave='3590cb8af0bbb9e78c343b52b93773c9'
+2007-04-04 08:46:21 INFO: Config -> /home/cristian/SMI Apuestas Palmira/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-04 08:46:22 INFO: Cargando archivo de configuración...
+2007-04-04 08:46:22 INFO: Cargando base de datos... smi
+2007-04-04 08:46:24 INFO: Cargando cache de enlace smi
+2007-04-04 08:46:24 SENTENCIA SQL :: SELECT codigo,driver,args FROM transacciones;
+2007-04-04 08:46:24 Iniciando demonio pop3
+2007-04-04 08:46:24 Host:      localhost
+2007-04-04 08:46:24 Inciando demonio de sincronización
+2007-04-04 08:46:25 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-04 08:46:31 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=35402,localport=9119] 1
+2007-04-04 08:46:31 Inicio de autenticación para el usuario {'} con la clave {3590cb8af0bbb9e78c343b52b93773c9}
+2007-04-04 08:46:31 SENTENCIA SQL :: SELECT count(*) FROM usuarios where login=''' AND clave='3590cb8af0bbb9e78c343b52b93773c9'
+2007-04-04 08:47:50 INFO: Config -> /home/cristian/SMI Apuestas Palmira/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-04 08:47:50 INFO: Cargando archivo de configuración...
+2007-04-04 08:47:50 INFO: Cargando base de datos... smi
+2007-04-04 08:47:50 INFO: Cargando cache de enlace smi
+2007-04-04 08:47:50 SENTENCIA SQL :: SELECT codigo,driver,args FROM transacciones;
+2007-04-04 08:47:51 Iniciando demonio pop3
+2007-04-04 08:47:51 Host:      localhost
+2007-04-04 08:47:51 Inciando demonio de sincronización
+2007-04-04 08:47:51 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-04 08:48:01 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=35403,localport=9119] 1
+2007-04-04 08:48:01 Inicio de autenticación para el usuario {'} con la clave {3590cb8af0bbb9e78c343b52b93773c9}
+2007-04-04 08:48:01 SENTENCIA SQL :: SELECT count(*) FROM usuarios where login=''' AND clave='3590cb8af0bbb9e78c343b52b93773c9'
+2007-04-04 08:48:42 INFO: Config -> /home/cristian/SMI Apuestas Palmira/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-04 08:48:42 INFO: Cargando archivo de configuración...
+2007-04-04 08:48:42 INFO: Cargando base de datos... smi
+2007-04-04 08:48:43 INFO: Cargando cache de enlace smi
+2007-04-04 08:48:43 SENTENCIA SQL :: SELECT codigo,driver,args FROM transacciones;
+2007-04-04 08:48:43 Iniciando demonio pop3
+2007-04-04 08:48:43 Host:      localhost
+2007-04-04 08:48:43 Inciando demonio de sincronización
+2007-04-04 08:48:44 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-04 08:48:49 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=46798,localport=9119] 1
+2007-04-04 08:48:50 Inicio de autenticación para el usuario {'} con la clave {3590cb8af0bbb9e78c343b52b93773c9}
+2007-04-04 08:48:50 SENTENCIA SQL :: SELECT count(*) FROM usuarios where login=''' AND clave='3590cb8af0bbb9e78c343b52b93773c9'
+2007-04-04 08:51:21 INFO: Config -> /home/cristian/SMI Apuestas Palmira/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-04 08:51:23 INFO: Cargando archivo de configuración...
+2007-04-04 08:51:23 INFO: Cargando base de datos... smi
+2007-04-04 08:51:25 INFO: Cargando cache de enlace smi
+2007-04-04 08:51:25 SENTENCIA SQL :: SELECT codigo,driver,args FROM transacciones;
+2007-04-04 08:51:26 Iniciando demonio pop3
+2007-04-04 08:51:26 Host:      localhost
+2007-04-04 08:51:26 Inciando demonio de sincronización
+2007-04-04 08:51:27 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-04 08:51:31 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=46805,localport=9119] 1
+2007-04-04 08:51:31 Inicio de autenticación para el usuario {'} con la clave {3590cb8af0bbb9e78c343b52b93773c9}
+2007-04-04 08:51:31 SENTENCIA SQL :: SELECT count(*) FROM usuarios where login=''' AND clave='3590cb8af0bbb9e78c343b52b93773c9'
+2007-04-04 08:52:24 INFO: Config -> /home/cristian/SMI Apuestas Palmira/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-04 08:52:25 INFO: Cargando archivo de configuración...
+2007-04-04 08:52:25 INFO: Cargando base de datos... smi
+2007-04-04 08:52:26 INFO: Cargando cache de enlace smi
+2007-04-04 08:52:26 SENTENCIA SQL :: SELECT codigo,driver,args FROM transacciones;
+2007-04-04 08:52:27 Iniciando demonio pop3
+2007-04-04 08:52:27 Host:      localhost
+2007-04-04 08:52:27 Inciando demonio de sincronización
+2007-04-04 08:52:29 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-04 08:52:33 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=46806,localport=9119] 1
+2007-04-04 08:52:34 Inicio de autenticación para el usuario {'} con la clave {3590cb8af0bbb9e78c343b52b93773c9}
+2007-04-04 08:52:34 SENTENCIA SQL :: SELECT count(*) FROM usuarios where login=''' AND clave='3590cb8af0bbb9e78c343b52b93773c9'
+2007-04-04 09:02:05 INFO: Config -> /home/cristian/SMI Apuestas Palmira/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-04 09:02:06 INFO: Cargando archivo de configuración...
+2007-04-04 09:02:06 INFO: Cargando base de datos... smi
+2007-04-04 09:02:06 INFO: Cargando cache de enlace smi
+2007-04-04 09:02:07 SENTENCIA SQL :: SELECT codigo,driver,args FROM transacciones;
+2007-04-04 09:02:07 Iniciando demonio pop3
+2007-04-04 09:02:07 Host:      localhost
+2007-04-04 09:02:08 Inciando demonio de sincronización
+2007-04-04 09:02:08 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-04 09:02:14 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=41226,localport=9119] 1
+2007-04-04 09:02:14 Inicio de autenticación para el usuario {'} con la clave {3590cb8af0bbb9e78c343b52b93773c9}
+2007-04-04 09:02:14 SENTENCIA SQL :: SELECT count(*) FROM usuarios where login='\'' AND clave='3590cb8af0bbb9e78c343b52b93773c9'
+2007-04-04 09:02:15 Acceso denegado a  {'} desde la ip 127.0.0.1 ingresando como Colocador
+2007-04-04 09:04:04 INFO: Config -> /home/cristian/SMI Apuestas Palmira/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-04 09:04:05 INFO: Cargando archivo de configuración...
+2007-04-04 09:04:05 INFO: Cargando base de datos... smi
+2007-04-04 09:04:06 INFO: Cargando cache de enlace smi
+2007-04-04 09:04:06 SENTENCIA SQL :: SELECT codigo,driver,args FROM transacciones;
+2007-04-04 09:04:08 Iniciando demonio pop3
+2007-04-04 09:04:08 Host:      localhost
+2007-04-04 09:04:08 Inciando demonio de sincronización
+2007-04-04 09:04:09 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-04 09:04:14 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=60822,localport=9119] 1
+2007-04-04 09:04:14 Inicio de autenticación para el usuario {'} con la clave {3590cb8af0bbb9e78c343b52b93773c9}
+2007-04-04 09:04:14 SENTENCIA SQL :: SELECT count(*) FROM usuarios where login=''' AND clave='3590cb8af0bbb9e78c343b52b93773c9'
+2007-04-04 09:05:31 INFO: Config -> /home/cristian/SMI Apuestas Palmira/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-04 09:05:32 INFO: Cargando archivo de configuración...
+2007-04-04 09:05:32 INFO: Cargando base de datos... smi
+2007-04-04 09:05:32 INFO: Cargando cache de enlace smi
+2007-04-04 09:05:33 SENTENCIA SQL :: SELECT codigo,driver,args FROM transacciones;
+2007-04-04 09:05:34 Iniciando demonio pop3
+2007-04-04 09:05:34 Host:      localhost
+2007-04-04 09:05:34 Inciando demonio de sincronización
+2007-04-04 09:05:34 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-04 09:06:00 INFO: Config -> /home/cristian/SMI Apuestas Palmira/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-04 09:06:02 INFO: Cargando archivo de configuración...
+2007-04-04 09:06:02 INFO: Cargando base de datos... smi
+2007-04-04 09:06:02 INFO: Cargando cache de enlace smi
+2007-04-04 09:06:02 SENTENCIA SQL :: SELECT codigo,driver,args FROM transacciones;
+2007-04-04 09:06:03 Iniciando demonio pop3
+2007-04-04 09:06:03 Host:      localhost
+2007-04-04 09:06:03 Inciando demonio de sincronización
+2007-04-04 09:06:04 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-04 09:06:11 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=60824,localport=9119] 1
+2007-04-04 09:06:11 Inicio de autenticación para el usuario {A} con la clave {9d5ed678fe57bcca610140957afab571}
+2007-04-04 09:06:11 SENTENCIA SQL :: SELECT count(*) FROM usuarios where login='B' AND clave='9d5ed678fe57bcca610140957afab571'
+2007-04-04 09:06:12 Acceso denegado a  {A} desde la ip 127.0.0.1 ingresando como Colocador
+2007-04-04 09:08:34 INFO: Config -> /home/cristian/SMI Apuestas Palmira/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-04 09:08:36 INFO: Cargando archivo de configuración...
+2007-04-04 09:08:36 INFO: Cargando base de datos... smi
+2007-04-04 09:08:36 INFO: Cargando cache de enlace smi
+2007-04-04 09:08:36 SENTENCIA SQL :: SELECT codigo,driver,args FROM transacciones;
+2007-04-04 09:08:37 Iniciando demonio pop3
+2007-04-04 09:08:37 Host:      localhost
+2007-04-04 09:08:37 Inciando demonio de sincronización
+2007-04-04 09:08:37 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-04 09:08:45 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=60851,localport=9119] 1
+2007-04-04 09:08:45 Inicio de autenticación para el usuario {'} con la clave {3590cb8af0bbb9e78c343b52b93773c9}
+2007-04-04 09:08:45 SENTENCIA SQL :: SELECT count(*) FROM usuarios where login=''' AND clave='3590cb8af0bbb9e78c343b52b93773c9'
+2007-04-04 09:12:01 INFO: Config -> /home/cristian/SMI Apuestas Palmira/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-04 09:12:01 INFO: Cargando archivo de configuración...
+2007-04-04 09:12:02 INFO: Cargando base de datos... smi
+2007-04-04 09:12:02 INFO: Cargando cache de enlace smi
+2007-04-04 09:12:02 SENTENCIA SQL :: SELECT codigo,driver,args FROM transacciones;
+2007-04-04 09:12:02 Iniciando demonio pop3
+2007-04-04 09:12:02 Host:      localhost
+2007-04-04 09:12:02 Inciando demonio de sincronización
+2007-04-04 09:12:03 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-04 09:12:08 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=60861,localport=9119] 1
+2007-04-04 09:12:08 Inicio de autenticación para el usuario {'} con la clave {3590cb8af0bbb9e78c343b52b93773c9}
+2007-04-04 09:12:08 SENTENCIA SQL :: SELECT count(*) FROM usuarios where login='\'' AND clave='3590cb8af0bbb9e78c343b52b93773c9'
+2007-04-04 09:12:08 Acceso denegado a  {'} desde la ip 127.0.0.1 ingresando como Colocador
+2007-04-04 09:12:18 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=60862,localport=9119] 1
+2007-04-04 09:12:18 Inicio de autenticación para el usuario {'''} con la clave {3590cb8af0bbb9e78c343b52b93773c9}
+2007-04-04 09:12:18 SENTENCIA SQL :: SELECT count(*) FROM usuarios where login='\'\'\'' AND clave='3590cb8af0bbb9e78c343b52b93773c9'
+2007-04-04 09:12:18 Acceso denegado a  {'''} desde la ip 127.0.0.1 ingresando como Colocador
+2007-04-07 09:14:32 INFO: Config -> /home/cristian/SMI Apuestas Palmira/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-07 09:14:33 INFO: Cargando archivo de configuración...
+2007-04-07 09:14:33 INFO: Cargando base de datos... smi
+2007-04-07 09:14:34 INFO: Cargando cache de enlace smi
+2007-04-07 09:14:35 Iniciando demonio pop3
+2007-04-07 09:14:35 Host:      localhost
+2007-04-07 09:14:35 Inciando demonio de sincronización
+2007-04-07 09:14:36 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-07 09:14:55 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=52767,localport=9119] 1
+2007-04-07 09:14:55 Inicio de autenticación para el usuario {CV661} con la clave {9eec1ca00047c50098153d554c82a07e}
+2007-04-07 09:14:55 Colocador Autenticado {CV661} desde la ip 127.0.0.1
+2007-04-10 12:53:26 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-10 12:53:26 INFO: Cargando archivo de configuración...
+2007-04-10 12:53:26 INFO: Cargando base de datos... smi
+2007-04-10 12:53:26 El servidor de transacciones no pudo conectarse a la base de datos, Backend start-up failed: FATAL:  role "smiadmin" does not exist
+
+2007-04-10 12:53:26 ERR_POOL,No pudo cargar el pool de conexiones en la base de datos smi, No hay mensaje de depuración
+2007-04-10 12:55:28 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-10 12:55:28 INFO: Cargando archivo de configuración...
+2007-04-10 12:55:28 INFO: Cargando base de datos... smi
+2007-04-10 12:55:28 INFO: Cargando cache de enlace smi
+2007-04-10 12:55:29 Iniciando demonio pop3
+2007-04-10 12:55:29 Host:      localhost
+2007-04-10 12:55:29 Inciando demonio de sincronización
+2007-04-10 12:55:29 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-10 14:41:13 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-10 14:41:13 INFO: Cargando archivo de configuración...
+2007-04-10 14:41:13 INFO: Cargando base de datos... smi
+2007-04-10 14:41:13 INFO: Cargando cache de enlace smi
+2007-04-10 14:41:14 Iniciando demonio pop3
+2007-04-10 14:41:14 Host:      localhost
+2007-04-10 14:41:14 Inciando demonio de sincronización
+2007-04-10 14:41:14 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-10 14:43:50 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-10 14:43:51 INFO: Cargando archivo de configuración...
+2007-04-10 14:43:51 INFO: Cargando base de datos... smi
+2007-04-10 14:43:51 INFO: Cargando cache de enlace smi
+2007-04-10 14:43:51 Iniciando demonio pop3
+2007-04-10 14:43:51 Host:      localhost
+2007-04-10 14:43:51 Inciando demonio de sincronización
+2007-04-10 14:43:51 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-10 14:47:06 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=54792,localport=9119] 1
+2007-04-10 14:47:06 Inicio de autenticación para el usuario {CV6666} con la clave {4f2f79a192c64e32ae193a4f37f4732e}
+2007-04-10 14:47:06 Colocador Autenticado {CV6666} desde la ip 127.0.0.1
+2007-04-10 14:51:21 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=59438,localport=9119] 2
+2007-04-10 14:51:21 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-10 14:51:21 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-10 14:52:05 Cargando datos actuales de la base de datos Oracle
+2007-04-10 14:52:06 Cargando datos actuales de la base de datos PostgreSQL
+2007-04-10 14:52:07 Sincronizando....
+2007-04-10 14:52:07 Punto de colocacion => VERSALLES almacenado
+2007-04-10 14:52:07 Punto de colocacion => SEMBRADOR IV almacenado
+2007-04-10 14:52:07 Punto de colocacion => COLOMBIA CABINAS almacenado
+2007-04-10 14:52:07 Punto de colocacion => LUIS CARLOS GALAN almacenado
+2007-04-10 14:52:07 Colocador => JESUS REINALDO PULIDO almacenado
+2007-04-10 14:52:07 Colocador => FRANCIA SOLIS almacenado
+2007-04-10 14:52:07 Colocador => NORY LADINO almacenado
+2007-04-10 14:52:07 Colocador => PAOLA ANDREA ORTIZ almacenado
+2007-04-10 14:52:07 Colocador => ASTRID CAROLINA CAICEDO almacenado
+2007-04-10 14:52:07 Colocador => MARITZA BECERRA almacenado
+2007-04-10 14:52:07 Colocador => ANA MILENA MULATO almacenado
+2007-04-10 14:52:07 Colocador => BILLY MARTINEZ almacenado
+2007-04-10 14:52:07 Colocador => VICTOR ADOLFO MONTENEGRO almacenado
+2007-04-10 14:52:07 Colocador => ELIZABETH VALENCIA almacenado
+2007-04-10 14:52:07 Colocador => NASLY MIRELLY MINA MINA almacenado
+2007-04-10 14:52:07 Colocador => SANDRA PIEDAD AGUIRRE almacenado
+2007-04-10 14:52:07 Colocador => NEREIDA CASTRO CASTRO CASTRO CASTRO almacenado
+2007-04-10 14:52:07 Colocador => SIRNEY HURTADO almacenado
+2007-04-10 14:52:07 Colocador => PAOLA ANDREA HERNANDEZ almacenado
+2007-04-10 14:52:07 Colocador => PATRICIA BEJARANO BEJARANO BEJARANO almacenado
+2007-04-10 14:52:07 Colocador => KATERINE MOSQUERA almacenado
+2007-04-10 14:52:07 Colocador => CONSTANZA OCHOA almacenado
+2007-04-10 14:52:07 Colocador => VIVIANA ORTIZ almacenado
+2007-04-10 14:52:07 Colocador => MARTHA LUCIA TABORDA almacenado
+2007-04-10 14:52:07 Colocador => AIDA SALAZAR almacenado
+2007-04-10 14:52:07 Colocador => SOFIA VELEZ almacenado
+2007-04-10 14:52:07 Colocador => ELSA MARIA MARTINEZ almacenado
+2007-04-10 14:52:07 Colocador => SANDRA MILENA ORTEGA almacenado
+2007-04-10 14:52:07 Colocador => ALBA LUCIA RAMOS RAMOS almacenado
+2007-04-10 14:52:07 Colocador => SANDRA MILENA CASTAÑO CASTAÑO almacenado
+2007-04-10 14:52:07 Colocador => FIDELINA ORTIZ almacenado
+2007-04-10 14:52:07 Colocador => JOHAN CANDELO almacenado
+2007-04-10 14:52:07 Colocador => LUZ DAMARIS ROJAS almacenado
+2007-04-10 14:52:07 Colocador => LUCIA ESPERANZA GOMEZ almacenado
+2007-04-10 14:52:07 Colocador => FABIOLA NIEVA almacenado
+2007-04-10 14:52:07 Colocador => GLORIA CALERO almacenado
+2007-04-10 14:52:07 Colocador => SANDRA PATRICIA VASQUEZ VASQUEZ almacenado
+2007-04-10 14:52:07 Colocador => WILMER CAICEDO almacenado
+2007-04-10 14:52:07 Colocador => EDNA CAICEDO almacenado
+2007-04-10 14:52:07 Colocador => SURY ANDREA BOTERO almacenado
+2007-04-10 14:52:07 Colocador => MARIA TERESA MENDOZA almacenado
+2007-04-10 14:52:07 Colocador => ESILDA SOAZA almacenado
+2007-04-10 14:52:07 Colocador => SANDRA LILIANA CLAVIJO CLAVIJO almacenado
+2007-04-10 14:52:07 Colocador => ANA DEIDA ALVARADO ALVARADO ALVARADO almacenado
+2007-04-10 14:52:07 Colocador => YURLEY KARIME GARCIA almacenado
+2007-04-10 14:52:07 Colocador => LUZ DARY OROZCO almacenado
+2007-04-10 14:52:07 Colocador => ELIZABETH VERGARA almacenado
+2007-04-10 14:52:07 Colocador => JACQUELINE SOTO almacenado
+2007-04-10 14:52:07 Colocador => ADELAIDA SALCEDO SALCEDO SALCEDO almacenado
+2007-04-10 14:52:07 Colocador => SONIA CALAMBAS almacenado
+2007-04-10 14:52:07 Asignando Colocador => JESUS REINALDO PULIDO(CV694) al punto=> 1834
+2007-04-10 14:52:07 Asignando Colocador => FRANCIA SOLIS(CV2519) al punto=> 1150
+2007-04-10 14:52:07 Asignando Colocador => NORY LADINO(CV270) al punto=> 1826
+2007-04-10 14:52:07 Asignando Colocador => PAOLA ANDREA ORTIZ(CV2458) al punto=> 1799
+2007-04-10 14:52:07 Asignando Colocador => ASTRID CAROLINA CAICEDO(CV661) al punto=> 1822
+2007-04-10 14:52:07 Asignando Colocador => MARITZA BECERRA(CV269) al punto=> 1825
+2007-04-10 14:52:07 Asignando Colocador => ANA MILENA MULATO(CV1802) al punto=> 1809
+2007-04-10 14:52:07 Asignando Colocador => BILLY MARTINEZ(CV644) al punto=> 1824
+2007-04-10 14:52:07 Asignando Colocador => VICTOR ADOLFO MONTENEGRO(CV2429) al punto=> 1314
+2007-04-10 14:52:07 Asignando Colocador => ELIZABETH VALENCIA(CV2422) al punto=> 1834
+2007-04-10 14:52:07 Asignando Colocador => NASLY MIRELLY MINA MINA(CV2420) al punto=> 1808
+2007-04-10 14:52:07 Asignando Colocador => SANDRA PIEDAD AGUIRRE(CV998) al punto=> 1807
+2007-04-10 14:52:07 Asignando Colocador => NEREIDA CASTRO CASTRO CASTRO CASTRO(CV997) al punto=> 1818
+2007-04-10 14:52:07 Asignando Colocador => SIRNEY HURTADO(CV2415) al punto=> 1814
+2007-04-10 14:52:07 Asignando Colocador => PAOLA ANDREA HERNANDEZ(CV2375) al punto=> 1801
+2007-04-10 14:52:07 Asignando Colocador => PATRICIA BEJARANO BEJARANO BEJARANO(CV8002) al punto=> 1800
+2007-04-10 14:52:07 Asignando Colocador => KATERINE MOSQUERA(CV224) al punto=> 1182
+2007-04-10 14:52:07 Asignando Colocador => CONSTANZA OCHOA(CV8754) al punto=> 1834
+2007-04-10 14:52:07 Asignando Colocador => VIVIANA ORTIZ(CV2369) al punto=> 1815
+2007-04-10 14:52:07 Asignando Colocador => MARTHA LUCIA TABORDA(CV978) al punto=> 1250
+2007-04-10 14:52:07 Asignando Colocador => AIDA SALAZAR(CV1670) al punto=> 1816
+2007-04-10 14:52:07 Asignando Colocador => SOFIA VELEZ(CV161) al punto=> 1802
+2007-04-10 14:52:07 Asignando Colocador => ELSA MARIA MARTINEZ(CV554) al punto=> 1806
+2007-04-10 14:52:07 Asignando Colocador => SANDRA MILENA ORTEGA(CV1655) al punto=> 1811
+2007-04-10 14:52:07 Asignando Colocador => ALBA LUCIA RAMOS RAMOS(CV4448) al punto=> 1804
+2007-04-10 14:52:07 Asignando Colocador => SANDRA MILENA CASTAÑO CASTAÑO(CV936) al punto=> 1823
+2007-04-10 14:52:07 Asignando Colocador => FIDELINA ORTIZ(CV1639) al punto=> 1816
+2007-04-10 14:52:07 Asignando Colocador => JOHAN CANDELO(CV2709) al punto=> 1562
+2007-04-10 14:52:07 Asignando Colocador => LUZ DAMARIS ROJAS(CV1977) al punto=> 1476
+2007-04-10 14:52:07 Asignando Colocador => LUCIA ESPERANZA GOMEZ(CV2251) al punto=> 1773
+2007-04-10 14:52:07 Asignando Colocador => FABIOLA NIEVA(CV2242) al punto=> 1816
+2007-04-10 14:52:07 Asignando Colocador => GLORIA CALERO(CV3319) al punto=> 1832
+2007-04-10 14:52:07 Asignando Colocador => SANDRA PATRICIA VASQUEZ VASQUEZ(CV1945) al punto=> 1798
+2007-04-10 14:52:07 Asignando Colocador => WILMER CAICEDO(CV2583) al punto=> 1819
+2007-04-10 14:52:07 Asignando Colocador => EDNA CAICEDO(CV2582) al punto=> 1819
+2007-04-10 14:52:07 Asignando Colocador => SURY ANDREA BOTERO(CV2580) al punto=> 1829
+2007-04-10 14:52:07 Asignando Colocador => MARIA TERESA MENDOZA(CV2184) al punto=> 1812
+2007-04-10 14:52:07 Asignando Colocador => ESILDA SOAZA(CV793) al punto=> 1827
+2007-04-10 14:52:07 Asignando Colocador => SANDRA LILIANA CLAVIJO CLAVIJO(CV772) al punto=> 1803
+2007-04-10 14:52:07 Asignando Colocador => ANA DEIDA ALVARADO ALVARADO ALVARADO(CV3631) al punto=> 1809
+2007-04-10 14:52:07 Asignando Colocador => YURLEY KARIME GARCIA(CV2556) al punto=> 1830
+2007-04-10 14:52:07 Asignando Colocador => LUZ DARY OROZCO(CV1909) al punto=> 1828
+2007-04-10 14:52:07 Asignando Colocador => ELIZABETH VERGARA(CV3609) al punto=> 1816
+2007-04-10 14:52:07 Asignando Colocador => JACQUELINE SOTO(CV3602) al punto=> 1813
+2007-04-10 14:52:07 Asignando Colocador => ADELAIDA SALCEDO SALCEDO SALCEDO(CV2528) al punto=> 1831
+2007-04-10 14:52:07 Asignando Colocador => SONIA CALAMBAS(CV5280) al punto=> 1517
+2007-04-10 14:52:07 Bases de datos sincronizada
+2007-04-10 14:52:07 Limpiano y recargando la cache de usuarios
+2007-04-10 15:04:30 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=51429,localport=9119] 3
+2007-04-10 15:04:31 Inicio de autenticación para el usuario {cv6661} con la clave {ea234dc2983e43e6fd47e3fb3ed461db}
+2007-04-10 15:04:31 Acceso denegado a  {cv6661} desde la ip 127.0.0.1 ingresando como Colocador
+2007-04-10 15:05:42 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=51430,localport=9119] 3
+2007-04-10 15:05:42 Inicio de autenticación para el usuario {CV6661} con la clave {9eec1ca00047c50098153d554c82a07e}
+2007-04-10 15:05:42 Acceso denegado a  {CV6661} desde la ip 127.0.0.1 ingresando como Colocador
+2007-04-10 15:14:04 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-10 15:14:04 INFO: Cargando archivo de configuración...
+2007-04-10 15:14:04 INFO: Cargando base de datos... smi
+2007-04-10 15:14:04 INFO: Cargando cache de enlace smi
+2007-04-10 15:14:05 Iniciando demonio pop3
+2007-04-10 15:14:05 Host:      localhost
+2007-04-10 15:14:05 Inciando demonio de sincronización
+2007-04-10 15:14:05 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-10 15:14:38 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=40346,localport=9119] 1
+2007-04-10 15:14:38 Inicio de autenticación para el usuario {CV661} con la clave {9eec1ca00047c50098153d554c82a07e}
+2007-04-10 15:14:38 Colocador Autenticado {CV661} desde la ip 127.0.0.1
+2007-04-10 15:15:34 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=40347,localport=9119] 2
+2007-04-10 15:15:34 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-10 15:15:34 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-10 15:18:20 Los datos fueron almacenados satisfactoriamente
+2007-04-10 16:07:56 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-10 16:07:57 INFO: Cargando archivo de configuración...
+2007-04-10 16:07:57 INFO: Cargando base de datos... smi
+2007-04-10 16:07:57 INFO: Cargando cache de enlace smi
+2007-04-10 16:07:58 Iniciando demonio pop3
+2007-04-10 16:07:58 Host:      localhost
+2007-04-10 16:07:58 Inciando demonio de sincronización
+2007-04-10 16:07:58 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-10 16:07:58 Leyendo correo del buzon de mensajes
+2007-04-10 16:07:58 Nuevo mensaje desde: root@localhost asunto  CV661,Mensaje de Prueba
+2007-04-10 16:07:59 Acceso denegado al usuario root para el envio de mensajes atravez de correo
+2007-04-10 16:07:59 Leyendo correo del buzon de mensajes
+2007-04-10 16:07:59 Nuevo mensaje desde: root@localhost asunto  CV661,Titulo Mensaje
+2007-04-10 16:07:59 Acceso denegado al usuario root para el envio de mensajes atravez de correo
+2007-04-10 16:07:59 Leyendo correo del buzon de mensajes
+2007-04-10 16:07:59 Nuevo mensaje desde: root@localhost asunto  CV661,Prueba
+2007-04-10 16:07:59 Acceso denegado al usuario root para el envio de mensajes atravez de correo
+2007-04-10 16:07:59 Leyendo correo del buzon de mensajes
+2007-04-10 16:07:59 Nuevo mensaje desde: root@localhost asunto  CV661,Prueba
+2007-04-10 16:07:59 Acceso denegado al usuario root para el envio de mensajes atravez de correo
+2007-04-10 16:07:59 Leyendo correo del buzon de mensajes
+2007-04-10 16:07:59 Nuevo mensaje desde: root@localhost asunto  CV661,prueba
+2007-04-10 16:07:59 Acceso denegado al usuario root para el envio de mensajes atravez de correo
+2007-04-10 16:07:59 Leyendo correo del buzon de mensajes
+2007-04-10 16:07:59 Nuevo mensaje desde: root@localhost asunto  CV661,prueba
+2007-04-10 16:07:59 Acceso denegado al usuario root para el envio de mensajes atravez de correo
+2007-04-10 16:07:59 Leyendo correo del buzon de mensajes
+2007-04-10 16:07:59 Nuevo mensaje desde: root@localhost asunto  CV661,prueba
+2007-04-10 16:07:59 Acceso denegado al usuario root para el envio de mensajes atravez de correo
+2007-04-10 16:07:59 Leyendo correo del buzon de mensajes
+2007-04-10 16:07:59 Nuevo mensaje desde: root@localhost asunto  CV661, Prueba
+2007-04-10 16:08:00 Acceso denegado al usuario root para el envio de mensajes atravez de correo
+2007-04-10 16:08:00 Leyendo correo del buzon de mensajes
+2007-04-10 16:08:00 Nuevo mensaje desde: root@localhost asunto  CV661,prueba
+2007-04-10 16:08:00 Acceso denegado al usuario root para el envio de mensajes atravez de correo
+2007-04-10 16:08:27 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=52797,localport=9119] 1
+2007-04-10 16:08:27 Inicio de autenticación para el usuario {CV661} con la clave {9eec1ca00047c50098153d554c82a07e}
+2007-04-10 16:08:28 Colocador Autenticado {CV661} desde la ip 127.0.0.1
+2007-04-10 16:09:10 Leyendo correo del buzon de mensajes
+2007-04-10 16:09:10 Nuevo mensaje desde: spy@localhost asunto  CV661,prueba
+2007-04-10 16:09:10 Enviando mensaje a 1 usuarios
+2007-04-10 16:09:10 Mensaje enviado a CV661 de spy asunto prueba
+2007-04-10 16:09:10 Mensaje almacenado en la base de datos
+2007-04-10 16:09:13 Confirmada lectura del mensaje con destino: CV661, con el asunto :prueba, remitido por: spy
+2007-04-10 16:09:13 Confirmada lectura del mensaje con destino: CV661, con el asunto :prueba, remitido por: spy
+2007-04-10 16:09:40 Leyendo correo del buzon de mensajes
+2007-04-10 16:09:40 Nuevo mensaje desde: spy@localhost asunto  CV661,Mensaje de Prueba
+2007-04-10 16:09:40 Enviando mensaje a 1 usuarios
+2007-04-10 16:09:40 Mensaje enviado a CV661 de spy asunto Mensaje de Prueba
+2007-04-10 16:09:40 Mensaje almacenado en la base de datos
+2007-04-10 16:09:49 Confirmada lectura del mensaje con destino: CV661, con el asunto :prueba, remitido por: spy
+2007-04-10 16:09:51 Confirmada lectura del mensaje con destino: CV661, con el asunto :Mensaje de Prueba, remitido por: spy
+2007-04-10 16:09:51 Confirmada lectura del mensaje con destino: CV661, con el asunto :Mensaje de Prueba, remitido por: spy
+2007-04-10 16:17:53 Leyendo correo del buzon de mensajes
+2007-04-10 16:17:53 Nuevo mensaje desde: spy@localhost asunto  CV661, Ja!
+2007-04-10 16:17:53 Enviando mensaje a 1 usuarios
+2007-04-10 16:17:53 Mensaje enviado a CV661 de spy asunto  Ja!
+2007-04-10 16:17:53 Mensaje almacenado en la base de datos
+2007-04-10 16:26:27 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=50967,localport=9119] 2
+2007-04-10 16:26:28 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-10 16:26:28 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-10 16:27:11 Los datos fueron almacenados satisfactoriamente
+2007-04-10 16:28:14 Leyendo correo del buzon de mensajes
+2007-04-10 16:28:14 Nuevo mensaje desde: spy@localhost asunto  CV661, prueba
+2007-04-10 16:28:14 Enviando mensaje a 1 usuarios
+2007-04-10 16:28:14 Mensaje enviado a CV661 de spy asunto  prueba
+2007-04-10 16:28:14 Mensaje almacenado en la base de datos
+2007-04-10 16:28:18 Confirmada lectura del mensaje con destino: CV661, con el asunto : Ja!, remitido por: spy
+2007-04-10 16:28:18 Confirmada lectura del mensaje con destino: CV661, con el asunto : Ja!, remitido por: spy
+2007-04-10 16:28:20 Confirmada lectura del mensaje con destino: CV661, con el asunto : prueba, remitido por: spy
+2007-04-10 16:28:20 Confirmada lectura del mensaje con destino: CV661, con el asunto : prueba, remitido por: spy
