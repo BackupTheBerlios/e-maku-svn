@@ -26,3 +26,5 @@ for more.
     
     The licences used by IzPack or the libraries it uses are available in the 
 legal folder. IzPack itself is covered by the Apache License Version 2.0.
+
+***
