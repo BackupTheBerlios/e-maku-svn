@@ -162,7 +162,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 		listComps.add(FieldMail        = new JTextField());
 		listComps.add(JCheckAdm        = new JCheckBox());
 		listComps.add(JCheckAudit      = new JCheckBox());
-		listComps.add(JCBGroups        = new JComboBox(Cache.getListKeys().toArray()));
+		listComps.add(JCBGroups        = new JComboBox(Cache.getListKeys()));
 		
 		FieldLogin.addItemListener(this);
 		FieldPassword.setDocument(new FixedSizePlainDocument(10));

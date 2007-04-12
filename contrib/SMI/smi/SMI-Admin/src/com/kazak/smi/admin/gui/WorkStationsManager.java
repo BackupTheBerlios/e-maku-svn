@@ -192,7 +192,7 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 		listComps.add(FieldName = new AutoCompleteComboBox(Cache.getListKeysWs(),false,50));
 		listComps.add(FieldCode = new JTextField());
 		listComps.add(FieldIp   = new JTextField());
-		listComps.add(JCBGroups = new JComboBox(Cache.getListKeys().toArray()));
+		listComps.add(JCBGroups = new JComboBox(Cache.getListKeys()));
 		
 		FieldCode.setDocument(new NumericDataValidator(4));
 		FieldIp.setDocument(new FixedSizePlainDocument(15));

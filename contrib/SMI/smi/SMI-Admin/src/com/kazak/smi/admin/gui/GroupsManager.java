@@ -11,6 +11,7 @@ import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.util.Arrays;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -148,7 +149,10 @@ public class GroupsManager extends JFrame implements ActionListener, ItemListene
 	
 	private void initComps() {
 		
-		listComps.add(FieldName   = new AutoCompleteComboBox(new Vector<String>(Cache.getListKeys()),false,40));
+		//listComps.add(FieldName   = new AutoCompleteComboBox(new Vector<String>(Cache.getListKeys()),false,40));
+		String[] comboList = Cache.getListKeys();
+		Vector <String>vector = new Vector<String>(Arrays.asList(comboList));
+		listComps.add(FieldName   = new AutoCompleteComboBox(vector,false,40));
 		listComps.add(JCheckVisible= new JCheckBox());
 		listComps.add(JCheckZone   = new JCheckBox());
 		FieldName.addItemListener(this);

@@ -6,6 +6,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
+import java.util.Arrays;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -454,8 +455,11 @@ public class Cache{
 		return listGroups.values();
 	}
 	
-	public static Set<String> getListKeys() {
-		return listGroups.keySet();
+	public static String[] getListKeys() {
+		Set <String>bag = listGroups.keySet();
+		String[] sortedGroupList = (String[])bag.toArray(new String[bag.size()]);
+		Arrays.sort(sortedGroupList);
+		return sortedGroupList;
 	}
 	
 	public static Vector<String> getListKeysWs() {
