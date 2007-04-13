@@ -21,7 +21,7 @@ import com.kazak.smi.server.database.sql.RunQuery;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 import com.kazak.smi.server.misc.LogWriter;
-import com.kazak.smi.server.misc.settings.OracleSynchronized;
+import com.kazak.smi.server.misc.settings.ConfigFile;
 
 public class MessageDistributor {
 	
@@ -39,6 +39,7 @@ public class MessageDistributor {
 	private Element root = new Element("root");
 	private int timeAlife = -1;
 	private boolean control = false;
+	
 	public MessageDistributor(Element elm, boolean pop) {
 		
 		gidStr  = elm.getChildText("idgroup");
@@ -150,7 +151,7 @@ public class MessageDistributor {
 			String[] argsSql = 
 			{String.valueOf(ifu.getUid()),String.valueOf(ifuFrom.getUid()),
 			dateStr,hourStr,subject.trim(),body.trim(),isvalid,
-			String.valueOf(OracleSynchronized.getTimeAlifeMessageForClient()),
+			String.valueOf(ConfigFile.getTimeAlifeMessageForClient()),
 			String.valueOf(control),String.valueOf(timeAlife)};
 			
 			RunQuery runQuery = null;

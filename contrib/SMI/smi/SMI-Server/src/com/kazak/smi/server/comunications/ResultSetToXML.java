@@ -125,6 +125,7 @@ public class ResultSetToXML extends Document {
 								if (res==null)
 									res= new String("").getBytes();
 
+								/*
 								record = new String(res,"ISO-8859-1");
 								if(record.startsWith("NI")) {
 								   System.out.println("DATA: " + record);
@@ -140,10 +141,11 @@ public class ResultSetToXML extends Document {
 									}
 								}
 								if (flag) {
-									//System.out.println("DATA: " + record);
+									System.out.println("DATA: " + record);
 									record = new String(data);
-									//System.out.println("DATA2: " + record);
-								}
+									System.out.println("DATA2: " + record);
+								} 
+								*/
 
 								record = new String(res,"ISO-8859-1");
 								writeBufferSocket(sock,ServerConst.TAGS_COL[0] + 
@@ -170,7 +172,6 @@ public class ResultSetToXML extends Document {
 						SQLEe.printStackTrace();
 					}
 					catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					rselect.closeStatement();

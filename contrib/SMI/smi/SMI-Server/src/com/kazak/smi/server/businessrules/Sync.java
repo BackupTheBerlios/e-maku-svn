@@ -42,32 +42,17 @@ public class Sync {
 	private Vector<String> CurrentDataWs;
 	private Statement st = null;
 	private SocketChannel sock;
-	
-	public Sync() {
 		
+	public Sync() {
 		try {
-			String line="";
-			BufferedReader in = new BufferedReader(new FileReader(ServerConst.CONF + ServerConst.SEPARATOR + "oracle.sql"));
-		    while ((line = in.readLine()) != null)   {
-		    	oracleSQL += line;
-		    }
-			in.close();
-		    
+            oracleSQL =	getOracleSQLString();
 			LogWriter.write("Inciando demonio de sincronización");
 			loadSettings();
 			for (OracleSynchronized oraclesync:ConfigFile.getOraclesync()) {
-				System.out.println("Cargando sincrinizacion automatica de las "+oraclesync.getHour());
+				System.out.println("Cargando sincronizacion automatica de las "+oraclesync.getHour());
 				new Cron(oraclesync).start();
 			}
-			
-			
-			/*
-			int hour   = ConfigFile.getHour();
-			int minute = ConfigFile.getMinute();
-			int second = ConfigFile.getSecond();
-			Cron cron = new Cron(hour,minute,second);
-			cron.start();*/
-			
+						
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -75,19 +60,10 @@ public class Sync {
 		}
 	}
 	
-	public void loadSettings() throws FileNotFoundException, IOException {
-		dataUser = new Hashtable<String, User>();
-		dataWs = new Hashtable<String, String>();
-		
-		CurrentDataUser = new Vector<String>();
-		CurrentDataWs = new Vector<String>();
-		ForDeleteDataUser = new Vector<String>();
-		ForDeleteDataWs = new Vector<String>();
-	}
-	
 	public Sync (SocketChannel sock) {
 		this.sock = sock;
 		try {
+            oracleSQL =	getOracleSQLString();
 			loadSettings();
 		} catch (FileNotFoundException e) {
 			Element errSync = new Element("ERRSYNC");
@@ -113,7 +89,7 @@ public class Sync {
 		}
 		
 		if (loadOracleData()) {
-			if (loadCurrentData()){
+			if (loadPostgresData()){
 				filter();
 				storePostgresData();
 				LogWriter.write("Bases de datos sincronizada");
@@ -129,12 +105,45 @@ public class Sync {
 			}
 		}
 	}
+
+	public String getOracleSQLString() {
+		String sql = "";
+		try {
+				String line="";
+				BufferedReader in = new BufferedReader(new FileReader(ServerConst.CONF + ServerConst.SEPARATOR + "oracle.sql"));
+				while ((line = in.readLine()) != null)   {
+						sql += " " + line;
+				}
+				in.close();
+
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			if(sql==null || sql.equals("")) {
+				System.out.println("Error en el archivo oracle.sql. Por favor revisar la sentencia.");
+				System.out.println("Valor actual: " + sql);
+			}
+			
+			return sql;
+	}
 	
+	public void loadSettings() throws FileNotFoundException, IOException {
+		dataUser = new Hashtable<String, User>();
+		dataWs = new Hashtable<String, String>();
+		
+		CurrentDataUser = new Vector<String>();
+		CurrentDataWs = new Vector<String>();
+		ForDeleteDataUser = new Vector<String>();
+		ForDeleteDataWs = new Vector<String>();
+	}	
 	
 	/**
 	 * Load current data from PostgreSQL Data Base
 	 */
-	private boolean loadCurrentData() {
+	private boolean loadPostgresData() {
 
 		LogWriter.write("Cargando datos actuales de la base de datos PostgreSQL");
 		ResultSet rs = null;
@@ -158,7 +167,7 @@ public class Sync {
 		} catch (SQLException e) {
 			Element errSync = new Element("ERRSYNC");
 			Element message = new Element("message");
-			String text = "Error en la base de datos\n mensaje: " + e.getMessage();
+			String text = "Error en la base de datos " + ConfigFile.getMainDataBase() + "\nMensaje: " + e.getMessage();
 			message.setText(text);
 			try {
 				SocketWriter.writing(sock,new Document(errSync));
@@ -188,35 +197,18 @@ public class Sync {
 			cnOracle = ConfigFile.getConnection(ConfigFile.getSecondDataBase());
 			
 			st = cnOracle.createStatement();
+			System.out.println("SENTENCIA: " + oracleSQL);
 			rs = st.executeQuery(oracleSQL);
 			while (rs.next()) {
-			/*RandomAccessFile raf = new RandomAccessFile("/datos/datos_oracle.csv","r");
-			String line = null;
-			while ((line = raf.readLine())!=null) {
-				StringTokenizer stk = new StringTokenizer(line,",");
-				String code     = stk.nextToken();
-				String wscode   = stk.nextToken();
-				String wsnamepv = stk.nextToken();
-				String nameus   = stk.nextToken();
-				User user = new User();
-				user.code = code;
-				user.password =  generatePassword(code);
-				user.name = nameus; 
-				user.codepv = wscode;
-				
-				dataUser.put(code,user);
-				if (!dataWs.containsKey(wscode)) {
-					dataWs.put(wscode,wsnamepv);
-				}*/
 				String code     = rs.getString(1).trim();
 				String wscode   = rs.getString(2).trim();
 				String wsnamepv = rs.getString(3).trim();
 				String nameus   = rs.getString(4).trim();
-				User user = new User();
-				user.code = code;
+				User user     = new User();
+				user.code     = code;
 				user.password =  generatePassword(code);
-				user.name = nameus; 
-				user.codepv = wscode;
+				user.name     = nameus; 
+				user.codepv   = wscode;
 				
 				dataUser.put(code,user);
 				if (!dataWs.containsKey(wscode)) {
@@ -234,7 +226,7 @@ public class Sync {
 		} catch (SQLException e) {
 			Element errSync = new Element("ERRSYNC");
 			Element message = new Element("message");
-			String text = "Error en la base de datos\n mensaje: " + e.getMessage();
+			String text = "Error en la base de datos " + ConfigFile.getSecondDataBase() + "\nMensaje: " + e.getMessage();
 			message.setText(text);
 			try {
 				SocketWriter.writing(sock,new Document(errSync));
@@ -446,18 +438,15 @@ public class Sync {
 	    
 	    public Cron(OracleSynchronized oraclesync){
 	    	this.oraclesync=oraclesync;
-	    	System.out.println("Instanciando ...");
 	    }
 	    
-	    
 	    public void start() {
-	    	System.out.println("llamando a start");
 	        scheduler.schedule(new SchedulerTask() {
 	            public void run() {
-	                LogWriter.write("Syncronizando  fecha: " + dateFormat.format(new Date()));
+	                LogWriter.write("Syncronizando fecha: " + dateFormat.format(new Date()));
 	                
 					if (loadOracleData()) {
-						if (loadCurrentData()){
+						if (loadPostgresData()){
 							filter();
 							storePostgresData();
 							LogWriter.write("Bases de datos sincronizada");

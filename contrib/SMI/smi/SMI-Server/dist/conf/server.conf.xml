@@ -12,12 +12,12 @@
         <DataBase>
             <name>smi</name>
             <driver>org.postgresql.Driver</driver>
-            <url>jdbc:postgresql://192.168.10.250:5432/smi</url>
-            <username>smiadmin</username>
+            <url>jdbc:postgresql://localhost:5432/smi</url>
+            <username>smi</username>
             <password></password>
             <connectOnInit>true</connectOnInit>
         </DataBase>
-		<DataBase>
+	<DataBase>
             <name>oracle</name>
             <driver>oracle.jdbc.driver.OracleDriver</driver>
             <url>jdbc:oracle:thin:@192.168.8.10:1521:palmira</url>
@@ -29,14 +29,14 @@
 	<!-- ================================================ -->
     <!-- Servidor SMTP / POP3-->
     <UserMail>smi</UserMail>
-    <PasswordMail>smi789</PasswordMail>
+    <PasswordMail>smi</PasswordMail>
     <MailServer>localhost</MailServer>
     <timeIntervalConnect>10000</timeIntervalConnect>
 	<!-- ================================================ -->    
     <!-- Tareas Programadas -->
     <synchronized>
-	    <Hour>16</Hour>
-	    <Minute>03</Minute>
+	    <Hour>5</Hour>
+	    <Minute>0</Minute>
 	    <Second>0</Second>
 	    <!-- ================================================ -->
 	    <!-- Mantenimiento de la Base de datos -->
@@ -46,8 +46,8 @@
 	    <!-- ================================================ -->
     </synchronized>
     <synchronized>
-	    <Hour>16</Hour>
-	    <Minute>04</Minute>
+	    <Hour>13</Hour>
+	    <Minute>0</Minute>
 	    <Second>0</Second>
 	    <!-- ================================================ -->
 	    <!-- Mantenimiento de la Base de datos -->

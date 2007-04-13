@@ -51,22 +51,15 @@ public class ConfigFile {
     private static String appOwner;
     private static String mainDataBase;
     private static String secondDataBase;
-    private static int    timeIntervalConnect;
+	private static int    timeIntervalConnect;
     private static String local;
     private static String userMail; 
     private static String passWordMail;
     private static String mailServer;
-    private static ArrayList<OracleSynchronized> oraclesync = new ArrayList<OracleSynchronized>();
+    private static int timeAlifeMessageForClient;
+    private static ArrayList<OracleSynchronized> oraclesync = new ArrayList<OracleSynchronized>();;
     
-    /*
-    private static int    hour;
-    private static int    minute;
-    private static int    second;
-	private static int    timeIntervalConnect;
-	private static int    timeAlifeMessageForClient;
-	private static int    timeAlifeMessageInDataBase;
-	private static int    maxMessagesDataBase;
-    */
+    
     
     /**
      * Este metodo se encarga de cargar el archivo de configuracion
@@ -83,7 +76,7 @@ public class ConfigFile {
             root = doc.getRootElement();
             java.util.List Lconfig = root.getChildren();
             Iterator i = Lconfig.iterator();
-                
+            
             /**
              * Ciclo encargado de leer las primeras etiquetas del archivo XML, en este
              * caso Configuración
@@ -113,9 +106,11 @@ public class ConfigFile {
                 	mailServer = records.getValue();
                 } else if (records.getName().equals("timeIntervalConnect")) {
                 	timeIntervalConnect = Integer.parseInt(records.getValue());
-                } else if (records.getName().equalsIgnoreCase("synchronized")) {
+                } else if (records.getName().equals("TimeAlifeMessageForClient")) {
+    	        	timeAlifeMessageForClient = Integer.parseInt(records.getValue());
+    	        } else if (records.getName().equalsIgnoreCase("synchronized")) {
                 	oraclesync.add(oracleSynchronized(records));
-                }                
+                }
             }
             LogWriter.write(Language.getWord("LOADING_CF"));
         }
@@ -141,9 +136,7 @@ public class ConfigFile {
 	            sync.setMinute(Integer.parseInt(records.getValue()));
 	        } else if (records.getName().equals("Second")) {
 	            sync.setSecond(Integer.parseInt(records.getValue()));
-	        } else if (records.getName().equals("TimeAlifeMessageForClient")) {
-	        	sync.setTimeAlifeMessageForClient(Integer.parseInt(records.getValue()));
-	        } else if (records.getName().equals("TimeAlifeMessageInDataBase")) {
+	        }else if (records.getName().equals("TimeAlifeMessageInDataBase")) {
 	        	sync.setTimeAlifeMessageInDataBase(Integer.parseInt(records.getValue()));
 	        } else if (records.getName().equals("MaxMessagesDataBase")) {
 	        	sync.setTimeAlifeMessageInDataBase(Integer.parseInt(records.getValue()));
@@ -152,7 +145,6 @@ public class ConfigFile {
     	
     	return sync;
     }
-    
     /**
      * Metodo encargado de cargar cada una de las conexiones a las
      * Bases de Datos
@@ -292,17 +284,10 @@ public class ConfigFile {
 	public static String getMainDataBase() {
 		return mainDataBase;
 	}
-	
+
+
 	public static String getUserMail() {
 		return userMail;
-	}
-	
-	public static String getPassWordMail() {
-		return passWordMail;
-	}
-	
-	public static String getMailServer() {
-		return mailServer;
 	}
 
 	public static String getSecondDataBase() {
@@ -313,6 +298,14 @@ public class ConfigFile {
 		return appOwner;
 	}
 
+
+	public static String getPassWordMail() {
+		return passWordMail;
+	}
+
+	public static String getMailServer() {
+		return mailServer;
+	}
 	public static int getTimeIntervalConnect() {
 		return timeIntervalConnect;
 	}
@@ -324,8 +317,14 @@ public class ConfigFile {
 	public static ArrayList<OracleSynchronized> getOraclesync() {
 		return oraclesync;
 	}
-	
-}
+
+	public static int getTimeAlifeMessageForClient() {
+		return timeAlifeMessageForClient;
+	}
+
+	public static void setTimeAlifeMessageForClient(int timeAlifeMessageForClient) {
+		ConfigFile.timeAlifeMessageForClient = timeAlifeMessageForClient;
+	}}
     
 /**
  * Esta clase almacena una estructura con la informaci�n necesaria
