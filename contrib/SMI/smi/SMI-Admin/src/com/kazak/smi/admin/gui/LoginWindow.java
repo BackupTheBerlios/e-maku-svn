@@ -7,10 +7,13 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.net.NoRouteToHostException;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.UnresolvedAddressException;
 
@@ -31,7 +34,7 @@ import com.kazak.smi.lib.misc.FixedSizePlainDocument;
 import com.kazak.smi.lib.misc.MD5Tool;
 import com.kazak.smi.lib.network.PackageToXML;
 
-public class LoginWindow implements ActionListener {
+public class LoginWindow implements ActionListener, KeyListener {
 	
 	private static final long serialVersionUID = 4515846092744596420L;
 	private JTextField JTFHost;
@@ -68,6 +71,7 @@ public class LoginWindow implements ActionListener {
 		JTFPort     = new JTextField(12);
 		JTFUser     = new JTextField(12);
 		JPFPassword = new JPasswordField(12);
+		JPFPassword.addKeyListener(this);
 		
 		JTFUser.setDocument(new FixedSizePlainDocument(30));
 		JTFPort.setDocument(new NumericDataValidator(4));
@@ -127,103 +131,118 @@ public class LoginWindow implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if ("accept".equals(action)) {
-			JBAccept.setEnabled(false);
-			int typeCursor = Cursor.WAIT_CURSOR;
-			Cursor cursor = Cursor.getPredefinedCursor(typeCursor);
-			String host = JTFHost.getText().trim();
-            int port = 
-            		JTFPort.getText().trim().equals("") ? 
-            		0 :
-            		Integer.parseInt(JTFPort.getText().trim());
-            
-			if (!"".equals(host)              && 
-				!"".equals(JTFPort.getText()) && 
-				!"".equals(getUser())         &&
-				!"".equals(getPassword())) {
-				SocketHandler connect;
-	            frame.setCursor(cursor);
-				try {
-					PackageToXML packageXML = new PackageToXML();
-					HeadersValidator valid = new HeadersValidator();
-					packageXML.addArrivePackageistener(valid);
-					connect = new SocketHandler(host,port,packageXML);
-		            connect.start();
-		            SocketChannel socket = SocketHandler.getSock();
-		            MD5Tool md5 = new MD5Tool(getPassword());
-		            String pass = md5.getDigest();
-		            Run.login = getUser();
-		    		new CNXSender(socket,getUser(),pass); 
-				} catch (ConnectException CEe){
-					CEe.printStackTrace();
-					JOptionPane.showMessageDialog(
-		                    frame,
-		                    "No se pudo establecer comunicación con el servidor\n"+
-		                    "Host: "+host+"\n"+
-		                    "Puerto "+port,
-		                    "Error de Conexión",
-		                    JOptionPane.ERROR_MESSAGE);
-					
-					JBAccept.setEnabled(true);
-					typeCursor = Cursor.DEFAULT_CURSOR;
-					cursor =Cursor.getPredefinedCursor(typeCursor);
-					frame.setCursor(cursor);
-				}catch (UnresolvedAddressException UAEe) {
-					UAEe.printStackTrace();
-					JOptionPane.showMessageDialog(
-		                    frame,
-		                    "No se pudo resolver la dirección\n" +
-		                    "del servidor de mensajeria\n"+
-		                    "Host: "+host+ 
-		                    "Puerto:"+port,
-		                    "Error de Conexión",
-		                    JOptionPane.ERROR_MESSAGE);
-					JBAccept.setEnabled(true);
-					typeCursor = Cursor.DEFAULT_CURSOR;
-					cursor =Cursor.getPredefinedCursor(typeCursor);
-				} catch (IOException IOEe) {
-					IOEe.printStackTrace();
-				}
-			}
-			if ("".equals(host)) {
-				JOptionPane.showMessageDialog(
-						frame,
-						"Información incompleta\n" +
-						"debe ingresar el host");
-			}
-			else if ("".equals(JTFPort.getText())) {
-				JOptionPane.showMessageDialog(
-						frame,
-						"Información incompleta\n" +
-						"debe ingresar el puerto");
-			}
-			else if ("".equals(getUser()) && "".equals(getPassword())) {
-				JOptionPane.showMessageDialog(
-						frame,
-						"Información incompleta\n" +
-						"debe digitar su nombre de usuario y clave");
-			}
-			else if ("".equals(getUser()) && "".equals(getPassword())) {
-				JOptionPane.showMessageDialog(
-						frame,
-						"Información incompleta\n" +
-						"debe digitar su nombre de usuario y clave");
-			}
-			else if (!"".equals(getUser()) && "".equals(getPassword())) {
-				JOptionPane.showMessageDialog(
-						frame,
-						"Debe digitar su clave\n");
-			}
-			else if ("".equals(getUser()) && !"".equals(getPassword())) {
-				JOptionPane.showMessageDialog(
-						frame,
-						"Debe digitar su nombre de usuario\n");
-			}
-			JBAccept.setEnabled(true);
+			connect();
 		}
 		else if ("cancel".equals(action)) {
 			close();
 		}
 	}
+
+	
+	private void connect() {
+		
+	JBAccept.setEnabled(false);
+	int typeCursor = Cursor.WAIT_CURSOR;
+	Cursor cursor = Cursor.getPredefinedCursor(typeCursor);
+	String host = JTFHost.getText().trim();
+    int port = 
+    		JTFPort.getText().trim().equals("") ? 
+    		0 :
+    		Integer.parseInt(JTFPort.getText().trim());
+    
+    if (!"".equals(host)              && 
+    		!"".equals(JTFPort.getText()) && 
+    		!"".equals(getUser())         &&
+    		!"".equals(getPassword())) {
+    	SocketHandler connect;
+    	frame.setCursor(cursor);
+    	try {
+    		PackageToXML packageXML = new PackageToXML();
+    		HeadersValidator valid = new HeadersValidator();
+    		packageXML.addArrivePackageistener(valid);
+    		connect = new SocketHandler(host,port,packageXML);
+    		connect.start();
+    		SocketChannel socket = SocketHandler.getSock();
+    		MD5Tool md5 = new MD5Tool(getPassword());
+    		String pass = md5.getDigest();
+    		Run.login = getUser();
+    		new CNXSender(socket,getUser(),pass); 
+    	} catch (ConnectException CEe){
+    		CEe.printStackTrace();
+    		JOptionPane.showMessageDialog(
+    				frame,
+    				"No se pudo establecer comunicación con el servidor\n"+
+    				"Host: "+host+"\n"+
+    				"Puerto "+port,
+    				"Error de Conexión",
+    				JOptionPane.ERROR_MESSAGE);
+
+    		JBAccept.setEnabled(true);
+    		typeCursor = Cursor.DEFAULT_CURSOR;
+    		cursor =Cursor.getPredefinedCursor(typeCursor);
+    		frame.setCursor(cursor);
+    	}catch (UnresolvedAddressException UAEe) {
+    		UAEe.printStackTrace();
+    		JOptionPane.showMessageDialog(
+    				frame,
+    				"No se pudo resolver la dirección\n" +
+    				"del servidor de mensajeria\n"+
+    				"Host: "+host+ 
+    				"Puerto:"+port,
+    				"Error de Conexión",
+    				JOptionPane.ERROR_MESSAGE);
+    		JBAccept.setEnabled(true);
+    		typeCursor = Cursor.DEFAULT_CURSOR;
+    		cursor =Cursor.getPredefinedCursor(typeCursor);
+    	} catch(NoRouteToHostException NRex) {
+    		JOptionPane.showMessageDialog(
+    				null,
+    				"El nombre del servidor o la dirección IP ingresada\n" +
+    				"no se encuentra disponible o no existe en la red.\n" +
+    				"Por favor, revise el valor ingresado en el campo Host.\n");
+    		JBAccept.setEnabled(true);
+    		typeCursor = Cursor.DEFAULT_CURSOR;
+    		cursor =Cursor.getPredefinedCursor(typeCursor);
+        } catch (IOException IOEe) {
+    		IOEe.printStackTrace();
+    	}
+    }
+	if ("".equals(host)) {
+		JOptionPane.showMessageDialog(
+				frame,
+				"Información incompleta\n" +
+				"debe ingresar el host");
+	}
+	else if ("".equals(JTFPort.getText())) {
+		JOptionPane.showMessageDialog(
+				frame,
+				"Información incompleta\n" +
+				"debe ingresar el puerto");
+	}
+	else if ("".equals(getUser()) && "".equals(getPassword())) {
+		JOptionPane.showMessageDialog(
+				frame,
+				"Información incompleta\n" +
+				"debe digitar su nombre de usuario y clave");
+	}
+	else if ("".equals(getUser()) && "".equals(getPassword())) {
+		JOptionPane.showMessageDialog(
+				frame,
+				"Información incompleta\n" +
+				"debe digitar su nombre de usuario y clave");
+	}
+	else if (!"".equals(getUser()) && "".equals(getPassword())) {
+		JOptionPane.showMessageDialog(
+				frame,
+				"Debe digitar su clave\n");
+	}
+	else if ("".equals(getUser()) && !"".equals(getPassword())) {
+		JOptionPane.showMessageDialog(
+				frame,
+				"Debe digitar su nombre de usuario\n");
+	}
+	JBAccept.setEnabled(true);
+}	
 	
 	private void close() {
 		int op = JOptionPane.showConfirmDialog(
@@ -261,5 +280,18 @@ public class LoginWindow implements ActionListener {
 	
 	public static String getLoginUser() {
 		return LoginWindow.JTFUser.getText();
+	}
+
+	public void keyPressed(KeyEvent e) {
+	}
+
+	public void keyReleased(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+        if (keyCode==KeyEvent.VK_ENTER){
+                connect();
+        }
+	}
+
+	public void keyTyped(KeyEvent e) {
 	}
 }

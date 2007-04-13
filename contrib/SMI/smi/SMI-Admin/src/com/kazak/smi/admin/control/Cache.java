@@ -33,6 +33,7 @@ public class Cache{
 					Document doc1 = QuerySender.getResultSetST("SEL0004",null);
 					Element root = doc1.getRootElement();
 					Iterator rows = root.getChildren("row").iterator();
+					
 					while (rows.hasNext()) {
 						Element row = (Element) rows.next();
 						Iterator cols = row.getChildren().iterator();
@@ -78,6 +79,11 @@ public class Cache{
 						
 						String code = ((Element)cols.next()).getValue();
 						String name = ((Element)cols.next()).getValue();
+						
+						/* if (name.startsWith("NI")) {
+							System.out.println("LLEGADA:" + name);
+						}*/
+						
 						String ip = ((Element)cols.next()).getValue();
 						String gid = ((Element)cols.next()).getValue();
 						String gidName = ((Element)cols.next()).getValue();
@@ -164,6 +170,7 @@ public class Cache{
 						user.gidname = ((Element)cols.next()).getValue();
 						Group g = searchByWorkStation(namepv);
 						//if (!g.getWs(namepv).containsUser(user.login)) {
+						    //System.out.println("VALUES: " + namepv + ":" + user);
 							g.getWs(namepv).add(user);
 							TreeManagerGroups.addChild(g.name,namepv,user.login);
 							//}
@@ -312,8 +319,11 @@ public class Cache{
 			return workStations.values();
 		}
 		
-		public Set<String> getWorkStationsKeys() {
-			return workStations.keySet();
+		public String[] getWorkStationsKeys() {
+			Set <String>bag = workStations.keySet();
+			String[] array = (String[])bag.toArray(new String[bag.size()]);
+			Arrays.sort(array);
+			return array;
 		}
 		
 		public Collection<User> getUsers() {

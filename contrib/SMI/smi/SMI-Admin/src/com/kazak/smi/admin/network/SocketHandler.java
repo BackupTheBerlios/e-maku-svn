@@ -3,6 +3,7 @@ package com.kazak.smi.admin.network;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
+import java.net.NoRouteToHostException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
@@ -21,24 +22,25 @@ public class SocketHandler extends Thread  {
 	private PackageToXML packageXML;
 	
 	public SocketHandler(String host,int port,PackageToXML packageXML) 
-	throws UnresolvedAddressException, IOException {
+	throws UnresolvedAddressException, IOException, NoRouteToHostException {
 		socket = SocketChannel.open();
         socket.configureBlocking(false);
         this.packageXML = packageXML;
         InetSocketAddress addr = new InetSocketAddress(host,port);
-        socket.connect(addr);
         
-        int times=0;
-        while(!socket.finishConnect()){
-        		try {
-        			Thread.sleep(100);
-        			times++;
-        			if (times==50) {
-        				throw new ConnectException();
-    				}
-        		}
-        		catch(InterruptedException IEe) {}
-        }	
+       	socket.connect(addr);
+
+       	int times=0;
+       	while(!socket.finishConnect()){
+       		try {
+       			Thread.sleep(100);
+       			times++;
+       			if (times==50) {
+       				throw new ConnectException();
+       			}
+       		}
+       		catch(InterruptedException IEe) {}
+       	}
 	}
 	
 	public void run() {
@@ -51,9 +53,9 @@ public class SocketHandler extends Thread  {
                 if (n > 0) {
                     Iterator iterador = selector.selectedKeys().iterator();
                     while (iterador.hasNext()) {
-                        SelectionKey clave = (SelectionKey) iterador.next();
+                        SelectionKey key = (SelectionKey) iterador.next();
                         iterador.remove();
-                        if (clave.isReadable()) {
+                        if (key.isReadable()) {
                         	ret = packageXML.work(socket) ;
                         	if (!ret) {
                         		JOptionPane.showMessageDialog(

@@ -33,7 +33,83 @@ public class TreeManagerGroups {
 	private JPopupMenu jpopup3 = new JPopupMenu();
 	private Actions actions;
 	private ArrayList<String> lastPath = new ArrayList<String>();
+	private static SortableTreeNode globalNode;
+	private static SortableTreeNode globalLastNode;
 	public static TreePath currTpath;
+	
+	public static void setNodes(SortableTreeNode node, SortableTreeNode finalNode) {
+		globalNode = node;
+		globalLastNode = finalNode;
+	}
+	
+	public static String getFinalNode() {
+		return globalLastNode.toString();
+	}
+	
+	public static String getGroupNode() {
+		return globalNode.toString();
+	}
+	
+	public TreeManagerGroups() {
+		rootNode = new SortableTreeNode(MainWindow.getAppOwner());
+		rootNode.setAllowsChildren(true);
+		tree = new JTree(rootNode);
+		loadPopups();
+		DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
+		renderer.setLeafIcon(null);
+		renderer.setClosedIcon(null);
+		renderer.setOpenIcon(null);
+		renderer.setIcon(null);
+		//renderer.setBackgroundSelectionColor(Color.LIGHT_GRAY);
+		renderer.setRequestFocusEnabled(true);
+		renderer.setAutoscrolls(true);
+		//renderer.setBorderSelectionColor(Color.BLACK);
+		
+		tree.setCellRenderer(renderer);
+		tree.setExpandsSelectedPaths(true);
+		tree.setShowsRootHandles(true);
+		tree.setAutoscrolls(true);
+		tree.setScrollsOnExpand(true);
+		tree.setDragEnabled(true);
+		
+		tree.addMouseListener(new MouseAdapter() {
+			
+			public void mousePressed(MouseEvent e) {
+				//if ( e.getButton() == MouseEvent.BUTTON3 && e.isPopupTrigger() ) {
+                if ( e.getButton() == MouseEvent.BUTTON3) {
+                	currTpath = tree.getPathForLocation(e.getX(), e.getY());
+                	tree.setSelectionPath(currTpath);
+                	int count = currTpath.getPathCount();
+                	SortableTreeNode node;
+                	switch (count) {
+                	case 2: // Puntos de Venta
+                		lastPath.clear();
+    	                jpopup1.show(e.getComponent(), e.getX(), e.getY());
+            			break;
+            		case 3: // Usuarios 
+            			node = (SortableTreeNode) currTpath.getPathComponent(2);
+            			String name = node.toString();
+            			if (Cache.containsWs(name)){
+            				jpopup2.show(e.getComponent(), e.getX(), e.getY());
+            			}
+            			if (Cache.containsUser(name)){
+            				jpopup3.show(e.getComponent(), e.getX(), e.getY());
+            			}
+            			break;
+            		case 4:
+            			jpopup3.show(e.getComponent(), e.getX(), e.getY());
+            			break;
+                	}
+                }
+			}
+		});
+		
+		int mode = TreeSelectionModel.SINGLE_TREE_SELECTION;
+		tree.getSelectionModel().setSelectionMode(mode);
+		jscroll = new JScrollPane(tree);
+		Cache.load();
+	}
+	
 	public void loadPopups() {
 		actions = new Actions();
 		
@@ -106,68 +182,7 @@ public class TreeManagerGroups {
         item.addActionListener(actions);
         jpopup3.add(item);
 	}
-	
-	
-	public TreeManagerGroups() {
-		rootNode = new SortableTreeNode(MainWindow.getAppOwner());
-		rootNode.setAllowsChildren(true);
-		tree = new JTree(rootNode);
-		loadPopups();
-		DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
-		renderer.setLeafIcon(null);
-		renderer.setClosedIcon(null);
-		renderer.setOpenIcon(null);
-		renderer.setIcon(null);
-		//renderer.setBackgroundSelectionColor(Color.LIGHT_GRAY);
-		renderer.setRequestFocusEnabled(true);
-		renderer.setAutoscrolls(true);
-		//renderer.setBorderSelectionColor(Color.BLACK);
 		
-		tree.setCellRenderer(renderer);
-		tree.setExpandsSelectedPaths(true);
-		tree.setShowsRootHandles(true);
-		tree.setAutoscrolls(true);
-		tree.setScrollsOnExpand(true);
-		tree.setDragEnabled(true);
-		
-		tree.addMouseListener(new MouseAdapter() {
-			
-			public void mousePressed(MouseEvent e) {
-				//if ( e.getButton() == MouseEvent.BUTTON3 && e.isPopupTrigger() ) {
-                if ( e.getButton() == MouseEvent.BUTTON3) {
-                	currTpath = tree.getPathForLocation(e.getX(), e.getY());
-                	tree.setSelectionPath(currTpath);
-                	int count = currTpath.getPathCount();
-                	SortableTreeNode node;
-                	switch (count) {
-                	case 2:
-                		lastPath.clear();
-    	                jpopup1.show(e.getComponent(), e.getX(), e.getY());
-            			break;
-            		case 3:
-            			node = (SortableTreeNode) currTpath.getPathComponent(2);
-            			String name = node.toString();
-            			if (Cache.containsWs(name)){
-            				jpopup2.show(e.getComponent(), e.getX(), e.getY());
-            			}
-            			if (Cache.containsUser(name)){
-            				jpopup3.show(e.getComponent(), e.getX(), e.getY());
-            			}
-            			break;
-            		case 4:
-            			jpopup3.show(e.getComponent(), e.getX(), e.getY());
-            			break;
-                	}
-                }
-			}
-		});
-		
-		int mode = TreeSelectionModel.SINGLE_TREE_SELECTION;
-		tree.getSelectionModel().setSelectionMode(mode);
-		jscroll = new JScrollPane(tree);
-		Cache.load();
-	}
-	
 	public void addMouseListener(MouseListener l) {
 		tree.addMouseListener(l);
 	}
@@ -225,7 +240,7 @@ public class TreeManagerGroups {
 		}
 		return null;
 	}
-	
+		
 	public static synchronized void addGroup(String name) {
 		SortableTreeNode df = new SortableTreeNode(name);
 		rootNode.add(df);
@@ -293,6 +308,7 @@ public class TreeManagerGroups {
 	public static class SortableTreeNode extends DefaultMutableTreeNode {
 
 		private static final long serialVersionUID = 1L;
+		
 		public SortableTreeNode(Object userObject) {
 			super(userObject);
 		}
@@ -340,6 +356,7 @@ public class TreeManagerGroups {
 	}
 	
 	class Actions implements ActionListener {
+						
 		public void actionPerformed(ActionEvent e) {
 			String command = e.getActionCommand();
 			int count = TreeManagerGroups.currTpath.getPathCount();
@@ -453,8 +470,6 @@ public class TreeManagerGroups {
 		return -1;
 	}
 	
-	
-
 	public static int getChildCount(String name) {
 		for (int i =0 ; i < rootNode.getChildCount() ;  i++) {
 			SortableTreeNode node = (SortableTreeNode) rootNode.getChildAt(i);
@@ -477,27 +492,31 @@ public class TreeManagerGroups {
 		return 0;
 	}
 	
-	
 	public static void expand() {
+		
 		if (TreeManagerGroups.currTpath!=null) {
 			Thread t = new Thread () {
 				public void run() {
-					collapseAll();
+					//collapseAll();
 					int pcount = currTpath.getPathCount();
-					SortableTreeNode node = (SortableTreeNode) currTpath.getPathComponent(pcount-2);
-					SortableTreeNode lastnode = (SortableTreeNode) currTpath.getPathComponent(pcount-1);
-					int ccount = getChildCount(node.toString());
-					System.out.println("child count " + ccount);
-					System.out.println("path count " + pcount);
-					if (pcount==2) {
+					SortableTreeNode globalNode = (SortableTreeNode) currTpath.getPathComponent(pcount-2);
+					SortableTreeNode globalLastNode = (SortableTreeNode) currTpath.getPathComponent(pcount-1);
+					int ccount = getChildCount(globalNode.toString());
+					//System.out.println("child count " + ccount);
+					//System.out.println("path count " + pcount);
+
+					if (pcount==2) { // Seleccion de un grupo
 						int row = getRowPath(currTpath);
 						tree.expandRow(row);
 						tree.setSelectionPath(currTpath);
 						tree.scrollRowToVisible(row+ccount);
 					}
-					if (pcount==3) {
-						if (getChildCount(lastnode.toString())>0) {
+					if (pcount==3) { // Seleccion de un usuario
+						if (getChildCount(globalLastNode.toString())>0) {
 							int row = getRowPath(currTpath);
+							//System.out.println("Imprimiendo objeto: " + globalLastNode.toString());
+							//System.out.println("Imprimiendo objeto: " + globalNode.toString());
+							TreeManagerGroups.setNodes(globalNode, globalLastNode);
 							tree.expandRow(row);
 							tree.setSelectionPath(currTpath);
 							tree.scrollPathToVisible(currTpath);
@@ -510,10 +529,13 @@ public class TreeManagerGroups {
 							tree.scrollRowToVisible(row);
 						}
 						else {
+							//System.out.println("Imprimiendo objeto en else: " + globalLastNode.toString());
+							//System.out.println("Imprimiendo objeto: " + globalNode.toString());
 							int row = getRowPath(currTpath);
 							tree.expandRow(row);
 							tree.setSelectionPath(currTpath);
 							tree.scrollRowToVisible(row+ccount);
+							
 						}
 					}
 					if (pcount==4) {

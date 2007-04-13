@@ -73,9 +73,9 @@ public class QuerySender {
             }
         }
     	
-        Document retorno = (Document)HspoolTransactions.get(id);
+        Document result = (Document)HspoolTransactions.get(id);
         HspoolTransactions.remove(id);
-        return retorno;
+        return result;
     }
 
     public static Document getResultSetST(String codigo, String [] args)

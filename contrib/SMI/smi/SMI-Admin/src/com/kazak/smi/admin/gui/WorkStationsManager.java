@@ -83,16 +83,20 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 			public void actionPerformed(ActionEvent e) {
 				String key = FieldName.getText().toUpperCase();
 				oldCode = key;
+				
 				if (Cache.containsWs(key)) {
 					WorkStation ws = Cache.getWorkStation(key);
 					FieldCode.setText(ws.getCode());
 					FieldIp.setText(ws.getIp());
 					JCBGroups.setSelectedItem(ws.getGidName());
+					System.out.println("*** Actualizando arbol...");
+					
 					TreeManagerGroups.currTpath = new TreePath(
 							new Object[] {
 										new SortableTreeNode(MainWindow.getAppOwner()),
 										new SortableTreeNode(ws.getGidName()),
 										new SortableTreeNode(ws.getName())});
+										
 					TreeManagerGroups.expand();
 					if (ACTION == ACTIONS.ADD) {
 						FieldName.setEditable(false);
@@ -291,11 +295,22 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 		else if (command.equals("accept")) {
 			String name = FieldName.getText().toUpperCase();
 			WorkStation ws = Cache.getWorkStation(name);
+			/* String group = TreeManagerGroups.getGroupNode();
+			System.out.println("Grupo XXX: " + group);
+			System.out.println("Nodo XXX: " + name); */
+			
 			TreeManagerGroups.currTpath = new TreePath(
 					new Object[] {
 								new SortableTreeNode(MainWindow.getAppOwner()),
 								new SortableTreeNode(ws.getGidName()),
-								new SortableTreeNode(ws.getName())});
+								new SortableTreeNode(ws.getName())});  
+			
+			/* TreeManagerGroups.currTpath = new TreePath(
+					new Object[] {
+								new SortableTreeNode(MainWindow.getAppOwner()),
+								new SortableTreeNode(group),
+								new SortableTreeNode(name)}); */
+			
 			if (!"".equals(name) && ws==null && FieldCode.getText().length() == 4) {
 				document = getDocumentForAdd();
 				this.dispose();
