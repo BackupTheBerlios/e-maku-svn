@@ -76,7 +76,6 @@ public class PackageToXML {
                         try {
 							doc = builder.build(bufferIn);
 						} catch (JDOMException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
         	            ArrivePackageEvent event = new ArrivePackageEvent(this,doc);
