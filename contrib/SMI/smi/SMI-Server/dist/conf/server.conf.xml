@@ -12,7 +12,7 @@
         <DataBase>
             <name>smi</name>
             <driver>org.postgresql.Driver</driver>
-            <url>jdbc:postgresql://localhost:5432/smi</url>
+            <url>jdbc:postgresql://192.168.8.18:5432/smi2</url>
             <username>smiadmin</username>
             <password></password>
             <connectOnInit>true</connectOnInit>
