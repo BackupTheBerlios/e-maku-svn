@@ -35,6 +35,7 @@ public class MessageWindow implements ActionListener {
 	private JButton JBCanel;
 	private JTextField JTFSubject;
 	private GUIFactory fact;
+	
 	public MessageWindow() {
 		System.out.println("Nuevo Envio de mesaje");
 		fact = new GUIFactory();
@@ -48,6 +49,7 @@ public class MessageWindow implements ActionListener {
 	}
 	
 	public void forReply(String dest, String subject) {
+		//System.out.println("Reply Destino: " + dest);
 		groupSelector.setSelectedItem(dest);
 		JTFSubject.setText("[RE:"+subject+"]");
 		JTFSubject.setEditable(false);
@@ -112,6 +114,7 @@ public class MessageWindow implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
+		
 		if ("send".equals(command)) {
 			JButton b = (JButton) e.getSource();
 			b.setEnabled(false);

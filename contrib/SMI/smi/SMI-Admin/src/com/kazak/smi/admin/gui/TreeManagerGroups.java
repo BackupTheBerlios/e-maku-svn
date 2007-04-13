@@ -246,6 +246,7 @@ public class TreeManagerGroups {
 		rootNode.add(df);
 	}
 	
+	//Metodo para añadir puntos de venta y funcionarios al arbol
 	public static synchronized void addChild(String z,String pv) {
 		SortableTreeNode df = new SortableTreeNode(pv);
 		int nodes = rootNode.getChildCount();
@@ -257,7 +258,7 @@ public class TreeManagerGroups {
 				break;
 			}
 		}
-	}
+	} 
 	
 	public static TreePath getSelectedPath() {
 		return tree.getSelectionPath();
@@ -361,6 +362,7 @@ public class TreeManagerGroups {
 			String command = e.getActionCommand();
 			int count = TreeManagerGroups.currTpath.getPathCount();
 			String name = TreeManagerGroups.currTpath.getPathComponent(count -1).toString();
+
 			if ("new_user".equals(command)) {
 				UsersManager userManager = new UsersManager();
 				userManager.clean();
@@ -502,8 +504,6 @@ public class TreeManagerGroups {
 					SortableTreeNode globalNode = (SortableTreeNode) currTpath.getPathComponent(pcount-2);
 					SortableTreeNode globalLastNode = (SortableTreeNode) currTpath.getPathComponent(pcount-1);
 					int ccount = getChildCount(globalNode.toString());
-					//System.out.println("child count " + ccount);
-					//System.out.println("path count " + pcount);
 
 					if (pcount==2) { // Seleccion de un grupo
 						int row = getRowPath(currTpath);
@@ -514,8 +514,6 @@ public class TreeManagerGroups {
 					if (pcount==3) { // Seleccion de un usuario
 						if (getChildCount(globalLastNode.toString())>0) {
 							int row = getRowPath(currTpath);
-							//System.out.println("Imprimiendo objeto: " + globalLastNode.toString());
-							//System.out.println("Imprimiendo objeto: " + globalNode.toString());
 							TreeManagerGroups.setNodes(globalNode, globalLastNode);
 							tree.expandRow(row);
 							tree.setSelectionPath(currTpath);
@@ -529,16 +527,14 @@ public class TreeManagerGroups {
 							tree.scrollRowToVisible(row);
 						}
 						else {
-							//System.out.println("Imprimiendo objeto en else: " + globalLastNode.toString());
-							//System.out.println("Imprimiendo objeto: " + globalNode.toString());
 							int row = getRowPath(currTpath);
 							tree.expandRow(row);
 							tree.setSelectionPath(currTpath);
-							tree.scrollRowToVisible(row+ccount);
-							
+							tree.scrollRowToVisible(row+ccount);							
 						}
 					}
-					if (pcount==4) {
+					if (pcount==4) { // Seleccion punto de venta?
+						System.out.println("Abriendo punto de venta...");
 						int row = getRowPath(currTpath.getParentPath());
 						tree.expandRow(row);
 						row = getRowPath(currTpath);

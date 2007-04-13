@@ -79,11 +79,15 @@ public class GroupsManager extends JFrame implements ActionListener, ItemListene
 					oldGroupName = FieldName.getText().toUpperCase();
 					JCheckVisible.setSelected(group.getVisible());
 					JCheckZone.setSelected(group.getZone());
-					TreeManagerGroups.currTpath = new TreePath(
+
+					/* TreeManagerGroups.currTpath = new TreePath(
 							new Object[] {
 										new SortableTreeNode(MainWindow.getAppOwner()),
 										new SortableTreeNode(oldGroupName)});
-					TreeManagerGroups.expand();
+					TreeManagerGroups.expand(); */
+					
+					System.out.println("Actualizando Arbol desde GroupsManager...");
+					
 					if (ACTION == ACTIONS.ADD) {
 						FieldName.setEditable(false);
 						JCheckVisible.setEnabled(false);

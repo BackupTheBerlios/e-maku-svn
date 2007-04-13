@@ -531,7 +531,9 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 										new SortableTreeNode(FieldLogin.getText())});
 				}
 				
-				TreeManagerGroups.expand();
+				//TreeManagerGroups.expand();
+				System.out.println("Actualizando Arbol desde UsersManager...");
+				
 				for (Cache.UserPVenta upv : pvs) {
 					table.addData(upv.getCodepv(),upv.getName(),upv.getValidip());
 				}

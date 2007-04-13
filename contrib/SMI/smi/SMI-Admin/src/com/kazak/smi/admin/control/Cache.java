@@ -16,7 +16,7 @@ import com.kazak.smi.admin.transactions.QuerySender;
 import com.kazak.smi.admin.transactions.QuerySenderException;
 
 
-public class Cache{
+public class Cache {
 	
 	private static Hashtable<String, Group> listGroups;
 	
@@ -48,25 +48,11 @@ public class Cache{
 						group.name = name;
 						group.visible = visible.equals("t") ? true : false;
 						group.zone = zone.equals("t") ? true : false;
-						//keys.add(name);
-						//if (!listGroups.containsKey(name)) {
-							listGroups.put(name,group);
-							TreeManagerGroups.addGroup(name);
-						//}
+						listGroups.put(name,group);
+						TreeManagerGroups.addGroup(name);
 					}
 					
-					/*Set<String> gkeys = listGroups.keySet();
-					Object[] arr = gkeys.toArray();
-					for (int i=0 ; i < arr.length ; i++) {
-						String key = arr[i].toString();
-						if (!keys.contains(key)){
-							listGroups.remove(key);
-							TreeManagerGroups.removeNode(key);
-						}
-					}*/
-					TreeManagerGroups.updateUI();
-					
-					//keys = new Vector<String>();
+					//TreeManagerGroups.updateUI();
 					Document doc2 = QuerySender.getResultSetST("SEL0005",null);
 					
 					//Puntos de Venta
@@ -78,12 +64,7 @@ public class Cache{
 						Iterator cols = row.getChildren().iterator();
 						
 						String code = ((Element)cols.next()).getValue();
-						String name = ((Element)cols.next()).getValue();
-						
-						/* if (name.startsWith("NI")) {
-							System.out.println("LLEGADA:" + name);
-						}*/
-						
+						String name = ((Element)cols.next()).getValue();						
 						String ip = ((Element)cols.next()).getValue();
 						String gid = ((Element)cols.next()).getValue();
 						String gidName = ((Element)cols.next()).getValue();
@@ -94,24 +75,12 @@ public class Cache{
 						ws.ip = ip;
 						ws.code = code;
 						ws.gidname = gidName;
-						//if (!listGroups.get(gidName).containsWS(ws.name)) {
-							listGroups.get(gidName).add(ws);
-							TreeManagerGroups.addChild(gidName,ws.name);
-							//}
-						//keys.add(name);
+						listGroups.get(gidName).add(ws);
+						TreeManagerGroups.addChild(gidName,ws.name);
 					}
-					/*for (Group group : listGroups.values()) {
-						arr = group.getWorkStationsKeys().toArray();
-						for (int i=0 ; i < arr.length ; i++) {
-							String key = arr[i].toString();
-							if (!keys.contains(key)){
-								group.workStations.remove(key);
-								TreeManagerGroups.removeNode(key);
-							}
-						}
-					}*/
-					TreeManagerGroups.updateUI();
-					//keys = new Vector<String>();
+
+					//TreeManagerGroups.updateUI();
+
 					//Usuarios - Funcionarios
 					Document doc3 = QuerySender.getResultSetST("SEL0006",null);
 					
@@ -130,26 +99,14 @@ public class Cache{
 						user.audit = ((Element)cols.next()).getValue().equals("t") ? true : false;
 						user.gid = ((Element)cols.next()).getValue();
 						user.gidname = ((Element)cols.next()).getValue();
-						//if (!listGroups.get(user.gidname).containsUser(user.login)) {
-							listGroups.get(user.gidname).add(user);
-							TreeManagerGroups.addChild(user.gidname,user.login);
-							//}
-						//keys.add(user.login);
+						
+						listGroups.get(user.gidname).add(user);
+						TreeManagerGroups.addChild(user.gidname,user.login);
 					}
 					
-					/*for (Group group : listGroups.values()) {
-						arr = group.users.keySet().toArray();
-						for (int i=0 ; i < arr.length ; i++) {
-							String key = arr[i].toString();
-							if (!keys.contains(key)){
-								group.users.remove(key);
-								TreeManagerGroups.removeNode(key);
-							}
-						}
-					}*/
-					TreeManagerGroups.updateUI();
+					//TreeManagerGroups.updateUI();
+					
 					// Usuarios - Puntos de Venta
-					//keys = new Vector<String>();
 					Document doc4 = QuerySender.getResultSetST("SEL0007",null);
 					root = doc4.getRootElement();
 					rows = root.getChildren("row").iterator();
@@ -169,28 +126,14 @@ public class Cache{
 						user.validIp = ((Element)cols.next()).getValue().equals("t") ? true : false;
 						user.gidname = ((Element)cols.next()).getValue();
 						Group g = searchByWorkStation(namepv);
-						//if (!g.getWs(namepv).containsUser(user.login)) {
-						    //System.out.println("VALUES: " + namepv + ":" + user);
-							g.getWs(namepv).add(user);
-							TreeManagerGroups.addChild(g.name,namepv,user.login);
-							//}
-						//keys.add(user.login);
+						g.getWs(namepv).add(user);
+						TreeManagerGroups.addChild(g.name,namepv,user.login);
 					}
-					/*for (Group group : listGroups.values()) {
-						for (WorkStation ws : group.workStations.values()) {
-							arr = ws.user.keySet().toArray();
-							for (int i=0 ; i < arr.length ; i++) {
-								String key = arr[i].toString();
-								if (!keys.contains(key)){
-									ws.user.remove(key);
-									TreeManagerGroups.removeNode(key);
-								}
-							}	
-						}
-					}*/
+
 					TreeManagerGroups.updateUI();
 					System.gc();
-					TreeManagerGroups.expand();
+					//TreeManagerGroups.expand();
+					System.out.println("Actualizando Arbol desde Cache...");
 				} catch (QuerySenderException e) {
 					e.printStackTrace();
 				}
@@ -198,7 +141,6 @@ public class Cache{
 		};
 		t.start();
 	}
-	
 	
 	public static boolean containsGroup(String gname) {
 		return listGroups.containsKey(gname);

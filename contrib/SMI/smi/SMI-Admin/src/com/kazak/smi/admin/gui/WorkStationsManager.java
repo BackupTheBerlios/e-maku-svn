@@ -89,15 +89,15 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 					FieldCode.setText(ws.getCode());
 					FieldIp.setText(ws.getIp());
 					JCBGroups.setSelectedItem(ws.getGidName());
-					System.out.println("*** Actualizando arbol...");
-					
+					System.out.println("*** Actualizando arbol desde WorkStation (busqueda)");
+					/*
 					TreeManagerGroups.currTpath = new TreePath(
 							new Object[] {
 										new SortableTreeNode(MainWindow.getAppOwner()),
 										new SortableTreeNode(ws.getGidName()),
-										new SortableTreeNode(ws.getName())});
+										new SortableTreeNode(ws.getName())});*/
 										
-					TreeManagerGroups.expand();
+					//TreeManagerGroups.expand();
 					if (ACTION == ACTIONS.ADD) {
 						FieldName.setEditable(false);
 						FieldIp.setEditable(false);
