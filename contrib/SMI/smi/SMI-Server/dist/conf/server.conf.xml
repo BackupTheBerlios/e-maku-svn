@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Config>
-	<!-- General -->
+    <!-- General -->
     <AppOwner>Apuestas Palmira S.A</AppOwner>
     <Lenguaje>es_CO</Lenguaje>
     <Port>9119</Port>
@@ -13,7 +13,7 @@
             <name>smi</name>
             <driver>org.postgresql.Driver</driver>
             <url>jdbc:postgresql://localhost:5432/smi</url>
-            <username>smi</username>
+            <username>smiadmin</username>
             <password></password>
             <connectOnInit>true</connectOnInit>
         </DataBase>
@@ -29,7 +29,7 @@
 	<!-- ================================================ -->
     <!-- Servidor SMTP / POP3-->
     <UserMail>smi</UserMail>
-    <PasswordMail>smi</PasswordMail>
+    <PasswordMail>4pu3st4s</PasswordMail>
     <MailServer>localhost</MailServer>
     <timeIntervalConnect>10000</timeIntervalConnect>
 	<!-- ================================================ -->    

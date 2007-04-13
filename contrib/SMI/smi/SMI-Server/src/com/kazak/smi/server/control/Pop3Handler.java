@@ -33,8 +33,8 @@ public class Pop3Handler extends Thread {
 	private static String host;
 	
 	public Pop3Handler() {
-		LogWriter.write("Iniciando demonio pop3");
-		LogWriter.write("Host:      "+ ConfigFile.getMailServer());
+		LogWriter.write("INFO: Iniciando demonio pop3");
+		LogWriter.write("INFO: Host: " + ConfigFile.getMailServer());
 		Pop3Handler.host = ConfigFile.getMailServer();
 		Pop3Handler.user = ConfigFile.getUserMail();
 		Pop3Handler.password = ConfigFile.getPassWordMail();

@@ -5,8 +5,8 @@ public class OracleSynchronized {
     private int    hour;
     private int    minute;
     private int    second;
-	private int    timeAlifeMessageInDataBase;
-	private int    maxMessagesDataBase;
+    private int    timeAlifeMessageInDataBase;
+    private int    maxMessagesDataBase;
 	
 	public int getHour() {
 		return hour;

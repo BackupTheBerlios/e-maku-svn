@@ -88,11 +88,11 @@ public class ResultSetToXML extends Document {
 						rselect = new RunQuery(sql,args);
 					}
 
-					ResultSet RSdatos = rselect.runSELECT();
+					ResultSet rsData = rselect.runSELECT();
 
 					try {
 
-						ResultSetMetaData RSMDinfo = RSdatos.getMetaData();
+						ResultSetMetaData RSMDinfo = rsData.getMetaData();
 						int columns = RSMDinfo.getColumnCount();
 						writeBufferSocket(sock,
 								ServerConst.CONTEN_TYPE+
@@ -114,55 +114,29 @@ public class ResultSetToXML extends Document {
 						 * Se recorre el resulset para a�adir los datos que contenga, y
 						 * se escriben directamente en el socket en formato XML
 						 */
-						 byte [] res;
-						 String record;
-						while (RSdatos.next()) {
+						byte [] res;
+						
+						while (rsData.next()) {
 							writeBufferSocket(sock,ServerConst.TAGS_ROW[0]);
 							for (int j = 1; j <= columns; j++) {
 
-								res = RSdatos.getBytes(j);
+								res = rsData.getBytes(j);
 
 								if (res==null)
 									res= new String("").getBytes();
-
-								/*
-								record = new String(res,"ISO-8859-1");
-								if(record.startsWith("NI")) {
-								   System.out.println("DATA: " + record);
-								}
-								
-								char[] data = record.toCharArray();
-								boolean flag = false;
-								for(int i=0;i<data.length;i++) {
-									int p = data[i];
-									if (p == 65533) {
-										data[i] = 'N';
-										flag = true;
-									}
-								}
-								if (flag) {
-									System.out.println("DATA: " + record);
-									record = new String(data);
-									System.out.println("DATA2: " + record);
-								} 
-								*/
-
-								record = new String(res,"ISO-8859-1");
 								writeBufferSocket(sock,ServerConst.TAGS_COL[0] + 
-										XMLformat.escapeAttributeEntities(record)+
+										escapeCharacters(new String(res,"ISO-8859-1"))+
 										ServerConst.TAGS_COL[1]
 								);
 							}
 							writeBufferSocket(sock,ServerConst.TAGS_ROW[1]);
-						}
+						}	
+							
 						writeBufferSocket(sock,ServerConst.TAGS_ANSWER[1]);
 						bufferSocket.write(new String ("\n\r\f").getBytes());
 						SocketWriter.writing(sock,bufferSocket);
 						bufferSocket.close();
-						CloseSQL.close(RSdatos);
-//						LogAdmin.setMessage(Language.getWord("OK_CREATING_XML"),
-//						ServerConst.MESSAGE);
-
+						CloseSQL.close(rsData);
 					}
 					catch (SQLException SQLEe) {
 						String err = Language.getWord("ERR_RS") + " " +sql+" "+SQLEe.getMessage();
@@ -207,6 +181,24 @@ public class ResultSetToXML extends Document {
 
 	}
 
+	private String escapeCharacters(String word) {
+		
+		word = word.replaceAll("ñ","&#241;");
+		word = word.replaceAll("Ñ","&#209;");
+		word = word.replaceAll("á","&#225;");
+		word = word.replaceAll("é","&#233;");
+		word = word.replaceAll("í","&#237;");
+		word = word.replaceAll("ó","&#243;");
+		word = word.replaceAll("ú","&#250;");
+		word = word.replaceAll("Á","&#201;");
+		word = word.replaceAll("É","&#241;");
+		word = word.replaceAll("Í","&#205;");
+		word = word.replaceAll("Ó","&#211;");
+		word = word.replaceAll("Ú","&#218;");
+				
+		return word;
+	}
+	
 	private void writeBufferSocket(SocketChannel sock,String data) {
 
 		byte[] bytes = data.getBytes();
@@ -222,5 +214,6 @@ public class ResultSetToXML extends Document {
 				i--;
 			}
 		}
-	}   
+	}
+
 }

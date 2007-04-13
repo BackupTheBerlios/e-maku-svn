@@ -46,10 +46,18 @@ public class Sync {
 	public Sync() {
 		try {
             oracleSQL =	getOracleSQLString();
-			LogWriter.write("Inciando demonio de sincronización");
+			LogWriter.write("INFO: Inciando demonio de sincronización");
 			loadSettings();
-			for (OracleSynchronized oraclesync:ConfigFile.getOraclesync()) {
-				System.out.println("Cargando sincronizacion automatica de las "+oraclesync.getHour());
+			for (OracleSynchronized oraclesync:ConfigFile.getOraclesync()) {				
+				String minute = Integer.toString(oraclesync.getMinute());
+				String time = "am";
+				if (minute.length() == 1) {
+					minute = "0" + minute; 
+				}
+				if (oraclesync.getHour()>12) {
+					time = "pm";
+				}
+				System.out.println("INFO: Cargando sincronizacion automatica de las " + oraclesync.getHour() + ":" + minute + " " + time);
 				new Cron(oraclesync).start();
 			}
 						
@@ -93,7 +101,7 @@ public class Sync {
 				filter();
 				storePostgresData();
 				LogWriter.write("Bases de datos sincronizada");
-				LogWriter.write("Limpiano y recargando la cache de usuarios");
+				LogWriter.write("Limpiano y recargando el cache de usuarios");
 				Element reload = new Element("RELOADTREE");
 				Element succesSync = new Element("SUCCESSSYNC");
 				try {
