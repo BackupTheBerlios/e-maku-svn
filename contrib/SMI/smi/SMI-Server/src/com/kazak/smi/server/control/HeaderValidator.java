@@ -9,8 +9,8 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import com.kazak.smi.lib.misc.Language;
-import com.kazak.smi.server.businesrules.RunTransaction;
-import com.kazak.smi.server.businesrules.Sync;
+import com.kazak.smi.server.businessrules.RunTransaction;
+import com.kazak.smi.server.businessrules.Sync;
 import com.kazak.smi.server.comunications.AcpFailure;
 import com.kazak.smi.server.comunications.ResultSetToXML;
 import com.kazak.smi.server.comunications.SocketServer;

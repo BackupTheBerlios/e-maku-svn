@@ -21,7 +21,7 @@ import com.kazak.smi.server.database.sql.RunQuery;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 import com.kazak.smi.server.misc.LogWriter;
-import com.kazak.smi.server.misc.settings.ConfigFile;
+import com.kazak.smi.server.misc.settings.OracleSynchronized;
 
 public class MessageDistributor {
 	
@@ -73,7 +73,7 @@ public class MessageDistributor {
 		    ResultSet rs = null;
 			try {
 				runQuery = new RunQuery("SEL0026",new String[]{from});
-				rs = runQuery.ejecutarSELECT();
+				rs = runQuery.runSELECT();
 				if (rs.next()) {
 					ifuFrom = SocketServer.getInstaceOfInfoSocket();
 					ifuFrom.setUid(rs.getInt(1));
@@ -150,14 +150,14 @@ public class MessageDistributor {
 			String[] argsSql = 
 			{String.valueOf(ifu.getUid()),String.valueOf(ifuFrom.getUid()),
 			dateStr,hourStr,subject.trim(),body.trim(),isvalid,
-			String.valueOf(ConfigFile.getTimeAlifeMessageForClient()),
+			String.valueOf(OracleSynchronized.getTimeAlifeMessageForClient()),
 			String.valueOf(control),String.valueOf(timeAlife)};
 			
 			RunQuery runQuery = null;
 			try {
 				runQuery = new RunQuery("INS0003",argsSql);
 				runQuery.setAutoCommit(false);
-				runQuery.ejecutarSQL();
+				runQuery.runSQL();
 				runQuery.commit();
 				runQuery.closeStatement();
 				LogWriter.write("Mensaje almacenado en la base de datos");

@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.kazak.smi.lib.misc.Language;
-import com.kazak.smi.server.database.connection.PoolConexiones;
+import com.kazak.smi.server.database.connection.ConnectionsPool;
 import com.kazak.smi.server.misc.LogWriter;
 import com.kazak.smi.server.misc.settings.ConfigFile;
 
@@ -51,7 +51,7 @@ public class RunIUD {
      */
     public String ejecutarIUD() {
         try {
-            Statement st = PoolConexiones.getConnection(ConfigFile.getMainDataBase()).createStatement();
+            Statement st = ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).createStatement();
             try {
                 st.execute(sql);
             } 

@@ -1,4 +1,4 @@
-package com.kazak.smi.server.businesrules;
+package com.kazak.smi.server.businessrules;
 
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
@@ -109,7 +109,7 @@ public class UserManager {
 						RunQuery rq = new RunQuery(sqlCode,sqlArgs);
 						querys.add(rq);
 						rq.setAutoCommit(false);
-						rq.ejecutarSQL();
+						rq.runSQL();
 					}
 				}
 				else {
@@ -118,7 +118,7 @@ public class UserManager {
 					RunQuery rq = new RunQuery(sqlCode,arrUserInfo);
 					querys.add(rq);
 					rq.setAutoCommit(false);
-					rq.ejecutarSQL();
+					rq.runSQL();
 				}
 			}
 		}
@@ -135,7 +135,7 @@ public class UserManager {
 		RunQuery rq = new RunQuery(sqlCode,arrUserInfo);
 		querys.add(rq);
 		rq.setAutoCommit(false);
-		rq.ejecutarSQL();
+		rq.runSQL();
 			
 		e = (Element)it.next();
 		String[] args = packArgs(e);
@@ -143,7 +143,7 @@ public class UserManager {
 		rq = new RunQuery(sqlCode,args);
 		querys.add(rq);
 		rq.setAutoCommit(false);
-		rq.ejecutarSQL();
+		rq.runSQL();
 		
 		e = (Element)it.next();
 		List lspacks = e.getChildren("subpackage");
@@ -158,7 +158,7 @@ public class UserManager {
 				rq = new RunQuery(sqlCode,sqlArgs);
 				querys.add(rq);
 				rq.setAutoCommit(false);
-				rq.ejecutarSQL();
+				rq.runSQL();
 			}
 		}
 		return true;
@@ -174,7 +174,7 @@ public class UserManager {
 		RunQuery rq = new RunQuery(sqlCode,args);
 		querys.add(rq);
 		rq.setAutoCommit(false);
-		rq.ejecutarSQL();
+		rq.runSQL();
 		//oldLogin = args[0];
 		
 		e = (Element)it.next();
@@ -183,7 +183,7 @@ public class UserManager {
 		rq = new RunQuery(sqlCode,args);
 		querys.add(rq);
 		rq.setAutoCommit(false);
-		rq.ejecutarSQL();
+		rq.runSQL();
 		
 		return true;
 	}
@@ -210,7 +210,7 @@ public class UserManager {
 		ResultSet rs = null;
 		try {
 			runQuery = new RunQuery("SEL0029",new String[]{login});
-			rs = runQuery.ejecutarSELECT();
+			rs = runQuery.runSELECT();
 		    if (rs.next()) {
 		    	return rs.getString(1);
 		    }

@@ -24,7 +24,7 @@ public class TransactionsCache {
 		transactions = new Hashtable<String,Transaction>();
 		try {
 			RunQuery runQuery = new RunQuery("SRV0001");
-			ResultSet rs = runQuery.ejecutarSELECT();
+			ResultSet rs = runQuery.runSELECT();
 			while (rs.next()) {
 				String code = rs.getString("codigo");
 				String driver = rs.getString("driver");

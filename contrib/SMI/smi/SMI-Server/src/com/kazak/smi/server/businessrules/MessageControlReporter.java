@@ -1,4 +1,4 @@
-package com.kazak.smi.server.businesrules;
+package com.kazak.smi.server.businessrules;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -59,7 +59,7 @@ public class MessageControlReporter {
 		ResultSet rs = null;
 		try {
 			runQuery = new RunQuery("SEL0022",sqlArgs);
-			rs = runQuery.ejecutarSELECT();
+			rs = runQuery.runSELECT();
 			HSSFWorkbook wb = new HSSFWorkbook();
 			HSSFSheet sheet = wb.createSheet("REPORTE DE CONTROL");
 			int i=0;
@@ -124,8 +124,11 @@ public class MessageControlReporter {
 			RunTransaction.errorMessage(
 					 sock,
 					 id,
-					 "No se pudo procesar la operacion:\n" +
-					 "causa:\n"+e.getMessage());
+					 "No se pudo procesar la operación:\n" +
+					 "posiblemente el usuario tiene una\n"+
+					 "cuenta de correo inválida o no tenga\n"+
+					 "una cuenta asignada en el sistema.\n"+ 
+					 "Causa:\n"+e.getMessage());
 		} catch (MessagingException e) {
 			e.printStackTrace();
 			RunTransaction.errorMessage(

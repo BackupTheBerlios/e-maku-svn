@@ -67,7 +67,7 @@ public class LoginUser {
 	    int count = 0;
 		try {
 			runQuery = new RunQuery("SEL0023",new String[]{login,password});
-			rs = runQuery.ejecutarSELECT();
+			rs = runQuery.runSELECT();
 		    count = rs.next() ? rs.getInt(1) : 0;
 		} catch (SQLNotFoundException e) {
 			e.printStackTrace();
@@ -83,7 +83,7 @@ public class LoginUser {
     		
 	    	try {
 				runQuery = new RunQuery("SEL0025",new String[]{login,login});
-				rs = runQuery.ejecutarSELECT();
+				rs = runQuery.runSELECT();
 				if (rs.next()) {
 					uid 	= rs.getInt(1);
 					login	= rs.getString(2);

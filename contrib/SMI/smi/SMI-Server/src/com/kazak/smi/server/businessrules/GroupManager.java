@@ -1,4 +1,4 @@
-package com.kazak.smi.server.businesrules;
+package com.kazak.smi.server.businessrules;
 
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
@@ -85,7 +85,7 @@ public class GroupManager {
 				RunQuery rq = new RunQuery(sqlCode,packArgs(e));
 				querys.add(rq);
 				rq.setAutoCommit(false);
-				rq.ejecutarSQL();
+				rq.runSQL();
 			}
 		}
 		return true;
@@ -101,7 +101,7 @@ public class GroupManager {
 		String sqlCode = ((Element)itArgs.next()).getText();
 		RunQuery rq = new RunQuery(sqlCode,args);
 		querys.add(rq);
-		ResultSet rs = rq.ejecutarSELECT();
+		ResultSet rs = rq.runSELECT();
 		rs.next();
 		int count = rs.getInt("count");
 		rs.close();
@@ -112,7 +112,7 @@ public class GroupManager {
 		sqlCode = ((Element)itArgs.next()).getText();
 		rq = new RunQuery(sqlCode,args);
 		querys.add(rq);
-		rs = rq.ejecutarSELECT();
+		rs = rq.runSELECT();
 		rs.next();
 		count = rs.getInt("count");
 		rs.close();
@@ -125,7 +125,7 @@ public class GroupManager {
 		rq = new RunQuery(sqlCode,packArgs(e));
 		querys.add(rq);
 		rq.setAutoCommit(false);
-		rq.ejecutarSQL();
+		rq.runSQL();
 		
 		return true;
 	}

@@ -8,13 +8,12 @@
     <SecondDataBase>oracle</SecondDataBase>
     <!-- ================================================ -->
 	<!-- Conexion a base de datos -->
-    <synchronized>true</synchronized>
     <PoolConnection>
         <DataBase>
             <name>smi</name>
             <driver>org.postgresql.Driver</driver>
-            <url>jdbc:postgresql://localhost:5432/smi</url>
-            <username>smi</username>
+            <url>jdbc:postgresql://192.168.10.250:5432/smi</url>
+            <username>smiadmin</username>
             <password></password>
             <connectOnInit>true</connectOnInit>
         </DataBase>
@@ -30,18 +29,31 @@
 	<!-- ================================================ -->
     <!-- Servidor SMTP / POP3-->
     <UserMail>smi</UserMail>
-    <PasswordMail>smi</PasswordMail>
+    <PasswordMail>smi789</PasswordMail>
     <MailServer>localhost</MailServer>
     <timeIntervalConnect>10000</timeIntervalConnect>
 	<!-- ================================================ -->    
     <!-- Tareas Programadas -->
-    <Hour>10</Hour>
-    <Minute>0</Minute>
-    <Second>0</Second>
-    <!-- ================================================ -->
-    <!-- Mantenimiento de la Base de datos -->
-    <TimeAlifeMessageForClient>3</TimeAlifeMessageForClient>
-    <TimeAlifeMessageInDataBase>30</TimeAlifeMessageInDataBase>
-    <MaxMessagesDataBase>3000</MaxMessagesDataBase>
-    <!-- ================================================ -->
+    <synchronized>
+	    <Hour>16</Hour>
+	    <Minute>03</Minute>
+	    <Second>0</Second>
+	    <!-- ================================================ -->
+	    <!-- Mantenimiento de la Base de datos -->
+	    <TimeAlifeMessageForClient>3</TimeAlifeMessageForClient>
+	    <TimeAlifeMessageInDataBase>30</TimeAlifeMessageInDataBase>
+	    <MaxMessagesDataBase>3000</MaxMessagesDataBase>
+	    <!-- ================================================ -->
+    </synchronized>
+    <synchronized>
+	    <Hour>16</Hour>
+	    <Minute>04</Minute>
+	    <Second>0</Second>
+	    <!-- ================================================ -->
+	    <!-- Mantenimiento de la Base de datos -->
+	    <TimeAlifeMessageForClient>3</TimeAlifeMessageForClient>
+	    <TimeAlifeMessageInDataBase>30</TimeAlifeMessageInDataBase>
+	    <MaxMessagesDataBase>3000</MaxMessagesDataBase>
+	    <!-- ================================================ -->
+    </synchronized>
 </Config>

@@ -63,14 +63,14 @@ public class CacheXML extends Document {
 				 */
 				String[] args = {codigo};
 				String SQL;
-				ResultSet RSdatos = new RunQuery("SEL0009",args).ejecutarSELECT();
+				ResultSet RSdatos = new RunQuery("SEL0009",args).runSELECT();
 				RSdatos.next();
 				SQL= RSdatos.getString("codigo");
 				CloseSQL.close(RSdatos);
 
 				rselect = new RunQuery("SEL0007",args);
 
-				RSdatos = rselect.ejecutarSELECT();
+				RSdatos = rselect.runSELECT();
 
 				/*
 				 *  Se captura las llaves en una tabla hash y en un String
@@ -94,11 +94,11 @@ public class CacheXML extends Document {
 					 * a transmitir 
 					 */
 
-					RSdatos = new RunQuery("SEL0010",args).ejecutarSELECT();
+					RSdatos = new RunQuery("SEL0010",args).runSELECT();
 					RSdatos.next();
 					String cache_sql = RSdatos.getString("sentencia_cache");
 
-					RSdatos = new RunQuery(codigo, cache_sql).ejecutarSELECT();
+					RSdatos = new RunQuery(codigo, cache_sql).runSELECT();
 					ResultSetMetaData RSMDinfo = RSdatos.getMetaData();
 					int columnas = RSMDinfo.getColumnCount();
 

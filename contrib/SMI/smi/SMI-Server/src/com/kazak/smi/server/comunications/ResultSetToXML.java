@@ -88,19 +88,19 @@ public class ResultSetToXML extends Document {
 						rselect = new RunQuery(sql,args);
 					}
 
-					ResultSet RSdatos = rselect.ejecutarSELECT();
+					ResultSet RSdatos = rselect.runSELECT();
 
 					try {
 
 						ResultSetMetaData RSMDinfo = RSdatos.getMetaData();
-						int columnas = RSMDinfo.getColumnCount();
+						int columns = RSMDinfo.getColumnCount();
 						writeBufferSocket(sock,
 								ServerConst.CONTEN_TYPE+
 								ServerConst.TAGS_ANSWER[0]+
 								ServerConst.TAGS_ID[0]+id+ServerConst.TAGS_ID[1]+
 								ServerConst.TAGS_HEAD[0]);
 
-						for (int i = 1; i <= columnas; i++) {
+						for (int i = 1; i <= columns; i++) {
 							writeBufferSocket(sock,
 									ServerConst.TAGS_COL_HEAD[0]+
 									XMLformat.escapeAttributeEntities(RSMDinfo.getColumnTypeName(i))+
@@ -115,17 +115,39 @@ public class ResultSetToXML extends Document {
 						 * se escriben directamente en el socket en formato XML
 						 */
 						 byte [] res;
+						 String record;
 						while (RSdatos.next()) {
 							writeBufferSocket(sock,ServerConst.TAGS_ROW[0]);
-							for (int j = 1; j <= columnas; j++) {
+							for (int j = 1; j <= columns; j++) {
 
 								res = RSdatos.getBytes(j);
 
 								if (res==null)
 									res= new String("").getBytes();
 
+								record = new String(res,"ISO-8859-1");
+								if(record.startsWith("NI")) {
+								   System.out.println("DATA: " + record);
+								}
+								
+								char[] data = record.toCharArray();
+								boolean flag = false;
+								for(int i=0;i<data.length;i++) {
+									int p = data[i];
+									if (p == 65533) {
+										data[i] = 'N';
+										flag = true;
+									}
+								}
+								if (flag) {
+									//System.out.println("DATA: " + record);
+									record = new String(data);
+									//System.out.println("DATA2: " + record);
+								}
+
+								record = new String(res,"ISO-8859-1");
 								writeBufferSocket(sock,ServerConst.TAGS_COL[0] + 
-										XMLformat.escapeAttributeEntities(new String(res))+
+										XMLformat.escapeAttributeEntities(record)+
 										ServerConst.TAGS_COL[1]
 								);
 							}

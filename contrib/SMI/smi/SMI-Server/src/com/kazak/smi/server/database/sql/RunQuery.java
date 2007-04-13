@@ -6,7 +6,7 @@ import java.sql.Statement;
 
 import org.jdom.Element;
 
-import com.kazak.smi.server.database.connection.PoolConexiones;
+import com.kazak.smi.server.database.connection.ConnectionsPool;
 import com.kazak.smi.server.misc.LogWriter;
 import com.kazak.smi.server.misc.settings.ConfigFile;
 
@@ -69,28 +69,28 @@ public class RunQuery extends Element {
      * 
      * @return retorna el resultado de la consulta
      */
-    public ResultSet ejecutarSELECT() throws SQLException{
-        st = PoolConexiones.getConnection(ConfigFile.getMainDataBase()).createStatement();
+    public ResultSet runSELECT() throws SQLException{
+        st = ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).createStatement();
 //        LogWriter.write("SENTENCIA SQL :: "+sql);
         ResultSet rs = st.executeQuery(sql);
         return rs;
     }
 
-    public boolean ejecutarSQL(String cod_sql,String[] args) 
+    public boolean runSQL(String cod_sql,String[] args) 
     throws SQLException,SQLNotFoundException, SQLBadArgumentsException {
         this.cod_sql = cod_sql;
         sql = InstruccionesSQL.getSentencia(cod_sql,args);
-        st = PoolConexiones.getConnection(ConfigFile.getMainDataBase()).createStatement();
+        st = ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).createStatement();
 //        LogWriter.write("SENTENCIA SQL :: "+sql);
         boolean status = st.execute(sql);
         st.close();
         return status;
     }
 
-    public boolean ejecutarSQL(String[] args) 
+    public boolean runSQL(String[] args) 
     throws SQLException,SQLNotFoundException, SQLBadArgumentsException {
         sql = InstruccionesSQL.getSentencia(cod_sql,args);
-        st = PoolConexiones.getConnection(ConfigFile.getMainDataBase()).createStatement();
+        st = ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).createStatement();
         LogWriter.write("SENTENCIA SQL :: "+sql);
         boolean status = st.execute(sql);
         st.close();
@@ -103,9 +103,9 @@ public class RunQuery extends Element {
      * 
      * @return retorna TRUE si la transaccion es excitosa y FALSE si no
      */
-    public boolean ejecutarSQL() throws SQLException{
+    public boolean runSQL() throws SQLException{
         
-        st = PoolConexiones.getConnection(ConfigFile.getMainDataBase()).createStatement();
+        st = ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).createStatement();
         //System.out.println("SENTENCIA SQL :: "+sql);
         boolean status = st.execute(sql);
         st.close();
@@ -122,7 +122,7 @@ public class RunQuery extends Element {
     
     public void setAutoCommit(boolean autoCommit) {
         try {
-        	PoolConexiones.getConnection(ConfigFile.getMainDataBase()).setAutoCommit(autoCommit);
+        	ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).setAutoCommit(autoCommit);
         }
         catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -132,7 +132,7 @@ public class RunQuery extends Element {
     
     public void commit() {
         try {
-        	PoolConexiones.getConnection(ConfigFile.getMainDataBase()).commit();
+        	ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).commit();
         }
         catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -142,7 +142,7 @@ public class RunQuery extends Element {
     
     public void rollback() {
         try {
-        	PoolConexiones.getConnection(ConfigFile.getMainDataBase()).rollback();
+        	ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).rollback();
         }
         catch (SQLException e) {
             // TODO Auto-generated catch block

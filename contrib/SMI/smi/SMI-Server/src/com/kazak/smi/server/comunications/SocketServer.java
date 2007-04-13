@@ -438,7 +438,7 @@ public class SocketServer {
 	    
 		try {
 			runQuery = new RunQuery("SEL0027");
-			rs = runQuery.ejecutarSELECT();
+			rs = runQuery.runSELECT();
 			while(rs.next()) {
 				InfoSocket ifuFrom = SocketServer.getInstaceOfInfoSocket();
 				ifuFrom.setUid(rs.getInt(1));
@@ -500,7 +500,7 @@ public class SocketServer {
         
 		try {
 			runQuery = new RunQuery("SEL0027");
-			rs = runQuery.ejecutarSELECT();
+			rs = runQuery.runSELECT();
 			while(rs.next()) {
 				InfoSocket ifuFrom = SocketServer.getInstaceOfInfoSocket();
 				ifuFrom.setUid(rs.getInt(1));

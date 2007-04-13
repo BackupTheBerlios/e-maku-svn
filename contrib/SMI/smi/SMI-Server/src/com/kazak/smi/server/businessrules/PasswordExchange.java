@@ -1,8 +1,7 @@
-package com.kazak.smi.server.businesrules;
+package com.kazak.smi.server.businessrules;
 
 import java.nio.channels.SocketChannel;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,16 +12,13 @@ import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 import com.kazak.smi.server.misc.LogWriter;
 
-public class GenericTransaction {
+public class PasswordExchange {
 
 	private Iterator it;
-	private ArrayList<RunQuery> querys;
-	public GenericTransaction(SocketChannel sock, Element args, Element packet, String id) {
+	
+	public PasswordExchange(SocketChannel sock, Element args, Element packet, String id) {
 		this.it = packet.getChildren("package").iterator();
-		int count = args.getChildren("args").size();
-		int passed = 0;
 		Iterator itArgs = args.getChildren("args").iterator();
-		querys = new ArrayList<RunQuery>();
 		RunQuery runQuery = null;
 		while(itArgs.hasNext()) {
 			Element element = (Element) itArgs.next();
@@ -31,10 +27,11 @@ public class GenericTransaction {
 			try {
 				runQuery = new RunQuery(sqlCode,sqlArgs);
 				runQuery.setAutoCommit(false);
-				querys.add(runQuery);
-				runQuery.ejecutarSQL();
-				passed ++;
+				runQuery.runSQL();
+				runQuery.commit();
+				RunTransaction.successMessage(sock,id,"Clave cambiada satisfactoriamente");
 			} catch (SQLException e) {
+				runQuery.rollback();
 				e.printStackTrace();
 				LogWriter.write("Codigo error: "+e.getErrorCode());
 				if (runQuery!=null) {
@@ -43,16 +40,14 @@ public class GenericTransaction {
 				RunTransaction.errorMessage(
 						 sock,
                     	 id,
-                    	 "No se pudo procesar la operacion:\n" +
+                    	 "No se pudo cambiar la clave:\n" +
  						 "causa:\n"+e.getLocalizedMessage());
-				break;
 			} catch (SQLNotFoundException e) {
 				e.printStackTrace();
 				RunTransaction.errorMessage(
 						 sock,
 						 id,
 						 "La sentencia  " + sqlCode + " no existe");
-				break;
 			} catch (SQLBadArgumentsException e) {
 				e.printStackTrace();
 				RunTransaction.errorMessage(
@@ -60,23 +55,9 @@ public class GenericTransaction {
 						 id,
 						 "Argumentos invalidos " +
 						 "para la sentencia : " + sqlCode);
-				break;
 			}
 		}
-		if (passed==count) {
-			for (RunQuery rq :querys) {
-				rq.commit();
-			}
-			
-			RunTransaction.
-			successMessage
-			(sock,id,"Los datos fueron almacenados satisfactoriamente");
-		}
-		else {
-			for (RunQuery rq :querys) {
-				rq.rollback();
-			}
-		}
+		
 	}
 	
 	public String[] packArgs() {

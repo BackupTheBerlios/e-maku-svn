@@ -1,4 +1,4 @@
-package com.kazak.smi.server.businesrules;
+package com.kazak.smi.server.businessrules;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;

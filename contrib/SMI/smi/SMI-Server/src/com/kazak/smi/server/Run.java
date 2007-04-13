@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import com.kazak.smi.lib.misc.Language;
-import com.kazak.smi.server.businesrules.Sync;
+import com.kazak.smi.server.businessrules.Sync;
 import com.kazak.smi.server.comunications.SocketServer;
 import com.kazak.smi.server.control.Pop3Handler;
 import com.kazak.smi.server.control.TransactionsCache;
-import com.kazak.smi.server.database.connection.PoolConexiones;
+import com.kazak.smi.server.database.connection.ConnectionsPool;
 import com.kazak.smi.server.database.connection.PoolNotLoadException;
 import com.kazak.smi.server.database.sql.CacheEnlace;
 import com.kazak.smi.server.misc.LogWriter;
@@ -31,7 +31,7 @@ public class Run {
 		}
 		try {	
 			ConfigFile.loadConfigFile(smiConfigFile);
-			PoolConexiones.CargarBD();
+			ConnectionsPool.loadDB();
 			new CacheEnlace();
 			TransactionsCache.loadCache();
 			new Pop3Handler();
@@ -65,7 +65,7 @@ public class Run {
 	
 	public static void killServer() {
 		try {
-			PoolConexiones.getConnection(ConfigFile.getMainDataBase()).close();
+			ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -120,13 +120,14 @@ public class Pop3Handler extends Thread {
 							runQuery = all ?
 									new RunQuery("SEL0028") :
 									new RunQuery("SEL0024",new String[]{to,to});
-							rs = runQuery.ejecutarSELECT();
+							rs = runQuery.runSELECT();
 							while (rs.next()) {
 								idgroup =  rs.getString(1);
 								if (idgroup!=null) {
 									Element xml = new Element("Message");
 									xml.addContent(create("idgroup",idgroup));
 									xml.addContent(create("toName",	all ? rs.getString(2): to ));
+									//xml.addContent(create("toName",	all ? new String(rs.getBytes(2),"ISO-8859-1"): to ));
 									xml.addContent(create("from",   from));
 									xml.addContent(create("subject",sub));
 									xml.addContent(create("message",content));

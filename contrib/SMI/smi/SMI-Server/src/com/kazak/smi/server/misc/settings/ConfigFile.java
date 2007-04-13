@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -50,10 +51,14 @@ public class ConfigFile {
     private static String appOwner;
     private static String mainDataBase;
     private static String secondDataBase;
+    private static int    timeIntervalConnect;
     private static String local;
     private static String userMail; 
     private static String passWordMail;
     private static String mailServer;
+    private static ArrayList<OracleSynchronized> oraclesync = new ArrayList<OracleSynchronized>();
+    
+    /*
     private static int    hour;
     private static int    minute;
     private static int    second;
@@ -61,7 +66,7 @@ public class ConfigFile {
 	private static int    timeAlifeMessageForClient;
 	private static int    timeAlifeMessageInDataBase;
 	private static int    maxMessagesDataBase;
-    
+    */
     
     /**
      * Este metodo se encarga de cargar el archivo de configuracion
@@ -106,21 +111,11 @@ public class ConfigFile {
                 	passWordMail = records.getValue();
                 } else if (records.getName().equals("MailServer")) {
                 	mailServer = records.getValue();
-                } else if (records.getName().equals("Hour")) {
-                    hour = Integer.parseInt(records.getValue());
-                } else if (records.getName().equals("Minute")) {
-                    minute = Integer.parseInt(records.getValue());
-                } else if (records.getName().equals("Second")) {
-                    second = Integer.parseInt(records.getValue());
                 } else if (records.getName().equals("timeIntervalConnect")) {
                 	timeIntervalConnect = Integer.parseInt(records.getValue());
-                } else if (records.getName().equals("TimeAlifeMessageForClient")) {
-                	timeAlifeMessageForClient = Integer.parseInt(records.getValue());
-                } else if (records.getName().equals("TimeAlifeMessageInDataBase")) {
-                	timeAlifeMessageInDataBase = Integer.parseInt(records.getValue());
-                } else if (records.getName().equals("MaxMessagesDataBase")) {
-                	maxMessagesDataBase = Integer.parseInt(records.getValue());
-                } 
+                } else if (records.getName().equalsIgnoreCase("synchronized")) {
+                	oraclesync.add(oracleSynchronized(records));
+                }                
             }
             LogWriter.write(Language.getWord("LOADING_CF"));
         }
@@ -135,6 +130,29 @@ public class ConfigFile {
         }
     }
 
+    private static OracleSynchronized oracleSynchronized(Element e) {
+    	OracleSynchronized sync = new OracleSynchronized();
+    	Iterator i = e.getChildren().iterator();
+    	while (i.hasNext()) {
+    		Element records = (Element)i.next();
+	    	if (records.getName().equals("Hour")) {
+	            sync.setHour(Integer.parseInt(records.getValue()));
+	        } else if (records.getName().equals("Minute")) {
+	            sync.setMinute(Integer.parseInt(records.getValue()));
+	        } else if (records.getName().equals("Second")) {
+	            sync.setSecond(Integer.parseInt(records.getValue()));
+	        } else if (records.getName().equals("TimeAlifeMessageForClient")) {
+	        	sync.setTimeAlifeMessageForClient(Integer.parseInt(records.getValue()));
+	        } else if (records.getName().equals("TimeAlifeMessageInDataBase")) {
+	        	sync.setTimeAlifeMessageInDataBase(Integer.parseInt(records.getValue()));
+	        } else if (records.getName().equals("MaxMessagesDataBase")) {
+	        	sync.setTimeAlifeMessageInDataBase(Integer.parseInt(records.getValue()));
+	        }
+    	}
+    	
+    	return sync;
+    }
+    
     /**
      * Metodo encargado de cargar cada una de las conexiones a las
      * Bases de Datos
@@ -274,29 +292,17 @@ public class ConfigFile {
 	public static String getMainDataBase() {
 		return mainDataBase;
 	}
-
-	public static int getHour() {
-		return hour;
+	
+	public static String getUserMail() {
+		return userMail;
 	}
-
-	public static String getMailServer() {
-		return mailServer;
-	}
-
-	public static int getMinute() {
-		return minute;
-	}
-
+	
 	public static String getPassWordMail() {
 		return passWordMail;
 	}
-
-	public static int getSecond() {
-		return second;
-	}
-
-	public static String getUserMail() {
-		return userMail;
+	
+	public static String getMailServer() {
+		return mailServer;
 	}
 
 	public static String getSecondDataBase() {
@@ -315,17 +321,10 @@ public class ConfigFile {
 		ConfigFile.timeIntervalConnect = timeIntervalConnect;
 	}
 
-	public static int getMaxMessagesDataBase() {
-		return maxMessagesDataBase;
+	public static ArrayList<OracleSynchronized> getOraclesync() {
+		return oraclesync;
 	}
-
-	public static int getTimeAlifeMessageForClient() {
-		return timeAlifeMessageForClient;
-	}
-
-	public static int getTimeAlifeMessageInDataBase() {
-		return timeAlifeMessageInDataBase;
-	}
+	
 }
     
 /**

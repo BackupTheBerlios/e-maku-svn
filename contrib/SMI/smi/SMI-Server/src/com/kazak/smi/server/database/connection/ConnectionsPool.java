@@ -32,7 +32,7 @@ import com.kazak.smi.server.misc.settings.ConfigFile;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
-public class PoolConexiones {
+public class ConnectionsPool {
     
     private static Hashtable <String,Connection>Hpoolbds;
     private static boolean closed = false;
@@ -41,7 +41,7 @@ public class PoolConexiones {
      * fichero de configuracion
      */
     
-    public static void CargarBD() throws PoolNotLoadException {
+    public static void loadDB() throws PoolNotLoadException {
         
         Hpoolbds = new Hashtable<String,Connection>();
         int max = ConfigFile.getDBSize();
@@ -90,16 +90,16 @@ public class PoolConexiones {
     }
     
     public static synchronized void  checkDataBasesConection() {
-    	if (!PoolConexiones.closed) return;
+    	if (!ConnectionsPool.closed) return;
     	try {
-        		CargarBD();
-        		PoolConexiones.closed = false;
+        		loadDB();
+        		ConnectionsPool.closed = false;
 		} catch (PoolNotLoadException e) {
 			e.printStackTrace();
 		}
     }
     
-    public static boolean chekDataBase(String DataBase) {
+    public static boolean checkDataBase(String DataBase) {
     	return Hpoolbds.containsKey(DataBase);
     }
     
@@ -112,6 +112,6 @@ public class PoolConexiones {
     				e.printStackTrace();
     		}
     	}
-    	PoolConexiones.closed = true;
+    	ConnectionsPool.closed = true;
     }
 }

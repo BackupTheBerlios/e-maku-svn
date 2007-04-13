@@ -16,10 +16,10 @@ import com.kazak.smi.server.misc.settings.ConfigFile;
 
 public class CacheEnlace {
 
-	private static Hashtable <String,String>Hinstrucciones;
+	private static Hashtable <String,String>HInstructions;
    
    public CacheEnlace() {
-	   Hinstrucciones = new Hashtable<String,String>();
+	   HInstructions = new Hashtable<String,String>();
 	   LogWriter.write(
 			   Language.getWord("LOADING_CACHE") + " "+
 			   ConfigFile.getMainDataBase());
@@ -33,7 +33,7 @@ public class CacheEnlace {
 			   Element sentence = (Element)sentences.next();
 			   String code = sentence.getChildText("code").trim();
 			   String sql = sentence.getChildText("sql").trim();
-			   Hinstrucciones.put("K-"+code,sql);
+			   HInstructions.put("K-"+code,sql);
 		   }
 	   } catch (JDOMException e) {
 		   e.printStackTrace();
@@ -49,6 +49,6 @@ public class CacheEnlace {
      * @return retorna la sentencia SQL
      */
     public static String getSentenciaSQL(String key) {
-        return Hinstrucciones.get(key);
+        return HInstructions.get(key);
     }    
 }

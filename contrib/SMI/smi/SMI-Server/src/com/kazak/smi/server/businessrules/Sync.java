@@ -1,5 +1,7 @@
-package com.kazak.smi.server.businesrules;
+package com.kazak.smi.server.businessrules;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
 import java.sql.Connection;
@@ -20,26 +22,16 @@ import com.kazak.smi.server.comunications.SocketWriter;
 import com.kazak.smi.server.control.DailyIterator;
 import com.kazak.smi.server.control.Scheduler;
 import com.kazak.smi.server.control.SchedulerTask;
-import com.kazak.smi.server.database.connection.PoolConexiones;
+import com.kazak.smi.server.database.connection.ConnectionsPool;
 import com.kazak.smi.server.misc.LogWriter;
 import com.kazak.smi.server.misc.settings.ConfigFile;
+import com.kazak.smi.server.misc.ServerConst;
+import com.kazak.smi.server.misc.settings.OracleSynchronized;
 
 
 public class Sync {
-	 
-	private String sqlOracle =
-	" select 'CV'||H.CONTVTA_PRS_DOCUMENTO Login,H.ubcneg_trtrio_codigo Codigo_punto,"+
-    " (select nombre from territorios T"+
-    "        where H.ubcneg_trtrio_codigo=T.codigo"+
-    "          and T.negocio='S'"+
-    "         and T.tpotrt_codigo=15) Nombre_Punto,"+
-    "      (select P.nombres||' '||P.apellido1 from personas P"+
-    "        where H.contvta_prs_documento=P.documento) Nombre_Colocador"+
-    " from horariopersonas H"+
-    " where H.fechafinal is null"+
-    " and (select nombre from territorios T"+
-    "      where H.ubcneg_trtrio_codigo=T.codigo) NOT LIKE '%MANUAL%'";
 	
+	private String oracleSQL = "";
 	private Connection cnOracle;
 	private Hashtable<String,User> dataUser; 
 	private Hashtable<String,String> dataWs;
@@ -50,15 +42,31 @@ public class Sync {
 	private Vector<String> CurrentDataWs;
 	private Statement st = null;
 	private SocketChannel sock;
+	
 	public Sync() {
+		
 		try {
+			String line="";
+			BufferedReader in = new BufferedReader(new FileReader(ServerConst.CONF + ServerConst.SEPARATOR + "oracle.sql"));
+		    while ((line = in.readLine()) != null)   {
+		    	oracleSQL += line;
+		    }
+			in.close();
+		    
 			LogWriter.write("Inciando demonio de sincronización");
 			loadSettings();
+			for (OracleSynchronized oraclesync:ConfigFile.getOraclesync()) {
+				System.out.println("Cargando sincrinizacion automatica de las "+oraclesync.getHour());
+				new Cron(oraclesync).start();
+			}
+			
+			
+			/*
 			int hour   = ConfigFile.getHour();
 			int minute = ConfigFile.getMinute();
 			int second = ConfigFile.getSecond();
 			Cron cron = new Cron(hour,minute,second);
-			cron.start();
+			cron.start();*/
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -131,7 +139,7 @@ public class Sync {
 		LogWriter.write("Cargando datos actuales de la base de datos PostgreSQL");
 		ResultSet rs = null;
 		try {
-			st = PoolConexiones.getConnection(ConfigFile.getMainDataBase()).createStatement();
+			st = ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).createStatement();
 			rs = st.executeQuery("SELECT login FROM usuarios WHERE login like 'CV%'");
 			while (rs.next()) {
 				String code   = rs.getString(1).trim();
@@ -180,7 +188,7 @@ public class Sync {
 			cnOracle = ConfigFile.getConnection(ConfigFile.getSecondDataBase());
 			
 			st = cnOracle.createStatement();
-			rs = st.executeQuery(sqlOracle);
+			rs = st.executeQuery(oracleSQL);
 			while (rs.next()) {
 			/*RandomAccessFile raf = new RandomAccessFile("/datos/datos_oracle.csv","r");
 			String line = null;
@@ -252,7 +260,7 @@ public class Sync {
 	private void storePostgresData() {
 		try {
 			LogWriter.write("Sincronizando....");
-			st = PoolConexiones.getConnection(ConfigFile.getMainDataBase()).createStatement();
+			st = ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).createStatement();
 		} catch (SQLException e) {
 			Element errSync = new Element("ERRSYNC");
 			Element message = new Element("message");
@@ -434,14 +442,16 @@ public class Sync {
 
 	    private Scheduler scheduler = new Scheduler();
 	    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss.SSS");
-	    private int hourOfDay, minute, second;
-	    public Cron(int hourOfDay, int minute, int second) {
-	        this.hourOfDay = hourOfDay;
-	        this.minute = minute;
-	        this.second = second;
+	    private OracleSynchronized oraclesync;
+	    
+	    public Cron(OracleSynchronized oraclesync){
+	    	this.oraclesync=oraclesync;
+	    	System.out.println("Instanciando ...");
 	    }
-
+	    
+	    
 	    public void start() {
+	    	System.out.println("llamando a start");
 	        scheduler.schedule(new SchedulerTask() {
 	            public void run() {
 	                LogWriter.write("Syncronizando  fecha: " + dateFormat.format(new Date()));
@@ -457,14 +467,14 @@ public class Sync {
 					LogWriter.write("Inicio de mantenimiento de base de datos");
 					ResultSet rs = null;
 					try {
-						st = PoolConexiones.getConnection(ConfigFile.getMainDataBase()).createStatement();
-						String sql = "DELETE FROM mensajes WHERE current_date=(fecha+"+ConfigFile.getTimeAlifeMessageInDataBase()+")";
-						LogWriter.write("Borrando mensajes con tiempo de vida igual a " + ConfigFile.getTimeAlifeMessageInDataBase());
+						st = ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).createStatement();
+						String sql = "DELETE FROM mensajes WHERE current_date=(fecha+"+oraclesync.getTimeAlifeMessageInDataBase()+")";
+						LogWriter.write("Borrando mensajes con tiempo de vida igual a " + oraclesync.getTimeAlifeMessageInDataBase());
 						if (st.execute(sql)) {
 							LogWriter.write("Mensajes borrados...");
 						}
-						sql = "SELECT count(*)-"+ConfigFile.getMaxMessagesDataBase()+" FROM mensajes";
-						LogWriter.write("Liberando mensajes de  base de datos, Cantidad: " + ConfigFile.getTimeAlifeMessageInDataBase());
+						sql = "SELECT count(*)-"+oraclesync.getMaxMessagesDataBase()+" FROM mensajes";
+						LogWriter.write("Liberando mensajes de  base de datos, Cantidad: " + oraclesync.getTimeAlifeMessageInDataBase());
 						rs = st.executeQuery(sql);
 						rs.next();
 						int limit = rs.getInt(1);
@@ -485,7 +495,7 @@ public class Sync {
 							st.executeBatch();
 						}
 						LogWriter.write("Mantenimiento de base de datos terminada");
-						PoolConexiones.CloseConnections();
+						ConnectionsPool.CloseConnections();
 					} catch (SQLException e) {
 						LogWriter.write(
 								"Error durante la sincronización\n" +
@@ -502,10 +512,10 @@ public class Sync {
 					}
 					
 	            }
-	        }, new DailyIterator(hourOfDay, minute, second));
+	        },  new DailyIterator(oraclesync.getHour(), oraclesync.getMinute(), oraclesync.getSecond()));
 	    }
 	}
-	
+
 	class User {
 		public String code;
 		public String password;
