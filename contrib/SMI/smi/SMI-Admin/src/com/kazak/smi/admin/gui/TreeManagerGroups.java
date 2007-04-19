@@ -357,11 +357,13 @@ public class TreeManagerGroups {
 	}
 	
 	class Actions implements ActionListener {
+		
+		String name="";
 						
 		public void actionPerformed(ActionEvent e) {
 			String command = e.getActionCommand();
 			int count = TreeManagerGroups.currTpath.getPathCount();
-			String name = TreeManagerGroups.currTpath.getPathComponent(count -1).toString();
+			name = TreeManagerGroups.currTpath.getPathComponent(count -1).toString();
 
 			if ("new_user".equals(command)) {
 				UsersManager userManager = new UsersManager();
@@ -398,6 +400,7 @@ public class TreeManagerGroups {
 				ws.add();
 			}
 			else if ("edit_point".equals(command)) {
+				System.out.println("Inicio: Editando punto de venta...");
 				WorkStationsManager ws = new WorkStationsManager();
 				ws.setFieldName(name);
 				ws.getJBSearch().doClick();
@@ -405,6 +408,7 @@ public class TreeManagerGroups {
 				ws.getFieldCode().setEditable(true);
 				ws.getFieldIp().setEditable(true);
 				ws.getJCBGroups().setEnabled(true);
+				System.out.println("Fin: Editando punto de venta...");
 			}
 				
 			else if ("delete_point".equals(command)) {
@@ -445,6 +449,10 @@ public class TreeManagerGroups {
 				group.getJBSearch().doClick();
 				group.search();
 			}
+		}
+		
+		public String getNodeName() {
+			return name;
 		}
 	}
 	
@@ -500,18 +508,25 @@ public class TreeManagerGroups {
 			Thread t = new Thread () {
 				public void run() {
 					//collapseAll();
+					System.out.println("Entrando a expand()...");
+
 					int pcount = currTpath.getPathCount();
 					SortableTreeNode globalNode = (SortableTreeNode) currTpath.getPathComponent(pcount-2);
 					SortableTreeNode globalLastNode = (SortableTreeNode) currTpath.getPathComponent(pcount-1);
 					int ccount = getChildCount(globalNode.toString());
-
+					
+					System.out.println("globalNode: " + globalNode.toString());
+					System.out.println("globalLastNode: " + globalLastNode.toString());
+					
 					if (pcount==2) { // Seleccion de un grupo
+						System.out.println("Abriendo 2...");
 						int row = getRowPath(currTpath);
 						tree.expandRow(row);
 						tree.setSelectionPath(currTpath);
 						tree.scrollRowToVisible(row+ccount);
 					}
 					if (pcount==3) { // Seleccion de un usuario
+						System.out.println("Abriendo 3...");
 						if (getChildCount(globalLastNode.toString())>0) {
 							int row = getRowPath(currTpath);
 							TreeManagerGroups.setNodes(globalNode, globalLastNode);
@@ -534,7 +549,7 @@ public class TreeManagerGroups {
 						}
 					}
 					if (pcount==4) { // Seleccion punto de venta?
-						System.out.println("Abriendo punto de venta...");
+						System.out.println("Abriendo 4...");
 						int row = getRowPath(currTpath.getParentPath());
 						tree.expandRow(row);
 						row = getRowPath(currTpath);

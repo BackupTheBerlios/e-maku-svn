@@ -77,7 +77,7 @@ public class Sync {
 			Element errSync = new Element("ERRSYNC");
 			Element message = new Element("message");
 			message.setText(
-					"Error, no se encontro el archivo de configuración de la sincronización");
+					"ERROR: No se encontró el archivo de configuración de la sincronización");
 			try {
 				SocketWriter.writing(sock,new Document(errSync));
 			} catch (IOException ex) {
@@ -87,7 +87,7 @@ public class Sync {
 		} catch (IOException e) {
 			Element errSync = new Element("ERRSYNC");
 			Element message = new Element("message");
-			message.setText("Error de E/S durante la sincronización");
+			message.setText("ERROR: Falla de E/S durante la sincronización");
 			try {
 				SocketWriter.writing(sock,new Document(errSync));
 			} catch (IOException ex) {
@@ -131,8 +131,8 @@ public class Sync {
 			}
 
 			if(sql==null || sql.equals("")) {
-				System.out.println("Error en el archivo oracle.sql. Por favor revisar la sentencia.");
-				System.out.println("Valor actual: " + sql);
+				LogWriter.write("ERROR: Sentencia SQL para sincronización es nula o vacía.");
+				LogWriter.write("ERROR: Revisar archivo de configuración: oracle.sql");
 			}
 			
 			return sql;
@@ -155,8 +155,9 @@ public class Sync {
 
 		LogWriter.write("Cargando datos actuales de la base de datos PostgreSQL");
 		ResultSet rs = null;
+		String pgdb = ConfigFile.getMainDataBase();
 		try {
-			st = ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).createStatement();
+			st = ConnectionsPool.getConnection(pgdb).createStatement();
 			rs = st.executeQuery("SELECT login FROM usuarios WHERE login like 'CV%'");
 			while (rs.next()) {
 				String code   = rs.getString(1).trim();
@@ -175,7 +176,7 @@ public class Sync {
 		} catch (SQLException e) {
 			Element errSync = new Element("ERRSYNC");
 			Element message = new Element("message");
-			String text = "Error en la base de datos " + ConfigFile.getMainDataBase() + "\nMensaje: " + e.getMessage();
+			String text = "Error en la base de datos " + pgdb + "\nMensaje: " + e.getMessage();
 			message.setText(text);
 			try {
 				SocketWriter.writing(sock,new Document(errSync));
@@ -200,12 +201,13 @@ public class Sync {
 	 */
 	private boolean loadOracleData() {
 		ResultSet rs = null;
+		String oracleDB = ConfigFile.getSecondDataBase();
 		try {
 			LogWriter.write("Cargando datos actuales de la base de datos Oracle");
-			cnOracle = ConfigFile.getConnection(ConfigFile.getSecondDataBase());
+			cnOracle = ConfigFile.getConnection(oracleDB);
 			
 			st = cnOracle.createStatement();
-			System.out.println("SENTENCIA: " + oracleSQL);
+			LogWriter.write("SENTENCIA: " + oracleSQL);
 			rs = st.executeQuery(oracleSQL);
 			while (rs.next()) {
 				String code     = rs.getString(1).trim();
@@ -234,7 +236,7 @@ public class Sync {
 		} catch (SQLException e) {
 			Element errSync = new Element("ERRSYNC");
 			Element message = new Element("message");
-			String text = "Error en la base de datos " + ConfigFile.getSecondDataBase() + "\nMensaje: " + e.getMessage();
+			String text = "Error en la base de datos " + oracleDB + "\nMensaje: " + e.getMessage();
 			message.setText(text);
 			try {
 				SocketWriter.writing(sock,new Document(errSync));
@@ -258,13 +260,15 @@ public class Sync {
 	 * Save data in the Postgresql Data Base Server
 	 */
 	private void storePostgresData() {
+		
+		String pgdb = ConfigFile.getMainDataBase();
 		try {
-			LogWriter.write("Sincronizando....");
-			st = ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).createStatement();
+			LogWriter.write("Sincronizando...");
+			st = ConnectionsPool.getConnection(pgdb).createStatement();
 		} catch (SQLException e) {
 			Element errSync = new Element("ERRSYNC");
 			Element message = new Element("message");
-			String text = "Error en la base de datos\n mensaje: " + e.getMessage();
+			String text = "Error en la base de datos " + pgdb + "\nMensaje: " + e.getMessage();
 			message.setText(text);
 			try {
 				SocketWriter.writing(sock,new Document(errSync));
@@ -291,7 +295,7 @@ public class Sync {
 			} catch (SQLException e) {
 				Element errSync = new Element("ERRSYNC");
 				Element message = new Element("message");
-				String text = "Error en la base de datos\n mensaje: " + e.getMessage();
+				String text = "Error en la base de datos " + pgdb + " mientras se eliminan usuarios.\nMensaje: " + e.getMessage();
 				message.setText(text);
 				try {
 					SocketWriter.writing(sock,new Document(errSync));
@@ -309,7 +313,7 @@ public class Sync {
 			} catch (SQLException e) {
 				Element errSync = new Element("ERRSYNC");
 				Element message = new Element("message");
-				String text = "Error en la base de datos\n mensaje: " + e.getMessage();
+				String text = "Error en la base de datos " + pgdb + " mientras se eliminan puntos de venta.\nMensaje: " + e.getMessage();
 				message.setText(text);
 				try {
 					SocketWriter.writing(sock,new Document(errSync));
@@ -320,22 +324,26 @@ public class Sync {
 				e.printStackTrace();
 			}
 		}
-
+        String name = "";
 		Set<String> keys = dataWs.keySet();
 		for (String key : keys) {
 			try {
-				String name = dataWs.get(key);
+				name = dataWs.get(key);
 				if (key!=null && name!=null) {
 					String sql = 
 						"INSERT INTO puntosv (codigo,nombre) " +
 						"values('"+key+"','"+name+"')";
 					st.execute(sql);
 					LogWriter.write("Punto de colocacion => " + name+ " almacenado");
+				} else {
+					LogWriter.write("Advertencia: Codigo " + key + " no pertenece a ningun punto de venta.");
 				}
 			} catch (SQLException e) {
 				Element errSync = new Element("ERRSYNC");
 				Element message = new Element("message");
-				String text = "Error en la base de datos\n mensaje: " + e.getMessage();
+				String text = "Error en la base de datos " + pgdb 
+				               + " mientras se ingresaba el punto de colocacion \""+ name 
+				               + "\" con codigo: "+ key +".\nMensaje: " + e.getMessage();
 				message.setText(text);
 				try {
 					SocketWriter.writing(sock,new Document(errSync));
@@ -348,17 +356,24 @@ public class Sync {
 		}
 		keys = dataUser.keySet();
 		for (String key : keys) {
+			User user = null;
 			try {
-				User user = dataUser.get(key);
-				String sql = 
-					"INSERT INTO usuarios (login,clave,nombres) " +
-					"values('"+user.code+"',md5('"+user.password+"'),'"+user.name+"')";
-				st.execute(sql);
-				LogWriter.write("Colocador => " + user.name+ " almacenado");
+				user = dataUser.get(key);
+				if (user != null) {
+					String sql = 
+						"INSERT INTO usuarios (login,clave,nombres) " +
+						"values('"+user.code+"',md5('"+user.password+"'),'"+user.name+"')";
+					st.execute(sql);
+					LogWriter.write("Colocador => " + user.name + " almacenado");
+				} else {
+					LogWriter.write("Advertencia: Codigo " + key + " no pertenece a ningun usuario.");
+				}
+				
 			} catch (SQLException e) {
 				Element errSync = new Element("ERRSYNC");
 				Element message = new Element("message");
-				String text = "Error en la base de datos\n mensaje: " + e.getMessage();
+				String text = "Error en la base de datos " + pgdb + " mientras se ingresaba el usuario [" 
+				               + user.code +"," + user.name + "].\nMensaje: " + e.getMessage();
 				message.setText(text);
 				try {
 					SocketWriter.writing(sock,new Document(errSync));
@@ -386,11 +401,14 @@ public class Sync {
 					LogWriter.write(
 							"Asignando Colocador => " + user.name+ "("+ user.code +") " +
 							"al punto=> "+ user.codepv);
+				} else {
+					LogWriter.write("Advertencia: Codigo " + key + " no esta asignado a ningun punto de venta.");
 				}
 			} catch (SQLException e) {
 				Element errSync = new Element("ERRSYNC");
 				Element message = new Element("message");
-				String text = "Error en la base de datos\n mensaje: " + e.getMessage();
+				String text = "Error en la base de datos " + pgdb + " mientras se ingresaba relacion usuarios-pventa [" 
+				              + user.code +","+ user.codepv + "]\n.Mensaje: " + e.getMessage();
 				message.setText(text);
 				try {
 					SocketWriter.writing(sock,new Document(errSync));

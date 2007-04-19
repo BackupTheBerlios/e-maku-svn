@@ -27,14 +27,12 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
-import javax.swing.tree.TreePath;
 
 import org.jdom.Document;
 import org.jdom.Element;
 
 import com.kazak.smi.admin.control.Cache;
 import com.kazak.smi.admin.control.Cache.WorkStation;
-import com.kazak.smi.admin.gui.TreeManagerGroups.SortableTreeNode;
 import com.kazak.smi.admin.misc.NumericDataValidator;
 import com.kazak.smi.admin.network.SocketHandler;
 import com.kazak.smi.admin.network.SocketWriter;
@@ -295,22 +293,12 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 		else if (command.equals("accept")) {
 			String name = FieldName.getText().toUpperCase();
 			WorkStation ws = Cache.getWorkStation(name);
-			/* String group = TreeManagerGroups.getGroupNode();
-			System.out.println("Grupo XXX: " + group);
-			System.out.println("Nodo XXX: " + name); */
-			
-			TreeManagerGroups.currTpath = new TreePath(
-					new Object[] {
-								new SortableTreeNode(MainWindow.getAppOwner()),
-								new SortableTreeNode(ws.getGidName()),
-								new SortableTreeNode(ws.getName())});  
-			
 			/* TreeManagerGroups.currTpath = new TreePath(
 					new Object[] {
 								new SortableTreeNode(MainWindow.getAppOwner()),
-								new SortableTreeNode(group),
-								new SortableTreeNode(name)}); */
-			
+								new SortableTreeNode(ws.getGidName()),
+								new SortableTreeNode(ws.getName())}); */  
+						
 			if (!"".equals(name) && ws==null && FieldCode.getText().length() == 4) {
 				document = getDocumentForAdd();
 				this.dispose();
@@ -347,11 +335,12 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 		else if (command.equals("save")) {
 			String key = FieldCode.getText();
 			String name = FieldName.getText().toUpperCase();
+			/*
 			TreeManagerGroups.currTpath = new TreePath(
 					new Object[] {
 								new SortableTreeNode(MainWindow.getAppOwner()),
 								new SortableTreeNode(JCBGroups.getSelectedItem()),
-								new SortableTreeNode(name)});
+								new SortableTreeNode(name)});*/
 			if (!"".equals(key) && !"".equals(name)) {
 				document = getDocumentForEdit();
 				this.dispose();
@@ -396,6 +385,7 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 				}
 			}
 		}
+		// Enviando comando al servidor para ser aprobado
 		if (document!=null) {
 			try {
 				SocketWriter.writing(SocketHandler.getSock(),document);

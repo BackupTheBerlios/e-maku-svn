@@ -91,7 +91,7 @@ public class MainWindow implements ActionListener, TreeSelectionListener {
 		TreePath tp = e.getPath();
 		TreeManagerGroups.currTpath = e.getPath();
 		DefaultMutableTreeNode node;
-		System.out.println(tp);
+		//System.out.println("Camino: " + tp);
 		TableSorter ts;
 		boolean affect = false;
 		switch (tp.getPathCount()) {
@@ -118,7 +118,7 @@ public class MainWindow implements ActionListener, TreeSelectionListener {
 		case 3:
 			node = (SortableTreeNode) tp.getPathComponent(2);
 			String name = node.toString();
-			System.out.println(name);
+			//System.out.println("Nodo: " + name);
 			if (Cache.containsWs(name)){
 				WorkStation ws = Cache.getWorkStation(name);
 				Collection<User> coll = ws.getUsers();

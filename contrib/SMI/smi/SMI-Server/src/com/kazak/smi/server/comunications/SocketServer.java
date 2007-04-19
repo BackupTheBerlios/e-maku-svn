@@ -225,6 +225,11 @@ public class SocketServer {
     }
     
     public static InfoSocket getInfoSocket(String login) {
+    	if (login != null) {
+    	    System.out.println("Consultando login: " + login);
+    	} else {
+    	    System.out.println("Llamado a getInfoSocket con parametro nulo (login)");
+    	}
     	for (InfoSocket ifs : Hchannelclients.values()) {
     		if (ifs.getLogin().equals(login)) {
     			return ifs;

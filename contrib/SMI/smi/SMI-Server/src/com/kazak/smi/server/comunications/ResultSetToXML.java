@@ -182,7 +182,12 @@ public class ResultSetToXML extends Document {
 	}
 
 	private String escapeCharacters(String word) {
-		
+
+		word = word.replaceAll("&","&#38;");
+		word = word.replaceAll("'","&#39;");
+		word = word.replaceAll("\"","&#34;");
+		word = word.replaceAll("<","&#60;");
+		word = word.replaceAll(">","&#62;");
 		word = word.replaceAll("ñ","&#241;");
 		word = word.replaceAll("Ñ","&#209;");
 		word = word.replaceAll("á","&#225;");

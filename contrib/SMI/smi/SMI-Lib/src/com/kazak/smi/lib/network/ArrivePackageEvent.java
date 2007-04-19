@@ -14,7 +14,6 @@ public class ArrivePackageEvent extends EventObject {
 		this.doc=doc;
 	}
 	
-	
 	public Document getDoc() {
 		return doc;
 	}

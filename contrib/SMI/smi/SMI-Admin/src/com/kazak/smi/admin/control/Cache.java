@@ -132,8 +132,7 @@ public class Cache {
 
 					TreeManagerGroups.updateUI();
 					System.gc();
-					//TreeManagerGroups.expand();
-					System.out.println("Actualizando Arbol desde Cache...");
+					TreeManagerGroups.expand();
 				} catch (QuerySenderException e) {
 					e.printStackTrace();
 				}

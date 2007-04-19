@@ -119,8 +119,8 @@ public class MessageWindow implements ActionListener {
 			JButton b = (JButton) e.getSource();
 			b.setEnabled(false);
 			String to = (String) groupSelector.getSelectedItem();
-			String subject = JTFSubject.getText();
-			String text = messageArea.getText();
+			String subject = escapeCharacters(JTFSubject.getText());
+			String text = escapeCharacters(messageArea.getText());
 			if (!"".equals(subject) && !"".equals(text)) {
 				new MessageSender(to,subject,text);
 				frame.dispose();
@@ -143,6 +143,29 @@ public class MessageWindow implements ActionListener {
 		else if ("cancel".equals(command)) {
 			frame.dispose();
 		}
+	}
+	
+	private String escapeCharacters(String word) {
+
+		word = word.replaceAll("&","&#38;");
+		word = word.replaceAll("'","&#39;");
+		word = word.replaceAll("\"","&#34;");
+		word = word.replaceAll("<","&#60;");
+		word = word.replaceAll(">","&#62;");
+		word = word.replaceAll("ñ","&#241;");
+		word = word.replaceAll("Ñ","&#209;");
+		word = word.replaceAll("á","&#225;");
+		word = word.replaceAll("é","&#233;");
+		word = word.replaceAll("í","&#237;");
+		word = word.replaceAll("ó","&#243;");
+		word = word.replaceAll("ú","&#250;");
+		word = word.replaceAll("Á","&#201;");
+		word = word.replaceAll("É","&#241;");
+		word = word.replaceAll("Í","&#205;");
+		word = word.replaceAll("Ó","&#211;");
+		word = word.replaceAll("Ú","&#218;");
+				
+		return word;
 	}
 
 	public static void main(String []  args) {

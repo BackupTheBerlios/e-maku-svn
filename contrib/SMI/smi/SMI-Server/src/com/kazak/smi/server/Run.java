@@ -21,7 +21,7 @@ public class Run {
 
 	public Run() {
 		
-		String smiConfigFile = ServerConst.CONF + ServerConst.SEPARATOR + "server.conf.xml";
+		String smiConfigFile = ServerConst.CONF + ServerConst.SEPARATOR + "server.conf";
 		boolean existsConfigFile = (new File(smiConfigFile)).exists();
 		new LogWriter();
 		if (!existsConfigFile) {

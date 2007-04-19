@@ -7,8 +7,6 @@ import javax.swing.JOptionPane;
 
 import org.jdom.Document;
 import org.jdom.Element;
-//import org.jdom.output.Format;
-//import org.jdom.output.XMLOutputter;
 
 import com.kazak.smi.admin.gui.LoginWindow;
 import com.kazak.smi.admin.gui.MainWindow;
@@ -27,14 +25,6 @@ public class HeadersValidator implements ArrivePackageListener {
    		Document doc = APe.getDoc();
         root = doc.getRootElement();
         String nombre = root.getName();
-        
-    	/*XMLOutputter out = new XMLOutputter();
-    	out.setFormat(Format.getPrettyFormat());
-    	try {
-			out.output(doc,System.out);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}*/
 		
     	if(nombre.equals("ACPBegin")) {
     		LoginWindow.setLoged(true);
