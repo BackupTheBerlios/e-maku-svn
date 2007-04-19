@@ -115,7 +115,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 		this.ACTION = ACTIONS.EDIT;
 		this.setVisible(true);
 	}
-	
+		
 	public void delete() {
 		this.setTitle("Borrar Usuario");
 		for (int i=1 ; i< labels.length ; i++) {
@@ -232,6 +232,8 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 		this.add(jpsearch,BorderLayout.EAST);
 	}
 	
+	
+	// Manejo de Eventos segun la operacion a realizar (Adicion, Edicion, Eliminacion)
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		Document document = null;
@@ -515,6 +517,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 				JCBGroups.setSelectedItem(user.getGidname());
 				table.clear();
 				ArrayList<Cache.UserPVenta> pvs = Cache.getLisWorksStationsForUser(code);
+				/*
 				if (pvs.size() > 0) {
 					TreeManagerGroups.currTpath = new TreePath(
 							new Object[] {
@@ -529,10 +532,10 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 										new SortableTreeNode(MainWindow.getAppOwner()),
 										new SortableTreeNode(getJCBGroups().getSelectedItem()),
 										new SortableTreeNode(FieldLogin.getText())});
-				}
+				}*/
 				
 				//TreeManagerGroups.expand();
-				System.out.println("Actualizando Arbol desde UsersManager...");
+				//System.out.println("Actualizando Arbol desde UsersManager...");
 				
 				for (Cache.UserPVenta upv : pvs) {
 					table.addData(upv.getCodepv(),upv.getName(),upv.getValidip());

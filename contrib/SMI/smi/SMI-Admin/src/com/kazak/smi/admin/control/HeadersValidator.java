@@ -57,7 +57,7 @@ public class HeadersValidator implements ArrivePackageListener {
 			displayError();
         }
         else if(nombre.equals("RELOADTREE")) {
-        	Cache.load();
+        	Cache.loadTree();
         }
         else if(nombre.equals("SUCCESS")) {
             String id = root.getChildText("id");

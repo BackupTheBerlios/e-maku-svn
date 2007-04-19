@@ -4,7 +4,7 @@ import java.util.Vector;
 
 import javax.swing.table.AbstractTableModel;
 
-public class ModelUser extends AbstractTableModel {
+public class UserModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 	private String[] titles = { "Codigo Punto","Nombre","Validar IP"};

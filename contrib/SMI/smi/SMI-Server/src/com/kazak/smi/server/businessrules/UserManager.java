@@ -57,20 +57,7 @@ public class UserManager {
 			for (RunQuery rq :querys) {
 				rq.commit();
 			}
-			
-			/*if ("remove".equals(type)) {
-				UsersCache.removeFromUID(oldLogin);
-			}
-			else if ("edit".equals(type)) {
-				InfoUser ifu = new InfoUser();
-				ifu.setFrom(arrUserInfo);
-				ifu.addPointSale(arrWs);
-				UsersCache.addUser(ifu);
-			}
-			else if ("add".equals(type)) {
-				UsersCache.load();
-			}*/
-			
+						
 			Element reload = new Element("RELOADTREE");
 			try {
 				SocketWriter.writing(sock,new Document(reload));

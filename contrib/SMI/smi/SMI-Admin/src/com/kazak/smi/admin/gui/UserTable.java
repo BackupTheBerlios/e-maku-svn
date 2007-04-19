@@ -22,7 +22,7 @@ public class UserTable {
 	
 	
 	private static final long serialVersionUID = 4182381331394270487L;
-	private ModelUser model;
+	private UserModel model;
 	private JFrame frame;
 	private JTable table;
 	private JPanel panel;
@@ -34,7 +34,7 @@ public class UserTable {
 	public UserTable(JFrame parent) {
 		frame = parent;
 		panel =  new JPanel(new BorderLayout());
-		model = new ModelUser();
+		model = new UserModel();
 		table = new JTable(model);
 		GUIFactory factory = new GUIFactory();
 		JBAdd = factory.createButton("add.png");

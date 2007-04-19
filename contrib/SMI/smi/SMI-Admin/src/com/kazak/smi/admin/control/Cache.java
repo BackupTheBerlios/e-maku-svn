@@ -1,5 +1,6 @@
 package com.kazak.smi.admin.control;
 
+import java.awt.Cursor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
@@ -7,6 +8,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
 import java.util.Arrays;
+
+import javax.swing.JFrame;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -19,14 +22,20 @@ import com.kazak.smi.admin.transactions.QuerySenderException;
 public class Cache {
 	
 	private static Hashtable<String, Group> listGroups;
+	private static JFrame frame;
 	
-	public static void load() {
+	// Este metodo actualiza el arbol de grupos, puntos de venta y usuarios
+	
+	public static void loadTree() {
 		listGroups = new Hashtable<String, Group>();
 		Thread t = new  Thread() {
 			
 			public void run() {
 				
 				try {
+                    int typeCursor = Cursor.WAIT_CURSOR;
+                    Cursor cursor = Cursor.getPredefinedCursor(typeCursor);
+                    frame.setCursor(cursor);
 					TreeManagerGroups.clearAll();
 					//Grupos
 					//Vector<String> keys = new Vector<String>();
@@ -133,6 +142,8 @@ public class Cache {
 					TreeManagerGroups.updateUI();
 					System.gc();
 					TreeManagerGroups.expand();
+					frame.setCursor(Cursor.getDefaultCursor());
+					
 				} catch (QuerySenderException e) {
 					e.printStackTrace();
 				}
@@ -191,6 +202,10 @@ public class Cache {
 	
 	public static Group getGroup(String key) {
 		return listGroups.get(key);
+	}
+	
+	public static void setFrame(JFrame mainFrame) {
+		frame = mainFrame;
 	}
 	
 	public static class Group  {

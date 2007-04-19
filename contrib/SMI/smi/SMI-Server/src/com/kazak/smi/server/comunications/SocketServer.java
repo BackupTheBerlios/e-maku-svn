@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.Enumeration;
 
 import com.kazak.smi.lib.misc.Language;
 import com.kazak.smi.server.database.sql.CloseSQL;
@@ -127,17 +128,29 @@ public class SocketServer {
      * @return Retorna true si el socket a sido autenticado, de lo contrario
      *         retorna false
      */
-    public static boolean isLoged(SocketChannel sock) {
+    public static boolean isLogged(SocketChannel sock) {
         return Hchannelclients.get(sock).isLoged();
     }
     
     /**
-     * Este metodo retorna 
+     * Este metodo retorna el login asociado a una conexion
      * @param sock
      * @return algo
      */
-    public static String getLoging(SocketChannel sock) {
+    public static String getLogin(SocketChannel sock) {
         return Hchannelclients.get(sock).getLogin();
+    }
+    
+    public static void getUsersOnLine() {
+    		int currentUsers = 0;
+    		for ( Enumeration e = Hchannelclients.keys() ; e.hasMoreElements() ; ) {
+     		      SocketChannel connection = (SocketChannel) e.nextElement();
+     		      if (isLogged(connection)) {
+     		    	  currentUsers++;
+     		    	  String login = getLogin(connection);
+     		    	  System.out.println("Usuario " + login + " conectado desde " + connection.socket().getLocalAddress().getHostAddress());
+     		      }
+    	    }
     }
     
     /**
@@ -151,6 +164,8 @@ public class SocketServer {
         sock.close();
         Hchannelclients.remove(sock);
     }
+    
+    
 
     public static ByteArrayOutputStream getBufferTmp(SocketChannel sock) {
         return Hchannelclients.get(sock).getBuffTmp();
@@ -185,7 +200,7 @@ public class SocketServer {
     /**
      * Este metodo retorna unicamente el numero de socket's
      * conectados
-     * @return algo
+     * @return El numero de sockets conectados
      */
     public static int getSocketsCount() {
         return SocketsCount;

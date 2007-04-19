@@ -72,7 +72,7 @@ public class HeaderValidator {
          *  autentificación)
          */
         
-        if (SocketServer.isLoged(sock)) {
+        if (SocketServer.isLogged(sock)) {
 
         	if (nom_raiz.equals("Message")) {
                 LogWriter.write("Nuevo mesaje desde " + sock);

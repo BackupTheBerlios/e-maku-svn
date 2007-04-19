@@ -38,6 +38,7 @@ public class MainWindow implements ActionListener, TreeSelectionListener {
 	private JPanel rightPanel;
 	private TreeManagerGroups treeManagerGroups;
 	private static String appOwner;
+
 	public MainWindow(String appOwner,String UserLevel) {
 		MainWindow.appOwner = appOwner;
 		frame = new JFrame("Administración SMI -" + appOwner);
@@ -54,6 +55,8 @@ public class MainWindow implements ActionListener, TreeSelectionListener {
 			}
 		});
 		
+		Cache.setFrame(frame);
+
 		if (UserLevel.equals("1")) {
 			splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 			splitPane.setDividerLocation(250);

@@ -297,7 +297,7 @@ TR007	Nuevo Punto de Venta	com.kazak.smi.server.businesrules.PointSaleManager	<r
 TR002	Edita Usuarios	com.kazak.smi.server.businesrules.UserManager	<root>\n    <action>edit</action>\n    <arg>UPD0004</arg>\n    <arg>DEL0001</arg>\n    <arg>INS0002</arg>\n</root>
 TR008	Editar Punto de Venta	com.kazak.smi.server.businesrules.PointSaleManager	<root>\n    <action>edit</action>\n    <arg>UPD0006</arg>\n    <arg>UPD0007</arg>\n</root>
 TR009	Borrar Punto de Venta	com.kazak.smi.server.businesrules.PointSaleManager	<root>\n    <action>remove</action>\n    <arg>DEL0004</arg>\n</root>
-TR012	Sincronización de las bases de datos Oracle con PostgreSQL	com.kazak.smi.server.businesrules.Sync	<roo/>
+TR012	Sincronización de las bases de datos Oracle con PostgreSQL	com.kazak.smi.server.businesrules.Sync	<root/>
 TR003	Borra Usuarios	com.kazak.smi.server.businesrules.UserManager	<root>\n    <action>remove</action>\n    <arg>DEL0001</arg>\n    <arg>DEL0002</arg>\n</root>
 TR013	Reporte de control de colocadores	com.kazak.smi.server.businesrules.MessageControlReporter	<root/>
 \.
