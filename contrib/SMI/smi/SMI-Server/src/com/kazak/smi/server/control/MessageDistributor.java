@@ -57,13 +57,7 @@ public class MessageDistributor {
 			body+="\n====================================\n" +
 				  "Este mensaje es de control\n";
 		}
-		Message.addContent(root);
-		root.addContent(createCol(dateStr));
-		root.addContent(createCol(hourStr));
-		root.addContent(createCol(from   ));
-		root.addContent(createCol(subject));
-		root.addContent(createCol(body   ));
-		root.addContent(createCol("f"));
+		
 		int nroUsers = 0;
 		SocketInfo ifuFrom = null;
 		if (!pop) {
@@ -98,7 +92,6 @@ public class MessageDistributor {
 				runQuery.closeStatement();
 			}
 		}
-		
 		Vector<SocketInfo> vusers;
 		if (!pop) {
 			vusers = SocketServer.getAllClients(gidInt);
@@ -121,6 +114,14 @@ public class MessageDistributor {
 			// Los Mensajes deben enviarse a los grupos.
 			SocketChannel sock = ifu.getSock()!=null ? ifu.getSock().getChannel() : null;
 			if (sock!=null) {
+				Message.addContent(root);
+				root.addContent(createCol(dateStr));
+				root.addContent(createCol(hourStr));
+				root.addContent(createCol(ifuFrom.getGName()));
+				root.addContent(createCol(subject));
+				root.addContent(createCol(body   ));
+				root.addContent(createCol("f"));
+				
 				Document doc = new Document((Element) Message.clone());
 				try {
 					SocketWriter.writing(sock,doc);
