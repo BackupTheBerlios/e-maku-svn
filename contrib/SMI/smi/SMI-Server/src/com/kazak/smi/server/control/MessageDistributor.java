@@ -104,7 +104,7 @@ public class MessageDistributor {
 		if (ifuFrom==null) {
 			LogWriter.write(
 					"Acceso denegado al usuario " +from+ " para el envio " +
-					"de mensajes atravez de correo");
+					"de mensajes a traves de correo");
 			return;
 		}
 		nroUsers = vusers.size();
