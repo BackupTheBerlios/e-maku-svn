@@ -370,6 +370,7 @@ public class Sync {
 				}
 				
 			} catch (SQLException e) {
+				
 				Element errSync = new Element("ERRSYNC");
 				Element message = new Element("message");
 				String text = "Error en la base de datos " + pgdb + " mientras se ingresaba el usuario [" 
@@ -390,14 +391,50 @@ public class Sync {
 			User user = dataUser.get(key);
 			try {
 				if (user.codepv!=null) {
-					String sql = 
-						"INSERT INTO usuarios_pventa (uid,codigo_pventa) " +
-						"values" +
-						"(" +
-						"(SELECT uid FROM usuarios WHERE usuarios.login='"+user.code+"')," +
-						"(SELECT codigo FROM puntosv WHERE puntosv.codigo='"+user.codepv+"')"+
-						")";
-					st.execute(sql);
+					ResultSet RSuid = st.executeQuery("SELECT uid FROM usuarios WHERE usuarios.login='"+user.code+"'");
+					String uid = null;
+					while(RSuid.next()) {
+						   uid = RSuid.getString("uid").trim();
+					}
+					ResultSet RScodigo_pventa = st.executeQuery("SELECT codigo FROM puntosv WHERE puntosv.codigo='"+user.codepv+"'");
+					String codigo_pventa = null;
+					while(RScodigo_pventa.next()) {
+						   codigo_pventa = RSuid.getString("codigo_pventa").trim();
+					}
+					RScodigo_pventa.close();
+					RSuid.close();
+					
+					if (uid!=null) {
+						if (codigo_pventa!=null) {
+							st.execute("INSERT INTO usuarios_pventa (uid,codigo_pventa) VALUES("+uid+","+codigo_pventa+")");
+						}
+						else {
+							Element errSync = new Element("ERRSYNC");
+							Element message = new Element("message");
+							String text = "Error sincronizando, el codigo_pventa del punto de venta\n"+
+							 user.codepv+" no existe en la base de datos, porfavor verifique las bases de datos";
+							message.setText(text);
+							try {
+								SocketWriter.writing(sock,new Document(errSync));
+							} catch (IOException ex) {
+								ex.printStackTrace();
+							}
+							LogWriter.write(text);
+						}
+					}
+					else {
+						Element errSync = new Element("ERRSYNC");
+						Element message = new Element("message");
+						String text = "Error sincronizando, el uid de usuario para el codigo\n"+
+						 user.code+" no existe en la base de datos, porfavor verifique las bases de datos";
+						message.setText(text);
+						try {
+							SocketWriter.writing(sock,new Document(errSync));
+						} catch (IOException ex) {
+							ex.printStackTrace();
+						}
+						LogWriter.write(text);
+					}
 					LogWriter.write(
 							"Asignando Colocador => " + user.name+ "("+ user.code +") " +
 							"al punto=> "+ user.codepv);
