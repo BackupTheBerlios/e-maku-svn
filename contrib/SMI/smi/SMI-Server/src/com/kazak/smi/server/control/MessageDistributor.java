@@ -35,8 +35,8 @@ public class MessageDistributor {
 	private String hourStr;
 	private String subject;
 	private String body;
-	private Element Message = new Element("Message");
-	private Element root = new Element("root");
+	
+	
 	private int timeAlife = -1;
 	private boolean control = false;
 	
@@ -114,6 +114,9 @@ public class MessageDistributor {
 			// Los Mensajes deben enviarse a los grupos.
 			SocketChannel sock = ifu.getSock()!=null ? ifu.getSock().getChannel() : null;
 			if (sock!=null) {
+				Element Message = new Element("Message");
+				Element root = new Element("root");
+				
 				Message.addContent(root);
 				root.addContent(createCol(dateStr));
 				root.addContent(createCol(hourStr));
