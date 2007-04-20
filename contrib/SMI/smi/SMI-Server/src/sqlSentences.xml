@@ -112,7 +112,7 @@
 			u.uid=m.uid_origen AND
 			u.gid=g.gid AND 
 			foo.id=m.uid_destino AND
-			current_date&lt;=(fecha+tiempo_vida) AND u.uid&lt;&gt;(SELECT uid FROM usuarios WHERE login='?')
+			current_date&lt;(fecha+tiempo_vida) AND u.uid&lt;&gt;(SELECT uid FROM usuarios WHERE login='?')
 			ORDER BY fecha desc ,hora desc
 		</sql>
 	</sentence>

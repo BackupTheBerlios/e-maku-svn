@@ -520,13 +520,13 @@ public class Sync {
 					ResultSet rs = null;
 					try {
 						st = ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).createStatement();
-						String sql = "DELETE FROM mensajes WHERE current_date=(fecha+"+oraclesync.getTimeAlifeMessageInDataBase()+")";
-						LogWriter.write("Borrando mensajes con tiempo de vida igual a " + oraclesync.getTimeAlifeMessageInDataBase());
+						String sql = "DELETE FROM mensajes WHERE current_date=(fecha+"+ConfigFile.getTimeAlifeMessageInDataBase()+")";
+						LogWriter.write("Borrando mensajes con tiempo de vida igual a " + ConfigFile.getTimeAlifeMessageInDataBase());
 						if (st.execute(sql)) {
 							LogWriter.write("Mensajes borrados...");
 						}
-						sql = "SELECT count(*)-"+oraclesync.getMaxMessagesDataBase()+" FROM mensajes";
-						LogWriter.write("Liberando mensajes de  base de datos, Cantidad: " + oraclesync.getTimeAlifeMessageInDataBase());
+						sql = "SELECT count(*)-"+ConfigFile.getMaxMessagesDataBase()+" FROM mensajes";
+						LogWriter.write("Liberando mensajes de  base de datos, Cantidad: " + ConfigFile.getTimeAlifeMessageInDataBase());
 						rs = st.executeQuery(sql);
 						rs.next();
 						int limit = rs.getInt(1);

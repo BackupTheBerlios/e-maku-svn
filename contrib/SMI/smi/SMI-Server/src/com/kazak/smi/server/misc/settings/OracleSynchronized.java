@@ -5,8 +5,7 @@ public class OracleSynchronized {
     private int    hour;
     private int    minute;
     private int    second;
-    private int    timeAlifeMessageInDataBase;
-    private int    maxMessagesDataBase;
+   
 	
 	public int getHour() {
 		return hour;
@@ -14,14 +13,6 @@ public class OracleSynchronized {
 	
 	public void setHour(int hour) {
 		this.hour = hour;
-	}
-	
-	public int getMaxMessagesDataBase() {
-		return maxMessagesDataBase;
-	}
-	
-	public void setMaxMessagesDataBase(int maxMessagesDataBase) {
-		this.maxMessagesDataBase = maxMessagesDataBase;
 	}
 	
 	public int getMinute() {
@@ -40,12 +31,4 @@ public class OracleSynchronized {
 		this.second = second;
 	}
 	
-	public int getTimeAlifeMessageInDataBase() {
-		return timeAlifeMessageInDataBase;
-	}
-	
-	public void setTimeAlifeMessageInDataBase(int timeAlifeMessageInDataBase) {
-		this.timeAlifeMessageInDataBase = timeAlifeMessageInDataBase;
-	}
-
 }

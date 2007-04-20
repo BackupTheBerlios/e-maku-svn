@@ -57,6 +57,8 @@ public class ConfigFile {
     private static String passWordMail;
     private static String mailServer;
     private static int timeAlifeMessageForClient;
+    private static int    timeAlifeMessageInDataBase;
+    private static int    maxMessagesDataBase;
     private static ArrayList<OracleSynchronized> oraclesync = new ArrayList<OracleSynchronized>();;
     
     
@@ -108,6 +110,10 @@ public class ConfigFile {
                 	timeIntervalConnect = Integer.parseInt(records.getValue());
                 } else if (records.getName().equals("TimeAlifeMessageForClient")) {
     	        	timeAlifeMessageForClient = Integer.parseInt(records.getValue());
+    	        }else if (records.getName().equals("TimeAlifeMessageInDataBase")) {
+    	        	timeAlifeMessageInDataBase = Integer.parseInt(records.getValue());
+    	        } else if (records.getName().equals("MaxMessagesDataBase")) {
+    	        	maxMessagesDataBase = Integer.parseInt(records.getValue());
     	        } else if (records.getName().equalsIgnoreCase("synchronized")) {
                 	oraclesync.add(oracleSynchronized(records));
                 }
@@ -136,10 +142,6 @@ public class ConfigFile {
 	            sync.setMinute(Integer.parseInt(records.getValue()));
 	        } else if (records.getName().equals("Second")) {
 	            sync.setSecond(Integer.parseInt(records.getValue()));
-	        }else if (records.getName().equals("TimeAlifeMessageInDataBase")) {
-	        	sync.setTimeAlifeMessageInDataBase(Integer.parseInt(records.getValue()));
-	        } else if (records.getName().equals("MaxMessagesDataBase")) {
-	        	sync.setTimeAlifeMessageInDataBase(Integer.parseInt(records.getValue()));
 	        }
     	}
     	
@@ -324,6 +326,14 @@ public class ConfigFile {
 
 	public static void setTimeAlifeMessageForClient(int timeAlifeMessageForClient) {
 		ConfigFile.timeAlifeMessageForClient = timeAlifeMessageForClient;
+	}
+
+	public static int getMaxMessagesDataBase() {
+		return maxMessagesDataBase;
+	}
+
+	public static int getTimeAlifeMessageInDataBase() {
+		return timeAlifeMessageInDataBase;
 	}}
     
 /**
@@ -427,5 +437,4 @@ class Connections {
 	public void setConnecOnInit(boolean connecOnInit) {
 		this.connecOnInit = connecOnInit;
 	}
-    
 }
