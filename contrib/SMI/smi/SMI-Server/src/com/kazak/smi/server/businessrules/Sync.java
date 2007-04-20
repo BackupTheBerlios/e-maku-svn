@@ -412,7 +412,7 @@ public class Sync {
 							Element errSync = new Element("ERRSYNC");
 							Element message = new Element("message");
 							String text = "Error sincronizando, el codigo_pventa del punto de venta\n"+
-							 user.codepv+" no existe en la base de datos, porfavor verifique las bases de datos";
+							 user.codepv+" no existe en la base de datos, por favor verifique las bases de datos";
 							message.setText(text);
 							try {
 								SocketWriter.writing(sock,new Document(errSync));
@@ -426,7 +426,7 @@ public class Sync {
 						Element errSync = new Element("ERRSYNC");
 						Element message = new Element("message");
 						String text = "Error sincronizando, el uid de usuario para el codigo\n"+
-						 user.code+" no existe en la base de datos, porfavor verifique las bases de datos";
+						 user.code+" no existe en la base de datos, por favor verifique las bases de datos";
 						message.setText(text);
 						try {
 							SocketWriter.writing(sock,new Document(errSync));

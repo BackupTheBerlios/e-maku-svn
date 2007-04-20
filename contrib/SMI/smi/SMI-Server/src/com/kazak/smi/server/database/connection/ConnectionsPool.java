@@ -71,7 +71,7 @@ public class ConnectionsPool {
             } 
             catch (SQLException SQLEe){
             	LogWriter.write(
-                		Language.getWord("ERR_SQL") + ", " + 
+                		Language.getWord("ERR_SQL") + " " + ConfigFile.getDBName(i) + ".\nCausa: " + 
                 		SQLEe.getMessage());
                 throw new PoolNotLoadException(ConfigFile.getDBName(i));
             }

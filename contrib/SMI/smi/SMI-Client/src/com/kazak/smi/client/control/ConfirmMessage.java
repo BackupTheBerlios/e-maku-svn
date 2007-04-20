@@ -25,7 +25,7 @@ public class ConfirmMessage extends Thread {
 		this.time = time;
 		this.subject = subject;
 		this.from = from;
-		start();
+		run();
 	}
 	
 	public void run() {
