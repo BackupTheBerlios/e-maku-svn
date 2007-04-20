@@ -100,17 +100,19 @@
 	<sentence>
 		<code>SEL0012</code>
 		<sql>
-			SELECT DISTINCT 
-			m.fecha,m.hora,u.login,m.asunto,m.texto,m.confirmado
+			SELECT
+			m.fecha,m.hora,g.nombre_grupo,m.asunto,m.texto,m.confirmado
 			FROM 
 			mensajes m,
 			usuarios u, 
-			(SELECT m.mid,u.uid as id FROM mensajes m, usuarios u WHERE u.uid=m.uid_destino AND u.login='?') as foo
+			(SELECT m.mid,u.uid as id FROM mensajes m, usuarios u WHERE u.uid=m.uid_destino AND u.login='?') as foo,
+			grupos g
 			WHERE 
 			m.mid=foo.mid AND 
-			u.uid=m.uid_origen AND 
-			foo.id=m.uid_destino AND 
-			current_date&lt;(fecha+tiempo_vida) AND u.uid&lt;&gt;(SELECT uid FROM usuarios WHERE login='?')
+			u.uid=m.uid_origen AND
+			u.gid=g.gid AND 
+			foo.id=m.uid_destino AND
+			current_date&lt;=(fecha+tiempo_vida) AND u.uid&lt;&gt;(SELECT uid FROM usuarios WHERE login='?')
 			ORDER BY fecha desc ,hora desc
 		</sql>
 	</sentence>

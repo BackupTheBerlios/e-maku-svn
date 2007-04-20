@@ -182,7 +182,7 @@ public class LoginWindow implements ActionListener {
 		            MD5Tool md5 = new MD5Tool(getPassword());
 		            String pass = md5.getDigest();
 		            Run.user = getUser();
-		    		new CNXSender(socket,getUser(),pass);
+		    		new CNXSender(socket,Run.user,pass);
 				} catch (NoRouteToHostException NRHEe) {
 					NRHEe.printStackTrace();
 					JOptionPane.showMessageDialog(
