@@ -155,15 +155,15 @@ public class HeaderValidator {
         	if (loguser.valid()) {
         		String login = loguser.getLogin();
         		SocketServer.setLogin(sock, ConfigFile.getMainDataBase(), login);
-        		SocketServer.getInfoSocket(sock).setEmail(loguser.getCorreo());
-        		SocketServer.getInfoSocket(sock).setUid(loguser.getUid());
-        		SocketServer.getInfoSocket(sock).setGid(loguser.getGid());
-        		SocketServer.getInfoSocket(sock).setAdmin(loguser.getAdmin());
-        		SocketServer.getInfoSocket(sock).setAudit(loguser.getAudit());
-        		SocketServer.getInfoSocket(sock).setCurrIp(loguser.getIp());
-        		SocketServer.getInfoSocket(sock).setPsName(loguser.getPsName());
-        		SocketServer.getInfoSocket(sock).setGName(loguser.getGName());
-        		SocketServer.getInfoSocket(sock).setNames(loguser.getNombres());
+        		SocketServer.getSocketInfo(sock).setEmail(loguser.getCorreo());
+        		SocketServer.getSocketInfo(sock).setUid(loguser.getUid());
+        		SocketServer.getSocketInfo(sock).setGid(loguser.getGid());
+        		SocketServer.getSocketInfo(sock).setAdmin(loguser.getAdmin());
+        		SocketServer.getSocketInfo(sock).setAudit(loguser.getAudit());
+        		SocketServer.getSocketInfo(sock).setCurrIp(loguser.getIp());
+        		SocketServer.getSocketInfo(sock).setPsName(loguser.getPsName());
+        		SocketServer.getSocketInfo(sock).setGName(loguser.getGName());
+        		SocketServer.getSocketInfo(sock).setNames(loguser.getNombres());
                 new ACPSender(sock,login,loguser.getUserLevel());
             } else {
                 try {

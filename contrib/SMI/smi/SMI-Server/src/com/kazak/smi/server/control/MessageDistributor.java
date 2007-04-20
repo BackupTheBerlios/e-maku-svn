@@ -15,7 +15,7 @@ import org.jdom.Element;
 
 import com.kazak.smi.server.comunications.SocketServer;
 import com.kazak.smi.server.comunications.SocketWriter;
-import com.kazak.smi.server.comunications.SocketServer.InfoSocket;
+import com.kazak.smi.server.comunications.SocketServer.SocketInfo;
 import com.kazak.smi.server.database.sql.CloseSQL;
 import com.kazak.smi.server.database.sql.RunQuery;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
@@ -65,9 +65,9 @@ public class MessageDistributor {
 		root.addContent(createCol(body   ));
 		root.addContent(createCol("f"));
 		int nroUsers = 0;
-		InfoSocket ifuFrom = null;
+		SocketInfo ifuFrom = null;
 		if (!pop) {
-			ifuFrom = SocketServer.getInfoSocket(from);	
+			ifuFrom = SocketServer.getSocketInfo(from);	
 		}
 		else {
 			RunQuery runQuery = null;
@@ -76,7 +76,7 @@ public class MessageDistributor {
 				runQuery = new RunQuery("SEL0026",new String[]{from});
 				rs = runQuery.runSELECT();
 				if (rs.next()) {
-					ifuFrom = SocketServer.getInstaceOfInfoSocket();
+					ifuFrom = SocketServer.getInstaceOfSocketInfo();
 					ifuFrom.setUid(rs.getInt(1));
 					ifuFrom.setLogin(rs.getString(2));
 					ifuFrom.setNames(rs.getString(3));
@@ -99,7 +99,7 @@ public class MessageDistributor {
 			}
 		}
 		
-		Vector<InfoSocket> vusers;
+		Vector<SocketInfo> vusers;
 		if (!pop) {
 			vusers = SocketServer.getAllClients(gidInt);
 		}
@@ -116,7 +116,7 @@ public class MessageDistributor {
 		}
 		nroUsers = vusers.size();
 		LogWriter.write("Enviando mensaje a "+ nroUsers + " usuarios");
-		for (InfoSocket ifu : vusers) {
+		for (SocketInfo ifu : vusers) {
 			// Aqui se define a quien se envia el mensage
 			// Los Mensajes deben enviarse a los grupos.
 			SocketChannel sock = ifu.getSock()!=null ? ifu.getSock().getChannel() : null;

@@ -571,3 +571,1298 @@
 2007-04-10 16:28:18 Confirmada lectura del mensaje con destino: CV661, con el asunto : Ja!, remitido por: spy
 2007-04-10 16:28:20 Confirmada lectura del mensaje con destino: CV661, con el asunto : prueba, remitido por: spy
 2007-04-10 16:28:20 Confirmada lectura del mensaje con destino: CV661, con el asunto : prueba, remitido por: spy
+2007-04-12 15:24:37 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 15:24:37 INFO: Cargando archivo de configuración...
+2007-04-12 15:24:37 INFO: Cargando base de datos... smi
+2007-04-12 15:24:37 El servidor de transacciones no pudo conectarse a la base de datos, Connection refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+2007-04-12 15:24:37 ERR_POOL,No pudo cargar el pool de conexiones en la base de datos smi, No hay mensaje de depuración
+2007-04-12 15:27:48 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 15:27:48 INFO: Cargando archivo de configuración...
+2007-04-12 15:27:48 INFO: Cargando base de datos... smi
+2007-04-12 15:27:49 INFO: Cargando cache de enlace smi
+2007-04-12 15:27:49 Iniciando demonio pop3
+2007-04-12 15:27:49 Host:      localhost
+2007-04-12 15:27:49 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 15:30:25 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 15:30:25 INFO: Cargando archivo de configuración...
+2007-04-12 15:30:25 INFO: Cargando base de datos... smi
+2007-04-12 15:30:25 INFO: Cargando cache de enlace smi
+2007-04-12 15:30:26 Iniciando demonio pop3
+2007-04-12 15:30:26 Host:      localhost
+2007-04-12 15:30:26 Inciando demonio de sincronización
+2007-04-12 15:30:26 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 15:31:07 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=33600,localport=9119] 1
+2007-04-12 15:31:07 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 15:31:07 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 15:34:17 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 15:34:17 INFO: Cargando archivo de configuración...
+2007-04-12 15:34:17 INFO: Cargando base de datos... smi
+2007-04-12 15:34:17 INFO: Cargando cache de enlace smi
+2007-04-12 15:34:17 Iniciando demonio pop3
+2007-04-12 15:34:17 Host:      localhost
+2007-04-12 15:34:17 Inciando demonio de sincronización
+2007-04-12 15:34:17 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 15:34:55 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=36801,localport=9119] 1
+2007-04-12 15:34:55 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 15:34:55 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 15:35:53 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 15:35:53 INFO: Cargando archivo de configuración...
+2007-04-12 15:35:53 INFO: Cargando base de datos... smi
+2007-04-12 15:35:53 INFO: Cargando cache de enlace smi
+2007-04-12 15:35:54 Iniciando demonio pop3
+2007-04-12 15:35:54 Host:      localhost
+2007-04-12 15:35:54 Inciando demonio de sincronización
+2007-04-12 15:35:54 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 15:36:23 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=36802,localport=9119] 1
+2007-04-12 15:36:23 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 15:36:23 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 15:51:52 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 15:51:52 INFO: Cargando archivo de configuración...
+2007-04-12 15:51:52 INFO: Cargando base de datos... smi
+2007-04-12 15:51:52 INFO: Cargando cache de enlace smi
+2007-04-12 15:51:52 Iniciando demonio pop3
+2007-04-12 15:51:52 Host:      localhost
+2007-04-12 15:51:52 Inciando demonio de sincronización
+2007-04-12 15:51:53 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 15:52:23 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=42971,localport=9119] 1
+2007-04-12 15:52:23 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 15:52:23 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 15:56:01 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 15:56:01 INFO: Cargando archivo de configuración...
+2007-04-12 15:56:01 INFO: Cargando base de datos... smi
+2007-04-12 15:56:02 INFO: Cargando cache de enlace smi
+2007-04-12 15:56:02 Iniciando demonio pop3
+2007-04-12 15:56:02 Host:      localhost
+2007-04-12 15:56:02 Inciando demonio de sincronización
+2007-04-12 15:56:02 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 15:56:35 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=43033,localport=9119] 1
+2007-04-12 15:56:35 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 15:56:35 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 16:00:12 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=43035,localport=9119] 2
+2007-04-12 16:00:12 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 16:00:12 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 16:01:57 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=33614,localport=9119] 3
+2007-04-12 16:01:57 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 16:01:57 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 16:05:26 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=33617,localport=9119] 4
+2007-04-12 16:05:26 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 16:05:26 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 16:08:12 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=34907,localport=9119] 5
+2007-04-12 16:08:12 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 16:08:12 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 16:14:40 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=51576,localport=9119] 6
+2007-04-12 16:14:40 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 16:14:40 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 16:16:02 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 16:16:02 INFO: Cargando archivo de configuración...
+2007-04-12 16:16:02 INFO: Cargando base de datos... smi
+2007-04-12 16:16:02 INFO: Cargando cache de enlace smi
+2007-04-12 16:16:02 Iniciando demonio pop3
+2007-04-12 16:16:02 Host:      localhost
+2007-04-12 16:16:02 Inciando demonio de sincronización
+2007-04-12 16:16:02 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 16:16:20 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=51578,localport=9119] 1
+2007-04-12 16:16:20 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 16:16:20 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 16:19:18 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=53999,localport=9119] 2
+2007-04-12 16:19:18 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 16:19:18 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 16:20:29 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=54000,localport=9119] 3
+2007-04-12 16:20:29 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 16:20:29 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 16:29:43 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 16:29:43 INFO: Cargando archivo de configuración...
+2007-04-12 16:29:43 INFO: Cargando base de datos... smi
+2007-04-12 16:29:43 INFO: Cargando cache de enlace smi
+2007-04-12 16:29:44 Iniciando demonio pop3
+2007-04-12 16:29:44 Host:      localhost
+2007-04-12 16:29:44 Inciando demonio de sincronización
+2007-04-12 16:29:44 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 16:30:50 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=40335,localport=9119] 1
+2007-04-12 16:30:50 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 16:30:50 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 16:31:34 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 16:31:35 INFO: Cargando archivo de configuración...
+2007-04-12 16:31:35 INFO: Cargando base de datos... smi
+2007-04-12 16:31:35 INFO: Cargando cache de enlace smi
+2007-04-12 16:31:35 Iniciando demonio pop3
+2007-04-12 16:31:35 Host:      localhost
+2007-04-12 16:31:35 Inciando demonio de sincronización
+2007-04-12 16:31:35 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 16:32:13 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=58958,localport=9119] 1
+2007-04-12 16:32:13 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 16:32:13 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 16:34:05 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 16:34:05 INFO: Cargando archivo de configuración...
+2007-04-12 16:34:05 INFO: Cargando base de datos... smi
+2007-04-12 16:34:05 INFO: Cargando cache de enlace smi
+2007-04-12 16:34:05 Iniciando demonio pop3
+2007-04-12 16:34:05 Host:      localhost
+2007-04-12 16:34:05 Inciando demonio de sincronización
+2007-04-12 16:34:05 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 16:34:29 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=58960,localport=9119] 1
+2007-04-12 16:34:29 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 16:34:29 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 16:35:46 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 16:35:46 INFO: Cargando archivo de configuración...
+2007-04-12 16:35:46 INFO: Cargando base de datos... smi
+2007-04-12 16:35:46 INFO: Cargando cache de enlace smi
+2007-04-12 16:35:46 Iniciando demonio pop3
+2007-04-12 16:35:46 Host:      localhost
+2007-04-12 16:35:46 Inciando demonio de sincronización
+2007-04-12 16:35:46 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 16:36:05 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=58961,localport=9119] 1
+2007-04-12 16:36:05 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 16:36:05 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 16:39:00 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 16:39:00 INFO: Cargando archivo de configuración...
+2007-04-12 16:39:00 INFO: Cargando base de datos... smi
+2007-04-12 16:39:00 INFO: Cargando cache de enlace smi
+2007-04-12 16:39:00 Iniciando demonio pop3
+2007-04-12 16:39:00 Host:      localhost
+2007-04-12 16:39:00 Inciando demonio de sincronización
+2007-04-12 16:39:00 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 16:39:30 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=43270,localport=9119] 1
+2007-04-12 16:39:30 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 16:39:30 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 16:41:34 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 16:41:34 INFO: Cargando archivo de configuración...
+2007-04-12 16:41:34 INFO: Cargando base de datos... smi
+2007-04-12 16:41:34 INFO: Cargando cache de enlace smi
+2007-04-12 16:41:35 Iniciando demonio pop3
+2007-04-12 16:41:35 Host:      localhost
+2007-04-12 16:41:35 Inciando demonio de sincronización
+2007-04-12 16:41:35 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 16:47:17 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 16:47:17 INFO: Cargando archivo de configuración...
+2007-04-12 16:47:17 INFO: Cargando base de datos... smi
+2007-04-12 16:47:17 INFO: Cargando cache de enlace smi
+2007-04-12 16:47:17 Iniciando demonio pop3
+2007-04-12 16:47:17 Host:      localhost
+2007-04-12 16:47:17 Inciando demonio de sincronización
+2007-04-12 16:47:17 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 16:47:44 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=51606,localport=9119] 1
+2007-04-12 16:47:44 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 16:47:44 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 16:48:35 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 16:48:36 INFO: Cargando archivo de configuración...
+2007-04-12 16:48:36 INFO: Cargando base de datos... smi
+2007-04-12 16:48:36 INFO: Cargando cache de enlace smi
+2007-04-12 16:48:36 Iniciando demonio pop3
+2007-04-12 16:48:36 Host:      localhost
+2007-04-12 16:48:36 Inciando demonio de sincronización
+2007-04-12 16:48:36 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 16:48:56 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=51608,localport=9119] 1
+2007-04-12 16:48:56 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 16:48:56 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 16:51:35 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 16:51:35 INFO: Cargando archivo de configuración...
+2007-04-12 16:51:35 INFO: Cargando base de datos... smi
+2007-04-12 16:51:35 INFO: Cargando cache de enlace smi
+2007-04-12 16:51:36 Iniciando demonio pop3
+2007-04-12 16:51:36 Host:      localhost
+2007-04-12 16:51:36 Inciando demonio de sincronización
+2007-04-12 16:51:36 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 16:52:06 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=59628,localport=9119] 1
+2007-04-12 16:52:07 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 16:52:07 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 16:52:51 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 16:52:51 INFO: Cargando archivo de configuración...
+2007-04-12 16:52:51 INFO: Cargando base de datos... smi
+2007-04-12 16:52:51 INFO: Cargando cache de enlace smi
+2007-04-12 16:52:52 Iniciando demonio pop3
+2007-04-12 16:52:52 Host:      localhost
+2007-04-12 16:52:52 Inciando demonio de sincronización
+2007-04-12 16:52:52 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 16:53:13 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=59629,localport=9119] 1
+2007-04-12 16:53:13 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 16:53:13 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 17:03:15 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 17:03:16 INFO: Cargando archivo de configuración...
+2007-04-12 17:03:16 INFO: Cargando base de datos... smi
+2007-04-12 17:03:16 INFO: Cargando cache de enlace smi
+2007-04-12 17:03:16 Iniciando demonio pop3
+2007-04-12 17:03:16 Host:      localhost
+2007-04-12 17:03:16 Inciando demonio de sincronización
+2007-04-12 17:03:16 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 17:03:42 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=46617,localport=9119] 1
+2007-04-12 17:03:42 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 17:03:42 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 17:06:52 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 17:06:52 INFO: Cargando archivo de configuración...
+2007-04-12 17:06:52 INFO: Cargando base de datos... smi
+2007-04-12 17:06:52 INFO: Cargando cache de enlace smi
+2007-04-12 17:06:53 Iniciando demonio pop3
+2007-04-12 17:06:53 Host:      localhost
+2007-04-12 17:06:53 Inciando demonio de sincronización
+2007-04-12 17:06:53 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 17:07:32 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=60047,localport=9119] 1
+2007-04-12 17:07:33 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 17:07:33 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 17:11:57 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 17:11:57 INFO: Cargando archivo de configuración...
+2007-04-12 17:11:57 INFO: Cargando base de datos... smi
+2007-04-12 17:11:57 INFO: Cargando cache de enlace smi
+2007-04-12 17:11:58 Iniciando demonio pop3
+2007-04-12 17:11:58 Host:      localhost
+2007-04-12 17:11:58 Inciando demonio de sincronización
+2007-04-12 17:11:58 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 17:12:16 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=48210,localport=9119] 1
+2007-04-12 17:12:16 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 17:12:16 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 17:13:29 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 17:13:29 INFO: Cargando archivo de configuración...
+2007-04-12 17:13:29 INFO: Cargando base de datos... smi
+2007-04-12 17:13:29 INFO: Cargando cache de enlace smi
+2007-04-12 17:13:30 Iniciando demonio pop3
+2007-04-12 17:13:30 Host:      localhost
+2007-04-12 17:13:30 Inciando demonio de sincronización
+2007-04-12 17:13:30 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 17:13:56 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=48211,localport=9119] 1
+2007-04-12 17:13:56 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 17:13:56 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 17:15:04 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 17:15:04 INFO: Cargando archivo de configuración...
+2007-04-12 17:15:04 INFO: Cargando base de datos... smi
+2007-04-12 17:15:05 INFO: Cargando cache de enlace smi
+2007-04-12 17:15:05 Iniciando demonio pop3
+2007-04-12 17:15:05 Host:      localhost
+2007-04-12 17:15:05 Inciando demonio de sincronización
+2007-04-12 17:15:05 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 17:16:22 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=48214,localport=9119] 1
+2007-04-12 17:16:22 Inicio de autenticación para el usuario {auditor} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 17:16:22 Auditor Autenticado {auditor} desde la ip 127.0.0.1
+2007-04-12 17:16:33 No se pudo procesar la operacion:
+causa:
+Illegal address
+2007-04-12 17:21:28 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=52299,localport=9119] 2
+2007-04-12 17:21:28 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 17:21:28 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 17:28:50 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 17:28:50 INFO: Cargando archivo de configuración...
+2007-04-12 17:28:50 INFO: Cargando base de datos... smi
+2007-04-12 17:28:50 INFO: Cargando cache de enlace smi
+2007-04-12 17:28:51 Iniciando demonio pop3
+2007-04-12 17:28:51 Host:      localhost
+2007-04-12 17:28:51 Inciando demonio de sincronización
+2007-04-12 17:28:51 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 17:29:10 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=38295,localport=9119] 1
+2007-04-12 17:29:10 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 17:29:10 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 17:31:40 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 17:31:40 INFO: Cargando archivo de configuración...
+2007-04-12 17:31:40 INFO: Cargando base de datos... smi
+2007-04-12 17:31:40 INFO: Cargando cache de enlace smi
+2007-04-12 17:31:41 Iniciando demonio pop3
+2007-04-12 17:31:41 Host:      localhost
+2007-04-12 17:31:41 Inciando demonio de sincronización
+2007-04-12 17:31:41 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 17:32:04 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=56347,localport=9119] 1
+2007-04-12 17:32:04 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 17:32:04 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 17:33:46 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 17:33:46 INFO: Cargando archivo de configuración...
+2007-04-12 17:33:46 INFO: Cargando base de datos... smi
+2007-04-12 17:33:46 INFO: Cargando cache de enlace smi
+2007-04-12 17:33:46 Iniciando demonio pop3
+2007-04-12 17:33:46 Host:      localhost
+2007-04-12 17:33:46 Inciando demonio de sincronización
+2007-04-12 17:33:47 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 17:34:05 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=56349,localport=9119] 1
+2007-04-12 17:34:05 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 17:34:05 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 17:35:15 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 17:35:15 INFO: Cargando archivo de configuración...
+2007-04-12 17:35:15 INFO: Cargando base de datos... smi
+2007-04-12 17:35:16 INFO: Cargando cache de enlace smi
+2007-04-12 17:35:16 Iniciando demonio pop3
+2007-04-12 17:35:16 Host:      localhost
+2007-04-12 17:35:16 Inciando demonio de sincronización
+2007-04-12 17:35:16 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 17:35:37 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=56350,localport=9119] 1
+2007-04-12 17:35:37 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 17:35:37 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 17:36:55 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 17:36:55 INFO: Cargando archivo de configuración...
+2007-04-12 17:36:55 INFO: Cargando base de datos... smi
+2007-04-12 17:36:55 INFO: Cargando cache de enlace smi
+2007-04-12 17:36:56 Iniciando demonio pop3
+2007-04-12 17:36:56 Host:      localhost
+2007-04-12 17:36:56 Inciando demonio de sincronización
+2007-04-12 17:36:56 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 17:37:12 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=39555,localport=9119] 1
+2007-04-12 17:37:12 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 17:37:12 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 17:42:21 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 17:42:21 INFO: Cargando archivo de configuración...
+2007-04-12 17:42:21 INFO: Cargando base de datos... smi
+2007-04-12 17:42:21 INFO: Cargando cache de enlace smi
+2007-04-12 17:42:22 Iniciando demonio pop3
+2007-04-12 17:42:22 Host:      localhost
+2007-04-12 17:42:22 Inciando demonio de sincronización
+2007-04-12 17:42:22 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 17:42:41 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=40195,localport=9119] 1
+2007-04-12 17:42:41 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 17:42:41 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 18:15:28 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 18:15:28 INFO: Cargando archivo de configuración...
+2007-04-12 18:15:28 INFO: Cargando base de datos... smi
+2007-04-12 18:15:28 INFO: Cargando cache de enlace smi
+2007-04-12 18:15:28 Iniciando demonio pop3
+2007-04-12 18:15:28 Host:      localhost
+2007-04-12 18:15:28 Inciando demonio de sincronización
+2007-04-12 18:15:28 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 18:15:51 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=60421,localport=9119] 1
+2007-04-12 18:15:51 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 18:15:51 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 18:16:51 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 18:16:51 INFO: Cargando archivo de configuración...
+2007-04-12 18:16:51 INFO: Cargando base de datos... smi
+2007-04-12 18:16:52 INFO: Cargando cache de enlace smi
+2007-04-12 18:16:52 Iniciando demonio pop3
+2007-04-12 18:16:52 Host:      localhost
+2007-04-12 18:16:52 Inciando demonio de sincronización
+2007-04-12 18:16:52 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 18:17:10 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=42691,localport=9119] 1
+2007-04-12 18:17:10 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 18:17:10 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 18:31:40 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 18:31:40 INFO: Cargando archivo de configuración...
+2007-04-12 18:31:40 INFO: Cargando base de datos... smi
+2007-04-12 18:31:41 INFO: Cargando cache de enlace smi
+2007-04-12 18:31:41 Iniciando demonio pop3
+2007-04-12 18:31:41 Host:      localhost
+2007-04-12 18:31:41 Inciando demonio de sincronización
+2007-04-12 18:31:41 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 18:32:11 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=40014,localport=9119] 1
+2007-04-12 18:32:11 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 18:32:11 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 18:35:16 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 18:35:16 INFO: Cargando archivo de configuración...
+2007-04-12 18:35:16 INFO: Cargando base de datos... smi
+2007-04-12 18:35:16 INFO: Cargando cache de enlace smi
+2007-04-12 18:35:17 Iniciando demonio pop3
+2007-04-12 18:35:17 Host:      localhost
+2007-04-12 18:35:17 Inciando demonio de sincronización
+2007-04-12 18:35:17 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 18:35:41 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=40016,localport=9119] 1
+2007-04-12 18:35:41 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 18:35:41 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 18:39:54 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 18:39:54 INFO: Cargando archivo de configuración...
+2007-04-12 18:39:54 INFO: Cargando base de datos... smi
+2007-04-12 18:39:54 INFO: Cargando cache de enlace smi
+2007-04-12 18:39:55 Iniciando demonio pop3
+2007-04-12 18:39:55 Host:      localhost
+2007-04-12 18:39:55 Inciando demonio de sincronización
+2007-04-12 18:39:55 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 18:40:14 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=47511,localport=9119] 1
+2007-04-12 18:40:14 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 18:40:14 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 18:45:44 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 18:45:44 INFO: Cargando archivo de configuración...
+2007-04-12 18:45:44 INFO: Cargando base de datos... smi
+2007-04-12 18:45:45 INFO: Cargando cache de enlace smi
+2007-04-12 18:45:45 Iniciando demonio pop3
+2007-04-12 18:45:45 Host:      localhost
+2007-04-12 18:45:45 Inciando demonio de sincronización
+2007-04-12 18:45:45 INFO: Finalizando el servidor de transacciones..., Address already in use
+2007-04-12 18:45:59 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 18:45:59 INFO: Cargando archivo de configuración...
+2007-04-12 18:45:59 INFO: Cargando base de datos... smi
+2007-04-12 18:45:59 INFO: Cargando cache de enlace smi
+2007-04-12 18:46:00 Iniciando demonio pop3
+2007-04-12 18:46:00 Host:      localhost
+2007-04-12 18:46:00 Inciando demonio de sincronización
+2007-04-12 18:46:00 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 18:46:33 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=34576,localport=9119] 1
+2007-04-12 18:46:34 Inicio de autenticación para el usuario {auditor} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 18:46:34 Auditor Autenticado {auditor} desde la ip 127.0.0.1
+2007-04-12 18:46:46 No se pudo procesar la operación:
+posiblemente el usuario tenga una
+cuenta de correo inválida o no tenga
+una cuenta asignada en el sistema.
+Causa:
+Illegal address
+2007-04-12 18:47:42 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=34577,localport=9119] 2
+2007-04-12 18:47:42 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 18:47:42 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 18:52:23 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=35593,localport=9119] 3
+2007-04-12 18:52:24 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 18:52:24 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 18:57:04 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 18:57:04 INFO: Cargando archivo de configuración...
+2007-04-12 18:57:04 INFO: Cargando base de datos... smi
+2007-04-12 18:57:04 INFO: Cargando cache de enlace smi
+2007-04-12 18:57:05 Iniciando demonio pop3
+2007-04-12 18:57:05 Host:      localhost
+2007-04-12 18:57:05 Inciando demonio de sincronización
+2007-04-12 18:57:05 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 18:57:55 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=51863,localport=9119] 1
+2007-04-12 18:57:55 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 18:57:55 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 19:02:55 Los datos fueron almacenados satisfactoriamente
+2007-04-12 19:03:43 Los datos fueron almacenados satisfactoriamente
+2007-04-12 19:16:52 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=48046,localport=9119] 2
+2007-04-12 19:16:52 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 19:16:52 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 19:17:18 Los datos fueron almacenados satisfactoriamente
+2007-04-12 19:18:40 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=48048,localport=9119] 3
+2007-04-12 19:18:40 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 19:18:40 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 19:18:55 Los datos fueron almacenados satisfactoriamente
+2007-04-12 19:19:41 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=48049,localport=9119] 4
+2007-04-12 19:19:41 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 19:19:41 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 19:19:58 Los datos fueron almacenados satisfactoriamente
+2007-04-12 20:35:19 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 20:35:19 INFO: Cargando archivo de configuración...
+2007-04-12 20:35:19 INFO: Cargando base de datos... smi
+2007-04-12 20:38:27 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 20:38:28 INFO: Cargando archivo de configuración...
+2007-04-12 20:38:28 INFO: Cargando base de datos... smi
+2007-04-12 20:41:37 El servidor de transacciones no pudo conectarse a la base de datos, Connection refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+2007-04-12 20:41:37 ERR_POOL,No pudo cargar el pool de conexiones en la base de datos smi, No hay mensaje de depuración
+2007-04-12 20:42:18 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 20:42:19 INFO: Cargando archivo de configuración...
+2007-04-12 20:42:19 INFO: Cargando base de datos... smi
+2007-04-12 20:43:44 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 20:43:44 INFO: Cargando archivo de configuración...
+2007-04-12 20:43:44 INFO: Cargando base de datos... smi
+2007-04-12 20:43:44 El servidor de transacciones no pudo conectarse a la base de datos, Backend start-up failed: FATAL:  role "smiadmin" does not exist
+
+2007-04-12 20:43:44 ERR_POOL,No pudo cargar el pool de conexiones en la base de datos smi, No hay mensaje de depuración
+2007-04-12 20:44:05 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 20:44:06 INFO: Cargando archivo de configuración...
+2007-04-12 20:44:06 INFO: Cargando base de datos... smi
+2007-04-12 20:44:06 INFO: Cargando cache de enlace smi
+2007-04-12 20:44:06 Iniciando demonio pop3
+2007-04-12 20:44:06 Host:      localhost
+2007-04-12 20:44:06 Inciando demonio de sincronización
+2007-04-12 20:44:06 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 20:44:29 Falló la autenticación del demonio pop3
+2007-04-12 20:44:29 mensaje: [AUTH] PAM authentication failed for user "smi": Authentication failure (7)
+2007-04-12 20:44:29 no se podran obtener los correos
+2007-04-12 20:44:29 revise el archivo de configuración
+2007-04-12 20:44:29 y vuelva a iniciar el servidor.
+2007-04-12 20:44:29 saliendo..
+2007-04-12 20:45:02 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 20:45:03 INFO: Cargando archivo de configuración...
+2007-04-12 20:45:03 INFO: Cargando base de datos... smi
+2007-04-12 20:45:03 INFO: Cargando cache de enlace smi
+2007-04-12 20:45:03 Iniciando demonio pop3
+2007-04-12 20:45:03 Host:      localhost
+2007-04-12 20:45:03 Inciando demonio de sincronización
+2007-04-12 20:45:03 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 20:45:25 Falló la autenticación del demonio pop3
+2007-04-12 20:45:25 mensaje: [AUTH] PAM authentication failed for user "smi": Authentication failure (7)
+2007-04-12 20:45:25 no se podran obtener los correos
+2007-04-12 20:45:25 revise el archivo de configuración
+2007-04-12 20:45:25 y vuelva a iniciar el servidor.
+2007-04-12 20:45:25 saliendo..
+2007-04-12 20:49:57 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 20:49:58 INFO: Cargando archivo de configuración...
+2007-04-12 20:49:58 INFO: Cargando base de datos... smi
+2007-04-12 20:49:58 INFO: Cargando cache de enlace smi
+2007-04-12 20:49:58 Iniciando demonio pop3
+2007-04-12 20:49:58 Host:      localhost
+2007-04-12 20:49:58 Inciando demonio de sincronización
+2007-04-12 20:49:58 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 20:50:20 Falló la autenticación del demonio pop3
+2007-04-12 20:50:20 mensaje: [AUTH] PAM authentication failed for user "smi": Authentication failure (7)
+2007-04-12 20:50:20 no se podran obtener los correos
+2007-04-12 20:50:20 revise el archivo de configuración
+2007-04-12 20:50:20 y vuelva a iniciar el servidor.
+2007-04-12 20:50:20 saliendo..
+2007-04-12 20:51:01 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 20:51:01 INFO: Cargando archivo de configuración...
+2007-04-12 20:51:01 INFO: Cargando base de datos... smi
+2007-04-12 20:51:01 INFO: Cargando cache de enlace smi
+2007-04-12 20:51:01 Iniciando demonio pop3
+2007-04-12 20:51:01 Host:      localhost
+2007-04-12 20:51:01 Inciando demonio de sincronización
+2007-04-12 20:51:01 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 20:52:20 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=55202,localport=9119] 1
+2007-04-12 20:52:20 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 20:52:20 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 20:52:44 No se pudo cargar el módulo de procesamiento de la transacción
+null
+2007-04-12 21:00:03 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 21:00:03 INFO: Cargando archivo de configuración...
+2007-04-12 21:00:03 INFO: Cargando base de datos... smi
+2007-04-12 21:00:04 INFO: Cargando cache de enlace smi
+2007-04-12 21:00:04 Iniciando demonio pop3
+2007-04-12 21:00:04 Host:      localhost
+2007-04-12 21:00:04 Inciando demonio de sincronización
+2007-04-12 21:00:04 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 21:00:50 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=47696,localport=9119] 1
+2007-04-12 21:00:50 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 21:00:50 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 21:02:21 Los datos fueron almacenados satisfactoriamente
+2007-04-12 21:03:37 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=35814,localport=9119] 2
+2007-04-12 21:03:37 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 21:03:37 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 21:03:52 Los datos fueron almacenados satisfactoriamente
+2007-04-12 21:19:33 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=45757,localport=9119] 3
+2007-04-12 21:19:33 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 21:19:33 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 21:22:30 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=39115,localport=9119] 4
+2007-04-12 21:22:30 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 21:22:30 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 21:23:25 Los datos fueron almacenados satisfactoriamente
+2007-04-12 21:33:07 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-12 21:33:07 INFO: Cargando archivo de configuración...
+2007-04-12 21:33:07 INFO: Cargando base de datos... smi
+2007-04-12 21:33:08 INFO: Cargando cache de enlace smi
+2007-04-12 21:33:08 Iniciando demonio pop3
+2007-04-12 21:33:08 Host:      localhost
+2007-04-12 21:33:08 Inciando demonio de sincronización
+2007-04-12 21:33:08 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-12 21:33:45 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=37573,localport=9119] 1
+2007-04-12 21:33:45 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-12 21:33:45 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-12 21:34:08 Los datos fueron almacenados satisfactoriamente
+2007-04-13 08:47:08 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 08:47:08 INFO: Cargando archivo de configuración...
+2007-04-13 08:47:08 INFO: Cargando base de datos... smi
+2007-04-13 08:47:08 El servidor de transacciones no pudo conectarse a la base de datos, Connection refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+2007-04-13 08:47:08 ERR_POOL,No pudo cargar el pool de conexiones en la base de datos smi, No hay mensaje de depuración
+2007-04-13 08:51:05 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 08:51:05 INFO: Cargando archivo de configuración...
+2007-04-13 08:51:05 INFO: Cargando base de datos... smi
+2007-04-13 08:51:05 INFO: Cargando cache de enlace smi
+2007-04-13 08:51:06 Iniciando demonio pop3
+2007-04-13 08:51:06 Host:      localhost
+2007-04-13 08:51:06 Inciando demonio de sincronización
+2007-04-13 08:51:06 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 08:54:29 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 08:54:29 INFO: Cargando archivo de configuración...
+2007-04-13 08:54:29 INFO: Cargando base de datos... smi
+2007-04-13 08:54:29 INFO: Cargando cache de enlace smi
+2007-04-13 08:54:29 Iniciando demonio pop3
+2007-04-13 08:54:29 Host:      localhost
+2007-04-13 08:54:29 Inciando demonio de sincronización
+2007-04-13 08:54:29 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 09:08:15 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 09:08:15 INFO: Cargando archivo de configuración...
+2007-04-13 09:08:15 INFO: Cargando base de datos... smi
+2007-04-13 09:08:15 INFO: Cargando cache de enlace smi
+2007-04-13 09:08:16 Iniciando demonio pop3
+2007-04-13 09:08:16 Host:      localhost
+2007-04-13 09:08:16 Inciando demonio de sincronización
+2007-04-13 09:08:16 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 09:13:19 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 09:13:19 INFO: Cargando archivo de configuración...
+2007-04-13 09:13:19 INFO: Cargando base de datos... smi
+2007-04-13 09:13:19 INFO: Cargando cache de enlace smi
+2007-04-13 09:13:20 Iniciando demonio pop3
+2007-04-13 09:13:20 Host:      localhost
+2007-04-13 09:13:20 Inciando demonio de sincronización
+2007-04-13 09:13:20 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 09:20:53 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=36616,localport=9119] 1
+2007-04-13 09:20:53 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 09:20:54 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 09:21:04 Cargando datos actuales de la base de datos Oracle
+2007-04-13 09:21:05 Error en la base de datos
+ mensaje: La sentencia SQL de ejecución no puede estar vacía ni ser nula
+2007-04-13 09:26:53 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 09:26:54 INFO: Cargando archivo de configuración...
+2007-04-13 09:26:54 INFO: Cargando base de datos... smi
+2007-04-13 09:26:54 INFO: Cargando cache de enlace smi
+2007-04-13 09:26:54 Iniciando demonio pop3
+2007-04-13 09:26:54 Host:      localhost
+2007-04-13 09:26:54 Inciando demonio de sincronización
+2007-04-13 09:26:54 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 09:27:27 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=45041,localport=9119] 1
+2007-04-13 09:27:27 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 09:27:27 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 09:27:34 Cargando datos actuales de la base de datos Oracle
+2007-04-13 09:27:34 Error en la base de datos oracle
+Mensaje: La sentencia SQL de ejecución no puede estar vacía ni ser nula
+2007-04-13 09:29:10 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 09:29:11 INFO: Cargando archivo de configuración...
+2007-04-13 09:29:11 INFO: Cargando base de datos... smi
+2007-04-13 09:29:11 INFO: Cargando cache de enlace smi
+2007-04-13 09:29:11 Iniciando demonio pop3
+2007-04-13 09:29:11 Host:      localhost
+2007-04-13 09:29:11 Inciando demonio de sincronización
+2007-04-13 09:29:11 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 09:29:31 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=58087,localport=9119] 1
+2007-04-13 09:29:31 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 09:29:31 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 09:29:37 Cargando datos actuales de la base de datos Oracle
+2007-04-13 09:29:37 Error en la base de datos oracle
+Mensaje: La sentencia SQL de ejecución no puede estar vacía ni ser nula
+2007-04-13 09:33:27 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 09:33:27 INFO: Cargando archivo de configuración...
+2007-04-13 09:33:27 INFO: Cargando base de datos... smi
+2007-04-13 09:33:27 INFO: Cargando cache de enlace smi
+2007-04-13 09:33:28 Iniciando demonio pop3
+2007-04-13 09:33:28 Host:      localhost
+2007-04-13 09:33:28 Inciando demonio de sincronización
+2007-04-13 09:33:28 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 09:33:58 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=55827,localport=9119] 1
+2007-04-13 09:33:58 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 09:33:58 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 09:34:08 Cargando datos actuales de la base de datos Oracle
+2007-04-13 09:34:09 Error en la base de datos oracle
+Mensaje: ORA-00900: invalid SQL statement
+
+2007-04-13 09:43:47 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 09:43:47 INFO: Cargando archivo de configuración...
+2007-04-13 09:43:47 INFO: Cargando base de datos... smi
+2007-04-13 09:43:47 INFO: Cargando cache de enlace smi
+2007-04-13 09:43:48 Iniciando demonio pop3
+2007-04-13 09:43:48 Host:      localhost
+2007-04-13 09:43:48 Inciando demonio de sincronización
+2007-04-13 09:43:48 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 09:45:08 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 09:45:09 INFO: Cargando archivo de configuración...
+2007-04-13 09:45:09 INFO: Cargando base de datos... smi
+2007-04-13 09:45:09 INFO: Cargando cache de enlace smi
+2007-04-13 09:45:09 Iniciando demonio pop3
+2007-04-13 09:45:09 Host:      localhost
+2007-04-13 09:45:09 Inciando demonio de sincronización
+2007-04-13 09:45:09 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 09:45:30 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=39550,localport=9119] 1
+2007-04-13 09:45:30 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 09:45:30 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 09:45:35 Cargando datos actuales de la base de datos Oracle
+2007-04-13 09:45:36 Cargando datos actuales de la base de datos PostgreSQL
+2007-04-13 09:45:36 Sincronizando....
+2007-04-13 09:45:36 Punto de colocacion => TIENDA TATI almacenado
+2007-04-13 09:45:36 Colocador => CLAUDIA PATRICIA ROA almacenado
+2007-04-13 09:45:36 Colocador => PIEDAD BARONA almacenado
+2007-04-13 09:45:36 Colocador => LILIANA MARIA ARBOLEDA almacenado
+2007-04-13 09:45:36 Asignando Colocador => CLAUDIA PATRICIA ROA(CV940) al punto=> 1182
+2007-04-13 09:45:36 Asignando Colocador => PIEDAD BARONA(CV2710) al punto=> 1161
+2007-04-13 09:45:36 Asignando Colocador => LILIANA MARIA ARBOLEDA(CV2545) al punto=> 1228
+2007-04-13 09:45:36 Bases de datos sincronizada
+2007-04-13 09:45:36 Limpiano y recargando la cache de usuarios
+2007-04-13 10:03:59 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 10:03:59 INFO: Cargando archivo de configuración...
+2007-04-13 10:03:59 INFO: Cargando base de datos... smi
+2007-04-13 10:03:59 INFO: Cargando cache de enlace smi
+2007-04-13 10:03:59 Iniciando demonio pop3
+2007-04-13 10:03:59 Host:      localhost
+2007-04-13 10:03:59 Inciando demonio de sincronización
+2007-04-13 10:03:59 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 10:04:24 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=56374,localport=9119] 1
+2007-04-13 10:04:24 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 10:04:24 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 10:04:29 Cargando datos actuales de la base de datos Oracle
+2007-04-13 10:04:30 Cargando datos actuales de la base de datos PostgreSQL
+2007-04-13 10:04:30 Sincronizando....
+2007-04-13 10:04:30 Bases de datos sincronizada
+2007-04-13 10:04:30 Limpiano y recargando la cache de usuarios
+2007-04-13 10:13:57 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 10:13:57 INFO: Cargando archivo de configuración...
+2007-04-13 10:13:57 INFO: Cargando base de datos... smi
+2007-04-13 10:13:58 INFO: Cargando cache de enlace smi
+2007-04-13 10:13:58 Iniciando demonio pop3
+2007-04-13 10:13:58 Host:      localhost
+2007-04-13 10:13:58 Inciando demonio de sincronización
+2007-04-13 10:13:58 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 10:25:13 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=49339,localport=9119] 1
+2007-04-13 10:25:13 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 10:25:13 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 10:29:15 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=59802,localport=9119] 2
+2007-04-13 10:29:15 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 10:29:15 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 10:29:23 Cargando datos actuales de la base de datos Oracle
+2007-04-13 10:29:24 Cargando datos actuales de la base de datos PostgreSQL
+2007-04-13 10:29:24 Sincronizando....
+2007-04-13 10:29:24 Bases de datos sincronizada
+2007-04-13 10:29:24 Limpiano y recargando la cache de usuarios
+2007-04-13 11:52:17 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 11:52:17 INFO: Cargando archivo de configuración...
+2007-04-13 11:52:17 INFO: Cargando base de datos... smi
+2007-04-13 11:52:17 INFO: Cargando cache de enlace smi
+2007-04-13 11:52:18 Iniciando demonio pop3
+2007-04-13 11:52:18 Host:      localhost
+2007-04-13 11:52:18 Inciando demonio de sincronización
+2007-04-13 11:52:18 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 11:56:09 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 11:56:09 INFO: Cargando archivo de configuración...
+2007-04-13 11:56:09 INFO: Cargando base de datos... smi
+2007-04-13 11:56:09 INFO: Cargando cache de enlace smi
+2007-04-13 11:56:09 INFO: Iniciando demonio pop3
+2007-04-13 11:56:09 INFO: Host: localhost
+2007-04-13 11:56:09 INFO: Inciando demonio de sincronización
+2007-04-13 11:56:09 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 12:00:05 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 12:00:05 INFO: Cargando archivo de configuración...
+2007-04-13 12:00:05 INFO: Cargando base de datos... smi
+2007-04-13 12:00:05 INFO: Cargando cache de enlace smi
+2007-04-13 12:00:05 INFO: Iniciando demonio pop3
+2007-04-13 12:00:05 INFO: Host: localhost
+2007-04-13 12:00:05 INFO: Inciando demonio de sincronización
+2007-04-13 12:00:05 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 12:02:55 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 12:02:55 INFO: Cargando archivo de configuración...
+2007-04-13 12:02:55 INFO: Cargando base de datos... smi
+2007-04-13 12:02:55 INFO: Cargando cache de enlace smi
+2007-04-13 12:02:56 INFO: Iniciando demonio pop3
+2007-04-13 12:02:56 INFO: Host: localhost
+2007-04-13 12:02:56 INFO: Inciando demonio de sincronización
+2007-04-13 12:02:56 INFO: Finalizando el servidor de transacciones..., Address already in use
+2007-04-13 12:03:06 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 12:03:06 INFO: Cargando archivo de configuración...
+2007-04-13 12:03:06 INFO: Cargando base de datos... smi
+2007-04-13 12:03:06 INFO: Cargando cache de enlace smi
+2007-04-13 12:03:07 INFO: Iniciando demonio pop3
+2007-04-13 12:03:07 INFO: Host: localhost
+2007-04-13 12:03:07 INFO: Inciando demonio de sincronización
+2007-04-13 12:03:07 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 12:04:01 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=45293,localport=9119] 1
+2007-04-13 12:04:01 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 12:04:01 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 12:04:13 Cargando datos actuales de la base de datos Oracle
+2007-04-13 12:04:14 Cargando datos actuales de la base de datos PostgreSQL
+2007-04-13 12:04:14 Sincronizando....
+2007-04-13 12:04:14 Bases de datos sincronizada
+2007-04-13 12:04:14 Limpiano y recargando la cache de usuarios
+2007-04-13 12:18:13 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 12:18:14 INFO: Cargando archivo de configuración...
+2007-04-13 12:18:14 INFO: Cargando base de datos... smi
+2007-04-13 12:18:14 INFO: Cargando cache de enlace smi
+2007-04-13 12:18:14 INFO: Iniciando demonio pop3
+2007-04-13 12:18:14 INFO: Host: localhost
+2007-04-13 12:18:14 INFO: Inciando demonio de sincronización
+2007-04-13 12:18:14 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 12:18:42 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=45465,localport=9119] 1
+2007-04-13 12:18:42 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 12:18:42 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 12:23:38 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 12:23:39 INFO: Cargando archivo de configuración...
+2007-04-13 12:23:39 INFO: Cargando base de datos... smi
+2007-04-13 12:23:39 INFO: Cargando cache de enlace smi
+2007-04-13 12:23:39 INFO: Iniciando demonio pop3
+2007-04-13 12:23:39 INFO: Host: localhost
+2007-04-13 12:23:39 INFO: Inciando demonio de sincronización
+2007-04-13 12:23:39 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 12:23:58 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=52639,localport=9119] 1
+2007-04-13 12:23:58 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 12:23:58 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 12:44:01 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 12:44:02 INFO: Cargando archivo de configuración...
+2007-04-13 12:44:02 INFO: Cargando base de datos... smi
+2007-04-13 12:44:02 INFO: Cargando cache de enlace smi
+2007-04-13 12:44:02 INFO: Iniciando demonio pop3
+2007-04-13 12:44:02 INFO: Host: localhost
+2007-04-13 12:44:02 INFO: Inciando demonio de sincronización
+2007-04-13 12:44:02 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 12:44:28 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=50052,localport=9119] 1
+2007-04-13 12:44:28 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 12:44:28 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 12:46:15 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 12:46:16 INFO: Cargando archivo de configuración...
+2007-04-13 12:46:16 INFO: Cargando base de datos... smi
+2007-04-13 12:46:16 INFO: Cargando cache de enlace smi
+2007-04-13 12:46:16 INFO: Iniciando demonio pop3
+2007-04-13 12:46:16 INFO: Host: localhost
+2007-04-13 12:46:16 INFO: Inciando demonio de sincronización
+2007-04-13 12:46:16 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 12:46:34 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=50054,localport=9119] 1
+2007-04-13 12:46:34 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 12:46:34 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 12:48:09 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 12:48:10 INFO: Cargando archivo de configuración...
+2007-04-13 12:48:10 INFO: Cargando base de datos... smi
+2007-04-13 12:48:10 INFO: Cargando cache de enlace smi
+2007-04-13 12:48:10 INFO: Iniciando demonio pop3
+2007-04-13 12:48:10 INFO: Host: localhost
+2007-04-13 12:48:10 INFO: Inciando demonio de sincronización
+2007-04-13 12:48:10 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 12:48:30 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=50055,localport=9119] 1
+2007-04-13 12:48:30 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 12:48:30 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 12:49:35 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 12:49:35 INFO: Cargando archivo de configuración...
+2007-04-13 12:49:35 INFO: Cargando base de datos... smi
+2007-04-13 12:49:35 INFO: Cargando cache de enlace smi
+2007-04-13 12:49:35 INFO: Iniciando demonio pop3
+2007-04-13 12:49:35 INFO: Host: localhost
+2007-04-13 12:49:35 INFO: Inciando demonio de sincronización
+2007-04-13 12:49:35 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 12:49:55 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=33190,localport=9119] 1
+2007-04-13 12:49:55 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 12:49:55 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 12:51:25 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 12:51:26 INFO: Cargando archivo de configuración...
+2007-04-13 12:51:26 INFO: Cargando base de datos... smi
+2007-04-13 12:51:26 INFO: Cargando cache de enlace smi
+2007-04-13 12:51:26 INFO: Iniciando demonio pop3
+2007-04-13 12:51:26 INFO: Host: localhost
+2007-04-13 12:51:26 INFO: Inciando demonio de sincronización
+2007-04-13 12:51:26 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 12:51:44 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=33191,localport=9119] 1
+2007-04-13 12:51:44 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 12:51:44 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 12:52:44 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 12:52:44 INFO: Cargando archivo de configuración...
+2007-04-13 12:52:44 INFO: Cargando base de datos... smi
+2007-04-13 12:52:44 INFO: Cargando cache de enlace smi
+2007-04-13 12:52:44 INFO: Iniciando demonio pop3
+2007-04-13 12:52:44 INFO: Host: localhost
+2007-04-13 12:52:44 INFO: Inciando demonio de sincronización
+2007-04-13 12:52:44 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 12:53:01 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=33192,localport=9119] 1
+2007-04-13 12:53:01 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 12:53:01 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 12:54:07 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 12:54:07 INFO: Cargando archivo de configuración...
+2007-04-13 12:54:07 INFO: Cargando base de datos... smi
+2007-04-13 12:54:07 INFO: Cargando cache de enlace smi
+2007-04-13 12:54:07 INFO: Iniciando demonio pop3
+2007-04-13 12:54:07 INFO: Host: localhost
+2007-04-13 12:54:07 INFO: Inciando demonio de sincronización
+2007-04-13 12:54:07 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 12:54:30 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=57838,localport=9119] 1
+2007-04-13 12:54:31 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 12:54:31 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 12:56:38 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 12:56:39 INFO: Cargando archivo de configuración...
+2007-04-13 12:56:39 INFO: Cargando base de datos... smi
+2007-04-13 12:56:39 INFO: Cargando cache de enlace smi
+2007-04-13 12:56:39 INFO: Iniciando demonio pop3
+2007-04-13 12:56:39 INFO: Host: localhost
+2007-04-13 12:56:39 INFO: Inciando demonio de sincronización
+2007-04-13 12:56:39 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 12:56:58 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=57840,localport=9119] 1
+2007-04-13 12:56:58 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 12:56:58 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 12:57:41 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 12:57:41 INFO: Cargando archivo de configuración...
+2007-04-13 12:57:41 INFO: Cargando base de datos... smi
+2007-04-13 12:57:41 INFO: Cargando cache de enlace smi
+2007-04-13 12:57:42 INFO: Iniciando demonio pop3
+2007-04-13 12:57:42 INFO: Host: localhost
+2007-04-13 12:57:42 INFO: Inciando demonio de sincronización
+2007-04-13 12:57:42 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 12:58:02 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=57841,localport=9119] 1
+2007-04-13 12:58:03 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 12:58:03 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 12:58:59 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 12:58:59 INFO: Cargando archivo de configuración...
+2007-04-13 12:58:59 INFO: Cargando base de datos... smi
+2007-04-13 12:58:59 INFO: Cargando cache de enlace smi
+2007-04-13 12:59:00 INFO: Iniciando demonio pop3
+2007-04-13 12:59:00 INFO: Host: localhost
+2007-04-13 12:59:00 INFO: Inciando demonio de sincronización
+2007-04-13 12:59:00 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 12:59:16 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=42718,localport=9119] 1
+2007-04-13 12:59:16 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 12:59:16 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 12:59:53 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 12:59:53 INFO: Cargando archivo de configuración...
+2007-04-13 12:59:53 INFO: Cargando base de datos... smi
+2007-04-13 12:59:53 INFO: Cargando cache de enlace smi
+2007-04-13 12:59:53 INFO: Iniciando demonio pop3
+2007-04-13 12:59:53 INFO: Host: localhost
+2007-04-13 12:59:53 INFO: Inciando demonio de sincronización
+2007-04-13 12:59:53 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 13:00:00 Syncronizando fecha: 13 abr 2007 13:00:00.008
+2007-04-13 13:00:00 Cargando datos actuales de la base de datos Oracle
+2007-04-13 13:00:00 Cargando datos actuales de la base de datos PostgreSQL
+2007-04-13 13:00:00 Sincronizando....
+2007-04-13 13:00:00 Bases de datos sincronizada
+2007-04-13 13:00:00 Inicio de mantenimiento de base de datos
+2007-04-13 13:00:00 Borrando mensajes con tiempo de vida igual a 3000
+2007-04-13 13:00:00 Liberando mensajes de  base de datos, Cantidad: 3000
+2007-04-13 13:00:00 Nro de mensajes a liberar 3030
+2007-04-13 13:00:03 Mantenimiento de base de datos terminada
+2007-04-13 13:00:18 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=42719,localport=9119] 1
+2007-04-13 13:00:18 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 13:00:18 INFO: Cargando base de datos... smi
+2007-04-13 13:00:18 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 13:04:17 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 13:04:17 INFO: Cargando archivo de configuración...
+2007-04-13 13:04:17 INFO: Cargando base de datos... smi
+2007-04-13 13:04:17 INFO: Cargando cache de enlace smi
+2007-04-13 13:04:18 INFO: Iniciando demonio pop3
+2007-04-13 13:04:18 INFO: Host: localhost
+2007-04-13 13:04:18 INFO: Inciando demonio de sincronización
+2007-04-13 13:04:18 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 13:04:41 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=42642,localport=9119] 1
+2007-04-13 13:04:41 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 13:04:41 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 13:06:06 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 13:06:06 INFO: Cargando archivo de configuración...
+2007-04-13 13:06:06 INFO: Cargando base de datos... smi
+2007-04-13 13:06:06 INFO: Cargando cache de enlace smi
+2007-04-13 13:06:06 INFO: Iniciando demonio pop3
+2007-04-13 13:06:06 INFO: Host: localhost
+2007-04-13 13:06:06 INFO: Inciando demonio de sincronización
+2007-04-13 13:06:06 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 13:06:23 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=42644,localport=9119] 1
+2007-04-13 13:06:23 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 13:06:24 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 13:07:52 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 13:07:53 INFO: Cargando archivo de configuración...
+2007-04-13 13:07:53 INFO: Cargando base de datos... smi
+2007-04-13 13:07:53 INFO: Cargando cache de enlace smi
+2007-04-13 13:07:53 INFO: Iniciando demonio pop3
+2007-04-13 13:07:53 INFO: Host: localhost
+2007-04-13 13:07:53 INFO: Inciando demonio de sincronización
+2007-04-13 13:07:53 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 13:08:09 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=42645,localport=9119] 1
+2007-04-13 13:08:09 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 13:08:09 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 13:09:54 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 13:09:54 INFO: Cargando archivo de configuración...
+2007-04-13 13:09:54 INFO: Cargando base de datos... smi
+2007-04-13 13:09:54 INFO: Cargando cache de enlace smi
+2007-04-13 13:09:54 INFO: Iniciando demonio pop3
+2007-04-13 13:09:54 INFO: Host: localhost
+2007-04-13 13:09:54 INFO: Inciando demonio de sincronización
+2007-04-13 13:09:54 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 13:10:18 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=39873,localport=9119] 1
+2007-04-13 13:10:19 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 13:10:19 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 13:13:04 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 13:13:04 INFO: Cargando archivo de configuración...
+2007-04-13 13:13:04 INFO: Cargando base de datos... smi
+2007-04-13 13:13:04 INFO: Cargando cache de enlace smi
+2007-04-13 13:13:04 INFO: Iniciando demonio pop3
+2007-04-13 13:13:04 INFO: Host: localhost
+2007-04-13 13:13:04 INFO: Inciando demonio de sincronización
+2007-04-13 13:13:04 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 13:13:35 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=39874,localport=9119] 1
+2007-04-13 13:13:36 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 13:13:36 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 13:16:25 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 13:16:25 INFO: Cargando archivo de configuración...
+2007-04-13 13:16:25 INFO: Cargando base de datos... smi
+2007-04-13 13:16:25 INFO: Cargando cache de enlace smi
+2007-04-13 13:16:25 INFO: Iniciando demonio pop3
+2007-04-13 13:16:25 INFO: Host: localhost
+2007-04-13 13:16:25 INFO: Inciando demonio de sincronización
+2007-04-13 13:16:25 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 13:16:47 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=47328,localport=9119] 1
+2007-04-13 13:16:47 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 13:16:47 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 14:16:01 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 14:16:01 INFO: Cargando archivo de configuración...
+2007-04-13 14:16:01 INFO: Cargando base de datos... smi
+2007-04-13 14:16:01 INFO: Cargando cache de enlace smi
+2007-04-13 14:16:02 INFO: Iniciando demonio pop3
+2007-04-13 14:16:02 INFO: Host: localhost
+2007-04-13 14:16:02 INFO: Inciando demonio de sincronización
+2007-04-13 14:16:02 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 14:16:24 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=38381,localport=9119] 1
+2007-04-13 14:16:24 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 14:16:24 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 14:20:18 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 14:20:19 INFO: Cargando archivo de configuración...
+2007-04-13 14:20:19 INFO: Cargando base de datos... smi
+2007-04-13 14:20:19 INFO: Cargando cache de enlace smi
+2007-04-13 14:20:19 INFO: Iniciando demonio pop3
+2007-04-13 14:20:19 INFO: Host: localhost
+2007-04-13 14:20:19 INFO: Inciando demonio de sincronización
+2007-04-13 14:20:19 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 14:20:51 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=54810,localport=9119] 1
+2007-04-13 14:20:51 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 14:20:52 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-13 14:21:21 Cargando datos actuales de la base de datos Oracle
+2007-04-13 14:21:22 Cargando datos actuales de la base de datos PostgreSQL
+2007-04-13 14:21:22 Sincronizando....
+2007-04-13 14:21:22 Bases de datos sincronizada
+2007-04-13 14:21:22 Limpiano y recargando el cache de usuarios
+2007-04-13 14:22:56 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-13 14:22:56 INFO: Cargando archivo de configuración...
+2007-04-13 14:22:56 INFO: Cargando base de datos... smi
+2007-04-13 14:22:57 INFO: Cargando cache de enlace smi
+2007-04-13 14:22:57 INFO: Iniciando demonio pop3
+2007-04-13 14:22:57 INFO: Host: localhost
+2007-04-13 14:22:57 INFO: Inciando demonio de sincronización
+2007-04-13 14:22:57 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-13 14:23:17 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=54812,localport=9119] 1
+2007-04-13 14:23:17 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-13 14:23:17 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-18 15:40:34 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-18 15:40:35 INFO: Cargando archivo de configuración...
+2007-04-18 15:40:35 INFO: Cargando base de datos... smi
+2007-04-18 15:40:35 INFO: Cargando cache de enlace smi
+2007-04-18 15:40:35 INFO: Iniciando demonio pop3
+2007-04-18 15:40:35 INFO: Host: localhost
+2007-04-18 15:40:35 INFO: Inciando demonio de sincronización
+2007-04-18 15:40:35 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-18 15:44:05 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=48826,localport=9119] 1
+2007-04-18 15:44:05 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-18 15:44:05 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-18 15:44:09 Cargando datos actuales de la base de datos Oracle
+2007-04-18 15:44:10 Cargando datos actuales de la base de datos PostgreSQL
+2007-04-18 15:44:10 Sincronizando...
+2007-04-18 15:44:11 Colocador => KATHERINE CALERO almacenado
+2007-04-18 15:44:11 Asignando Colocador => KATHERINE CALERO(CV2530) al punto=> 1173
+2007-04-18 15:44:11 Bases de datos sincronizada
+2007-04-18 15:44:11 Limpiano y recargando el cache de usuarios
+2007-04-18 16:50:59 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-18 16:50:59 INFO: Cargando archivo de configuración...
+2007-04-18 16:50:59 INFO: Cargando base de datos... smi
+2007-04-18 16:51:00 INFO: Cargando cache de enlace smi
+2007-04-18 16:51:00 INFO: Iniciando demonio pop3
+2007-04-18 16:51:00 INFO: Host: localhost
+2007-04-18 16:51:00 INFO: Inciando demonio de sincronización
+2007-04-18 16:51:00 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-18 16:59:52 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-18 16:59:52 INFO: Cargando archivo de configuración...
+2007-04-18 16:59:52 INFO: Cargando base de datos... smi
+2007-04-18 17:01:22 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf.xml
+2007-04-18 17:01:23 INFO: Cargando archivo de configuración...
+2007-04-18 17:01:23 INFO: Cargando base de datos... smi
+2007-04-18 17:01:23 INFO: Cargando cache de enlace smi
+2007-04-18 17:01:23 INFO: Iniciando demonio pop3
+2007-04-18 17:01:23 INFO: Host: localhost
+2007-04-18 17:01:23 INFO: Inciando demonio de sincronización
+2007-04-18 17:01:23 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-18 17:02:14 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=40343,localport=9119] 1
+2007-04-18 17:02:14 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-18 17:02:14 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-18 17:03:11 No se pudo cargar el módulo de procesamiento de la transacción
+com.kazak.smi.server.businesrules.PointSaleManager
+2007-04-18 17:11:18 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf
+2007-04-18 17:11:18 INFO: Cargando archivo de configuración...
+2007-04-18 17:11:18 INFO: Cargando base de datos... smi
+2007-04-18 17:11:18 INFO: Cargando cache de enlace smi
+2007-04-18 17:11:18 INFO: Iniciando demonio pop3
+2007-04-18 17:11:18 INFO: Host: localhost
+2007-04-18 17:11:18 INFO: Inciando demonio de sincronización
+2007-04-18 17:11:18 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-18 17:11:47 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=38755,localport=9119] 1
+2007-04-18 17:11:47 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-18 17:11:47 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-18 17:11:55 Cargando datos actuales de la base de datos Oracle
+2007-04-18 17:11:56 Cargando datos actuales de la base de datos PostgreSQL
+2007-04-18 17:11:56 Sincronizando...
+2007-04-18 17:11:56 Colocador => PAULA ANDREA DERAZO almacenado
+2007-04-18 17:11:56 Asignando Colocador => PAULA ANDREA DERAZO(CV2704) al punto=> 1570
+2007-04-18 17:11:56 Bases de datos sincronizada
+2007-04-18 17:11:56 Limpiano y recargando el cache de usuarios
+2007-04-18 17:12:23 Los datos fueron almacenados satisfactoriamente
+2007-04-18 17:16:15 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=59471,localport=9119] 2
+2007-04-18 17:16:16 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-18 17:16:16 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-18 17:16:28 Los datos fueron almacenados satisfactoriamente
+2007-04-18 17:21:19 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=46895,localport=9119] 3
+2007-04-18 17:21:19 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-18 17:21:19 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-18 17:21:49 Los datos fueron almacenados satisfactoriamente
+2007-04-18 17:26:19 Los datos fueron almacenados satisfactoriamente
+2007-04-18 17:28:12 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=36909,localport=9119] 4
+2007-04-18 17:28:12 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-18 17:28:12 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-18 17:28:36 Los datos fueron almacenados satisfactoriamente
+2007-04-18 17:45:02 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=33176,localport=9119] 5
+2007-04-18 17:45:02 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-18 17:45:02 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-18 17:45:21 Los datos fueron almacenados satisfactoriamente
+2007-04-18 18:28:10 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=59007,localport=9119] 6
+2007-04-18 18:28:10 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-18 18:28:10 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-18 18:29:22 Los datos fueron almacenados satisfactoriamente
+2007-04-18 18:42:03 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=44030,localport=9119] 7
+2007-04-18 18:42:03 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-18 18:42:03 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-18 18:42:14 Los datos fueron almacenados satisfactoriamente
+2007-04-18 18:45:00 Los datos fueron almacenados satisfactoriamente
+2007-04-18 18:56:29 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=42470,localport=9119] 8
+2007-04-18 18:56:29 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-18 18:56:29 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-18 18:56:51 Los datos fueron almacenados satisfactoriamente
+2007-04-18 18:58:49 Los datos fueron almacenados satisfactoriamente
+2007-04-18 19:26:07 Los datos fueron almacenados satisfactoriamente
+2007-04-18 19:26:43 Los datos fueron almacenados satisfactoriamente
+2007-04-18 19:34:15 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=59124,localport=9119] 9
+2007-04-18 19:34:15 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-18 19:34:15 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-18 19:34:38 Los datos fueron almacenados satisfactoriamente
+2007-04-18 19:41:16 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=45359,localport=9119] 10
+2007-04-18 19:41:16 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-18 19:41:16 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-18 19:41:34 Los datos fueron almacenados satisfactoriamente
+2007-04-18 19:51:30 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=36249,localport=9119] 11
+2007-04-18 19:51:30 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-18 19:51:30 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-18 19:52:03 Los datos fueron almacenados satisfactoriamente
+2007-04-18 19:53:04 Los datos fueron almacenados satisfactoriamente
+2007-04-18 20:00:45 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf
+2007-04-18 20:00:45 INFO: Cargando archivo de configuración...
+2007-04-18 20:00:45 INFO: Cargando base de datos... smi
+2007-04-18 20:00:45 INFO: Cargando cache de enlace smi
+2007-04-18 20:00:45 INFO: Iniciando demonio pop3
+2007-04-18 20:00:45 INFO: Host: localhost
+2007-04-18 20:00:45 INFO: Inciando demonio de sincronización
+2007-04-18 20:00:45 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-18 20:01:14 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=57950,localport=9119] 1
+2007-04-18 20:01:14 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-18 20:01:14 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-18 20:01:27 Los datos fueron almacenados satisfactoriamente
+2007-04-18 20:13:41 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=48648,localport=9119] 2
+2007-04-18 20:13:41 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-18 20:13:41 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-18 20:14:25 Los datos fueron almacenados satisfactoriamente
+2007-04-18 20:19:10 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=36597,localport=9119] 3
+2007-04-18 20:19:10 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-18 20:19:10 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-18 20:19:41 Los datos fueron almacenados satisfactoriamente
+2007-04-18 20:23:16 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=36598,localport=9119] 4
+2007-04-18 20:23:16 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-18 20:23:16 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-18 20:23:29 Los datos fueron almacenados satisfactoriamente
+2007-04-18 20:31:17 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=56084,localport=9119] 5
+2007-04-18 20:31:17 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-18 20:31:17 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-18 20:31:42 Los datos fueron almacenados satisfactoriamente
+2007-04-18 20:32:55 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=56085,localport=9119] 6
+2007-04-18 20:32:55 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-18 20:32:55 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-18 20:33:19 Los datos fueron almacenados satisfactoriamente
+2007-04-18 20:33:56 Los datos fueron almacenados satisfactoriamente
+2007-04-18 20:34:29 Los datos fueron almacenados satisfactoriamente
+2007-04-18 20:34:47 Los datos fueron almacenados satisfactoriamente
+2007-04-18 20:35:21 Los datos fueron almacenados satisfactoriamente
+2007-04-18 20:35:48 Los datos fueron almacenados satisfactoriamente
+2007-04-18 20:43:24 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=49404,localport=9119] 7
+2007-04-18 20:43:24 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-18 20:43:24 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-18 20:43:53 Los datos fueron almacenados satisfactoriamente
+2007-04-19 10:50:41 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf
+2007-04-19 10:50:42 INFO: Cargando archivo de configuración...
+2007-04-19 10:50:42 INFO: Cargando base de datos... smi
+2007-04-19 10:50:42 INFO: Cargando cache de enlace smi
+2007-04-19 10:50:42 INFO: Iniciando demonio pop3
+2007-04-19 10:50:42 INFO: Host: localhost
+2007-04-19 10:50:42 INFO: Inciando demonio de sincronización
+2007-04-19 10:50:42 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-19 10:51:11 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=35643,localport=9119] 1
+2007-04-19 10:51:11 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 10:51:11 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 10:51:27 Los datos fueron almacenados satisfactoriamente
+2007-04-19 10:55:26 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=37618,localport=9119] 2
+2007-04-19 10:55:26 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 10:55:26 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 10:55:48 Los datos fueron almacenados satisfactoriamente
+2007-04-19 11:04:07 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=36275,localport=9119] 3
+2007-04-19 11:04:07 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 11:04:07 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 11:04:21 Los datos fueron almacenados satisfactoriamente
+2007-04-19 11:05:15 Los datos fueron almacenados satisfactoriamente
+2007-04-19 11:23:51 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=43509,localport=9119] 4
+2007-04-19 11:23:51 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 11:23:51 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 11:24:03 Los datos fueron almacenados satisfactoriamente
+2007-04-19 11:24:50 Los datos fueron almacenados satisfactoriamente
+2007-04-19 12:35:30 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=36091,localport=9119] 5
+2007-04-19 12:35:31 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 12:35:31 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 12:38:27 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=34665,localport=9119] 6
+2007-04-19 12:38:27 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 12:38:27 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 12:48:03 Los datos fueron almacenados satisfactoriamente
+2007-04-19 12:48:50 Los datos fueron almacenados satisfactoriamente
+2007-04-19 12:50:00 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=58474,localport=9119] 7
+2007-04-19 12:50:00 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 12:50:00 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 12:50:26 Los datos fueron almacenados satisfactoriamente
+2007-04-19 12:50:52 Los datos fueron almacenados satisfactoriamente
+2007-04-19 12:51:12 Los datos fueron almacenados satisfactoriamente
+2007-04-19 12:55:51 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=46037,localport=9119] 8
+2007-04-19 12:55:51 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 12:55:51 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 12:56:14 Los datos fueron almacenados satisfactoriamente
+2007-04-19 12:56:37 Los datos fueron almacenados satisfactoriamente
+2007-04-19 12:57:07 Los datos fueron almacenados satisfactoriamente
+2007-04-19 12:57:33 Los datos fueron almacenados satisfactoriamente
+2007-04-19 13:00:00 Syncronizando fecha: 19 abr 2007 13:00:00.005
+2007-04-19 13:00:00 Cargando datos actuales de la base de datos Oracle
+2007-04-19 13:00:00 SENTENCIA:  SELECT 'CV'||H.CONTVTA_PRS_DOCUMENTO Login,H.ubcneg_trtrio_codigo Codigo_punto, (SELECT nombre FROM territorios T WHERE H.ubcneg_trtrio_codigo=T.codigo AND T.negocio='S' AND T.tpotrt_codigo=15) Nombre_Punto, (SELECT P.nombres||' '||P.apellido1 FROM personas P WHERE H.contvta_prs_documento=P.documento) Nombre_Colocador FROM horariopersonas H WHERE (H.fechafinal IS null OR  sysdate <= H.FECHAFINAL) AND (SELECT nombre FROM territorios T WHERE H.ubcneg_trtrio_codigo=T.codigo) NOT LIKE '%MANUAL%' ORDER BY LOGIN
+2007-04-19 13:00:00 Cargando datos actuales de la base de datos PostgreSQL
+2007-04-19 13:00:01 Sincronizando...
+2007-04-19 13:00:01 Bases de datos sincronizada
+2007-04-19 13:00:01 Inicio de mantenimiento de base de datos
+2007-04-19 13:00:01 Borrando mensajes con tiempo de vida igual a 3000
+2007-04-19 13:00:01 Liberando mensajes de  base de datos, Cantidad: 3000
+2007-04-19 13:00:01 Nro de mensajes a liberar 6334
+2007-04-19 13:00:03 Mantenimiento de base de datos terminada
+2007-04-19 13:00:28 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=32837,localport=9119] 9
+2007-04-19 13:00:28 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 13:00:28 INFO: Cargando base de datos... smi
+2007-04-19 13:00:28 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 13:07:14 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=47266,localport=9119] 10
+2007-04-19 13:07:15 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 13:07:15 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 13:07:30 Los datos fueron almacenados satisfactoriamente
+2007-04-19 13:07:53 Los datos fueron almacenados satisfactoriamente
+2007-04-19 13:08:30 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=47267,localport=9119] 11
+2007-04-19 13:08:30 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 13:08:30 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 13:18:52 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=42454,localport=9119] 12
+2007-04-19 13:18:52 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 13:18:52 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 13:19:45 Los datos fueron almacenados satisfactoriamente
+2007-04-19 13:20:14 Los datos fueron almacenados satisfactoriamente
+2007-04-19 13:24:08 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=41338,localport=9119] 13
+2007-04-19 13:24:08 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 13:24:08 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 13:24:59 Los datos fueron almacenados satisfactoriamente
+2007-04-19 13:25:47 Los datos fueron almacenados satisfactoriamente
+2007-04-19 13:27:53 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=39023,localport=9119] 14
+2007-04-19 13:27:54 Inicio de autenticación para el usuario {admin} con la clave {d62129ba57e53adea5189ce35e676842}
+2007-04-19 13:27:54 Acceso denegado a  {admin} desde la ip 127.0.0.1 ingresando como Administrador/Auditor
+2007-04-19 13:27:58 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=39024,localport=9119] 15
+2007-04-19 13:27:58 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 13:27:58 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 13:28:19 Los datos fueron almacenados satisfactoriamente
+2007-04-19 13:30:54 Los datos fueron almacenados satisfactoriamente
+2007-04-19 13:35:05 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=49154,localport=9119] 15
+2007-04-19 13:35:05 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 13:35:05 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 13:49:37 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=39113,localport=9119] 16
+2007-04-19 13:49:37 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 13:49:37 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 13:52:38 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=57674,localport=9119] 17
+2007-04-19 13:52:38 Inicio de autenticación para el usuario {admin} con la clave {d921c3c762b1522c475ac8fc0811bb0f}
+2007-04-19 13:52:38 Acceso denegado a  {admin} desde la ip 127.0.0.1 ingresando como Administrador/Auditor
+2007-04-19 13:52:43 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=57675,localport=9119] 18
+2007-04-19 13:52:43 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 13:52:43 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 14:00:17 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=51553,localport=9119] 18
+2007-04-19 14:00:17 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 14:00:17 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 14:02:42 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=47269,localport=9119] 19
+2007-04-19 14:02:42 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 14:02:42 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 14:06:24 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=47272,localport=9119] 20
+2007-04-19 14:06:24 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 14:06:24 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 14:11:57 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=42563,localport=9119] 21
+2007-04-19 14:11:57 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 14:11:57 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 14:40:57 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=33771,localport=9119] 22
+2007-04-19 14:40:57 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 14:40:57 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 14:41:00 No se pudo cargar el módulo de procesamiento de la transacción
+No se encontró el módulo para procesar la transacción
+2007-04-19 14:41:56 INFO: Config -> /home/emaku/SMI/smi/SMI-Server/dist/conf/server.conf
+2007-04-19 14:41:56 INFO: Cargando archivo de configuración...
+2007-04-19 14:41:56 INFO: Cargando base de datos... smi
+2007-04-19 14:41:56 INFO: Cargando cache de enlace smi
+2007-04-19 14:41:56 INFO: Iniciando demonio pop3
+2007-04-19 14:41:56 INFO: Host: localhost
+2007-04-19 14:41:56 INFO: Inciando demonio de sincronización
+2007-04-19 14:41:57 INFO: Servidor SMI escuchando por el puerto 9119
+2007-04-19 14:43:46 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=60004,localport=9119] 1
+2007-04-19 14:43:47 Inicio de autenticación para el usuario {admin} con la clave {bd598380a128fc2fdc12c453e7a7f3e8}
+2007-04-19 14:43:47 Acceso denegado a  {admin} desde la ip 127.0.0.1 ingresando como Administrador/Auditor
+2007-04-19 14:43:51 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=60005,localport=9119] 2
+2007-04-19 14:43:51 Inicio de autenticación para el usuario {admin} con la clave {bd598380a128fc2fdc12c453e7a7f3e8}
+2007-04-19 14:43:51 Acceso denegado a  {admin} desde la ip 127.0.0.1 ingresando como Administrador/Auditor
+2007-04-19 14:43:58 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=60007,localport=9119] 2
+2007-04-19 14:43:58 Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-04-19 14:43:58 Administrador Autenticado {admin} desde la ip 127.0.0.1
+2007-04-19 14:44:01 No se pudo cargar el módulo de procesamiento de la transacción
+No se encontró el módulo para procesar la transacción
+2007-04-19 15:28:30 No se pudo cargar el módulo de procesamiento de la transacción
+No se encontró el módulo para procesar la transacción

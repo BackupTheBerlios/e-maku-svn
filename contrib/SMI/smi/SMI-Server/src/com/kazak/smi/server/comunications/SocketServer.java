@@ -55,7 +55,7 @@ public class SocketServer {
      * las conexiones activas.
      */
 
-    private static Hashtable <SocketChannel,InfoSocket>Hchannelclients = new Hashtable<SocketChannel,InfoSocket>();
+    private static Hashtable <SocketChannel,SocketInfo>Hchannelclients = new Hashtable<SocketChannel,SocketInfo>();
     private static ServerSocketChannel SSCcanal1 = null;
     private static int SocketsCount = 0;
 
@@ -93,7 +93,7 @@ public class SocketServer {
                                 SocketChannel canalsocket = server.accept();
                                 canalsocket.configureBlocking(false);
                                 canalsocket.register(selector,SelectionKey.OP_READ);
-                                Hchannelclients.put(canalsocket, new InfoSocket(canalsocket.socket()));
+                                Hchannelclients.put(canalsocket, new SocketInfo(canalsocket.socket()));
                                 LogWriter.write(Language.getWord("NEW_SOCKET_CLIENT")
                                             + " "
                                             + canalsocket.socket()
@@ -129,7 +129,7 @@ public class SocketServer {
      *         retorna false
      */
     public static boolean isLogged(SocketChannel sock) {
-        return Hchannelclients.get(sock).isLoged();
+        return Hchannelclients.get(sock).isLogged();
     }
     
     /**
@@ -149,6 +149,8 @@ public class SocketServer {
      		    	  currentUsers++;
      		    	  String login = getLogin(connection);
      		    	  System.out.println("Usuario " + login + " conectado desde " + connection.socket().getLocalAddress().getHostAddress());
+     		    	  String data = Hchannelclients.get(connection).gName;
+     		    	 
      		      }
     	    }
     }
@@ -165,8 +167,6 @@ public class SocketServer {
         Hchannelclients.remove(sock);
     }
     
-    
-
     public static ByteArrayOutputStream getBufferTmp(SocketChannel sock) {
         return Hchannelclients.get(sock).getBuffTmp();
     }
@@ -181,8 +181,7 @@ public class SocketServer {
      * @return El nombre de la base de datos
      */
     public static String getBd(SocketChannel sock){
-    	return Hchannelclients.get(sock).getBd();
-    	
+    	return Hchannelclients.get(sock).getBd();    	
     }
 
     /**
@@ -235,33 +234,33 @@ public class SocketServer {
         return "K-"+ getBd(sock) + "-companyID";    
     }
     
-    public static InfoSocket getInfoSocket (SocketChannel sock) {
+    public static SocketInfo getSocketInfo(SocketChannel sock) {
     	return Hchannelclients.get(sock);
     }
     
-    public static InfoSocket getInfoSocket(String login) {
+    public static SocketInfo getSocketInfo(String login) {
     	if (login != null) {
     	    System.out.println("Consultando login: " + login);
     	} else {
     	    System.out.println("Llamado a getInfoSocket con parametro nulo (login)");
     	}
-    	for (InfoSocket ifs : Hchannelclients.values()) {
+    	for (SocketInfo ifs : Hchannelclients.values()) {
     		if (ifs.getLogin().equals(login)) {
     			return ifs;
     		}
     	}
     	return null;
     }
-    public static InfoSocket getInstaceOfInfoSocket() {
-    	return new InfoSocket();
+    public static SocketInfo getInstaceOfSocketInfo() {
+    	return new SocketInfo();
     }
     /**
      * Esta clase sirve como valor para guardar
      * la conexiones en la hash de sockets
      */
-    public static class InfoSocket extends Thread {
+    public static class SocketInfo extends Thread {
 
-        private boolean loged = false;
+        private boolean logged = false;
         private String bd;
         private String login;
         private Socket sock;
@@ -276,7 +275,7 @@ public class SocketServer {
         private String psName;
         private String gName;
         
-    	public InfoSocket() {}
+    	public SocketInfo() {}
     	public String getCurrIp() {
     		return currIp;
     	}
@@ -336,7 +335,7 @@ public class SocketServer {
         /**
          * @param sock
          */
-        public InfoSocket(Socket sock) {
+        public SocketInfo(Socket sock) {
             this.sock = sock;
             buffTmp = new ByteArrayOutputStream();
             start();
@@ -348,7 +347,7 @@ public class SocketServer {
         public void run() {
             try {
                 Thread.sleep(10000);
-                if (!isLoged()) {
+                if (!isLogged()) {
                     SocketServer.removeSock(sock.getChannel());
                 }
             }
@@ -366,8 +365,8 @@ public class SocketServer {
          * @return <code><b>true</b></code> si la conexion esta autenticada,
          * de lo contrario <code><b>false</b></code> 
          */
-        public boolean isLoged() {
-            return loged;
+        public boolean isLogged() {
+            return logged;
         }
 
         /**
@@ -375,7 +374,7 @@ public class SocketServer {
          * de no autenticado a autenticado.
          */
         public void setLoged() {
-            this.loged = true;
+            this.logged = true;
         }
 
         /**
@@ -444,13 +443,15 @@ public class SocketServer {
 			gName = name;
 		}
     }
+ 
+    // Retorna todos los usuarios conectados al sistema y pertenecientes al grupo gidInt
     
-	public static Vector<InfoSocket> getAllClients(int gidInt) {
-		Vector<InfoSocket> vusers = new Vector<InfoSocket>();
+	public static Vector<SocketInfo> getAllClients(int gidInt) {
+		Vector<SocketInfo> vusers = new Vector<SocketInfo>();
 		RunQuery runQuery = null;
 	    ResultSet rs = null;
 	    
-	    for (InfoSocket ifs : Hchannelclients.values()) {    
+	    for (SocketInfo ifs : Hchannelclients.values()) {    
             if (ifs.getGid()==gidInt) {
                 vusers.add(ifs);
             }
@@ -460,7 +461,7 @@ public class SocketServer {
 			runQuery = new RunQuery("SEL0027");
 			rs = runQuery.runSELECT();
 			while(rs.next()) {
-				InfoSocket ifuFrom = SocketServer.getInstaceOfInfoSocket();
+				SocketInfo ifuFrom = SocketServer.getInstaceOfSocketInfo();
 				ifuFrom.setUid(rs.getInt(1));
 				ifuFrom.setLogin(rs.getString(2));
 				ifuFrom.setNames(rs.getString(3));
@@ -471,7 +472,7 @@ public class SocketServer {
 				ifuFrom.setPsName(rs.getString(9));
 				ifuFrom.setGName(rs.getString(12));
 				
-				if (!containsInfoSocket(vusers, ifuFrom)) {
+				if (!containsSocketInfo(vusers, ifuFrom)) {
 					boolean cont = ifuFrom.getGid()==gidInt ? true : false;
 					if (ifuFrom.getGid()==gidInt) {
 						vusers.add(ifuFrom);
@@ -494,8 +495,8 @@ public class SocketServer {
 		return vusers;
 	}
 	
-	private static boolean containsInfoSocket(Vector<InfoSocket> vusers,InfoSocket ifs) {
-		for (InfoSocket rifs : vusers) {
+	private static boolean containsSocketInfo(Vector<SocketInfo> vusers,SocketInfo ifs) {
+		for (SocketInfo rifs : vusers) {
 			if (ifs.getLogin().equals(rifs.getLogin())) {
 				return true;
 			}
@@ -503,12 +504,12 @@ public class SocketServer {
 		return false;
 	}
 	
-	public static Vector<InfoSocket> getAllClients(String toName) {
-		Vector<InfoSocket> vusers = new Vector<InfoSocket>();
+	public static Vector<SocketInfo> getAllClients(String toName) {
+		Vector<SocketInfo> vusers = new Vector<SocketInfo>();
 		RunQuery runQuery = null;
 	    ResultSet rs = null;
 	    
-        for (InfoSocket ifs : Hchannelclients.values()) {    
+        for (SocketInfo ifs : Hchannelclients.values()) {    
             boolean cont = toName.equals(ifs.getGName());
             if (toName.equals(ifs.getLogin())) {
                 vusers.add(ifs);
@@ -522,7 +523,7 @@ public class SocketServer {
 			runQuery = new RunQuery("SEL0027");
 			rs = runQuery.runSELECT();
 			while(rs.next()) {
-				InfoSocket ifuFrom = SocketServer.getInstaceOfInfoSocket();
+				SocketInfo ifuFrom = SocketServer.getInstaceOfSocketInfo();
 				ifuFrom.setUid(rs.getInt(1));
 				ifuFrom.setLogin(rs.getString(2));
 				ifuFrom.setNames(rs.getString(3));
@@ -532,7 +533,7 @@ public class SocketServer {
 				ifuFrom.setGid(rs.getInt(7));
 				ifuFrom.setPsName(rs.getString(9));
 				ifuFrom.setGName(rs.getString(12));
-				if (!containsInfoSocket(vusers, ifuFrom)) {
+				if (!containsSocketInfo(vusers, ifuFrom)) {
 					boolean cont = ifuFrom.getGName().equals(toName);
 					if (ifuFrom.getLogin().equals(toName)) {
 						vusers.add(ifuFrom);

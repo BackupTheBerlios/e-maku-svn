@@ -87,7 +87,7 @@ public class MessageControlReporter {
 	    	props.put("mail.smtp.port", "25");
 	    	
 	        Session sesion = Session.getDefaultInstance(props);
-			Address to =  new InternetAddress(SocketServer.getInfoSocket(sock).getEmail());
+			Address to =  new InternetAddress(SocketServer.getSocketInfo(sock).getEmail());
 	        Address from = new InternetAddress(Pop3Handler.getUser()+"@"+Pop3Handler.getHost());
 	        
 	        MimeMessage mimeMessage = new MimeMessage(sesion);
@@ -110,9 +110,9 @@ public class MessageControlReporter {
 	        RunTransaction.
 			successMessage
 			(sock,id,"El reporte fue enviado a :\n" +
-					SocketServer.getInfoSocket(sock).getEmail()+".\n" +
+					SocketServer.getSocketInfo(sock).getEmail()+".\n" +
 					 "Por favor revise su correo.");
-	        LogWriter.write("Reporte de control de usuarios enviado a  " + SocketServer.getInfoSocket(sock).getEmail());
+	        LogWriter.write("Reporte de control de usuarios enviado a  " + SocketServer.getSocketInfo(sock).getEmail());
 		} catch (SendFailedException e) {
 			RunTransaction.errorMessage(
 					 sock,
