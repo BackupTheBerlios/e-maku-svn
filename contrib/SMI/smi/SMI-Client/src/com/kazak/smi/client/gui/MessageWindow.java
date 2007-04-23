@@ -37,7 +37,7 @@ public class MessageWindow implements ActionListener {
 	private GUIFactory fact;
 	
 	public MessageWindow() {
-		System.out.println("Nuevo Envio de mesaje");
+		//System.out.println("Nuevo Envio de mesaje");
 		fact = new GUIFactory();
 		JTFSubject = new JTextField(25);
 		JTFSubject.setDocument(new FixedSizePlainDocument(256));

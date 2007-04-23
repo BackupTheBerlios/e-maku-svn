@@ -19,6 +19,8 @@ import javax.swing.JToolTip;
 import javax.swing.ToolTipManager;
 import javax.swing.border.LineBorder;
 
+import com.kazak.smi.lib.misc.ClientConst;
+
 public class TrayManager implements ActionListener {
 
 	private JFrame window;
@@ -48,7 +50,7 @@ public class TrayManager implements ActionListener {
 		
 		menu = new JPanel(new GridLayout(1,3));
 		menu.setBorder(new LineBorder(Color.BLACK,3));
-		URL url = getClass().getResource("/com/kazak/smi/client/resources/new_message.png");
+		URL url = getClass().getResource(ClientConst.iconsPath + "new_message.png");
 		ImageIcon icon = new ImageIcon(url);
 
 		JBSend = new JButton(icon);
@@ -71,7 +73,7 @@ public class TrayManager implements ActionListener {
 		menu.add(JBSend);
 		
 		
-		url = getClass().getResource("/com/kazak/smi/client/resources/view_message.png");
+		url = getClass().getResource(ClientConst.iconsPath + "view_message.png");
 		icon = new ImageIcon(url);
 		JBView = new JButton(icon);
 		JBView.addMouseMotionListener(new MouseMotionAdapter() {
@@ -91,7 +93,7 @@ public class TrayManager implements ActionListener {
 		JBView.setBorder(new LineBorder(Color.BLACK,2));
 		menu.add(JBView);
 		
-		url = getClass().getResource("/com/kazak/smi/client/resources/password.png");
+		url = getClass().getResource(ClientConst.iconsPath + "password.png");
 		icon = new ImageIcon(url);
 		JBChange = new JButton(icon);
 		JBChange.addMouseMotionListener(new MouseMotionAdapter() {

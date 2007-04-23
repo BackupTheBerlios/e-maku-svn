@@ -1,4 +1,4 @@
 #!/bin/bash
 cd /usr/local/smiclient
-export CLASSPATH=$PWD/libs/jdom.jar:$PWD/libs/nimrodlf.jar:$PWD/smiclient.jar:$PWD/smilib.jar
+export CLASSPATH=$PWD/libs/jdom.jar:$PWD/libs/nimrodlf.jar:$PWD/libs/icons.jar:$PWD/smiclient.jar:$PWD/smilib.jar
 java com.kazak.smi.client.Run

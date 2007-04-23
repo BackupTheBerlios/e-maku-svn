@@ -5,11 +5,13 @@ import java.awt.Toolkit;
 public interface ClientConst {
 
 	public final String KeyClient = "client";
-
+	public final String winConfigPath = "C:\\GAMBLE\\smiclient\\";
+	public final String unixConfigPath = "/etc/";
 	public final String HOME = System.getProperty("user.home");
     public final String SEPARATOR = System.getProperty("file.separator");
     public final String TMP = System.getProperty("java.io.tmpdir");
 	public final String CONF = HOME+SEPARATOR+".smi"+SEPARATOR;
+	public final String iconsPath = "/icons/";
 
     public final int ERROR = 0;
     public final int WARNING = 1;

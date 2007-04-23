@@ -15,9 +15,9 @@ public class GUIFactory {
 			String name,
 			char mnemonic,
 			String command,
-			String icon ,
+			String icon,
 			int alignment) {
-		URL url = this.getClass().getResource("/com/kazak/smi/client/resources/"+icon);
+		URL url = this.getClass().getResource("/icons/"+icon);
 		ImageIcon imageIcon = new ImageIcon(url);
 		JButton button = createButton(name, mnemonic, command);
 		button.setHorizontalTextPosition(alignment);

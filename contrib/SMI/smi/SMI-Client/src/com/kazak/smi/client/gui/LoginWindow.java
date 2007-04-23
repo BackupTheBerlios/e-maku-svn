@@ -36,6 +36,7 @@ import com.kazak.smi.client.control.HeadersValidator;
 import com.kazak.smi.client.network.CNXSender;
 import com.kazak.smi.client.network.SocketHandler;
 import com.kazak.smi.lib.misc.ConfigFileClient;
+import com.kazak.smi.lib.misc.ClientConst;
 import com.kazak.smi.lib.misc.FixedSizePlainDocument;
 import com.kazak.smi.lib.misc.MD5Tool;
 import com.kazak.smi.lib.network.PackageToXML;
@@ -128,7 +129,7 @@ public class LoginWindow implements ActionListener {
 		
 		JPanel centerAux = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		centerAux.add(JPCenter);
-		URL url = getClass().getResource("/com/kazak/smi/client/resources/logo.jpg");
+		URL url = getClass().getResource(ClientConst.iconsPath + "logo.jpg");
 		ImageIcon icon = new ImageIcon(url);
 		JLabel logo = new JLabel(icon);
 		
