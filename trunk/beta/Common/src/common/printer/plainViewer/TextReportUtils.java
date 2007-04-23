@@ -41,6 +41,19 @@ public class TextReportUtils {
 	    return array;
 	}  
 
+	// Captures variables from a String
+	public static  Vector<String> getRecords(String line) {	   
+		Vector <String>records = new Vector<String>();
+	    StringTokenizer tokens = new StringTokenizer(line,"\t");
+	    while(tokens.hasMoreTokens()){
+	       String data = tokens.nextToken();
+	       if (data != null) {
+		       records.addElement(data );
+	       }
+	    }	   
+	    return records;
+	}
+	
 	// Get the Report Column Names
 	public static Vector<String> getColumnNames(String line) {
 		Vector <String>columns = new Vector<String>();	   
@@ -92,34 +105,6 @@ public class TextReportUtils {
 		  
 		return left;
 	} 
-
-	// Return Right Aligned String
-	public static String getRightAlignedHTMLString(String text, int maxWidth) {
-		String right = "";
-		int wordLength = text.length();
-		int spaces = maxWidth - wordLength;
-		  
-		for (int i=0;i<spaces;i++) {
-			right += "&nbsp;";
-		}
-		right += text;
-		  
-		return right;
-	}
-	  
-	// Return Left Aligned String
-	public static String getLeftAlignedHTMLString(String text, int maxWidth) {
-		String left="";
-		int wordLength = text.length();
-		int spaces = maxWidth - wordLength;
-		  
-		left += text;
-		for (int i=0;i<spaces;i++) {
-			left += "&nbsp;";
-		}
-		  
-		return left;
-	} 	
 	
 	// Return an asterisk bar
 	public static String getBar(int charactersPerLine){
@@ -130,7 +115,6 @@ public class TextReportUtils {
 		return bar;
 	}
 	
-	
 	// Check if an string var has only numbers
     public static boolean isNumber(String s) {
     	if (s.length() == 0) {
@@ -138,10 +122,9 @@ public class TextReportUtils {
     	}
         for(int i = 0; i < s.length(); i++) {
           char c = s.charAt(i);
-          if(!Character.isDigit(c))
+          if((!Character.isDigit(c)) && (c != ',') && (c != '.'))
               return false;
          }
         return true;
       }
-
 }

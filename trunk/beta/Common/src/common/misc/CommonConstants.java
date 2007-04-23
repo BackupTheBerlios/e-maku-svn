@@ -29,10 +29,11 @@ import javax.print.PrintServiceLookup;
  */
 public class CommonConstants {
     public static final int ERROR 		= 0;
-    public static final int WARNING 		= 1;
-    public static final int MESSAGE 		= 2;
+    public static final int WARNING 	= 1;
+    public static final int MESSAGE 	= 2;
     public static final long MAX_SIZE_FILE_LOG = 5242880;
     public static final String TMP 		= System.getProperty("java.io.tmpdir");
+    public static final String QHATU    = "Reporte elaborado con eMaku [ http://www.qhatu.net ]";
     public static PrintService defaultPrintService;
     public static HashMap<String, Integer> ScpCodes;
     public static PrintService printServices[];

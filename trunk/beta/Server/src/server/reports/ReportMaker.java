@@ -158,8 +158,6 @@ public class ReportMaker extends Thread {
 					rs = new QueryRunner(EmakuServerSocket.getBd(socket), sql).ejecutarSELECT();
 				}
 				
-				// TODO: Si rs es un conjunto vacio... imprima una hoja con el mensaje "Este reporte no contiene registros"
-				
 				int resultSize = rs.getFetchSize();
 				if (resultSize == 0) {
 					os = paintPDFMessage(os, "/reports/images/report_noresult_",false);

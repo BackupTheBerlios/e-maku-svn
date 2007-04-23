@@ -76,7 +76,6 @@ public class Run {
 			try {
 				LinkingCache.cargar();
 			} catch (SQLBadArgumentsException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			new BeanShell();
@@ -119,7 +118,6 @@ public class Run {
 		System.exit(0);
 	}
 	
-
 	/**
 	 * @param args
 	 */

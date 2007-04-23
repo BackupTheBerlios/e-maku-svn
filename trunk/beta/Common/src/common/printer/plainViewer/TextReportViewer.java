@@ -28,6 +28,7 @@ import common.control.ReportListener;
 import common.gui.forms.GenericForm;
 
 import common.misc.language.Language;
+import common.misc.CommonConstants;
 
 /**
  * TextReportViewer.java Creado el 1 de Febrero 2007
@@ -373,7 +374,8 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 		    currentPage = j + 1;
 		    currentPageTF.setText("" + currentPage);		    
 		    String pageFooter = Language.getWord("PAGE") + " " + currentPage + " " + Language.getWord("OF") + " " + pages;
-			page1 += "<p align=\"right\">" + pageFooter + "&nbsp;&nbsp;&nbsp;<br></p></td></tr></table></center><br><br>";		    
+			page1 += "<table width=\"100%\"><tr><td><b>" + CommonConstants.QHATU + "</b></td><td align=\"right\">" 
+			         + pageFooter + "&nbsp;&nbsp;&nbsp;</td></tr></table></td></tr></table></center><br><br>";		    
 		    reportArea.setText(page1);
 		    reportArea.setCaretPosition(0);
 		} 

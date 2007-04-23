@@ -59,6 +59,8 @@ public class TextReportGenerator {
   private PrinterViewsArray printerViews;
   private String input = "";
   private int linesPerPage = 52;
+  private int fieldMax = 0;
+  private boolean isComplex = false;
 
   // Class Constructor
   public TextReportGenerator(int charactersPerLine, byte[] bytes){
@@ -87,6 +89,7 @@ public class TextReportGenerator {
     	  fieldsTypes.add(type); 
       }
       
+      fieldMax = fieldsTypes.size();
 	  int[] maxColumnsLength = new int[columnsNum];
 	  maxlong = new int[columnsNum];
 	  
@@ -145,11 +148,18 @@ public class TextReportGenerator {
            			} 
            			else {
            					// Process the report records
-           					data = TextReportUtils.getLineVars(line,columnsNum);
-           					for(int i=0;i<columnsNum;i++) {  	  
+           					Vector info = TextReportUtils.getRecords(line);
+           					int size = info.size();
+           					
+           					if (size < fieldMax) {
+           						isComplex = true;
+           					}
+           					
+           					for(int i=0;i<size;i++) {  	  
            						// processing length of fields to find max values
-           						if (data[i].length()>maxlong[i]) {
-           							maxlong[i] = data[i].length(); 
+           						String field = (String) info.get(i);
+           						if (field.length()>maxlong[i]) {
+           							maxlong[i] = field.length(); 
            						}           	            	  
            					}
            			}
@@ -179,7 +189,6 @@ public class TextReportGenerator {
    try {    
 	   printerViews = new PrinterViewsArray();	             
 	   String line  = "";
-	   String[] data;
 	   StringTokenizer tokens = new StringTokenizer(input,"\n");
 	   line = tokens.nextToken();
 
@@ -235,36 +244,55 @@ public class TextReportGenerator {
 				   	// Process the report records
 				   	currentLines++;
 
-				   	data = TextReportUtils.getLineVars(line,columnsNum);
+				   	Vector info = TextReportUtils.getRecords(line);
+				   	int size = info.size();
 				   	printStringToReportViewer("<tr>");
 
-				   	for(int i=0;i<columnsNum;i++) {
+				   	for(int i=0;i<size;i++) {
 				   		String value = "";
-				   		String htmlValue = "";
-				   		String type = fieldsTypes.get(i);
 				   		int maxlength = maxlong[i];
-				   		if(data[i] == null) {
-				   			data[i] = "";
+				   		String field = (String) info.get(i);
+				   		String side = "left";
+				   		
+				   		if (field.startsWith("\"") && field.endsWith("\"")) {
+				   			field = field.substring(1, field.length() - 1);
 				   		}
+				   		
+				   		if (!isComplex) {
+				   			String type = fieldsTypes.get(i);
 
-				   		if (type.equals("java.lang.String")) {
-				   			// align to left relative
-				   			if (data[i].length()>maxlength) {
-				   				data[i] = data[i].substring(0, maxlength);
+				   			if (type.equals("java.lang.String")) {
+				   				// align to left relative
+				   				if (field.length()>maxlength) {
+				   					field = field.substring(0, maxlength);
+				   				}
+				   				value = TextReportUtils.getLeftAlignedString(field,maxlength);
 				   			}
-				   			value = TextReportUtils.getLeftAlignedString(data[i],maxlength);
-				   			htmlValue = TextReportUtils.getLeftAlignedHTMLString(data[i],maxlength);
+				   			if (type.equals("java.lang.Integer") || type.equals("java.lang.Float")) {
+				   				// align to right relative
+				   				value = TextReportUtils.getRightAlignedString(field,maxlength);
+				   				side = "right";
+				   			}
+				   		} else {
+				   			    if (TextReportUtils.isNumber(field)) {
+					   				value = TextReportUtils.getRightAlignedString(field,maxlength);
+					   				side = "right";
+				   			    } 
 				   		}
-				   		if (type.equals("java.lang.Integer") || type.equals("java.lang.Float")) {
-				   			// align to right relative
-				   			value = TextReportUtils.getRightAlignedString(data[i],maxlength);
-				   			htmlValue = TextReportUtils.getRightAlignedHTMLString(data[i],maxlength);
-				   		}
-				   		printStringToReportViewer("<td>");
-				   		printStringToReportViewer(htmlValue + "&nbsp;&nbsp;&nbsp;");
+				   		
+				   		printStringToReportViewer("<td align=\"" + side + "\">");
+				   		printStringToReportViewer(field + "&nbsp;&nbsp;&nbsp;");
 				   		printStringToReportViewer("</td><td>|</td>");
-				   		printerViews.addStringToPrinterView(value + " | ");
+				   		printerViews.addStringToPrinterView(value + " | ");	
 				   	}
+				   	
+				   	if (size < fieldMax) {
+				   		int loop = fieldMax - size;
+				   		for(int i=0;i<loop;i++) {
+					   		printStringToReportViewer("<td></td><td></td>");
+				   		}
+				   	}
+				   	
 				   	printStringToReportViewer("</tr>\n");
 				   	printerViews.addStringToPrinterView("\n");
 
