@@ -98,6 +98,7 @@ public class EmakuUIFieldFiller extends Thread {
     }
     
     public boolean searchQuery() {
+    	int row = 0;
         try {
         	int size =0;
         	if (arg!=null) {
@@ -124,7 +125,7 @@ public class EmakuUIFieldFiller extends Thread {
 	                return false;
 	            
 	            Iterator i = doc.getRootElement().getChildren("row").iterator();
-	            int row = doc.getRootElement().getChildren("row").size();
+	            row = doc.getRootElement().getChildren("row").size();
 	            
                 boolean enable_button = false;
                 if (row>0) {
@@ -156,7 +157,7 @@ public class EmakuUIFieldFiller extends Thread {
             return false;
         }
         
-        return true;
+        return row > 0 ? true : false;
     }
 
     private void setClean() {

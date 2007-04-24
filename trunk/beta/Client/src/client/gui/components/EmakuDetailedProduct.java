@@ -5,10 +5,17 @@ import java.awt.GridLayout;
 import java.awt.IllegalComponentStateException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Vector;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -19,30 +26,32 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
-import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
+import common.gui.components.EmakuUIFieldFiller;
 import common.gui.components.XMLTextField;
+import common.gui.forms.ExternalValueChangeEvent;
+import common.gui.forms.ExternalValueChangeListener;
 import common.gui.forms.GenericForm;
 import common.misc.Icons;
 import common.misc.language.Language;
 
-public class EmakuDetailedProduct extends JComponent implements KeyListener, ActionListener  {
+public class EmakuDetailedProduct extends JComponent implements FocusListener,KeyListener, ActionListener,ExternalValueChangeListener {
 
 	private static final long serialVersionUID = 8386003217712730190L;
 	private JPanel contentPane;
 	private JPopupMenu JPMpopup;
 	private XMLTextField XMLTFCode;
 	private XMLTextField XMLTFDescription;
-	private XMLTextField XMLTFPrice;
+	private ComboBoxFiller comboBoxPrice;
 	private XMLTextField XMLTFAmount;
 	private XMLTextField XMLTFValue;
 	private XMLTextField XMLTFTotal;
 	private JRadioButton JRDebit;
 	private JRadioButton JRCredit;
-	private JToolBar statusBar;
 	private JPanel JPFields;
 	private JPanel JPLabels;
 	private JLabel statusLabel;
@@ -53,7 +62,7 @@ public class EmakuDetailedProduct extends JComponent implements KeyListener, Act
 	private JTable table;
 	private int rowIndex;
 	protected int columnIndex;
-	
+	private boolean visible = false;
 	
 	public EmakuDetailedProduct(GenericForm GFforma,
 							   String sql,
@@ -73,13 +82,15 @@ public class EmakuDetailedProduct extends JComponent implements KeyListener, Act
 			private static final long serialVersionUID = 6294167396739991593L;
 			public void storeData() {
 				super.storeData();
-				XMLTFCode.setText(getValue());
+				String s = getValue(); 
+				setCode(s);
+				genericForm.setExternalValues(XMLTFCode.getExportvalue(),s);
 				forceFocus();
-				
 			}
 		};
 		dataSearch.addKeyListener(this);
 		this.addKeyListener(this);
+		genericForm.addChangeExternalValueListener(this);
 		initComps();
 	}
 	
@@ -96,35 +107,61 @@ public class EmakuDetailedProduct extends JComponent implements KeyListener, Act
 	
 	private void initComps() {
 		contentPane = new JPanel(new BorderLayout());
-		statusBar = new JToolBar();
-		statusBar.setLayout(new GridLayout(1,1));
-		statusBar.setFloatable(false);
 		statusLabel = new JLabel(" ");
 		statusLabel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
-		statusBar.add(statusLabel);
 		JPFields = new JPanel(new GridLayout(7,1));
 		JPLabels = new JPanel(new GridLayout(7,1));
 
-		JPMpopup = new JPopupMenu();
+		JPMpopup = new JPopupMenu() {
+			private static final long serialVersionUID = -8347328110027850041L;
+			public void setVisible(boolean b) {
+					super.setVisible(visible);	
+			}
+		};
+		
 		JPMpopup.setLayout(new BorderLayout());
 		JPMpopup.setLightWeightPopupEnabled(true);
 		JPMpopup.setBorderPainted(true);
 		JPMpopup.add(contentPane,BorderLayout.CENTER);
 		JPMpopup.add(new JPanel(),BorderLayout.NORTH);
 		JPMpopup.add(new JPanel(),BorderLayout.WEST);
-		JPMpopup.add(statusBar,BorderLayout.SOUTH);
 		
-		XMLTFCode 		 = new XMLTextField("CODE", 9, 10, XMLTextField.TEXT);
-		XMLTFDescription = new XMLTextField("DESCRIPCION", 9, 10, XMLTextField.TEXT);
-		//Compra,Inventario,Catalogos
-		XMLTFPrice		 = new XMLTextField("PRICE", 9, 10, XMLTextField.TEXT);
-		XMLTFAmount		 = new XMLTextField("CANTIDAD", 9, 10, XMLTextField.TEXT);
-		XMLTFValue		 = new XMLTextField("VALOR", 9, 10, XMLTextField.TEXT);
-		XMLTFTotal		 = new XMLTextField("TOTAL", 9, 10, XMLTextField.TEXT);
+		XMLTFCode 		 = new XMLTextField("CODE", 15, 10, XMLTextField.TEXT);
+		
+		XMLTFDescription = new XMLTextField("DESCRIPCION",15, 100, XMLTextField.TEXT);
+		//Compra,Inventario,Catalogos, Hay que parametrizar la consulta
+		comboBoxPrice	 = new ComboBoxFiller(genericForm,"SEL0398","catalogue",true);
+		XMLTFAmount		 = new XMLTextField("CANTIDAD", 15, 10, XMLTextField.NUMERIC);
+		XMLTFValue		 = new XMLTextField("VALOR", 15, 10, XMLTextField.NUMERIC);
+		XMLTFTotal		 = new XMLTextField("TOTAL", 15, 10, XMLTextField.NUMERIC);
 		JRDebit			 = new JRadioButton();
 		JRCredit		 = new JRadioButton();
 		
 		XMLTFCode.addKeyListener(this);
+		XMLTFCode.setExportvalue("code");
+		XMLTFAmount.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				calculateAmount();
+			}
+		});
+		
+		XMLTFAmount.setHorizontalAlignment(SwingConstants.RIGHT);
+		XMLTFValue.setHorizontalAlignment(SwingConstants.RIGHT);
+		XMLTFTotal.setHorizontalAlignment(SwingConstants.RIGHT);
+		
+		XMLTFDescription.setEditable(false);
+		XMLTFValue.setEditable(false);
+		XMLTFTotal.setEditable(false);
+		
+		XMLTFCode.addFocusListener(new FocusAdapter() {
+			public void focusLost(FocusEvent e) {
+				String s = getValue(); 
+				genericForm.setExternalValues(XMLTFCode.getExportvalue(),s);
+			}
+		});
+		
+		XMLTFValue.setSqlLocal("SEL0399");
+		XMLTFDescription.setSqlLocal("SEL0400");
 		
 		ButtonGroup group = new ButtonGroup();
 		group.add(JRDebit);
@@ -154,15 +191,18 @@ public class EmakuDetailedProduct extends JComponent implements KeyListener, Act
 		
 		JPLabels.add(XMLTFCode.getLabel());
 		JPLabels.add(XMLTFDescription.getLabel());
-		JPLabels.add(XMLTFPrice.getLabel());
+		/* Pendiente de traducir */
+		JPLabels.add(new JLabel("Precio"));
 		JPLabels.add(XMLTFAmount.getLabel());
 		JPLabels.add(XMLTFValue.getLabel());
 		JPLabels.add(XMLTFTotal.getLabel());
 		JPLabels.add(p1);
 		
+		JPanel panel = new JPanel();
+		panel.add(comboBoxPrice);
 		JPFields.add(XMLTFCode.getJPtext());
 		JPFields.add(XMLTFDescription.getJPtext());
-		JPFields.add(XMLTFPrice.getJPtext());
+		JPFields.add(panel);
 		JPFields.add(XMLTFAmount.getJPtext());
 		JPFields.add(XMLTFValue.getJPtext());
 		JPFields.add(XMLTFTotal.getJPtext());
@@ -170,7 +210,7 @@ public class EmakuDetailedProduct extends JComponent implements KeyListener, Act
 		
 		contentPane.add(JPLabels,BorderLayout.WEST);
 		contentPane.add(JPFields,BorderLayout.CENTER);
-		contentPane.add(jpbuttons,BorderLayout.SOUTH);
+		JPMpopup.add(jpbuttons,BorderLayout.SOUTH);
 		
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -184,6 +224,7 @@ public class EmakuDetailedProduct extends JComponent implements KeyListener, Act
 	public void showDetailed() {
 		if (!JPMpopup.isVisible()) {
 			updateUI();
+			visible = true;
 			int psize = (int) JPMpopup.getPreferredSize().getWidth();
 			int x = this.getWidth() - psize;
 			int y = this.getY();
@@ -198,9 +239,13 @@ public class EmakuDetailedProduct extends JComponent implements KeyListener, Act
 	}
 	
 	public void setCode(String code) {
-		XMLTFCode.setText(code);
+		if ("".equals(code)) { 
+			clean();
+		}
+		else {
+			XMLTFCode.setText(code);	
+		}
 	}
-	
 	
 	public void showDataSearch() {
 		if (!dataSearch.getPopup().isVisible()) {
@@ -245,12 +290,11 @@ public class EmakuDetailedProduct extends JComponent implements KeyListener, Act
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if ("accept".equals(command)) {
-			
+			close();
 		}
 		else if ("cancel".equals(command)) {
-			JPMpopup.setVisible(false);
+			close();
 		}
-		
 	}
 
 	public void setColumnIndex(int columnIndex) {
@@ -260,4 +304,103 @@ public class EmakuDetailedProduct extends JComponent implements KeyListener, Act
 	public void setRowIndex(int rowIndex) {
 		this.rowIndex = rowIndex;
 	}
+	
+	public void close() {
+		visible = false;
+		JPMpopup.setVisible(visible);
+		table.requestFocus();
+		table.changeSelection(rowIndex, columnIndex, false,false);
+		table.getCellEditor().stopCellEditing();
+	}
+
+	public void calculateAmount() {
+		try {
+			int cant = Integer.valueOf(XMLTFAmount.getText());
+			double val = XMLTFValue.getNumberValue();
+			String total = String.valueOf(cant*val);
+			XMLTFTotal.setText(total);
+			fieldFormater(XMLTFTotal);
+		}
+		catch (NumberFormatException NFE) {}
+	}
+	
+	public void changeExternalValue(ExternalValueChangeEvent e) {
+		String key = e.getExternalValue();
+		String value = genericForm.getExteralValuesString(key);
+		if ("".equals(value)) { return; }
+		if (key.equals("catalogue")) {
+			Vector<String> vconst = new Vector<String>();
+			vconst.add(XMLTFCode.getText().trim());
+			vconst.add(value);
+			XMLTFValue.setConstantValue(vconst);
+			processQuery(XMLTFValue);
+			calculateAmount();
+		}
+		if (key.equals("code")) {
+			Vector<String> vconst = new Vector<String>();
+			vconst.add(XMLTFCode.getText().trim());
+			XMLTFDescription.setConstantValue(vconst);
+			processQuery(XMLTFDescription);
+		}
+	}
+	
+	private void processQuery(XMLTextField field) {
+
+		String sqlLocal = field.getSqlLocal();
+		Vector<XMLTextField> VFields = new Vector<XMLTextField>(1);
+		VFields.add(field);
+		if (sqlLocal != null) {
+			String[] imps = getArgsForQuery(field);
+			EmakuUIFieldFiller filler = null; 
+			filler = new EmakuUIFieldFiller(genericForm,null,true,sqlLocal,
+											imps,null,VFields);
+			if (!filler.searchQuery()) {
+				String t = field.getType();
+				if (t.equals("NUMERIC")) {
+					field.setText("0.0");	
+				}
+			} 
+			fieldFormater(field);
+		}
+	}
+	
+	private String[] getArgsForQuery(XMLTextField field) {
+		if (field.isWithOutArgsQuery()) { return null; }
+		String[] impValues = null;
+		int argumentos = field.getConstantSize();
+		impValues = new String[argumentos];
+		int i = 0;
+		for (; i < argumentos ; i++) {
+			impValues[i] = field.getConstantValue(i);
+		}
+		return impValues;
+	}
+	
+	public void clean() {
+		XMLTFCode.setText("");
+		XMLTFDescription.setText("");
+		XMLTFAmount.setText("");
+		XMLTFValue.setText("");
+		XMLTFTotal.setText("");
+		comboBoxPrice.setSelectedIndex(0);
+	}
+	
+	public void fieldFormater(XMLTextField field) {
+		if (field.getType().equals("NUMERIC")) {
+			double value = field.getNumberValue();
+			
+			BigDecimal bd = new BigDecimal(value);
+			bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+			
+			NumberFormat nf = NumberFormat.getNumberInstance();
+			DecimalFormat form = (DecimalFormat) nf;
+			form.applyPattern("###,###,##0.00");
+			field.setNumberValue(bd.doubleValue());
+			field.setText(form.format(bd));
+		}
+	}
+	
+	public void focusGained(FocusEvent e) {}
+	public void focusLost(FocusEvent e) {}
+	
 }
