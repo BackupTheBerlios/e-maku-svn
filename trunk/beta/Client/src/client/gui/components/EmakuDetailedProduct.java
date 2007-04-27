@@ -1,6 +1,8 @@
 package client.gui.components;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.IllegalComponentStateException;
 import java.awt.event.ActionEvent;
@@ -46,8 +48,10 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 	private JPopupMenu JPMpopup;
 	private XMLTextField XMLTFCode;
 	private XMLTextField XMLTFDescription;
-	private ComboBoxFiller comboBoxPrice;
+	private ComboBoxFiller comboBoxCatalogue;
+	private ComboBoxFiller comboBoxWarehouse;
 	private XMLTextField XMLTFAmount;
+	private XMLTextField XMLTFIdProd;
 	private XMLTextField XMLTFValue;
 	private XMLTextField XMLTFTotal;
 	private JRadioButton JRDebit;
@@ -63,6 +67,13 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 	private int rowIndex;
 	protected int columnIndex;
 	private boolean visible = false;
+	
+	private short columnDebit;
+	private short columnCredit;
+	private short columnAmount;
+	private short columnIdProdServ;
+	private short columnIdWareHouse;
+	private Vector<XMLTextField> VFields = new Vector<XMLTextField>();
 	
 	public EmakuDetailedProduct(GenericForm GFforma,
 							   String sql,
@@ -109,13 +120,13 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 		contentPane = new JPanel(new BorderLayout());
 		statusLabel = new JLabel(" ");
 		statusLabel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
-		JPFields = new JPanel(new GridLayout(7,1));
-		JPLabels = new JPanel(new GridLayout(7,1));
+		JPFields = new JPanel(new GridLayout(8,1));
+		JPLabels = new JPanel(new GridLayout(8,1));
 
 		JPMpopup = new JPopupMenu() {
 			private static final long serialVersionUID = -8347328110027850041L;
 			public void setVisible(boolean b) {
-					super.setVisible(visible);	
+				super.setVisible(visible);	
 			}
 		};
 		
@@ -130,13 +141,16 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 		
 		XMLTFDescription = new XMLTextField("DESCRIPCION",15, 100, XMLTextField.TEXT);
 		//Compra,Inventario,Catalogos, Hay que parametrizar la consulta
-		comboBoxPrice	 = new ComboBoxFiller(genericForm,"SEL0398","catalogue",true);
+		comboBoxCatalogue= new ComboBoxFiller(genericForm,"SEL0398","catalogue",true);
+		comboBoxWarehouse= new ComboBoxFiller(genericForm,"SEL0088","warehouse",false);
+		
 		XMLTFAmount		 = new XMLTextField("CANTIDAD", 15, 10, XMLTextField.NUMERIC);
+		XMLTFIdProd		 = new XMLTextField("IDPROD", 15, 10, XMLTextField.NUMERIC);
 		XMLTFValue		 = new XMLTextField("VALOR", 15, 10, XMLTextField.NUMERIC);
 		XMLTFTotal		 = new XMLTextField("TOTAL", 15, 10, XMLTextField.NUMERIC);
 		JRDebit			 = new JRadioButton();
 		JRCredit		 = new JRadioButton();
-		
+		JRDebit.setSelected(true);
 		XMLTFCode.addKeyListener(this);
 		XMLTFCode.setExportvalue("code");
 		XMLTFAmount.addActionListener(new ActionListener() {
@@ -145,13 +159,17 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 			}
 		});
 		
+		Dimension d = new Dimension(170,20);
+		comboBoxCatalogue.setPreferredSize(d);
+		comboBoxWarehouse.setPreferredSize(d);
+		
 		XMLTFAmount.setHorizontalAlignment(SwingConstants.RIGHT);
 		XMLTFValue.setHorizontalAlignment(SwingConstants.RIGHT);
 		XMLTFTotal.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		XMLTFDescription.setEditable(false);
-		XMLTFValue.setEditable(false);
-		XMLTFTotal.setEditable(false);
+		XMLTFDescription.setEnabled(false);
+		XMLTFValue.setEnabled(false);
+		XMLTFTotal.setEnabled(false);
 		
 		XMLTFCode.addFocusListener(new FocusAdapter() {
 			public void focusLost(FocusEvent e) {
@@ -192,17 +210,23 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 		JPLabels.add(XMLTFCode.getLabel());
 		JPLabels.add(XMLTFDescription.getLabel());
 		/* Pendiente de traducir */
+		JPLabels.add(new JLabel("Bodega"));
 		JPLabels.add(new JLabel("Precio"));
 		JPLabels.add(XMLTFAmount.getLabel());
 		JPLabels.add(XMLTFValue.getLabel());
 		JPLabels.add(XMLTFTotal.getLabel());
 		JPLabels.add(p1);
 		
-		JPanel panel = new JPanel();
-		panel.add(comboBoxPrice);
+		JPanel panelPrice = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		panelPrice.add(comboBoxCatalogue);
+		
+		JPanel panelWareHouse = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		panelWareHouse.add(comboBoxWarehouse);
+		
 		JPFields.add(XMLTFCode.getJPtext());
 		JPFields.add(XMLTFDescription.getJPtext());
-		JPFields.add(panel);
+		JPFields.add(panelWareHouse);
+		JPFields.add(panelPrice);
 		JPFields.add(XMLTFAmount.getJPtext());
 		JPFields.add(XMLTFValue.getJPtext());
 		JPFields.add(XMLTFTotal.getJPtext());
@@ -225,6 +249,7 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 		if (!JPMpopup.isVisible()) {
 			updateUI();
 			visible = true;
+			clean();
 			int psize = (int) JPMpopup.getPreferredSize().getWidth();
 			int x = this.getWidth() - psize;
 			int y = this.getY();
@@ -290,6 +315,15 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if ("accept".equals(command)) {
+			boolean b = JRDebit.isSelected();
+			int index = comboBoxWarehouse.getSelectedIndex();
+			table.setValueAt(comboBoxWarehouse.getItemAt(index), rowIndex, columnIdWareHouse);
+			table.setValueAt(XMLTFAmount.getText(), rowIndex, columnAmount);
+			table.setValueAt(XMLTFIdProd.getText(), rowIndex, columnIdProdServ);
+			table.setValueAt(
+					XMLTFValue.getNumberValue(),
+					rowIndex,
+					b ? columnDebit : columnCredit);
 			close();
 		}
 		else if ("cancel".equals(command)) {
@@ -333,6 +367,7 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 			vconst.add(XMLTFCode.getText().trim());
 			vconst.add(value);
 			XMLTFValue.setConstantValue(vconst);
+			VFields.add(XMLTFValue);
 			processQuery(XMLTFValue);
 			calculateAmount();
 		}
@@ -340,15 +375,15 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 			Vector<String> vconst = new Vector<String>();
 			vconst.add(XMLTFCode.getText().trim());
 			XMLTFDescription.setConstantValue(vconst);
+			VFields.add(new XMLTextField());
+			VFields.add(XMLTFDescription);
+			VFields.add(XMLTFIdProd);
 			processQuery(XMLTFDescription);
 		}
 	}
 	
-	private void processQuery(XMLTextField field) {
-
+	private synchronized void processQuery(XMLTextField field) {
 		String sqlLocal = field.getSqlLocal();
-		Vector<XMLTextField> VFields = new Vector<XMLTextField>(1);
-		VFields.add(field);
 		if (sqlLocal != null) {
 			String[] imps = getArgsForQuery(field);
 			EmakuUIFieldFiller filler = null; 
@@ -362,6 +397,7 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 			} 
 			fieldFormater(field);
 		}
+		VFields.clear();
 	}
 	
 	private String[] getArgsForQuery(XMLTextField field) {
@@ -382,7 +418,9 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 		XMLTFAmount.setText("");
 		XMLTFValue.setText("");
 		XMLTFTotal.setText("");
-		comboBoxPrice.setSelectedIndex(0);
+		JRDebit.setSelected(false);
+		comboBoxCatalogue.setSelectedIndex(0);
+		comboBoxWarehouse.setSelectedIndex(0);
 	}
 	
 	public void fieldFormater(XMLTextField field) {
@@ -402,5 +440,48 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 	
 	public void focusGained(FocusEvent e) {}
 	public void focusLost(FocusEvent e) {}
-	
+
+	public short getColumnAmount() {
+		return columnAmount;
+	}
+
+	public void setColumnAmount(short columnAmount) {
+		this.columnAmount = columnAmount;
+	}
+
+	public short getColumnCredit() {
+		return columnCredit;
+	}
+
+	public void setColumnCredit(short columnCredit) {
+		this.columnCredit = columnCredit;
+	}
+
+	public short getColumnDebit() {
+		return columnDebit;
+	}
+
+	public void setColumnDebit(short columnDebit) {
+		this.columnDebit = columnDebit;
+	}
+
+	public int getColumnIndex() {
+		return columnIndex;
+	}
+
+	public short getColumnIdProdServ() {
+		return columnIdProdServ;
+	}
+
+	public void setColumnIdProdServ(short columnIdProdServ) {
+		this.columnIdProdServ = columnIdProdServ;
+	}
+
+	public short getColumnIdWareHouse() {
+		return columnIdWareHouse;
+	}
+
+	public void setColumnIdWareHouse(short columnIdWareHouse) {
+		this.columnIdWareHouse = columnIdWareHouse;
+	}
 }

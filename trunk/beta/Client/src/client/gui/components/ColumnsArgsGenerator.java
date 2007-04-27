@@ -60,6 +60,12 @@ public class ColumnsArgsGenerator {
 	private boolean specializedCellEditable = true;
 	private Element args;
 	
+	private short columnDebit = -1;
+	private short columnCredit = -1;
+	private short columnAmount = -1;
+	private short columnIdProdServ = -1;
+	private short columnIdWareHouse = -1;
+	
     public boolean isDataBeep() {
 		return dataBeep;
 	}
@@ -223,6 +229,36 @@ public class ColumnsArgsGenerator {
     			catch(NumberFormatException NFEe) {
     				selected = 1;
     			}
+    		}
+    		else if ("debit".equals(attrib)) {
+    			try {
+    				columnDebit = (short) Integer.parseInt(value);
+    			}
+    			catch(NumberFormatException NFEe) {}
+    		}
+    		else if ("credit".equals(attrib)) {
+    			try {
+    				columnCredit = (short) Integer.parseInt(value);
+    			}
+    			catch(NumberFormatException NFEe) {}
+    		}
+    		else if ("amount".equals(attrib)) {
+    			try {
+    				columnAmount = (short) Integer.parseInt(value);
+    			}
+    			catch(NumberFormatException NFEe) {}
+    		}
+    		else if ("idprodserv".equals(attrib)) {
+    			try {
+    				columnIdProdServ = (short) Integer.parseInt(value);
+    			}
+    			catch(NumberFormatException NFEe) {}
+    		}
+    		else if ("idwarehouse".equals(attrib)) {
+    			try {
+    				columnIdWareHouse = (short) Integer.parseInt(value);
+    			}
+    			catch(NumberFormatException NFEe) {}
     		}
     	}
 
@@ -427,4 +463,31 @@ public class ColumnsArgsGenerator {
 		return args;
 	}
 
+	public short getColumnAmount() {
+		return columnAmount;
+	}
+
+	public short getColumnCredit() {
+		return columnCredit;
+	}
+
+	public short getColumnDebit() {
+		return columnDebit;
+	}
+	
+	public short getColumnIdProdServ() {
+		return columnIdProdServ;
+	}
+
+	public void setColumnIdProdServ(short columnIdProdServ) {
+		this.columnIdProdServ = columnIdProdServ;
+	}
+	
+	public short getColumnIdWareHouse() {
+		return columnIdWareHouse;
+	}
+
+	public void setColumnIdWareHouse(short columnIdWareHouse) {
+		this.columnIdWareHouse = columnIdWareHouse;
+	}
 }

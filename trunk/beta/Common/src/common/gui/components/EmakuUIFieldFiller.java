@@ -181,11 +181,14 @@ public class EmakuUIFieldFiller extends Thread {
     private void setData(String value,int index) {
         if (XMLTFout!=null) {
             XMLTFout[index].setText(value);
+            XMLTFout[index].setCaretPosition(0);
         }
         else if (Vfields!=null){
         	try {
         		((XMLTextField)Vfields.get(index+1)).setText(value);
+        		((XMLTextField)Vfields.get(index+1)).setCaretPosition(0);
         	}catch (ArrayIndexOutOfBoundsException AIOOBEe) {
+        		((XMLTextField)Vfields.get(index)).setCaretPosition(0);
         		((XMLTextField)Vfields.get(index)).setText(value);
         	}
         }

@@ -24,6 +24,11 @@ public class EmakuDetailedProductCellEditor  extends AbstractCellEditor implemen
 								ATFDargs[index].getSelected(),
 								ATFDargs[index].getRepeatData(),table);
 		table.addKeyListener(detailedProduc);
+		detailedProduc.setColumnAmount(ATFDargs[index].getColumnAmount());
+		detailedProduc.setColumnDebit(ATFDargs[index].getColumnDebit());
+		detailedProduc.setColumnCredit(ATFDargs[index].getColumnCredit());
+		detailedProduc.setColumnIdProdServ(ATFDargs[index].getColumnIdProdServ());
+		detailedProduc.setColumnIdWareHouse(ATFDargs[index].getColumnIdWareHouse());
 	}
 	
 	public Component getTableCellEditorComponent(

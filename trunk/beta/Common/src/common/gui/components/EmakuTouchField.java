@@ -42,7 +42,7 @@ KeyListener, FocusListener, AnswerListener {
 
 	private static final long serialVersionUID = -8059783384089564101L;
 	private TouchButtons touchButtons;
-	private JButton JBTouch;
+	private JButton JBTouch = new JButton();
 	protected JPopupMenu popupTouch;
 	private Font font;
 	private Vector<RecordListener> recordListener = new Vector<RecordListener>();
@@ -51,6 +51,7 @@ KeyListener, FocusListener, AnswerListener {
 	private int sequence = 0;
 	private boolean notified;
 	private Vector<String> keySQL;
+	private boolean withoutButton;
 	
 	public EmakuTouchField(GenericForm genericForm, Document doc) {
 		Element rootElement = doc.getRootElement();
@@ -129,18 +130,23 @@ KeyListener, FocusListener, AnswerListener {
 				keySQL.add(elm.getValue());
 			} else if ("iconButton".equals(elm.getAttributeValue("attribute"))) {
 				url = this.getClass().getResource(elm.getValue());
-			} 
+			}
+			else if ("withoutButton".equals(elm.getAttributeValue("attribute"))) {
+				withoutButton = Boolean.parseBoolean(elm.getValue());
+			}
 		}
 		setSqlCode(sqlCode);
 		generar();
 		touchButtons = new TouchButtons(this,font);
-		ImageIcon icon = url!=null ? new ImageIcon(url) : null;
-		JBTouch = icon!=null ? new JButton(icon) : new JButton("X");
-		JBTouch.setFocusable(false);
-		JBTouch.setActionCommand("display");
-		JBTouch.addActionListener(this);
-		popupTouch.add(touchButtons);
-		getJPtext().add(JBTouch,BorderLayout.EAST);
+		if (!withoutButton) {
+			ImageIcon icon = url!=null ? new ImageIcon(url) : null;
+			JBTouch = icon!=null ? new JButton(icon) : new JButton("X");
+			JBTouch.setFocusable(false);
+			JBTouch.setActionCommand("display");
+			JBTouch.addActionListener(this);
+			popupTouch.add(touchButtons);
+			getJPtext().add(JBTouch,BorderLayout.EAST);
+		}
 		addKeyListener(this);
 		addFocusListener(this);
 	}
@@ -211,6 +217,12 @@ KeyListener, FocusListener, AnswerListener {
 			}
 			catch (NumberFormatException NFEe) {}
 			catch (ParseException Pe) {}
+		}
+		if (isExportvalue()) {
+			try {
+				GFforma.setExternalValues(getExportvalue(),getNumberValue());
+			}
+			catch (NumberFormatException NFE) {}
 		}
 	}
 
@@ -343,7 +355,6 @@ KeyListener, FocusListener, AnswerListener {
 	private void notificando(AnswerEvent event) {
 		for (AnswerListener l:AnswerListener) {
 			if (l.containSqlCode(event.getSqlCode())) {
-				System.out.println("notificando: "+event.getSqlCode());
 				l.arriveAnswerEvent(event);
 			}
 		}
