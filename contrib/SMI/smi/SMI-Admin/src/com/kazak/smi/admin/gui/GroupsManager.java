@@ -154,7 +154,7 @@ public class GroupsManager extends JFrame implements ActionListener, ItemListene
 	private void initComps() {
 		
 		//listComps.add(FieldName   = new AutoCompleteComboBox(new Vector<String>(Cache.getListKeys()),false,40));
-		String[] comboList = Cache.getListKeys();
+		String[] comboList = Cache.getGroupsList();
 		Vector <String>vector = new Vector<String>(Arrays.asList(comboList));
 		listComps.add(FieldName   = new AutoCompleteComboBox(vector,false,40));
 		listComps.add(JCheckVisible= new JCheckBox());

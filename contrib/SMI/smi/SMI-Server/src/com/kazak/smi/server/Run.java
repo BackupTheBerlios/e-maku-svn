@@ -11,7 +11,7 @@ import com.kazak.smi.server.control.Pop3Handler;
 import com.kazak.smi.server.control.TransactionsCache;
 import com.kazak.smi.server.database.connection.ConnectionsPool;
 import com.kazak.smi.server.database.connection.PoolNotLoadException;
-import com.kazak.smi.server.database.sql.CacheEnlace;
+import com.kazak.smi.server.database.sql.CacheLoader;
 import com.kazak.smi.server.misc.LogWriter;
 import com.kazak.smi.server.misc.ServerConst;
 import com.kazak.smi.server.misc.settings.ConfigFile;
@@ -32,7 +32,7 @@ public class Run {
 		try {	
 			ConfigFile.loadConfigFile(smiConfigFile);
 			ConnectionsPool.loadDB();
-			new CacheEnlace();
+			new CacheLoader();
 			TransactionsCache.loadCache();
 			new Pop3Handler();
 			new Sync();

@@ -14,11 +14,11 @@ import com.kazak.smi.lib.misc.Language;
 import com.kazak.smi.server.misc.LogWriter;
 import com.kazak.smi.server.misc.settings.ConfigFile;
 
-public class CacheEnlace {
+public class CacheLoader {
 
 	private static Hashtable <String,String>HInstructions;
    
-   public CacheEnlace() {
+   public CacheLoader() {
 	   HInstructions = new Hashtable<String,String>();
 	   LogWriter.write(
 			   Language.getWord("LOADING_CACHE") + " "+
@@ -48,7 +48,7 @@ public class CacheEnlace {
      * @param key Codigo de la sentencia SQL
      * @return retorna la sentencia SQL
      */
-    public static String getSentenciaSQL(String key) {
+    public static String getSQLSentence(String key) {
         return HInstructions.get(key);
     }    
 }

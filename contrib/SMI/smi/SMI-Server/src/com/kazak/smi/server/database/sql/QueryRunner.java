@@ -33,7 +33,7 @@ import com.kazak.smi.server.misc.settings.ConfigFile;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
 
-public class RunQuery extends Element {
+public class QueryRunner extends Element {
 
 	private static final long serialVersionUID = -5369073295276204778L;
     private String cod_sql;
@@ -47,18 +47,18 @@ public class RunQuery extends Element {
      * @param bd Base de datos
      * @param cod_sql Codigo Sentencia SQL
      */
-    public RunQuery() {}
-    public RunQuery(String cod_sql) throws SQLNotFoundException, SQLBadArgumentsException {
+    public QueryRunner() {}
+    public QueryRunner(String cod_sql) throws SQLNotFoundException, SQLBadArgumentsException {
         this.cod_sql = cod_sql;
-        sql = InstruccionesSQL.getSentencia(cod_sql);
+        sql = SQLInstructions.getSentence(cod_sql);
     }
     
-    public RunQuery(String cod_sql,String[] args) throws SQLNotFoundException, SQLBadArgumentsException{
+    public QueryRunner(String cod_sql,String[] args) throws SQLNotFoundException, SQLBadArgumentsException{
         this.cod_sql = cod_sql;
-        sql = InstruccionesSQL.getSentencia(cod_sql,args);
+        sql = SQLInstructions.getSentence(cod_sql,args);
     }
     
-    public RunQuery(String cache,String sql) {
+    public QueryRunner(String cache,String sql) {
         this.cod_sql=cache;
         this.sql=sql;
     }
@@ -79,7 +79,7 @@ public class RunQuery extends Element {
     public boolean runSQL(String cod_sql,String[] args) 
     throws SQLException,SQLNotFoundException, SQLBadArgumentsException {
         this.cod_sql = cod_sql;
-        sql = InstruccionesSQL.getSentencia(cod_sql,args);
+        sql = SQLInstructions.getSentence(cod_sql,args);
         st = ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).createStatement();
 //        LogWriter.write("SENTENCIA SQL :: "+sql);
         boolean status = st.execute(sql);
@@ -89,7 +89,7 @@ public class RunQuery extends Element {
 
     public boolean runSQL(String[] args) 
     throws SQLException,SQLNotFoundException, SQLBadArgumentsException {
-        sql = InstruccionesSQL.getSentencia(cod_sql,args);
+        sql = SQLInstructions.getSentence(cod_sql,args);
         st = ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).createStatement();
         LogWriter.write("SENTENCIA SQL :: "+sql);
         boolean status = st.execute(sql);

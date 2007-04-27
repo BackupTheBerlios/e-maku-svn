@@ -11,7 +11,7 @@ import org.jdom.Document;
 
 import com.kazak.smi.lib.misc.Language;
 import com.kazak.smi.server.database.sql.CloseSQL;
-import com.kazak.smi.server.database.sql.RunQuery;
+import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 import com.kazak.smi.server.misc.LogWriter;
@@ -54,7 +54,7 @@ public class CacheXML extends Document {
 	public void transmition(SocketChannel sock) {
 		try {
 			try {            
-				RunQuery rselect;
+				QueryRunner rselect;
 
 				/*
 				 * Se obtiene las llaves del cache que se va a generar
@@ -63,12 +63,12 @@ public class CacheXML extends Document {
 				 */
 				String[] args = {codigo};
 				String SQL;
-				ResultSet RSdatos = new RunQuery("SEL0009",args).runSELECT();
+				ResultSet RSdatos = new QueryRunner("SEL0009",args).runSELECT();
 				RSdatos.next();
 				SQL= RSdatos.getString("codigo");
 				CloseSQL.close(RSdatos);
 
-				rselect = new RunQuery("SEL0007",args);
+				rselect = new QueryRunner("SEL0007",args);
 
 				RSdatos = rselect.runSELECT();
 
@@ -94,11 +94,11 @@ public class CacheXML extends Document {
 					 * a transmitir 
 					 */
 
-					RSdatos = new RunQuery("SEL0010",args).runSELECT();
+					RSdatos = new QueryRunner("SEL0010",args).runSELECT();
 					RSdatos.next();
 					String cache_sql = RSdatos.getString("sentencia_cache");
 
-					RSdatos = new RunQuery(codigo, cache_sql).runSELECT();
+					RSdatos = new QueryRunner(codigo, cache_sql).runSELECT();
 					ResultSetMetaData RSMDinfo = RSdatos.getMetaData();
 					int columnas = RSMDinfo.getColumnCount();
 

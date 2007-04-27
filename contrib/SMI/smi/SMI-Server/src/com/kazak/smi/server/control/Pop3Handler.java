@@ -20,7 +20,7 @@ import org.jdom.Element;
 
 import com.kazak.smi.server.Run;
 import com.kazak.smi.server.database.sql.CloseSQL;
-import com.kazak.smi.server.database.sql.RunQuery;
+import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 import com.kazak.smi.server.misc.LogWriter;
@@ -111,15 +111,15 @@ public class Pop3Handler extends Thread {
 						sub = fullsubject.substring(ind2+1,fullsubject.length());
 						to = to.toUpperCase();
 						
-						RunQuery runQuery = null;
+						QueryRunner runQuery = null;
 					    ResultSet rs = null;
 					    String idgroup = null;
 					    boolean all = false;
 					    if ("TODOS".equals(to)) { all=true; }
 						try {
 							runQuery = all ?
-									new RunQuery("SEL0028") :
-									new RunQuery("SEL0024",new String[]{to,to});
+									new QueryRunner("SEL0028") :
+									new QueryRunner("SEL0024",new String[]{to,to});
 							rs = runQuery.runSELECT();
 							while (rs.next()) {
 								idgroup =  rs.getString(1);

@@ -17,9 +17,14 @@ import java.util.Iterator;
 import java.util.Vector;
 import java.util.Enumeration;
 
+import javax.swing.JOptionPane;
+
+import org.jdom.Document;
+import org.jdom.Element;
+
 import com.kazak.smi.lib.misc.Language;
 import com.kazak.smi.server.database.sql.CloseSQL;
-import com.kazak.smi.server.database.sql.RunQuery;
+import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 import com.kazak.smi.server.misc.LogWriter;
@@ -79,7 +84,6 @@ public class SocketServer {
             SSCcanal1.register(selector, SelectionKey.OP_ACCEPT);
 
             LogWriter.write(Language.getWord("SOCKET_SERVER_OPEN") + " "+ ConfigFile.getPort());
-
             while (true) {
                 int n = selector.select();
                 if (n > 0) {
@@ -140,20 +144,58 @@ public class SocketServer {
     public static String getLogin(SocketChannel sock) {
         return Hchannelclients.get(sock).getLogin();
     }
+
+    /**
+     * Este metodo retorna el login asociado a una conexion
+     * @param sock
+     * @return algo
+     */
+    public static String getName(SocketChannel sock) {
+        return Hchannelclients.get(sock).getNames();
+    }
     
-    public static void getUsersOnLine() {
-    		int currentUsers = 0;
+    public static Document getUsersOnLine(String gid) {
+    		Document doc = new Document();
+    		Element root = new Element("USERLIST");
+    		Element id = new Element("id").setText("LIST");
+    		doc.setRootElement(root);
+     		Element rows, user, name, ip;
+     		root.addContent(id);
+     		
     		for ( Enumeration e = Hchannelclients.keys() ; e.hasMoreElements() ; ) {
      		      SocketChannel connection = (SocketChannel) e.nextElement();
-     		      if (isLogged(connection)) {
-     		    	  currentUsers++;
-     		    	  String login = getLogin(connection);
-     		    	  System.out.println("Usuario " + login + " conectado desde " + connection.socket().getLocalAddress().getHostAddress());
-     		    	  String data = Hchannelclients.get(connection).gName;
-     		    	 
+     		      String group = Integer.toString(Hchannelclients.get(connection).getGid());
+     		      if (isLogged(connection) && group.equals(gid)) {
+     		    	  rows = new Element("row");
+     		    	  user = new Element("cols").setText(getLogin(connection));
+     		    	  name = new Element("cols").setText(getName(connection));
+     		    	  ip = new Element("cols").setText(connection.socket().getInetAddress().getHostAddress());
+     		    			  //getRemoteSocketAddress().toString());
+     		    			  //getLocalAddress().getHostAddress());
+     		    	  rows.addContent(user);
+     		    	  rows.addContent(name);
+     		    	  rows.addContent(ip);
+     		    	  root.addContent(rows);
      		      }
     	    }
+    		
+    		return doc;
     }
+    
+    public static Document getUsersTotal() {
+		Document doc = new Document();
+		Element root = new Element("USERLIST");
+		doc.setRootElement(root);
+		Element id = new Element("id").setText("TOTAL");
+		root.addContent(id);
+		Element rows = new Element("row");
+		Element total = new Element("cols").setText("10");
+		rows.addContent(total);
+ 		root.addContent(rows);
+ 		
+ 		return doc;
+}
+
     
     /**
      * Este metodo remueve una coneccion (socket) de la
@@ -180,8 +222,8 @@ public class SocketServer {
      * @param sock Socket del cual se quiere obtener la informacion
      * @return El nombre de la base de datos
      */
-    public static String getBd(SocketChannel sock){
-    	return Hchannelclients.get(sock).getBd();    	
+    public static String getDataBase(SocketChannel sock){
+    	return Hchannelclients.get(sock).getDataBaseName();    	
     }
 
     /**
@@ -201,9 +243,10 @@ public class SocketServer {
      * conectados
      * @return El numero de sockets conectados
      */
+    /*
     public static int getSocketsCount() {
         return SocketsCount;
-    }
+    }*/
 
     /**
      * Este metodo Incrementa el contador de socket's
@@ -227,11 +270,11 @@ public class SocketServer {
     }
 
     public static String getCompanyNameKey(SocketChannel sock) {
-        return "K-"+ getBd(sock) + "-company";
+        return "K-"+ getDataBase(sock) + "-company";
     }
     
     public static String getCompanyIDKey(SocketChannel sock) {
-        return "K-"+ getBd(sock) + "-companyID";    
+        return "K-"+ getDataBase(sock) + "-companyID";    
     }
     
     public static SocketInfo getSocketInfo(SocketChannel sock) {
@@ -383,7 +426,7 @@ public class SocketServer {
          * referencia.
          * @return Nombre de la base de datos
          */
-        public String getBd() {
+        public String getDataBaseName() {
             return bd;
         }
 
@@ -448,7 +491,7 @@ public class SocketServer {
     
 	public static Vector<SocketInfo> getAllClients(int gidInt) {
 		Vector<SocketInfo> vusers = new Vector<SocketInfo>();
-		RunQuery runQuery = null;
+		QueryRunner runQuery = null;
 	    ResultSet rs = null;
 	    
 	    for (SocketInfo ifs : Hchannelclients.values()) {    
@@ -458,7 +501,7 @@ public class SocketServer {
         }
 	    
 		try {
-			runQuery = new RunQuery("SEL0027");
+			runQuery = new QueryRunner("SEL0027");
 			rs = runQuery.runSELECT();
 			while(rs.next()) {
 				SocketInfo ifuFrom = SocketServer.getInstaceOfSocketInfo();
@@ -506,7 +549,7 @@ public class SocketServer {
 	
 	public static Vector<SocketInfo> getAllClients(String toName) {
 		Vector<SocketInfo> vusers = new Vector<SocketInfo>();
-		RunQuery runQuery = null;
+		QueryRunner runQuery = null;
 	    ResultSet rs = null;
 	    
         for (SocketInfo ifs : Hchannelclients.values()) {    
@@ -520,7 +563,7 @@ public class SocketServer {
         }
         
 		try {
-			runQuery = new RunQuery("SEL0027");
+			runQuery = new QueryRunner("SEL0027");
 			rs = runQuery.runSELECT();
 			while(rs.next()) {
 				SocketInfo ifuFrom = SocketServer.getInstaceOfSocketInfo();

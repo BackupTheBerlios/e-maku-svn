@@ -12,7 +12,7 @@ import org.jdom.output.XMLOutputter;
 
 import com.kazak.smi.lib.misc.Language;
 import com.kazak.smi.server.database.sql.CloseSQL;
-import com.kazak.smi.server.database.sql.RunQuery;
+import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 import com.kazak.smi.server.misc.LogWriter;
@@ -79,13 +79,13 @@ public class ResultSetToXML extends Document {
 				try {
 					bufferSocket = new ByteArrayOutputStream();
 					XMLOutputter XMLformat = new XMLOutputter();
-					RunQuery rselect;
+					QueryRunner rselect;
 
 					if(args==null ) {
-						rselect = new RunQuery(sql);
+						rselect = new QueryRunner(sql);
 					}
 					else {
-						rselect = new RunQuery(sql,args);
+						rselect = new QueryRunner(sql,args);
 					}
 
 					ResultSet rsData = rselect.runSELECT();

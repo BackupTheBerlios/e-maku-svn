@@ -156,13 +156,13 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 	
 	private void initComps() {
 		
-		listComps.add(FieldLogin       = new AutoCompleteComboBox(Cache.getListKeysUsers(),true,30));
+		listComps.add(FieldLogin       = new AutoCompleteComboBox(Cache.getUsersList(),true,30));
 		listComps.add(FieldPassword    = new JPasswordField());
 		listComps.add(FieldNames       = new JTextField());
 		listComps.add(FieldMail        = new JTextField());
 		listComps.add(JCheckAdm        = new JCheckBox());
 		listComps.add(JCheckAudit      = new JCheckBox());
-		listComps.add(JCBGroups        = new JComboBox(Cache.getListKeys()));
+		listComps.add(JCBGroups        = new JComboBox(Cache.getGroupsList()));
 		
 		FieldLogin.addItemListener(this);
 		FieldPassword.setDocument(new FixedSizePlainDocument(10));
@@ -516,7 +516,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 				JCheckAudit.setSelected(user.getAudit());
 				JCBGroups.setSelectedItem(user.getGidname());
 				table.clear();
-				ArrayList<Cache.UserPVenta> pvs = Cache.getLisWorksStationsForUser(code);
+				ArrayList<Cache.UserPOS> pvs = Cache.getWorkStationsListByUser(code);
 				/*
 				if (pvs.size() > 0) {
 					TreeManagerGroups.currTpath = new TreePath(
@@ -537,7 +537,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 				//TreeManagerGroups.expand();
 				//System.out.println("Actualizando Arbol desde UsersManager...");
 				
-				for (Cache.UserPVenta upv : pvs) {
+				for (Cache.UserPOS upv : pvs) {
 					table.addData(upv.getCodepv(),upv.getName(),upv.getValidip());
 				}
 				if (ACTION == ACTIONS.EDIT ) {

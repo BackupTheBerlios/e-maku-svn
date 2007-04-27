@@ -22,7 +22,7 @@ package com.kazak.smi.server.database.sql;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
-public class InstruccionesNotLoadException extends Exception {
+public class SentencesNotLoadException extends Exception {
 
 	/**
 	 * 

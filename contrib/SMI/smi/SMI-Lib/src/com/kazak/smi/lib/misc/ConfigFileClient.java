@@ -35,7 +35,7 @@ public class ConfigFileClient {
         File proof = new File(path);
         if (!proof.exists()) {
 			JLabel label = new JLabel(
-					"Ojo! No se encontró el archivo \n"+
+					"No se encontró el archivo \n"+
 					"de configuración.\n" +
 					"Contacte al administrador del sistema.");
 			label.setHorizontalTextPosition(JLabel.CENTER);

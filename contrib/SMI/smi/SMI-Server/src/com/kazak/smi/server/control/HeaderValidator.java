@@ -9,14 +9,16 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import com.kazak.smi.lib.misc.Language;
-import com.kazak.smi.server.businessrules.RunTransaction;
+import com.kazak.smi.server.businessrules.TransactionRunner;
 import com.kazak.smi.server.businessrules.Sync;
 import com.kazak.smi.server.comunications.AcpFailure;
 import com.kazak.smi.server.comunications.ResultSetToXML;
 import com.kazak.smi.server.comunications.SocketServer;
 import com.kazak.smi.server.comunications.SocketWriter;
 import com.kazak.smi.server.misc.LogWriter;
+import com.kazak.smi.server.misc.ServerConst;
 import com.kazak.smi.server.misc.settings.ConfigFile;
+
 /**
  * ClientHeaderValidator.java Creado el 22-jul-2004
  * 
@@ -54,17 +56,17 @@ public class HeaderValidator {
         /*
          * Obtenemos la raiz del documento si el documento tiene raiz
          */
-        final Element raiz = doc.getRootElement();
-        String nom_raiz = raiz.getName();
-        /*XMLOutputter xmlOutputter = new XMLOutputter();
+        final Element root = doc.getRootElement();
+        String rootName = root.getName();
+/*        XMLOutputter xmlOutputter = new XMLOutputter();
         xmlOutputter.setFormat(Format.getPrettyFormat());
         try {
             xmlOutputter.output(doc,System.out);
         }
         catch (IOException e) {
             e.printStackTrace();
-        }*/
-        /*
+        }
+*/        /*
          *  Validaci�n de solicitud de paquetes, se verifica si el socket ya fue
          *  autenticado, si lo fue entonces se procede a validar la solicitud 
          *  del paquete requerido, si no se procede a validar un paquete CNX o la
@@ -74,14 +76,14 @@ public class HeaderValidator {
         
         if (SocketServer.isLogged(sock)) {
 
-        	if (nom_raiz.equals("Message")) {
+        	if (rootName.equals("Message")) {
                 LogWriter.write("Nuevo mesaje desde " + sock);
-                new MessageDistributor(raiz,false);
+                new MessageDistributor(root,false);
             }
-        	else if (nom_raiz.equals("Transaction")) {
-                new RunTransaction(sock,doc);
+        	else if (rootName.equals("Transaction")) {
+                new TransactionRunner(sock,doc);
             }
-        	else if (nom_raiz.equals("Synchronization")) {
+        	else if (rootName.equals("Synchronization")) {
         		Thread t = new Thread() {
                 	public void run() {
                 		new Sync(sock);
@@ -89,7 +91,7 @@ public class HeaderValidator {
                 };
                 t.start();
             }
-        	else if (nom_raiz.equals("RequestLogContent")) {
+        	else if (rootName.equals("RequestLogContent")) {
         		LogWriter.write("Solicitud de envio del registro del servidor");
         		
 				Thread t = new Thread() {
@@ -110,61 +112,73 @@ public class HeaderValidator {
 				LogWriter.write("Solicitud de envio del registro del servidor enviada");
             }
            /* Validacion de una solicitud de consulta */
-            else if (nom_raiz.equals("QUERY")) {
+            else if (rootName.equals("QUERY")) {
             	Thread t = new Thread() {
                 	public void run() {
-                        ValidQuery valida = new ValidQuery(raiz);
-                        String codigo = "";
-                        codigo = raiz.getChild("sql").getValue();
+                        ValidQuery valid = new ValidQuery(root);
+                        String code = "";
+                        code = root.getChild("sql").getValue();
                         ResultSetToXML answer;
-                        if (valida.changeStructParam()) {
-                            answer = new ResultSetToXML(codigo, valida.getArgs());
+                        if (valid.changeStructParam()) {
+                            answer = new ResultSetToXML(code, valid.getArgs());
                         } else {
-                            answer = new ResultSetToXML(codigo);
+                            answer = new ResultSetToXML(code);
                         }
-                        answer.transmition(sock,valida.getId());   
+                        answer.transmition(sock,valid.getId());   
                 	}
                 };
                 t.start();         
             } 
+            else if (rootName.equals("ONLINELIST")) {
+            	String id = root.getChildText("id");
+            	Document list  = new Document();
+            	if ("LIST".equals(id)) {
+            		System.out.println("lista");
+            		list = SocketServer.getUsersOnLine(root.getText());
+            	}
+            	else if("TOTAL".equals(id)) {
+            		System.out.println("total");
+            		list = SocketServer.getUsersTotal();
+            	}
+            	try {
+            	SocketWriter.writing(sock,list);
+            	} catch (IOException e) {
+					LogWriter.write("Error de entrada y salida");
+					LogWriter.write("mensaje: " + e.getMessage());
+					e.printStackTrace();
+				}
+            }
+            else if (rootName.equals("USERSTOTAL")) {
+            	Document list = SocketServer.getUsersTotal();
+            	try {
+            	SocketWriter.writing(sock,list);
+            	} catch (IOException e) {
+					LogWriter.write("Error de entrada y salida");
+					LogWriter.write("mensaje: " + e.getMessage());
+					e.printStackTrace();
+				}
+            }
             else {
-                /*ErrorXML error = new ErrorXML();
-                String tmp = Language.getWord("ERR_FORMAT_PROTOCOL") + " "
-                        + sock.socket();
-
-                LogAdmin.setMessage(tmp, ServerConst.ERROR);
-
-                LogWriter.write("ERROR FORMATO PROTOCOLO");
-                XMLOutputter xmlOutputter = new XMLOutputter();
-                xmlOutputter.setFormat(Format.getPrettyFormat());
-                try {
-                    xmlOutputter.output(doc,LogWriter.write);
-                    SocketWriter.writing(sock, error.returnError(
-                            ServerConst.ERROR, "", tmp));
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }*/
+                  LogWriter.write(Language.getWord("ERR_FORMAT_PROTOCOL") + ": " + sock.socket());
             }
 
-        } 
-        
+        }
         /* Validacion de una solicitud de un paquete conexión */
-        else if (nom_raiz.equals("CNX")) {
-            LoginUser loguser = new LoginUser(raiz);
-        	if (loguser.valid()) {
-        		String login = loguser.getLogin();
+        else if (rootName.equals("CNX")) {
+            LoginUser user = new LoginUser(root);
+        	if (user.valid()) {
+        		String login = user.getLogin();
         		SocketServer.setLogin(sock, ConfigFile.getMainDataBase(), login);
-        		SocketServer.getSocketInfo(sock).setEmail(loguser.getCorreo());
-        		SocketServer.getSocketInfo(sock).setUid(loguser.getUid());
-        		SocketServer.getSocketInfo(sock).setGid(loguser.getGid());
-        		SocketServer.getSocketInfo(sock).setAdmin(loguser.getAdmin());
-        		SocketServer.getSocketInfo(sock).setAudit(loguser.getAudit());
-        		SocketServer.getSocketInfo(sock).setCurrIp(loguser.getIp());
-        		SocketServer.getSocketInfo(sock).setPsName(loguser.getPsName());
-        		SocketServer.getSocketInfo(sock).setGName(loguser.getGName());
-        		SocketServer.getSocketInfo(sock).setNames(loguser.getNombres());
-                new ACPSender(sock,login,loguser.getUserLevel());
+        		SocketServer.getSocketInfo(sock).setEmail(user.getCorreo());
+        		SocketServer.getSocketInfo(sock).setUid(user.getUid());
+        		SocketServer.getSocketInfo(sock).setGid(user.getGid());
+        		SocketServer.getSocketInfo(sock).setAdmin(user.getAdmin());
+        		SocketServer.getSocketInfo(sock).setAudit(user.getAudit());
+        		SocketServer.getSocketInfo(sock).setCurrIp(user.getIp());
+        		SocketServer.getSocketInfo(sock).setPsName(user.getPsName());
+        		SocketServer.getSocketInfo(sock).setGName(user.getGName());
+        		SocketServer.getSocketInfo(sock).setNames(user.getNombres());
+                new ACPSender(sock,login,user.getUserLevel());
             } else {
                 try {
 					SocketWriter.writing(sock, new AcpFailure(Language.getWord("ACPFAILURE")));

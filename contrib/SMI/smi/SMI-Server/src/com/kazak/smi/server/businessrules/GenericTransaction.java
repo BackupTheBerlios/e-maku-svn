@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.jdom.Element;
 
-import com.kazak.smi.server.database.sql.RunQuery;
+import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 import com.kazak.smi.server.misc.LogWriter;
@@ -16,20 +16,20 @@ import com.kazak.smi.server.misc.LogWriter;
 public class GenericTransaction {
 
 	private Iterator it;
-	private ArrayList<RunQuery> querys;
+	private ArrayList<QueryRunner> querys;
 	public GenericTransaction(SocketChannel sock, Element args, Element packet, String id) {
 		this.it = packet.getChildren("package").iterator();
 		int count = args.getChildren("args").size();
 		int passed = 0;
 		Iterator itArgs = args.getChildren("args").iterator();
-		querys = new ArrayList<RunQuery>();
-		RunQuery runQuery = null;
+		querys = new ArrayList<QueryRunner>();
+		QueryRunner runQuery = null;
 		while(itArgs.hasNext()) {
 			Element element = (Element) itArgs.next();
 			String sqlCode = element.getValue();
 			String[] sqlArgs = packArgs();
 			try {
-				runQuery = new RunQuery(sqlCode,sqlArgs);
+				runQuery = new QueryRunner(sqlCode,sqlArgs);
 				runQuery.setAutoCommit(false);
 				querys.add(runQuery);
 				runQuery.runSQL();
@@ -40,7 +40,7 @@ public class GenericTransaction {
 				if (runQuery!=null) {
 					runQuery.rollback();
 				}
-				RunTransaction.errorMessage(
+				TransactionRunner.errorMessage(
 						 sock,
                     	 id,
                     	 "No se pudo procesar la operacion:\n" +
@@ -48,14 +48,14 @@ public class GenericTransaction {
 				break;
 			} catch (SQLNotFoundException e) {
 				e.printStackTrace();
-				RunTransaction.errorMessage(
+				TransactionRunner.errorMessage(
 						 sock,
 						 id,
 						 "La sentencia  " + sqlCode + " no existe");
 				break;
 			} catch (SQLBadArgumentsException e) {
 				e.printStackTrace();
-				RunTransaction.errorMessage(
+				TransactionRunner.errorMessage(
 						 sock,
 						 id,
 						 "Argumentos invalidos " +
@@ -64,16 +64,16 @@ public class GenericTransaction {
 			}
 		}
 		if (passed==count) {
-			for (RunQuery rq :querys) {
+			for (QueryRunner rq :querys) {
 				rq.commit();
 			}
 			
-			RunTransaction.
+			TransactionRunner.
 			successMessage
 			(sock,id,"Los datos fueron almacenados satisfactoriamente");
 		}
 		else {
-			for (RunQuery rq :querys) {
+			for (QueryRunner rq :querys) {
 				rq.rollback();
 			}
 		}

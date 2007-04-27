@@ -18,7 +18,7 @@ import com.kazak.smi.client.control.MessageEvent;
 import com.kazak.smi.client.control.MessageListener;
 
 
-public class HistoryDataPanel extends JPanel implements MessageListener {
+public class HistoryDataPanel extends JPanel implements MessageListener{
 
 	private static final long serialVersionUID = 1L;
 	private JTable JTData;
@@ -79,23 +79,29 @@ public class HistoryDataPanel extends JPanel implements MessageListener {
 		JTData.getSelectionModel().addListSelectionListener(
 				new ListSelectionListener() {
 					public void valueChanged(ListSelectionEvent e) {
-						int rowIndex = JTData.getSelectedRow();
-						if (rowIndex < JTData.getRowCount()) {
-							messagePanel.setData(getSelectedData());
+						
+						int rowIndex = JTData.getSelectedRow(); //e.getFirstIndex(); //0<JTData.getSelectedRow()?JTData.getSelectedRow():0;
+						if (0<=rowIndex) {
+							if (rowIndex < JTData.getRowCount()) {
+								messagePanel.setData(getSelectedData(e.getFirstIndex()));
+							}
+							if (((Boolean)JTData.getValueAt(rowIndex, 6))==false) {
+								JTData.setValueAt(true,rowIndex,6);
+								System.out.println("ping: Marcando mensaje como leido. ");
+								new ConfirmMessage(
+										true,
+										(String )JTData.getValueAt(rowIndex,1),
+										(String )JTData.getValueAt(rowIndex,2),
+										(String )JTData.getValueAt(rowIndex,4),
+										(String )JTData.getValueAt(rowIndex,3));
+							}
 						}
-						JTData.setValueAt(true,rowIndex,6);
-						new ConfirmMessage(
-								true,
-								(String )JTData.getValueAt(rowIndex,1),
-								(String )JTData.getValueAt(rowIndex,2),
-								(String )JTData.getValueAt(rowIndex,4),
-								(String )JTData.getValueAt(rowIndex,3));
 					}
 				});
 	}
 	
-	public String[] getSelectedData() {
-		int rowIndex = JTData.getSelectedRow();
+	public String[] getSelectedData(int row) {
+		int rowIndex =  row; //0<JTData.getSelectedRow()?JTData.getSelectedRow():0;
 		String[] data = new String[5];
 		for (int i =0 ; i < data.length ; i++) {
 			data[i] = String.valueOf(JTData.getValueAt(rowIndex,(i+1)));
@@ -109,6 +115,8 @@ public class HistoryDataPanel extends JPanel implements MessageListener {
 
 	public void arriveMessage(MessageEvent event) {
 		JTData.updateUI();
-		
+		JTData.clearSelection();
 	}
+
+	
 }

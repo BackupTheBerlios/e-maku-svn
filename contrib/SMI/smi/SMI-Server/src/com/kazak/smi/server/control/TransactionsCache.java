@@ -12,7 +12,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 import com.kazak.smi.server.database.sql.CloseSQL;
-import com.kazak.smi.server.database.sql.RunQuery;
+import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 
@@ -23,7 +23,7 @@ public class TransactionsCache {
 	public static void loadCache() {
 		transactions = new Hashtable<String,Transaction>();
 		try {
-			RunQuery runQuery = new RunQuery("SRV0001");
+			QueryRunner runQuery = new QueryRunner("SRV0001");
 			ResultSet rs = runQuery.runSELECT();
 			while (rs.next()) {
 				String code = rs.getString("codigo");

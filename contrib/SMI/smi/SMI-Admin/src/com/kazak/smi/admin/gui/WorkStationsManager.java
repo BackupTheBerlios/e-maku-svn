@@ -126,75 +126,12 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 		});
 	}
 	
-	public void add() {
-		this.setTitle("Nuevo Punto de Colocación");
-		JBAccept.setActionCommand("accept");
-		JBCancel.setActionCommand("cancel");
-		ACTION = ACTIONS.ADD;
-		this.setVisible(true);
-		
-	}
-	
-	public void edit() {
-		this.setTitle("Editar Punto de Colocación");
-		JBAccept.setActionCommand("save");
-		JBCancel.setActionCommand("cancel");
-		ACTION = ACTIONS.EDIT;
-		this.setVisible(true);
-	}
-	
-	public void delete() {
-		this.setTitle("Borrar Punto de Colocación");
-		FieldCode.setEditable(false);
-		FieldIp.setEditable(false);
-		JCBGroups.setEnabled(false);
-		ACTION = ACTIONS.DELETE;
-		JBAccept.setActionCommand("remove");
-		JBCancel.setActionCommand("cancel");
-		this.setVisible(true);
-	}
-	
-	public void search() {
-		this.setTitle("Buscar Punto de Colocación");
-		FieldCode.setEditable(false);
-		FieldIp.setEditable(false);
-		JCBGroups.setEnabled(false);
-		UIManager.put("ComboBox.disabledForeground",Color.BLACK);
-		JBAccept.setEnabled(false);
-		JBCancel.setActionCommand("cancel");
-		ACTION = ACTIONS.SEARCH;
-		this.setVisible(true);
-	}
-	public void search(JTable t) {
-		this.table = t;
-		this.setTitle("Buscar Punto de Colocación");
-		FieldCode.setEditable(false);
-		FieldIp.setEditable(false);
-		JCBGroups.setEnabled(false);
-		UIManager.put("ComboBox.disabledForeground",Color.BLACK);
-		JBAccept.setActionCommand("search_code");
-		JBCancel.setActionCommand("cancel");
-		ACTION = ACTIONS.SEARCH;
-		frame.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				super.windowClosing(e);
-				int lastrow = table.getRowCount()-1;
-				if (lastrow>=0) {
-					table.setValueAt(FieldCode.getText(),lastrow,0);
-					table.setValueAt(FieldName.getText(),lastrow,1);
-					table.requestFocusInWindow();
-					table.changeSelection(lastrow,0,true,true);
-				}
-			}
-		});
-		this.setVisible(true);
-	}
 	private void initComps() {
 		
-		listComps.add(FieldName = new AutoCompleteComboBox(Cache.getListKeysWs(),false,50));
+		listComps.add(FieldName = new AutoCompleteComboBox(Cache.getWorkStationsList(),false,50));
 		listComps.add(FieldCode = new JTextField());
 		listComps.add(FieldIp   = new JTextField());
-		listComps.add(JCBGroups = new JComboBox(Cache.getListKeys()));
+		listComps.add(JCBGroups = new JComboBox(Cache.getGroupsList()));
 		
 		FieldCode.setDocument(new NumericDataValidator(4));
 		FieldIp.setDocument(new FixedSizePlainDocument(15));
@@ -270,6 +207,70 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 		this.add(new JPanel(),BorderLayout.WEST);
 		this.add(jpsearch,BorderLayout.EAST);
 	}
+	
+	public void add() {
+		this.setTitle("Nuevo Punto de Colocación");
+		JBAccept.setActionCommand("accept");
+		JBCancel.setActionCommand("cancel");
+		ACTION = ACTIONS.ADD;
+		this.setVisible(true);
+		
+	}
+	
+	public void edit() {
+		this.setTitle("Editar Punto de Colocación");
+		JBAccept.setActionCommand("save");
+		JBCancel.setActionCommand("cancel");
+		ACTION = ACTIONS.EDIT;
+		this.setVisible(true);
+	}
+	
+	public void delete() {
+		this.setTitle("Borrar Punto de Colocación");
+		FieldCode.setEditable(false);
+		FieldIp.setEditable(false);
+		JCBGroups.setEnabled(false);
+		ACTION = ACTIONS.DELETE;
+		JBAccept.setActionCommand("remove");
+		JBCancel.setActionCommand("cancel");
+		this.setVisible(true);
+	}
+	
+	public void search() {
+		this.setTitle("Buscar Punto de Colocación");
+		FieldCode.setEditable(false);
+		FieldIp.setEditable(false);
+		JCBGroups.setEnabled(false);
+		UIManager.put("ComboBox.disabledForeground",Color.BLACK);
+		JBAccept.setEnabled(false);
+		JBCancel.setActionCommand("cancel");
+		ACTION = ACTIONS.SEARCH;
+		this.setVisible(true);
+	}
+	public void search(JTable t) {
+		this.table = t;
+		this.setTitle("Buscar Punto de Colocación");
+		FieldCode.setEditable(false);
+		FieldIp.setEditable(false);
+		JCBGroups.setEnabled(false);
+		UIManager.put("ComboBox.disabledForeground",Color.BLACK);
+		JBAccept.setActionCommand("search_code");
+		JBCancel.setActionCommand("cancel");
+		ACTION = ACTIONS.SEARCH;
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				super.windowClosing(e);
+				int lastrow = table.getRowCount()-1;
+				if (lastrow>=0) {
+					table.setValueAt(FieldCode.getText(),lastrow,0);
+					table.setValueAt(FieldName.getText(),lastrow,1);
+					table.requestFocusInWindow();
+					table.changeSelection(lastrow,0,true,true);
+				}
+			}
+		});
+		this.setVisible(true);
+	}	
 	
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
@@ -503,7 +504,7 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 	}
 
 	public void itemStateChanged(ItemEvent e) {
-		JBSearch.doClick();	
+		//JBSearch.doClick();	
 	}
 	
 	public void setFieldName(String name) {

@@ -35,7 +35,7 @@ import org.jdom.Element;
 
 import com.kazak.smi.server.comunications.SocketServer;
 import com.kazak.smi.server.control.Pop3Handler;
-import com.kazak.smi.server.database.sql.RunQuery;
+import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 import com.kazak.smi.server.misc.LogWriter;
@@ -54,11 +54,11 @@ public class MessageControlReporter {
 		sqlArgs[1] = ((Element) it.next()).getValue();
 		//String login = ((Element) it.next()).getValue();
 		
-		RunQuery runQuery = null;
+		QueryRunner runQuery = null;
 		//InfoUser ifu = null;
 		ResultSet rs = null;
 		try {
-			runQuery = new RunQuery("SEL0022",sqlArgs);
+			runQuery = new QueryRunner("SEL0022",sqlArgs);
 			rs = runQuery.runSELECT();
 			HSSFWorkbook wb = new HSSFWorkbook();
 			HSSFSheet sheet = wb.createSheet("REPORTE DE CONTROL");
@@ -107,21 +107,21 @@ public class MessageControlReporter {
 	        multipart.addBodyPart(report);
 	        mimeMessage.setContent(multipart);
 	        Transport.send(mimeMessage);
-	        RunTransaction.
+	        TransactionRunner.
 			successMessage
 			(sock,id,"El reporte fue enviado a :\n" +
 					SocketServer.getSocketInfo(sock).getEmail()+".\n" +
 					 "Por favor revise su correo.");
 	        LogWriter.write("Reporte de control de usuarios enviado a  " + SocketServer.getSocketInfo(sock).getEmail());
 		} catch (SendFailedException e) {
-			RunTransaction.errorMessage(
+			TransactionRunner.errorMessage(
 					 sock,
 					 id,
 					 "No se pudo procesar la operacion:\n" +
 					 "causa:\n"+e.getLocalizedMessage());
 		} catch (AddressException e) {
 			e.printStackTrace();
-			RunTransaction.errorMessage(
+			TransactionRunner.errorMessage(
 					 sock,
 					 id,
 					 "No se pudo procesar la operación:\n" +
@@ -131,21 +131,21 @@ public class MessageControlReporter {
 					 "Causa:\n"+e.getMessage());
 		} catch (MessagingException e) {
 			e.printStackTrace();
-			RunTransaction.errorMessage(
+			TransactionRunner.errorMessage(
 					 sock,
 					 id,
 					 "No se pudo procesar la operacion:\n" +
 					 "causa:\n"+e.getLocalizedMessage());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			RunTransaction.errorMessage(
+			TransactionRunner.errorMessage(
 					 sock,
 					 id,
 					 "No se pudo procesar la operacion:\n" +
 					 "causa:\n"+e.getMessage());
 		} catch (IOException e) {
 			e.printStackTrace();
-			RunTransaction.errorMessage(
+			TransactionRunner.errorMessage(
 					 sock,
 					 id,
 					 "No se pudo procesar la operacion:\n" +
@@ -153,7 +153,7 @@ public class MessageControlReporter {
 		} catch (SQLException e) {
 			runQuery.closeStatement();
 			e.printStackTrace();
-			RunTransaction.errorMessage(
+			TransactionRunner.errorMessage(
 					 sock,
 					 id,
 					 "No se pudo procesar la operacion:\n" +
@@ -161,14 +161,14 @@ public class MessageControlReporter {
 		} catch (SQLNotFoundException e) {
 			
 			e.printStackTrace();
-			RunTransaction.errorMessage(
+			TransactionRunner.errorMessage(
 					 sock,
 					 id,
 					 "No se pudo procesar la operacion:\n" +
 					 "causa:\n"+e.getMessage());
 		} catch (SQLBadArgumentsException e) {
 			e.printStackTrace();
-			RunTransaction.errorMessage(
+			TransactionRunner.errorMessage(
 					 sock,
 					 id,
 					 "No se pudo procesar la operacion:\n" +

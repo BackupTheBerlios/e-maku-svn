@@ -78,6 +78,28 @@ public class QuerySender {
         return result;
     }
 
+    public static Document getResultSetST(String id) throws QuerySenderException {
+    	
+        int i=0;
+        System.out.println("Verificando contenido ...");
+        while (!HspoolTransactions.containsKey(id)) {
+            try {
+                Thread.sleep(100);
+                i++;
+                if (i>20000) {
+                    throw new QuerySenderException();
+                }
+            }
+            catch(InterruptedException e) {
+                throw new QuerySenderException();
+            }
+        }
+    	
+        Document result = (Document)HspoolTransactions.get(id);
+        HspoolTransactions.remove(id);
+        return result;
+    }
+    
     public static Document getResultSetST(String codigo, String [] args)
     throws QuerySenderException {
         Document doc = new Document();

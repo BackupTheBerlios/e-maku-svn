@@ -1,12 +1,18 @@
 package com.kazak.smi.admin.gui;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
+
 import javax.swing.table.AbstractTableModel;
+
+import org.jdom.Document;
+import org.jdom.Element;
 
 public class OnLineModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 	private String[] titles = { "Codigo Usuario","Nombre","Dirección IP"};
-	private Class[] types = {String.class,String.class,Boolean.class};
+	private Class[] types = {String.class,String.class,String.class};
 	private Vector<Vector> data = new Vector<Vector>();
 	
 	@SuppressWarnings("unchecked")
@@ -33,7 +39,17 @@ public class OnLineModel extends AbstractTableModel {
 	public void clear() {
 		data.clear();
 		fireTableDataChanged();
-	}
+		/*System.out.println("limpiando ..");
+		int i=0;
+    	for (Vector<Object> col : data) {
+    		for (int j=0;j<3;j++) {
+        		col.set(j,"");
+        		fireTableCellUpdated(i,j);
+    		}
+    		i++;
+   		}*/
+   	}
+
 	
 	public Vector<Vector> getData() {
 		return data;
@@ -73,4 +89,58 @@ public class OnLineModel extends AbstractTableModel {
 			return true;
 		return false;
 	}
+
+    public synchronized void setQuery(Document doc) {
+    	class LoadData extends Thread {
+    		private Document doc;
+
+    		LoadData(Document doc) {
+    			this.doc=doc;
+    		}
+
+    		public void run() {
+    			
+		        List Lrows = doc.getRootElement().getChildren("row");
+		        Iterator Irows = Lrows.iterator();
+		        int max = Lrows.size();
+		        System.out.println("Lrows "+Lrows);
+		        if (max>0) {
+		            /*
+		             * Se limpia la tabla antes de desplegar la consulta nueva
+		             */
+		            clear();
+		            /*
+		             * Cargando informacion
+		             */
+		            
+		            int i=0;		            
+		            for (;Irows.hasNext();i++) {
+		                Element Erow = (Element) Irows.next();
+		                List Lcol = Erow.getChildren();
+		                if (data.size() <= i) {
+		    				Vector<String> col = new Vector<String>();
+		        			for (int k=0;k<3;k++) {
+		        			    col.add(((Element)Lcol.get(k)).getText());
+		        			}
+		        			/* Se adiciona la nueva fila al vector de filas */
+		        			data.add(col);
+		        			fireTableDataChanged();
+		    			}
+		        		for (int j=0;j<3;j++) {
+		        			fireTableCellUpdated(i, j);
+		        		}
+
+		            }
+		        }
+		        else {
+		        	clear();
+		        }
+		        
+		        doc = null;
+		        System.gc();
+    		}
+    	}
+    	new LoadData(doc).start();
+    }
+
 }

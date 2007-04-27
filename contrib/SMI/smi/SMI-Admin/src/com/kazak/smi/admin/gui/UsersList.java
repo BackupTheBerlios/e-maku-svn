@@ -1,30 +1,47 @@
 package com.kazak.smi.admin.gui;
 
-import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.DefaultCellEditor;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
+import com.kazak.smi.admin.control.Cache;
+import com.kazak.smi.admin.control.Cache.Group;
 import com.kazak.smi.admin.network.SocketHandler;
 import com.kazak.smi.admin.network.SocketWriter;
 import com.kazak.smi.admin.transactions.QuerySender;
+import com.kazak.smi.admin.transactions.QuerySenderException;
 
-public class UsersList extends JFrame implements ActionListener {
+/*
+ *  Esta clase muestra la lista de usuarios en linea de forma agrupada
+ */
+
+public class UsersList extends JFrame implements ActionListener,PopupMenuListener {
 
 	private static final long serialVersionUID = 3920757441925057976L;
 	private JButton close;
@@ -34,15 +51,16 @@ public class UsersList extends JFrame implements ActionListener {
 	private JTable table;
 	private OnLineModel model;
 	private int uTotal = 0;
+	private HashMap<String,String> hashGroup;
 	
 	public UsersList() {
 		this.setLayout(new BorderLayout());
 		this.setSize(600,400);
 		
 		initInterface();
-		requestOnlineUsers();
+		String date = getFormattedDate();
 		
-		this.setTitle("Usuarios en Linea: " + uTotal);
+		this.setTitle("Usuarios en Linea: " + uTotal + " / " + date);
 		
 		this.setLocationByPlatform(true);
 		this.setLocationRelativeTo(MainWindow.getFrame());
@@ -54,8 +72,20 @@ public class UsersList extends JFrame implements ActionListener {
 	public void initInterface() {
 		
 		jGroups = new JLabel("Grupos:");
-		String[] list = {"Uno","Dos","Tres"};
-		groups = new JComboBox(list);
+		Object[] obj = Cache.getList().toArray();
+		groups = new JComboBox(Cache.getGroupsList());
+		hashGroup = new HashMap<String,String>();
+		for (Object infoGroup:obj) {
+			Group g = (Group)infoGroup;
+			hashGroup.put(g.getName(), g.getId());
+			//System.out.println(g.getName()+" "+g.getId());
+		}
+		
+		groups.addPopupMenuListener(this);
+		loadUserList();
+		loadTotal();
+		requestUsersTotal();
+		requestOnlineUsers(groups.getSelectedItem().toString());
 		
 		model = new OnLineModel();
 		table = new JTable(model);
@@ -88,19 +118,78 @@ public class UsersList extends JFrame implements ActionListener {
 		add(center,BorderLayout.CENTER);
 		add(down,BorderLayout.SOUTH);
 	}
+
+	private void loadTotal() {
+		class Monitor  extends Thread {
+			
+			Document doc= null;
+			public void run() {
+				try {
+					doc = QuerySender.getResultSetST("TOTAL");
+					XMLOutputter xmlOutputter = new XMLOutputter();
+		            xmlOutputter.setFormat(Format.getPrettyFormat());
+		    		String date = getFormattedDate();
+		    		Element elm = doc.getRootElement();
+		    		List list = elm.getChildren("row");
+		    		Element col = (Element)list.get(0);
+		    		String uTotal = col.getValue();
+		    		setTitle("Usuarios en Linea: " + uTotal + " / " + date);
+				} catch (QuerySenderException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		new Monitor().start();		
+	}
+
+	private void loadUserList() {
+		class Monitor  extends Thread {
+			
+			Document doc= null;
+			public void run() {
+				try {
+					doc = QuerySender.getResultSetST("LIST");
+					model.setQuery(doc);
+				} catch (QuerySenderException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		new Monitor().start();		
+	}
 	
-	public void requestOnlineUsers() {
+	public void requestUsersTotal() {
 		// Enviando comando al servidor para ser aprobado
-		Element transaction = new Element("Transaction");
-		Document document = new Document(transaction);
+		Cache.getGroup("key");
+		Element onlist = new Element("ONLINELIST");
+		Element id = new Element("id").setText("TOTAL");
+		onlist.addContent(id);
+		Document document = new Document(onlist);
+
+		if (document!=null) {
+			try {
+				SocketWriter.writing(SocketHandler.getSock(),document);
+			} catch (IOException ex) {
+				System.out.println("Error de entrada y salida");
+				System.out.println("mensaje: " + ex.getMessage());
+				ex.printStackTrace();
+			}
+		}
 		
-		Element id = new Element("id");
-        id.setText(QuerySender.getId());
-        transaction.addContent(id);
-        
-        Element driver = new Element("driver");
-        driver.setText("TR014");
-        transaction.addContent(driver);
+	}
+	
+	public void requestOnlineUsers(String group) {
+		// Enviando comando al servidor para ser aprobado
+		Cache.getGroup("key");
+		Element onlist = new Element("ONLINELIST");
+		Element id = new Element("id").setText("LIST");
+		onlist.addContent(id);
+		Document document = new Document(onlist);
+        Element args = new Element("args");
+        onlist.addContent(hashGroup.get(group));
+        args.setText(group);
 
 		if (document!=null) {
 			try {
@@ -136,6 +225,31 @@ public class UsersList extends JFrame implements ActionListener {
 	    	String value = ((JTextField)getComponent()).getText();
 	        return value;
 	    }
+	}
+	
+	
+    public static String getFormattedDate() {
+
+    	SimpleDateFormat now = new SimpleDateFormat("E, dd MMM yyyy - H:m");
+    	Date date = new Date();
+    	
+    	return now.format(date);
+    }
+
+	public void popupMenuCanceled(PopupMenuEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+		// TODO Auto-generated method stub
+		loadUserList();
+		requestOnlineUsers(((JComboBox)e.getSource()).getSelectedItem().toString());
+	}
+
+	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

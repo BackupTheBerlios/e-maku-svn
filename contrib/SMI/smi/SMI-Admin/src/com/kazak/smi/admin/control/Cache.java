@@ -3,6 +3,7 @@ package com.kazak.smi.admin.control;
 import java.awt.Cursor;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
@@ -21,13 +22,13 @@ import com.kazak.smi.admin.transactions.QuerySenderException;
 
 public class Cache {
 	
-	private static Hashtable<String, Group> listGroups;
+	private static Hashtable<String, Group> groupsList;
 	private static JFrame frame;
 	
 	// Este metodo actualiza el arbol de grupos, puntos de venta y usuarios
 	
 	public static void loadTree() {
-		listGroups = new Hashtable<String, Group>();
+		groupsList = new Hashtable<String, Group>();
 		Thread t = new  Thread() {
 			
 			public void run() {
@@ -39,8 +40,8 @@ public class Cache {
 					TreeManagerGroups.clearAll();
 					//Grupos
 					//Vector<String> keys = new Vector<String>();
-					Document doc1 = QuerySender.getResultSetST("SEL0004",null);
-					Element root = doc1.getRootElement();
+					Document doc = QuerySender.getResultSetST("SEL0004",null);
+					Element root = doc.getRootElement();
 					Iterator rows = root.getChildren("row").iterator();
 					
 					while (rows.hasNext()) {
@@ -57,16 +58,16 @@ public class Cache {
 						group.name = name;
 						group.visible = visible.equals("t") ? true : false;
 						group.zone = zone.equals("t") ? true : false;
-						listGroups.put(name,group);
+						groupsList.put(name,group);
 						TreeManagerGroups.addGroup(name);
 					}
 					
 					//TreeManagerGroups.updateUI();
-					Document doc2 = QuerySender.getResultSetST("SEL0005",null);
+					doc = QuerySender.getResultSetST("SEL0005",null);
 					
 					//Puntos de Venta
 					
-					root = doc2.getRootElement();
+					root = doc.getRootElement();
 					rows = root.getChildren("row").iterator();
 					while (rows.hasNext()) {
 						Element row = (Element) rows.next();
@@ -84,16 +85,15 @@ public class Cache {
 						ws.ip = ip;
 						ws.code = code;
 						ws.gidname = gidName;
-						listGroups.get(gidName).add(ws);
+						groupsList.get(gidName).add(ws);
 						TreeManagerGroups.addChild(gidName,ws.name);
 					}
 
 					//TreeManagerGroups.updateUI();
 
 					//Usuarios - Funcionarios
-					Document doc3 = QuerySender.getResultSetST("SEL0006",null);
-					
-					root = doc3.getRootElement();
+					doc = QuerySender.getResultSetST("SEL0006",null);
+					root = doc.getRootElement();
 					rows = root.getChildren("row").iterator();
 					
 					while (rows.hasNext()) {
@@ -109,15 +109,15 @@ public class Cache {
 						user.gid = ((Element)cols.next()).getValue();
 						user.gidname = ((Element)cols.next()).getValue();
 						
-						listGroups.get(user.gidname).add(user);
+						groupsList.get(user.gidname).add(user);
 						TreeManagerGroups.addChild(user.gidname,user.login);
 					}
 					
 					//TreeManagerGroups.updateUI();
 					
 					// Usuarios - Puntos de Venta
-					Document doc4 = QuerySender.getResultSetST("SEL0007",null);
-					root = doc4.getRootElement();
+					doc = QuerySender.getResultSetST("SEL0007",null);
+					root = doc.getRootElement();
 					rows = root.getChildren("row").iterator();
 					
 					while (rows.hasNext()) {
@@ -153,11 +153,11 @@ public class Cache {
 	}
 	
 	public static boolean containsGroup(String gname) {
-		return listGroups.containsKey(gname);
+		return groupsList.containsKey(gname);
 	}
 	
 	private static Group searchByWorkStation(String code) {
-		Collection<Group> list = listGroups.values();
+		Collection<Group> list = groupsList.values();
 		for (Group g: list) {
 			if (g.containsWS(code)) {
 				return g;
@@ -167,7 +167,7 @@ public class Cache {
 	}
 	
 	public static boolean containsWs(String name) {
-		Collection<Group> list = listGroups.values();
+		Collection<Group> list = groupsList.values();
 		for (Group g: list) {
 			for (WorkStation ws : g.getWorkStations()) {
 				if (ws.name.equals(name)) {
@@ -179,7 +179,7 @@ public class Cache {
 	}
 	
 	public static boolean containsWsByCode(String code) {
-		Collection<Group> list = listGroups.values();
+		Collection<Group> list = groupsList.values();
 		for (Group g: list) {
 			for (WorkStation ws : g.getWorkStations()) {
 				if (ws.code.equals(code)) {
@@ -191,7 +191,7 @@ public class Cache {
 	}
 	
 	public static WorkStation getWorkStation(String name) {
-		Collection<Group> list = listGroups.values();
+		Collection<Group> list = groupsList.values();
 		for (Group g: list) {
 			if (g.containsWS(name)) {
 				return g.getWs(name);
@@ -201,14 +201,14 @@ public class Cache {
 	}
 	
 	public static Group getGroup(String key) {
-		return listGroups.get(key);
+		return groupsList.get(key);
 	}
 	
 	public static void setFrame(JFrame mainFrame) {
 		frame = mainFrame;
 	}
 	
-	public static class Group  {
+	public static class Group {
 		
 		private String name;
 		private String id;
@@ -249,24 +249,31 @@ public class Cache {
 		public String getId() {
 			return id;
 		}
+		
 		public void setId(String id) {
 			this.id = id;
 		}
+		
 		public String getName() {
 			return name;
 		}
+		
 		public void setName(String name) {
 			this.name = name;
 		}
+		
 		public Boolean getZone() {
 			return zone;
 		}
+		
 		public void setZone(Boolean zone) {
 			this.zone = zone;
 		}
+		
 		public Boolean getVisible() {
 			return visible;
 		}
+		
 		public void setVisible(Boolean visible) {
 			this.visible = visible;
 		}
@@ -303,30 +310,39 @@ public class Cache {
 		public void add(User us) {
 			user.put(us.login,us);
 		}
+		
 		public User getUser(String code) {
 			return user.get(code);
 		}
+		
 		public String getCode() {
 			return code;
 		}
+		
 		public void setCode(String code) {
 			this.code = code;
 		}
+		
 		public String getGid() {
 			return gid;
 		}
+		
 		public void setGid(String gid) {
 			this.gid = gid;
 		}
+		
 		public String getIp() {
 			return ip;
 		}
+		
 		public void setIp(String ip) {
 			this.ip = ip;
 		}
+		
 		public String getName() {
 			return name;
 		}
+		
 		public void setName(String name) {
 			this.name = name;
 		}
@@ -363,39 +379,51 @@ public class Cache {
 		public void setAdmin(Boolean admin) {
 			this.admin = admin;
 		}
+		
 		public String getEmail() {
 			return email;
 		}
+		
 		public void setEmail(String email) {
 			this.email = email;
 		}
+		
 		public String getGid() {
 			return gid;
 		}
+		
 		public void setGid(String gid) {
 			this.gid = gid;
 		}
+		
 		public String getId() {
 			return id;
 		}
+		
 		public void setId(String id) {
 			this.id = id;
 		}
+		
 		public String getLogin() {
 			return login;
 		}
+		
 		public void setLogin(String login) {
 			this.login = login;
 		}
+		
 		public String getName() {
 			return name;
 		}
+		
 		public void setName(String name) {
 			this.name = name;
 		}
+		
 		public Boolean getValidIp() {
 			return validIp;
 		}
+		
 		public void setValidIp(Boolean validIp) {
 			this.validIp = validIp;
 		}
@@ -418,24 +446,24 @@ public class Cache {
 	}
 
 	public static Collection<Group> getList() {
-		return listGroups.values();
+		return groupsList.values();
 	}
 	
-	public static String[] getListKeys() {
-		Set <String>bag = listGroups.keySet();
+	public static String[] getGroupsList() {
+		Set <String>bag = groupsList.keySet();
 		String[] sortedGroupList = (String[])bag.toArray(new String[bag.size()]);
 		Arrays.sort(sortedGroupList);
 		return sortedGroupList;
 	}
 	
-	public static Vector<String> getListKeysWs() {
-		Vector<String> vkeys = new Vector<String>();
-		for (Group g : listGroups.values()) {
+	public static Vector<String> getWorkStationsList() {
+		Vector<String> workstations = new Vector<String>();
+		for (Group g : groupsList.values()) {
 			for (WorkStation ws : g.getWorkStations()) {
-				vkeys.add(ws.getName());
+				workstations.add(ws.getName());
 			}
 		}
-		return vkeys;
+		return workstations;
 	}
 	
 	public static User searchUser (String login) {
@@ -462,48 +490,48 @@ public class Cache {
 		return user;
 	}
 	
-	public static class UserPVenta {
-		private String codepv;
+	public static class UserPOS {
+		
+		private String posCode;
 		private String name;
-		private Boolean validip;
+		private Boolean validIP;
 		
 		public String getCodepv() {
-			return codepv;
+			return posCode;
 		}
 		public Boolean getValidip() {
-			return validip;
+			return validIP;
 		}
 		public String getName() {
 			return name;
 		}
+		
 	}
 	
-	public static ArrayList<UserPVenta> getLisWorksStationsForUser(String code) {
-		ArrayList<UserPVenta> list = new ArrayList<UserPVenta>();
+	public static ArrayList<UserPOS> getWorkStationsListByUser(String code) {
+		ArrayList<UserPOS> list = new ArrayList<UserPOS>();
 		for (Cache.Group grp : Cache.getList()) {
 			for (Cache.WorkStation ws : grp.getWorkStations()) {
 				if (ws.containsUser(code)) {
-					UserPVenta upv = new UserPVenta();
-					upv.codepv = ws.code;
-					upv.name = ws.name;
-					upv.validip= ws.getUser(code).getValidIp();
-					list.add(upv);
+					UserPOS upos = new UserPOS();
+					upos.posCode = ws.code;
+					upos.name    = ws.name;
+					upos.validIP = ws.getUser(code).getValidIp();
+					list.add(upos);
 				}
 			}
 		}
 		return list;
 	}
 
-
 	public static boolean containsUser(String login) {
 		User user = searchUser(login);
 		return user!=null && user.login.equals(login) ? true :false;
 	}
 
-
 	public static void removeWs(String name) {
 		
-		Collection<Group> list = listGroups.values();
+		Collection<Group> list = groupsList.values();
 		for (Group g: list) {
 			for (WorkStation ws : g.getWorkStations()) {
 				if (ws.name.equals(name)) {
@@ -515,7 +543,7 @@ public class Cache {
 	
 	public static void removeUser(String login) {
 		
-		Collection<Group> list = listGroups.values();
+		Collection<Group> list = groupsList.values();
 		for (Group g: list) {
 			for (User user : g.getUsers() ) {
 				if (user.login.equals(login)) {
@@ -525,20 +553,19 @@ public class Cache {
 		}
 	}
 
-
-	public static Vector<String> getListKeysUsers() {
-		Vector<String> vkeys = new Vector<String>();
-		for (Group g : listGroups.values()) {
+	public static Vector<String> getUsersList() {
+		Vector<String> users = new Vector<String>();
+		for (Group g : groupsList.values()) {
 			for (WorkStation ws : g.getWorkStations()) {
 				for (String code : ws.user.keySet()) {
-					vkeys.add(code);
+					users.add(code);
 				}
 				
 			}
 			for (String code : g.users.keySet()) {
-				vkeys.add(code);
+				users.add(code);
 			}
 		}
-		return vkeys;
+		return users;
 	}
 }

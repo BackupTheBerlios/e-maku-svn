@@ -17,7 +17,7 @@ import com.kazak.smi.server.comunications.SocketServer;
 import com.kazak.smi.server.comunications.SocketWriter;
 import com.kazak.smi.server.comunications.SocketServer.SocketInfo;
 import com.kazak.smi.server.database.sql.CloseSQL;
-import com.kazak.smi.server.database.sql.RunQuery;
+import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 import com.kazak.smi.server.misc.LogWriter;
@@ -64,10 +64,10 @@ public class MessageDistributor {
 			ifuFrom = SocketServer.getSocketInfo(from);	
 		}
 		else {
-			RunQuery runQuery = null;
+			QueryRunner runQuery = null;
 		    ResultSet rs = null;
 			try {
-				runQuery = new RunQuery("SEL0026",new String[]{from});
+				runQuery = new QueryRunner("SEL0026",new String[]{from});
 				rs = runQuery.runSELECT();
 				if (rs.next()) {
 					ifuFrom = SocketServer.getInstaceOfSocketInfo();
@@ -158,9 +158,9 @@ public class MessageDistributor {
 			String.valueOf(ConfigFile.getTimeAlifeMessageForClient()),
 			String.valueOf(control),String.valueOf(timeAlife)};
 			
-			RunQuery runQuery = null;
+			QueryRunner runQuery = null;
 			try {
-				runQuery = new RunQuery("INS0003",argsSql);
+				runQuery = new QueryRunner("INS0003",argsSql);
 				runQuery.setAutoCommit(false);
 				runQuery.runSQL();
 				runQuery.commit();

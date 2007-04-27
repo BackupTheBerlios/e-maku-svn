@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import org.jdom.Element;
 
 import com.kazak.smi.server.database.sql.CloseSQL;
-import com.kazak.smi.server.database.sql.RunQuery;
+import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 import com.kazak.smi.server.misc.LogWriter;
@@ -62,11 +62,11 @@ public class LoginUser {
 	    ip = data.getChild("ip").getValue();
 	    boolean validate = data.getChild("validate")!=null ? true : false ;
 	    LogWriter.write("Inicio de autenticación para el usuario {"+login+"} con la clave {"+password+"}");
-	    RunQuery runQuery = null;
+	    QueryRunner runQuery = null;
 	    ResultSet rs = null;
 	    int count = 0;
 		try {
-			runQuery = new RunQuery("SEL0023",new String[]{login,password});
+			runQuery = new QueryRunner("SEL0023",new String[]{login,password});
 			rs = runQuery.runSELECT();
 		    count = rs.next() ? rs.getInt(1) : 0;
 		} catch (SQLNotFoundException e) {
@@ -82,7 +82,7 @@ public class LoginUser {
 	    if (count==1) {
     		
 	    	try {
-				runQuery = new RunQuery("SEL0025",new String[]{login,login});
+				runQuery = new QueryRunner("SEL0025",new String[]{login,login});
 				rs = runQuery.runSELECT();
 				if (rs.next()) {
 					uid 	= rs.getInt(1);

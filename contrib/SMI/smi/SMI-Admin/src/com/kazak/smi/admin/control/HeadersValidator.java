@@ -2,11 +2,14 @@ package com.kazak.smi.admin.control;
 
 import java.awt.Cursor;
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
 import com.kazak.smi.admin.gui.LoginWindow;
 import com.kazak.smi.admin.gui.MainWindow;
@@ -51,6 +54,14 @@ public class HeadersValidator implements ArrivePackageListener {
         else if(nombre.equals("ANSWER")) {
             String id = root.getChildText("id");
             QuerySender.putSpoolQuery(id,doc);
+            /*XMLOutputter xmlOutputter = new XMLOutputter();
+            xmlOutputter.setFormat(Format.getPrettyFormat());
+            try {
+                xmlOutputter.output(doc,System.out);
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }*/
         }
         else if(nombre.equals("ERROR")) {
         	Sync.successssyncerror = true;
@@ -73,6 +84,10 @@ public class HeadersValidator implements ArrivePackageListener {
         	Sync.successssyncerror = true;
             String message = root.getChildText("message");
             JOptionPane.showMessageDialog(Sync.getDialog(), message);
+        }
+        else if(nombre.equals("USERLIST")) {
+            String id = root.getChildText("id");
+            QuerySender.putSpoolQuery(id,doc);
         }
         else if(nombre.equals("ERROR")) {
 			displayError();

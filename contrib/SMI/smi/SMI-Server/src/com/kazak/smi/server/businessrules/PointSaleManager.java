@@ -11,21 +11,21 @@ import org.jdom.Document;
 import org.jdom.Element;
 
 import com.kazak.smi.server.comunications.SocketWriter;
-import com.kazak.smi.server.database.sql.RunQuery;
+import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 
 public class PointSaleManager {
 
 	private Iterator itArgs;
-	private ArrayList<RunQuery> querys;
+	private ArrayList<QueryRunner> querys;
 	
 	public PointSaleManager(SocketChannel sock, Element args, Element packet, String id) {
 		this.itArgs = args.getChildren("arg").iterator();
 		String type = args.getChildText("action");
 		boolean ret = false;
 		String message = "";
-		querys = new ArrayList<RunQuery>();
+		querys = new ArrayList<QueryRunner>();
 		try {
 			if ("add".equals(type)) {
 				ret = processPointSale(packet);
@@ -47,7 +47,7 @@ public class PointSaleManager {
 			message = e.getMessage();
 		}
 		if (ret) {
-			for (RunQuery rq :querys) {
+			for (QueryRunner rq :querys) {
 				rq.commit();
 			}
 			Element reload = new Element("RELOADTREE");
@@ -57,10 +57,10 @@ public class PointSaleManager {
 				e.printStackTrace();
 			}
 			message = "Los datos fueron almacenados satisfactoriamente";
-			RunTransaction.successMessage(sock,id,message);
+			TransactionRunner.successMessage(sock,id,message);
 		}
 		else {
-			for (RunQuery rq :querys) {
+			for (QueryRunner rq :querys) {
 				rq.rollback();
 			}
 			if ("remove".equals(type)) {
@@ -68,7 +68,7 @@ public class PointSaleManager {
 					"El grupo debe estar vacio\n" +
 					"para poder ser eliminado\n";
 			}
-			RunTransaction.
+			TransactionRunner.
 			errorMessage
 			(sock,id,"No se pudo procesar la transacción, causa:\n" + message);
 		}
@@ -81,7 +81,7 @@ public class PointSaleManager {
 			Element e = (Element)it.next();
 			//if (e.getChildren().size() > 0 ) {
 				String sqlCode = ((Element)itArgs.next()).getText();
-				RunQuery rq = new RunQuery(sqlCode,packArgs(e));
+				QueryRunner rq = new QueryRunner(sqlCode,packArgs(e));
 				querys.add(rq);
 				rq.setAutoCommit(false);
 				rq.runSQL();

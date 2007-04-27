@@ -39,7 +39,7 @@ import com.kazak.smi.server.misc.ServerConst;
  * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  */
-public class RunTransaction {
+public class TransactionRunner {
 
     private String transaction_code;
     private String id_transaction;
@@ -50,7 +50,7 @@ public class RunTransaction {
     
     private SocketChannel sock;
     
-    public RunTransaction(SocketChannel sock,Document transaction) {
+    public TransactionRunner(SocketChannel sock,Document transaction) {
 
         this.sock=sock;
         Element elm = transaction.getRootElement();

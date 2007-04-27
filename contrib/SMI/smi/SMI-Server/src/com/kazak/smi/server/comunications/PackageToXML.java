@@ -44,7 +44,6 @@ public class PackageToXML extends Thread {
     private SAXBuilder builder;
     
     private static Document doc;
-
     private SocketChannel channel;
 
     public PackageToXML(SocketChannel channel) {
@@ -119,6 +118,7 @@ public class PackageToXML extends Thread {
                 if (numRead == -1) {
                     bufferOut.close();
                     channel.close();
+                    SocketServer.removeSock(channel);
                     return;
                 }
             }

@@ -15,14 +15,14 @@ import org.jdom.Element;
 
 import com.kazak.smi.server.comunications.SocketWriter;
 import com.kazak.smi.server.database.sql.CloseSQL;
-import com.kazak.smi.server.database.sql.RunQuery;
+import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 
 public class UserManager {
 
 	private Iterator itArgs;
-	private ArrayList<RunQuery> querys;
+	private ArrayList<QueryRunner> querys;
 	private String[] arrUserInfo;
 	private Vector<String[]> arrWs = new Vector<String[]>();
 	//private String oldLogin;
@@ -32,7 +32,7 @@ public class UserManager {
 		String type = args.getChildText("action");
 		boolean ret = false;
 		String message = "";
-		querys = new ArrayList<RunQuery>();
+		querys = new ArrayList<QueryRunner>();
 		try {
 			if ("add".equals(type)) {
 				ret = addUser(packet);
@@ -54,7 +54,7 @@ public class UserManager {
 			message = e.getMessage();
 		}
 		if (ret) {
-			for (RunQuery rq :querys) {
+			for (QueryRunner rq :querys) {
 				rq.commit();
 			}
 						
@@ -65,13 +65,13 @@ public class UserManager {
 				e.printStackTrace();
 			}
 			message = "Los datos fueron almacenados satisfactoriamente";
-			RunTransaction.successMessage(sock,id,message);
+			TransactionRunner.successMessage(sock,id,message);
 		}
 		else {
-			for (RunQuery rq :querys) {
+			for (QueryRunner rq :querys) {
 				rq.rollback();
 			}
-			RunTransaction.
+			TransactionRunner.
 			errorMessage
 			(sock,id,"No se pudo insertar el usuario causa: " + message);
 		}
@@ -93,7 +93,7 @@ public class UserManager {
 						Element sp = (Element)itspacks.next();
 						String[] sqlArgs = packArgs(sp);
 						arrWs.add(sqlArgs);
-						RunQuery rq = new RunQuery(sqlCode,sqlArgs);
+						QueryRunner rq = new QueryRunner(sqlCode,sqlArgs);
 						querys.add(rq);
 						rq.setAutoCommit(false);
 						rq.runSQL();
@@ -102,7 +102,7 @@ public class UserManager {
 				else {
 					arrUserInfo = packArgs(e);
 					String sqlCode = ((Element)itArgs.next()).getText();
-					RunQuery rq = new RunQuery(sqlCode,arrUserInfo);
+					QueryRunner rq = new QueryRunner(sqlCode,arrUserInfo);
 					querys.add(rq);
 					rq.setAutoCommit(false);
 					rq.runSQL();
@@ -119,7 +119,7 @@ public class UserManager {
 		Element e = (Element)it.next();
 		arrUserInfo = packArgs(e);
 		String sqlCode = ((Element)itArgs.next()).getText();
-		RunQuery rq = new RunQuery(sqlCode,arrUserInfo);
+		QueryRunner rq = new QueryRunner(sqlCode,arrUserInfo);
 		querys.add(rq);
 		rq.setAutoCommit(false);
 		rq.runSQL();
@@ -127,7 +127,7 @@ public class UserManager {
 		e = (Element)it.next();
 		String[] args = packArgs(e);
 		sqlCode = ((Element)itArgs.next()).getText();
-		rq = new RunQuery(sqlCode,args);
+		rq = new QueryRunner(sqlCode,args);
 		querys.add(rq);
 		rq.setAutoCommit(false);
 		rq.runSQL();
@@ -142,7 +142,7 @@ public class UserManager {
 				Element sp = (Element)itspacks.next();
 				String[] sqlArgs = packArgs(sp);
 				arrWs.add(sqlArgs);
-				rq = new RunQuery(sqlCode,sqlArgs);
+				rq = new QueryRunner(sqlCode,sqlArgs);
 				querys.add(rq);
 				rq.setAutoCommit(false);
 				rq.runSQL();
@@ -158,7 +158,7 @@ public class UserManager {
 		Element e = (Element)it.next();
 		String[] args = packArgs(e);
 		String sqlCode = ((Element)itArgs.next()).getText();
-		RunQuery rq = new RunQuery(sqlCode,args);
+		QueryRunner rq = new QueryRunner(sqlCode,args);
 		querys.add(rq);
 		rq.setAutoCommit(false);
 		rq.runSQL();
@@ -167,7 +167,7 @@ public class UserManager {
 		e = (Element)it.next();
 		args = packArgs(e);
 		sqlCode = ((Element)itArgs.next()).getText();
-		rq = new RunQuery(sqlCode,args);
+		rq = new QueryRunner(sqlCode,args);
 		querys.add(rq);
 		rq.setAutoCommit(false);
 		rq.runSQL();
@@ -193,10 +193,10 @@ public class UserManager {
 	}
 	
 	private String oldPassword(String login){
-		RunQuery runQuery = null;
+		QueryRunner runQuery = null;
 		ResultSet rs = null;
 		try {
-			runQuery = new RunQuery("SEL0029",new String[]{login});
+			runQuery = new QueryRunner("SEL0029",new String[]{login});
 			rs = runQuery.runSELECT();
 		    if (rs.next()) {
 		    	return rs.getString(1);

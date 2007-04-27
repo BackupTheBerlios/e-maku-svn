@@ -25,7 +25,7 @@ import com.kazak.smi.server.misc.LogWriter;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
 
-public class InstruccionesSQL {
+public class SQLInstructions {
     
     /**
      * Este metodo retorna una consulta formateada segun los argumentos que se le
@@ -37,17 +37,17 @@ public class InstruccionesSQL {
      * entonces se procede a reemplazar los <code>?</code> por los
      * argumentos recibidos.
      *
-     * @param codigo codigo de la sentencia SQL, ej. INS0010
+     * @param code codigo de la sentencia SQL, ej. INS0010
      * @param args arreglo de String's que guarda los argumentos para la consulta
      * @return retorna la consulta formateada en un objeto String
      */
     
-    public static String getSentencia(String codigo, String[] args)
+    public static String getSentence(String code, String[] args)
     throws SQLNotFoundException, SQLBadArgumentsException {
     	
-        String sentencia = "";
+        String sentence = "";
         args = addSlashes(args);
-    	String sql = CacheEnlace.getSentenciaSQL("K-"+codigo);
+    	String sql = CacheLoader.getSQLSentence("K-"+code);
     	if (sql!=null) {
 	        StringTokenizer STsql = new StringTokenizer(sql,"?");
 	        
@@ -59,28 +59,28 @@ public class InstruccionesSQL {
                         nulo=false;
                      } 
 	            	if (!args[i].equals("NULL")) {
-                        sentencia += salto + args[ i ];
+                        sentence += salto + args[ i ];
 	                }
 	                else {
-                        sentencia+=salto.substring(0,salto.length()-1) + "NULL";
+                        sentence+=salto.substring(0,salto.length()-1) + "NULL";
 	                    nulo=true;
 	                }
 		        }
-            	sentencia+=nullToken(STsql.nextToken(),nulo);
+            	sentence+=nullToken(STsql.nextToken(),nulo);
             	
-		        return sentencia;
+		        return sentence;
 	        }
 	        else {
 	            LogWriter.write("numero de tokens: "+(STsql.countTokens()-1)+" numero de args: "+args.length);
 	            for (int i=0;i<args.length;i++) {
 	            	LogWriter.write("argumento "+i+": "+args[i]);
 	            }
-	            throw new SQLBadArgumentsException(codigo);
+	            throw new SQLBadArgumentsException(code);
 	        }
 	        
     	}
     	else
-    	    throw new SQLNotFoundException(codigo);
+    	    throw new SQLNotFoundException(code);
     	
     	
     	
@@ -105,15 +105,15 @@ public class InstruccionesSQL {
     /**
      * Este metodo retorna una consulta que no tiene argumentos.
      *
-     * @param codigo codigo de la sentencia SQL, ej. SEL0010
+     * @param code codigo de la sentencia SQL, ej. SEL0010
      * @return retorna una sentencia sql en un objeto String
      */
     
-    public static String getSentencia(String codigo) throws SQLNotFoundException {
-    	String Query = CacheEnlace.getSentenciaSQL("K-"+codigo);
+    public static String getSentence(String code) throws SQLNotFoundException {
+    	String Query = CacheLoader.getSQLSentence("K-"+code);
     	if (Query!=null)
     		return Query;
     	else
-    		throw new SQLNotFoundException(codigo);
+    		throw new SQLNotFoundException(code);
     }
 }
