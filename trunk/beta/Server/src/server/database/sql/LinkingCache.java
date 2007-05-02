@@ -103,7 +103,7 @@ public class LinkingCache {
                  */
                 
                          	  
-                rs = st.executeQuery("SELECT codigo,sentencia FROM "+
+                rs = st.executeQuery("SELECT trim(codigo) as codigo,sentencia FROM "+
                 "sentencia_sql ORDER BY codigo desc");
                 /*
                  * Se almacena la información en la hashtable Hinstrucciones 

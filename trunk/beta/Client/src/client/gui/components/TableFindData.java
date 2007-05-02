@@ -50,7 +50,6 @@ import common.gui.components.AnswerListener;
 import common.gui.components.DataErrorException;
 import common.gui.components.RecordEvent;
 import common.gui.components.RecordListener;
-import common.gui.components.TableSorter;
 import common.gui.components.VoidPackageException;
 import common.gui.forms.EndEventGenerator;
 import common.gui.forms.ExternalValueChangeEvent;
@@ -915,23 +914,20 @@ public class TableFindData extends JPanel implements AnswerListener,
 		}
 	}
 
-	public void arriveRecordEvent(RecordEvent e) {
-		Document doc = new Document();
-		Element element = e.getElement();
-		if (element.getChildren().size() > 0) {
-			doc.setRootElement(element);
-			TMFDtabla.setQuery(doc, true);
+	public void arriveRecordEvent(final RecordEvent e) {
+		
+		if (e.getElement().getChildren().size() > 0) {
 			Thread t = new Thread() {
 				public void run() {
+					Document doc = new Document();
+					Element element = e.getElement();
+					doc.setRootElement(element);
+					TMFDtabla.setQuery(doc, true);
 					JTtabla.scrollRectToVisible(JTtabla.getCellRect(TMFDtabla.getCurrentIndex(),0,false));
 					JTtabla.updateUI();
-					
 				}
 			};
 			SwingUtilities.invokeLater(t);
-			e = null;
-			element = null;
-			doc = null;
 		}
 	}
 

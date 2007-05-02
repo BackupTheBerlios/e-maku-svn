@@ -280,11 +280,9 @@ KeyListener, FocusListener, AnswerListener {
 		}
 
 		RecordEvent event = new RecordEvent(this, element);
-
-		Vector lista;
-		lista = (Vector) recordListener.clone();
-		for (int i = 0; i < lista.size(); i++) {
-			RecordListener listener = (RecordListener) lista.elementAt(i);
+		int max = recordListener.size();
+		for (int i = 0; i < max; i++) {
+			RecordListener listener = recordListener.get(i);
 			listener.arriveRecordEvent(event);
 		}
 	}

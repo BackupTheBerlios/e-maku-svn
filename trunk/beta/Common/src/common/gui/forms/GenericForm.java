@@ -45,6 +45,7 @@ import common.comunications.DateSender;
 import common.comunications.SocketConnector;
 import common.comunications.SocketWriter;
 import common.comunications.UpdateCodeSender;
+import common.gui.components.Couplable;
 import common.gui.components.GenericData;
 import common.gui.components.VoidPackageException;
 import common.gui.components.XMLTabbedPane;
@@ -1614,6 +1615,20 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
         }
 	}
 
+	public void clearAllComps() {
+		if (child) {
+        	GFforma.clearAllComps();
+        }
+        else {
+        	for (Componentes c : Hcomps.values()) {
+        		Object o = c.getObj();
+        		if (o instanceof Couplable) {
+        			((Couplable)o).clean();
+        		}
+        	}
+        }
+	}
+	
 	public void internalFrameClosing(InternalFrameEvent e) {
 		// TODO Auto-generated method stub
 		
