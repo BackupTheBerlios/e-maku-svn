@@ -159,19 +159,19 @@ public class ConfigFile {
 
         while (i.hasNext()) {
             Element records = (Element)i.next();
-            VConnectionsPool.addElement(loadBD(records.getChildren()));
+            VConnectionsPool.addElement(loadDB(records.getChildren()));
         }
     }
     
     /**
      * Metodo encargado de cargar las propiedades de las conexiones de 
      * las bases de datos
-     * @param LBD Lista de datos xml que contienen los parametros de la conexion
+     * @param LDB Lista de datos xml que contienen los parametros de la conexion
      * @return Valor tipo Conexiones.
      */
     
-    private static Connections loadBD(java.util.List LBD) {
-        Iterator i = LBD.iterator();
+    private static Connections loadDB(java.util.List LDB) {
+        Iterator i = LDB.iterator();
         Connections connection = new Connections();
         
         while (i.hasNext()) {

@@ -34,7 +34,7 @@ public class MenuBar extends JMenuBar {
 		try {
 			this.userLevel = userLevel; 
 			SAXBuilder builder = new SAXBuilder(false);
-			URL url = this.getClass().getResource("/resources/menu.xml");
+			URL url = this.getClass().getResource("/menu.xml");
 			Document doc = builder.build(url);
 			Element raiz = doc.getRootElement();
 			String string = "JMenu";

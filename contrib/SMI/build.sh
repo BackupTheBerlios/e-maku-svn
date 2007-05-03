@@ -91,6 +91,7 @@ compile(){
    echo "* Creando jars para SMI-Admin..."
    cd ../../../ 
    cd smi/SMI-Admin/bin
+   cp ../src/resources/menu.xml .
    jar -cf smiadmin.jar *
    mv smiadmin.jar ../dist
    cd ../dist

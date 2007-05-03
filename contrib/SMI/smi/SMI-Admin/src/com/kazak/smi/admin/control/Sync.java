@@ -45,7 +45,7 @@ public class Sync {
 			dialog.setLocationByPlatform(true);
 			dialog.setLocationRelativeTo(null);
 			panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-			label = new JLabel("     Sincronizando.....");
+			label = new JLabel("     Sincronizando...");
 			panel.add(label);
 			dialog.add(panel,BorderLayout.CENTER);
 			Element transaction = new Element("Synchronization");
@@ -86,7 +86,7 @@ public class Sync {
 									"<b>" +
 									"<p aling=center>" +
 									"Error Sincronizando la base de datos<br>" +
-									"Tiempo de espera agotado.."+
+									"Tiempo de espera agotado."+
 									"<p></b></html>",
 									"Sincronización",
 									JOptionPane.YES_NO_OPTION);

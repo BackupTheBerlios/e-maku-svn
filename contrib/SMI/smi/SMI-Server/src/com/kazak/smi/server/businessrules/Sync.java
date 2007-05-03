@@ -182,6 +182,11 @@ public class Sync {
 		try {
 			LogWriter.write("Cargando datos actuales de la base de datos Oracle");
 			cnOracle = ConfigFile.getConnection(oracleDB);
+						
+			if (cnOracle == null) {
+				LogWriter.write("La conexion a la base de datos es nula");
+				return false;
+			}
 			
 			st = cnOracle.createStatement();
 			LogWriter.write("SENTENCIA: " + oracleSQL);
@@ -282,9 +287,12 @@ public class Sync {
 		e.printStackTrace();
 		
 		try {
-			if (rs!=null) rs.close();
+			if (rs!=null) {
+				rs.close();
+			}
 			st.close();
 		} catch (SQLException e1) {
+			LogWriter.write("Error cerrando conexion a base de datos " + db);
 			e1.printStackTrace();
 		}		
 	}	

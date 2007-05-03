@@ -60,9 +60,8 @@ public class ConnectionsPool {
 								ConfigFile.getUser(i),
 								ConfigFile.getPassword(i)));
             	} else {
-                    LogWriter.write(
-                    		Language.getWord("ERR_LOADING_DB") +
-                    		ConfigFile.getDBName(i));
+                    LogWriter.write(Language.getWord("ERR_LOADING_DB") +
+                    		        ConfigFile.getDBName(i));
             	}
             } 
             catch (ClassNotFoundException CNFEe) {
