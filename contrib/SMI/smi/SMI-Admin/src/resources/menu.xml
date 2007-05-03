@@ -45,7 +45,6 @@
 			<Mnemonic>t</Mnemonic>
 			<Text>Listar en Linea</Text>
 			<Clase>com.kazak.smi.admin.gui.UsersList</Clase>
-			<Metodo>list</Metodo>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>		
 		<JMenuItem>

@@ -81,6 +81,7 @@ compile(){
    echo
    echo "* Creando jars para SMI-Server..."
    cd smi/SMI-Server/bin
+   cp ../src/*.xml .
    jar -cf smiserver.jar *
    mv smiserver.jar ../dist/libs
    cd ../dist

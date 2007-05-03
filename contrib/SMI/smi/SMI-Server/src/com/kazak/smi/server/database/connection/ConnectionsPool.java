@@ -53,13 +53,16 @@ public class ConnectionsPool {
                 		ConfigFile.getDBName(i));
                 
                 Class.forName(ConfigFile.getDriver(i));
-                
                 Hpoolbds.put(
                 		ConfigFile.getDBName(i),
 						DriverManager.getConnection(
 								ConfigFile.getUrl(i),
 								ConfigFile.getUser(i),
 								ConfigFile.getPassword(i)));
+            	} else {
+                    LogWriter.write(
+                    		Language.getWord("ERR_LOADING_DB") +
+                    		ConfigFile.getDBName(i));
             	}
             } 
             catch (ClassNotFoundException CNFEe) {

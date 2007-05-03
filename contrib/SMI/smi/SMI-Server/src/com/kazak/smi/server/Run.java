@@ -42,7 +42,7 @@ public class Run {
 						new SocketServer();
 					} catch (IOException IOEe) {
 			            LogWriter.write(
-			            		Language.getWord("UNLOADING_ST") + ", "+
+			            		Language.getWord("UNLOADING_ST") + " " +
 			            		IOEe.getMessage());
 			            killServer();
 			        }

@@ -16,7 +16,7 @@ import com.kazak.smi.server.comunications.ResultSetToXML;
 import com.kazak.smi.server.comunications.SocketServer;
 import com.kazak.smi.server.comunications.SocketWriter;
 import com.kazak.smi.server.misc.LogWriter;
-import com.kazak.smi.server.misc.ServerConst;
+//import com.kazak.smi.server.misc.ServerConst;
 import com.kazak.smi.server.misc.settings.ConfigFile;
 
 /**
@@ -133,11 +133,9 @@ public class HeaderValidator {
             	String id = root.getChildText("id");
             	Document list  = new Document();
             	if ("LIST".equals(id)) {
-            		System.out.println("lista");
             		list = SocketServer.getUsersOnLine(root.getText());
             	}
             	else if("TOTAL".equals(id)) {
-            		System.out.println("total");
             		list = SocketServer.getUsersTotal();
             	}
             	try {

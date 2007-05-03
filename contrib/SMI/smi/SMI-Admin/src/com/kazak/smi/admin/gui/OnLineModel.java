@@ -103,7 +103,6 @@ public class OnLineModel extends AbstractTableModel {
 		        List Lrows = doc.getRootElement().getChildren("row");
 		        Iterator Irows = Lrows.iterator();
 		        int max = Lrows.size();
-		        System.out.println("Lrows "+Lrows);
 		        if (max>0) {
 		            /*
 		             * Se limpia la tabla antes de desplegar la consulta nueva

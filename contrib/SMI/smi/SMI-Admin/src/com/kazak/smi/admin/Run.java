@@ -36,7 +36,6 @@ public class Run {
 				"",
 				JOptionPane.YES_NO_OPTION);
 		if (op==JOptionPane.YES_OPTION) {
-			System.out.println("Saliendo de la aplicacion");
 			System.exit(0);			
 		}
 	}

@@ -61,7 +61,7 @@ public class LoginUser {
 	    String password = data.getChild("password").getValue();
 	    ip = data.getChild("ip").getValue();
 	    boolean validate = data.getChild("validate")!=null ? true : false ;
-	    LogWriter.write("Inicio de autenticación para el usuario {"+login+"} con la clave {"+password+"}");
+	    LogWriter.write("INFO: Inicio de autenticación para el usuario {"+login+"} con la clave {"+password+"}");
 	    QueryRunner runQuery = null;
 	    ResultSet rs = null;
 	    int count = 0;
@@ -96,24 +96,25 @@ public class LoginUser {
 					psName	= rs.getString(9);
 					String ipPv = rs.getString(11);
 					gName	= rs.getString(12);
+					
 					if ( validIp && (!ip.equals(ipPv))) {
 						LogWriter.write("La ip {"+ip+"} no esta autorizada para el usuario " +login);
 						return false;
 					}
 					if (validate) {
 		    			if (admin) {
-		    				LogWriter.write("Administrador Autenticado {"+login+"} desde la ip "+ ip);
+		    				LogWriter.write("INFO: Usuario Administrador autenticado {"+login+"} desde la ip "+ ip);
 		    				userLevel = 1;
 				    		return true;
 		    			}
 		    			else if (audit) {
-		    				LogWriter.write("Auditor Autenticado {"+login+"} desde la ip "+ ip);
+		    				LogWriter.write("INFO: Auditor Autenticado {"+login+"} desde la ip "+ ip);
 			    			userLevel = 2;
 				    		return true;
 		    			}
 					}
 					else {
-		    			LogWriter.write("Colocador Autenticado {"+login+"} desde la ip "+ ip);
+		    			LogWriter.write("INFO: Colocador Autenticado {"+login+"} desde la ip "+ ip);
 		    			userLevel = 3;
 			    		return true;
 					}
@@ -131,7 +132,7 @@ public class LoginUser {
 			
 	    }
 	    LogWriter.write(
-	    		"Acceso denegado a  {"+login+"} desde la ip "+ ip + " " +
+	    		"INFO: Acceso denegado a  {"+login+"} desde la ip "+ ip + " " +
 	    		"ingresando como " + (validate ? "Administrador/Auditor" :"Colocador"));
 	    return false;
     }

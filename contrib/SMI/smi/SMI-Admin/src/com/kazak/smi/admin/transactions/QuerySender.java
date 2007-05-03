@@ -81,7 +81,6 @@ public class QuerySender {
     public static Document getResultSetST(String id) throws QuerySenderException {
     	
         int i=0;
-        System.out.println("Verificando contenido ...");
         while (!HspoolTransactions.containsKey(id)) {
             try {
                 Thread.sleep(100);

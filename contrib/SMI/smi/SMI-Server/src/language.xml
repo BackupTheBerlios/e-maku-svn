@@ -39,14 +39,19 @@
     </sentence>
     <sentence>
         <key>UNLOADING_ST</key>
-        <es_CO>INFO: Finalizando el servidor de transacciones...</es_CO>
-        <en_US>INFO: Shutting down the transactions server...</en_US>
+        <es_CO>ERROR: Finalizando el servidor de transacciones. Causa:</es_CO>
+        <en_US>ERROR: Shutting down the transactions server. Reason:</en_US>
     </sentence>
     <sentence>
         <key>LOADING_DB</key>
         <es_CO>INFO: Cargando base de datos...</es_CO>
         <en_US>INFO: Loading database...</en_US>
     </sentence>
+    <sentence>
+        <key>ERR_LOADING_DB</key>
+        <es_CO>ERROR: No se pudo cargar base de datos -> </es_CO>
+        <en_US>ERROR: Can not load database -> </en_US>
+    </sentence>    
     <sentence>
         <key>LOADING_ST</key>
         <es_CO>INFO: Cargando sentencias SQL...</es_CO>
