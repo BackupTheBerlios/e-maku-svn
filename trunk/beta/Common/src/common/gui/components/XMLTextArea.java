@@ -72,7 +72,8 @@ public class XMLTextArea extends JTextArea implements Couplable, FocusListener {
         
         Element parameters = doc.getRootElement();
         Iterator i = parameters.getChildren().iterator();
-
+        this.setLineWrap(true);
+        this.setWrapStyleWord(true);
         while (i.hasNext()) {
             Element subargs = (Element) i.next();
             String value = subargs.getValue();

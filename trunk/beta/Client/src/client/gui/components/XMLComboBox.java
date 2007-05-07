@@ -114,7 +114,7 @@ public class XMLComboBox extends ComboBoxFiller {
     	panel.add(jpCombo,BorderLayout.CENTER); 
     	
     	String text = Language.getWord(getLabelName());
-    	JLlabel = new JLabel(!text.equals("")?text:getLabelName()) {
+    	JLlabel = new JLabel(text) {
 			private static final long serialVersionUID = 1326711205695035680L;
 			public void paintComponent(Graphics g) {
     	        Graphics2D g2 = (Graphics2D)g;
