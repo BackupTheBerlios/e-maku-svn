@@ -15,7 +15,7 @@ public class GUIFactory {
 			String command,
 			String icon ,
 			int alignment) {
-		URL url = this.getClass().getResource("/resources/"+icon);
+		URL url = this.getClass().getResource("/icons/"+icon);
 		JButton button = createButton(name, mnemonic, command);
 		if (url!=null) {
 			ImageIcon imageIcon = new ImageIcon(url);
@@ -27,7 +27,7 @@ public class GUIFactory {
 	}
 	
 	public JButton createButton(String icon) {
-		URL url = this.getClass().getResource("/resources/"+icon);
+		URL url = this.getClass().getResource("/icons/"+icon);
 		ImageIcon imageIcon = new ImageIcon(url);
 		JButton button = new JButton(imageIcon);
 		return button;
