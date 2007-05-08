@@ -119,18 +119,19 @@ packaging_lib(){
 
 packaging_server(){
    echo "* Creando jars para SMI-Server..."
-   cp -v smi/SMI-Lib/dist/smilib.jar smi/SMI-Server/dist/libs
+   cp -v smi/SMI-Lib/dist/smilib.jar smi/SMI-Server/smiserver/libs
    cd smi/SMI-Server/bin
    cp ../src/*.xml .
    jar -cf smiserver.jar *
-   mv smiserver.jar ../dist/libs
-   cd ../dist
-   #find . | grep ".svn" > EXCLUDE 
-   tar cfz smiserver.tar.gz *
-   #gzip smiserver.tar
-   #rm EXCLUDE
-   mv smiserver.tar.gz  ../../../dist/Servidor
-   cd ../../../
+   mv smiserver.jar ../smiserver/libs
+   cd ..
+   find ./smiserver | grep ".svn"
+   find ./smiserver | grep ".svn" > EXCLUDE 
+   tar cfX smiserver.tar EXCLUDE smiserver
+   gzip smiserver.tar
+   #rm /tmp/EXCLUDE
+   mv smiserver.tar.gz  ../../dist/Servidor
+   cd ../../
 }
 
 packaging_admin(){
@@ -190,6 +191,12 @@ case "$1" in
              else
                case "$2" in
                  server)
+                        clean_lib
+                        echo
+                        compile_lib
+                        echo
+			packaging_lib
+                        echo
                         clean_server
                         echo
                         compile_server
@@ -197,6 +204,12 @@ case "$1" in
                         packaging_server
                         ;;
                  client)
+                        clean_lib
+                        echo
+                        compile_lib
+                        echo
+                        packaging_lib
+                        echo
                         clean_client
                         echo
                         compile_client
@@ -204,6 +217,12 @@ case "$1" in
                         packaging_client
                         ;;
                  admin)
+                        clean_lib
+                        echo
+                        compile_lib
+                        echo
+                        packaging_lib
+                        echo
                         clean_admin
                         echo
                         compile_admin
