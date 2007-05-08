@@ -1,22 +1,45 @@
 #!/bin/bash
 
-clean() {
+ANT_FLAG="-q"
+
+clean_lib() {
    echo
-   echo "* Eliminando archivos de compilacion y archivos temporales..."
-   echo
-   rm -rvf smi/SMI-Server/log/*
+   echo "* Eliminando archivos de compilacion en Lib..."
    cd ./smi/SMI-Lib/
-   ant clean
+   ant $ANT_FLAG clean
    cd -
+}
+
+clean_server() {
+   echo
+   echo "* Eliminando archivos de compilacion en Servidor..."
+   rm -rvf smi/SMI-Server/log/*
    cd ./smi/SMI-Server/
-   ant clean
+   ant $ANT_FLAG clean
    cd -
+}
+
+clean_client() {
+   echo
+   echo "* Eliminando archivos de compilacion en Cliente..."
    cd ./smi/SMI-Client/
-   ant clean
+   ant $ANT_FLAG clean
    cd -
+}
+
+clean_admin() {
+   echo
+   echo "* Eliminando archivos de compilacion en Admin..."
    cd ./smi/SMI-Admin/
-   ant clean
+   ant $ANT_FLAG clean
    cd -
+}
+
+clean_all() {
+   clean_lib
+   clean_server
+   clean_client
+   clean_admin
    echo
    echo "* Hecho."
    echo
@@ -33,63 +56,78 @@ help(){
    echo
 }
 
-compile(){
-   echo "* Compilando..."
-   echo
-
+compile_lib(){
    echo "* Compilando fuentes SMI-Lib..."
    echo
    cd ./smi/SMI-Lib/
-   ant build
+   ant $ANT_FLAG build
    cd -
+}
 
-   echo
+compile_server(){
    echo "* Compilando fuentes SMI-Server..."
    echo
    cd ./smi/SMI-Server/
-   ant build
+   ant $ANT_FLAG build
    cd -
+}
 
-   echo
+compile_client() {
    echo "* Compilando fuentes SMI-Client..."
    echo
    cd ./smi/SMI-Client/
-   ant build
+   ant $ANT_FLAG build
    cd -
+}
 
-   echo
+compile_admin() {
    echo "* Compilando fuentes SMI-Admin..."
    echo
    cd ./smi/SMI-Admin/
-   ant build
+   ant $ANT_FLAG build
    cd -
-   echo
-   echo "* Empaquetando..."
+}
 
+compile_all(){
+   echo "* Compilando..."
    echo
+   compile_lib
+   echo
+   compile_server
+   echo
+   compile_client
+   echo
+   compile_admin
+}
+
+packaging_lib(){
    echo "* Creando jars para SMI-Lib..."
    echo
    cd smi/SMI-Lib/bin
    jar -cf smilib.jar *
    cd -
    mv -v smi/SMI-Lib/bin/smilib.jar smi/SMI-Lib/dist/
+}
 
-   cp -v smi/SMI-Lib/dist/smilib.jar smi/SMI-Client/dist/
-   cp -v smi/SMI-Lib/dist/smilib.jar smi/SMI-Admin/dist/
-   cp -v smi/SMI-Lib/dist/smilib.jar smi/SMI-Server/dist/libs
-
-   echo
+packaging_server(){
    echo "* Creando jars para SMI-Server..."
+   cp -v smi/SMI-Lib/dist/smilib.jar smi/SMI-Server/dist/libs
    cd smi/SMI-Server/bin
    cp ../src/*.xml .
    jar -cf smiserver.jar *
    mv smiserver.jar ../dist/libs
    cd ../dist
+   #find . | grep ".svn" > EXCLUDE 
    tar cfz smiserver.tar.gz *
+   #gzip smiserver.tar
+   #rm EXCLUDE
    mv smiserver.tar.gz  ../../../dist/Servidor
+   cd ../../../
+}
 
+packaging_admin(){
    echo "* Creando jars para SMI-Admin..."
-   cd ../../../ 
+   cp -v smi/SMI-Lib/dist/smilib.jar smi/SMI-Admin/dist/
    cd smi/SMI-Admin/bin
    cp ../src/resources/menu.xml .
    jar -cf smiadmin.jar *
@@ -97,33 +135,75 @@ compile(){
    cd ../dist
    tar cfz smiadmin.tar.gz *
    mv smiadmin.tar.gz ../../../dist/Administrador
+   cd ../../../
+}
 
+packaging_client(){
    echo "* Creando jars para SMI-Client..."
-
-   cd ../../../ 
+   cp -v smi/SMI-Lib/dist/smilib.jar smi/SMI-Client/dist/
    cd smi/SMI-Client/bin
    jar -cf smiclient.jar *
    mv smiclient.jar ../dist
    cd ..
-   jar -cf icons.jar icons 
+   jar -cf icons.jar icons
    mv icons.jar dist/libs
    cd dist
    tar cfz smiclient.tar.gz *
    mv smiclient.tar.gz ../../../dist/Cliente
    zip -qr smiclient.zip *
    mv smiclient.zip ../../../dist/Cliente
+   cd ../../../
+}
 
+packaging_all(){
+   echo "* Empaquetando..."
+   echo
+   packaging_lib
+   echo
+   packaging_server
+   echo
+   packaging_admin
+   echo
+   packaging_client
+   echo
    echo "* Instaladores Listos"
 }
 
 case "$1" in
 
   -c|clean)
-             clean
+             clean_all
              ;;
    compile)
-             clean
-             compile
+             if [ -z $2 ] ; then
+                clean_all
+                compile_all
+                packaging_all
+             else
+               case "$2" in
+                 server)
+                        clean_server
+                        echo
+                        compile_server
+                        echo
+                        packaging_server
+                        ;;
+                 client)
+                        clean_client
+                        echo
+                        compile_client
+                        echo
+                        packaging_client
+                        ;;
+                 admin)
+                        clean_admin
+                        echo
+                        compile_admin
+                        echo
+                        packaging_admin
+                        ;;
+               esac
+             fi
              ;;
    *)
              help
