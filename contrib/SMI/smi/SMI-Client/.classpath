@@ -7,7 +7,6 @@
 	<classpathentry kind="lib" path="dist/libs/jdom.jar"/>
 	<classpathentry kind="lib" path="dist/libs/nimrodlf.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/SMI-Lib"/>
-	<classpathentry kind="lib" path="/SMI-Server/dist/libs/smilib.jar"/>
 	<classpathentry kind="lib" path="dist/libs/icons.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

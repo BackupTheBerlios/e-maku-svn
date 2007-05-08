@@ -3,18 +3,18 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/SMI-Lib/bin"/>
-	<classpathentry kind="lib" path="dist/libs/activation.jar"/>
-	<classpathentry kind="lib" path="dist/libs/jdbc-pgsql.jar"/>
-	<classpathentry kind="lib" path="dist/libs/jdom.jar"/>
-	<classpathentry kind="lib" path="dist/libs/mail.jar"/>
-	<classpathentry kind="lib" path="dist/libs/mailapi.jar"/>
-	<classpathentry kind="lib" path="dist/libs/pop3.jar"/>
-	<classpathentry kind="lib" path="dist/libs/smilib.jar"/>
-	<classpathentry kind="lib" path="dist/libs/smiserver.jar"/>
-	<classpathentry kind="lib" path="dist/libs/smtp.jar"/>
-	<classpathentry kind="lib" path="dist/libs/wrapper.jar"/>
-	<classpathentry kind="lib" path="dist/libs/ojdbc14.jar"/>
-	<classpathentry kind="lib" path="dist/libs/poi.jar"/>
+	<classpathentry kind="lib" path="smiserver/libs/activation.jar"/>
+	<classpathentry kind="lib" path="smiserver/libs/jdbc-pgsql.jar"/>
+	<classpathentry kind="lib" path="smiserver/libs/jdom.jar"/>
+	<classpathentry kind="lib" path="smiserver/libs/mail.jar"/>
+	<classpathentry kind="lib" path="smiserver/libs/mailapi.jar"/>
+	<classpathentry kind="lib" path="smiserver/libs/pop3.jar"/>
+	<classpathentry kind="lib" path="smiserver/libs/smilib.jar"/>
+	<classpathentry kind="lib" path="smiserver/libs/smiserver.jar"/>
+	<classpathentry kind="lib" path="smiserver/libs/smtp.jar"/>
+	<classpathentry kind="lib" path="smiserver/libs/wrapper.jar"/>
+	<classpathentry kind="lib" path="smiserver/libs/ojdbc14.jar"/>
+	<classpathentry kind="lib" path="smiserver/libs/poi.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/SMI-Lib"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
