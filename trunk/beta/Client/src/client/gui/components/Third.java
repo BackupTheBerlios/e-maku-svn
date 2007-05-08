@@ -379,12 +379,11 @@ public class Third extends JPanel {
      * @param event 
      */
     private synchronized void notificando(AnswerEvent event) {
-        Vector lista;
-        lista = (Vector)AnswerListener.clone();
-        for (int i=0; i<lista.size();i++) {
-            AnswerListener listener = (AnswerListener)lista.elementAt(i);
-            listener.arriveAnswerEvent(event);
-        }
+    	for(AnswerListener l:AnswerListener) {
+			if (l.containSqlCode(event.getSqlCode())) {
+				l.arriveAnswerEvent(event);
+			}
+		}    
     }
     
     public void searchOthersSqls() {

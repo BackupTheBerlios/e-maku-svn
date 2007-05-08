@@ -140,7 +140,7 @@ public class ReportMaker extends Thread {
 				xmout.output(element,System.out);
 				InputStream iosTemplate = rs.getAsciiStream(1); */
 				title = rs.getString(1);
-				sql = rs.getString(2);
+				sql = rs.getString(2).trim();
 			
 				this.id = element.getChildText("id");
 				List list = element.getChild("package").getChildren();

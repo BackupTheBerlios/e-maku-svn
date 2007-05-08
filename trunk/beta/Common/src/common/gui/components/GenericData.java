@@ -1100,7 +1100,7 @@ public class GenericData extends JPanel implements DateListener,
 
 					}
 				}
-				if (xmltf.getSqlLocal() != null) {
+				if (xmltf.getSqlLocal() != null && xmltf.getImportValues().length>0) {
 					new EmakuUIFieldFiller(GFforma, namebutton, enablebutton,
 							xmltf.getSqlLocal(), new String[] {
 													GFforma.getExteralValuesString(

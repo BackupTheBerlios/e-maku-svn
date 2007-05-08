@@ -114,7 +114,7 @@ public class ResultSetToXML extends Document implements Runnable {
                             ServerConstants.TAGS_COL_HEAD[0]+
                             XMLformat.escapeAttributeEntities(RSMDinfo.getColumnTypeName(i))+
                             ServerConstants.TAGS_COL_HEAD[1]+
-                            XMLformat.escapeAttributeEntities(RSMDinfo.getColumnName(i))+
+                            escapeCharacters(RSMDinfo.getColumnName(i))+
                             ServerConstants.TAGS_COL[1]);
                 }
                 writeBufferSocket(sock,ServerConstants.TAGS_HEAD[1]);
@@ -134,7 +134,7 @@ public class ResultSetToXML extends Document implements Runnable {
                             res= new String("").getBytes();
                         
                         writeBufferSocket(sock,ServerConstants.TAGS_COL[0] + 
-                                XMLformat.escapeAttributeEntities(new String(res))+
+                                escapeCharacters(new String(res,"UTF-8"))+
                                 ServerConstants.TAGS_COL[1]
                                 );
                     }
@@ -182,6 +182,30 @@ public class ResultSetToXML extends Document implements Runnable {
         }
     }
     
+    private String escapeCharacters(String word) {
+		word = word.replaceAll("&","&amp;");
+		word = word.replaceAll("ñ","&#241;");
+		word = word.replaceAll("Ñ","&#209;");
+
+		word = word.replaceAll("á","&#225;");
+		word = word.replaceAll("é","&#233;");
+		word = word.replaceAll("í","&#237;");
+		word = word.replaceAll("ó","&#243;");
+		word = word.replaceAll("ú","&#250;");
+		
+		word = word.replaceAll("Á","&#201;");
+		word = word.replaceAll("É","&#241;");
+		word = word.replaceAll("Í","&#205;");
+		word = word.replaceAll("Ó","&#211;");
+		word = word.replaceAll("Ú","&#218;");
+		
+		word = word.replaceAll("<","&lt;");
+		word = word.replaceAll(">","&gt;");
+
+		word = word.replaceAll("'","&apos;");
+		word = word.replaceAll("\"","&quot;");
+		return word;
+	}
     private void writeBufferSocket(SocketChannel sock,String data) {
 
         byte[] bytes = data.getBytes();

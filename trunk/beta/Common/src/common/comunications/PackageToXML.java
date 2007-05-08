@@ -2,6 +2,7 @@ package common.comunications;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
@@ -78,6 +79,9 @@ public class PackageToXML {
 						} catch (JDOMException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
+							FileOutputStream fos = new FileOutputStream("/home/felipe/jdomexception.txt");
+							fos.write(bufferOut.toByteArray());
+							fos.close();
 						}
         	            ArrivedPackageEvent event = new ArrivedPackageEvent(this,doc);
         	            notifyArrivePackage(event);

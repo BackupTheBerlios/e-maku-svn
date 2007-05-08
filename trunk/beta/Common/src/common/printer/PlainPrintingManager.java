@@ -38,7 +38,7 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 	private int height;*/
 	private ByteArrayInputStream in;
 	private boolean successful;
-	private ImpresionType impresionType;
+	private ImpresionType impresionType= ImpresionType.PLAIN;
 	private boolean withHeader;
 	private Element header;
 	private int rowPageSeparator;

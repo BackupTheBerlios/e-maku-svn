@@ -114,6 +114,7 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
 	private ArrayList<String> sqlCodeWT;
 	private String typeDocument;
 	private Vector<String> constantValue;
+	private boolean multiRecords = true;
 	
     public FindThird(GenericForm GFforma,Document doc) {
         
@@ -167,6 +168,9 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
             }
             else if("sqlRecords".equals(e.getAttributeValue("attribute"))) {
             		sqlRecords = e.getValue();
+            }
+            else if("multiRecords".equals(e.getAttributeValue("attribute"))) {
+        		multiRecords = Boolean.parseBoolean(e.getValue());
             }
             else if("sqlAddress".equals(e.getAttributeValue("attribute"))) {
             		sqlAddress = e.getValue();
@@ -445,17 +449,22 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
             args[k]= arg;
         }
         
-        fined(args);
-
-        if (STargs.countTokens()>1) {
-            for (int i=0;STargs.hasMoreTokens();i++) {
-                args = new String[3];
-                arg = STargs.nextToken();
-                for (int k=0;k<3;k++) {
-                    args[k]= arg;
-                }
-                fined(args);
-            }
+        try {
+	        fined(args);
+	
+	        if (multiRecords && STargs.countTokens()>1) {
+	            for (int i=0;STargs.hasMoreTokens();i++) {
+	                args = new String[3];
+	                arg = STargs.nextToken();
+	                for (int k=0;k<3;k++) {
+	                    args[k]= arg;
+	                }
+	                fined(args);
+	            }
+	        }
+        }
+        catch(MaxRecordsException e) {
+        	message();
         }
     }
         
@@ -465,11 +474,12 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
      * @param args contiene los argumentos para generar la consulta
      */
     
-    private void fined(String[] args) {
+    private void fined(String[] args) throws MaxRecordsException {
         try {
         	Document doc = TransactionServerResultSet.getResultSetST(sqlSizeRecords,args);
         	
  	        int row = Integer.parseInt(doc.getRootElement().getChild("row").getChildText("col"));
+ 	        System.out.println("Maximo numero de registros: "+maxRecords+" Numero de registros: "+row);
  	        if (row < maxRecords) {
 		        doc = TransactionServerResultSet.getResultSetST(sqlRecords,args);
 		        LoadDocument(doc);
@@ -477,7 +487,7 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
 	            searchOthersSQL();
  	        }
  	        else {
- 	        	message();
+ 	        	throw new MaxRecordsException();
  	        }
  	        doc = null;
         }

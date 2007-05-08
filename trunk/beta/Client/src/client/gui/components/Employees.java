@@ -495,12 +495,11 @@ public class Employees extends JPanel {
      * @param event 
      */
     private synchronized void notificando(AnswerEvent event) {
-        /*Vector lista;
-        lista = (Vector)AnswerListener.clone();*/
-        for (int i=0; i<AnswerListener.size();i++) {
-            AnswerListener listener = AnswerListener.elementAt(i);
-            listener.arriveAnswerEvent(event);
-        }
+        for(AnswerListener l:AnswerListener) {
+			if (l.containSqlCode(event.getSqlCode())) {
+				l.arriveAnswerEvent(event);
+			}
+		}
     }
     
     public void searchOthersSqls() {

@@ -212,10 +212,11 @@ public class AdminProdServ extends JPanel implements FocusListener {
      * @param event 
      */
     private synchronized void notificando(AnswerEvent event) {
-        for (int i=0; i< AnswerListener.size();i++) {
-            AnswerListener listener = AnswerListener.elementAt(i);
-            listener.arriveAnswerEvent(event);
-        }
+    	for(AnswerListener l:AnswerListener) {
+			if (l.containSqlCode(event.getSqlCode())) {
+				l.arriveAnswerEvent(event);
+			}
+		}
     }
     
     /**

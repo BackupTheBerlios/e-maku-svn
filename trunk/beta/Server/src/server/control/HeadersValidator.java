@@ -86,7 +86,7 @@ public class HeadersValidator {
              */
             if (nom_raiz.equals("TRANSACTION")) {
                 System.out.println("Paquete TRANSACCION");
-                /*
+                
                 XMLOutputter xmlOutputter = new XMLOutputter();
                 xmlOutputter.setFormat(Format.getPrettyFormat());
                 
@@ -96,7 +96,7 @@ public class HeadersValidator {
                 catch (IOException e) {
                     e.printStackTrace();
                 }
-                */
+                
                 new RunTransaction(sock,doc).start();
                 
             } 
