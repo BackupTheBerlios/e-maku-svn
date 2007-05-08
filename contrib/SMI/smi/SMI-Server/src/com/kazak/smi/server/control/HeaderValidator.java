@@ -133,9 +133,11 @@ public class HeaderValidator {
             	String id = root.getChildText("id");
             	Document list  = new Document();
             	if ("LIST".equals(id)) {
+            		 System.out.println("Preparando lista de usuarios...");
             		list = SocketServer.getUsersOnLine(root.getText());
             	}
             	else if("TOTAL".equals(id)) {
+           		 System.out.println("Preparando total de usuarios...");
             		list = SocketServer.getUsersTotal();
             	}
             	try {

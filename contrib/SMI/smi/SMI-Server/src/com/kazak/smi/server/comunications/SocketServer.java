@@ -63,7 +63,7 @@ public class SocketServer {
     private static Hashtable <SocketChannel,SocketInfo>Hchannelclients = new Hashtable<SocketChannel,SocketInfo>();
     private static ServerSocketChannel SSCcanal1 = null;
     private static int SocketsCount = 0;
-
+    private static int usersOnLine;
 
     /**
      * Desde el constructor de esta clase se trabaja la administracion de
@@ -155,47 +155,51 @@ public class SocketServer {
     }
     
     public static Document getUsersOnLine(String gid) {
+    	
+    	    System.out.println("Ingresando a getUsersOnline...");
     		Document doc = new Document();
     		Element root = new Element("USERLIST");
     		Element id = new Element("id").setText("LIST");
     		doc.setRootElement(root);
      		Element rows, user, name, ip;
      		root.addContent(id);
+     		usersOnLine = 0;
      		
     		for ( Enumeration e = Hchannelclients.keys() ; e.hasMoreElements() ; ) {
      		      SocketChannel connection = (SocketChannel) e.nextElement();
      		      String group = Integer.toString(Hchannelclients.get(connection).getGid());
      		      if (isLogged(connection) && group.equals(gid)) {
+     		    	  usersOnLine++;
      		    	  rows = new Element("row");
      		    	  user = new Element("cols").setText(getLogin(connection));
      		    	  name = new Element("cols").setText(getName(connection));
      		    	  ip = new Element("cols").setText(connection.socket().getInetAddress().getHostAddress());
-     		    			  //getRemoteSocketAddress().toString());
-     		    			  //getLocalAddress().getHostAddress());
      		    	  rows.addContent(user);
      		    	  rows.addContent(name);
      		    	  rows.addContent(ip);
      		    	  root.addContent(rows);
      		      }
     	    }
+    		System.out.println("Numero Usuarios: " + usersOnLine);
     		
     		return doc;
     }
     
     public static Document getUsersTotal() {
+	    System.out.println("Ingresando a getUsersTotal...");
 		Document doc = new Document();
 		Element root = new Element("USERLIST");
 		doc.setRootElement(root);
 		Element id = new Element("id").setText("TOTAL");
 		root.addContent(id);
 		Element rows = new Element("row");
-		Element total = new Element("cols").setText("10");
+		Element total = new Element("cols").setText(Integer.toString(usersOnLine));
+		System.out.println("** Numero de Usuarios: " + usersOnLine);
 		rows.addContent(total);
  		root.addContent(rows);
  		
  		return doc;
-}
-
+    }
     
     /**
      * Este metodo remueve una coneccion (socket) de la
@@ -242,8 +246,7 @@ public class SocketServer {
      * Este metodo retorna unicamente el numero de socket's
      * conectados
      * @return El numero de sockets conectados
-     */
-    /*
+     *
     public static int getSocketsCount() {
         return SocketsCount;
     }*/

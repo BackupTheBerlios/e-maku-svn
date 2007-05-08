@@ -31,7 +31,6 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import com.kazak.smi.admin.control.Cache;
-import com.kazak.smi.admin.control.Cache.Group;
 import com.kazak.smi.admin.network.SocketHandler;
 import com.kazak.smi.admin.network.SocketWriter;
 import com.kazak.smi.admin.transactions.QuerySender;
@@ -50,17 +49,13 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 	private JComboBox groups;
 	private JTable table;
 	private OnLineModel model;
-	private int uTotal = 0;
-	private HashMap<String,String> hashGroup;
+	private HashMap<String,String> groupsHash;
 	
 	public UsersList() {
 		this.setLayout(new BorderLayout());
 		this.setSize(600,400);
 		
 		initInterface();
-		String date = getFormattedDate();
-		
-		this.setTitle("Usuarios en Linea: " + uTotal + " / " + date);
 		
 		this.setLocationByPlatform(true);
 		this.setLocationRelativeTo(MainWindow.getFrame());
@@ -72,20 +67,11 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 	public void initInterface() {
 		
 		jGroups = new JLabel("Grupos:");
-		Object[] obj = Cache.getList().toArray();
 		groups = new JComboBox(Cache.getGroupsList());
-		hashGroup = new HashMap<String,String>();
-		for (Object infoGroup:obj) {
-			Group g = (Group)infoGroup;
-			hashGroup.put(g.getName(), g.getId());
-			//System.out.println(g.getName()+" "+g.getId());
-		}
-		
+		groupsHash = Cache.getGroupsHash();		
 		groups.addPopupMenuListener(this);
-		loadUserList();
-		loadTotal();
-		requestUsersTotal();
-		requestOnlineUsers(groups.getSelectedItem().toString());
+				
+		updateList(groups.getSelectedItem().toString());
 		
 		model = new OnLineModel();
 		table = new JTable(model);
@@ -120,22 +106,20 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 	}
 
 	private void loadTotal() {
-		class Monitor  extends Thread {
-			
+		class Monitor extends Thread {
 			Document doc= null;
 			public void run() {
 				try {
 					doc = QuerySender.getResultSetST("TOTAL");
 					XMLOutputter xmlOutputter = new XMLOutputter();
 		            xmlOutputter.setFormat(Format.getPrettyFormat());
-		    		String date = getFormattedDate();
 		    		Element elm = doc.getRootElement();
 		    		List list = elm.getChildren("row");
 		    		Element col = (Element)list.get(0);
 		    		String uTotal = col.getValue();
-		    		setTitle("Usuarios en Linea: " + uTotal + " / " + date);
+		    		System.out.println("Total de usuarios: " + uTotal);
+		    		setWindowLabel(uTotal);
 				} catch (QuerySenderException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -143,16 +127,15 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 		new Monitor().start();		
 	}
 
+	// Captura la lista de usuarios solicitada  
 	private void loadUserList() {
-		class Monitor  extends Thread {
-			
+		class Monitor  extends Thread {			
 			Document doc= null;
 			public void run() {
 				try {
 					doc = QuerySender.getResultSetST("LIST");
 					model.setQuery(doc);
 				} catch (QuerySenderException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -160,6 +143,7 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 		new Monitor().start();		
 	}
 	
+	// Solicita el total de usuarios conectados
 	public void requestUsersTotal() {
 		// Enviando comando al servidor para ser aprobado
 		Cache.getGroup("key");
@@ -180,6 +164,7 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 		
 	}
 	
+	// Solicita la lista de usuarios de un grupo determinado
 	public void requestOnlineUsers(String group) {
 		// Enviando comando al servidor para ser aprobado
 		Cache.getGroup("key");
@@ -188,7 +173,7 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 		onlist.addContent(id);
 		Document document = new Document(onlist);
         Element args = new Element("args");
-        onlist.addContent(hashGroup.get(group));
+        onlist.addContent(groupsHash.get(group));
         args.setText(group);
 
 		if (document!=null) {
@@ -206,11 +191,44 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if (command.equals("update")) {
-			
+			updateList((String)groups.getSelectedItem());
 		}
 		if (command.equals("close")) {
 			this.dispose();
 		}
+	}	
+	
+    public static String getFormattedDate() {
+
+    	SimpleDateFormat now = new SimpleDateFormat("E, dd MMM yyyy - H:m");
+    	Date date = new Date();
+    	
+    	return now.format(date);
+    }
+    
+    public void setWindowLabel(String total) {
+    	String date = getFormattedDate();
+    	this.setTitle("Usuarios en Linea: " + total + " / " + date);
+    }
+
+	public void popupMenuCanceled(PopupMenuEvent e) {
+		
+	}
+
+	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+		String group = (String)((JComboBox)e.getSource()).getSelectedItem();
+		updateList(group);
+	}
+	
+	public void updateList(String group) {
+		loadUserList();
+		loadTotal();
+		requestUsersTotal();
+		requestOnlineUsers(group);
+	}
+
+	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+		
 	}
 	
 	class CellEditor extends DefaultCellEditor {
@@ -226,30 +244,4 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 	        return value;
 	    }
 	}
-	
-	
-    public static String getFormattedDate() {
-
-    	SimpleDateFormat now = new SimpleDateFormat("E, dd MMM yyyy - H:m");
-    	Date date = new Date();
-    	
-    	return now.format(date);
-    }
-
-	public void popupMenuCanceled(PopupMenuEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-		// TODO Auto-generated method stub
-		loadUserList();
-		requestOnlineUsers(((JComboBox)e.getSource()).getSelectedItem().toString());
-	}
-
-	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 }

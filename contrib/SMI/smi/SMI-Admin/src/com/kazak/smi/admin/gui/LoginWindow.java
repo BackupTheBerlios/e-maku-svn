@@ -67,14 +67,14 @@ public class LoginWindow implements ActionListener, KeyListener {
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		
-		JTFHost     = new JTextField(12);
-		JTFPort     = new JTextField(12);
-		JTFUser     = new JTextField(12);
-		JPFPassword = new JPasswordField(12);
+		JTFHost     = new JTextField("localhost",12);
+		JTFPort     = new JTextField("9119",12);
+		JTFUser     = new JTextField("admin",12);
+		JPFPassword = new JPasswordField("12345",12);
 		JPFPassword.addKeyListener(this);
 		
-		JTFUser.setDocument(new FixedSizePlainDocument(30));
-		JTFPort.setDocument(new NumericDataValidator(4));
+		//JTFUser.setDocument(new FixedSizePlainDocument(30));
+		//JTFPort.setDocument(new NumericDataValidator(4));
 		
 		JBAccept = new JButton("Aceptar");
 		JBCancel = new JButton("Cancelar");

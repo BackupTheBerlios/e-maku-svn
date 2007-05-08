@@ -400,6 +400,7 @@ public class Sync {
 
 			if (user.codepv!=null) {
 				String codigo_pventa      = null;
+				String nombre_pventa      = null;
 				String uid                = null;
 				ResultSet RSuid           = null;
 				ResultSet RScodigo_pventa = null;
@@ -418,11 +419,12 @@ public class Sync {
 					return false;
 				}
 
-				SQL = "SELECT codigo FROM puntosv WHERE puntosv.codigo='" + user.codepv + "'";
+				SQL = "SELECT codigo,nombre FROM puntosv WHERE puntosv.codigo='" + user.codepv + "'";
 				try {	
 					RScodigo_pventa = st.executeQuery(SQL);
 					while(RScodigo_pventa.next()) {
 						codigo_pventa = RScodigo_pventa.getString("codigo").trim();
+						nombre_pventa = RScodigo_pventa.getString("nombre").trim();
 					}
 					RScodigo_pventa.close();
 					RSuid.close();
@@ -473,7 +475,7 @@ public class Sync {
 					return false;
 				}
 				LogWriter.write("Asignando Colocador => " + user.name + "(" + user.code + ") " +
-						        "al punto => "+ user.codepv);
+						        "al punto => " + nombre_pventa + " {" + user.codepv + "}");
 			} else {
 				LogWriter.write("Advertencia: Codigo " + key + " no esta asignado a ningun punto de venta.");
 			}
