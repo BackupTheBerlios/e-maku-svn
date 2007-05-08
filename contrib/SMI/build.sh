@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#
 # Bandera para activar el debug del ant
 ANT_FLAG="-q"
 
@@ -9,6 +9,7 @@ clean_lib() {
    cd ./smi/SMI-Lib/
    ant $ANT_FLAG clean
    cd -
+   find . -iname smilib.jar -exec rm {} \;
 }
 
 clean_server() {
@@ -18,6 +19,7 @@ clean_server() {
    cd ./smi/SMI-Server/
    ant $ANT_FLAG clean
    cd -
+   \rm -rf dist/Servidor/*
 }
 
 clean_client() {
@@ -26,6 +28,7 @@ clean_client() {
    cd ./smi/SMI-Client/
    ant $ANT_FLAG clean
    cd -
+   \rm -rf dist/Cliente/*
 }
 
 clean_admin() {
@@ -34,6 +37,7 @@ clean_admin() {
    cd ./smi/SMI-Admin/
    ant $ANT_FLAG clean
    cd -
+   \rm -rf dist/Administrador/*
 }
 
 clean_all() {
