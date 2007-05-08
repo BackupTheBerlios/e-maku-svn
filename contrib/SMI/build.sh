@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Bandera para activar el debug del ant
 ANT_FLAG="-q"
 
 clean_lib() {
