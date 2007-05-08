@@ -20,6 +20,7 @@ clean_server() {
    ant $ANT_FLAG clean
    cd -
    \rm -rf dist/Servidor/*
+   find . -iname smiserver.jar -exec rm {} \;
 }
 
 clean_client() {
@@ -29,6 +30,7 @@ clean_client() {
    ant $ANT_FLAG clean
    cd -
    \rm -rf dist/Cliente/*
+   find . -iname smiclient.jar -exec rm {} \;
 }
 
 clean_admin() {
@@ -38,6 +40,7 @@ clean_admin() {
    ant $ANT_FLAG clean
    cd -
    \rm -rf dist/Administrador/*
+   find . -iname smiadmin.jar -exec rm {} \;
 }
 
 clean_all() {
@@ -150,8 +153,8 @@ packaging_client(){
    jar -cf smiclient.jar *
    mv smiclient.jar ../dist
    cd ..
-   jar -cf icons.jar icons
-   mv icons.jar dist/libs
+   #jar -cf icons.jar icons
+   #mv icons.jar dist/libs
    cd dist
    tar cfz smiclient.tar.gz *
    mv smiclient.tar.gz ../../../dist/Cliente
