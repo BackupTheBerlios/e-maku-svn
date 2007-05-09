@@ -63,7 +63,6 @@ public class SocketServer {
     private static Hashtable <SocketChannel,SocketInfo>Hchannelclients = new Hashtable<SocketChannel,SocketInfo>();
     private static ServerSocketChannel SSCcanal1 = null;
     private static int SocketsCount = 0;
-    private static int usersOnLine;
 
     /**
      * Desde el constructor de esta clase se trabaja la administracion de
@@ -161,13 +160,11 @@ public class SocketServer {
     	doc.setRootElement(root);
     	Element rows, user, name, ip;
     	root.addContent(id);
-    	usersOnLine = 0;
 
     	for ( Enumeration e = Hchannelclients.keys() ; e.hasMoreElements() ; ) {
     		SocketChannel connection = (SocketChannel) e.nextElement();
     		String group = Integer.toString(Hchannelclients.get(connection).getGid());
     		if (isLogged(connection) && group.equals(gid)) {
-    			usersOnLine++;
     			rows = new Element("row");
     			user = new Element("cols").setText(getLogin(connection));
     			name = new Element("cols").setText(getName(connection));

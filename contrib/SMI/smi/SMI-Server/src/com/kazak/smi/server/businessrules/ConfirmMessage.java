@@ -15,18 +15,18 @@ import com.kazak.smi.server.misc.LogWriter;
 
 public class ConfirmMessage {
 
-	private Iterator it;
+	private Iterator iterator;
 	
 	public ConfirmMessage(SocketChannel sock, Element args, Element packet, String id) {
-		this.it = packet.getChildren("package").iterator();
-		Iterator itArgs = args.getChildren("args").iterator();
+		this.iterator = packet.getChildren("package").iterator();
+		Iterator argsIterator = args.getChildren("args").iterator();
 		QueryRunner runQuery = null;
-		while(itArgs.hasNext()) {
-			Element element = (Element) itArgs.next();
+		while(argsIterator.hasNext()) {
+			Element element = (Element) argsIterator.next();
 			String sqlCode = element.getValue();
 			
-			Element elm = (Element)it.next();
-			List list = elm.getChildren();
+			Element nextElement = (Element)iterator.next();
+			List list = nextElement.getChildren();
 			String[] sqlArgs = new String[5];
 			Iterator it = list.iterator();
 
@@ -42,10 +42,10 @@ public class ConfirmMessage {
 				runQuery.runSQL();
 				runQuery.commit();
 				LogWriter.write(
-						"INFO: Confirmada lectura del mensaje con destino: " + 
-						((Element)list.get(3)).getValue() + ", con el asunto :" + 
-						((Element)list.get(4)).getValue() + ", remitido por: " + 
-						((Element)list.get(5)).getValue());
+						"INFO: Confirmada lectura del mensaje con destino {" + 
+						((Element)list.get(3)).getValue() + "} / Asunto: [" + 
+						((Element)list.get(4)).getValue() + "] / Remitido por: {" + 
+						((Element)list.get(5)).getValue() + "}");
 			} catch (SQLException e) {
 				runQuery.rollback();
 				LogWriter.write("ERROR: " + e.getErrorCode());
@@ -63,7 +63,7 @@ public class ConfirmMessage {
 				TransactionRunner.errorMessage(
 						 sock,
 						 id,
-						 "La sentencia  " + sqlCode + " no existe");
+						 "La sentencia  " + sqlCode + " no existe.");
 			} catch (SQLBadArgumentsException e) {
 				e.printStackTrace();
 				TransactionRunner.errorMessage(

@@ -34,7 +34,7 @@ public class Pop3Handler extends Thread {
 	
 	public Pop3Handler() {
 		LogWriter.write("INFO: Iniciando demonio pop3");
-		LogWriter.write("INFO: Host: " + ConfigFile.getMailServer());
+		LogWriter.write("INFO: Servidor " + ConfigFile.getMailServer());
 		Pop3Handler.host = ConfigFile.getMailServer();
 		Pop3Handler.user = ConfigFile.getUserMail();
 		Pop3Handler.password = ConfigFile.getPassWordMail();
@@ -58,42 +58,40 @@ public class Pop3Handler extends Thread {
 				
 				for (Message message : messages) {
 					InternetAddress addr = (InternetAddress) message.getFrom()[0];
-					String fullsubject =  message.getSubject();
-					fullsubject = fullsubject!=null ? fullsubject.trim() : null;
-					int ind1 = addr.getAddress().indexOf('@');
-					String from = addr.getAddress().substring(0,ind1);
-					int ind2 = fullsubject!=null ? fullsubject.indexOf(',') : -1;
-					/*int ind3 = ind2 > 0 ?
-							   message.getSubject().indexOf(',',(ind2+1)) : 
-							   -1;*/
+					String fullSubject   =  message.getSubject();
+					fullSubject          = fullSubject!=null ? fullSubject.trim() : null;
+					int index1             = addr.getAddress().indexOf('@');
+					String from          = addr.getAddress().substring(0,index1);
+					int index2             = fullSubject!=null ? fullSubject.indexOf(',') : -1;
+
 					String to = "";
 					String sub = "";
 					String content = message.getContent().toString();
-					LogWriter.write("Leyendo correo del buzon de mensajes");
-					LogWriter.write("Nuevo mensaje desde: " + addr.getAddress() + " asunto  " +  fullsubject);
-					if (ind2==-1) {
+					LogWriter.write("INFO: Leyendo correo del buzon de mensajes.");
+					LogWriter.write("INFO: Nuevo mensaje desde {" + addr.getAddress() + "} con asunto [ " +  fullSubject + " ]");
+					if (index2==-1) {
 						if (!"Mailer-Daemon".equals(from)){
-						LogWriter.write("Erro en el asunto del mesaje desde: "+addr.getAddress());
-						LogWriter.write("asunto escrito: "+fullsubject);
+						LogWriter.write("INFO: Error en el asunto del mensaje desde: "+addr.getAddress());
+						LogWriter.write("asunto escrito: "+fullSubject);
 						EmailSender ems = new EmailSender();
 						ems.setFrom	   (user+"@"+host);
 						ems.setTo	   (addr.getAddress());
 						ems.setSubject ("Error");
 						ems.setDate	   (new Date());
 						ems.setMessage (
-								"El correo no tiene el formato debido.\n" +
+								"El correo no tiene el formato apropiado.\n" +
 								"Por favor verifique el asunto del mensaje\n" +
 								"Contenido Original\n" +
 								"-------------------------------------\n" +
-								"Asunto:"   + fullsubject+"\n" +
+								"Asunto:"   + fullSubject+"\n" +
 								"Mensage:\n"+ content    +"\n" +
 								"-------------------------------------\n" +
-								"Este mensaje fue enviado por el SMI Apuestas Palmira" );
+								"Este mensaje fue enviado por el Sistema de Mensajeria Instantanea" );
 						ems.send();
 						}
 					}
 					else {
-						String[] strings = fullsubject.split(":");
+						String[] strings = fullSubject.split(":");
 						String timeAlife = "-1";
 						if (strings.length > 0 ) {
 							timeAlife = strings[strings.length-1];
@@ -107,8 +105,8 @@ public class Pop3Handler extends Thread {
 								timeAlife = "-1";
 							}
 						}
-						to = fullsubject.substring(0,ind2);
-						sub = fullsubject.substring(ind2+1,fullsubject.length());
+						to = fullSubject.substring(0,index2);
+						sub = fullSubject.substring(index2+1,fullSubject.length());
 						to = to.toUpperCase();
 						
 						QueryRunner runQuery = null;
@@ -127,7 +125,6 @@ public class Pop3Handler extends Thread {
 									Element xml = new Element("Message");
 									xml.addContent(create("idgroup",idgroup));
 									xml.addContent(create("toName",	all ? rs.getString(2): to ));
-									//xml.addContent(create("toName",	all ? new String(rs.getBytes(2),"ISO-8859-1"): to ));
 									xml.addContent(create("from",   from));
 									xml.addContent(create("subject",sub));
 									xml.addContent(create("message",content));
@@ -135,7 +132,7 @@ public class Pop3Handler extends Thread {
 									new MessageDistributor(xml,true);
 								}
 								else {
-									LogWriter.write("La cuenta de correo " + to + " no existe en el sistema");
+									LogWriter.write("ERROR: La cuenta de correo {" + to + "} no existe en el sistema.");
 								}
 							}
 						} catch (SQLNotFoundException e) {
@@ -154,12 +151,9 @@ public class Pop3Handler extends Thread {
 				folder.close(true);
 				store.close();
 			} catch (AuthenticationFailedException e) {
-				LogWriter.write("Falló la autenticación del demonio pop3");
-				LogWriter.write("mensaje: " + e.getMessage());
-				LogWriter.write("no se podran obtener los correos");
-				LogWriter.write("revise el archivo de configuración");
-				LogWriter.write("y vuelva a iniciar el servidor.");
-				LogWriter.write("saliendo..");
+				LogWriter.write("ERROR: Falla en la autenticacion del demonio pop3. No se podran obtener los correos.");
+				LogWriter.write("ERROR: Por favor, revise el archivo de configuracion y vuelva a iniciar el SMI.");
+				LogWriter.write("Causa: " + e.getMessage());
 				Run.killServer();
 			} catch (NoSuchProviderException e) {
 				e.printStackTrace();
