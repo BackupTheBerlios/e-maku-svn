@@ -295,7 +295,9 @@ public class Sync {
 			if (rs!=null) {
 				rs.close();
 			}
-			st.close();
+			if (st!=null) {
+				st.close();
+			}
 		} catch (SQLException e1) {
 			LogWriter.write("Error cerrando conexion a base de datos " + db);
 			e1.printStackTrace();
