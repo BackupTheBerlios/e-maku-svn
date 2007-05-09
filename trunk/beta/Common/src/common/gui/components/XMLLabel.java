@@ -113,6 +113,7 @@ public class XMLLabel extends JLabel implements Couplable {
         }
         panel = new JPanel(layout);
         panel.add(this);
+        GFforma.addInitiateFinishListener(this);
     }
 
     public Component getPanel() {
