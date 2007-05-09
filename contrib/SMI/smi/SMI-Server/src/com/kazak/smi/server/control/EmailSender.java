@@ -48,7 +48,7 @@ public class EmailSender extends Thread {
 		this.date = date;
 	}
 
-	public void setToNameFull(String toNameFull) {
+	public void setToFullName(String toNameFull) {
 		this.toNameFull = toNameFull;
 	}
 

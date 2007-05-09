@@ -42,14 +42,14 @@ public class ConfirmMessage {
 				runQuery.runSQL();
 				runQuery.commit();
 				LogWriter.write(
-						"Confirmada lectura del mensaje con destino: " + 
+						"INFO: Confirmada lectura del mensaje con destino: " + 
 						((Element)list.get(3)).getValue() + ", con el asunto :" + 
 						((Element)list.get(4)).getValue() + ", remitido por: " + 
 						((Element)list.get(5)).getValue());
 			} catch (SQLException e) {
 				runQuery.rollback();
+				LogWriter.write("ERROR: " + e.getErrorCode());
 				e.printStackTrace();
-				LogWriter.write("Codigo error: "+e.getErrorCode());
 				if (runQuery!=null) {
 					runQuery.rollback();
 				}
@@ -57,7 +57,7 @@ public class ConfirmMessage {
 						 sock,
                     	 id,
                     	 "No se pudo procesar la operacion:\n" +
- 						 "causa:\n"+e.getLocalizedMessage());
+ 						 "Causa:\n" + e.getLocalizedMessage());
 			} catch (SQLNotFoundException e) {
 				e.printStackTrace();
 				TransactionRunner.errorMessage(

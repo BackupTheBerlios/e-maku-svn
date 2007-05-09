@@ -138,7 +138,7 @@ packaging_admin(){
    echo "* Creando jars para SMI-Admin..."
    cp -v smi/SMI-Lib/dist/smilib.jar smi/SMI-Admin/dist/
    cd smi/SMI-Admin/bin
-   cp ../src/resources/menu.xml .
+   cp ../src/menu.xml .
    jar -cf smiadmin.jar *
    mv smiadmin.jar ../dist
    cd ../dist

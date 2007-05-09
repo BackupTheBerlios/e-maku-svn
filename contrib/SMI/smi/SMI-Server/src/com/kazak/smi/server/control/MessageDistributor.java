@@ -23,6 +23,8 @@ import com.kazak.smi.server.database.sql.SQLNotFoundException;
 import com.kazak.smi.server.misc.LogWriter;
 import com.kazak.smi.server.misc.settings.ConfigFile;
 
+// Esta clase se encarga de distribuir un mensaje a sus destinos
+
 public class MessageDistributor {
 	
 	private SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -35,7 +37,6 @@ public class MessageDistributor {
 	private String hourStr;
 	private String subject;
 	private String body;
-	
 	
 	private int timeAlife = -1;
 	private boolean control = false;
@@ -52,6 +53,7 @@ public class MessageDistributor {
 		body    = elm.getChildText("message");
 		Element elmTimeAlife = elm.getChild("timeAlife");
 		timeAlife = elmTimeAlife!=null ? Integer.parseInt(elmTimeAlife.getValue()) : 0;
+
 		if (timeAlife > 0) {
 			control = true;
 			body+="\n====================================\n" +
@@ -59,27 +61,31 @@ public class MessageDistributor {
 		}
 		
 		int nroUsers = 0;
-		SocketInfo ifuFrom = null;
-		if (!pop) {
-			ifuFrom = SocketServer.getSocketInfo(from);	
+		SocketInfo sender = null;
+		
+		if (!pop) {	
+			// Consultando usuarios de puntos de venta
+			LogWriter.write("INFO: Remitente -> " + from + " / Destino: " + elm.getChildText("toName") + " / Asunto: " + subject);
+			sender = SocketServer.getSocketInfo(from);
 		}
 		else {
+			// Consultando usuarios de correo pop
 			QueryRunner runQuery = null;
 		    ResultSet rs = null;
 			try {
 				runQuery = new QueryRunner("SEL0026",new String[]{from});
 				rs = runQuery.runSELECT();
 				if (rs.next()) {
-					ifuFrom = SocketServer.getInstaceOfSocketInfo();
-					ifuFrom.setUid(rs.getInt(1));
-					ifuFrom.setLogin(rs.getString(2));
-					ifuFrom.setNames(rs.getString(3));
-					ifuFrom.setEmail(rs.getString(4));
-					ifuFrom.setAdmin(rs.getBoolean(5));
-					ifuFrom.setAudit(rs.getBoolean(6));
-					ifuFrom.setGid(rs.getInt(7));
-					ifuFrom.setPsName(rs.getString(9));
-					ifuFrom.setGName(rs.getString(12));	
+					sender = SocketServer.getInstaceOfSocketInfo();
+					sender.setUid(rs.getInt(1));
+					sender.setLogin(rs.getString(2));
+					sender.setNames(rs.getString(3));
+					sender.setEmail(rs.getString(4));
+					sender.setAdmin(rs.getBoolean(5));
+					sender.setAudit(rs.getBoolean(6));
+					sender.setGid(rs.getInt(7));
+					sender.setPsName(rs.getString(9));
+					sender.setGName(rs.getString(12));	
 				}
 			} catch (SQLNotFoundException e) {
 				e.printStackTrace();
@@ -92,6 +98,7 @@ public class MessageDistributor {
 				runQuery.closeStatement();
 			}
 		}
+		
 		Vector<SocketInfo> vusers;
 		if (!pop) {
 			vusers = SocketServer.getAllClients(gidInt);
@@ -101,18 +108,20 @@ public class MessageDistributor {
 			vusers = SocketServer.getAllClients(toName);
 		}
 			
-		if (ifuFrom==null) {
-			LogWriter.write(
-					"Acceso denegado al usuario " +from+ " para el envio " +
-					"de mensajes a traves de correo");
+		if (sender==null) {
+			LogWriter.write("ERROR: Acceso denegado al usuario " + from + " para el envio de mensajes a traves de correo");
 			return;
 		}
 		nroUsers = vusers.size();
-		LogWriter.write("Enviando mensaje a "+ nroUsers + " usuarios");
-		for (SocketInfo ifu : vusers) {
-			// Aqui se define a quien se envia el mensage
-			// Los Mensajes deben enviarse a los grupos.
-			SocketChannel sock = ifu.getSock()!=null ? ifu.getSock().getChannel() : null;
+		LogWriter.write("INFO: Enviando mensaje a "+ nroUsers + " usuarios.");
+
+		// Aqui se define a quien se envia el mensage
+		// Los Mensajes deben enviarse a los grupos.
+
+		for (SocketInfo destination : vusers) {
+			SocketChannel sock = destination.getSock()!=null ? destination.getSock().getChannel() : null;
+			
+			// Si el usuario esta en linea
 			if (sock!=null) {
 				Element Message = new Element("Message");
 				Element root = new Element("root");
@@ -120,58 +129,69 @@ public class MessageDistributor {
 				Message.addContent(root);
 				root.addContent(createCol(dateStr));
 				root.addContent(createCol(hourStr));
-				root.addContent(createCol(ifuFrom.getGName()));
+				root.addContent(createCol(sender.getGName()));
 				root.addContent(createCol(subject));
-				root.addContent(createCol(body   ));
+				root.addContent(createCol(body));
 				root.addContent(createCol("f"));
 				
 				Document doc = new Document((Element) Message.clone());
+				// Enviando mensaje a colocadores en linea
 				try {
 					SocketWriter.writing(sock,doc);
-					LogWriter.write("Mensaje enviado a "+ ifu.getLogin() + " de " + ifuFrom.getLogin() + " asunto " + subject);					
+					LogWriter.write("INFO: [Envio a Punto de Venta] Remitente -> " + sender.getLogin() 
+							        + " / Destino: " + destination.getLogin() 
+							        + " / Asunto: " + subject);
 				} catch (ClosedChannelException e) {
-					LogWriter.write("El colocador "+ifu.getLogin()+" no se encuentra en linea");
+					LogWriter.write("INFO: El colocador " + destination.getLogin() + " no se encuentra en linea.");
 					e.printStackTrace();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
-			else {
-				LogWriter.write("El usuario "+ifu.getLogin()+" no se encuentra en linea");
-			}
+			/*else {
+				LogWriter.write("El usuario " + destination.getLogin() + " no se encuentra en linea.");
+			}*/
+
+			// Enviando mensaje a usuarios del servidor de correo (personal administrativo)
 			if (!pop) {
 				EmailSender ems = new EmailSender();
 				ems.setFrom	   (Pop3Handler.getUser()+"@"+Pop3Handler.getHost());
-				ems.setTo	   (ifu.getEmail());
-				ems.setSubject (ifuFrom.getLogin()+","+subject);
+				ems.setTo	   (destination.getEmail());
+				ems.setSubject (sender.getLogin() + "," +subject);
 				ems.setDate	   (date);
 				ems.setMessage (body);
-				ems.setToNameFull(ifuFrom.getNames());
-				ems.setColocationPoint(ifuFrom.getPsName());
+				ems.setToFullName(sender.getNames());
+				ems.setColocationPoint(sender.getPsName());
 				ems.send();
+				LogWriter.write("INFO: [Envio a Cuenta de Correo] Remitente -> " + sender.getLogin() 
+				        + " / Destino: " + destination.getLogin() 
+				        + " / Asunto: " + subject);
 			}
 			
 			String isvalid   = nroUsers > 0 ? "true" : "false";
 			String[] argsSql = 
-			{String.valueOf(ifu.getUid()),String.valueOf(ifuFrom.getUid()),
+			{String.valueOf(destination.getUid()),String.valueOf(sender.getUid()),
 			dateStr,hourStr,subject.trim(),body.trim(),isvalid,
 			String.valueOf(ConfigFile.getTimeAlifeMessageForClient()),
 			String.valueOf(control),String.valueOf(timeAlife)};
 			
 			QueryRunner runQuery = null;
 			try {
+				LogWriter.write("Almacenando registro de mensaje en la base de datos.");
 				runQuery = new QueryRunner("INS0003",argsSql);
 				runQuery.setAutoCommit(false);
 				runQuery.runSQL();
 				runQuery.commit();
 				runQuery.closeStatement();
-				LogWriter.write("Mensaje almacenado en la base de datos");
 			} catch (SQLNotFoundException e) {
+				LogWriter.write("ERROR: No se pudo almacenar mensaje en la base de datos. Instruccion SQL no encontrada");
 				runQuery.rollback();
 				e.printStackTrace();
 			} catch (SQLBadArgumentsException e) {
+				LogWriter.write("ERROR: No se pudo almacenar mensaje en la base de datos. Argumentos Invalidos");
 				e.printStackTrace();
 			} catch (SQLException e) {
+				LogWriter.write("ERROR: No se pudo almacenar mensaje en la base de datos. Excepcion SQL");
 				e.printStackTrace();
 			}
 		}	

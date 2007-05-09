@@ -1,6 +1,5 @@
 package com.kazak.smi.server.comunications;
 
-
 import java.util.Date;
 import java.util.Properties;
 
@@ -31,22 +30,22 @@ public class MailHandler {
     	props.put("mail.transport.protocol", "smtp");
     	props.put("mail.smtp.host", ConfigFile.getMailServer());
     	props.put("mail.smtp.port", "25");
-        Session sesion = Session.getDefaultInstance(props);
-        Address para;
+        Session session = Session.getDefaultInstance(props);
+        Address destinationAddress;
 		try {
-			para = new InternetAddress(to);
-	        Address de = new InternetAddress(from);
-	        MimeMessage mimeMenssage = new MimeMessage(sesion);
+			destinationAddress       = new InternetAddress(to);
+	        Address senderAddress    = new InternetAddress(from);
+	        MimeMessage mimeMenssage = new MimeMessage(session);
 	
-	        mimeMenssage.setFrom(de);
-	        mimeMenssage.addRecipients(Message.RecipientType.TO,new Address[]{para});
+	        mimeMenssage.setFrom(senderAddress);
+	        mimeMenssage.addRecipients(Message.RecipientType.TO,new Address[]{destinationAddress});
 	        mimeMenssage.setSubject(subject);
 	        mimeMenssage.setSentDate(date);
 	        mimeMenssage.setText(message);
 	        Transport.send(mimeMenssage);
 		} catch (SendFailedException e) {
-			LogWriter.write("Falló el envio del mensaje a " + to);
-			LogWriter.write("error :" +e.getMessage());
+			LogWriter.write("ERROR: Falla en el envio del mensaje a " + to);
+			LogWriter.write("ERROR: " + e.getMessage());
 		} catch (AddressException e) {
 			e.printStackTrace();
 		} catch (MessagingException e) {

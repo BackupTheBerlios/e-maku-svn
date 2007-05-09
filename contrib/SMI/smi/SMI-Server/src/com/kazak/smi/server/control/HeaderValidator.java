@@ -76,8 +76,8 @@ public class HeaderValidator {
         
         if (SocketServer.isLogged(sock)) {
 
-        	if (rootName.equals("Message")) {
-                LogWriter.write("Nuevo mesaje desde " + sock);
+        	if (rootName.equals("Message")) { 
+                LogWriter.write("INFO: Nuevo mensaje enviado desde " + sock.socket().getInetAddress().getHostAddress());
                 new MessageDistributor(root,false);
             }
         	else if (rootName.equals("Transaction")) {
@@ -133,11 +133,9 @@ public class HeaderValidator {
             	String id = root.getChildText("id");
             	Document list  = new Document();
             	if ("LIST".equals(id)) {
-            		 System.out.println("Preparando lista de usuarios...");
             		list = SocketServer.getUsersOnLine(root.getText());
             	}
             	else if("TOTAL".equals(id)) {
-           		 System.out.println("Preparando total de usuarios...");
             		list = SocketServer.getUsersTotal();
             	}
             	try {
@@ -165,11 +163,11 @@ public class HeaderValidator {
         }
         /* Validacion de una solicitud de un paquete conexión */
         else if (rootName.equals("CNX")) {
-            LoginUser user = new LoginUser(root);
+            UserLogin user = new UserLogin(root);
         	if (user.valid()) {
         		String login = user.getLogin();
         		SocketServer.setLogin(sock, ConfigFile.getMainDataBase(), login);
-        		SocketServer.getSocketInfo(sock).setEmail(user.getCorreo());
+        		SocketServer.getSocketInfo(sock).setEmail(user.getEmail());
         		SocketServer.getSocketInfo(sock).setUid(user.getUid());
         		SocketServer.getSocketInfo(sock).setGid(user.getGid());
         		SocketServer.getSocketInfo(sock).setAdmin(user.getAdmin());
@@ -177,7 +175,7 @@ public class HeaderValidator {
         		SocketServer.getSocketInfo(sock).setCurrIp(user.getIp());
         		SocketServer.getSocketInfo(sock).setPsName(user.getPsName());
         		SocketServer.getSocketInfo(sock).setGName(user.getGName());
-        		SocketServer.getSocketInfo(sock).setNames(user.getNombres());
+        		SocketServer.getSocketInfo(sock).setNames(user.getNames());
                 new ACPSender(sock,login,user.getUserLevel());
             } else {
                 try {

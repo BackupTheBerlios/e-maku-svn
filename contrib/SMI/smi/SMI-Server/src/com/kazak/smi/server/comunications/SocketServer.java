@@ -155,46 +155,41 @@ public class SocketServer {
     }
     
     public static Document getUsersOnLine(String gid) {
-    	
-    	    System.out.println("Ingresando a getUsersOnline...");
-    		Document doc = new Document();
-    		Element root = new Element("USERLIST");
-    		Element id = new Element("id").setText("LIST");
-    		doc.setRootElement(root);
-     		Element rows, user, name, ip;
-     		root.addContent(id);
-     		usersOnLine = 0;
-     		
-    		for ( Enumeration e = Hchannelclients.keys() ; e.hasMoreElements() ; ) {
-     		      SocketChannel connection = (SocketChannel) e.nextElement();
-     		      String group = Integer.toString(Hchannelclients.get(connection).getGid());
-     		      if (isLogged(connection) && group.equals(gid)) {
-     		    	  usersOnLine++;
-     		    	  rows = new Element("row");
-     		    	  user = new Element("cols").setText(getLogin(connection));
-     		    	  name = new Element("cols").setText(getName(connection));
-     		    	  ip = new Element("cols").setText(connection.socket().getInetAddress().getHostAddress());
-     		    	  rows.addContent(user);
-     		    	  rows.addContent(name);
-     		    	  rows.addContent(ip);
-     		    	  root.addContent(rows);
-     		      }
-    	    }
-    		System.out.println("Numero Usuarios: " + usersOnLine);
-    		
-    		return doc;
+    	Document doc = new Document();
+    	Element root = new Element("USERLIST");
+    	Element id = new Element("id").setText("LIST");
+    	doc.setRootElement(root);
+    	Element rows, user, name, ip;
+    	root.addContent(id);
+    	usersOnLine = 0;
+
+    	for ( Enumeration e = Hchannelclients.keys() ; e.hasMoreElements() ; ) {
+    		SocketChannel connection = (SocketChannel) e.nextElement();
+    		String group = Integer.toString(Hchannelclients.get(connection).getGid());
+    		if (isLogged(connection) && group.equals(gid)) {
+    			usersOnLine++;
+    			rows = new Element("row");
+    			user = new Element("cols").setText(getLogin(connection));
+    			name = new Element("cols").setText(getName(connection));
+    			ip = new Element("cols").setText(connection.socket().getInetAddress().getHostAddress());
+    			rows.addContent(user);
+    			rows.addContent(name);
+    			rows.addContent(ip);
+    			root.addContent(rows);
+    		}
+    	}
+
+    	return doc;
     }
     
     public static Document getUsersTotal() {
-	    System.out.println("Ingresando a getUsersTotal...");
 		Document doc = new Document();
 		Element root = new Element("USERLIST");
 		doc.setRootElement(root);
 		Element id = new Element("id").setText("TOTAL");
 		root.addContent(id);
 		Element rows = new Element("row");
-		Element total = new Element("cols").setText(Integer.toString(usersOnLine));
-		System.out.println("** Numero de Usuarios: " + usersOnLine);
+		Element total = new Element("cols").setText(Integer.toString(Hchannelclients.size()));
 		rows.addContent(total);
  		root.addContent(rows);
  		
@@ -284,12 +279,11 @@ public class SocketServer {
     	return Hchannelclients.get(sock);
     }
     
-    public static SocketInfo getSocketInfo(String login) {
-    	if (login != null) {
-    	    System.out.println("Consultando login: " + login);
-    	} else {
-    	    System.out.println("Llamado a getInfoSocket con parametro nulo (login)");
+    public static SocketInfo getSocketInfo(String login) {	
+    	if (login == null) {
+    	    System.out.println("ERROR: Llamado a getInfoSocket con parametro nulo (login)");
     	}
+    	
     	for (SocketInfo ifs : Hchannelclients.values()) {
     		if (ifs.getLogin().equals(login)) {
     			return ifs;
@@ -297,6 +291,7 @@ public class SocketServer {
     	}
     	return null;
     }
+    
     public static SocketInfo getInstaceOfSocketInfo() {
     	return new SocketInfo();
     }
@@ -555,13 +550,13 @@ public class SocketServer {
 		QueryRunner runQuery = null;
 	    ResultSet rs = null;
 	    
-        for (SocketInfo ifs : Hchannelclients.values()) {    
-            boolean cont = toName.equals(ifs.getGName());
-            if (toName.equals(ifs.getLogin())) {
-                vusers.add(ifs);
+        for (SocketInfo user : Hchannelclients.values()) {    
+            boolean cont = toName.equals(user.getGName());
+            if (toName.equals(user.getLogin())) {
+                vusers.add(user);
             }
             else if (cont) {
-                vusers.add(ifs);
+                vusers.add(user);
             }
         }
         

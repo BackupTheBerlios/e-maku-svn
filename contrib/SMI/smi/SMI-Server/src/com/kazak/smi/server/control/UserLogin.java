@@ -32,14 +32,14 @@ import com.kazak.smi.server.misc.LogWriter;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
-public class LoginUser {
+public class UserLogin {
     
     private Element data;
     private int userLevel;
     private Integer	uid;
     private String	login;
-    private String	nombres;
-    private String	correo;
+    private String	names;
+    private String	email;
     private Boolean	admin;
     private Boolean audit;
     private Integer gid;
@@ -51,7 +51,7 @@ public class LoginUser {
     public String getLogin() {
         return login;
     }
-    public LoginUser(Element data){
+    public UserLogin(Element data){
     	this.data = data;
     }
     
@@ -87,8 +87,8 @@ public class LoginUser {
 				if (rs.next()) {
 					uid 	= rs.getInt(1);
 					login	= rs.getString(2);
-					nombres	= rs.getString(3);
-					correo	= rs.getString(4);
+					names	= rs.getString(3);
+					email	= rs.getString(4);
 					admin	= rs.getBoolean(5);
 					audit	= rs.getBoolean(6);
 					gid		= rs.getInt(7);
@@ -132,22 +132,22 @@ public class LoginUser {
 			
 	    }
 	    LogWriter.write(
-	    		"INFO: Acceso denegado a  {"+login+"} desde la ip "+ ip + " " +
-	    		"ingresando como " + (validate ? "Administrador/Auditor" :"Colocador"));
+	    		"INFO: Acceso denegado a {"+login+"} desde la ip "+ ip + 
+	    		" ingresando como " + (validate ? "Administrador/Auditor" :"Colocador"));
 	    return false;
     }
     
 	public int getUserLevel() {
 		return userLevel;
 	}
-	public String getCorreo() {
-		return correo;
+	public String getEmail() {
+		return email;
 	}
 	public Integer getGid() {
 		return gid;
 	}
-	public String getNombres() {
-		return nombres;
+	public String getNames() {
+		return names;
 	}
 	public Integer getUid() {
 		return uid;

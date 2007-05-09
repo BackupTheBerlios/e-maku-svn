@@ -474,7 +474,7 @@ public class Sync {
 					LogWriter.write(text);
 					return false;
 				}
-				LogWriter.write("Asignando Colocador => " + user.name + "(" + user.code + ") " +
+				LogWriter.write("Asignando Colocador => " + user.name + " (" + user.code + ") " +
 						        "al punto => " + nombre_pventa + " {" + user.codepv + "}");
 			} else {
 				LogWriter.write("Advertencia: Codigo " + key + " no esta asignado a ningun punto de venta.");

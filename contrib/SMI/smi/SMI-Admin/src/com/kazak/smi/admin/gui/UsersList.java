@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 //import java.util.ArrayList;
@@ -40,7 +42,7 @@ import com.kazak.smi.admin.transactions.QuerySenderException;
  *  Esta clase muestra la lista de usuarios en linea de forma agrupada
  */
 
-public class UsersList extends JFrame implements ActionListener,PopupMenuListener {
+public class UsersList extends JFrame implements ActionListener,PopupMenuListener,MouseListener {
 
 	private static final long serialVersionUID = 3920757441925057976L;
 	private JButton close;
@@ -78,7 +80,8 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 		table.setGridColor(Color.BLACK);
 		table.setDefaultEditor(String.class,new CellEditor());
 		table.setSurrendersFocusOnKeystroke(true);
-
+		table.addMouseListener(this);
+		
 		update = new JButton("Actualizar");
 		update.setActionCommand("update");
 		update.addActionListener(this);
@@ -117,7 +120,6 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 		    		List list = elm.getChildren("row");
 		    		Element col = (Element)list.get(0);
 		    		String uTotal = col.getValue();
-		    		System.out.println("Total de usuarios: " + uTotal);
 		    		setWindowLabel(uTotal);
 				} catch (QuerySenderException e) {
 					e.printStackTrace();
@@ -200,7 +202,7 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 	
     public static String getFormattedDate() {
 
-    	SimpleDateFormat now = new SimpleDateFormat("E, dd MMM yyyy - H:m");
+    	SimpleDateFormat now = new SimpleDateFormat("E, dd MMM yyyy - HH:mm");
     	Date date = new Date();
     	
     	return now.format(date);
@@ -243,5 +245,36 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 	    	String value = ((JTextField)getComponent()).getText();
 	        return value;
 	    }
+	}
+
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		System.out.println(e.getSource());
+		if (e.getClickCount() == 2) {
+			JTable tmp = (JTable) e.getSource();
+			int i = tmp.getSelectedRow();
+			String data = (String) model.getValueAt(i, 0);
+			System.out.println("Data: " + data);
+		}
+	}
+
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

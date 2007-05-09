@@ -20,17 +20,17 @@ public class OnLineModel extends AbstractTableModel {
 		Vector v = new Vector();
 		v.add("");
 		v.add("");
-		v.add(false);
+		v.add("");
 		data.add(v);
 		fireTableDataChanged();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void addRow(String code,String name,Boolean b) {
+	public void addRow(String code,String name,String ip) {
 		Vector v = new Vector();
 		v.add(code);
 		v.add(name);
-		v.add(b);
+		v.add(ip);
 		data.add(v);
 		fireTableDataChanged();
 	}
@@ -39,17 +39,7 @@ public class OnLineModel extends AbstractTableModel {
 	public void clear() {
 		data.clear();
 		fireTableDataChanged();
-		/*System.out.println("limpiando ..");
-		int i=0;
-    	for (Vector<Object> col : data) {
-    		for (int j=0;j<3;j++) {
-        		col.set(j,"");
-        		fireTableCellUpdated(i,j);
-    		}
-    		i++;
-   		}*/
    	}
-
 	
 	public Vector<Vector> getData() {
 		return data;
@@ -85,12 +75,11 @@ public class OnLineModel extends AbstractTableModel {
 	}
 
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		if (columnIndex==2)
-			return true;
 		return false;
 	}
 
     public synchronized void setQuery(Document doc) {
+
     	class LoadData extends Thread {
     		private Document doc;
 
