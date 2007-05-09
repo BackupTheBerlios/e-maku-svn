@@ -283,6 +283,7 @@ public class Sync {
 		
 		String text = "Error en la base de datos " + db + "\nCausa: " + e.getMessage();
 		message.setText(text);
+		errSync.addContent(message);
 		try {
 			SocketWriter.writing(sock,new Document(errSync));
 		} catch (IOException ex) {
