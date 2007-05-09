@@ -25,8 +25,7 @@ public class Run {
 		boolean existsConfigFile = (new File(smiConfigFile)).exists();
 		new LogWriter();
 		if (!existsConfigFile) {
-			LogWriter.write("ERROR: Archivo de configuracion no encontrado...");
-			LogWriter.write("ERROR: Debe reinstalar la aplicación...");
+			LogWriter.write("ERROR: Archivo de configuracion no encontrado -> [ " + smiConfigFile + " ]");
 			killServer();
 		}
 		try {	
