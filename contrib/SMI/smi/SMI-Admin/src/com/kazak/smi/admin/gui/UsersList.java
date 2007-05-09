@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Iterator;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
@@ -248,33 +249,52 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 	}
 
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		System.out.println(e.getSource());
 		if (e.getClickCount() == 2) {
-			JTable tmp = (JTable) e.getSource();
-			int i = tmp.getSelectedRow();
-			String data = (String) model.getValueAt(i, 0);
-			System.out.println("Data: " + data);
+			String login = (String) model.getValueAt(((JTable)e.getSource()).getSelectedRow(), 0);
+			getMessages(login);
 		}
 	}
 
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
+	}
+	
+	public static void getMessages(final String user) {
+		Thread t = new Thread() {
+			public void run() {
+				try {
+					String[] args = {user};
+					System.out.println("Consultando mensajes recibidos por " + user);
+					Document doc = QuerySender.getResultSetST("SEL0011",args);
+					Element root = doc.getRootElement();
+					Iterator it = root.getChildren("row").iterator();
+					while (it.hasNext()) {
+						Element el = (Element)it.next();
+						Iterator itCols = el.getChildren().iterator();
+						String date    = ((Element)itCols.next()).getValue();
+						String hour    = ((Element)itCols.next()).getValue();
+						String sender  = ((Element)itCols.next()).getValue();
+						String subject = ((Element)itCols.next()).getValue();  
+						System.out.println("Record: " + date + " / " + hour + " / " + sender + " / " + subject);
+					}
+				} catch (QuerySenderException e) {
+					System.out.println("ERROR: No se pudieron consultar los mensajes del usuario: " + user);
+					e.printStackTrace();
+				}
+			}
+		};
+		t.start();
 	}
 }

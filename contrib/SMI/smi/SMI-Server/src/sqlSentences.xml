@@ -97,6 +97,14 @@
 			FROM grupos WHERE nombre_grupo='?'
 		</sql>
 	</sentence>
+        <sentence>
+                <code>SEL0011</code>
+                <sql>
+			SELECT DISTINCT m.fecha,m.hora,u.login,m.asunto AS login 
+			FROM usuarios u, mensajes m 
+			WHERE u.uid=m.uid_origen AND m.uid_destino=(SELECT uid FROM usuarios WHERE login='?'); 
+                </sql>
+        </sentence>
 	<sentence>
 		<code>SEL0012</code>
 		<sql>
