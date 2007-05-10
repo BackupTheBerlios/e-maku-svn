@@ -17,6 +17,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import com.kazak.smi.admin.control.Cache;
+import com.kazak.smi.admin.gui.table.UserModel;
 
 public class UserTable {
 	

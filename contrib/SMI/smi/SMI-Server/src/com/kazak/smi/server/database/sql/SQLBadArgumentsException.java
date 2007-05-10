@@ -36,7 +36,7 @@ public class SQLBadArgumentsException extends Exception {
     }
 
     public String getMessage() {
-        return Language.getWord("ERR_COD_ARGS") + this.codigo;
+        return Language.getWord("ERR_COD_ARGS") + ": " + this.codigo;
     }
 
 }

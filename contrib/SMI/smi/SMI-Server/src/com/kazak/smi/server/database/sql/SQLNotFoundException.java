@@ -36,6 +36,6 @@ public class SQLNotFoundException extends Exception {
     }
 
     public String getMessage() {
-        return Language.getWord("ERR_COD_NOT_FOUND") + this.codigo;
+        return Language.getWord("ERR_COD_NOT_FOUND") + ": " + this.codigo;
     }
 }

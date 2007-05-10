@@ -125,11 +125,10 @@ packaging_server(){
    jar -cf smiserver.jar *
    mv smiserver.jar ../smiserver/libs
    cd ..
-   find ./smiserver | grep ".svn"
    find ./smiserver | grep ".svn" > EXCLUDE 
    tar cfX smiserver.tar EXCLUDE smiserver
    gzip smiserver.tar
-   #rm /tmp/EXCLUDE
+   rm /tmp/EXCLUDE
    mv smiserver.tar.gz  ../../dist/Servidor
    cd ../../
 }

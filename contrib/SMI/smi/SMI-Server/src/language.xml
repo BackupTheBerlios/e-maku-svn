@@ -124,13 +124,13 @@
     </sentence>
     <sentence>
         <key errorCode="109">ERR_COD_NOT_FOUND</key>
-        <es_CO>El siguiente código no fue encontrado</es_CO>
-        <en_US>The code was not found</en_US>
+        <es_CO>ERROR: El siguiente código SQL no fue encontrado</es_CO>
+        <en_US>ERROR: The SQL code was not found</en_US>
     </sentence>
     <sentence>
         <key errorCode="110">ERR_COD_ARGS</key>
-        <es_CO>Argumentos inválidos para la sentencia</es_CO>
-        <en_US>Invalid arguments for the sentence</en_US>
+        <es_CO>ERROR: Argumentos inválidos para la sentencia</es_CO>
+        <en_US>ERROR: Invalid arguments for the sentence</en_US>
     </sentence>
     <sentence>
         <key errorCode="111">ERR_CONSECUTIVE</key>

@@ -67,7 +67,7 @@ public class LoginWindow implements ActionListener, KeyListener {
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		
-		JTFHost     = new JTextField("localhost",12);
+		JTFHost     = new JTextField("server",12);
 		JTFPort     = new JTextField("9119",12);
 		JTFUser     = new JTextField("admin",12);
 		JPFPassword = new JPasswordField("12345",12);

@@ -1,28 +1,23 @@
 package com.kazak.smi.admin.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
+import javax.swing.JTabbedPane;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
@@ -36,32 +31,33 @@ import com.kazak.smi.admin.network.SocketHandler;
 import com.kazak.smi.admin.network.SocketWriter;
 import com.kazak.smi.admin.transactions.QuerySender;
 import com.kazak.smi.admin.transactions.QuerySenderException;
+import com.kazak.smi.admin.gui.table.GroupsSearchPanel;
+import com.kazak.smi.admin.gui.table.UsersTable;
 
 /*
- *  Esta clase muestra la lista de usuarios en linea de forma agrupada
+ *  This class searchs for users online and shows them as a list
  */
 
-public class UsersList extends JFrame implements ActionListener,PopupMenuListener,MouseListener {
-
+public class UsersList extends JFrame implements ActionListener,PopupMenuListener {  
+	
 	private static final long serialVersionUID = 3920757441925057976L;
 	private JButton close;
 	private JButton update;
 	private JLabel jGroups;
 	private JComboBox groups;
-	private JTable table;
-	private OnLineModel model;
+	private UsersTable table;
 	private HashMap<String,String> groupsHash;
+	private boolean oneTable = false;
 	
 	public UsersList() {
 		this.setLayout(new BorderLayout());
 		this.setSize(600,400);
-		
 		initInterface();
-		
 		this.setLocationByPlatform(true);
 		this.setLocationRelativeTo(MainWindow.getFrame());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setResizable(false);
+		this.setAlwaysOnTop(true);
 		this.setVisible(true);
 	}
 	
@@ -71,15 +67,12 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 		groups = new JComboBox(Cache.getGroupsList());
 		groupsHash = Cache.getGroupsHash();		
 		groups.addPopupMenuListener(this);
-				
-		updateList(groups.getSelectedItem().toString());
+		updateList(groups.getSelectedItem().toString());		
 		
-		model = new OnLineModel();
-		table = new JTable(model);
-		table.setGridColor(Color.BLACK);
-		table.setDefaultEditor(String.class,new CellEditor());
-		table.setSurrendersFocusOnKeystroke(true);
-		table.addMouseListener(this);
+		table = new UsersTable();
+		JScrollPane js = new JScrollPane(table);
+		js.setPreferredSize(new Dimension(500,300));
+		js.setAutoscrolls(true);
 		
 		update = new JButton("Actualizar");
 		update.setActionCommand("update");
@@ -93,18 +86,24 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 		top.setLayout(new FlowLayout(FlowLayout.CENTER));
 		top.add(jGroups);
 		top.add(groups);
-		
-		JScrollPane js  = new JScrollPane(table);
-		JPanel center = new JPanel();
-		center.add(js,BorderLayout.CENTER);
+
 		JPanel down = new JPanel();
 		down.setLayout(new FlowLayout(FlowLayout.CENTER));
 		down.add(update);
 		down.add(close);
 		
-		add(top,BorderLayout.NORTH);
-		add(center,BorderLayout.CENTER);
-		add(down,BorderLayout.SOUTH);
+		JPanel searchByGroups = new JPanel();
+		searchByGroups.setLayout(new BorderLayout());
+		searchByGroups.add(top,BorderLayout.NORTH);
+		searchByGroups.add(js,BorderLayout.CENTER);
+		searchByGroups.add(down,BorderLayout.SOUTH);
+		
+		JTabbedPane tabbedPane = new JTabbedPane();
+		tabbedPane.add("Búsqueda por Código", new UserSearchPanel(this));		
+		tabbedPane.add("Listado por Grupos", new GroupsSearchPanel(this));
+		add(tabbedPane,BorderLayout.CENTER);
+		
+		oneTable = true;		
 	}
 
 	private void loadTotal() {
@@ -135,7 +134,7 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 			public void run() {
 				try {
 					doc = QuerySender.getResultSetST("LIST");
-					model.setQuery(doc);
+					table.getModel().setQuery(doc);
 				} catch (QuerySenderException e) {
 					e.printStackTrace();
 				}
@@ -182,7 +181,7 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 				SocketWriter.writing(SocketHandler.getSock(),document);
 			} catch (IOException ex) {
 				System.out.println("Error de entrada y salida");
-				System.out.println("mensaje: " + ex.getMessage());
+				System.out.println("Causa: " + ex.getMessage());
 				ex.printStackTrace();
 			}
 		}
@@ -200,10 +199,8 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 	}	
 	
     public static String getFormattedDate() {
-
     	SimpleDateFormat now = new SimpleDateFormat("E, dd MMM yyyy - HH:mm");
     	Date date = new Date();
-    	
     	return now.format(date);
     }
     
@@ -226,31 +223,23 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 		loadTotal();
 		requestUsersTotal();
 		requestOnlineUsers(group);
+		if (oneTable) {
+			table.getRenderer().setPressedColumn(0);
+			table.getRenderer().setSelectedColumn(0);
+			table.getTableHeader().repaint();
+		}
 	}
 
 	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
 		
 	}
 	
-	class CellEditor extends DefaultCellEditor {
-
-		private static final long serialVersionUID = -3511583773152512776L;
-
-		public CellEditor() {
-			super(new JTextField());
-		}
-		
-	    public Object getCellEditorValue() {
-	    	String value = ((JTextField)getComponent()).getText();
-	        return value;
-	    }
-	}
-
+	/*
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2) {
-			String login = (String) model.getValueAt(((JTable)e.getSource()).getSelectedRow(), 0);
+			String login = (String) table.getModel().getValueAt(((JTable)e.getSource()).getSelectedRow(), 0);
 			getMessages(login);
-		}
+		} 
 	}
 
 	public void mouseEntered(MouseEvent e) {
@@ -267,7 +256,7 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 
 	public void mouseReleased(MouseEvent e) {
 		
-	}
+	} 
 	
 	public static void getMessages(final String user) {
 		Thread t = new Thread() {
@@ -295,5 +284,6 @@ public class UsersList extends JFrame implements ActionListener,PopupMenuListene
 		};
 		t.start();
 	}
+	*/
 }
 
