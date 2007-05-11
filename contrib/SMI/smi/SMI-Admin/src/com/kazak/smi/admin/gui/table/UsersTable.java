@@ -25,6 +25,7 @@ public class UsersTable extends JTable implements MouseListener {
 	private OnLineModel model;
 	private SortButtonRenderer renderer;
 	private JTableHeader header = new JTableHeader();
+	private TableHeaderListener listener;
 		
 	// Users Table Constructor
 	public UsersTable() {
@@ -47,7 +48,8 @@ public class UsersTable extends JTable implements MouseListener {
 	    //this.setColumnModel(columnModel);
 	    header = this.getTableHeader();
 				
-		header.addMouseListener(new TableHeaderListener(header,model,renderer));
+	    listener = new TableHeaderListener(header,model,renderer);
+		header.addMouseListener(listener);
 	}
 	
 	// This method gets the inbox mail titles from a user
@@ -94,6 +96,14 @@ public class UsersTable extends JTable implements MouseListener {
 			String login = (String) model.getValueAt(((JTable)e.getSource()).getSelectedRow(), 0);
 			getMessages(login);
 		} 		
+	}
+	
+	public void initHeader() {
+		listener.initHeader();
+	}
+	
+	public int getGroupSize() {
+		return model.getGroupSize();
 	}
 	
 	public void mouseEntered(MouseEvent e) {

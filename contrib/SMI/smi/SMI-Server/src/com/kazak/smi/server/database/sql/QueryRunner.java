@@ -36,7 +36,7 @@ import com.kazak.smi.server.misc.settings.ConfigFile;
 public class QueryRunner extends Element {
 
 	private static final long serialVersionUID = -5369073295276204778L;
-    private String cod_sql;
+    private String sqlCode;
     private Statement st;
     private String sql;
     
@@ -45,22 +45,22 @@ public class QueryRunner extends Element {
      * la consulta
      * 
      * @param bd Base de datos
-     * @param cod_sql Codigo Sentencia SQL
+     * @param sqlCode Codigo Sentencia SQL
      */
     public QueryRunner() {}
-    public QueryRunner(String cod_sql) throws SQLNotFoundException, SQLBadArgumentsException {
-        this.cod_sql = cod_sql;
-        sql = SQLInstructions.getSentence(cod_sql);
+    public QueryRunner(String sqlCode) throws SQLNotFoundException, SQLBadArgumentsException {
+        this.sqlCode = sqlCode;
+        sql = SQLInstructions.getSentence(sqlCode);
     }
     
-    public QueryRunner(String cod_sql,String[] args) throws SQLNotFoundException, SQLBadArgumentsException{
-        this.cod_sql = cod_sql;
-        sql = SQLInstructions.getSentence(cod_sql,args);
+    public QueryRunner(String sqlCode,String[] args) throws SQLNotFoundException, SQLBadArgumentsException{
+        this.sqlCode = sqlCode;
+        sql = SQLInstructions.getSentence(sqlCode,args);
     }
     
-    public QueryRunner(String cache,String sql) {
-        this.cod_sql=cache;
-        this.sql=sql;
+    public QueryRunner(String sqlCode,String sql) {
+        this.sqlCode = sqlCode;
+        this.sql = sql;
     }
     
     
@@ -78,7 +78,7 @@ public class QueryRunner extends Element {
 
     public boolean runSQL(String cod_sql,String[] args) 
     throws SQLException,SQLNotFoundException, SQLBadArgumentsException {
-        this.cod_sql = cod_sql;
+        this.sqlCode = cod_sql;
         sql = SQLInstructions.getSentence(cod_sql,args);
         st = ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).createStatement();
 //        LogWriter.write("SENTENCIA SQL :: "+sql);
@@ -89,7 +89,7 @@ public class QueryRunner extends Element {
 
     public boolean runSQL(String[] args) 
     throws SQLException,SQLNotFoundException, SQLBadArgumentsException {
-        sql = SQLInstructions.getSentence(cod_sql,args);
+        sql = SQLInstructions.getSentence(sqlCode,args);
         st = ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).createStatement();
         LogWriter.write("SENTENCIA SQL :: "+sql);
         boolean status = st.execute(sql);

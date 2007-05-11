@@ -60,7 +60,7 @@ public class ConnectionsPool {
 								ConfigFile.getUser(i),
 								ConfigFile.getPassword(i)));
             	} else {
-                    LogWriter.write(Language.getWord("ERR_LOADING_DB") +
+                    LogWriter.write(Language.getWord("NO_LOADING_DB") +
                     		        ConfigFile.getDBName(i));
             	}
             } 

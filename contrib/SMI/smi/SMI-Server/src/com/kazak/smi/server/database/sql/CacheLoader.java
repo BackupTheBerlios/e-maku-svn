@@ -20,9 +20,8 @@ public class CacheLoader {
    
    public CacheLoader() {
 	   HInstructions = new Hashtable<String,String>();
-	   LogWriter.write(
-			   Language.getWord("LOADING_CACHE") + " "+
-			   ConfigFile.getMainDataBase());
+	   LogWriter.write(Language.getWord("LOADING_CACHE") 
+			           + " [" + ConfigFile.getMainDataBase() + "]");
 	   URL url = this.getClass().getResource("/sqlSentences.xml");
 	   SAXBuilder sax = new SAXBuilder(false);
 	   try {

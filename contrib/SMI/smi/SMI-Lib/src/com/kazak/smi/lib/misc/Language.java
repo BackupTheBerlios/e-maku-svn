@@ -16,26 +16,26 @@ public class Language  {
     
     /**
      * Metodo que carga se encarga de llenar el glosario para el idioma del ST
-     * @param lenguaje idioma para el ST, Ej. <code>SPANISH</code>
+     * @param lang idioma para el ST, Ej. <code>SPANISH</code>
      */
-    public void CargarLenguaje(String lenguaje) {
+    public void loadLanguage(String lang) {
         Language.glossary = new Hashtable<String,messageStructure>();
         try {
             SAXBuilder builder = new SAXBuilder(false);
             Document doc = builder.build(this.getClass().getResource("/language.xml"));
-            Element raiz = doc.getRootElement();
-            List palabras = raiz.getChildren("sentence");
-            Iterator i = palabras.iterator();
+            Element root = doc.getRootElement();
+            List words = root.getChildren("sentence");
+            Iterator i = words.iterator();
             while (i.hasNext()) {
-                Element campos = (Element)i.next();
-            	String message = campos.getChildText(lenguaje);
+                Element fields = (Element)i.next();
+            	String message = fields.getChildText(lang);
             	
-                if (campos.getChild("key").getAttribute("errorCode")!=null) {
-                	String codeError = campos.getChild("key").getAttribute("errorCode").getValue();
-                	glossary.put(campos.getChildText("key"),new messageStructure(codeError,message));
+                if (fields.getChild("key").getAttribute("errorCode")!=null) {
+                	String errorCode = fields.getChild("key").getAttribute("errorCode").getValue();
+                	glossary.put(fields.getChildText("key"),new messageStructure(errorCode,message));
                 }
                 else {
-                	glossary.put(campos.getChildText("key"),new messageStructure(null,message));
+                	glossary.put(fields.getChildText("key"),new messageStructure(null,message));
                 }
         		
             }
@@ -60,24 +60,24 @@ public class Language  {
         return nemo;
     }
     
-    public static String getCodeError(String key) {
+    public static String getErrorCode(String key) {
     	if (glossary.containsKey(key))
-    		return glossary.get(key).getCodeError();
+    		return glossary.get(key).getErrorCode();
     	else
     		return "";
     }
     
     class messageStructure {
     	private String message = null;
-    	private String codeError = null;
+    	private String errorCode = null;
     	
-    	private messageStructure(String codeError,String message){
-    		this.codeError=codeError;
+    	private messageStructure(String errorCode,String message){
+    		this.errorCode=errorCode;
     		this.message=message;
     	}
     	
-		public String getCodeError() {
-			return codeError;
+		public String getErrorCode() {
+			return errorCode;
 		}
 		public String getMessage() {
 			return message;

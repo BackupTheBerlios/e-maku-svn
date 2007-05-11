@@ -234,7 +234,7 @@ public class Cache {
 		return workstations;
 	}
 	
-	public static User searchUser (String login) {
+	public static User getUser (String login) {
 		Cache.User user = null;
 		boolean withgroup = false;
 		boolean withpv = false;
@@ -275,7 +275,7 @@ public class Cache {
 	}
 
 	public static boolean containsUser(String login) {
-		User user = searchUser(login);
+		User user = getUser(login);
 		return user!=null && user.login.equals(login) ? true :false;
 	}
 

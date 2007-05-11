@@ -1,4 +1,3 @@
-
 package com.kazak.smi.server.misc.settings;
 
 import java.io.FileNotFoundException;
@@ -40,6 +39,7 @@ import com.kazak.smi.server.misc.LogWriter;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
+
 public class ConfigFile {
     
     private static SAXBuilder builder;
@@ -47,22 +47,20 @@ public class ConfigFile {
     private static Element root;
     private static Language appLang = new Language();
     private static Vector <Connections>VConnectionsPool  = new Vector<Connections>();
-    private static int    port;
+    private static int port;
     private static String appOwner;
     private static String mainDataBase;
     private static String secondDataBase;
-	private static int    timeIntervalConnect;
+	private static int checkMailEvery;
     private static String local;
-    private static String userMail; 
-    private static String passWordMail;
+    private static String mailUser; 
+    private static String mailPassword;
     private static String mailServer;
-    private static int timeAlifeMessageForClient;
-    private static int    timeAlifeMessageInDataBase;
-    private static int    maxMessagesDataBase;
-    private static ArrayList<OracleSynchronized> oraclesync = new ArrayList<OracleSynchronized>();;
-    
-    
-    
+    private static int messageLifeTimeForClients;
+    private static int messageLifeTimeInDB;
+    private static int maxMessagesDataBase;
+    private static ArrayList<OracleSyncTask> oracleSync = new ArrayList<OracleSyncTask>();;
+      
     /**
      * Este metodo se encarga de cargar el archivo de configuracion
      * @throws ConfigFileNotLoadException
@@ -87,35 +85,35 @@ public class ConfigFile {
             while (i.hasNext()) {
                 
                 Element records = (Element)i.next();
-                if (records.getName().equals("PoolConnection")) {
+                if (records.getName().equals("ConnectionPool")) {
                     loadConnectionsPool(records.getChildren());
                 } else if (records.getName().equals("MainDataBase")) {
                 	mainDataBase = records.getValue();
-                } else if (records.getName().equals("SecondDataBase")) {
+                } else if (records.getName().equals("SourceDataBase")) {
                 	secondDataBase = records.getValue();
                 } else if (records.getName().equals("AppOwner")) {
                 	appOwner = records.getValue();
-                }else if (records.getName().equals("Lenguaje")) {
+                }else if (records.getName().equals("Language")) {
                 	local = records.getValue();
-                    appLang.CargarLenguaje(local);
+                    appLang.loadLanguage(local);
                 } else if (records.getName().equals("Port")) {
                     port = Integer.parseInt(records.getValue());
-                } else if (records.getName().equals("UserMail")) {
-                	userMail = records.getValue();
-                } else if (records.getName().equals("PasswordMail")) {
-                	passWordMail = records.getValue();
+                } else if (records.getName().equals("MailUser")) {
+                	mailUser = records.getValue();
+                } else if (records.getName().equals("MailPassword")) {
+                	mailPassword = records.getValue();
                 } else if (records.getName().equals("MailServer")) {
                 	mailServer = records.getValue();
-                } else if (records.getName().equals("timeIntervalConnect")) {
-                	timeIntervalConnect = Integer.parseInt(records.getValue());
-                } else if (records.getName().equals("TimeAlifeMessageForClient")) {
-    	        	timeAlifeMessageForClient = Integer.parseInt(records.getValue());
-    	        }else if (records.getName().equals("TimeAlifeMessageInDataBase")) {
-    	        	timeAlifeMessageInDataBase = Integer.parseInt(records.getValue());
+                } else if (records.getName().equals("CheckMailEvery")) {
+                	checkMailEvery = Integer.parseInt(records.getValue());
+                } else if (records.getName().equals("MessageLifeTimeForClients")) {
+    	        	messageLifeTimeForClients = Integer.parseInt(records.getValue());
+    	        }else if (records.getName().equals("MessageLifeTimeInDataBase")) {
+    	        	messageLifeTimeInDB = Integer.parseInt(records.getValue());
     	        } else if (records.getName().equals("MaxMessagesDataBase")) {
     	        	maxMessagesDataBase = Integer.parseInt(records.getValue());
-    	        } else if (records.getName().equalsIgnoreCase("synchronized")) {
-                	oraclesync.add(oracleSynchronized(records));
+    	        } else if (records.getName().equalsIgnoreCase("SyncTask")) {
+                	oracleSync.add(createSyncTask(records));
                 }
             }
             LogWriter.write(Language.getWord("LOADING_CF"));
@@ -131,8 +129,8 @@ public class ConfigFile {
         }
     }
 
-    private static OracleSynchronized oracleSynchronized(Element e) {
-    	OracleSynchronized sync = new OracleSynchronized();
+    private static OracleSyncTask createSyncTask(Element e) {
+    	OracleSyncTask sync = new OracleSyncTask();
     	Iterator i = e.getChildren().iterator();
     	while (i.hasNext()) {
     		Element records = (Element)i.next();
@@ -150,12 +148,12 @@ public class ConfigFile {
     /**
      * Metodo encargado de cargar cada una de las conexiones a las
      * Bases de Datos
-     * @param LPoolConexiones Lista de datos xml que contienen el pool de conexiones de
+     * @param connectionsPool Lista de datos xml que contienen el pool de conexiones de
      * las bases de datos existentes
      */
     
-    private static void loadConnectionsPool(java.util.List LPoolConexiones) {
-        Iterator i = LPoolConexiones.iterator();
+    private static void loadConnectionsPool(java.util.List connectionsPool) {
+        Iterator i = connectionsPool.iterator();
 
         while (i.hasNext()) {
             Element records = (Element)i.next();
@@ -263,7 +261,7 @@ public class ConfigFile {
     }
     
     public static boolean isConnectOnInit(int index) {
-        return VConnectionsPool.get(index).isConnecOnInit();
+        return VConnectionsPool.get(index).isConnectedOnInit();
     }
     
     public static Connection getConnection(String name) throws SQLException, ClassNotFoundException {
@@ -289,7 +287,7 @@ public class ConfigFile {
 
 
 	public static String getUserMail() {
-		return userMail;
+		return mailUser;
 	}
 
 	public static String getSecondDataBase() {
@@ -300,40 +298,39 @@ public class ConfigFile {
 		return appOwner;
 	}
 
-
 	public static String getPassWordMail() {
-		return passWordMail;
+		return mailPassword;
 	}
 
 	public static String getMailServer() {
 		return mailServer;
 	}
 	public static int getTimeIntervalConnect() {
-		return timeIntervalConnect;
+		return checkMailEvery;
 	}
 
 	public static void setTimeIntervalConnect(int timeIntervalConnect) {
-		ConfigFile.timeIntervalConnect = timeIntervalConnect;
+		ConfigFile.checkMailEvery = timeIntervalConnect;
 	}
 
-	public static ArrayList<OracleSynchronized> getOraclesync() {
-		return oraclesync;
+	public static ArrayList<OracleSyncTask> getOraclesync() {
+		return oracleSync;
 	}
 
-	public static int getTimeAlifeMessageForClient() {
-		return timeAlifeMessageForClient;
+	public static int getMessageLifeTimeForClients() {
+		return messageLifeTimeForClients;
 	}
 
-	public static void setTimeAlifeMessageForClient(int timeAlifeMessageForClient) {
-		ConfigFile.timeAlifeMessageForClient = timeAlifeMessageForClient;
+	public static void setTimeAlifeMessageForClient(int MessageLifeTimeForClient) {
+		ConfigFile.messageLifeTimeForClients = MessageLifeTimeForClient;
 	}
 
 	public static int getMaxMessagesDataBase() {
 		return maxMessagesDataBase;
 	}
 
-	public static int getTimeAlifeMessageInDataBase() {
-		return timeAlifeMessageInDataBase;
+	public static int getMessageLifeTimeInDataBase() {
+		return messageLifeTimeInDB;
 	}}
     
 /**
@@ -348,13 +345,13 @@ class Connections {
     private String driver;
     private String user;
     private String password;
-    private boolean connecOnInit = true;
+    private boolean connectedOnInit = true;
     
     /** Getter for property nombre.
      * @return Value of property nombre.
      *
      */
-    public java.lang.String getName() {
+    public String getName() {
         return name;
     }
     
@@ -362,15 +359,15 @@ class Connections {
      * @param name New value of property nombre.
      *
      */
-    public void setName(java.lang.String nameVar) {
-        this.name = nameVar;
+    public void setName(String name) {
+        this.name = name;
     }
     
     /** Getter for property url.
      * @return Value of property url.
      *
      */
-    public java.lang.String getUrl() {
+    public String getUrl() {
         return url;
     }
     
@@ -378,7 +375,7 @@ class Connections {
      * @param url New value of property url.
      *
      */
-    public void setUrl(java.lang.String url) {
+    public void setUrl(String url) {
         this.url = url;
     }
     
@@ -386,7 +383,7 @@ class Connections {
      * @return Value of property driver.
      *
      */
-    public java.lang.String getDriver() {
+    public String getDriver() {
         return driver;
     }
     
@@ -394,7 +391,7 @@ class Connections {
      * @param driver New value of property driver.
      *
      */
-    public void setDriver(java.lang.String driver) {
+    public void setDriver(String driver) {
         this.driver = driver;
     }
     
@@ -402,7 +399,7 @@ class Connections {
      * @return Value of property usuario.
      *
      */
-    public java.lang.String getUser() {
+    public String getUser() {
         return user;
     }
     
@@ -410,15 +407,15 @@ class Connections {
      * @param usuario New value of property usuario.
      *
      */
-    public void setUser(java.lang.String userVar) {
-        this.user = userVar;
+    public void setUser(String user) {
+        this.user = user;
     }
     
     /** Getter for property password.
      * @return Value of property password.
      *
      */
-    public java.lang.String getPassword() {
+    public String getPassword() {
         return password;
     }
     
@@ -426,15 +423,15 @@ class Connections {
      * @param password New value of property password.
      *
      */
-    public void setPassword(java.lang.String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-	public boolean isConnecOnInit() {
-		return connecOnInit;
+	public boolean isConnectedOnInit() {
+		return connectedOnInit;
 	}
 
 	public void setConnecOnInit(boolean connecOnInit) {
-		this.connecOnInit = connecOnInit;
+		this.connectedOnInit = connecOnInit;
 	}
 }

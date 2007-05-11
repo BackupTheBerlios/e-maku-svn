@@ -19,25 +19,27 @@ public class TableHeaderListener extends MouseAdapter {
     public void mousePressed(MouseEvent e) {
       int index = header.columnAtPoint(e.getPoint());
       boolean isAscent;
-      
       renderer.setPressedColumn(index);
       renderer.setSelectedColumn(index);
       header.repaint();
       if (SortButtonRenderer.DOWN == renderer.getState(index)) {
-        isAscent = true;
-      } else {
         isAscent = false;
+      } else {
+        isAscent = true;
       }
-      model.updateTable(index, isAscent);	  
+      model.updateTable(index, isAscent);	      	
     }
 
     public void mouseReleased(MouseEvent e) {
-    	cleanColumns();
-    }
-    
-    public void cleanColumns() {
         renderer.setPressedColumn(-1); // clear
-        header.repaint();
+        header.repaint();    	
     }
-    
+        
+    public void initHeader() {
+        renderer.setPressedColumn(0);
+        renderer.setColumnForUpdate();
+        header.repaint();
+        model.updateTable(0, true);	      	
+    }
+            
   }

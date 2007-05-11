@@ -1,7 +1,7 @@
 package com.kazak.smi.server.misc.settings;
 
 
-public class OracleSynchronized {
+public class OracleSyncTask {
     private int    hour;
     private int    minute;
     private int    second;

@@ -7,7 +7,7 @@ public class BevelArrowIcon implements Icon {
 	public static final int UP    = 0;         // direction
 	public static final int DOWN  = 1;
 
-	private static final int DEFAULT_SIZE = 11;
+	private static final int DEFAULT_SIZE = 8;
 
 	private Color edge1;
 	private Color edge2;
@@ -51,8 +51,8 @@ public class BevelArrowIcon implements Icon {
 
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		switch (direction) {
-		case DOWN: drawDownArrow(g, x, y); break;
-		case   UP: drawUpArrow(g, x, y);   break;
+		case DOWN: drawDownArrow(g, x+5, y); break;
+		case   UP: drawUpArrow(g, x+5, y);   break;
 		}
 	}
 

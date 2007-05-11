@@ -26,7 +26,7 @@ import com.kazak.smi.server.database.connection.ConnectionsPool;
 import com.kazak.smi.server.misc.LogWriter;
 import com.kazak.smi.server.misc.settings.ConfigFile;
 import com.kazak.smi.server.misc.ServerConst;
-import com.kazak.smi.server.misc.settings.OracleSynchronized;
+import com.kazak.smi.server.misc.settings.OracleSyncTask;
 
 /**
  * This class handles all the sync processes between the SMI and the Oracle/PostgreSQL DB
@@ -38,14 +38,14 @@ import com.kazak.smi.server.misc.settings.OracleSynchronized;
 public class Sync {
 	
 	private String oracleSQL = "";
-	private Connection cnOracle;
-	private Hashtable<String,User> dataUser; 
-	private Hashtable<String,String> dataWs;
+	private Connection oracleConnection;
+	private Hashtable<String,User> usersHash; 
+	private Hashtable<String,String> wsHash;
 	
-	private Vector<String> CurrentDataUser;
-	private Vector<String> ForDeleteDataUser;
-	private Vector<String> ForDeleteDataWs;
-	private Vector<String> CurrentDataWs;
+	private Vector<String> currentUsersVector;
+	private Vector<String> deletedUsersVector;
+	private Vector<String> deletedWSVector;
+	private Vector<String> currentWSVector;
 	private Statement st = null;
 	private SocketChannel sock;
 
@@ -58,7 +58,7 @@ public class Sync {
             oracleSQL =	getOracleSQLString();
 			LogWriter.write("INFO: Iniciando demonio de sincronización");
 			loadSettings();
-			for (OracleSynchronized oraclesync:ConfigFile.getOraclesync()) {				
+			for (OracleSyncTask oraclesync:ConfigFile.getOraclesync()) {				
 				String minute = Integer.toString(oraclesync.getMinute());
 				String time = "am";
 				if (minute.length() == 1) {
@@ -169,13 +169,13 @@ public class Sync {
 	 * 
 	 */
 	public void loadSettings() throws FileNotFoundException, IOException {
-		dataUser = new Hashtable<String, User>();
-		dataWs = new Hashtable<String, String>();
+		usersHash = new Hashtable<String, User>();
+		wsHash = new Hashtable<String, String>();
 		
-		CurrentDataUser = new Vector<String>();
-		CurrentDataWs = new Vector<String>();
-		ForDeleteDataUser = new Vector<String>();
-		ForDeleteDataWs = new Vector<String>();
+		currentUsersVector = new Vector<String>();
+		currentWSVector = new Vector<String>();
+		deletedUsersVector = new Vector<String>();
+		deletedWSVector = new Vector<String>();
 	}	
 	
 	/**
@@ -186,14 +186,14 @@ public class Sync {
 		String oracleDB = ConfigFile.getSecondDataBase();
 		try {
 			LogWriter.write("INFO: Cargando registros actualizados de la base de datos Oracle [" + oracleDB + "]");
-			cnOracle = ConfigFile.getConnection(oracleDB);
+			oracleConnection = ConfigFile.getConnection(oracleDB);
 						
-			if (cnOracle == null) {
+			if (oracleConnection == null) {
 				LogWriter.write("ERROR: La conexion a la base de datos " + oracleDB + " es invalida.");
 				return false;
 			}
 			
-			st = cnOracle.createStatement();
+			st = oracleConnection.createStatement();
 			LogWriter.write("SENTENCIA: " + oracleSQL);
 			rs = st.executeQuery(oracleSQL);
 			int i=0;
@@ -208,16 +208,16 @@ public class Sync {
 				user.name     = nameus; 
 				user.codepv   = wscode;
 				
-				dataUser.put(code,user);
-				if (!dataWs.containsKey(wscode)) {
-					dataWs.put(wscode,wsnamepv);
+				usersHash.put(code,user);
+				if (!wsHash.containsKey(wscode)) {
+					wsHash.put(wscode,wsnamepv);
 				}
 				i++;
 			}
 			LogWriter.write("INFO: Total de usuarios registrados: " + i);
 			rs.close();
 			st.close();
-			cnOracle.close();
+			oracleConnection.close();
 			return true;
 		}
 		catch (ClassNotFoundException e) {
@@ -243,7 +243,7 @@ public class Sync {
 			int i=0;
 			while (rs.next()) {
 				String code = rs.getString(1).trim();
-				CurrentDataUser.add(code);
+				currentUsersVector.add(code);
 				i++;
 			}
 			LogWriter.write("INFO: Total de colocadores registrados: " + i);
@@ -259,7 +259,7 @@ public class Sync {
 			int i=0;
 			while (rs.next()) {
 				String code   = rs.getString(1).trim();
-				CurrentDataWs.add(code);
+				currentWSVector.add(code);
 				i++;
 			}
 			LogWriter.write("INFO: Total de puntos de venta registrados: " + i);
@@ -321,7 +321,7 @@ public class Sync {
 
 		String SQL = "";
 		LogWriter.write("INFO: Eliminando usuarios deshabilitados...");
-		for (String code : ForDeleteDataUser) {
+		for (String code : deletedUsersVector) {
 			try {
 				 SQL = "DELETE FROM " + "usuarios_pventa " + "WHERE uid=(SELECT uid FROM usuarios WHERE login='"+code+"')";
 				 st.execute(SQL);
@@ -336,7 +336,7 @@ public class Sync {
 		}
 
 		LogWriter.write("INFO: Eliminando puntos de venta deshabilitados...");
-		for (String code : ForDeleteDataWs) {
+		for (String code : deletedWSVector) {
 			try {
 				SQL = "DELETE FROM puntosv WHERE codigo='"+code+"'";
 				st.execute(SQL);
@@ -349,12 +349,12 @@ public class Sync {
 		}
 		
         String name = "";
-		Set<String> keys = dataWs.keySet();
+		Set<String> keys = wsHash.keySet();
 		LogWriter.write("INFO: Actualizando puntos de venta...");
 		
 		for (String key : keys) {
 			try {
-				name = dataWs.get(key);
+				name = wsHash.get(key);
 				if (key!=null && name!=null) {
 					SQL = "INSERT INTO puntosv (codigo,nombre) values('"+key+"','"+name+"')";
 					st.execute(SQL);
@@ -370,13 +370,13 @@ public class Sync {
 			}
 		}
 
-		keys = dataUser.keySet();
+		keys = usersHash.keySet();
 		LogWriter.write("INFO: Actualizando usuarios del sistema...");
 		
 		for (String key : keys) {
 			User user = null;
 			try {
-				user = dataUser.get(key);
+				user = usersHash.get(key);
 				if (user != null) {
 					SQL = "INSERT INTO usuarios (login,clave,nombres) " + 
 					      "values('"+user.code+"',md5('"+user.password+"'),'"+user.name+"')";
@@ -394,11 +394,11 @@ public class Sync {
 			}
 		}
 		
-		keys = dataUser.keySet();
+		keys = usersHash.keySet();
 		LogWriter.write("INFO: Actualizando relacion de usuarios y puntos de venta...");
 		
 		for (String key : keys) {
-			User user = dataUser.get(key);
+			User user = usersHash.get(key);
 
 			if (user.codepv!=null) {
 				String codigo_pventa      = null;
@@ -495,23 +495,24 @@ public class Sync {
 	 * This method selects the old records which must to be deleted 
 	 */
 	private void filter() {
-		for (String code : CurrentDataUser) {
-			if (dataUser.containsKey(code)) {
-				dataUser.remove(code);
+		
+        LogWriter.write("INFO: Filtrando lista de usuarios a eliminar...");
+		for (String code : currentUsersVector) {
+			if (usersHash.containsKey(code)) {
+				usersHash.remove(code);
 			}
 			else {
-				LogWriter.write("INFO: Adicionando usuario {" + code + "} a la lista de eliminacion.");
-				ForDeleteDataUser.add(code);
+				deletedUsersVector.add(code);
 			}
 		}
-		
-		for (String code : CurrentDataWs) {
-			if (dataWs.containsKey(code)) {
-				dataWs.remove(code);
+
+        LogWriter.write("INFO: Filtrando puntos de venta a eliminar...");
+		for (String code : currentWSVector) {
+			if (wsHash.containsKey(code)) {
+				wsHash.remove(code);
 			}
 			else {
-				LogWriter.write("INFO: Adicionando punto de venta {" + code + "} a la lista de eliminacion.");
-				ForDeleteDataWs.add(code);
+				deletedWSVector.add(code);
 			}
 		}
 	}
@@ -533,9 +534,9 @@ public class Sync {
 
 	    private Scheduler scheduler = new Scheduler();
 	    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss.SSS");
-	    private OracleSynchronized oraclesync;
+	    private OracleSyncTask oraclesync;
 	    
-	    public Cron(OracleSynchronized oraclesync){
+	    public Cron(OracleSyncTask oraclesync){
 	    	this.oraclesync=oraclesync;
 	    }
 	    
@@ -568,15 +569,15 @@ public class Sync {
 					
 					try {
 						st = ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).createStatement();
-						sql = "DELETE FROM mensajes WHERE current_date=(fecha+" + ConfigFile.getTimeAlifeMessageInDataBase() + ")";
-						LogWriter.write("Borrando mensajes con tiempo de vida igual a " + ConfigFile.getTimeAlifeMessageInDataBase());
+						sql = "DELETE FROM mensajes WHERE current_date=(fecha+" + ConfigFile.getMessageLifeTimeInDataBase() + ")";
+						LogWriter.write("INFO: Eliminando mensajes con tiempo de vida igual a " + ConfigFile.getMessageLifeTimeInDataBase());
 						if (st.execute(sql)) {
 							LogWriter.write("INFO: Mensajes antiguos borrados satisfactoriamente.");
 						}
 						
 					} catch (SQLException e) {
 							LogWriter.write(
-									"Error durante la sincronización\n" +
+									"ERROR: Falla durante la sincronizacion.\n" +
 									"Causa: " +  e.getMessage());
 							e.printStackTrace();
 					}
@@ -585,21 +586,22 @@ public class Sync {
 						
 					try {	
 						sql = "SELECT count(*)-"+ConfigFile.getMaxMessagesDataBase()+" FROM mensajes";
-						LogWriter.write("INFO: Liberando mensajes de  base de datos, Cantidad: " + ConfigFile.getTimeAlifeMessageInDataBase());
+						LogWriter.write("INFO: Revisando cantidad de mensajes almacenados en la base de datos...");
 						rs = st.executeQuery(sql);
 						rs.next();
 						limit = rs.getInt(1);
 						rs.close();
 					} catch (SQLException e) {
 						LogWriter.write(
-								"Error durante la sincronizacion\n" +
+								"ERROR: Falla durante la sincronizacion.\n" +
 								"Causa: " +  e.getMessage());
 						e.printStackTrace();
 					}
 					
 					try {
 						if (limit > 0 ) {
-							LogWriter.write("INFO: Numero de mensajes a liberar: " + limit);
+							LogWriter.write("INFO: El numero maximo de mensajes permitidos en la base de datos ha sido alcanzado.");
+							LogWriter.write("INFO: Procediendo a eliminar " + limit + " mensajes...");
 							sql = "SELECT mid FROM mensajes ORDER BY fecha ASC ,hora ASC LIMIT "+limit;
 							rs = st.executeQuery(sql);
 							ArrayList<Integer> mids = new ArrayList<Integer>();
@@ -616,7 +618,7 @@ public class Sync {
 						ConnectionsPool.CloseConnections();
 					} catch (SQLException e) {
 						LogWriter.write(
-								"Error durante la sincronizacion\n" +
+								"ERROR: Falla durante la sincronizacion\n" +
 								"Causa: " +  e.getMessage());
 						e.printStackTrace();
 					}

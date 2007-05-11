@@ -30,8 +30,8 @@ public class MessageDistributor {
 	private SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
 	private SimpleDateFormat formatHour = new SimpleDateFormat("hh:mm aaa");
 	private Date date;
-	private String gidStr;
-	private int    gidInt;
+	private String groupIDString;
+	private int    groupID;
 	private String from;
 	private String dateStr;
 	private String hourStr;
@@ -41,17 +41,17 @@ public class MessageDistributor {
 	private int timeAlife = -1;
 	private boolean control = false;
 	
-	public MessageDistributor(Element elm, boolean pop) {
+	public MessageDistributor(Element element, boolean pop) {
 		
-		gidStr  = elm.getChildText("idgroup");
-		gidInt  = Integer.parseInt(gidStr);
+		groupIDString  = element.getChildText("idgroup");
+		groupID  = Integer.parseInt(groupIDString);
 		date    = Calendar.getInstance().getTime();
-		from    = elm.getChildText("from");
+		from    = element.getChildText("from");
 		dateStr = formatDate.format(date);
 		hourStr = formatHour.format(date);
-		subject = elm.getChildText("subject");
-		body    = elm.getChildText("message");
-		Element elmTimeAlife = elm.getChild("timeAlife");
+		subject = element.getChildText("subject");
+		body    = element.getChildText("message");
+		Element elmTimeAlife = element.getChild("timeAlife");
 		timeAlife = elmTimeAlife!=null ? Integer.parseInt(elmTimeAlife.getValue()) : 0;
 
 		if (timeAlife > 0) {
@@ -65,7 +65,6 @@ public class MessageDistributor {
 		
 		if (!pop) {	
 			// Consultando usuarios de puntos de venta
-			LogWriter.write("INFO: Remitente -> " + from + " / Destino: " + elm.getChildText("toName") + " / Asunto: " + subject);
 			sender = SocketServer.getSocketInfo(from);
 		}
 		else {
@@ -101,10 +100,10 @@ public class MessageDistributor {
 		
 		Vector<SocketInfo> vusers;
 		if (!pop) {
-			vusers = SocketServer.getAllClients(gidInt);
+			vusers = SocketServer.getAllClients(groupID);
 		}
 		else {
-			String toName = elm.getChildText("toName");
+			String toName = element.getChildText("toName");
 			vusers = SocketServer.getAllClients(toName);
 		}
 			
@@ -148,9 +147,6 @@ public class MessageDistributor {
 					e.printStackTrace();
 				}
 			}
-			/*else {
-				LogWriter.write("El usuario " + destination.getLogin() + " no se encuentra en linea.");
-			}*/
 
 			// Enviando mensaje a usuarios del servidor de correo (personal administrativo)
 			if (!pop) {
@@ -172,12 +168,12 @@ public class MessageDistributor {
 			String[] argsSql = 
 			{String.valueOf(destination.getUid()),String.valueOf(sender.getUid()),
 			dateStr,hourStr,subject.trim(),body.trim(),isvalid,
-			String.valueOf(ConfigFile.getTimeAlifeMessageForClient()),
+			String.valueOf(ConfigFile.getMessageLifeTimeForClients()),
 			String.valueOf(control),String.valueOf(timeAlife)};
 			
 			QueryRunner runQuery = null;
 			try {
-				LogWriter.write("Almacenando registro de mensaje en la base de datos.");
+				LogWriter.write("INFO: Almacenando registro de mensaje en la base de datos...");
 				runQuery = new QueryRunner("INS0003",argsSql);
 				runQuery.setAutoCommit(false);
 				runQuery.runSQL();

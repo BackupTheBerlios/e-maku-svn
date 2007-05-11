@@ -1,70 +1,59 @@
-package com.kazak.smi.admin.gui.table;
+package com.kazak.smi.admin.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-//import java.awt.event.MouseEvent;
-//import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-//import javax.swing.JFrame;
+import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 /* import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
+import org.jdom.output.XMLOutputter; 
 import java.io.IOException;
 import java.util.List;
 import com.kazak.smi.admin.control.Cache;
 import com.kazak.smi.admin.network.SocketHandler;
 import com.kazak.smi.admin.network.SocketWriter;
 import com.kazak.smi.admin.transactions.QuerySender;
-import com.kazak.smi.admin.transactions.QuerySenderException; */
+import com.kazak.smi.admin.transactions.QuerySenderException;*/
 
 import com.kazak.smi.admin.gui.table.UsersTable;
-import com.kazak.smi.admin.gui.GUIFactory;
-import com.kazak.smi.admin.gui.UsersList;
 
-// This class shows the Search Panel for users online
-
-public class UserSearchPanel extends JPanel implements ActionListener {
+public class UserSearchPanel extends JPanel implements ActionListener,MouseListener {
 
 	private static final long serialVersionUID = 1L;
 	private JButton close;
-	private UsersList frame;
+	private JFrame frame;
 	private UsersTable table;
 	private JButton searchBT;
 	private JTextField searchTF;
-	JComboBox field;
+	//private boolean oneTable = false;
 	
-	// Search Panel Constructor
-	public UserSearchPanel(UsersList frame) {
+	public UserSearchPanel(JFrame frame) {
 		this.frame = frame;
 		setLayout(new BorderLayout());
 
-		JLabel search = new JLabel("Buscar:");
+		JLabel search = new JLabel("Código:");
 		searchTF = new JTextField(15);
-		JLabel in = new JLabel(" en ");
 		GUIFactory gui = new GUIFactory();
 		searchBT = gui.createButton("search.png");
 		searchBT.setActionCommand("search");
 		searchBT.addActionListener(this);
-		String[] options = {"Código","Nombre","Dirección IP"};
-		field = new JComboBox(options);
 		
 		JPanel top = new JPanel();
 		top.setLayout(new FlowLayout(FlowLayout.CENTER));
 		top.add(search);
 		top.add(searchTF);
-		top.add(in);
-		top.add(field);
 		top.add(searchBT);
 					
 		table = new UsersTable();
@@ -83,19 +72,20 @@ public class UserSearchPanel extends JPanel implements ActionListener {
 		add(top,BorderLayout.NORTH);
 		add(js,BorderLayout.CENTER);
 		add(down,BorderLayout.SOUTH);
+		//oneTable = true;
 	}
 
-	// This method handles action events
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if (command.equals("search")) {
-			//frame.updateList("SIN GRUPO");
+		    //updateList("SIN GRUPO");
+			System.out.println("Buscando patron...");
 		}	
 		if (command.equals("close")) {
 			frame.dispose();
 		}	
 	}
-	
+
 	/*
 	public void updateList(String group) {
 		loadUserList();
@@ -107,8 +97,8 @@ public class UserSearchPanel extends JPanel implements ActionListener {
 			table.getRenderer().setSelectedColumn(0);
 			table.getTableHeader().repaint();
 		}
-	}*/
-	/*
+	}
+	
 	private void loadTotal() {
 		class Monitor extends Thread {
 			Document doc= null;
@@ -188,13 +178,8 @@ public class UserSearchPanel extends JPanel implements ActionListener {
 			}
 		}
 		
-	}
+	}*/
 	
-    public void setWindowLabel(String total) {
-    	String date = UsersList.getFormattedDate();
-    	frame.setTitle("Usuarios en Linea: " + total + " / " + date);
-    } 
-
 	public void mouseClicked(MouseEvent e) {
 	}
 
@@ -208,5 +193,5 @@ public class UserSearchPanel extends JPanel implements ActionListener {
 	}
 
 	public void mouseReleased(MouseEvent e) {		
-	} */
+	}
 }

@@ -7,7 +7,7 @@ public class DataGrid extends JTable {
 
 	private static final long serialVersionUID = 1L;
 	
-	public JScrollPane getWithScroll() {
+	public JScrollPane getScrollPane() {
 		JScrollPane jscroll = new JScrollPane(this);
 		return jscroll;
 	}

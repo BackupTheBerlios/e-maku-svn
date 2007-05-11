@@ -48,9 +48,9 @@
         <en_US>INFO: Loading database...</en_US>
     </sentence>
     <sentence>
-        <key>ERR_LOADING_DB</key>
-        <es_CO>ERROR: No se pudo cargar base de datos -> </es_CO>
-        <en_US>ERROR: Can not load database -> </en_US>
+        <key>NO_LOADING_DB</key>
+        <es_CO>ADVERTENCIA: Base de datos deshabilitada desde configuracion -> </es_CO>
+        <en_US>ADVERTENCIA: Database disabled from settings -> </en_US>
     </sentence>    
     <sentence>
         <key>LOADING_ST</key>
@@ -59,23 +59,23 @@
     </sentence>
     <sentence>
         <key errorCode="001">ERR_CLASS</key>
-        <es_CO>No se pudo cargar el driver de la base de datos</es_CO>
-        <en_US>Can not load the database driver</en_US>
+        <es_CO>ERROR: No se pudo cargar el driver de la base de datos</es_CO>
+        <en_US>ERROR: Can not load the database driver</en_US>
     </sentence>
     <sentence>
         <key errorCode="002">ERR_SQL</key>
-        <es_CO>El servidor de transacciones no pudo conectarse a la base de datos</es_CO>
-        <en_US>The transactions server can not connect to the database</en_US>
+        <es_CO>ERROR: El servidor de transacciones no pudo conectarse a la base de datos</es_CO>
+        <en_US>ERROR: The transactions server can not connect to the database</en_US>
     </sentence>
     <sentence>
         <key errorCode="003">ERR_CONFIG</key>
-        <es_CO>No se pudo cargar el archivo de configuración</es_CO>
-        <en_US>Can not load the settings file</en_US>
+        <es_CO>ERROR: No se pudo cargar el archivo de configuración</es_CO>
+        <en_US>ERROR: Can not load the settings file</en_US>
     </sentence>
     <sentence>
         <key errorCode="004">ERR_PARAMETERS_DOCUMENT</key>
-        <es_CO>Parámetros incorrectos en el archivo de configuración</es_CO>
-        <en_US>Incorrect parameters in the settings file</en_US>
+        <es_CO>ERROR: Parámetros incorrectos en el archivo de configuración</es_CO>
+        <en_US>ERROR: Incorrect parameters in the settings file</en_US>
     </sentence>
     <sentence>
         <key errorCode="005">ERR_LOADING_ST</key>

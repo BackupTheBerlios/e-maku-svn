@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.table.AbstractTableModel;
+import javax.swing.JLabel;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -16,6 +17,12 @@ public class OnLineModel extends AbstractTableModel {
 	private String[] titles = { "Codigo Usuario","Nombre","Dirección IP"};
 	private Class[] types = {String.class,String.class,String.class};
 	private Vector<Vector> tableData = new Vector<Vector>();
+	private int size;
+	private JLabel groupSize;
+	
+	public void setLabel(JLabel gSize) {
+		groupSize = gSize;
+	}
 	
 	@SuppressWarnings("unchecked")
 	public void addRow() {
@@ -82,9 +89,13 @@ public class OnLineModel extends AbstractTableModel {
 	
 	public void updateTable(int index, boolean asc) {
         Collections.sort(tableData, new ColumnSorter(index,asc));
-        fireTableStructureChanged();		
+        fireTableStructureChanged();
 	}
 
+	public int getGroupSize() {
+		return size;
+	}
+	
 	// This method fills the table of users online
     public synchronized void setQuery(Document doc) {
 
@@ -103,7 +114,7 @@ public class OnLineModel extends AbstractTableModel {
 		             // Cleaning the table
 		            clear();
 		             // Loading new info 
-		            int i=0;		            
+		            int i=0;
 		            for (;userData.hasNext();i++) {
 		                Element oneUser = (Element) userData.next();
 		                List userDetails = oneUser.getChildren();
@@ -121,9 +132,16 @@ public class OnLineModel extends AbstractTableModel {
 		        		}
 
 		            }
+		            size = i;
+		            String s = "s";
+		            if (i==1) {
+		            	s = "";
+		            }
+		            groupSize.setText("( " + size + " usuario" + s + " )");
 		        }
 		        else {
 		        	clear();
+		            groupSize.setText("");
 		        }
 		        
 		        updateTable(0, true);
@@ -133,7 +151,6 @@ public class OnLineModel extends AbstractTableModel {
     	}
     	new LoadData(doc).start();
     }
-
 }
 
 class ColumnSorter implements Comparator {

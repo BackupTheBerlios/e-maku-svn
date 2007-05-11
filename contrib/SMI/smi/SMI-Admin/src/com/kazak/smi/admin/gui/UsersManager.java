@@ -251,7 +251,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 		else if (command.equals("accept")) {
 			String login = FieldLogin.getText();
 			if (!"".equals(login)) {
-				User user = Cache.searchUser(login);
+				User user = Cache.getUser(login);
 				if (user==null) {
 					String str = JCBGroups.getSelectedItem().toString();
 					Group group = Cache.getGroup(str);
@@ -291,7 +291,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 		else if (command.equals("save")) {
 			String login = FieldLogin.getText();
 			if (!"".equals(login)) {
-				User user = Cache.searchUser(oldLogin);
+				User user = Cache.getUser(oldLogin);
 				if (oldLogin.equals(login)) {
 					user = null;
 				}
@@ -432,7 +432,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 		password = new String(FieldPassword.getPassword());
 		MD5Tool md = new MD5Tool(password);
 		Cache.Group g = Cache.getGroup((String)JCBGroups.getSelectedItem());
-		String id = Cache.searchUser(oldLogin).getId();
+		String id = Cache.getUser(oldLogin).getId();
 		Element field = createField(md.getDigest());
 		if ("".equals(new String(FieldPassword.getPassword()).trim())) {
 			field.setAttribute(new Attribute("arg","edit"));
@@ -479,7 +479,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
         Element driver = new Element("driver");
         driver.setText("TR003");
         transaction.addContent(driver);
-        Cache.User user = Cache.searchUser(FieldLogin.getText());
+        Cache.User user = Cache.getUser(FieldLogin.getText());
 		Element pack = new Element("package");
 		pack.addContent(createField(user.getId()));
 		transaction.addContent(pack);
@@ -507,7 +507,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 		
 		public void run() {
 			
-			Cache.User user = Cache.searchUser(code);
+			Cache.User user = Cache.getUser(code);
 			if (user!=null) {
 				oldLogin = FieldLogin.getText();
 				FieldNames.setText(user.getName());

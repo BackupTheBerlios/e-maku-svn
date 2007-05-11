@@ -14,6 +14,8 @@ import javax.swing.JScrollPane;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+import org.jdom.Document;
+
 import java.util.HashMap;
 
 import com.kazak.smi.admin.control.Cache;
@@ -25,6 +27,7 @@ public class GroupsSearchPanel extends JPanel implements PopupMenuListener, Acti
 	private static final long serialVersionUID = 1L;
 	private JComboBox groups;
 	private JLabel groupsLabel;
+	private JLabel groupSize;
 	private HashMap<String,String> groupsHash;
 	private UsersTable table;
 	private JButton update,close;
@@ -34,13 +37,14 @@ public class GroupsSearchPanel extends JPanel implements PopupMenuListener, Acti
 
 		this.frame = frame;
 		this.setLayout(new BorderLayout());
-		groupsLabel = new JLabel("Grupos:");
+		groupsLabel = new JLabel("Grupo:");
 		groups = new JComboBox(Cache.getGroupsList());
+		groupSize = new JLabel("");
 		groupsHash = Cache.getGroupsHash();		
 		groups.addPopupMenuListener(this);
-		frame.updateList(groups.getSelectedItem().toString());		
-
+		
 		table = new UsersTable();
+		table.getModel().setLabel(groupSize);
 		JScrollPane js = new JScrollPane(table);
 		js.setPreferredSize(new Dimension(500,300));
 		js.setAutoscrolls(true);
@@ -57,6 +61,7 @@ public class GroupsSearchPanel extends JPanel implements PopupMenuListener, Acti
 		top.setLayout(new FlowLayout(FlowLayout.CENTER));
 		top.add(groupsLabel);
 		top.add(groups);
+		top.add(groupSize);
 
 		JPanel down = new JPanel();
 		down.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -69,23 +74,40 @@ public class GroupsSearchPanel extends JPanel implements PopupMenuListener, Acti
 	}
 
 	public void popupMenuCanceled(PopupMenuEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-		// TODO Auto-generated method stub
-		
+		frame.updateGroupTable();	
 	}
 
 	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		String command = e.getActionCommand();
+		if (command.equals("update")) {
+			frame.updateGroupTable();
+		}
+		if (command.equals("close")) {
+			frame.dispose();
+		}
 	}
 
+	public UsersTable getTable(){
+		return table;
+	}
+	
+	public String getGroupsSelection() {
+		return (String) groups.getSelectedItem();
+	}
+	
+	public String getGroupID() {
+		return groupsHash.get(getGroupsSelection());
+	}
+	
+	public void updateUserList(Document doc) {
+        table.getModel().setQuery(doc);
+ 	}
+	
 }

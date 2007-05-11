@@ -14,6 +14,7 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.NoRouteToHostException;
+import java.net.SocketException;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.UnresolvedAddressException;
 
@@ -203,7 +204,17 @@ public class LoginWindow implements ActionListener, KeyListener {
     		JBAccept.setEnabled(true);
     		typeCursor = Cursor.DEFAULT_CURSOR;
     		cursor =Cursor.getPredefinedCursor(typeCursor);
-        } catch (IOException IOEe) {
+        } 
+    	catch(SocketException Nex) {
+    		JOptionPane.showMessageDialog(
+    				null,
+    				"Este equipo no tiene acceso a la red.\n" +
+    				"Por favor, revise la configuración de su sistema.\n");
+    		JBAccept.setEnabled(true);
+    		typeCursor = Cursor.DEFAULT_CURSOR;
+    		cursor =Cursor.getPredefinedCursor(typeCursor);
+        }
+    	catch (IOException IOEe) {
     		IOEe.printStackTrace();
     	}
     }

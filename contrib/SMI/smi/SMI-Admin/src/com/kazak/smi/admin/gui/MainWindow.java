@@ -2,8 +2,8 @@ package com.kazak.smi.admin.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+//import java.awt.event.ActionEvent;
+//import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Collection;
@@ -30,7 +30,7 @@ import com.kazak.smi.admin.models.PointSaleModel;
 import com.kazak.smi.admin.models.TableSorter;
 import com.kazak.smi.admin.models.UsersModel;
 
-public class MainWindow implements ActionListener, TreeSelectionListener {
+public class MainWindow implements TreeSelectionListener { // ActionListener
 	
 	private static JFrame frame;
 	private JSplitPane splitPane;
@@ -41,7 +41,7 @@ public class MainWindow implements ActionListener, TreeSelectionListener {
 
 	public MainWindow(String appOwner,String UserLevel) {
 		MainWindow.appOwner = appOwner;
-		frame = new JFrame("Administración SMI -" + appOwner);
+		frame = new JFrame("Administración SMI - " + appOwner);
 		frame.setSize(800,600);
 		frame.setJMenuBar(new MenuBar(UserLevel));
 		frame.setLayout(new BorderLayout());
@@ -67,7 +67,7 @@ public class MainWindow implements ActionListener, TreeSelectionListener {
 			
 			rightPanel = new JPanel(new BorderLayout());
 			dataGrid = new DataGrid();
-			rightPanel.add(dataGrid.getWithScroll(),BorderLayout.CENTER);
+			rightPanel.add(dataGrid.getScrollPane(),BorderLayout.CENTER);
 
 			splitPane.setRightComponent(rightPanel);
 			frame.add(splitPane,BorderLayout.CENTER);	
@@ -82,82 +82,90 @@ public class MainWindow implements ActionListener, TreeSelectionListener {
 		frame.setVisible(true);
 	}
 
+	/*
 	public void actionPerformed(ActionEvent e) {
 		
-	}
+	}*/
 	
 	public static JFrame getFrame() {
 		return frame;
 	}
 	
 	public void valueChanged(TreeSelectionEvent e) {
-		TreePath tp = e.getPath();
+		TreePath treePath = e.getPath();
 		TreeManagerGroups.currTpath = e.getPath();
 		DefaultMutableTreeNode node;
 		//System.out.println("Camino: " + tp);
-		TableSorter ts;
+		TableSorter tableSorter;
 		boolean affect = false;
-		switch (tp.getPathCount()) {
+		switch (treePath.getPathCount()) {
 		case 2:
-			node = (SortableTreeNode) tp.getPathComponent(1);
-			Group grp = Cache.getGroup(node.toString());
-			Collection<WorkStation> collectionws = grp.getWorkStations();
-			Vector<WorkStation> vws = new Vector<WorkStation>(collectionws);
-			if (vws.size() > 0 ) {
-				ts = new TableSorter(new PointSaleModel(vws));
-				dataGrid.setModel(ts);
-				ts.setTableHeader(dataGrid.getTableHeader());
+			System.out.println("Seleccionando grupo...");
+			node = (SortableTreeNode) treePath.getPathComponent(1);
+			Group group = Cache.getGroup(node.toString());
+			Collection<WorkStation> wsCollection = group.getWorkStations();
+			
+			// TODO: To order this vector
+			Vector<WorkStation> wsVector = new Vector<WorkStation>(wsCollection);
+			
+			if (wsVector.size() > 0 ) {
+				tableSorter = new TableSorter(new PointSaleModel(wsVector));
+				dataGrid.setModel(tableSorter);
+				tableSorter.setTableHeader(dataGrid.getTableHeader());
 				affect = true;
 			}
-			Collection<User> collectionus = grp.getUsers();
+			Collection<User> collectionus = group.getUsers();
 			Vector<User> usr = new Vector<User>(collectionus);
 			if (usr.size() > 0 ) {
-				ts = new TableSorter(new UsersModel(usr));
-				dataGrid.setModel(ts);
-				ts.setTableHeader(dataGrid.getTableHeader());
+				tableSorter = new TableSorter(new UsersModel(usr));
+				dataGrid.setModel(tableSorter);
+				tableSorter.setTableHeader(dataGrid.getTableHeader());
 				affect = true;
 			}
 			break;
 		case 3:
-			node = (SortableTreeNode) tp.getPathComponent(2);
+			System.out.println("Seleccionando punto de venta...");
+			node = (SortableTreeNode) treePath.getPathComponent(2);
 			String name = node.toString();
 			//System.out.println("Nodo: " + name);
 			if (Cache.containsWs(name)){
 				WorkStation ws = Cache.getWorkStation(name);
 				Collection<User> coll = ws.getUsers();
-				Vector<User> usrcoll = new Vector<User>(coll);
-				if (usrcoll.size() > 0 ) {
-					ts =new TableSorter(new UsersModel(usrcoll));
-					dataGrid.setModel(ts);
-					ts.setTableHeader(dataGrid.getTableHeader());
+				Vector<User> usersVector = new Vector<User>(coll);
+				if (usersVector.size() > 0 ) {
+					tableSorter = new TableSorter(new UsersModel(usersVector));
+					dataGrid.setModel(tableSorter);
+					tableSorter.setTableHeader(dataGrid.getTableHeader());
 					affect = true;
 				}
 			}
 			if (Cache.containsUser(name)){
-				User user = Cache.searchUser(name);
-				Vector<User> usrcoll = new Vector<User>();
-				usrcoll.add(user);
-				if (usrcoll.size() > 0 ) {
-					ts =new TableSorter(new UsersModel(usrcoll));
-					dataGrid.setModel(ts);
-					ts.setTableHeader(dataGrid.getTableHeader());
+				User user = Cache.getUser(name);
+				if (user != null) {
+					Vector<User> usersVector = new Vector<User>();
+					usersVector.add(user);
+					//if (usrcoll.size() > 0) {
+					tableSorter = new TableSorter(new UsersModel(usersVector));
+					dataGrid.setModel(tableSorter);
+					tableSorter.setTableHeader(dataGrid.getTableHeader());
 					affect = true;
 				}
 			}
 			break;
 		case 4:
-			node = (SortableTreeNode) tp.getPathComponent(3);
+			System.out.println("Seleccionando usuario...");
+			node = (SortableTreeNode) treePath.getPathComponent(3);
 			String login = node.toString();
-			User user = Cache.searchUser(login);
+			User user = Cache.getUser(login);
 			if (user!=null) {
-				Vector<User> usrcoll = new Vector<User>();
-				usrcoll.add(user);
-				if (usrcoll.size() > 0 ) {
-					ts =new TableSorter(new UsersModel(usrcoll));
-					dataGrid.setModel(ts);
-					ts.setTableHeader(dataGrid.getTableHeader());
-					affect = true;
-				}
+				Vector<User> usersVector = new Vector<User>();
+				usersVector.add(user);
+				//if (usrcoll.size() > 0 ) {
+				tableSorter = new TableSorter(new UsersModel(usersVector));
+				dataGrid.setModel(tableSorter);
+				tableSorter.setTableHeader(dataGrid.getTableHeader());
+				affect = true;
+				//}
 			}
 			break;
 		}

@@ -67,7 +67,7 @@ public class SortButtonRenderer extends JButton implements TableCellRenderer {
 		Integer value = null;
 		Object obj = state.get(new Integer(col));
 		if (obj == null) {
-			value = new Integer(DOWN);
+			value = new Integer(UP);
 		} else {
 			if (((Integer)obj).intValue() == DOWN) {
 				value = new Integer(UP);
@@ -78,6 +78,11 @@ public class SortButtonRenderer extends JButton implements TableCellRenderer {
 		state.clear();
 		state.put(new Integer(col), value);
 	} 
+	
+	public void setColumnForUpdate() {
+		state.clear();
+		state.put(new Integer(0), new Integer(UP));
+	} 	
 
 	public int getState(int col) {
 		int retValue;
