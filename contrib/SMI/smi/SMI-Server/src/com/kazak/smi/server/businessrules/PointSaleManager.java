@@ -17,38 +17,38 @@ import com.kazak.smi.server.database.sql.SQLNotFoundException;
 
 public class PointSaleManager {
 
-	private Iterator itArgs;
-	private ArrayList<QueryRunner> querys;
+	private Iterator argsIterator;
+	private ArrayList<QueryRunner> queries;
 	
 	public PointSaleManager(SocketChannel sock, Element args, Element packet, String id) {
-		this.itArgs = args.getChildren("arg").iterator();
+		this.argsIterator = args.getChildren("arg").iterator();
 		String type = args.getChildText("action");
-		boolean ret = false;
+		boolean result = false;
 		String message = "";
-		querys = new ArrayList<QueryRunner>();
+		queries = new ArrayList<QueryRunner>();
 		try {
 			if ("add".equals(type)) {
-				ret = processPointSale(packet);
+				result = processPointOfSale(packet);
 			}
 			else if ("edit".equals(type)) {
-				ret = processPointSale(packet);
+				result = processPointOfSale(packet);
 			}
 			else if ("remove".equals(type)) {
-				ret = processPointSale(packet);
+				result = processPointOfSale(packet);
 			}
 		} catch (SQLNotFoundException e) {
-			ret = false;
+			result = false;
 			message = e.getMessage();
 		} catch (SQLBadArgumentsException e) {
-			ret = false;
+			result = false;
 			message = e.getMessage();
 		} catch (SQLException e) {
-			ret = false;
+			result = false;
 			message = e.getMessage();
 		}
-		if (ret) {
-			for (QueryRunner rq :querys) {
-				rq.commit();
+		if (result) {
+			for (QueryRunner queryRunner :queries) {
+				queryRunner.commit();
 			}
 			Element reload = new Element("RELOADTREE");
 			try {
@@ -57,35 +57,32 @@ public class PointSaleManager {
 				e.printStackTrace();
 			}
 			message = "Los datos fueron almacenados satisfactoriamente";
-			TransactionRunner.successMessage(sock,id,message);
+			TransactionRunner.notifyMessageReception(sock,id,message);
 		}
 		else {
-			for (QueryRunner rq :querys) {
-				rq.rollback();
+			for (QueryRunner qRunner :queries) {
+				qRunner.rollback();
 			}
 			if ("remove".equals(type)) {
 				message =
 					"El grupo debe estar vacio\n" +
 					"para poder ser eliminado\n";
 			}
-			TransactionRunner.
-			errorMessage
-			(sock,id,"No se pudo procesar la transacción, causa:\n" + message);
+			TransactionRunner.notifyErrorMessage(sock,id,
+							"No se pudo procesar la transacción. Causa:\n" + message);
 		}
 	}
 	
-	private boolean processPointSale(Element transaction) throws 
+	private boolean processPointOfSale(Element transaction) throws 
 	SQLNotFoundException, SQLBadArgumentsException, SQLException {
-		Iterator it = transaction.getChildren("package").iterator();
-		while(it.hasNext()) {
-			Element e = (Element)it.next();
-			//if (e.getChildren().size() > 0 ) {
-				String sqlCode = ((Element)itArgs.next()).getText();
-				QueryRunner rq = new QueryRunner(sqlCode,packArgs(e));
-				querys.add(rq);
-				rq.setAutoCommit(false);
-				rq.runSQL();
-			//}
+		Iterator iterator = transaction.getChildren("package").iterator();
+		while(iterator.hasNext()) {
+			Element element = (Element)iterator.next();
+			String sqlCode = ((Element)argsIterator.next()).getText();
+			QueryRunner queryRunner = new QueryRunner(sqlCode,packArgs(element));
+			queries.add(queryRunner);
+			queryRunner.setAutoCommit(false);
+			queryRunner.runSQL();
 		}
 		return true;
 	}
@@ -93,14 +90,14 @@ public class PointSaleManager {
 	
 	public String[] packArgs(Element pack) {
 		List list = pack.getChildren("field");
-		Iterator it = list.iterator();
-		String[] ret = new String[list.size()];
+		Iterator listIterator = list.iterator();
+		String[] argsArray = new String[list.size()];
 		int index = 0;
-		while(it.hasNext()) {
-			Element e = (Element) it.next();
-			ret[index] = e.getValue();
+		while(listIterator.hasNext()) {
+			Element element = (Element) listIterator.next();
+			argsArray[index] = element.getValue();
 			index++;
 		}
-		return ret;
+		return argsArray;
 	}
 }

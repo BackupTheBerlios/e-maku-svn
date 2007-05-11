@@ -1,6 +1,6 @@
 package com.kazak.smi.server.control;
 
-public class InfoPointSale {
+public class PointSaleInfo {
 	private String 	ip;
 	private String 	code;
 	private String 	name;

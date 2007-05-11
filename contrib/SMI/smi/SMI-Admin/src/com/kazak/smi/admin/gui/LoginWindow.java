@@ -33,7 +33,7 @@ import com.kazak.smi.admin.network.CNXSender;
 import com.kazak.smi.admin.network.SocketHandler;
 import com.kazak.smi.lib.misc.FixedSizePlainDocument;
 import com.kazak.smi.lib.misc.MD5Tool;
-import com.kazak.smi.lib.network.PackageToXML;
+import com.kazak.smi.lib.network.PackageToXMLConverter;
 
 public class LoginWindow implements ActionListener, KeyListener {
 	
@@ -158,9 +158,9 @@ public class LoginWindow implements ActionListener, KeyListener {
     	SocketHandler connect;
     	frame.setCursor(cursor);
     	try {
-    		PackageToXML packageXML = new PackageToXML();
+    		PackageToXMLConverter packageXML = new PackageToXMLConverter();
     		HeadersValidator valid = new HeadersValidator();
-    		packageXML.addArrivePackageistener(valid);
+    		packageXML.addPackageComingListener(valid);
     		connect = new SocketHandler(host,port,packageXML);
     		connect.start();
     		SocketChannel socket = SocketHandler.getSock();

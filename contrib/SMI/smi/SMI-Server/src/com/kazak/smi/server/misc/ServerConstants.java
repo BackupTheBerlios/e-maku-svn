@@ -3,7 +3,7 @@ package com.kazak.smi.server.misc;
 //import java.awt.Toolkit;
 
 /**
- * ServerConst.java Creado el 29-jun-2004
+ * ServerConstants.java Creado el 29-jun-2004
  * 
  * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
@@ -23,7 +23,7 @@ package com.kazak.smi.server.misc;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
-public interface ServerConst {
+public interface ServerConstants {
     
 	public final String KeyServer = "SMI";
 
@@ -47,10 +47,5 @@ public interface ServerConst {
     public final String [] TAGS_ROW = {"            <row>\n",
             						   "            </row>\n"};
     public final String [] TAGS_COL_HEAD = {"       <col type=\"","\">"};
-    public final String [] TAGS_COL = {"                <col>","</col>\n"};
-    
-    //public static int MAX_WIN_SIZE_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-
-    //public static int MAX_WIN_SIZE_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(); 
-    
+    public final String [] TAGS_COL = {"                <col>","</col>\n"};    
 }

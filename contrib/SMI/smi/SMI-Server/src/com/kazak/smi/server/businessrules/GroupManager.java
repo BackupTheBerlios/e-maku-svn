@@ -18,38 +18,38 @@ import com.kazak.smi.server.database.sql.SQLNotFoundException;
 
 public class GroupManager {
 
-	private Iterator itArgs;
-	private ArrayList<QueryRunner> querys;
+	private Iterator argsIterator;
+	private ArrayList<QueryRunner> queries;
 	
 	public GroupManager(SocketChannel sock, Element args, Element packet, String id) {
-		this.itArgs = args.getChildren("arg").iterator();
+		this.argsIterator = args.getChildren("arg").iterator();
 		String type = args.getChildText("action");
-		boolean ret = false;
+		boolean result = false;
 		String message = "";
-		querys = new ArrayList<QueryRunner>();
+		queries = new ArrayList<QueryRunner>();
 		try {
 			if ("add".equals(type)) {
-				ret = addGroup(packet);
+				result = addGroup(packet);
 			}
 			else if ("edit".equals(type)) {
-				ret = addGroup(packet);
+				result = addGroup(packet);
 			}
 			else if ("remove".equals(type)) {
-				ret = removeGroup(packet);
+				result = removeGroup(packet);
 			}
 		} catch (SQLNotFoundException e) {
-			ret = false;
+			result = false;
 			message = e.getMessage();
 		} catch (SQLBadArgumentsException e) {
-			ret = false;
+			result = false;
 			message = e.getMessage();
 		} catch (SQLException e) {
-			ret = false;
+			result = false;
 			message = e.getMessage();
 		}
-		if (ret) {
-			for (QueryRunner rq :querys) {
-				rq.commit();
+		if (result) {
+			for (QueryRunner qRunner :queries) {
+				qRunner.commit();
 			}
 			Element reload = new Element("RELOADTREE");
 			try {
@@ -57,12 +57,12 @@ public class GroupManager {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			message = "Los datos fueron almacenados satisfactoriamente";
-			TransactionRunner.successMessage(sock,id,message);
+			message = "Los datos fueron almacenados satisfactoriamente.";
+			TransactionRunner.notifyMessageReception(sock,id,message);
 		}
 		else {
-			for (QueryRunner rq :querys) {
-				rq.rollback();
+			for (QueryRunner qRunner :queries) {
+				qRunner.rollback();
 			}
 			if ("remove".equals(type)) {
 				message =
@@ -70,22 +70,22 @@ public class GroupManager {
 					"para poder ser eliminado\n";
 			}
 			TransactionRunner.
-			errorMessage
-			(sock,id,"No se pudo procesar la transacción, causa:\n" + message);
+			notifyErrorMessage
+			(sock,id,"No se pudo procesar la transacción. Causa:\n" + message);
 		}
 	}
 	
 	private boolean addGroup(Element transaction) throws 
 	SQLNotFoundException, SQLBadArgumentsException, SQLException {
-		Iterator it = transaction.getChildren("package").iterator();
-		while(it.hasNext()) {
-			Element e = (Element)it.next();
+		Iterator iterator = transaction.getChildren("package").iterator();
+		while(iterator.hasNext()) {
+			Element e = (Element)iterator.next();
 			if (e.getChildren().size() > 0 ) {
-				String sqlCode = ((Element)itArgs.next()).getText();
-				QueryRunner rq = new QueryRunner(sqlCode,packArgs(e));
-				querys.add(rq);
-				rq.setAutoCommit(false);
-				rq.runSQL();
+				String sqlCode = ((Element)argsIterator.next()).getText();
+				QueryRunner qRunner = new QueryRunner(sqlCode,packArgs(e));
+				queries.add(qRunner);
+				qRunner.setAutoCommit(false);
+				qRunner.runSQL();
 			}
 		}
 		return true;
@@ -94,52 +94,53 @@ public class GroupManager {
 	
 	private boolean removeGroup(Element transaction) throws 
 	SQLNotFoundException, SQLBadArgumentsException, SQLException {
-		Iterator it = transaction.getChildren("package").iterator();
+		Iterator iterator = transaction.getChildren("package").iterator();
 		
-		Element e = (Element)it.next();
-		String[] args = packArgs(e);
-		String sqlCode = ((Element)itArgs.next()).getText();
-		QueryRunner rq = new QueryRunner(sqlCode,args);
-		querys.add(rq);
-		ResultSet rs = rq.runSELECT();
-		rs.next();
-		int count = rs.getInt("count");
-		rs.close();
-		rq.closeStatement();
+		Element element = (Element)iterator.next();
+		String[] args = packArgs(element);
+		String sqlCode = ((Element)argsIterator.next()).getText();
+		QueryRunner queryRunner = new QueryRunner(sqlCode,args);
+		queries.add(queryRunner);
+		ResultSet resultSet = queryRunner.runSELECT();
+		resultSet.next();
+		int count = resultSet.getInt("count");
+		resultSet.close();
+		queryRunner.closeStatement();
+		
 		if (count>0) {
 			return false;
 		}
-		sqlCode = ((Element)itArgs.next()).getText();
-		rq = new QueryRunner(sqlCode,args);
-		querys.add(rq);
-		rs = rq.runSELECT();
-		rs.next();
-		count = rs.getInt("count");
-		rs.close();
-		rq.closeStatement();
+		sqlCode = ((Element)argsIterator.next()).getText();
+		queryRunner = new QueryRunner(sqlCode,args);
+		queries.add(queryRunner);
+		resultSet = queryRunner.runSELECT();
+		resultSet.next();
+		count = resultSet.getInt("count");
+		resultSet.close();
+		queryRunner.closeStatement();
 		if (count>0) {
 			return false;
 		}
 		
-		sqlCode = ((Element)itArgs.next()).getText();
-		rq = new QueryRunner(sqlCode,packArgs(e));
-		querys.add(rq);
-		rq.setAutoCommit(false);
-		rq.runSQL();
+		sqlCode = ((Element)argsIterator.next()).getText();
+		queryRunner = new QueryRunner(sqlCode,packArgs(element));
+		queries.add(queryRunner);
+		queryRunner.setAutoCommit(false);
+		queryRunner.runSQL();
 		
 		return true;
 	}
 	
 	public String[] packArgs(Element pack) {
 		List list = pack.getChildren("field");
-		Iterator it = list.iterator();
-		String[] ret = new String[list.size()];
+		Iterator iterator = list.iterator();
+		String[] argsArray = new String[list.size()];
 		int index = 0;
-		while(it.hasNext()) {
-			Element e = (Element) it.next();
-			ret[index] = e.getValue();
+		while(iterator.hasNext()) {
+			Element element = (Element) iterator.next();
+			argsArray[index] = element.getValue();
 			index++;
 		}
-		return ret;
+		return argsArray;
 	}
 }

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import com.kazak.smi.lib.misc.Language;
-import com.kazak.smi.server.businessrules.Sync;
+import com.kazak.smi.server.businessrules.SyncManager;
 import com.kazak.smi.server.comunications.SocketServer;
 import com.kazak.smi.server.control.Pop3Handler;
 import com.kazak.smi.server.control.TransactionsCache;
@@ -13,15 +13,15 @@ import com.kazak.smi.server.database.connection.ConnectionsPool;
 import com.kazak.smi.server.database.connection.PoolNotLoadException;
 import com.kazak.smi.server.database.sql.CacheLoader;
 import com.kazak.smi.server.misc.LogWriter;
-import com.kazak.smi.server.misc.ServerConst;
-import com.kazak.smi.server.misc.settings.ConfigFile;
+import com.kazak.smi.server.misc.ServerConstants;
+import com.kazak.smi.server.misc.settings.ConfigFileHandler;
 import com.kazak.smi.server.misc.settings.ConfigFileNotLoadException;
 
 public class Run {
 
 	public Run() {
 		
-		String smiConfigFile = ServerConst.CONF + ServerConst.SEPARATOR + "server.conf";
+		String smiConfigFile = ServerConstants.CONF + ServerConstants.SEPARATOR + "server.conf";
 		boolean existsConfigFile = (new File(smiConfigFile)).exists();
 		new LogWriter();
 		if (!existsConfigFile) {
@@ -29,12 +29,12 @@ public class Run {
 			killServer();
 		}
 		try {	
-			ConfigFile.loadConfigFile(smiConfigFile);
+			ConfigFileHandler.loadConfigFile(smiConfigFile);
 			ConnectionsPool.loadDB();
 			new CacheLoader();
 			TransactionsCache.loadCache();
 			new Pop3Handler();
-			new Sync();
+			new SyncManager();
 			Thread t = new Thread() {
 				public void run() {
 					try {
@@ -64,7 +64,7 @@ public class Run {
 	
 	public static void killServer() {
 		try {
-			ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).close();
+			ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

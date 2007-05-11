@@ -11,7 +11,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
-import com.kazak.smi.server.database.sql.CloseSQL;
+import com.kazak.smi.server.database.sql.QueryClosingHandler;
 import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
@@ -36,7 +36,7 @@ public class TransactionsCache {
 				Transaction tr = new Transaction(driver,doc.getRootElement());
 				transactions.put(code,tr);
 			}
-			CloseSQL.close(rs);
+			QueryClosingHandler.close(rs);
 		} catch (SQLNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLBadArgumentsException e) {

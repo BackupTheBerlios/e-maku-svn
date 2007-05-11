@@ -39,54 +39,55 @@ import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 import com.kazak.smi.server.misc.LogWriter;
-import com.kazak.smi.server.misc.settings.ConfigFile;
+import com.kazak.smi.server.misc.settings.ConfigFileHandler;
 
 public class MessageControlReporter {
 
-	private static Properties props = new Properties();
-	private Iterator it;
+	private static Properties properties = new Properties();
+	private Iterator iterator;
+	
 	@SuppressWarnings("deprecation")
+	// TODO: Verificar si se pueden cambiar los metodos deprecados
+	
 	public MessageControlReporter(SocketChannel sock, Element args, Element packet, String id) {
 		
-		this.it = packet.getChild("package").getChildren().iterator();
+		this.iterator = packet.getChild("package").getChildren().iterator();
 		String[] sqlArgs = new String[2];
-		sqlArgs[0] = ((Element) it.next()).getValue();
-		sqlArgs[1] = ((Element) it.next()).getValue();
-		//String login = ((Element) it.next()).getValue();
+		sqlArgs[0] = ((Element) iterator.next()).getValue();
+		sqlArgs[1] = ((Element) iterator.next()).getValue();
 		
-		QueryRunner runQuery = null;
-		//InfoUser ifu = null;
-		ResultSet rs = null;
+		QueryRunner queryRunner = null;
+		ResultSet resultSet = null;
+		
 		try {
-			runQuery = new QueryRunner("SEL0022",sqlArgs);
-			rs = runQuery.runSELECT();
+			queryRunner = new QueryRunner("SEL0022",sqlArgs);
+			resultSet = queryRunner.runSELECT();
 			HSSFWorkbook wb = new HSSFWorkbook();
 			HSSFSheet sheet = wb.createSheet("REPORTE DE CONTROL");
 			int i=0;
-			while (rs.next()) {
+			while (resultSet.next()) {
 			    HSSFRow row = sheet.createRow((short)i);
-			    row.createCell((short)0).setCellValue(rs.getString(1));
-			    row.createCell((short)1).setCellValue(rs.getString(2));
-			    row.createCell((short)2).setCellValue(rs.getString(3));
-			    row.createCell((short)3).setCellValue(rs.getString(4));
+			    row.createCell((short)0).setCellValue(resultSet.getString(1));
+			    row.createCell((short)1).setCellValue(resultSet.getString(2));
+			    row.createCell((short)2).setCellValue(resultSet.getString(3));
+			    row.createCell((short)3).setCellValue(resultSet.getString(4));
 			    i++;
 			}
 			if (i==0) {
 				 HSSFRow row = sheet.createRow((short)i);
-				 row.createCell((short)0).setCellValue("La consulta no genero datos, verifique las fechas");
+				 row.createCell((short)0).setCellValue("La consulta no generó datos, verifique las fechas.");
 			}
-			FileOutputStream fileOut = new FileOutputStream("/tmp/reporte.xls");
-		    wb.write(fileOut);
-		    fileOut.close();
-			rs.close();
-			runQuery.closeStatement();
+			FileOutputStream outputFile = new FileOutputStream("/tmp/reporte.xls");
+		    wb.write(outputFile);
+		    outputFile.close();
+			resultSet.close();
+			queryRunner.closeStatement();
 			
-			;
-			props.put("mail.transport.protocol", "smtp");
-	    	props.put("mail.smtp.host", ConfigFile.getMailServer());
-	    	props.put("mail.smtp.port", "25");
+			properties.put("mail.transport.protocol", "smtp");
+	    	properties.put("mail.smtp.host", ConfigFileHandler.getMailServer());
+	    	properties.put("mail.smtp.port", "25");
 	    	
-	        Session sesion = Session.getDefaultInstance(props);
+	        Session sesion = Session.getDefaultInstance(properties);
 			Address to =  new InternetAddress(SocketServer.getSocketInfo(sock).getEmail());
 	        Address from = new InternetAddress(Pop3Handler.getUser()+"@"+Pop3Handler.getHost());
 	        
@@ -96,7 +97,7 @@ public class MessageControlReporter {
 	        mimeMessage.addRecipients(Message.RecipientType.TO,new Address[]{to});
 	        mimeMessage.setSubject("Reporte de control");
 	        mimeMessage.setSentDate(new Date());
-	        mimeMessage.setText("Reporte de control de colocadores");
+	        mimeMessage.setText("Reporte de control de Colocadores");
 	        
 	        Multipart multipart = new MimeMultipart();
 	        BodyPart report = new MimeBodyPart();
@@ -107,21 +108,19 @@ public class MessageControlReporter {
 	        multipart.addBodyPart(report);
 	        mimeMessage.setContent(multipart);
 	        Transport.send(mimeMessage);
-	        TransactionRunner.
-			successMessage
-			(sock,id,"El reporte fue enviado a :\n" +
-					SocketServer.getSocketInfo(sock).getEmail()+".\n" +
-					 "Por favor revise su correo.");
-	        LogWriter.write("Reporte de control de usuarios enviado a  " + SocketServer.getSocketInfo(sock).getEmail());
+	        TransactionRunner.notifyMessageReception(sock,id,"El reporte de control fue enviado a :\n" +
+											 SocketServer.getSocketInfo(sock).getEmail()+".\n" +
+											 "Por favor revise su correo.");
+	        LogWriter.write("Reporte de control de usuarios enviado a {" + SocketServer.getSocketInfo(sock).getEmail() + "}");
 		} catch (SendFailedException e) {
-			TransactionRunner.errorMessage(
+			TransactionRunner.notifyErrorMessage(
 					 sock,
 					 id,
 					 "No se pudo procesar la operacion:\n" +
 					 "causa:\n"+e.getLocalizedMessage());
 		} catch (AddressException e) {
 			e.printStackTrace();
-			TransactionRunner.errorMessage(
+			TransactionRunner.notifyErrorMessage(
 					 sock,
 					 id,
 					 "No se pudo procesar la operación:\n" +
@@ -131,48 +130,48 @@ public class MessageControlReporter {
 					 "Causa:\n"+e.getMessage());
 		} catch (MessagingException e) {
 			e.printStackTrace();
-			TransactionRunner.errorMessage(
+			TransactionRunner.notifyErrorMessage(
 					 sock,
 					 id,
-					 "No se pudo procesar la operacion:\n" +
-					 "causa:\n"+e.getLocalizedMessage());
+					 "No se pudo procesar la operación:\n" +
+					 "Causa:\n"+e.getLocalizedMessage());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			TransactionRunner.errorMessage(
+			TransactionRunner.notifyErrorMessage(
 					 sock,
 					 id,
-					 "No se pudo procesar la operacion:\n" +
-					 "causa:\n"+e.getMessage());
+					 "No se pudo procesar la operación:\n" +
+					 "Causa:\n"+e.getMessage());
 		} catch (IOException e) {
 			e.printStackTrace();
-			TransactionRunner.errorMessage(
+			TransactionRunner.notifyErrorMessage(
 					 sock,
 					 id,
-					 "No se pudo procesar la operacion:\n" +
-					 "causa:\n"+e.getMessage());
+					 "No se pudo procesar la operación:\n" +
+					 "Causa:\n"+e.getMessage());
 		} catch (SQLException e) {
-			runQuery.closeStatement();
+			queryRunner.closeStatement();
 			e.printStackTrace();
-			TransactionRunner.errorMessage(
+			TransactionRunner.notifyErrorMessage(
 					 sock,
 					 id,
-					 "No se pudo procesar la operacion:\n" +
-					 "causa:\n"+e.getMessage());
+					 "No se pudo procesar la operación:\n" +
+					 "Causa:\n"+e.getMessage());
 		} catch (SQLNotFoundException e) {
 			
 			e.printStackTrace();
-			TransactionRunner.errorMessage(
+			TransactionRunner.notifyErrorMessage(
 					 sock,
 					 id,
-					 "No se pudo procesar la operacion:\n" +
-					 "causa:\n"+e.getMessage());
+					 "No se pudo procesar la operación:\n" +
+					 "Causa:\n"+e.getMessage());
 		} catch (SQLBadArgumentsException e) {
 			e.printStackTrace();
-			TransactionRunner.errorMessage(
+			TransactionRunner.notifyErrorMessage(
 					 sock,
 					 id,
-					 "No se pudo procesar la operacion:\n" +
-					 "causa:\n"+e.getMessage());
+					 "No se pudo procesar la operación:\n" +
+					 "Causa:\n"+e.getMessage());
 		} 
 	}
 }

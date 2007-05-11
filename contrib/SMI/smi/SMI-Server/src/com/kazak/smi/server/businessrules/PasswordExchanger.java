@@ -12,16 +12,16 @@ import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 import com.kazak.smi.server.misc.LogWriter;
 
-public class PasswordExchange {
+public class PasswordExchanger {
 
-	private Iterator it;
+	private Iterator iterator;
 	
-	public PasswordExchange(SocketChannel sock, Element args, Element packet, String id) {
-		this.it = packet.getChildren("package").iterator();
-		Iterator itArgs = args.getChildren("args").iterator();
+	public PasswordExchanger(SocketChannel sock, Element args, Element packet, String id) {
+		this.iterator = packet.getChildren("package").iterator();
+		Iterator argsIterator = args.getChildren("args").iterator();
 		QueryRunner runQuery = null;
-		while(itArgs.hasNext()) {
-			Element element = (Element) itArgs.next();
+		while(argsIterator.hasNext()) {
+			Element element = (Element) argsIterator.next();
 			String sqlCode = element.getValue();
 			String[] sqlArgs = packArgs();
 			try {
@@ -29,7 +29,7 @@ public class PasswordExchange {
 				runQuery.setAutoCommit(false);
 				runQuery.runSQL();
 				runQuery.commit();
-				TransactionRunner.successMessage(sock,id,"Clave cambiada satisfactoriamente");
+				TransactionRunner.notifyMessageReception(sock,id,"Clave cambiada satisfactoriamente");
 			} catch (SQLException e) {
 				runQuery.rollback();
 				e.printStackTrace();
@@ -37,23 +37,23 @@ public class PasswordExchange {
 				if (runQuery!=null) {
 					runQuery.rollback();
 				}
-				TransactionRunner.errorMessage(
+				TransactionRunner.notifyErrorMessage(
 						 sock,
                     	 id,
                     	 "No se pudo cambiar la clave:\n" +
  						 "causa:\n"+e.getLocalizedMessage());
 			} catch (SQLNotFoundException e) {
 				e.printStackTrace();
-				TransactionRunner.errorMessage(
+				TransactionRunner.notifyErrorMessage(
 						 sock,
 						 id,
-						 "La sentencia  " + sqlCode + " no existe");
+						 "La sentencia  " + sqlCode + " no existe.");
 			} catch (SQLBadArgumentsException e) {
 				e.printStackTrace();
-				TransactionRunner.errorMessage(
+				TransactionRunner.notifyErrorMessage(
 						 sock,
 						 id,
-						 "Argumentos invalidos " +
+						 "Argumentos inválidos " +
 						 "para la sentencia : " + sqlCode);
 			}
 		}
@@ -61,19 +61,19 @@ public class PasswordExchange {
 	}
 	
 	public String[] packArgs() {
-		if (!it.hasNext()) {
+		if (!iterator.hasNext()) {
 			return null;
 		}
-		Element element = (Element)it.next();
+		Element element = (Element)iterator.next();
 		List list = element.getChildren();
-		Iterator it = list.iterator();
-		String[] ret = new String[list.size()];
+		Iterator listIterator = list.iterator();
+		String[] argsArray = new String[list.size()];
 		int index = 0;
-		while(it.hasNext()) {
-			Element e = (Element) it.next();
-			ret[index] = e.getValue();
+		while(listIterator.hasNext()) {
+			Element e = (Element) listIterator.next();
+			argsArray[index] = e.getValue();
 			index++;
 		}
-		return ret;
+		return argsArray;
 	}
 }

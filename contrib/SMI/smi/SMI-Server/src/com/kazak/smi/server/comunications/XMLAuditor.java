@@ -23,7 +23,7 @@ import org.jdom.Element;
  * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  */
-public class SuccessXML extends Document {
+public class XMLAuditor extends Document {
 
     /**
 	 * 

@@ -33,15 +33,15 @@ import org.jdom.input.SAXBuilder;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David
  *         Cepeda </A>
  */
-public class PackageToXML {
+public class PackageToXMLConverter {
 
     private static ByteArrayOutputStream bufferOut;
     private static Document doc;
     private ByteBuffer buf;
     private SAXBuilder builder;
-    private Vector <ArrivePackageListener>arrivePackageListener = new Vector<ArrivePackageListener>();
+    private Vector <PackageComingListener>arrivePackageListener = new Vector<PackageComingListener>();
     
-    public PackageToXML() {
+    public PackageToXMLConverter() {
         bufferOut = new ByteArrayOutputStream();
     }
 
@@ -78,7 +78,7 @@ public class PackageToXML {
 						} catch (JDOMException e) {
 							e.printStackTrace();
 						}
-        	            ArrivePackageEvent event = new ArrivePackageEvent(this,doc);
+        	            ArrivedPackageEvent event = new ArrivedPackageEvent(this,doc);
         	            notifyArrivePackage(event);
                     	bufferOut.close();
                         bufferOut = new ByteArrayOutputStream();
@@ -102,17 +102,17 @@ public class PackageToXML {
         return true;
     }
 
-    public synchronized void addArrivePackageistener(ArrivePackageListener listener ) {
+    public synchronized void addPackageComingListener(PackageComingListener listener ) {
         arrivePackageListener.addElement(listener);
     }
 
-    public synchronized void removeSuccessListener(ArrivePackageListener listener ) {
+    public synchronized void removeSuccessListener(PackageComingListener listener ) {
         arrivePackageListener.removeElement(listener);
     }
 
-    private synchronized void notifyArrivePackage(ArrivePackageEvent event) {
+    private synchronized void notifyArrivePackage(ArrivedPackageEvent event) {
         for (int i=0; i<arrivePackageListener.size();i++) {
-            ArrivePackageListener listener = (ArrivePackageListener)arrivePackageListener.elementAt(i);
+            PackageComingListener listener = (PackageComingListener)arrivePackageListener.elementAt(i);
             listener.validPackage(event);
         }
     }

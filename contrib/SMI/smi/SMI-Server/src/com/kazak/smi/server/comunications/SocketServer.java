@@ -23,12 +23,12 @@ import org.jdom.Document;
 import org.jdom.Element;
 
 import com.kazak.smi.lib.misc.Language;
-import com.kazak.smi.server.database.sql.CloseSQL;
+import com.kazak.smi.server.database.sql.QueryClosingHandler;
 import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 import com.kazak.smi.server.misc.LogWriter;
-import com.kazak.smi.server.misc.settings.ConfigFile;
+import com.kazak.smi.server.misc.settings.ConfigFileHandler;
 /**
  * SocketServer.java Creado el 21-jul-2004
  * 
@@ -60,8 +60,8 @@ public class SocketServer {
      * las conexiones activas.
      */
 
-    private static Hashtable <SocketChannel,SocketInfo>Hchannelclients = new Hashtable<SocketChannel,SocketInfo>();
-    private static ServerSocketChannel SSCcanal1 = null;
+    private static Hashtable <SocketChannel,SocketInfo>socketsInfoHash = new Hashtable<SocketChannel,SocketInfo>();
+    private static ServerSocketChannel serverSocketChannel = null;
     private static int SocketsCount = 0;
 
     /**
@@ -72,41 +72,40 @@ public class SocketServer {
     public SocketServer() throws IOException{
         try {
 
-            SSCcanal1 = ServerSocketChannel.open();
-            SSCcanal1.configureBlocking(false);
-            ServerSocket SSclient = SSCcanal1.socket();
+            serverSocketChannel = ServerSocketChannel.open();
+            serverSocketChannel.configureBlocking(false);
+            ServerSocket socketForClient = serverSocketChannel.socket();
 
-
-            SSclient.bind(new InetSocketAddress(ConfigFile.getPort()));
+            socketForClient.bind(new InetSocketAddress(ConfigFileHandler.getPort()));
 
             Selector selector = Selector.open();
-            SSCcanal1.register(selector, SelectionKey.OP_ACCEPT);
+            serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
-            LogWriter.write(Language.getWord("SOCKET_SERVER_OPEN") + " "+ ConfigFile.getPort());
+            LogWriter.write(Language.getWord("SOCKET_SERVER_OPEN") + " "+ ConfigFileHandler.getPort());
             while (true) {
                 int n = selector.select();
                 if (n > 0) {
                     Iterator iterador = selector.selectedKeys().iterator();
                     while (iterador.hasNext()) {
-                        SelectionKey clave = (SelectionKey) iterador.next();
+                        SelectionKey password = (SelectionKey) iterador.next();
                         try {
-                            if (clave.isAcceptable()) {
-                                ServerSocketChannel server = (ServerSocketChannel) clave.channel();
+                            if (password.isAcceptable()) {
+                                ServerSocketChannel server = (ServerSocketChannel) password.channel();
 
-                                SocketChannel canalsocket = server.accept();
-                                canalsocket.configureBlocking(false);
-                                canalsocket.register(selector,SelectionKey.OP_READ);
-                                Hchannelclients.put(canalsocket, new SocketInfo(canalsocket.socket()));
+                                SocketChannel socketChannel = server.accept();
+                                socketChannel.configureBlocking(false);
+                                socketChannel.register(selector,SelectionKey.OP_READ);
+                                socketsInfoHash.put(socketChannel, new SocketInfo(socketChannel.socket()));
                                 LogWriter.write(Language.getWord("NEW_SOCKET_CLIENT")
                                             + " "
-                                            + canalsocket.socket()
+                                            + socketChannel.socket()
                                             + " "
                                             + (setIncrementSocketsCount()));
                                 Thread.sleep(50);
 
-                            } else if (clave.isReadable()) {
-                                SocketChannel canalsocket = (SocketChannel) clave.channel();
-                                PackageToXML packageXML2 = new PackageToXML(canalsocket);
+                            } else if (password.isReadable()) {
+                                SocketChannel canalsocket = (SocketChannel) password.channel();
+                                PackageToXMLConverter packageXML2 = new PackageToXMLConverter(canalsocket);
                                 packageXML2.start();
                                 Thread.sleep(70);
                             }
@@ -132,7 +131,7 @@ public class SocketServer {
      *         retorna false
      */
     public static boolean isLogged(SocketChannel sock) {
-        return Hchannelclients.get(sock).isLogged();
+        return socketsInfoHash.get(sock).isLogged();
     }
     
     /**
@@ -141,7 +140,7 @@ public class SocketServer {
      * @return algo
      */
     public static String getLogin(SocketChannel sock) {
-        return Hchannelclients.get(sock).getLogin();
+        return socketsInfoHash.get(sock).getLogin();
     }
 
     /**
@@ -150,7 +149,7 @@ public class SocketServer {
      * @return algo
      */
     public static String getName(SocketChannel sock) {
-        return Hchannelclients.get(sock).getNames();
+        return socketsInfoHash.get(sock).getNames();
     }
     
     public static Document getUsersOnLine(String gid) {
@@ -161,9 +160,9 @@ public class SocketServer {
     	Element rows, user, name, ip;
     	root.addContent(id);
 
-    	for ( Enumeration e = Hchannelclients.keys() ; e.hasMoreElements() ; ) {
+    	for ( Enumeration e = socketsInfoHash.keys() ; e.hasMoreElements() ; ) {
     		SocketChannel connection = (SocketChannel) e.nextElement();
-    		String group = Integer.toString(Hchannelclients.get(connection).getGid());
+    		String group = Integer.toString(socketsInfoHash.get(connection).getGid());
     		if (isLogged(connection) && group.equals(gid)) {
     			rows = new Element("row");
     			user = new Element("cols").setText(getLogin(connection));
@@ -186,7 +185,7 @@ public class SocketServer {
 		Element id = new Element("id").setText("TOTAL");
 		root.addContent(id);
 		Element rows = new Element("row");
-		Element total = new Element("cols").setText(Integer.toString(Hchannelclients.size()));
+		Element total = new Element("cols").setText(Integer.toString(socketsInfoHash.size()));
 		rows.addContent(total);
  		root.addContent(rows);
  		
@@ -202,15 +201,15 @@ public class SocketServer {
     public static void removeSock(SocketChannel sock) throws IOException {
         setDecrementSocketsCount();
         sock.close();
-        Hchannelclients.remove(sock);
+        socketsInfoHash.remove(sock);
     }
     
     public static ByteArrayOutputStream getBufferTmp(SocketChannel sock) {
-        return Hchannelclients.get(sock).getBuffTmp();
+        return socketsInfoHash.get(sock).getBuffTmp();
     }
 
     public static void setBufferTmp(SocketChannel sock,ByteArrayOutputStream buffTmp) {
-        Hchannelclients.get(sock).setBuffTmp(buffTmp);
+        socketsInfoHash.get(sock).setBuffTmp(buffTmp);
     }
     
     /**
@@ -219,7 +218,7 @@ public class SocketServer {
      * @return El nombre de la base de datos
      */
     public static String getDataBase(SocketChannel sock){
-    	return Hchannelclients.get(sock).getDataBaseName();    	
+    	return socketsInfoHash.get(sock).getDataBaseName();    	
     }
 
     /**
@@ -229,9 +228,9 @@ public class SocketServer {
      */
 
     public static void setLogin(SocketChannel sock, String bd, String login) {
-        Hchannelclients.get(sock).setLoged();
-        Hchannelclients.get(sock).setBd(bd);
-        Hchannelclients.get(sock).setLogin(login);
+        socketsInfoHash.get(sock).setLoged();
+        socketsInfoHash.get(sock).setBd(bd);
+        socketsInfoHash.get(sock).setLogin(login);
     }
 
     /**
@@ -261,7 +260,7 @@ public class SocketServer {
         return --SocketsCount;
     }
     public static Hashtable getHchannelclients() {
-        return Hchannelclients;
+        return socketsInfoHash;
     }
 
     public static String getCompanyNameKey(SocketChannel sock) {
@@ -273,7 +272,7 @@ public class SocketServer {
     }
     
     public static SocketInfo getSocketInfo(SocketChannel sock) {
-    	return Hchannelclients.get(sock);
+    	return socketsInfoHash.get(sock);
     }
     
     public static SocketInfo getSocketInfo(String login) {	
@@ -281,7 +280,7 @@ public class SocketServer {
     	    System.out.println("ERROR: Llamado a getInfoSocket con parametro nulo (login)");
     	}
     	
-    	for (SocketInfo ifs : Hchannelclients.values()) {
+    	for (SocketInfo ifs : socketsInfoHash.values()) {
     		if (ifs.getLogin().equals(login)) {
     			return ifs;
     		}
@@ -489,7 +488,7 @@ public class SocketServer {
 		QueryRunner runQuery = null;
 	    ResultSet rs = null;
 	    
-	    for (SocketInfo ifs : Hchannelclients.values()) {    
+	    for (SocketInfo ifs : socketsInfoHash.values()) {    
             if (ifs.getGid()==gidInt) {
                 vusers.add(ifs);
             }
@@ -527,7 +526,7 @@ public class SocketServer {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			CloseSQL.close(rs);
+			QueryClosingHandler.close(rs);
 			runQuery.closeStatement();
 		}
 		return vusers;
@@ -547,7 +546,7 @@ public class SocketServer {
 		QueryRunner runQuery = null;
 	    ResultSet rs = null;
 	    
-        for (SocketInfo user : Hchannelclients.values()) {    
+        for (SocketInfo user : socketsInfoHash.values()) {    
             boolean cont = toName.equals(user.getGName());
             if (toName.equals(user.getLogin())) {
                 vusers.add(user);
@@ -588,7 +587,7 @@ public class SocketServer {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			CloseSQL.close(rs);
+			QueryClosingHandler.close(rs);
 			runQuery.closeStatement();
 		}
 		return vusers;

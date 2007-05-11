@@ -24,7 +24,7 @@ import org.jdom.Element;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David
  *         Cepeda </A>
  */
-public class MessageXML extends Document {
+public class XMLMessage extends Document {
     
     /**
 	 * 
@@ -38,7 +38,7 @@ public class MessageXML extends Document {
      * @param Mensaje
      *            Mensaje de error
      */
-    public MessageXML(String Mensaje) {
+    public XMLMessage(String Mensaje) {
         this.setRootElement(new Element("MESSAGE"));
         Element msg = new Element("msg");
         msg.setText(Mensaje);

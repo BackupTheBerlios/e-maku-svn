@@ -39,7 +39,7 @@ import com.kazak.smi.lib.misc.ConfigFileClient;
 import com.kazak.smi.lib.misc.ClientConst;
 import com.kazak.smi.lib.misc.FixedSizePlainDocument;
 import com.kazak.smi.lib.misc.MD5Tool;
-import com.kazak.smi.lib.network.PackageToXML;
+import com.kazak.smi.lib.network.PackageToXMLConverter;
 
 
 public class LoginWindow implements ActionListener {
@@ -172,9 +172,9 @@ public class LoginWindow implements ActionListener {
 				SocketHandler connect;
 	            frame.setCursor(cursor);
 				try {
-					PackageToXML packageXML = new PackageToXML();
+					PackageToXMLConverter packageXML = new PackageToXMLConverter();
 					HeadersValidator valid = new HeadersValidator();
-					packageXML.addArrivePackageistener(valid);
+					packageXML.addPackageComingListener(valid);
 					String host = ConfigFileClient.getHost();
 					int port =  ConfigFileClient.getServerPort(); 
 					connect = new SocketHandler(host,port,packageXML);

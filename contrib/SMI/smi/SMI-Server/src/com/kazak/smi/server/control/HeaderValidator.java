@@ -10,14 +10,14 @@ import org.jdom.output.XMLOutputter;
 
 import com.kazak.smi.lib.misc.Language;
 import com.kazak.smi.server.businessrules.TransactionRunner;
-import com.kazak.smi.server.businessrules.Sync;
+import com.kazak.smi.server.businessrules.SyncManager;
 import com.kazak.smi.server.comunications.AcpFailure;
-import com.kazak.smi.server.comunications.ResultSetToXML;
+import com.kazak.smi.server.comunications.ResultSetToXMLConverter;
 import com.kazak.smi.server.comunications.SocketServer;
 import com.kazak.smi.server.comunications.SocketWriter;
 import com.kazak.smi.server.misc.LogWriter;
 //import com.kazak.smi.server.misc.ServerConst;
-import com.kazak.smi.server.misc.settings.ConfigFile;
+import com.kazak.smi.server.misc.settings.ConfigFileHandler;
 
 /**
  * ClientHeaderValidator.java Creado el 22-jul-2004
@@ -86,7 +86,7 @@ public class HeaderValidator {
         	else if (rootName.equals("Synchronization")) {
         		Thread t = new Thread() {
                 	public void run() {
-                		new Sync(sock);
+                		new SyncManager(sock);
                 	}
                 };
                 t.start();
@@ -118,11 +118,11 @@ public class HeaderValidator {
                         ValidQuery valid = new ValidQuery(root);
                         String code = "";
                         code = root.getChild("sql").getValue();
-                        ResultSetToXML answer;
+                        ResultSetToXMLConverter answer;
                         if (valid.changeStructParam()) {
-                            answer = new ResultSetToXML(code, valid.getArgs());
+                            answer = new ResultSetToXMLConverter(code, valid.getArgs());
                         } else {
-                            answer = new ResultSetToXML(code);
+                            answer = new ResultSetToXMLConverter(code);
                         }
                         answer.transmition(sock,valid.getId());   
                 	}
@@ -166,7 +166,7 @@ public class HeaderValidator {
             UserLogin user = new UserLogin(root);
         	if (user.valid()) {
         		String login = user.getLogin();
-        		SocketServer.setLogin(sock, ConfigFile.getMainDataBase(), login);
+        		SocketServer.setLogin(sock, ConfigFileHandler.getMainDataBase(), login);
         		SocketServer.getSocketInfo(sock).setEmail(user.getEmail());
         		SocketServer.getSocketInfo(sock).setUid(user.getUid());
         		SocketServer.getSocketInfo(sock).setGid(user.getGid());

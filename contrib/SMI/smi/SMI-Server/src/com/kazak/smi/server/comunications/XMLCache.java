@@ -10,12 +10,12 @@ import java.util.Hashtable;
 import org.jdom.Document;
 
 import com.kazak.smi.lib.misc.Language;
-import com.kazak.smi.server.database.sql.CloseSQL;
+import com.kazak.smi.server.database.sql.QueryClosingHandler;
 import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 import com.kazak.smi.server.misc.LogWriter;
-import com.kazak.smi.server.misc.ServerConst;
+import com.kazak.smi.server.misc.ServerConstants;
 
 /**
  * CacheXML.java Creado el 06-sep-2004
@@ -39,12 +39,12 @@ import com.kazak.smi.server.misc.ServerConst;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
-public class CacheXML extends Document {
+public class XMLCache extends Document {
 
 	private static final long serialVersionUID = -3555258118537262861L;
 	private String codigo;
 
-	public CacheXML(String codigo) {
+	public XMLCache(String codigo) {
 		this.codigo=codigo;
 	}
 
@@ -66,7 +66,7 @@ public class CacheXML extends Document {
 				ResultSet RSdatos = new QueryRunner("SEL0009",args).runSELECT();
 				RSdatos.next();
 				SQL= RSdatos.getString("codigo");
-				CloseSQL.close(RSdatos);
+				QueryClosingHandler.close(RSdatos);
 
 				rselect = new QueryRunner("SEL0007",args);
 
@@ -88,7 +88,7 @@ public class CacheXML extends Document {
 						num_col_keys++;
 					}
 
-					CloseSQL.close(RSdatos);
+					QueryClosingHandler.close(RSdatos);
 					/*
 					 * A medida que se empieza a generar el paquete CACHE-ANSWER, se empieza
 					 * a transmitir 
@@ -110,11 +110,11 @@ public class CacheXML extends Document {
 
 
 					SocketWriter.writing(sock,
-							ServerConst.CONTEN_TYPE+
-							ServerConst.TAGS_CACHE_ANSWER[0]+
-							ServerConst.TAGS_SQL[0]+ SQL +
-							ServerConst.TAGS_SQL[1]+
-							ServerConst.TAGS_HEAD[0]);
+							ServerConstants.CONTEN_TYPE+
+							ServerConstants.TAGS_CACHE_ANSWER[0]+
+							ServerConstants.TAGS_SQL[0]+ SQL +
+							ServerConstants.TAGS_SQL[1]+
+							ServerConstants.TAGS_HEAD[0]);
 
 					for (int i = 1; i <= columnas; i++) {
 						/*
@@ -125,11 +125,11 @@ public class CacheXML extends Document {
 
 						if (!keys.containsKey(RSMDinfo.getColumnName(i)))
 							SocketWriter.writing(sock,
-									ServerConst.TAGS_COL_HEAD[0]+
+									ServerConstants.TAGS_COL_HEAD[0]+
 									RSMDinfo.getColumnTypeName(i)+
-									ServerConst.TAGS_COL_HEAD[1]+
+									ServerConstants.TAGS_COL_HEAD[1]+
 									RSMDinfo.getColumnName(i)+
-									ServerConst.TAGS_COL[1]);
+									ServerConstants.TAGS_COL[1]);
 					}
 
 					/*
@@ -137,7 +137,7 @@ public class CacheXML extends Document {
 					 * 		</header>
 					 * 		<value>
 					 */
-					SocketWriter.writing(sock,ServerConst.TAGS_HEAD[1]);
+					SocketWriter.writing(sock,ServerConstants.TAGS_HEAD[1]);
 
 					/*
 					 * Se recorre el resulset para a�adir los datos que contenga, y
@@ -157,32 +157,32 @@ public class CacheXML extends Document {
 
 
 						if (!new_key_data.equals(old_key_data)) {
-							SocketWriter.writing(sock,ServerConst.TAGS_VALUE[0]+
-									ServerConst.TAGS_KEY[0]+
+							SocketWriter.writing(sock,ServerConstants.TAGS_VALUE[0]+
+									ServerConstants.TAGS_KEY[0]+
 									new_key_data+
-									ServerConst.TAGS_KEY[1]+
-									ServerConst.TAGS_ANSWER[0]
+									ServerConstants.TAGS_KEY[1]+
+									ServerConstants.TAGS_ANSWER[0]
 							);
 						}
 						/*
 						 * <row>
 						 * 	<col>value</col>
 						 */
-						 SocketWriter.writing(sock,ServerConst.TAGS_ROW[0]);
+						 SocketWriter.writing(sock,ServerConstants.TAGS_ROW[0]);
 						 for (int j = num_col_keys+1; j <= columnas; j++) {
-							 SocketWriter.writing(sock,ServerConst.TAGS_COL[0] + 
+							 SocketWriter.writing(sock,ServerConstants.TAGS_COL[0] + 
 									 RSdatos.getString(j).trim()+
-									 ServerConst.TAGS_COL[1]
+									 ServerConstants.TAGS_COL[1]
 							 );
 						 }
-						 SocketWriter.writing(sock,ServerConst.TAGS_ROW[1]);
+						 SocketWriter.writing(sock,ServerConstants.TAGS_ROW[1]);
 						 /*
 						  * </row>
 						  */
 
 						  if (!new_key_data.equals(old_key_data) && !old_key_data.equals("")) {
-							  SocketWriter.writing(sock,ServerConst.TAGS_ANSWER[1]+
-									  ServerConst.TAGS_VALUE[1]
+							  SocketWriter.writing(sock,ServerConstants.TAGS_ANSWER[1]+
+									  ServerConstants.TAGS_VALUE[1]
 							  );
 							  close_tags=false;
 						  } else
@@ -193,42 +193,42 @@ public class CacheXML extends Document {
 					}
 
 					if (close_tags)
-						SocketWriter.writing(sock,ServerConst.TAGS_ANSWER[1]+
-								ServerConst.TAGS_VALUE[1]);
+						SocketWriter.writing(sock,ServerConstants.TAGS_ANSWER[1]+
+								ServerConstants.TAGS_VALUE[1]);
 
 
-					SocketWriter.writing(sock,ServerConst.TAGS_CACHE_ANSWER[1]);
+					SocketWriter.writing(sock,ServerConstants.TAGS_CACHE_ANSWER[1]);
 
-					CloseSQL.close(RSdatos);
+					QueryClosingHandler.close(RSdatos);
 					LogWriter.write(Language.getWord("OK_CREATING_XML"));
 
 				}
 				catch (SQLException SQLEe) {
 					String err = Language.getWord("ERR_RS") + " " + SQLEe.getMessage();
 					LogWriter.write(err);
-					ErrorXML error = new ErrorXML();
-					SocketWriter.writing(sock,error.returnError(ServerConst.ERROR, err));
+					XMLError error = new XMLError();
+					SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR, err));
 				}
 				rselect.closeStatement();
 			}
 			catch (SQLNotFoundException QNFEe) {
 				String err = QNFEe.getMessage();
 				LogWriter.write(err);
-				ErrorXML error = new ErrorXML();
-				SocketWriter.writing(sock,error.returnError(ServerConst.ERROR,  err));
+				XMLError error = new XMLError();
+				SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR,  err));
 
 			} 
 			catch (SQLException SQLEe) {
 				String err = Language.getWord("ERR_ST") + " " + SQLEe.getMessage();
 				LogWriter.write(err);
-				ErrorXML error = new ErrorXML();
-				SocketWriter.writing(sock,error.returnError(ServerConst.ERROR,  err));
+				XMLError error = new XMLError();
+				SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR,  err));
 			}
 			catch (SQLBadArgumentsException QBAEe) {
 				String err = QBAEe.getMessage();
 				LogWriter.write(err);
-				ErrorXML error = new ErrorXML();
-				SocketWriter.writing(sock,error.returnError(ServerConst.ERROR,  err));
+				XMLError error = new XMLError();
+				SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR,  err));
 			}
 		}
 		catch (IOException e) {

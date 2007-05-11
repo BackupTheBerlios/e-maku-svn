@@ -42,7 +42,7 @@ public class UserSearchPanel extends JPanel implements ActionListener {
 	private UsersTable table;
 	private JButton searchBT;
 	private JTextField searchTF;
-	JComboBox field;
+	private JComboBox field;
 	
 	// Search Panel Constructor
 	public UserSearchPanel(UsersList frame) {
@@ -56,7 +56,7 @@ public class UserSearchPanel extends JPanel implements ActionListener {
 		searchBT = gui.createButton("search.png");
 		searchBT.setActionCommand("search");
 		searchBT.addActionListener(this);
-		String[] options = {"Código","Nombre","Dirección IP"};
+		String[] options = {"Códigos","Nombres","Direcciones IP"};
 		field = new JComboBox(options);
 		
 		JPanel top = new JPanel();
@@ -89,124 +89,11 @@ public class UserSearchPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if (command.equals("search")) {
-			//frame.updateList("SIN GRUPO");
+			
 		}	
 		if (command.equals("close")) {
 			frame.dispose();
 		}	
 	}
 	
-	/*
-	public void updateList(String group) {
-		loadUserList();
-		loadTotal();
-		requestUsersTotal();
-		requestOnlineUsers(group);
-		if (oneTable) {
-			table.getRenderer().setPressedColumn(0);
-			table.getRenderer().setSelectedColumn(0);
-			table.getTableHeader().repaint();
-		}
-	}*/
-	/*
-	private void loadTotal() {
-		class Monitor extends Thread {
-			Document doc= null;
-			public void run() {
-				try {
-					doc = QuerySender.getResultSetST("TOTAL");
-					XMLOutputter xmlOutputter = new XMLOutputter();
-		            xmlOutputter.setFormat(Format.getPrettyFormat());
-		    		Element elm = doc.getRootElement();
-		    		List list = elm.getChildren("row");
-		    		Element col = (Element)list.get(0);
-		    		String uTotal = col.getValue();
-		    		setWindowLabel(uTotal);
-				} catch (QuerySenderException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		new Monitor().start();		
-	}
-
-	// Captura la lista de usuarios solicitada  
-	private void loadUserList() {
-		class Monitor  extends Thread {			
-			Document doc= null;
-			public void run() {
-				try {
-					doc = QuerySender.getResultSetST("LIST");
-					table.getModel().setQuery(doc);
-				} catch (QuerySenderException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		new Monitor().start();		
-	}
-	
-	// Solicita el total de usuarios conectados
-	public void requestUsersTotal() {
-		// Enviando comando al servidor para ser aprobado
-		Cache.getGroup("key");
-		Element onlist = new Element("ONLINELIST");
-		Element id = new Element("id").setText("TOTAL");
-		onlist.addContent(id);
-		Document document = new Document(onlist);
-
-		if (document!=null) {
-			try {
-				SocketWriter.writing(SocketHandler.getSock(),document);
-			} catch (IOException ex) {
-				System.out.println("Error de entrada y salida");
-				System.out.println("mensaje: " + ex.getMessage());
-				ex.printStackTrace();
-			}
-		}
-	}
-	
-	// Solicita la lista de usuarios de un grupo determinado
-	public void requestOnlineUsers(String group) {
-		// Enviando comando al servidor para ser aprobado
-		Cache.getGroup("key");
-		Element onlist = new Element("ONLINELIST");
-		Element id = new Element("id").setText("LIST");
-		onlist.addContent(id);
-		Document document = new Document(onlist);
-        Element args = new Element("args");
-        onlist.addContent("5");
-        args.setText(group);
-
-		if (document!=null) {
-			try {
-				SocketWriter.writing(SocketHandler.getSock(),document);
-			} catch (IOException ex) {
-				System.out.println("Error de entrada y salida");
-				System.out.println("Causa: " + ex.getMessage());
-				ex.printStackTrace();
-			}
-		}
-		
-	}
-	
-    public void setWindowLabel(String total) {
-    	String date = UsersList.getFormattedDate();
-    	frame.setTitle("Usuarios en Linea: " + total + " / " + date);
-    } 
-
-	public void mouseClicked(MouseEvent e) {
-	}
-
-	public void mouseEntered(MouseEvent e) {
-	}
-
-	public void mouseExited(MouseEvent e) {		
-	}
-
-	public void mousePressed(MouseEvent e) {		
-	}
-
-	public void mouseReleased(MouseEvent e) {		
-	} */
 }

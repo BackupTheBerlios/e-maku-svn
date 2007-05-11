@@ -14,48 +14,47 @@ import org.jdom.Document;
 import org.jdom.Element;
 
 import com.kazak.smi.server.comunications.SocketWriter;
-import com.kazak.smi.server.database.sql.CloseSQL;
+import com.kazak.smi.server.database.sql.QueryClosingHandler;
 import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 
 public class UserManager {
 
-	private Iterator itArgs;
-	private ArrayList<QueryRunner> querys;
-	private String[] arrUserInfo;
-	private Vector<String[]> arrWs = new Vector<String[]>();
-	//private String oldLogin;
+	private Iterator argsIterator;
+	private ArrayList<QueryRunner> queries;
+	private String[] userInfoArray;
+	private Vector<String[]> wsArray = new Vector<String[]>();
 
 	public UserManager(SocketChannel sock, Element args, Element packet, String id) {
-		this.itArgs = args.getChildren("arg").iterator();
+		this.argsIterator = args.getChildren("arg").iterator();
 		String type = args.getChildText("action");
-		boolean ret = false;
+		boolean result = false;
 		String message = "";
-		querys = new ArrayList<QueryRunner>();
+		queries = new ArrayList<QueryRunner>();
 		try {
 			if ("add".equals(type)) {
-				ret = addUser(packet);
+				result = addUser(packet);
 			}
 			else if ("edit".equals(type)) {
-				ret = editUser(packet);
+				result = editUser(packet);
 			}
 			else if ("remove".equals(type)) {
-				ret = removeUser(packet);
+				result = removeUser(packet);
 			}
 		} catch (SQLNotFoundException e) {
-			ret = false;
+			result = false;
 			message = e.getMessage();
 		} catch (SQLBadArgumentsException e) {
-			ret = false;
+			result = false;
 			message = e.getMessage();
 		} catch (SQLException e) {
-			ret = false;
+			result = false;
 			message = e.getMessage();
 		}
-		if (ret) {
-			for (QueryRunner rq :querys) {
-				rq.commit();
+		if (result) {
+			for (QueryRunner qRunner :queries) {
+				qRunner.commit();
 			}
 						
 			Element reload = new Element("RELOADTREE");
@@ -65,47 +64,47 @@ public class UserManager {
 				e.printStackTrace();
 			}
 			message = "Los datos fueron almacenados satisfactoriamente";
-			TransactionRunner.successMessage(sock,id,message);
+			TransactionRunner.notifyMessageReception(sock,id,message);
 		}
 		else {
-			for (QueryRunner rq :querys) {
-				rq.rollback();
+			for (QueryRunner qRunner :queries) {
+				qRunner.rollback();
 			}
 			TransactionRunner.
-			errorMessage
-			(sock,id,"No se pudo insertar el usuario causa: " + message);
+			notifyErrorMessage
+			(sock,id,"No se pudo insertar el usuario. Causa:\n" + message);
 		}
 	}
 	
 	private boolean addUser(Element transaction) throws 
 	SQLNotFoundException, SQLBadArgumentsException, SQLException {
-		Iterator it = transaction.getChildren("package").iterator();
-		while(it.hasNext()) {
-			Element e = (Element)it.next();
-			List lspacks = e.getChildren("subpackage");
-			int spacks = lspacks!=null ? lspacks.size() : 0;
-			if ((e.getChildren().size() - spacks) > 0 ||
-				(spacks>0)) {
-				if (spacks>0) {
-					Iterator itspacks = lspacks.iterator();
-					String sqlCode = ((Element)itArgs.next()).getText();
-					while (itspacks.hasNext()) {
-						Element sp = (Element)itspacks.next();
-						String[] sqlArgs = packArgs(sp);
-						arrWs.add(sqlArgs);
-						QueryRunner rq = new QueryRunner(sqlCode,sqlArgs);
-						querys.add(rq);
-						rq.setAutoCommit(false);
-						rq.runSQL();
+		Iterator iterator = transaction.getChildren("package").iterator();
+		while(iterator.hasNext()) {
+			Element e = (Element)iterator.next();
+			List packetsList = e.getChildren("subpackage");
+			int packetsListSize = packetsList!=null ? packetsList.size() : 0;
+			if ((e.getChildren().size() - packetsListSize) > 0 ||
+				(packetsListSize>0)) {
+				if (packetsListSize>0) {
+					Iterator packetsIterator = packetsList.iterator();
+					String sqlCode = ((Element)argsIterator.next()).getText();
+					while (packetsIterator.hasNext()) {
+						Element element = (Element)packetsIterator.next();
+						String[] sqlArgs = getPackArgs(element);
+						wsArray.add(sqlArgs);
+						QueryRunner queryRunner = new QueryRunner(sqlCode,sqlArgs);
+						queries.add(queryRunner);
+						queryRunner.setAutoCommit(false);
+						queryRunner.runSQL();
 					}
 				}
 				else {
-					arrUserInfo = packArgs(e);
-					String sqlCode = ((Element)itArgs.next()).getText();
-					QueryRunner rq = new QueryRunner(sqlCode,arrUserInfo);
-					querys.add(rq);
-					rq.setAutoCommit(false);
-					rq.runSQL();
+					userInfoArray = getPackArgs(e);
+					String sqlCode = ((Element)argsIterator.next()).getText();
+					QueryRunner qRunner = new QueryRunner(sqlCode,userInfoArray);
+					queries.add(qRunner);
+					qRunner.setAutoCommit(false);
+					qRunner.runSQL();
 				}
 			}
 		}
@@ -114,38 +113,38 @@ public class UserManager {
 	
 	private boolean editUser(Element transaction) throws 
 	SQLNotFoundException, SQLBadArgumentsException, SQLException {
-		Iterator it = transaction.getChildren("package").iterator();
+		Iterator iterator = transaction.getChildren("package").iterator();
 		
-		Element e = (Element)it.next();
-		arrUserInfo = packArgs(e);
-		String sqlCode = ((Element)itArgs.next()).getText();
-		QueryRunner rq = new QueryRunner(sqlCode,arrUserInfo);
-		querys.add(rq);
-		rq.setAutoCommit(false);
-		rq.runSQL();
+		Element element = (Element)iterator.next();
+		userInfoArray = getPackArgs(element);
+		String sqlCode = ((Element)argsIterator.next()).getText();
+		QueryRunner queryRunner = new QueryRunner(sqlCode,userInfoArray);
+		queries.add(queryRunner);
+		queryRunner.setAutoCommit(false);
+		queryRunner.runSQL();
 			
-		e = (Element)it.next();
-		String[] args = packArgs(e);
-		sqlCode = ((Element)itArgs.next()).getText();
-		rq = new QueryRunner(sqlCode,args);
-		querys.add(rq);
-		rq.setAutoCommit(false);
-		rq.runSQL();
+		element = (Element)iterator.next();
+		String[] args = getPackArgs(element);
+		sqlCode = ((Element)argsIterator.next()).getText();
+		queryRunner = new QueryRunner(sqlCode,args);
+		queries.add(queryRunner);
+		queryRunner.setAutoCommit(false);
+		queryRunner.runSQL();
 		
-		e = (Element)it.next();
-		List lspacks = e.getChildren("subpackage");
-		int spacks = lspacks!=null ? lspacks.size() : 0;
-		if (spacks>0) {
-			Iterator itspacks = lspacks.iterator();
-			sqlCode = ((Element)itArgs.next()).getText();
-			while (itspacks.hasNext()) {
-				Element sp = (Element)itspacks.next();
-				String[] sqlArgs = packArgs(sp);
-				arrWs.add(sqlArgs);
-				rq = new QueryRunner(sqlCode,sqlArgs);
-				querys.add(rq);
-				rq.setAutoCommit(false);
-				rq.runSQL();
+		element = (Element)iterator.next();
+		List packetsList = element.getChildren("subpackage");
+		int packetsListSize = packetsList!=null ? packetsList.size() : 0;
+		if (packetsListSize>0) {
+			Iterator packetsIterator = packetsList.iterator();
+			sqlCode = ((Element)argsIterator.next()).getText();
+			while (packetsIterator.hasNext()) {
+				Element packetArg = (Element)packetsIterator.next();
+				String[] sqlArgs = getPackArgs(packetArg);
+				wsArray.add(sqlArgs);
+				queryRunner = new QueryRunner(sqlCode,sqlArgs);
+				queries.add(queryRunner);
+				queryRunner.setAutoCommit(false);
+				queryRunner.runSQL();
 			}
 		}
 		return true;
@@ -153,53 +152,52 @@ public class UserManager {
 	
 	private boolean removeUser(Element transaction) throws 
 	SQLNotFoundException, SQLBadArgumentsException, SQLException {
-		Iterator it = transaction.getChildren("package").iterator();
+		Iterator iterator = transaction.getChildren("package").iterator();
 		
-		Element e = (Element)it.next();
-		String[] args = packArgs(e);
-		String sqlCode = ((Element)itArgs.next()).getText();
-		QueryRunner rq = new QueryRunner(sqlCode,args);
-		querys.add(rq);
-		rq.setAutoCommit(false);
-		rq.runSQL();
-		//oldLogin = args[0];
+		Element element = (Element)iterator.next();
+		String[] args = getPackArgs(element);
+		String sqlCode = ((Element)argsIterator.next()).getText();
+		QueryRunner qRunner = new QueryRunner(sqlCode,args);
+		queries.add(qRunner);
+		qRunner.setAutoCommit(false);
+		qRunner.runSQL();
 		
-		e = (Element)it.next();
-		args = packArgs(e);
-		sqlCode = ((Element)itArgs.next()).getText();
-		rq = new QueryRunner(sqlCode,args);
-		querys.add(rq);
-		rq.setAutoCommit(false);
-		rq.runSQL();
+		element = (Element)iterator.next();
+		args = getPackArgs(element);
+		sqlCode = ((Element)argsIterator.next()).getText();
+		qRunner = new QueryRunner(sqlCode,args);
+		queries.add(qRunner);
+		qRunner.setAutoCommit(false);
+		qRunner.runSQL();
 		
 		return true;
 	}
 	
-	public String[] packArgs(Element pack) {
+	public String[] getPackArgs(Element pack) {
 		List list = pack.getChildren("field");
-		Iterator it = list.iterator();
-		String[] ret = new String[list.size()];
+		Iterator iterator = list.iterator();
+		String[] argsArray = new String[list.size()];
 		int index = 0;
-		while(it.hasNext()) {
-			Element e = (Element) it.next();
-			Attribute at = e.getAttribute("arg");
-			ret[index] = e.getValue();
-			if (at!=null && at.getValue().equals("edit")) {
-				ret[index] = oldPassword(ret[index-1]);
+		while(iterator.hasNext()) {
+			Element e = (Element) iterator.next();
+			Attribute attribute = e.getAttribute("arg");
+			argsArray[index] = e.getValue();
+			if (attribute!=null && attribute.getValue().equals("edit")) {
+				argsArray[index] = getOldPassword(argsArray[index-1]);
 			}
 			index++;
 		}
-		return ret;
+		return argsArray;
 	}
 	
-	private String oldPassword(String login){
-		QueryRunner runQuery = null;
-		ResultSet rs = null;
+	private String getOldPassword(String login){
+		QueryRunner queryRunner = null;
+		ResultSet resultSet = null;
 		try {
-			runQuery = new QueryRunner("SEL0029",new String[]{login});
-			rs = runQuery.runSELECT();
-		    if (rs.next()) {
-		    	return rs.getString(1);
+			queryRunner = new QueryRunner("SEL0029",new String[]{login});
+			resultSet = queryRunner.runSELECT();
+		    if (resultSet.next()) {
+		    	return resultSet.getString(1);
 		    }
 		} catch (SQLNotFoundException e) {
 			e.printStackTrace();
@@ -208,8 +206,8 @@ public class UserManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			CloseSQL.close(rs);
-			runQuery.closeStatement();
+			QueryClosingHandler.close(resultSet);
+			queryRunner.closeStatement();
 		}
 		return null;
 	}

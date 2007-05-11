@@ -8,7 +8,7 @@ import org.jdom.Element;
 
 import com.kazak.smi.server.comunications.SocketWriter;
 import com.kazak.smi.server.misc.LogWriter;
-import com.kazak.smi.server.misc.settings.ConfigFile;
+import com.kazak.smi.server.misc.settings.ConfigFileHandler;
 
 /**
  * ACPSender.java Creado el 10-ago-2004
@@ -50,7 +50,7 @@ public class ACPSender extends Thread{
 		Element root = new Element("ACPBegin");
         docACPBegin = new Document();
         docACPBegin.setRootElement(root);
-        root.addContent(new Element("AppOwner").setText(ConfigFile.getAppOwner()));
+        root.addContent(new Element("AppOwner").setText(ConfigFileHandler.getAppOwner()));
         root.addContent(new Element("UserLevel").setText(String.valueOf(userLevel)));
         try {
 			SocketWriter.writing(sock,this.docACPBegin);

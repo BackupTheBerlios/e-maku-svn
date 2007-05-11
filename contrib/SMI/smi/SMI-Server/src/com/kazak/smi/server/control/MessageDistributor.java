@@ -16,12 +16,12 @@ import org.jdom.Element;
 import com.kazak.smi.server.comunications.SocketServer;
 import com.kazak.smi.server.comunications.SocketWriter;
 import com.kazak.smi.server.comunications.SocketServer.SocketInfo;
-import com.kazak.smi.server.database.sql.CloseSQL;
+import com.kazak.smi.server.database.sql.QueryClosingHandler;
 import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 import com.kazak.smi.server.misc.LogWriter;
-import com.kazak.smi.server.misc.settings.ConfigFile;
+import com.kazak.smi.server.misc.settings.ConfigFileHandler;
 
 // Esta clase se encarga de distribuir un mensaje a sus destinos
 
@@ -93,7 +93,7 @@ public class MessageDistributor {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
-				CloseSQL.close(rs);
+				QueryClosingHandler.close(rs);
 				runQuery.closeStatement();
 			}
 		}
@@ -168,7 +168,7 @@ public class MessageDistributor {
 			String[] argsSql = 
 			{String.valueOf(destination.getUid()),String.valueOf(sender.getUid()),
 			dateStr,hourStr,subject.trim(),body.trim(),isvalid,
-			String.valueOf(ConfigFile.getMessageLifeTimeForClients()),
+			String.valueOf(ConfigFileHandler.getMessageLifeTimeForClients()),
 			String.valueOf(control),String.valueOf(timeAlife)};
 			
 			QueryRunner runQuery = null;

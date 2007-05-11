@@ -8,7 +8,7 @@ import org.jdom.Element;
 
 import com.kazak.smi.server.database.connection.ConnectionsPool;
 import com.kazak.smi.server.misc.LogWriter;
-import com.kazak.smi.server.misc.settings.ConfigFile;
+import com.kazak.smi.server.misc.settings.ConfigFileHandler;
 
 
 /**
@@ -70,7 +70,7 @@ public class QueryRunner extends Element {
      * @return retorna el resultado de la consulta
      */
     public ResultSet runSELECT() throws SQLException{
-        st = ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).createStatement();
+        st = ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).createStatement();
 //        LogWriter.write("SENTENCIA SQL :: "+sql);
         ResultSet rs = st.executeQuery(sql);
         return rs;
@@ -80,7 +80,7 @@ public class QueryRunner extends Element {
     throws SQLException,SQLNotFoundException, SQLBadArgumentsException {
         this.sqlCode = cod_sql;
         sql = SQLInstructions.getSentence(cod_sql,args);
-        st = ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).createStatement();
+        st = ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).createStatement();
 //        LogWriter.write("SENTENCIA SQL :: "+sql);
         boolean status = st.execute(sql);
         st.close();
@@ -90,7 +90,7 @@ public class QueryRunner extends Element {
     public boolean runSQL(String[] args) 
     throws SQLException,SQLNotFoundException, SQLBadArgumentsException {
         sql = SQLInstructions.getSentence(sqlCode,args);
-        st = ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).createStatement();
+        st = ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).createStatement();
         LogWriter.write("SENTENCIA SQL :: "+sql);
         boolean status = st.execute(sql);
         st.close();
@@ -105,7 +105,7 @@ public class QueryRunner extends Element {
      */
     public boolean runSQL() throws SQLException{
         
-        st = ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).createStatement();
+        st = ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).createStatement();
         //System.out.println("SENTENCIA SQL :: "+sql);
         boolean status = st.execute(sql);
         st.close();
@@ -117,12 +117,12 @@ public class QueryRunner extends Element {
      * la informacion del Resultset haya sido interpretada
      */
     public void closeStatement() {
-        CloseSQL.close(st);
+        QueryClosingHandler.close(st);
     }
     
     public void setAutoCommit(boolean autoCommit) {
         try {
-        	ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).setAutoCommit(autoCommit);
+        	ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).setAutoCommit(autoCommit);
         }
         catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -132,7 +132,7 @@ public class QueryRunner extends Element {
     
     public void commit() {
         try {
-        	ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).commit();
+        	ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).commit();
         }
         catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -142,7 +142,7 @@ public class QueryRunner extends Element {
     
     public void rollback() {
         try {
-        	ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).rollback();
+        	ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).rollback();
         }
         catch (SQLException e) {
             // TODO Auto-generated catch block

@@ -41,7 +41,7 @@ public class EmailSender extends Thread {
 			message+ "\n"+
 			"--------------------------------------------\n" +
 			".";
-		MailHandler.send(from, to, date, subject, fulltext);
+		MailHandler.sendMessage(from, to, date, subject, fulltext);
 	}
 
 	public void setDate(Date date) {

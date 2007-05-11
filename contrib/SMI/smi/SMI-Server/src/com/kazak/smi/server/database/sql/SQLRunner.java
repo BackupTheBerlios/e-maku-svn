@@ -6,11 +6,11 @@ import java.sql.Statement;
 import com.kazak.smi.lib.misc.Language;
 import com.kazak.smi.server.database.connection.ConnectionsPool;
 import com.kazak.smi.server.misc.LogWriter;
-import com.kazak.smi.server.misc.settings.ConfigFile;
+import com.kazak.smi.server.misc.settings.ConfigFileHandler;
 
 
 /**
- * RunIUD.java Creado el 6-jul-2004
+ * SQLRunner.java Creado el 6-jul-2004
  * 
  * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
@@ -30,7 +30,7 @@ import com.kazak.smi.server.misc.settings.ConfigFile;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
-public class RunIUD {
+public class SQLRunner {
     
     private String sql;
     
@@ -40,7 +40,7 @@ public class RunIUD {
      * @param bd Base de datos
      * @param sql Sentencia SQL
      */
-    public RunIUD(String sql) {
+    public SQLRunner(String sql) {
         this.sql = sql;
     }
     
@@ -49,9 +49,9 @@ public class RunIUD {
      * @return Un mensaje de exito o de error al ejecutar
      * la instruccion
      */
-    public String ejecutarIUD() {
+    public String executeSQL() {
         try {
-            Statement st = ConnectionsPool.getConnection(ConfigFile.getMainDataBase()).createStatement();
+            Statement st = ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).createStatement();
             try {
                 st.execute(sql);
             } 
@@ -61,7 +61,7 @@ public class RunIUD {
                 		SQLEe.getMessage());
                 return Language.getWord("EXECUTE_IUD_ERR");
             }
-            CloseSQL.close(st);
+            QueryClosingHandler.close(st);
             LogWriter.write(Language.getWord("EXECUTE_IUD_OK"));
             return Language.getWord("EXECUTE_IUD_OK");
         } 

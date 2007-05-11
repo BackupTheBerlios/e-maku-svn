@@ -15,81 +15,81 @@ import com.kazak.smi.server.misc.LogWriter;
 
 public class GenericTransaction {
 
-	private Iterator it;
-	private ArrayList<QueryRunner> querys;
+	private Iterator iterator;
+	private ArrayList<QueryRunner> queries;
 	public GenericTransaction(SocketChannel sock, Element args, Element packet, String id) {
-		this.it = packet.getChildren("package").iterator();
+		this.iterator = packet.getChildren("package").iterator();
 		int count = args.getChildren("args").size();
 		int passed = 0;
-		Iterator itArgs = args.getChildren("args").iterator();
-		querys = new ArrayList<QueryRunner>();
-		QueryRunner runQuery = null;
-		while(itArgs.hasNext()) {
-			Element element = (Element) itArgs.next();
+		Iterator argsIterator = args.getChildren("args").iterator();
+		queries = new ArrayList<QueryRunner>();
+		QueryRunner queryRunner = null;
+		while(argsIterator.hasNext()) {
+			Element element = (Element) argsIterator.next();
 			String sqlCode = element.getValue();
 			String[] sqlArgs = packArgs();
 			try {
-				runQuery = new QueryRunner(sqlCode,sqlArgs);
-				runQuery.setAutoCommit(false);
-				querys.add(runQuery);
-				runQuery.runSQL();
+				queryRunner = new QueryRunner(sqlCode,sqlArgs);
+				queryRunner.setAutoCommit(false);
+				queries.add(queryRunner);
+				queryRunner.runSQL();
 				passed ++;
 			} catch (SQLException e) {
 				e.printStackTrace();
-				LogWriter.write("Codigo error: "+e.getErrorCode());
-				if (runQuery!=null) {
-					runQuery.rollback();
+				LogWriter.write("ERROR: Excepcion en SQL -> " + e.getErrorCode());
+				if (queryRunner!=null) {
+					queryRunner.rollback();
 				}
-				TransactionRunner.errorMessage(
+				TransactionRunner.notifyErrorMessage(
 						 sock,
                     	 id,
-                    	 "No se pudo procesar la operacion:\n" +
+                    	 "No se pudo procesar la operación:\n" +
  						 "causa:\n"+e.getLocalizedMessage());
 				break;
 			} catch (SQLNotFoundException e) {
 				e.printStackTrace();
-				TransactionRunner.errorMessage(
+				TransactionRunner.notifyErrorMessage(
 						 sock,
 						 id,
-						 "La sentencia  " + sqlCode + " no existe");
+						 "La sentencia  " + sqlCode + " no existe.");
 				break;
 			} catch (SQLBadArgumentsException e) {
 				e.printStackTrace();
-				TransactionRunner.errorMessage(
+				TransactionRunner.notifyErrorMessage(
 						 sock,
 						 id,
-						 "Argumentos invalidos " +
+						 "Argumentos inválidos " +
 						 "para la sentencia : " + sqlCode);
 				break;
 			}
 		}
 		if (passed==count) {
-			for (QueryRunner rq :querys) {
-				rq.commit();
+			for (QueryRunner qRunner :queries) {
+				 qRunner.commit();
 			}
 			
 			TransactionRunner.
-			successMessage
-			(sock,id,"Los datos fueron almacenados satisfactoriamente");
+			notifyMessageReception
+			(sock,id,"Los datos fueron almacenados satisfactoriamente.");
 		}
 		else {
-			for (QueryRunner rq :querys) {
+			for (QueryRunner rq :queries) {
 				rq.rollback();
 			}
 		}
 	}
 	
 	public String[] packArgs() {
-		if (!it.hasNext()) {
+		if (!iterator.hasNext()) {
 			return null;
 		}
-		Element element = (Element)it.next();
+		Element element = (Element)iterator.next();
 		List list = element.getChildren();
-		Iterator it = list.iterator();
+		Iterator listIterator = list.iterator();
 		String[] ret = new String[list.size()];
 		int index = 0;
-		while(it.hasNext()) {
-			Element e = (Element) it.next();
+		while(listIterator.hasNext()) {
+			Element e = (Element) listIterator.next();
 			ret[index] = e.getValue();
 			index++;
 		}

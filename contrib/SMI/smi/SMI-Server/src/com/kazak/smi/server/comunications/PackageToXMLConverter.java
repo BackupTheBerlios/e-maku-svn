@@ -15,7 +15,7 @@ import org.jdom.input.SAXBuilder;
 import com.kazak.smi.lib.misc.Language;
 import com.kazak.smi.server.control.HeaderValidator;
 import com.kazak.smi.server.misc.LogWriter;
-import com.kazak.smi.server.misc.ServerConst;
+import com.kazak.smi.server.misc.ServerConstants;
 
 /**
  * PackageToXML.java Creado el 05-oct-2004
@@ -38,7 +38,7 @@ import com.kazak.smi.server.misc.ServerConst;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David
  *         Cepeda </A>
  */
-public class PackageToXML extends Thread {
+public class PackageToXMLConverter extends Thread {
 
     private ByteBuffer buf;
     private SAXBuilder builder;
@@ -46,7 +46,7 @@ public class PackageToXML extends Thread {
     private static Document doc;
     private SocketChannel channel;
 
-    public PackageToXML(SocketChannel channel) {
+    public PackageToXMLConverter(SocketChannel channel) {
         this.channel = channel;
         this.setPriority(Thread.MIN_PRIORITY);
     }
@@ -107,11 +107,11 @@ public class PackageToXML extends Thread {
                     }
                     catch (JDOMException e1) {
                         SocketServer.getBufferTmp(channel).write(docStream.toByteArray());
-                        ErrorXML error = new ErrorXML();
+                        XMLError error = new XMLError();
                         String tmp = Language.getWord("ERR_FORMAT_PROTOCOL")
                                 + " " + channel.socket();
                         LogWriter.write(tmp);
-                        SocketWriter.writing(channel, error.returnError(ServerConst.ERROR, "", tmp));
+                        SocketWriter.writing(channel, error.returnError(ServerConstants.ERROR, "", tmp));
                     }
                 }
 

@@ -21,6 +21,7 @@ import com.kazak.smi.admin.network.SocketWriter;
 import com.kazak.smi.admin.transactions.QuerySender;
 import com.kazak.smi.admin.transactions.QuerySenderException;
 import com.kazak.smi.admin.gui.table.GroupsSearchPanel;
+import com.kazak.smi.admin.gui.table.UserSearchPanel;
 
 /*
  *  This class searchs for users online and shows them as a list

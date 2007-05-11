@@ -19,12 +19,12 @@ import javax.mail.internet.InternetAddress;
 import org.jdom.Element;
 
 import com.kazak.smi.server.Run;
-import com.kazak.smi.server.database.sql.CloseSQL;
+import com.kazak.smi.server.database.sql.QueryClosingHandler;
 import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 import com.kazak.smi.server.misc.LogWriter;
-import com.kazak.smi.server.misc.settings.ConfigFile;
+import com.kazak.smi.server.misc.settings.ConfigFileHandler;
 
 public class Pop3Handler extends Thread {
 	
@@ -34,10 +34,10 @@ public class Pop3Handler extends Thread {
 	
 	public Pop3Handler() {
 		LogWriter.write("INFO: Iniciando demonio pop3");
-		LogWriter.write("INFO: Servidor " + ConfigFile.getMailServer());
-		Pop3Handler.host = ConfigFile.getMailServer();
-		Pop3Handler.user = ConfigFile.getUserMail();
-		Pop3Handler.password = ConfigFile.getPassWordMail();
+		LogWriter.write("INFO: Servidor " + ConfigFileHandler.getMailServer());
+		Pop3Handler.host = ConfigFileHandler.getMailServer();
+		Pop3Handler.user = ConfigFileHandler.getUserMail();
+		Pop3Handler.password = ConfigFileHandler.getPassWordMail();
 		start();
 	}
 	
@@ -142,7 +142,7 @@ public class Pop3Handler extends Thread {
 						} catch (SQLException e) {
 							e.printStackTrace();
 						} finally {
-							CloseSQL.close(rs);
+							QueryClosingHandler.close(rs);
 							runQuery.closeStatement();
 						}
 					}
@@ -163,7 +163,7 @@ public class Pop3Handler extends Thread {
 				e.printStackTrace();
 			}
 			try {
-				Thread.sleep(ConfigFile.getTimeIntervalConnect());
+				Thread.sleep(ConfigFileHandler.getTimeIntervalConnect());
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}

@@ -13,16 +13,16 @@ import javax.swing.JOptionPane;
 
 import com.kazak.smi.client.gui.LoginWindow;
 import com.kazak.smi.client.gui.TrayManager;
-import com.kazak.smi.lib.network.PackageToXML;
+import com.kazak.smi.lib.network.PackageToXMLConverter;
 
 public class SocketHandler extends Thread  {
 
 	private static SocketChannel socket;
-	private PackageToXML packageXML;
+	private PackageToXMLConverter packageXML;
 	private String host;
 	private int port;
 	
-	public SocketHandler(String host,int port,PackageToXML packageXML) 
+	public SocketHandler(String host,int port,PackageToXMLConverter packageXML) 
 	throws UnresolvedAddressException, IOException {
 		this.host = host;
 		this.port = port;

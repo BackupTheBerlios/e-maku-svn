@@ -7,11 +7,11 @@ public class AcpFailure extends Document {
 
 	private static final long serialVersionUID = -2227873601621081462L;
 	
-	public AcpFailure(String mess) {
+	public AcpFailure(String sentence) {
 		this.setRootElement(new Element("ACPFAILURE"));
 		
-		Element	message 	= new Element("message");
-		message.setText(mess);
+		Element	message = new Element("message");
+		message.setText(sentence);
 		
 		this.getRootElement().addContent(message);
 	}

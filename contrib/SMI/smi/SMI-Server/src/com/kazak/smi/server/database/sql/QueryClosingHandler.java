@@ -27,7 +27,7 @@ import java.sql.Statement;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
-public class CloseSQL {
+public class QueryClosingHandler {
     
     /**
      * Metodo encargado de cerrar los Statements

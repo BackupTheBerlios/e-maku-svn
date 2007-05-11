@@ -25,7 +25,7 @@ import org.jdom.Element;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
-public class ErrorXML extends Document {
+public class XMLError extends Document {
 
     /**
 	 * 

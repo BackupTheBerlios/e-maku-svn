@@ -2,30 +2,27 @@ package com.kazak.smi.admin.control;
 
 import java.awt.Cursor;
 import java.io.IOException;
-//import java.util.List;
 
 import javax.swing.JOptionPane;
 
 import org.jdom.Document;
 import org.jdom.Element;
-//import org.jdom.output.Format;
-//import org.jdom.output.XMLOutputter;
 
 import com.kazak.smi.admin.gui.LoginWindow;
 import com.kazak.smi.admin.gui.MainWindow;
 import com.kazak.smi.admin.network.SocketHandler;
 import com.kazak.smi.admin.transactions.QuerySender;
-import com.kazak.smi.lib.network.ArrivePackageEvent;
-import com.kazak.smi.lib.network.ArrivePackageListener;
+import com.kazak.smi.lib.network.ArrivedPackageEvent;
+import com.kazak.smi.lib.network.PackageComingListener;
 
 
-public class HeadersValidator implements ArrivePackageListener {
+public class HeadersValidator implements PackageComingListener {
 
     private static Element root;
     
-    public void validPackage(ArrivePackageEvent APe) {
+    public void validPackage(ArrivedPackageEvent arrivedPackageEvent) {
     	
-   		Document doc = APe.getDoc();
+   		Document doc = arrivedPackageEvent.getDoc();
         root = doc.getRootElement();
         String nombre = root.getName();
 		
@@ -78,7 +75,7 @@ public class HeadersValidator implements ArrivePackageListener {
         }
         else if(nombre.equals("SUCCESSSYNC")) {
         	Sync.successsync = true;
-        	JOptionPane.showMessageDialog(Sync.getDialog(), "Base de datos Sincronizada con exito");
+        	JOptionPane.showMessageDialog(Sync.getDialog(), "Base de datos sincronizada con éxito.");
         }
         else if(nombre.equals("ERRSYNC")) {
         	Sync.successssyncerror = true;

@@ -40,7 +40,7 @@ import com.kazak.smi.server.misc.LogWriter;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
 
-public class ConfigFile {
+public class ConfigFileHandler {
     
     private static SAXBuilder builder;
     private static Document doc;
@@ -310,7 +310,7 @@ public class ConfigFile {
 	}
 
 	public static void setTimeIntervalConnect(int timeIntervalConnect) {
-		ConfigFile.checkMailEvery = timeIntervalConnect;
+		ConfigFileHandler.checkMailEvery = timeIntervalConnect;
 	}
 
 	public static ArrayList<OracleSyncTask> getOraclesync() {
@@ -322,7 +322,7 @@ public class ConfigFile {
 	}
 
 	public static void setTimeAlifeMessageForClient(int MessageLifeTimeForClient) {
-		ConfigFile.messageLifeTimeForClients = MessageLifeTimeForClient;
+		ConfigFileHandler.messageLifeTimeForClients = MessageLifeTimeForClient;
 	}
 
 	public static int getMaxMessagesDataBase() {

@@ -14,13 +14,13 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import com.kazak.smi.server.misc.LogWriter;
-import com.kazak.smi.server.misc.settings.ConfigFile;
+import com.kazak.smi.server.misc.settings.ConfigFileHandler;
 
 public class MailHandler {
     
     private static Properties props = new Properties();
     
-    public static void send (
+    public static void sendMessage (
     		String from,
     		String to,
     		Date date,
@@ -28,7 +28,7 @@ public class MailHandler {
     		String message
     		) {
     	props.put("mail.transport.protocol", "smtp");
-    	props.put("mail.smtp.host", ConfigFile.getMailServer());
+    	props.put("mail.smtp.host", ConfigFileHandler.getMailServer());
     	props.put("mail.smtp.port", "25");
         Session session = Session.getDefaultInstance(props);
         Address destinationAddress;

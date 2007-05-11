@@ -11,15 +11,15 @@ import org.jdom.Document;
 import org.jdom.Element;
 
 import com.kazak.smi.lib.misc.Language;
-import com.kazak.smi.server.comunications.ErrorXML;
+import com.kazak.smi.server.comunications.XMLError;
 import com.kazak.smi.server.comunications.SocketWriter;
-import com.kazak.smi.server.comunications.SuccessXML;
+import com.kazak.smi.server.comunications.XMLAuditor;
 import com.kazak.smi.server.control.TransactionsCache;
 import com.kazak.smi.server.misc.LogWriter;
-import com.kazak.smi.server.misc.ServerConst;
+import com.kazak.smi.server.misc.ServerConstants;
 
 /**
- * RunTransaction.java Creado el 18-ene-2005
+ * TransactionRunner.java Creado el 18-ene-2005
  * 
  * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
@@ -41,68 +41,68 @@ import com.kazak.smi.server.misc.ServerConst;
  */
 public class TransactionRunner {
 
-    private String transaction_code;
-    private String id_transaction;
+    private String transactionCode;
+    private String transactionID;
     
-    private Class[] type_args_constructor;
-    private Object[] args_constructor;
+    private Class[] ArgsTypeConstructor;
+    private Object[] argsConstructor;
     private Element pack = null;
     
     private SocketChannel sock;
     
     public TransactionRunner(SocketChannel sock,Document transaction) {
 
-        this.sock=sock;
-        Element elm = transaction.getRootElement();
-        List listaRaiz = elm.getChildren();
-        Iterator i = listaRaiz.iterator();
+        this.sock = sock;
+        Element element = transaction.getRootElement();
+        List rootList = element.getChildren();
+        Iterator iterator = rootList.iterator();
         pack = new Element("source");
         /*
          * Se separa el codigo de la transaccion de los datos
          */
         
-        while (i.hasNext()) {
-            Element e = (Element) i.next();
-            String nombre = e.getName();
-            if (nombre.equals("driver"))
-                transaction_code=e.getValue();
-            else if (nombre.equals("id"))
-                id_transaction=e.getValue();
-            else if (nombre.equals("package"))
+        while (iterator.hasNext()) {
+            Element e = (Element) iterator.next();
+            String name = e.getName();
+            if (name.equals("driver"))
+                transactionCode = e.getValue();
+            else if (name.equals("id"))
+                transactionID = e.getValue();
+            else if (name.equals("package"))
                 pack.addContent((Element)e.clone());
         }
-        final TransactionsCache.Transaction tr;
-        tr = TransactionsCache.getTransaction(transaction_code);
+        final TransactionsCache.Transaction operation;
+        operation = TransactionsCache.getTransaction(transactionCode);
         Thread t = new Thread() {
         	public void run() {
-        		callDriver(tr,id_transaction);
+        		callDriver(operation,transactionID);
         	}
         };
         t.start();
     }
 
-    private void callDriver(TransactionsCache.Transaction tr,
-            			    String id_transaction) {
+    private void callDriver(TransactionsCache.Transaction transaction,
+            			    String transactionID) {
         try {
-            if (tr.getDriver() != null) {
-                Class<?> cls = Class.forName(tr.getDriver());
-                type_args_constructor = new Class[] {
+            if (transaction.getDriver() != null) {
+                Class<?> cls = Class.forName(transaction.getDriver());
+                ArgsTypeConstructor = new Class[] {
                 		SocketChannel.class,
                 		Element.class,
                 		Element.class,
                 		String.class};
                     
-                 args_constructor = new Object[] {
+                 argsConstructor = new Object[] {
                 		 sock,
-                		 tr.getArgs(),
+                		 transaction.getArgs(),
                 		 pack,
-                		 id_transaction};
-                Constructor cons = cls.getConstructor(type_args_constructor);
-                cons.newInstance(args_constructor);
+                		 transactionID};
+                Constructor constructor = cls.getConstructor(ArgsTypeConstructor);
+                constructor.newInstance(argsConstructor);
             }
             else {
-                errorMessage(sock,
-		                   	 id_transaction,
+                notifyErrorMessage(sock,
+		                   	 transactionID,
 		                	 Language.getWord("ERR_MODULE_LG")+"\n"+
 		                	 Language.getWord("ERR_NOT_DRIVER"));
             }
@@ -116,91 +116,91 @@ public class TransactionRunner {
 
         catch (ClassNotFoundException CNFEe) {
             CNFEe.printStackTrace();
-            errorMessage(sock,
-		               	 id_transaction,
+            notifyErrorMessage(sock,
+		               	 transactionID,
 		            	 Language.getWord("ERR_MODULE_LG")+"\n"+
 		            	 CNFEe.getMessage());
         }
         catch (NoSuchMethodException NSMEe) {
             NSMEe.printStackTrace();
-            errorMessage(sock,
-		               	 id_transaction,
+            notifyErrorMessage(sock,
+		               	 transactionID,
 		            	 Language.getWord("ERR_MODULE_LG")+"\n"+
 		            	 NSMEe.getMessage());
         }
         catch (InstantiationException IEe) {
             IEe.printStackTrace();
-            errorMessage(sock,
-		               	 id_transaction,
+            notifyErrorMessage(sock,
+		               	 transactionID,
 		            	 Language.getWord("ERR_MODULE_LG")+"\n"+
 		            	 IEe.getMessage());
         }
         catch (IllegalAccessException IAEe) {
             IAEe.printStackTrace();
-            errorMessage(sock,
-		               	 id_transaction,
+            notifyErrorMessage(sock,
+		               	 transactionID,
 		            	 Language.getWord("ERR_MODULE_LG")+"\n"+
 		            	 IAEe.getMessage());
         }
         catch (InvocationTargetException ITEe) {
             ITEe.printStackTrace();
-            errorMessage(sock,
-		               	 id_transaction,
+            notifyErrorMessage(sock,
+		               	 transactionID,
 		            	 Language.getWord("ERR_MODULE_LG")+"\n"+
 		            	 ITEe.getMessage());
         }
         catch(NullPointerException NPEe) {
             NPEe.printStackTrace();
-            errorMessage(sock,
-                    	 id_transaction,
+            notifyErrorMessage(sock,
+                    	 transactionID,
                     	 Language.getWord("ERR_MODULE_LG")+"\n"+
                     	 Language.getWord("ERR_FOUND_DRIVER_LG"));
         }
     }
     
-    public static void errorMessage(SocketChannel sock,
+    public static void notifyErrorMessage(SocketChannel sock,
             					     String id_transaction,
             					     String message) {
-        ErrorXML error = new ErrorXML();
+        XMLError error = new XMLError();
         LogWriter.write(message);
         try {
         	Document doc = error.returnError(
-        			ServerConst.ERROR,
+        			ServerConstants.ERROR,
         			id_transaction,
         			message);
         	SocketWriter.writing(sock,doc);
         } catch (IOException e) {
-			LogWriter.write("Error de entrada y salida");
-			LogWriter.write("mensaje: " + e.getMessage());
+			LogWriter.write("ERROR: Falla de entrada/salida");
+			LogWriter.write("Causa: " + e.getMessage());
 			e.printStackTrace();
 		}
 
     }
     
-    public static void successMessage(SocketChannel sock,
-									  String id_transaction,
+    public static void notifyMessageReception(SocketChannel sock,
+									  String transactionID,
 									  String message) {
-		SuccessXML success = new SuccessXML();
+		XMLAuditor auditor = new XMLAuditor();
 		LogWriter.write(message);
 		try {
-			SocketWriter.writing(sock,success.returnSuccess(id_transaction,message));
+			SocketWriter.writing(sock,auditor.returnSuccess(transactionID,message));
 		} catch (IOException e) {
-			LogWriter.write("Error de entrada y salida");
-			LogWriter.write("mensaje: " + e.getMessage());
+			LogWriter.write("ERROR: Falla de entrada/salida");
+			LogWriter.write("Causa: " + e.getMessage());
 			e.printStackTrace();
 		} 
 	    
     }
     
-    public static void successMessage(
+    public static void notifyMessageReception(
     							SocketChannel sock,
-    							String id_transaction,
+    							String transactionID,
     							String message,
     							Element element) {
-		SuccessXML success = new SuccessXML();
+		XMLAuditor auditor = new XMLAuditor();
 		LogWriter.write(message);
 		try {
-			SocketWriter.writing(sock,success.returnSuccess(id_transaction,message,element));
+			SocketWriter.writing(sock,auditor.returnSuccess(transactionID,message,element));
 		} catch (IOException e) {
 			LogWriter.write("Error de entrada y salida");
 			LogWriter.write("mensaje: " + e.getMessage());

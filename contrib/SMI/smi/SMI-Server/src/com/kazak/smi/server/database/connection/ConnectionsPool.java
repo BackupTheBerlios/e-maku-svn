@@ -7,7 +7,7 @@ import java.util.Hashtable;
 
 import com.kazak.smi.lib.misc.Language;
 import com.kazak.smi.server.misc.LogWriter;
-import com.kazak.smi.server.misc.settings.ConfigFile;
+import com.kazak.smi.server.misc.settings.ConfigFileHandler;
 
 
 /**
@@ -44,24 +44,24 @@ public class ConnectionsPool {
     public static void loadDB() throws PoolNotLoadException {
         
         Hpoolbds = new Hashtable<String,Connection>();
-        int max = ConfigFile.getDBSize();
+        int max = ConfigFileHandler.getDBSize();
         for (int i=0;i<max;i++)
             try {
-            	if (ConfigFile.isConnectOnInit(i)) {
+            	if (ConfigFileHandler.isConnectOnInit(i)) {
                 LogWriter.write(
                 		Language.getWord("LOADING_DB") +" "+
-                		ConfigFile.getDBName(i));
+                		ConfigFileHandler.getDBName(i));
                 
-                Class.forName(ConfigFile.getDriver(i));
+                Class.forName(ConfigFileHandler.getDriver(i));
                 Hpoolbds.put(
-                		ConfigFile.getDBName(i),
+                		ConfigFileHandler.getDBName(i),
 						DriverManager.getConnection(
-								ConfigFile.getUrl(i),
-								ConfigFile.getUser(i),
-								ConfigFile.getPassword(i)));
+								ConfigFileHandler.getUrl(i),
+								ConfigFileHandler.getUser(i),
+								ConfigFileHandler.getPassword(i)));
             	} else {
                     LogWriter.write(Language.getWord("NO_LOADING_DB") +
-                    		        ConfigFile.getDBName(i));
+                    		        ConfigFileHandler.getDBName(i));
             	}
             } 
             catch (ClassNotFoundException CNFEe) {
@@ -69,13 +69,13 @@ public class ConnectionsPool {
                 		Language.getWord("ERR_CLASS") + ", "+
                 		CNFEe.getMessage());
                 
-                throw new PoolNotLoadException(ConfigFile.getDBName(i));
+                throw new PoolNotLoadException(ConfigFileHandler.getDBName(i));
             } 
             catch (SQLException SQLEe){
             	LogWriter.write(
-                		Language.getWord("ERR_SQL") + " " + ConfigFile.getDBName(i) + ".\nCausa: " + 
+                		Language.getWord("ERR_SQL") + " " + ConfigFileHandler.getDBName(i) + ".\nCausa: " + 
                 		SQLEe.getMessage());
-                throw new PoolNotLoadException(ConfigFile.getDBName(i));
+                throw new PoolNotLoadException(ConfigFileHandler.getDBName(i));
             }
     }
     

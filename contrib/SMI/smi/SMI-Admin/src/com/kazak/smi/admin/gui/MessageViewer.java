@@ -94,7 +94,7 @@ public class MessageViewer implements ActionListener {
 					fos.close();
 					JOptionPane.showMessageDialog(
 							frame,
-							"Archivo guardado");
+							"Archivo guardado con éxito.");
 				} catch (FileNotFoundException ex) {
 					ex.printStackTrace();
 				} catch (IOException ex) {

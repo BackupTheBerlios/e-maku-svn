@@ -5,14 +5,14 @@ import java.sql.SQLException;
 
 import org.jdom.Element;
 
-import com.kazak.smi.server.database.sql.CloseSQL;
+import com.kazak.smi.server.database.sql.QueryClosingHandler;
 import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 import com.kazak.smi.server.misc.LogWriter;
 
 /**
- * LoginUser.java Creado el 23-jul-2004
+ * UserLogin.java Creado el 23-jul-2004
  * 
  * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
@@ -27,7 +27,7 @@ import com.kazak.smi.server.misc.LogWriter;
  * o por un PROPOSITO PARTICULAR. Consulte la Licencia Publica General
  * GNU GPL para mas detalles.
  * <br>
- * Informacion de la clase
+ * Esta clase autentica el ingreso de un usuario al sistema
  * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
@@ -62,12 +62,12 @@ public class UserLogin {
 	    ip = data.getChild("ip").getValue();
 	    boolean validate = data.getChild("validate")!=null ? true : false ;
 	    LogWriter.write("INFO: Inicio de autenticación para el usuario {"+login+"} con la clave {"+password+"}");
-	    QueryRunner runQuery = null;
+	    QueryRunner queryRunner = null;
 	    ResultSet rs = null;
 	    int count = 0;
 		try {
-			runQuery = new QueryRunner("SEL0023",new String[]{login,password});
-			rs = runQuery.runSELECT();
+			queryRunner = new QueryRunner("SEL0023",new String[]{login,password});
+			rs = queryRunner.runSELECT();
 		    count = rs.next() ? rs.getInt(1) : 0;
 		} catch (SQLNotFoundException e) {
 			e.printStackTrace();
@@ -76,14 +76,14 @@ public class UserLogin {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			CloseSQL.close(rs);
-			runQuery.closeStatement();
+			QueryClosingHandler.close(rs);
+			queryRunner.closeStatement();
 		}
 	    if (count==1) {
     		
 	    	try {
-				runQuery = new QueryRunner("SEL0025",new String[]{login,login});
-				rs = runQuery.runSELECT();
+				queryRunner = new QueryRunner("SEL0025",new String[]{login,login});
+				rs = queryRunner.runSELECT();
 				if (rs.next()) {
 					uid 	= rs.getInt(1);
 					login	= rs.getString(2);
@@ -126,8 +126,8 @@ public class UserLogin {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
-				CloseSQL.close(rs);
-				runQuery.closeStatement();
+				QueryClosingHandler.close(rs);
+				queryRunner.closeStatement();
 			}
 			
 	    }

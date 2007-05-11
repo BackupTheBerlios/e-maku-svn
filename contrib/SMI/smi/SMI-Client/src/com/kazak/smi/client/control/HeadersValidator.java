@@ -16,15 +16,15 @@ import com.kazak.smi.client.gui.MessageViewer;
 import com.kazak.smi.client.gui.TrayManager;
 import com.kazak.smi.client.network.QuerySender;
 import com.kazak.smi.client.network.SocketHandler;
-import com.kazak.smi.lib.network.ArrivePackageEvent;
-import com.kazak.smi.lib.network.ArrivePackageListener;
+import com.kazak.smi.lib.network.ArrivedPackageEvent;
+import com.kazak.smi.lib.network.PackageComingListener;
 
 
-public class HeadersValidator implements ArrivePackageListener {
+public class HeadersValidator implements PackageComingListener {
 
     private static Element root;
     private static ArrayList<MessageListener> messageListeners = new ArrayList<MessageListener>();
-    public void validPackage(ArrivePackageEvent APe) {
+    public void validPackage(ArrivedPackageEvent APe) {
     	
    		Document doc = APe.getDoc();
         root = doc.getRootElement();

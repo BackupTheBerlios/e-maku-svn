@@ -14,14 +14,14 @@ import javax.swing.JOptionPane;
 
 import com.kazak.smi.admin.gui.LoginWindow;
 import com.kazak.smi.admin.gui.MainWindow;
-import com.kazak.smi.lib.network.PackageToXML;
+import com.kazak.smi.lib.network.PackageToXMLConverter;
 
 public class SocketHandler extends Thread  {
 
 	private static SocketChannel socket;
-	private PackageToXML packageXML;
+	private PackageToXMLConverter packageXML;
 	
-	public SocketHandler(String host,int port,PackageToXML packageXML) 
+	public SocketHandler(String host,int port,PackageToXMLConverter packageXML) 
 	throws UnresolvedAddressException, IOException, NoRouteToHostException {
 		socket = SocketChannel.open();
         socket.configureBlocking(false);
