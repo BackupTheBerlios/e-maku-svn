@@ -382,22 +382,23 @@ public class ComboBoxFiller extends JComboBox implements
 					Document doc = null;
 					String [] args = null;
 					boolean cleanArgs = false;
-					if (keys!=null) {
-						int i=0;
-						if (constantValue!=null) {
-			    			args = new String[constantValue.size()+keys.length];
-			    			for (;i<constantValue.size();i++) {
-			        			args[i]= constantValue.get(i);
-			        		}
-			    		}
-						else {
-							args= new String[keys.length];
-						}
-						for (int j=0 ; i < args.length ; i++ ,j++) {
-							args[i] = GFforma.getExteralValuesString(keys[j]);
-							if (args[i]==null || args[i].equals("")) {
+					int keysLength = keys!=null ? keys.length : 0 ; 
+					int ind=0;
+					if (constantValue!=null) {
+		    			args = new String[constantValue.size()+keysLength];
+		    			for (;ind<constantValue.size();ind++) {
+		        			args[ind]= constantValue.get(ind);
+		        		}
+		    		}
+					else {
+						args= keysLength > 0 ?  new String[keys.length] : null;
+					}
+					if (keysLength>0) {
+						for (int j=0 ; ind < args.length ; ind++ ,j++) {
+							args[ind] = GFforma.getExteralValuesString(keys[j]);
+							if (args[ind]==null || args[ind].equals("")) {
 								if (blankArgs) {
-									args[i]="";
+									args[ind]="";
 								}
 								else {
 									cleanArgs=true;
@@ -405,7 +406,6 @@ public class ComboBoxFiller extends JComboBox implements
 							}
 						}
 					}
-					
 					clear();
 					if (!cleanArgs) {
 						doc = TransactionServerResultSet.getResultSetST(sqlCombo, args);
@@ -466,6 +466,7 @@ public class ComboBoxFiller extends JComboBox implements
 				keysCombo.addElement(code);
 				if (displayIcons) {
 					URL url = this.getClass().getResource(name.toString());
+					
 					if (url!=null) {
 						ImageIcon icon = new ImageIcon(url);
 						this.addItem(icon);
