@@ -251,6 +251,7 @@ public class LNDocuments {
 	                	 */
 	                	String numero = subpackage.getValue();
     	                String primaryKey = getPrimaryKey(numero);
+	                	numero="0000000000".substring(0,10-numero.length())+numero;
 
                     if (primaryKey==null) {
                     		undoTransaction(Language.getWord("ERR_ANNUL_DOCUMENT_NOT_FOUND"));

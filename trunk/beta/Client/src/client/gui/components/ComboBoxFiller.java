@@ -664,6 +664,7 @@ public class ComboBoxFiller extends JComboBox implements
 
 	public void arriveAnswerEvent(AnswerEvent AEe) {
 		try {
+	        this.setSelectedIndex(0);
 			Document doc = AEe.getDocument();
 	        String select = doc.getRootElement().getChild("row").getChildText("col");
 	        this.setSelectedItem(select);

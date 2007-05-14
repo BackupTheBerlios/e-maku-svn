@@ -42,7 +42,7 @@ public class StatementsClosingHandler {
             SQLEe.printStackTrace();
         }
         catch(NullPointerException NPEe) {
-        	NPEe.printStackTrace();
+        	//NPEe.printStackTrace();
         }
         
     }
