@@ -728,7 +728,6 @@ public class ComboBoxFiller extends JComboBox implements
 	private void notificando(AnswerEvent event) {
 		for(AnswerListener l:answerListener) {
 			if (l.containSqlCode(event.getSqlCode())) {
-				System.out.println("Notificando " + l);
 				l.arriveAnswerEvent(event);
 			}
 		}
