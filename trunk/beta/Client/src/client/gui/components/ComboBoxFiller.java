@@ -50,6 +50,7 @@ import javax.swing.event.PopupMenuListener;
 import org.jdom.Document;
 import org.jdom.Element;
 
+import common.comunications.EmptyTransaction;
 import common.gui.components.AnswerEvent;
 import common.gui.components.AnswerListener;
 import common.gui.forms.EndEventGenerator;
@@ -593,7 +594,7 @@ public class ComboBoxFiller extends JComboBox implements
 		if (exportTextValue!=null) {
 			GFforma.setExternalValues(exportTextValue,this.getSelectedItem().toString());
 		}
-		if (sqlCode!=null && getSelectedIndex() > 0) {
+		if (sqlCode!=null && getSelectedIndex() >= 0) {
 			class SearchingSQL extends Thread {
 	            
 		        private String[] args;
@@ -604,10 +605,12 @@ public class ComboBoxFiller extends JComboBox implements
 	            public void run() {
 	                String sql;
 			        for (int i=0;i<sqlCode.size();i++) {
-			            Document doc = null;
+			            Document doc = new EmptyTransaction();
 	                    sql = sqlCode.get(i);
 	                    try {
-	                        doc = TransactionServerResultSet.getResultSetST(sql,args);
+	                    	if (getSelectedIndex()>0) {
+	                    		doc = TransactionServerResultSet.getResultSetST(sql,args);
+	                    	}
 	                    }
 	                    catch (TransactionServerException e) {
 	                        e.printStackTrace();
@@ -725,6 +728,7 @@ public class ComboBoxFiller extends JComboBox implements
 	private void notificando(AnswerEvent event) {
 		for(AnswerListener l:answerListener) {
 			if (l.containSqlCode(event.getSqlCode())) {
+				System.out.println("Notificando " + l);
 				l.arriveAnswerEvent(event);
 			}
 		}
