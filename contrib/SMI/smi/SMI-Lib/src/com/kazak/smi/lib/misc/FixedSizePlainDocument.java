@@ -13,11 +13,11 @@ public class FixedSizePlainDocument extends PlainDocument {
         maxSize = limit;
     }
 
-    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-        if ((getLength() + str.length()) <= maxSize) {
-            super.insertString(offs, str, a);
+    public void insertString(int offset, String string, AttributeSet attributeSet) throws BadLocationException {
+        if ((getLength() + string.length()) <= maxSize) {
+            super.insertString(offset, string, attributeSet);
         } else {
-            throw new BadLocationException("Insertion exceeds max size of document", offs);
+            throw new BadLocationException("ERROR: Insertion exceeds max size of document", offset);
         }
     }
 }

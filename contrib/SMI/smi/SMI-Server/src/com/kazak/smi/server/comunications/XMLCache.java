@@ -18,7 +18,7 @@ import com.kazak.smi.server.misc.LogWriter;
 import com.kazak.smi.server.misc.ServerConstants;
 
 /**
- * CacheXML.java Creado el 06-sep-2004
+ * XMLCache.java Creado el 06-sep-2004
  * 
  * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
@@ -42,93 +42,90 @@ import com.kazak.smi.server.misc.ServerConstants;
 public class XMLCache extends Document {
 
 	private static final long serialVersionUID = -3555258118537262861L;
-	private String codigo;
+	private String code;
 
-	public XMLCache(String codigo) {
-		this.codigo=codigo;
+	public XMLCache(String code) {
+		this.code=code;
 	}
 
 	/**
-	 * Metodo encargado de ejcutar y transmitir la sentencia sql
+	 * Metodo encargado de ejecutar y transmitir la sentencia sql
 	 */
-	public void transmition(SocketChannel sock) {
+	public void transmit(SocketChannel sock) {
+		
 		try {
 			try {            
-				QueryRunner rselect;
+				QueryRunner qRunner;
 
 				/*
 				 * Se obtiene las llaves del cache que se va a generar
 				 * la consulta para obtener las llaves es la SEL0007,
 				 * recibe como argumentos el codigo de CACHE 
 				 */
-				String[] args = {codigo};
-				String SQL;
-				ResultSet RSdatos = new QueryRunner("SEL0009",args).runSELECT();
-				RSdatos.next();
-				SQL= RSdatos.getString("codigo");
-				QueryClosingHandler.close(RSdatos);
-
-				rselect = new QueryRunner("SEL0007",args);
-
-				RSdatos = rselect.runSELECT();
+				String[] argsArray = {code};
+				String SQL = "";
+				ResultSet resultSet = new QueryRunner("SEL0009",argsArray).select();
+				resultSet.next();
+				SQL= resultSet.getString("codigo");
+				QueryClosingHandler.close(resultSet);
+				qRunner = new QueryRunner("SEL0007",argsArray);
+				resultSet = qRunner.select();
 
 				/*
 				 *  Se captura las llaves en una tabla hash y en un String
 				 */
 
 				Hashtable <String,String>keys = new Hashtable<String,String>();
-				String skey = "";
-				String llave="";
-				int num_col_keys=0;
+				//String skey = ""; // TODO: Preguntar que hace skey ???
+				String key = "";
+				int columnsNum = 0;
 				try {
-					while (RSdatos.next()) {
-						llave = RSdatos.getString("codigo").trim();
-						keys.put(llave,"");
-						skey+=llave;
-						num_col_keys++;
+					while (resultSet.next()) {
+						key = resultSet.getString("codigo").trim();
+						keys.put(key,"");
+						//skey+=llave;
+						columnsNum++;
 					}
 
-					QueryClosingHandler.close(RSdatos);
+					QueryClosingHandler.close(resultSet);
 					/*
 					 * A medida que se empieza a generar el paquete CACHE-ANSWER, se empieza
 					 * a transmitir 
 					 */
 
-					RSdatos = new QueryRunner("SEL0010",args).runSELECT();
-					RSdatos.next();
-					String cache_sql = RSdatos.getString("sentencia_cache");
+					resultSet = new QueryRunner("SEL0010",argsArray).select();
+					resultSet.next();
+					String sqlCache = resultSet.getString("sentencia_cache");
 
-					RSdatos = new QueryRunner(codigo, cache_sql).runSELECT();
-					ResultSetMetaData RSMDinfo = RSdatos.getMetaData();
-					int columnas = RSMDinfo.getColumnCount();
+					resultSet = new QueryRunner(code, sqlCache).select();
+					ResultSetMetaData rsMetaData = resultSet.getMetaData();
+					int columns = rsMetaData.getColumnCount();
 
 					/*
 					 * Generacion de etiquetas
 					 * <CACHE-ANSWER>
 					 * 		<header>
 					 */
-
-
-					SocketWriter.writing(sock,
+					SocketWriter.write(sock,
 							ServerConstants.CONTEN_TYPE+
 							ServerConstants.TAGS_CACHE_ANSWER[0]+
 							ServerConstants.TAGS_SQL[0]+ SQL +
 							ServerConstants.TAGS_SQL[1]+
 							ServerConstants.TAGS_HEAD[0]);
 
-					for (int i = 1; i <= columnas; i++) {
+					for (int i=1;i<=columns;i++) {
 						/*
-						 * Se escribe las cabeceras diferentes a las llaves
-						 * generacion de etiquetas
+						 * Se crean las cabeceras diferentes a las llaves.
+						 * Generacion de etiquetas de la forma:
 						 * 		<col type="tipo">nombre</col>
 						 */
 
-						if (!keys.containsKey(RSMDinfo.getColumnName(i)))
-							SocketWriter.writing(sock,
+						if (!keys.containsKey(rsMetaData.getColumnName(i)))
+							SocketWriter.write(sock,
 									ServerConstants.TAGS_COL_HEAD[0]+
-									RSMDinfo.getColumnTypeName(i)+
+									rsMetaData.getColumnTypeName(i)+
 									ServerConstants.TAGS_COL_HEAD[1]+
-									RSMDinfo.getColumnName(i)+
+									rsMetaData.getColumnName(i)+
 									ServerConstants.TAGS_COL[1]);
 					}
 
@@ -137,29 +134,27 @@ public class XMLCache extends Document {
 					 * 		</header>
 					 * 		<value>
 					 */
-					SocketWriter.writing(sock,ServerConstants.TAGS_HEAD[1]);
+					SocketWriter.write(sock,ServerConstants.TAGS_HEAD[1]);
 
 					/*
 					 * Se recorre el resulset para a�adir los datos que contenga, y
 					 * se escriben directamente en el socket en formato XML
 					 */
 
-					String new_key_data="";
-					String old_key_data="";
-					boolean close_tags=true;
+					String newKey = "";
+					String oldKey="";
+					boolean closeTags = true;
 
-					while (RSdatos.next()) {
-						new_key_data="";
-						for (int j = 1; j <= num_col_keys; j++) {
-							new_key_data+=RSdatos.getString(j).trim();
-
+					while (resultSet.next()) {
+						newKey = "";
+						for (int j=1;j<=columnsNum;j++) {
+							newKey+=resultSet.getString(j).trim();
 						}
 
-
-						if (!new_key_data.equals(old_key_data)) {
-							SocketWriter.writing(sock,ServerConstants.TAGS_VALUE[0]+
+						if (!newKey.equals(oldKey)) {
+							SocketWriter.write(sock,ServerConstants.TAGS_VALUE[0]+
 									ServerConstants.TAGS_KEY[0]+
-									new_key_data+
+									newKey+
 									ServerConstants.TAGS_KEY[1]+
 									ServerConstants.TAGS_ANSWER[0]
 							);
@@ -168,67 +163,66 @@ public class XMLCache extends Document {
 						 * <row>
 						 * 	<col>value</col>
 						 */
-						 SocketWriter.writing(sock,ServerConstants.TAGS_ROW[0]);
-						 for (int j = num_col_keys+1; j <= columnas; j++) {
-							 SocketWriter.writing(sock,ServerConstants.TAGS_COL[0] + 
-									 RSdatos.getString(j).trim()+
-									 ServerConstants.TAGS_COL[1]
-							 );
-						 }
-						 SocketWriter.writing(sock,ServerConstants.TAGS_ROW[1]);
-						 /*
-						  * </row>
-						  */
+						SocketWriter.write(sock,ServerConstants.TAGS_ROW[0]);
+						for (int j=columnsNum+1;j<=columns;j++) {
+							SocketWriter.write(sock,ServerConstants.TAGS_COL[0] + 
+									resultSet.getString(j).trim()+
+									ServerConstants.TAGS_COL[1]
+							);
+						}
+						SocketWriter.write(sock,ServerConstants.TAGS_ROW[1]);
+						/*
+						 * </row>
+						 */
 
-						  if (!new_key_data.equals(old_key_data) && !old_key_data.equals("")) {
-							  SocketWriter.writing(sock,ServerConstants.TAGS_ANSWER[1]+
-									  ServerConstants.TAGS_VALUE[1]
-							  );
-							  close_tags=false;
-						  } else
-							  close_tags=true;
-
-						  old_key_data=new_key_data;
-
+						if (!newKey.equals(oldKey) && !oldKey.equals("")) {
+							SocketWriter.write(sock,ServerConstants.TAGS_ANSWER[1]+
+									ServerConstants.TAGS_VALUE[1]
+							);
+							closeTags = false;
+						} else {
+							closeTags = true;
+						}
+						
+                        oldKey = newKey;
 					}
 
-					if (close_tags)
-						SocketWriter.writing(sock,ServerConstants.TAGS_ANSWER[1]+
+					if (closeTags) {
+						SocketWriter.write(sock,ServerConstants.TAGS_ANSWER[1]+
 								ServerConstants.TAGS_VALUE[1]);
+					}
 
-
-					SocketWriter.writing(sock,ServerConstants.TAGS_CACHE_ANSWER[1]);
-
-					QueryClosingHandler.close(RSdatos);
+					SocketWriter.write(sock,ServerConstants.TAGS_CACHE_ANSWER[1]);
+					QueryClosingHandler.close(resultSet);
 					LogWriter.write(Language.getWord("OK_CREATING_XML"));
 
 				}
 				catch (SQLException SQLEe) {
-					String err = Language.getWord("ERR_RS") + " " + SQLEe.getMessage();
-					LogWriter.write(err);
+					String errorMessage = Language.getWord("ERR_RS") + " " + SQLEe.getMessage();
+					LogWriter.write(errorMessage);
 					XMLError error = new XMLError();
-					SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR, err));
+					SocketWriter.write(sock,error.returnErrorMessage(ServerConstants.ERROR, errorMessage));
 				}
-				rselect.closeStatement();
+				qRunner.closeStatement();
 			}
 			catch (SQLNotFoundException QNFEe) {
-				String err = QNFEe.getMessage();
-				LogWriter.write(err);
+				String errorMessage = QNFEe.getMessage();
+				LogWriter.write(errorMessage);
 				XMLError error = new XMLError();
-				SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR,  err));
+				SocketWriter.write(sock,error.returnErrorMessage(ServerConstants.ERROR,  errorMessage));
 
 			} 
 			catch (SQLException SQLEe) {
-				String err = Language.getWord("ERR_ST") + " " + SQLEe.getMessage();
-				LogWriter.write(err);
+				String errorMessage = Language.getWord("ERR_ST") + " " + SQLEe.getMessage();
+				LogWriter.write(errorMessage);
 				XMLError error = new XMLError();
-				SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR,  err));
+				SocketWriter.write(sock,error.returnErrorMessage(ServerConstants.ERROR,  errorMessage));
 			}
 			catch (SQLBadArgumentsException QBAEe) {
-				String err = QBAEe.getMessage();
-				LogWriter.write(err);
+				String errorMessage = QBAEe.getMessage();
+				LogWriter.write(errorMessage);
 				XMLError error = new XMLError();
-				SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR,  err));
+				SocketWriter.write(sock,error.returnErrorMessage(ServerConstants.ERROR,  errorMessage));
 			}
 		}
 		catch (IOException e) {

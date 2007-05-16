@@ -31,8 +31,7 @@ public abstract class SchedulerTask implements Runnable {
 
     public long scheduledExecutionTime() {
         synchronized(lock) {
-         return timerTask == null ? 0 : timerTask.scheduledExecutionTime();
+        	return timerTask == null ? 0 : timerTask.scheduledExecutionTime();
         }
     }
-
 }

@@ -33,20 +33,20 @@ import com.kazak.smi.server.misc.LogWriter;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
 public class UserLogin {
-    
+	
     private Element data;
     private int userLevel;
     private Integer	uid;
-    private String	login;
-    private String	names;
-    private String	email;
+    private String login;
+    private String names;
+    private String email;
     private Boolean	admin;
     private Boolean audit;
     private Integer gid;
-    private String	ip;
+    private String groupName;
+    private String ip;
     private boolean validIp;
-    private String psName;
-    private String gName;
+    private String wsName;
     
     public String getLogin() {
         return login;
@@ -55,20 +55,22 @@ public class UserLogin {
     	this.data = data;
     }
     
-    public boolean valid() {
+    public boolean isValid() {
     	
 	    login = data.getChild("login").getValue();
 	    String password = data.getChild("password").getValue();
 	    ip = data.getChild("ip").getValue();
 	    boolean validate = data.getChild("validate")!=null ? true : false ;
+	    
 	    LogWriter.write("INFO: Inicio de autenticación para el usuario {"+login+"} con la clave {"+password+"}");
 	    QueryRunner queryRunner = null;
-	    ResultSet rs = null;
+	    ResultSet resultSet = null;
 	    int count = 0;
+	    
 		try {
 			queryRunner = new QueryRunner("SEL0023",new String[]{login,password});
-			rs = queryRunner.runSELECT();
-		    count = rs.next() ? rs.getInt(1) : 0;
+			resultSet = queryRunner.select();
+		    count = resultSet.next() ? resultSet.getInt(1) : 0;
 		} catch (SQLNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLBadArgumentsException e) {
@@ -76,34 +78,34 @@ public class UserLogin {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			QueryClosingHandler.close(rs);
+			QueryClosingHandler.close(resultSet);
 			queryRunner.closeStatement();
 		}
 	    if (count==1) {
     		
 	    	try {
 				queryRunner = new QueryRunner("SEL0025",new String[]{login,login});
-				rs = queryRunner.runSELECT();
-				if (rs.next()) {
-					uid 	= rs.getInt(1);
-					login	= rs.getString(2);
-					names	= rs.getString(3);
-					email	= rs.getString(4);
-					admin	= rs.getBoolean(5);
-					audit	= rs.getBoolean(6);
-					gid		= rs.getInt(7);
-					validIp	= rs.getBoolean(8);
-					psName	= rs.getString(9);
-					String ipPv = rs.getString(11);
-					gName	= rs.getString(12);
+				resultSet = queryRunner.select();
+				if (resultSet.next()) {
+					uid 	= resultSet.getInt(1);
+					login	= resultSet.getString(2);
+					names	= resultSet.getString(3);
+					email	= resultSet.getString(4);
+					admin	= resultSet.getBoolean(5);
+					audit	= resultSet.getBoolean(6);
+					gid		= resultSet.getInt(7);
+					validIp	= resultSet.getBoolean(8);
+					wsName	= resultSet.getString(9);
+					String posIP = resultSet.getString(11);
+					groupName	= resultSet.getString(12);
 					
-					if ( validIp && (!ip.equals(ipPv))) {
-						LogWriter.write("La ip {"+ip+"} no esta autorizada para el usuario " +login);
+					if ( validIp && (!ip.equals(posIP))) {
+						LogWriter.write("ADVERTENCIA: La ip {" + ip + "} no esta autorizada para el usuario " + login);
 						return false;
 					}
 					if (validate) {
 		    			if (admin) {
-		    				LogWriter.write("INFO: Usuario Administrador autenticado {"+login+"} desde la ip "+ ip);
+		    				LogWriter.write("INFO: Usuario Administrador autenticado {" + login + "} desde la ip " + ip);
 		    				userLevel = 1;
 				    		return true;
 		    			}
@@ -114,7 +116,7 @@ public class UserLogin {
 		    			}
 					}
 					else {
-		    			LogWriter.write("INFO: Colocador Autenticado {"+login+"} desde la ip "+ ip);
+		    			LogWriter.write("INFO: Colocador Autenticado {" + login + "} desde la ip " + ip);
 		    			userLevel = 3;
 			    		return true;
 					}
@@ -126,13 +128,13 @@ public class UserLogin {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
-				QueryClosingHandler.close(rs);
+				QueryClosingHandler.close(resultSet);
 				queryRunner.closeStatement();
 			}
 			
 	    }
 	    LogWriter.write(
-	    		"INFO: Acceso denegado a {"+login+"} desde la ip "+ ip + 
+	    		"INFO: Acceso denegado a {" + login + "} desde la ip " + ip + 
 	    		" ingresando como " + (validate ? "Administrador/Auditor" :"Colocador"));
 	    return false;
     }
@@ -161,10 +163,11 @@ public class UserLogin {
 	public Boolean getAudit() {
 		return audit;
 	}
-	public String getPsName() {
-		return psName;
+	public String getWsName() {
+		return wsName;
 	}
-	public String getGName() {
-		return gName;
+	public String getGroupName() {
+		return groupName;
 	}
+	
 }

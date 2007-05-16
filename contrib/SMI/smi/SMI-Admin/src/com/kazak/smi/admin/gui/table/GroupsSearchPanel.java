@@ -20,16 +20,16 @@ import java.util.HashMap;
 
 import com.kazak.smi.admin.control.Cache;
 import com.kazak.smi.admin.gui.UsersList;
-import com.kazak.smi.admin.gui.table.UsersTable;
+import com.kazak.smi.admin.gui.table.OnLineUsersTable;
 
-public class GroupsSearchPanel extends JPanel implements PopupMenuListener, ActionListener{
+public class GroupsSearchPanel extends JPanel implements PopupMenuListener, ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JComboBox groups;
 	private JLabel groupsLabel;
 	private JLabel groupSize;
 	private HashMap<String,String> groupsHash;
-	private UsersTable table;
+	private OnLineUsersTable table;
 	private JButton update,close;
 	private UsersList frame;
 	
@@ -43,11 +43,12 @@ public class GroupsSearchPanel extends JPanel implements PopupMenuListener, Acti
 		groupsHash = Cache.getGroupsHash();		
 		groups.addPopupMenuListener(this);
 		
-		table = new UsersTable();
+		table = new OnLineUsersTable(frame);
+		table.setModelTab(1);
 		table.getModel().setLabel(groupSize);
-		JScrollPane js = new JScrollPane(table);
-		js.setPreferredSize(new Dimension(500,300));
-		js.setAutoscrolls(true);
+		JScrollPane jscroll = new JScrollPane(table);
+		jscroll.setPreferredSize(new Dimension(500,300));
+		jscroll.setAutoscrolls(true);
 
 		update = new JButton("Actualizar");
 		update.setActionCommand("update");
@@ -69,7 +70,7 @@ public class GroupsSearchPanel extends JPanel implements PopupMenuListener, Acti
 		down.add(close);
 		
 		add(top,BorderLayout.NORTH);
-		add(js,BorderLayout.CENTER);
+		add(jscroll,BorderLayout.CENTER);
 		add(down,BorderLayout.SOUTH);
 	}
 
@@ -94,7 +95,7 @@ public class GroupsSearchPanel extends JPanel implements PopupMenuListener, Acti
 		}
 	}
 
-	public UsersTable getTable(){
+	public OnLineUsersTable getTable(){
 		return table;
 	}
 	

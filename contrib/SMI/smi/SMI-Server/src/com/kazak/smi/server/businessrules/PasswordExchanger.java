@@ -27,7 +27,7 @@ public class PasswordExchanger {
 			try {
 				runQuery = new QueryRunner(sqlCode,sqlArgs);
 				runQuery.setAutoCommit(false);
-				runQuery.runSQL();
+				runQuery.executeSQL();
 				runQuery.commit();
 				TransactionRunner.notifyMessageReception(sock,id,"Clave cambiada satisfactoriamente");
 			} catch (SQLException e) {

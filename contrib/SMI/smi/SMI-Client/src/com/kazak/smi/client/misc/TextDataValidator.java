@@ -43,14 +43,14 @@ public class TextDataValidator extends PlainDocument {
         return limit;
     }
     
-    public void insertString(int posicion, String s, AttributeSet attributeSet) throws BadLocationException {
+    public void insertString(int position, String string, AttributeSet attributeSet) throws BadLocationException {
         
-        int longitud = s.length();
+        int longitud = string.length();
         
         if (this.getLength() < limit) {
-            if (longitud <= limit - posicion) {
-                if(posicion < limit) { 
-                    super.insertString(posicion,s,attributeSet);
+            if (longitud <= limit - position) {
+                if(position < limit) { 
+                    super.insertString(position,string,attributeSet);
                 }
                 else {
                     Toolkit.getDefaultToolkit().beep();

@@ -19,16 +19,16 @@ import javax.swing.JToolTip;
 import javax.swing.ToolTipManager;
 import javax.swing.border.LineBorder;
 
-import com.kazak.smi.lib.misc.ClientConst;
+import com.kazak.smi.lib.misc.ClientConstants;
 
 public class TrayManager implements ActionListener {
 
 	private JFrame window;
-	private static boolean loged = false;
+	private static boolean logged = false;
 	private JPanel menu;
-	private static JButton JBSend;
-	private static JButton JBView;
-	private static JButton JBChange;
+	private static JButton sendButton;
+	private static JButton viewButton;
+	private static JButton changePasswdButton;
 	
 	public TrayManager() {
 		window = new JFrame("Mensajería Interna");
@@ -50,72 +50,71 @@ public class TrayManager implements ActionListener {
 		
 		menu = new JPanel(new GridLayout(1,3));
 		menu.setBorder(new LineBorder(Color.BLACK,3));
-		URL url = getClass().getResource(ClientConst.iconsPath + "new_message.png");
+		URL url = getClass().getResource(ClientConstants.iconsPath + "new_message.png");
 		ImageIcon icon = new ImageIcon(url);
 
-		JBSend = new JButton(icon);
-		JBSend.addMouseMotionListener(new MouseMotionAdapter() {
+		sendButton = new JButton(icon);
+		sendButton.addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseMoved(MouseEvent e) {
 				super.mouseMoved(e);
 				window.requestFocus();
-				if (!LoginWindow.isLoged()) {
+				if (!LoginWindow.isLogged()) {
 					LoginWindow.getFrame().toBack();
 					LoginWindow.getFrame().toFront();
 				}
 			}
 		});
-		JBSend.setToolTipText("<html><h1>Enviar Nuevo Mensaje</h1></html>");
-		JBSend.setActionCommand("new");
-		JBSend.addActionListener(this);
-		JBSend.setEnabled(false);
-		JBSend.setBorder(new LineBorder(Color.BLACK,2));
+		sendButton.setToolTipText("<html><h1>Enviar Nuevo Mensaje</h1></html>");
+		sendButton.setActionCommand("new");
+		sendButton.addActionListener(this);
+		sendButton.setEnabled(false);
+		sendButton.setBorder(new LineBorder(Color.BLACK,2));
 
-		menu.add(JBSend);
+		menu.add(sendButton);
 		
-		
-		url = getClass().getResource(ClientConst.iconsPath + "view_message.png");
+		url = getClass().getResource(ClientConstants.iconsPath + "view_message.png");
 		icon = new ImageIcon(url);
-		JBView = new JButton(icon);
-		JBView.addMouseMotionListener(new MouseMotionAdapter() {
+		viewButton = new JButton(icon);
+		viewButton.addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseMoved(MouseEvent e) {
 				super.mouseMoved(e);
 				window.requestFocus();
-				if (!LoginWindow.isLoged()) {
+				if (!LoginWindow.isLogged()) {
 					LoginWindow.getFrame().toBack();
 					LoginWindow.getFrame().toFront();
 				}
 			}
 		});
-		JBView.setToolTipText("<html><h1>Ver Mensajes recibidos</h1></html>");
-		JBView.addActionListener(this);
-		JBView.setActionCommand("view");
-		JBView.setEnabled(false);
-		JBView.setBorder(new LineBorder(Color.BLACK,2));
-		menu.add(JBView);
+		viewButton.setToolTipText("<html><h1>Ver Mensajes recibidos</h1></html>");
+		viewButton.addActionListener(this);
+		viewButton.setActionCommand("view");
+		viewButton.setEnabled(false);
+		viewButton.setBorder(new LineBorder(Color.BLACK,2));
+		menu.add(viewButton);
 		
-		url = getClass().getResource(ClientConst.iconsPath + "password.png");
+		url = getClass().getResource(ClientConstants.iconsPath + "password.png");
 		icon = new ImageIcon(url);
-		JBChange = new JButton(icon);
-		JBChange.addMouseMotionListener(new MouseMotionAdapter() {
+		changePasswdButton = new JButton(icon);
+		changePasswdButton.addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseMoved(MouseEvent e) {
 				super.mouseMoved(e);
 				window.requestFocus();
-				if (!LoginWindow.isLoged()) {
+				if (!LoginWindow.isLogged()) {
 					LoginWindow.getFrame().toBack();
 					LoginWindow.getFrame().toFront();
 				}
 			}
 		});
-		JBChange.setToolTipText("<html><h1>Cambiar clave del correo<h1></html>");
-		JBChange.addActionListener(this);
-		JBChange.setActionCommand("change_password");
-		JBChange.setEnabled(false);
-		JBChange.setBorder(new LineBorder(Color.BLACK,2));
-		menu.add(JBChange);
+		changePasswdButton.setToolTipText("<html><h1>Cambiar clave del correo<h1></html>");
+		changePasswdButton.addActionListener(this);
+		changePasswdButton.setActionCommand("change_password");
+		changePasswdButton.setEnabled(false);
+		changePasswdButton.setBorder(new LineBorder(Color.BLACK,2));
+		menu.add(changePasswdButton);
 		
-		JToolTip jtp = new JToolTip();
-		jtp.setFont(new Font("Sans",Font.BOLD,20));
-		jtp.setComponent(JBSend);
+		JToolTip toolTip = new JToolTip();
+		toolTip.setFont(new Font("Sans",Font.BOLD,20));
+		toolTip.setComponent(sendButton);
 		
 		window.add(menu);
 		window.setVisible(true);
@@ -124,32 +123,32 @@ public class TrayManager implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if ("new".equals(command)) {
-			if (loged) {
-				JBSend.setEnabled(false);
+			if (logged) {
+				sendButton.setEnabled(false);
 				new MessageWindow();
-				JBSend.setEnabled(true);
+				sendButton.setEnabled(true);
 			}
 		}
 		else if ("view".equals(command)) {
-			JBView.setEnabled(false);
+			viewButton.setEnabled(false);
 			MessageViewer.show();
-			JBView.setEnabled(true);
+			viewButton.setEnabled(true);
 		}
 		else if ("change_password".equals(command)) {
-			JBChange.setEnabled(false);
-			PasswordExchange.show();
-			JBChange.setEnabled(true);
+			changePasswdButton.setEnabled(false);
+			PasswordExchanger.show();
+			changePasswdButton.setEnabled(true);
 		}
 	}
 
-	public static boolean isLoged() {
-		return loged;
+	public static boolean isLogged() {
+		return logged;
 	}
 
-	public static void setLoged(boolean loged) {
-		TrayManager.loged = loged;
-		JBSend.setEnabled(loged);
-		JBView.setEnabled(loged);
-		JBChange.setEnabled(loged);
+	public static void setLogged(boolean logged) {
+		TrayManager.logged = logged;
+		sendButton.setEnabled(logged);
+		viewButton.setEnabled(logged);
+		changePasswdButton.setEnabled(logged);
 	}
 }

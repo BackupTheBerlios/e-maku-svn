@@ -7,10 +7,9 @@ import javax.swing.table.AbstractTableModel;
 public class UserModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
-	private String[] titles = { "Codigo Punto","Nombre","Validar IP"};
+	private String[] titles = { "Código Punto","Nombre","Validar IP"};
 	private Class[] types = {String.class,String.class,Boolean.class};
 	private Vector<Vector> data = new Vector<Vector>();
-	
 	
 	@SuppressWarnings("unchecked")
 	public void addRow() {

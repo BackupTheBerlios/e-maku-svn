@@ -16,6 +16,7 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.NoRouteToHostException;
+import java.net.SocketException;
 import java.net.URL;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.UnresolvedAddressException;
@@ -35,8 +36,8 @@ import com.kazak.smi.client.Run;
 import com.kazak.smi.client.control.HeadersValidator;
 import com.kazak.smi.client.network.CNXSender;
 import com.kazak.smi.client.network.SocketHandler;
-import com.kazak.smi.lib.misc.ConfigFileClient;
-import com.kazak.smi.lib.misc.ClientConst;
+import com.kazak.smi.lib.misc.ClientConfigFile;
+import com.kazak.smi.lib.misc.ClientConstants;
 import com.kazak.smi.lib.misc.FixedSizePlainDocument;
 import com.kazak.smi.lib.misc.MD5Tool;
 import com.kazak.smi.lib.network.PackageToXMLConverter;
@@ -45,30 +46,30 @@ import com.kazak.smi.lib.network.PackageToXMLConverter;
 public class LoginWindow implements ActionListener {
 	
 	private static final long serialVersionUID = 4515846092744596420L;
-	private static JTextField JTFUser;
-	private JPasswordField JPFPassword;
-	private static JButton JBAccept;
+	private static JTextField userTextField;
+	private JPasswordField passwordField;
+	private static JButton acceptButton;
 	private static JFrame frame;
-	private static boolean loged = false;
-	private static boolean displayed = false;
-	public static boolean ontop = true;
+	private static boolean logged = false;
+	private static boolean isDisplayed = false;
+	public static boolean onTop = true;
 	public static int sleepTime = 1000;
 	
-	public static synchronized  void Show() {
-		if (!displayed) {
-			LoginWindow.displayed = true;
+	public static synchronized  void show() {
+		if (!isDisplayed) {
+			LoginWindow.isDisplayed = true;
 			new LoginWindow();
 		}
 	}
 	
 	public LoginWindow() {
-		initComps();
-		LoginWindow.loged = false;
+		initComponents();
+		LoginWindow.logged = false;
 		frame.setVisible(true);
 		new Displayer();
 	}
 	
-	public void initComps() {
+	public void initComponents() {
 		frame = new JFrame();
 		frame.setLayout(new BorderLayout());
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -78,7 +79,7 @@ public class LoginWindow implements ActionListener {
 		frame.setResizable(false);
 		frame.setUndecorated(true);
 		Color background = new Color(3,1,100);
-		//frame.setAlwaysOnTop(true);
+
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowIconified(WindowEvent e) {
 				frame.setState(JFrame.NORMAL);
@@ -88,55 +89,55 @@ public class LoginWindow implements ActionListener {
 			}
 		});
 		frame.getRootPane().setBorder(new LineBorder(Color.BLACK,4));
-		Font f = new Font("Dialog",Font.BOLD,13);
-		LoginWindow.JTFUser  = new JTextField(12);
-		LoginWindow.JTFUser.setFont(f);
-		LoginWindow.JTFUser.addKeyListener(new KeyAdapter() {
+		Font font = new Font("Dialog",Font.BOLD,13);
+		LoginWindow.userTextField  = new JTextField(12);
+		LoginWindow.userTextField.setFont(font);
+		LoginWindow.userTextField.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent arg0) {
-				JTFUser.setText(JTFUser.getText().toUpperCase());
+				userTextField.setText(userTextField.getText().toUpperCase());
 			}
 		});
-		JPFPassword = new JPasswordField(12);
-		LoginWindow.JTFUser.setDocument(new FixedSizePlainDocument(10));
-		JPFPassword.setDocument(new FixedSizePlainDocument(10));
-		JPFPassword.setFont(f);
+		passwordField = new JPasswordField(12);
+		LoginWindow.userTextField.setDocument(new FixedSizePlainDocument(10));
+		passwordField.setDocument(new FixedSizePlainDocument(10));
+		passwordField.setFont(font);
 		
-		JBAccept = new JButton("Aceptar");
-		JBAccept.setMnemonic('A');
-		JBAccept.addActionListener(this);
-		JBAccept.setActionCommand("accept");
-		JBAccept.setFont(f);
+		acceptButton = new JButton("Aceptar");
+		acceptButton.setMnemonic('A');
+		acceptButton.addActionListener(this);
+		acceptButton.setActionCommand("accept");
+		acceptButton.setFont(font);
 		
-		JPanel JPCenter = new JPanel(new BorderLayout());
-		JPanel JPSouth  = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		JPanel JPLabels = new JPanel(new GridLayout(2,1));
-		JPanel JPFields = new JPanel(new GridLayout(2,1));
+		JPanel centerPanel = new JPanel(new BorderLayout());
+		JPanel southPanel  = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JPanel labelsPanel = new JPanel(new GridLayout(2,1));
+		JPanel textFieldsPanel = new JPanel(new GridLayout(2,1));
 
-		JPCenter.add(JPLabels,BorderLayout.WEST);
-		JPCenter.add(JPFields,BorderLayout.CENTER);
-		JLabel lb1 = new JLabel("Usuario:");
-		lb1.setFont(f);
-		JLabel lb2 = new JLabel("Clave:");
-		lb2.setFont(f);
+		centerPanel.add(labelsPanel,BorderLayout.WEST);
+		centerPanel.add(textFieldsPanel,BorderLayout.CENTER);
+		JLabel userLabel = new JLabel("Usuario:");
+		userLabel.setFont(font);
+		JLabel passwdLabel = new JLabel("Clave:");
+		passwdLabel.setFont(font);
 		
-		JPLabels.add(lb1);
-		JPLabels.add(lb2);
+		labelsPanel.add(userLabel);
+		labelsPanel.add(passwdLabel);
 		
-		JPFields.add(addWithPanel(LoginWindow.JTFUser));
-		JPFields.add(addWithPanel(JPFPassword));
+		textFieldsPanel.add(addWithPanel(LoginWindow.userTextField));
+		textFieldsPanel.add(addWithPanel(passwordField));
 		
-		JPSouth.add(JBAccept);
+		southPanel.add(acceptButton);
 		
 		JPanel centerAux = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		centerAux.add(JPCenter);
-		URL url = getClass().getResource(ClientConst.iconsPath + "logo.jpg");
+		centerAux.add(centerPanel);
+		URL url = getClass().getResource(ClientConstants.iconsPath + "logo.jpg");
 		ImageIcon icon = new ImageIcon(url);
 		JLabel logo = new JLabel(icon);
 		
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(logo,BorderLayout.NORTH);
 		panel.add(centerAux,BorderLayout.CENTER);
-		panel.add(JPSouth,BorderLayout.SOUTH);
+		panel.add(southPanel,BorderLayout.SOUTH);
 		panel.setBackground(background);
 		Component box1 = Box.createVerticalStrut(60);
 		Component box2 = Box.createVerticalStrut(60);
@@ -146,26 +147,28 @@ public class LoginWindow implements ActionListener {
 		frame.add(box2,BorderLayout.SOUTH);
 	}
 	
-	private JPanel addWithPanel(Component comp) {
+	private JPanel addWithPanel(Component component) {
 		JPanel panel = new JPanel();
-		panel.add(comp);
+		panel.add(component);
 		return panel;
 	}
 	
 	private String getUser() {
-		return LoginWindow.JTFUser.getText();
+		return LoginWindow.userTextField.getText();
 	}
 	
 	private String getPassword() {
-		return new String(this.JPFPassword.getPassword());
+		return new String(this.passwordField.getPassword());
 	}
+	
 	public static String getLoginUser() {
-		return LoginWindow.JTFUser.getText();
+		return LoginWindow.userTextField.getText();
 	}
+	
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if ("accept".equals(action)) {
-			JBAccept.setEnabled(false);
+			acceptButton.setEnabled(false);
 			int typeCursor = Cursor.WAIT_CURSOR;
 			Cursor cursor = Cursor.getPredefinedCursor(typeCursor);
 			if (!"".equals(getUser()) && !"".equals(getPassword())) {
@@ -175,30 +178,30 @@ public class LoginWindow implements ActionListener {
 					PackageToXMLConverter packageXML = new PackageToXMLConverter();
 					HeadersValidator valid = new HeadersValidator();
 					packageXML.addPackageComingListener(valid);
-					String host = ConfigFileClient.getHost();
-					int port =  ConfigFileClient.getServerPort(); 
+					String host = ClientConfigFile.getHost();
+					int port =  ClientConfigFile.getServerPort(); 
 					connect = new SocketHandler(host,port,packageXML);
 		            connect.start();
 		            SocketChannel socket = SocketHandler.getSock();
 		            MD5Tool md5 = new MD5Tool(getPassword());
-		            String pass = md5.getDigest();
+		            String passwd = md5.getDigest();
 		            Run.user = getUser();
-		    		new CNXSender(socket,Run.user,pass);
+		    		new CNXSender(socket,Run.user,passwd);
 				} catch (NoRouteToHostException NRHEe) {
 					NRHEe.printStackTrace();
 					JOptionPane.showMessageDialog(
 		                    frame,
 		                    "No se pudo establecer comunicación con el servidor\n"+
-		                    "Host: "+ConfigFileClient.getHost()+"\n"+
-		                    "Puerto "+ConfigFileClient.getServerPort(),
+		                    "Host: "+ClientConfigFile.getHost()+"\n"+
+		                    "Puerto "+ClientConfigFile.getServerPort(),
 		                    "Error de Conexión",
 		                    JOptionPane.ERROR_MESSAGE);
 					
-					JBAccept.setEnabled(true);
+					acceptButton.setEnabled(true);
 					typeCursor = Cursor.DEFAULT_CURSOR;
-					cursor =Cursor.getPredefinedCursor(typeCursor);
+					cursor = Cursor.getPredefinedCursor(typeCursor);
 					frame.setCursor(cursor);
-					LoginWindow.ontop = false;
+					LoginWindow.onTop = false;
 					LoginWindow.sleepTime = 10000;
 					frame.toBack();
 				} catch (ConnectException CEe){
@@ -206,16 +209,16 @@ public class LoginWindow implements ActionListener {
 					JOptionPane.showMessageDialog(
 		                    frame,
 		                    "No se pudo establecer comunicación con el servidor\n"+
-		                    "Host: "+ConfigFileClient.getHost()+"\n"+
-		                    "Puerto "+ConfigFileClient.getServerPort(),
+		                    "Host: "+ClientConfigFile.getHost()+"\n"+
+		                    "Puerto "+ClientConfigFile.getServerPort(),
 		                    "Error de Conexión",
 		                    JOptionPane.ERROR_MESSAGE);
 					
-					JBAccept.setEnabled(true);
+					acceptButton.setEnabled(true);
 					typeCursor = Cursor.DEFAULT_CURSOR;
-					cursor =Cursor.getPredefinedCursor(typeCursor);
+					cursor = Cursor.getPredefinedCursor(typeCursor);
 					frame.setCursor(cursor);
-					LoginWindow.ontop = false;
+					LoginWindow.onTop = false;
 					LoginWindow.sleepTime = 10000;
 					frame.toBack();
 				}catch (UnresolvedAddressException UAEe) {
@@ -224,19 +227,27 @@ public class LoginWindow implements ActionListener {
 		                    frame,
 		                    "No se pudo resolver la dirección\n" +
 		                    "del servidor de mensajeria\n"+
-		                    "Host: "+ConfigFileClient.getHost()+ 
-		                    "Puerto:"+ConfigFileClient.getServerPort(),
+		                    "Host: "+ClientConfigFile.getHost()+ 
+		                    "Puerto:"+ClientConfigFile.getServerPort(),
 		                    "Error de Conexión",
 		                    JOptionPane.ERROR_MESSAGE);
-					JBAccept.setEnabled(true);
+					acceptButton.setEnabled(true);
 					typeCursor = Cursor.DEFAULT_CURSOR;
-					cursor =Cursor.getPredefinedCursor(typeCursor);
-					LoginWindow.ontop = false;
+					cursor = Cursor.getPredefinedCursor(typeCursor);
+					LoginWindow.onTop = false;
 					LoginWindow.sleepTime = 10000;
 					frame.toBack();
+				} catch (SocketException SE) {
+					SE.printStackTrace();
+					JOptionPane.showMessageDialog(
+		                    frame,
+		                    "Este equipo no posee acceso a la red.\n" 
+		                    + "Por favor, verifique la configuración del sistema.",
+		                    "Error de Conexión",
+		                    JOptionPane.ERROR_MESSAGE);					
 				} catch (IOException IOEe) {
 					IOEe.printStackTrace();
-					LoginWindow.ontop = false;
+					LoginWindow.onTop = false;
 					LoginWindow.sleepTime = 10000;
 					frame.toBack();
 				}
@@ -245,26 +256,26 @@ public class LoginWindow implements ActionListener {
 				JOptionPane.showMessageDialog(
 						frame,
 						"Información incompleta\n" +
-						"debe digitar su nombre de usuario y clave");
+						"debe digitar su nombre de usuario y clave.");
 			}
 			else if (!"".equals(getUser()) && "".equals(getPassword())) {
 				JOptionPane.showMessageDialog(
 						frame,
-						"Debe digitar su clave\n");
+						"Por favor, digite su clave.\n");
 			}
 			else if ("".equals(getUser()) && !"".equals(getPassword())) {
 				JOptionPane.showMessageDialog(
 						frame,
-						"Debe digitar su nombre de usuario\n");
+						"Por favor, digite su nombre de usuario.\n");
 			}
-			JBAccept.setEnabled(true);
-			LoginWindow.JTFUser.requestFocus();
+			acceptButton.setEnabled(true);
+			LoginWindow.userTextField.requestFocus();
 		}
 	}
 
 	
 	public static void setEnabled() {
-    	JBAccept.setEnabled(true);
+    	acceptButton.setEnabled(true);
     }
     
     public static void setCursorState(int state) {
@@ -274,22 +285,22 @@ public class LoginWindow implements ActionListener {
 	public static void quit() {
 		frame.setVisible(false);
 		frame.dispose();
-		LoginWindow.displayed = false;
+		LoginWindow.isDisplayed = false;
 	}
 
-	public static boolean isLoged() {
-		return loged;
+	public static boolean isLogged() {
+		return logged;
 	}
 
-	public static void setLoged(boolean loged) {
-		LoginWindow.loged = loged;
+	public static void setLogged(boolean logged) {
+		LoginWindow.logged = logged;
 	}
 	
 	public static JFrame getFrame(){
 		return frame;
 	}
+	
 	class Displayer extends Thread {
-		
 		public Displayer() {
 			start();
 		}
@@ -298,10 +309,10 @@ public class LoginWindow implements ActionListener {
 			while(true) {
 				try {
 					Thread.sleep(sleepTime);
-					if (!LoginWindow.isLoged()) {
-						frame.setAlwaysOnTop(ontop);
+					if (!LoginWindow.isLogged()) {
+						frame.setAlwaysOnTop(onTop);
 						frame.setState(JFrame.NORMAL);
-						if (!frame.isFocused() && ontop) {
+						if (!frame.isFocused() && onTop) {
 							frame.requestFocus();
 						}
 					}

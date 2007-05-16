@@ -29,66 +29,59 @@ import com.kazak.smi.client.network.SocketHandler;
 import com.kazak.smi.client.network.SocketWriter;
 import com.kazak.smi.lib.misc.MD5Tool;
 
-public class PasswordExchange implements ActionListener {
+public class PasswordExchanger implements ActionListener {
 	
 	private static boolean displayed;
 	private JFrame frame;
-	private JPasswordField textField1;
-	private JPasswordField textField2;
-	private static JButton JBAccept;
-	private static JButton JBCancel;
-	
-	public static void show() {
-		if (!displayed) {
-			PasswordExchange.displayed = true;
-			new PasswordExchange();
-		}
-	}
-	
-	public PasswordExchange() {
+	private JPasswordField passwdField1;
+	private JPasswordField passwdField2;
+	private static JButton acceptButton;
+	private static JButton cancelButton;
+		
+	public PasswordExchanger() {
 		frame = new JFrame("Cambio de Clave");
 		frame.setLayout(new BorderLayout());
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				PasswordExchange.displayed = false;
+				PasswordExchanger.displayed = false;
 			}
 			public void windowIconified(WindowEvent e) {
 				frame.setState(JFrame.NORMAL);
 			}
 		});
-		textField1 = new JPasswordField(15);
-		textField1.setDocument(new TextDataValidator(10));
+		passwdField1 = new JPasswordField(15);
+		passwdField1.setDocument(new TextDataValidator(10));
 		
-		textField2 = new JPasswordField(15);
-		textField2.setDocument(new TextDataValidator(10));
-		textField2.addFocusListener(new FocusAdapter() {
+		passwdField2 = new JPasswordField(15);
+		passwdField2.setDocument(new TextDataValidator(10));
+		passwdField2.addFocusListener(new FocusAdapter() {
 			public void focusLost(FocusEvent e) {
-				String pass1 = new String(textField1.getPassword());
-				String pass2 = new String(textField2.getPassword());
+				String pass1 = new String(passwdField1.getPassword());
+				String pass2 = new String(passwdField2.getPassword());
 				if (!pass1.equals(pass2)) {
 					JOptionPane.showMessageDialog(
 							frame,
 							"Las claves digitadas no coinciden");
-					textField1.setText("");
-					textField2.setText("");
-					textField1.requestFocus();
+					passwdField1.setText("");
+					passwdField2.setText("");
+					passwdField1.requestFocus();
 				}
 			}
 		});
-		JBAccept = new JButton("Aceptar");
-		JBCancel = new JButton("Cancelar");
-		JBAccept.setMnemonic('A');
-		JBCancel.setMnemonic('C');
-		JBAccept.addActionListener(this);
-		JBCancel.addActionListener(this);
-		JBAccept.setActionCommand("accept");
-		JBCancel.setActionCommand("cancel");
+		acceptButton = new JButton("Aceptar");
+		cancelButton = new JButton("Cancelar");
+		acceptButton.setMnemonic('A');
+		cancelButton.setMnemonic('C');
+		acceptButton.addActionListener(this);
+		cancelButton.addActionListener(this);
+		acceptButton.setActionCommand("accept");
+		cancelButton.setActionCommand("cancel");
 		
 		JPanel jpsouth = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		jpsouth.add(JBAccept);
-		jpsouth.add(JBCancel);
+		jpsouth.add(acceptButton);
+		jpsouth.add(cancelButton);
 		JLabel jl1 =new JLabel("Nueva clave: ");
 		JLabel jl2 =new JLabel("Repita la clave: ");
 		
@@ -98,10 +91,9 @@ public class PasswordExchange implements ActionListener {
 		jplabels.add(jl1);
 		jplabels.add(jl2);
 	
-		jpfields.add(textField1);
-		jpfields.add(textField2);
+		jpfields.add(passwdField1);
+		jpfields.add(passwdField2);
 		
-		//jl.setFont(new Font("Dialog",Font.BOLD,14));
 		frame.add(jplabels,BorderLayout.WEST);
 		frame.add(jpfields,BorderLayout.CENTER);
 		frame.add(jpsouth,BorderLayout.SOUTH);
@@ -111,21 +103,28 @@ public class PasswordExchange implements ActionListener {
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
+	
+	public static void show() {
+		if (!displayed) {
+			PasswordExchanger.displayed = true;
+			new PasswordExchanger();
+		}
+	}
 
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if ("accept".equals(command)) {
-			String pass1 = new String(textField1.getPassword());
-			String pass2 = new String(textField2.getPassword());
-			if (!"".equals(pass1) && !"".equals(pass2) && pass1.equals(pass2)) {
-				int op = JOptionPane.showConfirmDialog(
+			String passwd1 = new String(passwdField1.getPassword());
+			String passwd2 = new String(passwdField2.getPassword());
+			if (!"".equals(passwd1) && !"".equals(passwd2) && passwd1.equals(passwd2)) {
+				int option = JOptionPane.showConfirmDialog(
 						frame,
 						"Realmente desea cambiar la clave\n" +
 						"para el sistema de correo?",
-						"Cambio de Clave SMI",
+						"Cambio de Clave - SMI",
 						JOptionPane.YES_NO_OPTION);
-				if (op == JOptionPane.YES_OPTION) {
-					MD5Tool md = new MD5Tool(pass1);
+				if (option == JOptionPane.YES_OPTION) {
+					MD5Tool md5 = new MD5Tool(passwd1);
 					Element transaction = new Element("Transaction");
 					Document doc = new Document(transaction);
 					
@@ -138,36 +137,36 @@ public class PasswordExchange implements ActionListener {
 			        transaction.addContent(driver);
 			        
 					Element pack = new Element("package");
-					pack.addContent(new Element("field").setText(md.getDigest()));
+					pack.addContent(new Element("field").setText(md5.getDigest()));
 					pack.addContent(new Element("field").setText(Run.user));
 					transaction.addContent(pack);
 					SocketChannel sock = SocketHandler.getSock();
 					try {
 						SocketWriter.writing(sock,doc);
 					} catch (IOException ex) {
-						System.out.println("Error de entrada y salida");
-						System.out.println("mensaje: " + ex.getMessage());
+						System.out.println("ERROR: Falla de entrada/salida");
+						System.out.println("Causa: " + ex.getMessage());
 						ex.printStackTrace();
 					}
 					frame.dispose();
-					PasswordExchange.displayed = false;
+					PasswordExchanger.displayed = false;
 				}
 			}
-			if (!pass1.equals(pass2)) {
+			if (!passwd1.equals(passwd2)) {
 				JOptionPane.showMessageDialog(
 						frame,
-						"Las claves digitadas no coinciden");
-				textField1.setText("");
-				textField2.setText("");
-				textField1.requestFocus();
+						"Las claves digitadas no coinciden.");
+				passwdField1.setText("");
+				passwdField2.setText("");
+				passwdField1.requestFocus();
 			}
-			if (pass1.equals("")) {
-				textField1.requestFocus();
+			if (passwd1.equals("")) {
+				passwdField1.requestFocus();
 			}
 		}
 		else if ("cancel".equals(command)) {
 			frame.dispose();
-			PasswordExchange.displayed = false;
+			PasswordExchanger.displayed = false;
 		}
 	}
 }

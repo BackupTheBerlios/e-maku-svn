@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.List;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -46,7 +47,7 @@ public class ConfigFileHandler {
     private static Document doc;
     private static Element root;
     private static Language appLang = new Language();
-    private static Vector <Connections>VConnectionsPool  = new Vector<Connections>();
+    private static Vector <DBConnection>connectionsPoolVector = new Vector<DBConnection>();
     private static int port;
     private static String appOwner;
     private static String mainDataBase;
@@ -58,66 +59,65 @@ public class ConfigFileHandler {
     private static String mailServer;
     private static int messageLifeTimeForClients;
     private static int messageLifeTimeInDB;
-    private static int maxMessagesDataBase;
-    private static ArrayList<OracleSyncTask> oracleSync = new ArrayList<OracleSyncTask>();;
+    private static int maxMessagesNumAllowed;
+    private static ArrayList<OracleSyncTask> syncTaskList = new ArrayList<OracleSyncTask>();;
       
     /**
      * Este metodo se encarga de cargar el archivo de configuracion
      * @throws ConfigFileNotLoadException
      */
-    public static void loadConfigFile(String emakuConfigFile) throws ConfigFileNotLoadException{
-        try {
-            builder = new SAXBuilder(false);
-            
-            LogWriter.write("INFO: Config -> "+emakuConfigFile);
-            
-            doc = builder.build(emakuConfigFile);
-            
-            root = doc.getRootElement();
-            java.util.List Lconfig = root.getChildren();
-            Iterator i = Lconfig.iterator();
-            
-            /**
-             * Ciclo encargado de leer las primeras etiquetas del archivo XML, en este
-             * caso Configuración
-             */
-            
-            while (i.hasNext()) {
-                
-                Element records = (Element)i.next();
-                if (records.getName().equals("ConnectionPool")) {
-                    loadConnectionsPool(records.getChildren());
-                } else if (records.getName().equals("MainDataBase")) {
-                	mainDataBase = records.getValue();
-                } else if (records.getName().equals("SourceDataBase")) {
-                	secondDataBase = records.getValue();
-                } else if (records.getName().equals("AppOwner")) {
-                	appOwner = records.getValue();
-                }else if (records.getName().equals("Language")) {
-                	local = records.getValue();
-                    appLang.loadLanguage(local);
-                } else if (records.getName().equals("Port")) {
-                    port = Integer.parseInt(records.getValue());
-                } else if (records.getName().equals("MailUser")) {
-                	mailUser = records.getValue();
-                } else if (records.getName().equals("MailPassword")) {
-                	mailPassword = records.getValue();
-                } else if (records.getName().equals("MailServer")) {
-                	mailServer = records.getValue();
-                } else if (records.getName().equals("CheckMailEvery")) {
-                	checkMailEvery = Integer.parseInt(records.getValue());
-                } else if (records.getName().equals("MessageLifeTimeForClients")) {
-    	        	messageLifeTimeForClients = Integer.parseInt(records.getValue());
-    	        }else if (records.getName().equals("MessageLifeTimeInDataBase")) {
-    	        	messageLifeTimeInDB = Integer.parseInt(records.getValue());
-    	        } else if (records.getName().equals("MaxMessagesDataBase")) {
-    	        	maxMessagesDataBase = Integer.parseInt(records.getValue());
-    	        } else if (records.getName().equalsIgnoreCase("SyncTask")) {
-                	oracleSync.add(createSyncTask(records));
-                }
-            }
-            LogWriter.write(Language.getWord("LOADING_CF"));
-        }
+    
+    public static void loadConfigFile(String configFile) throws ConfigFileNotLoadException{
+    	try {
+    		LogWriter.write("INFO: ConfigFile -> " + configFile);
+
+    		builder = new SAXBuilder(false);
+    		doc = builder.build(configFile);
+    		root = doc.getRootElement();
+    		java.util.List Lconfig = root.getChildren();
+    		Iterator iterator = Lconfig.iterator();
+
+    		/**
+    		 * Ciclo encargado de leer las primeras etiquetas del archivo XML, en este
+    		 * caso Configuración
+    		 */
+
+    		while (iterator.hasNext()) {
+
+    			Element records = (Element)iterator.next();
+    			if (records.getName().equals("ConnectionPool")) {
+    				loadConnectionsPool(records.getChildren());
+    			} else if (records.getName().equals("MainDataBase")) {
+    				mainDataBase = records.getValue();
+    			} else if (records.getName().equals("SourceDataBase")) {
+    				secondDataBase = records.getValue();
+    			} else if (records.getName().equals("AppOwner")) {
+    				appOwner = records.getValue();
+    			}else if (records.getName().equals("Language")) {
+    				local = records.getValue();
+    				appLang.loadLanguage(local);
+    			} else if (records.getName().equals("Port")) {
+    				port = Integer.parseInt(records.getValue());
+    			} else if (records.getName().equals("MailUser")) {
+    				mailUser = records.getValue();
+    			} else if (records.getName().equals("MailPassword")) {
+    				mailPassword = records.getValue();
+    			} else if (records.getName().equals("MailServer")) {
+    				mailServer = records.getValue();
+    			} else if (records.getName().equals("CheckMailEvery")) {
+    				checkMailEvery = Integer.parseInt(records.getValue());
+    			} else if (records.getName().equals("MessageLifeTimeForClients")) {
+    				messageLifeTimeForClients = Integer.parseInt(records.getValue());
+    			}else if (records.getName().equals("MessageLifeTimeInDataBase")) {
+    				messageLifeTimeInDB = Integer.parseInt(records.getValue());
+    			} else if (records.getName().equals("MaxMessagesDataBase")) {
+    				maxMessagesNumAllowed = Integer.parseInt(records.getValue());
+    			} else if (records.getName().equalsIgnoreCase("SyncTask")) {
+    				syncTaskList.add(createSyncTask(records));
+    			}
+    		}
+    		LogWriter.write(Language.getWord("LOADING_CF"));
+    	}
         catch (FileNotFoundException FNFEe) {       	
         	throw new ConfigFileNotLoadException();
         }
@@ -129,22 +129,23 @@ public class ConfigFileHandler {
         }
     }
 
-    private static OracleSyncTask createSyncTask(Element e) {
-    	OracleSyncTask sync = new OracleSyncTask();
-    	Iterator i = e.getChildren().iterator();
-    	while (i.hasNext()) {
-    		Element records = (Element)i.next();
+    private static OracleSyncTask createSyncTask(Element element) {
+    	OracleSyncTask syncTask = new OracleSyncTask();
+    	Iterator iterator = element.getChildren().iterator();
+    	while (iterator.hasNext()) {
+    		Element records = (Element)iterator.next();
 	    	if (records.getName().equals("Hour")) {
-	            sync.setHour(Integer.parseInt(records.getValue()));
+	            syncTask.setHour(Integer.parseInt(records.getValue()));
 	        } else if (records.getName().equals("Minute")) {
-	            sync.setMinute(Integer.parseInt(records.getValue()));
+	            syncTask.setMinute(Integer.parseInt(records.getValue()));
 	        } else if (records.getName().equals("Second")) {
-	            sync.setSecond(Integer.parseInt(records.getValue()));
+	            syncTask.setSecond(Integer.parseInt(records.getValue()));
 	        }
     	}
     	
-    	return sync;
+    	return syncTask;
     }
+    
     /**
      * Metodo encargado de cargar cada una de las conexiones a las
      * Bases de Datos
@@ -152,48 +153,47 @@ public class ConfigFileHandler {
      * las bases de datos existentes
      */
     
-    private static void loadConnectionsPool(java.util.List connectionsPool) {
-        Iterator i = connectionsPool.iterator();
-
-        while (i.hasNext()) {
-            Element records = (Element)i.next();
-            VConnectionsPool.addElement(loadDB(records.getChildren()));
+    private static void loadConnectionsPool(List connectionsPool) {
+        Iterator iterator = connectionsPool.iterator();
+        while (iterator.hasNext()) {
+            Element records = (Element)iterator.next();
+            connectionsPoolVector.addElement(loadDB(records.getChildren()));
         }
     }
     
     /**
      * Metodo encargado de cargar las propiedades de las conexiones de 
      * las bases de datos
-     * @param LDB Lista de datos xml que contienen los parametros de la conexion
+     * @param dbList Lista de datos xml que contienen los parametros de la conexion
      * @return Valor tipo Conexiones.
      */
     
-    private static Connections loadDB(java.util.List LDB) {
-        Iterator i = LDB.iterator();
-        Connections connection = new Connections();
+    private static DBConnection loadDB(List dbList) {
+        Iterator iterator = dbList.iterator();
+        DBConnection dbConnection = new DBConnection();
         
-        while (i.hasNext()) {
-            Element records = (Element)i.next();
+        while (iterator.hasNext()) {
+            Element records = (Element)iterator.next();
             if (records.getName().equals("name")) {
-                connection.setName(records.getValue());
+                dbConnection.setName(records.getValue());
             }
             else if(records.getName().equals("driver")) {
-                connection.setDriver(records.getValue());
+                dbConnection.setDriver(records.getValue());
             }
             else if(records.getName().equals("url")) {
-                connection.setUrl(records.getValue());
+                dbConnection.setUrl(records.getValue());
             }
             else if(records.getName().equals("username")) {
-                connection.setUser(records.getValue());
+                dbConnection.setUser(records.getValue());
             }
             else if(records.getName().equals("password")) {
-                connection.setPassword(records.getValue());
+                dbConnection.setPassword(records.getValue());
             }
             else if(records.getName().equals("connectOnInit")) {
-                connection.setConnecOnInit(Boolean.parseBoolean(records.getValue()));
+                dbConnection.setConnecOnInit(Boolean.parseBoolean(records.getValue()));
             }
         }
-        return connection;
+        return dbConnection;
     }
        
     /**
@@ -202,7 +202,7 @@ public class ConfigFileHandler {
      */
     
     public static int getDBSize() {
-        return VConnectionsPool.size();
+        return connectionsPoolVector.size();
     }
     
     /**
@@ -213,7 +213,7 @@ public class ConfigFileHandler {
      */
     
     public static String getDriver(int index) {
-        return VConnectionsPool.get(index).getDriver();
+        return connectionsPoolVector.get(index).getDriver();
     }
 
     /**
@@ -224,7 +224,7 @@ public class ConfigFileHandler {
      */
     
     public static String getDBName(int index) {
-        return VConnectionsPool.get(index).getName();
+        return connectionsPoolVector.get(index).getName();
     }
 
     /**
@@ -235,7 +235,7 @@ public class ConfigFileHandler {
      */
     
     public static String getUrl(int index) {
-        return VConnectionsPool.get(index).getUrl();
+        return connectionsPoolVector.get(index).getUrl();
     }
 
     /**
@@ -246,7 +246,7 @@ public class ConfigFileHandler {
      */
     
     public static String getUser(int index) {
-        return VConnectionsPool.get(index).getUser();
+        return connectionsPoolVector.get(index).getUser();
     }
     
     /**
@@ -257,18 +257,18 @@ public class ConfigFileHandler {
      */
     
     public static String getPassword(int index) {
-        return VConnectionsPool.get(index).getPassword();
+        return connectionsPoolVector.get(index).getPassword();
     }
     
     public static boolean isConnectOnInit(int index) {
-        return VConnectionsPool.get(index).isConnectedOnInit();
+        return connectionsPoolVector.get(index).isConnectedOnInit();
     }
     
     public static Connection getConnection(String name) throws SQLException, ClassNotFoundException {
-    	for (Connections con : VConnectionsPool) {
-    		if (name.equals(con.getName())) {
-    			Class.forName(con.getDriver());
-    			return DriverManager.getConnection(con.getUrl(),con.getUser(),con.getPassword());
+    	for (DBConnection dbConnection : connectionsPoolVector) {
+    		if (name.equals(dbConnection.getName())) {
+    			Class.forName(dbConnection.getDriver());
+    			return DriverManager.getConnection(dbConnection.getUrl(),dbConnection.getUser(),dbConnection.getPassword());
     		}
     	}
     	return null;
@@ -284,7 +284,6 @@ public class ConfigFileHandler {
 	public static String getMainDataBase() {
 		return mainDataBase;
 	}
-
 
 	public static String getUserMail() {
 		return mailUser;
@@ -309,24 +308,24 @@ public class ConfigFileHandler {
 		return checkMailEvery;
 	}
 
-	public static void setTimeIntervalConnect(int timeIntervalConnect) {
-		ConfigFileHandler.checkMailEvery = timeIntervalConnect;
+	public static void setConnectionTimeInterval(int connectionTimeInterval) {
+		ConfigFileHandler.checkMailEvery = connectionTimeInterval;
 	}
 
-	public static ArrayList<OracleSyncTask> getOraclesync() {
-		return oracleSync;
+	public static ArrayList<OracleSyncTask> getSyncTaskList() {
+		return syncTaskList;
 	}
 
 	public static int getMessageLifeTimeForClients() {
 		return messageLifeTimeForClients;
 	}
 
-	public static void setTimeAlifeMessageForClient(int MessageLifeTimeForClient) {
+	public static void setMessageLifeTimeForClient(int MessageLifeTimeForClient) {
 		ConfigFileHandler.messageLifeTimeForClients = MessageLifeTimeForClient;
 	}
 
-	public static int getMaxMessagesDataBase() {
-		return maxMessagesDataBase;
+	public static int getMaxMessagesNumAllowed() {
+		return maxMessagesNumAllowed;
 	}
 
 	public static int getMessageLifeTimeInDataBase() {
@@ -338,7 +337,7 @@ public class ConfigFileHandler {
  * para poder instanciar una base de datos
  */
     
-class Connections {
+class DBConnection {
     
     private String name;
     private String url;
@@ -351,6 +350,7 @@ class Connections {
      * @return Value of property nombre.
      *
      */
+    
     public String getName() {
         return name;
     }
@@ -359,6 +359,7 @@ class Connections {
      * @param name New value of property nombre.
      *
      */
+    
     public void setName(String name) {
         this.name = name;
     }
@@ -367,6 +368,7 @@ class Connections {
      * @return Value of property url.
      *
      */
+    
     public String getUrl() {
         return url;
     }
@@ -375,6 +377,7 @@ class Connections {
      * @param url New value of property url.
      *
      */
+    
     public void setUrl(String url) {
         this.url = url;
     }
@@ -383,6 +386,7 @@ class Connections {
      * @return Value of property driver.
      *
      */
+    
     public String getDriver() {
         return driver;
     }
@@ -391,6 +395,7 @@ class Connections {
      * @param driver New value of property driver.
      *
      */
+    
     public void setDriver(String driver) {
         this.driver = driver;
     }
@@ -399,6 +404,7 @@ class Connections {
      * @return Value of property usuario.
      *
      */
+    
     public String getUser() {
         return user;
     }
@@ -407,6 +413,7 @@ class Connections {
      * @param usuario New value of property usuario.
      *
      */
+    
     public void setUser(String user) {
         this.user = user;
     }
@@ -415,6 +422,7 @@ class Connections {
      * @return Value of property password.
      *
      */
+    
     public String getPassword() {
         return password;
     }
@@ -423,6 +431,7 @@ class Connections {
      * @param password New value of property password.
      *
      */
+    
     public void setPassword(String password) {
         this.password = password;
     }

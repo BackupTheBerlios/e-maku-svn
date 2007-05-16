@@ -11,7 +11,7 @@ import com.kazak.smi.client.network.QuerySender;
 import com.kazak.smi.client.network.SocketHandler;
 import com.kazak.smi.client.network.SocketWriter;
 
-public class ConfirmMessage extends Thread {
+public class MessageConfirmer extends Thread {
 
 	private Boolean confirm;
 	private String date;
@@ -19,7 +19,7 @@ public class ConfirmMessage extends Thread {
 	private String subject;
 	private String from;
 	
-	public ConfirmMessage(Boolean confirm,String date, String time,String subject,String from) {
+	public MessageConfirmer(Boolean confirm,String date, String time,String subject,String from) {
 		this.confirm = confirm;
 		this.date = date;
 		this.time = time;

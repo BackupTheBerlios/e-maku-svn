@@ -14,16 +14,17 @@ public class CNXSender {
         String ipAddr = socket.socket().getLocalAddress().getHostAddress();
         Element ip = new Element("ip").setText(ipAddr);
         Element user = new Element("login").setText(login);
-        Element secret = new Element("password").setText(password);
+        Element passwd = new Element("password").setText(password);
         
         doc.getRootElement().addContent(ip);
         doc.getRootElement().addContent(user);
-        doc.getRootElement().addContent(secret);
+        doc.getRootElement().addContent(passwd);
+        
         try {
         	SocketWriter.writing(socket,doc);
         } catch (IOException e) {
-    		System.out.println("Error de entrada y salida");
-    		System.out.println("mensaje: " + e.getMessage());
+    		System.out.println("ERROR: Falla de entrada/salida");
+    		System.out.println("Causa: " + e.getMessage());
     		e.printStackTrace();
     	}
     }

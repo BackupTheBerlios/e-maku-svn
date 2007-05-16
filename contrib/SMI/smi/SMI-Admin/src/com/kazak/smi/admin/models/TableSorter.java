@@ -195,7 +195,6 @@ public class TableSorter extends AbstractTableModel {
         }
     }
 
-    @SuppressWarnings("unchecked")
 	public void setSortingStatus(int column, int status) {
         Directive directive = getDirective(column);
         if (directive != EMPTY_DIRECTIVE) {
@@ -314,8 +313,8 @@ public class TableSorter extends AbstractTableModel {
             int row1 = modelIndex;
             int row2 = ((Row) o).modelIndex;
 
-            for (Iterator it = sortingColumns.iterator(); it.hasNext();) {
-                Directive directive = (Directive) it.next();
+            for (Iterator iterator = sortingColumns.iterator(); iterator.hasNext();) {
+                Directive directive = (Directive) iterator.next();
                 int column = directive.column;
                 Object o1 = tableModel.getValueAt(row1, column);
                 Object o2 = tableModel.getValueAt(row2, column);
@@ -480,15 +479,15 @@ public class TableSorter extends AbstractTableModel {
                                                        boolean hasFocus,
                                                        int row, 
                                                        int column) {
-            Component c = tableCellRenderer.getTableCellRendererComponent(table, 
+            Component component = tableCellRenderer.getTableCellRendererComponent(table, 
                     value, isSelected, hasFocus, row, column);
-            if (c instanceof JLabel) {
-                JLabel l = (JLabel) c;
-                l.setHorizontalTextPosition(JLabel.LEFT);
+            if (component instanceof JLabel) {
+                JLabel label = (JLabel) component;
+                label.setHorizontalTextPosition(JLabel.LEFT);
                 int modelColumn = table.convertColumnIndexToModel(column);
-                l.setIcon(getHeaderRendererIcon(modelColumn, l.getFont().getSize()));
+                label.setIcon(getHeaderRendererIcon(modelColumn, label.getFont().getSize()));
             }
-            return c;
+            return component;
         }
     }
 

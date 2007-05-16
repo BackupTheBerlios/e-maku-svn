@@ -1,9 +1,10 @@
 package com.kazak.smi.client.control;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.Set;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -15,28 +16,28 @@ import com.kazak.smi.client.network.QuerySenderException;
 public class Cache {
 
 	private static final long serialVersionUID = -2796119857538194265L;
-	private static HashMap<String, String> cacheGroups;
-	private static ArrayList<Message> cacheMessages;
+	private static HashMap<String, String> groupsCacheHash;
+	private static ArrayList<MessageList> msgCacheList;
 	
 	public Cache () {
-		cacheGroups = new HashMap<String, String>();
-		cacheMessages = new ArrayList<Message>();
+		groupsCacheHash = new HashMap<String, String>();
+		msgCacheList = new ArrayList<MessageList>();
 	}
 	
-	public static void loadCacheGroups() {
-		cacheGroups.clear();
+	public static void loadGroupsCache() {
+		groupsCacheHash.clear();
 		Thread t = new Thread() {
 			public void run() {
 				try {
-					Document doc = QuerySender.getResultSetST("SEL0001",null);
+					Document doc = QuerySender.getResultSetFromST("SEL0001",null);
 					Element root = doc.getRootElement();
-					Iterator it = root.getChildren("row").iterator();
-					while (it.hasNext()) {
-						Element el = (Element)it.next();
-						Iterator itCols = el.getChildren().iterator();
-						String id = ((Element)itCols.next()).getValue();
-						String desc = ((Element)itCols.next()).getValue();
-						cacheGroups.put(desc,id);  
+					Iterator iterator = root.getChildren("row").iterator();
+					while (iterator.hasNext()) {
+						Element element = (Element)iterator.next();
+						Iterator columnsIterator = element.getChildren().iterator();
+						String id = ((Element)columnsIterator.next()).getValue();
+						String name = ((Element)columnsIterator.next()).getValue();
+						groupsCacheHash.put(name,id);  
 					}
 				} catch (QuerySenderException e) {
 					e.printStackTrace();
@@ -46,43 +47,46 @@ public class Cache {
 		t.start();
 	}
 	
-	public static String getIdGroup(String key) {
-		return cacheGroups.get(key);
+	public static String getGroupID(String key) {
+		return groupsCacheHash.get(key);
 	}
 	
-	public static void addMessages (Element groups) {
-		Iterator it = groups.getChildren().iterator();
-		while (it.hasNext()) {
-			Element cols = (Element)it.next();
-			int index = cacheMessages.size() + 1;
-			Message message = new Message(index,cols);
-			cacheMessages.add(0,message);
+	public static void addMessages (Element messages) {
+		Iterator iterator = messages.getChildren().iterator();
+		while (iterator.hasNext()) {
+			Element columns = (Element)iterator.next();
+			int index = msgCacheList.size() + 1;
+			MessageList message = new MessageList(index,columns);
+			msgCacheList.add(0,message);
 		}
 	}
 	
-	public static ArrayList<Message> getMessages() {
-		return cacheMessages;
+	public static ArrayList<MessageList> getMessages() {
+		return msgCacheList;
 	}
 	
-	public static Vector<String> getGroups() {
-		Vector<String> v = new Vector<String>(cacheGroups.keySet());
-		return v;
+	public static String[] getGroups() {
+		Set <String>bag = groupsCacheHash.keySet();
+		String[] sortedGroupList = (String[])bag.toArray(new String[bag.size()]);
+		Arrays.sort(sortedGroupList);
+
+		return sortedGroupList;	
 	}
 	
-	public static void loadHistoryMessages() {
-		cacheMessages.clear();
+	public static void loadMessagesHistory() {
+		msgCacheList.clear();
 		Thread t = new Thread() {
 			public void run() {
 				try {
 					String[] args = {Run.user,Run.user};
-					Document doc = QuerySender.getResultSetST("SEL0012",args);
+					Document doc = QuerySender.getResultSetFromST("SEL0012",args);
 					Element root = doc.getRootElement();
-					Iterator it = root.getChildren("row").iterator();
-					while (it.hasNext()) {
-						Element cols = (Element)it.next();
-						int index = cacheMessages.size() + 1;
-						Message message = new Message(index,cols);
-						cacheMessages.add(message);  
+					Iterator iterator = root.getChildren("row").iterator();
+					while (iterator.hasNext()) {
+						Element columns = (Element)iterator.next();
+						int index = msgCacheList.size() + 1;
+						MessageList message = new MessageList(index,columns);
+						msgCacheList.add(message);  
 					}
 				} catch (QuerySenderException e) {
 					e.printStackTrace();

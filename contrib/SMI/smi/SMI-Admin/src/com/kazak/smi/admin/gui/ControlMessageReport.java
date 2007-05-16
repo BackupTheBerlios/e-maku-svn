@@ -29,16 +29,15 @@ import com.toedter.calendar.JDateChooser;
 public class ControlMessageReport extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 3920757441925057976L;
-	private JDateChooser FieldDate1;
-	private JDateChooser FieldDate2;
+	private JDateChooser dateField1;
+	private JDateChooser dateField2;
 		
-	private JPanel JPCenter;
-	private JPanel JPSouth;
+	private JPanel centerPanel;
+	private JPanel southPanel;
 	
-	private JButton JBCancel;
-	private JButton JBSearch;
-	private ArrayList<Component> listComps = new ArrayList<Component>();
-
+	private JButton cancelButton;
+	private JButton searchButton;
+	private ArrayList<Component> componentsList = new ArrayList<Component>();
 	final JFrame frame = this;
 	
 	private String[] labels = { "Fecha Inicio ", "Fecha Fin ",};
@@ -56,47 +55,47 @@ public class ControlMessageReport extends JFrame implements ActionListener {
 	
 	public void init() {
 		this.setTitle("Buscar mensajes");
-		JBSearch.setActionCommand("search");
-		JBCancel.setActionCommand("cancel");
+		searchButton.setActionCommand("search");
+		cancelButton.setActionCommand("cancel");
 		this.setVisible(true);
 	}
 	
 	private void initComps() {
 		
-		listComps.add(FieldDate1	   = new JDateChooser());
-		listComps.add(FieldDate2	   = new JDateChooser());
+		componentsList.add(dateField1 = new JDateChooser());
+		componentsList.add(dateField2 = new JDateChooser());
 		
-		FieldDate1.setDateFormatString("yyyy-MM-dd h:mm a");
-		FieldDate2.setDateFormatString("yyyy-MM-dd h:mm a");
-		FieldDate1.getCalendarButton().addActionListener(new MyActionListener(FieldDate1));
-		FieldDate2.getCalendarButton().addActionListener(new MyActionListener(FieldDate2));
-		JBSearch = new JButton("Buscar");
-		JBCancel = new JButton("Cancelar");
+		dateField1.setDateFormatString("yyyy-MM-dd h:mm a");
+		dateField2.setDateFormatString("yyyy-MM-dd h:mm a");
+		dateField1.getCalendarButton().addActionListener(new MyActionListener(dateField1));
+		dateField2.getCalendarButton().addActionListener(new MyActionListener(dateField2));
+		searchButton = new JButton("Buscar");
+		cancelButton = new JButton("Cancelar");
 		
-		JBSearch.addActionListener(this);
-		JBCancel.addActionListener(this);
+		searchButton.addActionListener(this);
+		cancelButton.addActionListener(this);
 		
-		JPCenter = new JPanel(new BorderLayout());
-		JPSouth  = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		centerPanel = new JPanel(new BorderLayout());
+		southPanel  = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	}
 	
 	private void addComps() {
-		JPanel jplabels = new JPanel(new GridLayout(labels.length,0));
-		JPanel jpfields = new JPanel(new GridLayout(labels.length,0));
+		JPanel labelsPanel = new JPanel(new GridLayout(labels.length,0));
+		JPanel fieldsPanel = new JPanel(new GridLayout(labels.length,0));
 		
 		for (int i=0 ; i< labels.length ; i++) {
-			jplabels.add(new JLabel(labels[i]));
-			jpfields.add(listComps.get(i));
+			labelsPanel.add(new JLabel(labels[i]));
+			fieldsPanel.add(componentsList.get(i));
 		}
 
-		JPCenter.add(jplabels,BorderLayout.WEST);
-		JPCenter.add(jpfields,BorderLayout.CENTER);
+		centerPanel.add(labelsPanel,BorderLayout.WEST);
+		centerPanel.add(fieldsPanel,BorderLayout.CENTER);
 
-		JPSouth.add(JBSearch);
-		JPSouth.add(JBCancel);
+		southPanel.add(searchButton);
+		southPanel.add(cancelButton);
 		
-		this.add(JPCenter,BorderLayout.CENTER);
-		this.add(JPSouth,BorderLayout.SOUTH);
+		this.add(centerPanel,BorderLayout.CENTER);
+		this.add(southPanel,BorderLayout.SOUTH);
 		this.add(new JPanel(),BorderLayout.NORTH);
 		this.add(new JPanel(),BorderLayout.WEST);
 		this.add(new JPanel(),BorderLayout.EAST);
@@ -114,8 +113,8 @@ public class ControlMessageReport extends JFrame implements ActionListener {
 	
 	class Worker extends Thread {		
 		public void run() {
-			Date date1 = FieldDate1.getDate();
-			Date date2 = FieldDate2.getDate();
+			Date date1 = dateField1.getDate();
+			Date date2 = dateField2.getDate();
 			if (date1==null) {
 				JOptionPane.showMessageDialog(frame,"Debe Digitar la fecha de inicio");
 				return;
@@ -125,13 +124,13 @@ public class ControlMessageReport extends JFrame implements ActionListener {
 				return;
 			}
 			
-			Calendar c1 = Calendar.getInstance(); 
-		    Calendar c2 = Calendar.getInstance();
+			Calendar calendar1 = Calendar.getInstance(); 
+		    Calendar calendar2 = Calendar.getInstance();		    
+		    calendar1.setTime(date1);
+		    calendar2.setTime(date2);
 		    
-		    c1.setTime(date1);
-		    c2.setTime(date2);
-		    if (!c1.equals(c2)) {
-				if (c2.after(c1)) {
+		    if (!calendar1.equals(calendar2)) {
+				if (calendar2.after(calendar1)) {
 					Element transaction = new Element("Transaction");
 					Document doc = new Document(transaction);
 					
@@ -151,20 +150,20 @@ public class ControlMessageReport extends JFrame implements ActionListener {
 					transaction.addContent(pack);
 					
 					try {
-						SocketWriter.writing(SocketHandler.getSock(),doc);
+						SocketWriter.write(SocketHandler.getSock(),doc);
 					} catch (IOException ex) {
-						System.out.println("Error de entrada y salida");
-						System.out.println("mensaje: " + ex.getMessage());
+						System.out.println("ERROR: Falla de entrada/salida");
+						System.out.println("Causa: " + ex.getMessage());
 						ex.printStackTrace();
 					}
 					frame.dispose();
 				}
 				else {
-					JOptionPane.showMessageDialog(frame,"La fecha de fin debe ser posterior a la de inicio");
+					JOptionPane.showMessageDialog(frame,"La fecha de fin debe ser posterior a la de inicio.");
 				}
 		    }
 		    else {
-				JOptionPane.showMessageDialog(frame,"La fecha de fin debe ser posterior a la de inicio");
+				JOptionPane.showMessageDialog(frame,"La fecha de fin debe ser posterior a la de inicio.");
 			}
 		}
 	}
@@ -172,9 +171,11 @@ public class ControlMessageReport extends JFrame implements ActionListener {
 	class MyActionListener implements ActionListener {
 		
 		private JDateChooser chooser;
+		
 		public MyActionListener(JDateChooser chooser) {
 			this.chooser = chooser;
 		}
+		
 		public void actionPerformed(ActionEvent e) {
 			((JTextComponent)this.chooser.getDateEditor()).requestFocus();
 		}

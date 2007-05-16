@@ -13,12 +13,12 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 import com.kazak.smi.lib.misc.Language;
-import com.kazak.smi.server.control.HeaderValidator;
+import com.kazak.smi.server.control.HeadersValidator;
 import com.kazak.smi.server.misc.LogWriter;
 import com.kazak.smi.server.misc.ServerConstants;
 
 /**
- * PackageToXML.java Creado el 05-oct-2004
+ * PackageToXMLConverter.java Creado el 05-oct-2004
  * 
  * Este archivo es parte de E-Maku <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
@@ -32,7 +32,8 @@ import com.kazak.smi.server.misc.ServerConstants;
  * GARANTIA; sin ninguna garantia aun por COMERCIALIZACION o por un PROPOSITO
  * PARTICULAR. Consulte la Licencia Publica General GNU GPL para mas detalles.
  * <br>
- * Informacion de la clase <br>
+ * Esta clase se encarga de convertir un paquete de red en un documento XML 
+ * <br>
  * 
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez </A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David
@@ -40,8 +41,8 @@ import com.kazak.smi.server.misc.ServerConstants;
  */
 public class PackageToXMLConverter extends Thread {
 
-    private ByteBuffer buf;
-    private SAXBuilder builder;
+    private ByteBuffer buffer;
+    private SAXBuilder saxBuilder;
     
     private static Document doc;
     private SocketChannel channel;
@@ -53,70 +54,66 @@ public class PackageToXMLConverter extends Thread {
 
     public void run() {
 
-        buf = ByteBuffer.allocateDirect(8192);
+        buffer = ByteBuffer.allocateDirect(8192);
         
         try {
 
+            int bytesNumber = 1;
             
-            int numRead = 1;
+            while (bytesNumber > 0) {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                outputStream.write((SocketServer.getTemporalBuffer(channel)).toByteArray());
+                SocketServer.setTemporalBuffer(channel,new ByteArrayOutputStream());
 
-            while (numRead > 0) {
- 
-                ByteArrayOutputStream bufferOut = new ByteArrayOutputStream();
-                bufferOut.write((SocketServer.getBufferTmp(channel)).toByteArray());
-                SocketServer.setBufferTmp(channel,new ByteArrayOutputStream());
+                Vector <ByteArrayOutputStream>bufferVector = new Vector<ByteArrayOutputStream>();
+                bufferVector.addElement(outputStream);
 
-                Vector <ByteArrayOutputStream>vbuffer = new Vector<ByteArrayOutputStream>();
-                vbuffer.addElement(bufferOut);
-
-                buf.rewind();
-                numRead = channel.read(buf);
-                buf.rewind();
+                buffer.rewind();
+                bytesNumber = channel.read(buffer);
+                buffer.rewind();
 
                 int j=0;
-                for (int i = 0; i < numRead; i++) {
-                    int character = buf.get(i);
+                for (int i = 0; i < bytesNumber; i++) {
+                    int character = buffer.get(i);
                     if (character != 12) {
                         if (character!=0) {
-	                        vbuffer.get(j).write(buf.get(i));
+	                        bufferVector.get(j).write(buffer.get(i));
                         }
                     }
                     else {
-                        if (i != (numRead - 1)) {
-	                        bufferOut = new ByteArrayOutputStream();
-	                        vbuffer.add(bufferOut);
+                        if (i != (bytesNumber - 1)) {
+	                        outputStream = new ByteArrayOutputStream();
+	                        bufferVector.add(outputStream);
 	                        j++;
                         }
                     }
                     
                 }
 
-                for (int i = 0; i < vbuffer.size(); i++) {
-
+                for (int i = 0; i < bufferVector.size(); i++) {
                     ByteArrayOutputStream docStream = new ByteArrayOutputStream();
-
                     try {
-                        builder = new SAXBuilder();
-                        docStream = (ByteArrayOutputStream) vbuffer.get(i);
+                        saxBuilder = new SAXBuilder();
+                        docStream = (ByteArrayOutputStream) bufferVector.get(i);
                         if (docStream.size() > 2) {
                             ByteArrayInputStream bufferIn = new ByteArrayInputStream(
                                     docStream.toByteArray());
-                            doc = builder.build(bufferIn);
-                            HeaderValidator.ValidClient(doc, channel);
+                            doc = saxBuilder.build(bufferIn);
+                            HeadersValidator.validClient(doc, channel);
                         }
                     }
                     catch (JDOMException e1) {
-                        SocketServer.getBufferTmp(channel).write(docStream.toByteArray());
+                        SocketServer.getTemporalBuffer(channel).write(docStream.toByteArray());
                         XMLError error = new XMLError();
-                        String tmp = Language.getWord("ERR_FORMAT_PROTOCOL")
+                        String message = Language.getWord("ERR_FORMAT_PROTOCOL")
                                 + " " + channel.socket();
-                        LogWriter.write(tmp);
-                        SocketWriter.writing(channel, error.returnError(ServerConstants.ERROR, "", tmp));
+                        LogWriter.write(message);
+                        SocketWriter.write(channel, error.returnErrorMessage(ServerConstants.ERROR, "", message));
                     }
                 }
 
-                if (numRead == -1) {
-                    bufferOut.close();
+                if (bytesNumber == -1) {
+                    outputStream.close();
                     channel.close();
                     SocketServer.removeSock(channel);
                     return;
@@ -125,10 +122,10 @@ public class PackageToXMLConverter extends Thread {
 
         }
         catch (ClosedChannelException e) {
-            //
+        	e.printStackTrace();
         }
         catch (IOException e) {
-            //
+        	e.printStackTrace();
         }
     }
 }

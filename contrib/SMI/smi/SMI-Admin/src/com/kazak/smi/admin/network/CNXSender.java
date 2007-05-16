@@ -11,21 +11,22 @@ public class CNXSender {
     public CNXSender(SocketChannel socket,String login,String password) {
         Document doc = new Document();
         doc.setRootElement(new Element("CNX"));
-        String ipAddr = socket.socket().getLocalAddress().getHostAddress();
-        Element ip = new Element("ip").setText(ipAddr);
-        Element user = new Element("login").setText(login);
-        Element secret = new Element("password").setText(password);
+        String ipAddress = socket.socket().getLocalAddress().getHostAddress();
+        Element ip       = new Element("ip").setText(ipAddress);
+        Element user     = new Element("login").setText(login);
+        Element passwd   = new Element("password").setText(password);
         Element validate = new Element("validate").setText("true");
         
         doc.getRootElement().addContent(ip);
         doc.getRootElement().addContent(user);
-        doc.getRootElement().addContent(secret);
+        doc.getRootElement().addContent(passwd);
         doc.getRootElement().addContent(validate);
+        
         try {	
-        	SocketWriter.writing(socket,doc);
+        	SocketWriter.write(socket,doc);
 	    } catch (IOException e) {
-			System.out.println("Error de entrada y salida");
-			System.out.println("mensaje: " + e.getMessage());
+			System.out.println("ERROR: Falla de entrada/salida");
+			System.out.println("Causa: " + e.getMessage());
 			e.printStackTrace();
 		}
     }

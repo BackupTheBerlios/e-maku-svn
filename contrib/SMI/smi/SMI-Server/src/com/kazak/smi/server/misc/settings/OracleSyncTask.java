@@ -1,12 +1,10 @@
 package com.kazak.smi.server.misc.settings;
 
-
 public class OracleSyncTask {
-    private int    hour;
-    private int    minute;
-    private int    second;
-   
-	
+    private int hour;
+    private int minute;
+    private int second;
+   	
 	public int getHour() {
 		return hour;
 	}

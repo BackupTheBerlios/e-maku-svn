@@ -30,12 +30,13 @@ public class Run {
 	}
 	
 	public static void exit() {
-		int op = JOptionPane.showConfirmDialog(
+		int option = JOptionPane.showConfirmDialog(
 				MainWindow.getFrame(),
 				"Realmente desea Salir?",
 				"Salir",
 				JOptionPane.YES_NO_OPTION);
-		if (op==JOptionPane.YES_OPTION) {
+		
+		if (option==JOptionPane.YES_OPTION) {
 			System.exit(0);			
 		}
 	}

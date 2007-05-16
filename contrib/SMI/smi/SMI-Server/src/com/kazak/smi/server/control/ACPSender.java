@@ -37,9 +37,10 @@ public class ACPSender extends Thread{
 	 * 
 	 */
 	private static final long serialVersionUID = -757058034217759942L;
-	private Document docACPBegin;
+	private Document acpBeginDoc;
 	private SocketChannel sock;
 	private int userLevel;
+	
 	public ACPSender(SocketChannel sock, String login,int userLevel) {
         this.sock = sock;
         this.userLevel = userLevel;
@@ -48,15 +49,15 @@ public class ACPSender extends Thread{
     
 	public void run() {
 		Element root = new Element("ACPBegin");
-        docACPBegin = new Document();
-        docACPBegin.setRootElement(root);
+        acpBeginDoc = new Document();
+        acpBeginDoc.setRootElement(root);
         root.addContent(new Element("AppOwner").setText(ConfigFileHandler.getAppOwner()));
         root.addContent(new Element("UserLevel").setText(String.valueOf(userLevel)));
         try {
-			SocketWriter.writing(sock,this.docACPBegin);
+			SocketWriter.write(sock,this.acpBeginDoc);
 		} catch (IOException e) {
-			LogWriter.write("Error de entrada y salida");
-			LogWriter.write("mensaje: " + e.getMessage());
+			LogWriter.write("ERROR: Falla de entrada/salida");
+			LogWriter.write("Causa: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}

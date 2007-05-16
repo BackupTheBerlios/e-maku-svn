@@ -18,6 +18,7 @@ import com.kazak.smi.server.database.sql.QueryClosingHandler;
 import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
+import com.kazak.smi.server.misc.LogWriter;
 
 public class UserManager {
 
@@ -59,16 +60,16 @@ public class UserManager {
 						
 			Element reload = new Element("RELOADTREE");
 			try {
-				SocketWriter.writing(sock,new Document(reload));
+				SocketWriter.write(sock,new Document(reload));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			message = "Los datos fueron almacenados satisfactoriamente";
+			message = "La operación fue realizada satisfactoriamente.";
 			TransactionRunner.notifyMessageReception(sock,id,message);
 		}
 		else {
 			for (QueryRunner qRunner :queries) {
-				qRunner.rollback();
+	 			 qRunner.rollback();
 			}
 			TransactionRunner.
 			notifyErrorMessage
@@ -78,6 +79,7 @@ public class UserManager {
 	
 	private boolean addUser(Element transaction) throws 
 	SQLNotFoundException, SQLBadArgumentsException, SQLException {
+		LogWriter.write("INFO: Adicionando usuario al sistema...");
 		Iterator iterator = transaction.getChildren("package").iterator();
 		while(iterator.hasNext()) {
 			Element e = (Element)iterator.next();
@@ -95,7 +97,7 @@ public class UserManager {
 						QueryRunner queryRunner = new QueryRunner(sqlCode,sqlArgs);
 						queries.add(queryRunner);
 						queryRunner.setAutoCommit(false);
-						queryRunner.runSQL();
+						queryRunner.executeSQL();
 					}
 				}
 				else {
@@ -104,7 +106,7 @@ public class UserManager {
 					QueryRunner qRunner = new QueryRunner(sqlCode,userInfoArray);
 					queries.add(qRunner);
 					qRunner.setAutoCommit(false);
-					qRunner.runSQL();
+					qRunner.executeSQL();
 				}
 			}
 		}
@@ -113,6 +115,7 @@ public class UserManager {
 	
 	private boolean editUser(Element transaction) throws 
 	SQLNotFoundException, SQLBadArgumentsException, SQLException {
+		LogWriter.write("INFO: Editando usuario del sistema...");
 		Iterator iterator = transaction.getChildren("package").iterator();
 		
 		Element element = (Element)iterator.next();
@@ -121,7 +124,7 @@ public class UserManager {
 		QueryRunner queryRunner = new QueryRunner(sqlCode,userInfoArray);
 		queries.add(queryRunner);
 		queryRunner.setAutoCommit(false);
-		queryRunner.runSQL();
+		queryRunner.executeSQL();
 			
 		element = (Element)iterator.next();
 		String[] args = getPackArgs(element);
@@ -129,7 +132,7 @@ public class UserManager {
 		queryRunner = new QueryRunner(sqlCode,args);
 		queries.add(queryRunner);
 		queryRunner.setAutoCommit(false);
-		queryRunner.runSQL();
+		queryRunner.executeSQL();
 		
 		element = (Element)iterator.next();
 		List packetsList = element.getChildren("subpackage");
@@ -144,7 +147,7 @@ public class UserManager {
 				queryRunner = new QueryRunner(sqlCode,sqlArgs);
 				queries.add(queryRunner);
 				queryRunner.setAutoCommit(false);
-				queryRunner.runSQL();
+				queryRunner.executeSQL();
 			}
 		}
 		return true;
@@ -152,6 +155,7 @@ public class UserManager {
 	
 	private boolean removeUser(Element transaction) throws 
 	SQLNotFoundException, SQLBadArgumentsException, SQLException {
+		LogWriter.write("INFO: Eliminando usuario del sistema...");
 		Iterator iterator = transaction.getChildren("package").iterator();
 		
 		Element element = (Element)iterator.next();
@@ -160,7 +164,7 @@ public class UserManager {
 		QueryRunner qRunner = new QueryRunner(sqlCode,args);
 		queries.add(qRunner);
 		qRunner.setAutoCommit(false);
-		qRunner.runSQL();
+		qRunner.executeSQL();
 		
 		element = (Element)iterator.next();
 		args = getPackArgs(element);
@@ -168,7 +172,7 @@ public class UserManager {
 		qRunner = new QueryRunner(sqlCode,args);
 		queries.add(qRunner);
 		qRunner.setAutoCommit(false);
-		qRunner.runSQL();
+		qRunner.executeSQL();
 		
 		return true;
 	}
@@ -195,7 +199,7 @@ public class UserManager {
 		ResultSet resultSet = null;
 		try {
 			queryRunner = new QueryRunner("SEL0029",new String[]{login});
-			resultSet = queryRunner.runSELECT();
+			resultSet = queryRunner.select();
 		    if (resultSet.next()) {
 		    	return resultSet.getString(1);
 		    }

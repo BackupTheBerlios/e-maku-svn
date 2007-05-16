@@ -6,16 +6,14 @@ import javax.swing.table.AbstractTableModel;
 
 import com.kazak.smi.admin.control.Cache.WorkStation;
 
-public class PointSaleModel extends AbstractTableModel {
+public class PosModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
-	private String[] titles = 
-	{"CODIGO","NOMBRE DEL PUNTO","IP"};
-	private Class[] types   =  
-	{String.class,String.class,String.class};
-	private Vector<WorkStation> values;
+	private String[] titles = {"CODIGO","NOMBRE DEL PUNTO","IP"};
+	private Class[] types   = {String.class,String.class,String.class};
+	private Vector<WorkStation> wsVector;
 	
-	public PointSaleModel(Vector<WorkStation> vws) {
-		values = vws;
+	public PosModel(Vector<WorkStation> wsVector) {
+		this.wsVector = wsVector;
 	}
 	
 	public String getColumnName(int index) {
@@ -27,14 +25,15 @@ public class PointSaleModel extends AbstractTableModel {
 	}
 
 	public int getRowCount() {
-		return values.size();
+		return wsVector.size();
 	}
 
 	public Class<?> getColumnClass(int columnIndex) {
 		return types[columnIndex];
 	}
+	
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		WorkStation ws = values.get(rowIndex);
+		WorkStation ws = wsVector.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
 			return ws.getCode();

@@ -53,7 +53,7 @@ public class GroupManager {
 			}
 			Element reload = new Element("RELOADTREE");
 			try {
-				SocketWriter.writing(sock,new Document(reload));
+				SocketWriter.write(sock,new Document(reload));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -85,7 +85,7 @@ public class GroupManager {
 				QueryRunner qRunner = new QueryRunner(sqlCode,packArgs(e));
 				queries.add(qRunner);
 				qRunner.setAutoCommit(false);
-				qRunner.runSQL();
+				qRunner.executeSQL();
 			}
 		}
 		return true;
@@ -101,7 +101,7 @@ public class GroupManager {
 		String sqlCode = ((Element)argsIterator.next()).getText();
 		QueryRunner queryRunner = new QueryRunner(sqlCode,args);
 		queries.add(queryRunner);
-		ResultSet resultSet = queryRunner.runSELECT();
+		ResultSet resultSet = queryRunner.select();
 		resultSet.next();
 		int count = resultSet.getInt("count");
 		resultSet.close();
@@ -113,7 +113,7 @@ public class GroupManager {
 		sqlCode = ((Element)argsIterator.next()).getText();
 		queryRunner = new QueryRunner(sqlCode,args);
 		queries.add(queryRunner);
-		resultSet = queryRunner.runSELECT();
+		resultSet = queryRunner.select();
 		resultSet.next();
 		count = resultSet.getInt("count");
 		resultSet.close();
@@ -126,7 +126,7 @@ public class GroupManager {
 		queryRunner = new QueryRunner(sqlCode,packArgs(element));
 		queries.add(queryRunner);
 		queryRunner.setAutoCommit(false);
-		queryRunner.runSQL();
+		queryRunner.executeSQL();
 		
 		return true;
 	}

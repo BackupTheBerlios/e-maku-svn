@@ -1,48 +1,67 @@
 <root>
 	<sentence>
+		<!--Descripcion: ... -->
 		<code>SRV0001</code>
 		<sql>
-			SELECT codigo,driver,args FROM transacciones;
+			SELECT codigo,driver,args 
+			FROM transacciones
+			ORDER BY codigo
 		</sql>
 	</sentence>
 	<!--========================== Selects =================================-->
 	<sentence>
+		<!--Descripcion: ... -->
 		<code>SEL0001</code>
-		<sql>SELECT gid,nombre_grupo FROM grupos WHERE mostrable=true</sql>
+		<sql>
+			SELECT gid,nombre_grupo 
+			FROM grupos 
+			WHERE mostrable=true
+			ORDER BY nombre_grupo 
+		</sql>
 	</sentence>
 	<sentence>
+		<!--Descripcion: ... -->
 		<code>SEL0002</code>
 		<sql>
 			SELECT
-			uid,trim(u.login) as login,clave,correo,admin,gid,audit,nombres
+			uid,trim(u.login) AS login,clave,correo,admin,gid,audit,nombres
 			FROM
 			usuarios u 
 			WHERE u.habilitado=true
+			ORDER BY login
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0003</code>
 		<sql>
-			select trim(u.login) as login,pv.codigo,pv.nombre,pv.ip,upv.valid_ip, g.nombre_grupo, g.gid
-			from usuarios u,puntosv pv,usuarios_pventa upv, grupos g
-			where u.uid=upv.uid AND pv.codigo=upv.codigo_pventa AND pv.gid=g.gid
+			SELECT trim(u.login) AS login,pv.codigo,pv.nombre,pv.ip,upv.valid_ip, g.nombre_grupo, g.gid
+			FROM usuarios u,puntosv pv,usuarios_pventa upv, grupos g
+			WHERE u.uid=upv.uid AND pv.codigo=upv.codigo_pventa AND pv.gid=g.gid
+			ORDER BY login
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0004</code>
 		<sql>
-			SELECT * FROM grupos order by nombre_grupo,zona desc;
+			SELECT * 
+			FROM grupos 
+			ORDER BY nombre_grupo,zona desc
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0005</code>
 		<sql>
 			SELECT pv.*,g.nombre_grupo 
 			FROM puntosv pv, grupos g 
-			WHERE g.gid=pv.gid ORDER by nombre ;
+			WHERE g.gid=pv.gid 
+			ORDER BY nombre
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0006</code>
 		<sql>
 			SELECT 
@@ -51,9 +70,11 @@
 			usuarios u, grupos g 
 			WHERE g.gid=u.gid AND g.zona=false AND 
 			u.habilitado=true AND g.nombre_grupo&lt;&gt;'COLOCADORES' 
+			ORDER BY u.login 
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0007</code>
 		<sql>
 			SELECT DISTINCT
@@ -65,9 +86,11 @@
 			upv.codigo_pventa=pv.codigo AND 
 			g.zona=true AND 
 			u.uid=upv.uid AND pv.gid=g.gid
+			ORDER BY u.login
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0008</code>
 		<sql>
 			SELECT 
@@ -76,9 +99,11 @@
 			usuarios u,grupos g 
 			WHERE 
 			u.login='?' AND u.gid=g.gid AND u.habilitado=true
+			ORDER BY nombres
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0009</code>
 		<sql>
 			SELECT 
@@ -91,21 +116,25 @@
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0010</code>
 		<sql>
 			SELECT mostrable,zona 
 			FROM grupos WHERE nombre_grupo='?'
 		</sql>
 	</sentence>
-        <sentence>
-                <code>SEL0011</code>
-                <sql>
-			SELECT DISTINCT m.fecha,m.hora,u.login,m.asunto AS login 
+    <sentence>
+    <!--Descripcion: Consulta la lista de mensajes de un usuario a partir de su login -->
+        <code>SEL0011</code>
+        <sql>
+			SELECT DISTINCT m.fecha,m.hora,u.login,m.asunto,m.confirmado,m.texto AS login 
 			FROM usuarios u, mensajes m 
-			WHERE u.uid=m.uid_origen AND m.uid_destino=(SELECT uid FROM usuarios WHERE login='?'); 
-                </sql>
-        </sentence>
+			WHERE u.uid=m.uid_origen AND m.uid_destino=(SELECT uid FROM usuarios WHERE login='?') 
+			ORDER BY m.fecha
+        </sql>
+    </sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0012</code>
 		<sql>
 			SELECT
@@ -113,7 +142,7 @@
 			FROM 
 			mensajes m,
 			usuarios u, 
-			(SELECT m.mid,u.uid as id FROM mensajes m, usuarios u WHERE u.uid=m.uid_destino AND u.login='?') as foo,
+			(SELECT m.mid,u.uid as id FROM mensajes m, usuarios u WHERE u.uid=m.uid_destino AND u.login='?') AS foo,
 			grupos g
 			WHERE 
 			m.mid=foo.mid AND 
@@ -125,9 +154,10 @@
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0013</code>
 		<sql>
-			SELECT count(*) as count
+			SELECT count(*) AS count
 			FROM 
 			usuarios u 
 			WHERE 
@@ -135,14 +165,16 @@
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0014</code>
 		<sql>
-			SELECT count(*) as count
+			SELECT count(*) AS count
 			FROM puntosv  
 			WHERE gid=(SELECT gid FROM grupos g WHERE g.nombre_grupo='?')
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0015</code>
 		<sql>
 			SELECT 
@@ -150,44 +182,50 @@
 			FROM 
 			puntosv, grupos 
 			WHERE codigo='?' AND grupos.gid=puntosv.gid
+			ORDER BY nombre
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0016</code>
 		<sql>
 			SELECT
-			m.mid,m.fecha,m.hora,u.login as de ,bar.name as para,m.asunto,m.texto,CASE WHEN confirmado='t' THEN 'true' ELSE 'false' END
+			m.mid,m.fecha,m.hora,u.login AS de,bar.name AS para,m.asunto,m.texto,CASE WHEN confirmado='t' THEN 'true' ELSE 'false' END
 			FROM
 			mensajes m,
-			(select uid as id,login as name from usuarios) as bar,
+			(SELECT uid AS id,login AS name FROM usuarios) AS bar,
 			usuarios u
 			WHERE 
 			m.uid_destino=bar.id AND 
 			uid_origen=u.uid AND 
-			u.login ilike '%?%' AND 
-			bar.name ilike '%?%'AND 
+			u.login ILIKE '%?%' AND 
+			bar.name ILIKE '%?%'AND 
 			fecha='?' AND 
-			asunto ilike '%?%'
+			asunto ILIKE '%?%'
+			ORDER BY m.mid
 		</sql>
 	</sentence>
-		<sentence>
+	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0017</code>
 		<sql>
 			SELECT DISTINCT 
 			date_part('year',fecha),
 			date_part('month', fecha),
 			date_part('day', fecha) 
-			FROM mensajes;
+			FROM mensajes
+			ORDER BY date_part('month', fecha) 
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0018</code>
 		<sql>
 			SELECT
-			m.mid,m.fecha,m.hora,u.login as de ,bar.name as para,m.asunto,m.texto,CASE WHEN confirmado='t' THEN 'true' ELSE 'false' END
+			m.mid,m.fecha,m.hora,u.login AS de ,bar.name AS para,m.asunto,m.texto,CASE WHEN confirmado='t' THEN 'true' ELSE 'false' END
 			FROM
 			mensajes m,
-			(select uid as id,login as name from usuarios) as bar,
+			(SELECT uid AS id,login AS name FROM usuarios) AS bar,
 			usuarios u
 			WHERE 
 			m.uid_destino=bar.id AND 
@@ -196,13 +234,14 @@
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0019</code>
 		<sql>
 			SELECT
-			m.mid,m.fecha,m.hora,u.login as de ,bar.name as para,m.asunto,m.texto,CASE WHEN confirmado='t' THEN 'true' ELSE 'false' END
+			m.mid,m.fecha,m.hora,u.login AS de ,bar.name AS para,m.asunto,m.texto,CASE WHEN confirmado='t' THEN 'true' ELSE 'false' END
 			FROM
 			mensajes m,
-			(select uid as id,login as name from usuarios) as bar,
+			(SELECT uid AS id,login AS name FROM usuarios) AS bar,
 			usuarios u
 			WHERE 
 			m.uid_destino=bar.id AND 
@@ -212,13 +251,14 @@
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0020</code>
 		<sql>
 			SELECT
-			m.mid,m.fecha,m.hora,u.login as de ,bar.name as para,m.asunto,m.texto,CASE WHEN confirmado='t' THEN 'true' ELSE 'false' END
+			m.mid,m.fecha,m.hora,u.login AS de ,bar.name AS para,m.asunto,m.texto,CASE WHEN confirmado='t' THEN 'true' ELSE 'false' END
 			FROM
 			mensajes m,
-			(select uid as id,login as name from usuarios) as bar,
+			(SELECT uid AS id,login AS name FROM usuarios) AS bar,
 			usuarios u
 			WHERE 
 			m.uid_destino=bar.id AND 
@@ -227,76 +267,81 @@
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0021</code>
 		<sql>
 			SELECT
-			m.mid,m.fecha,m.hora,u.login as de ,bar.name as para,m.asunto,m.texto,CASE WHEN confirmado='t' THEN 'true' ELSE 'false' END
+			m.mid,m.fecha,m.hora,u.login AS de ,bar.name AS para,m.asunto,m.texto,CASE WHEN confirmado='t' THEN 'true' ELSE 'false' END
 			FROM
 			mensajes m,
-			(select uid as id,login as name from usuarios) as bar,
+			(SELECT uid AS id,login AS name FROM usuarios) AS bar,
 			usuarios u
 			WHERE 
 			m.uid_destino=bar.id AND 
 			uid_origen=u.uid AND
-			u.login ilike '%?%' AND 
-			bar.name ilike '%?%'AND
-			asunto ilike '%?%'
+			u.login ILIKE '%?%' AND 
+			bar.name ILIKE '%?%'AND
+			asunto ILIKE '%?%'
+			ORDER BY m.mid
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0022</code>
 		<sql>
-			SELECT u.login,u.nombres,pv.nombre as punto_colocacion,foo.valido AS confirmado FROM (SELECT
+			SELECT u.login,u.nombres,pv.nombre AS punto_colocacion,foo.valido AS confirmado FROM (SELECT
 			u.login,
 			u.nombres,
-			(cast(m.fecha as timestamp)+m.hora) as fecha_mensaje,
+			(CAST(m.fecha AS timestamp)+m.hora) AS fecha_mensaje,
 			m.fecha_confirmacion,
-			m.minutos as minutos_de_vida,
-			date_part('minute',(m.fecha_confirmacion - (cast(m.fecha as timestamp)+m.hora))) as diferencia ,
-			'NO' as valido
+			m.minutos AS minutos_de_vida,
+			date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) AS diferencia,
+			'NO' AS valido
 			FROM
 			mensajes m,
 			usuarios u 
 			WHERE 
-			date_part('minute',(m.fecha_confirmacion - (cast(m.fecha as timestamp)+m.hora))) > m.minutos and u.uid=m.uid_destino AND control=true
+			date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) > m.minutos and u.uid=m.uid_destino AND control=true
 			UNION
 			SELECT 
 			u.login,
 			u.nombres,
-			(cast(m.fecha as timestamp)+m.hora) as fecha_mensaje,
-			null as fecha_confirmacion,
-			m.minutos as minutos_de_vida,
-			null as diferencia,
-			'NO' as valido
+			(CAST(m.fecha AS timestamp)+m.hora) AS fecha_mensaje,
+			null AS fecha_confirmacion,
+			m.minutos AS minutos_de_vida,
+			null AS diferencia,
+			'NO' AS valido
 			FROM 
 			mensajes m, usuarios u
 			WHERE 
-			u.uid=m.uid_destino AND control=true and confirmado=false
+			u.uid=m.uid_destino AND control=true AND confirmado=false
 			UNION
 			SELECT
 			u.login,
 			u.nombres,
-			(cast(m.fecha as timestamp)+m.hora) as fecha_mensaje,
+			(CAST(m.fecha AS timestamp)+m.hora) AS fecha_mensaje,
 			m.fecha_confirmacion,
-			m.minutos as minutos_de_vida,
-			date_part('minute',(m.fecha_confirmacion - (cast(m.fecha as timestamp)+m.hora))) as diferencia ,
-			'SI' as valido
+			m.minutos AS minutos_de_vida,
+			date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) AS diferencia ,
+			'SI' AS valido
 			FROM
 			mensajes m,
 			usuarios u 
 			WHERE 
-			date_part('minute',(m.fecha_confirmacion - (cast(m.fecha as timestamp)+m.hora))) &lt;= m.minutos and u.uid=m.uid_destino AND control=true)
-				AS foo,usuarios u, puntosv pv, usuarios_pventa upv
-				WHERE
-				u.login=foo.login AND upv.uid=(SELECT uid FROM usuarios where login=foo.login) AND pv.codigo=upv.codigo_pventa AND foo.fecha_mensaje&gt;'?' AND foo.fecha_mensaje&lt;'?'  
-				ORDER BY valido,diferencia desc
+			date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) &lt;= m.minutos AND u.uid=m.uid_destino AND control=true)
+			AS foo,usuarios u, puntosv pv, usuarios_pventa upv
+			WHERE
+			u.login=foo.login AND upv.uid=(SELECT uid FROM usuarios WHERE login=foo.login) AND pv.codigo=upv.codigo_pventa AND foo.fecha_mensaje&gt;'?' AND foo.fecha_mensaje&lt;'?'  
+			ORDER BY valido,diferencia DESC
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0023</code>
-		<sql>SELECT count(*) FROM usuarios where login='?' AND clave='?'</sql>
+		<sql>SELECT COUNT(*) FROM usuarios WHERE login='?' AND clave='?'</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0024</code>
 		<sql>
 			SELECT uid FROM usuarios u WHERE login='?' UNION 
@@ -304,12 +349,13 @@
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0025</code>
 		<sql>
 			SELECT 
 				u.uid,login,nombres,correo,
 				admin,audit,u.gid,upv.valid_ip,
-				pv.nombre,pv.gid as gidpv,ip,g.nombre_grupo 
+				pv.nombre,pv.gid AS gidpv,ip,g.nombre_grupo 
 			FROM 
 				usuarios u ,puntosv pv,usuarios_pventa upv,grupos g 
 			WHERE 
@@ -321,9 +367,11 @@
 				usuarios u,grupos g 
 			WHERE 
 				login='?' AND (admin=true OR audit=true) AND g.gid=u.gid
+			ORDER BY login
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0026</code>
 		<sql>
 			SELECT 
@@ -333,9 +381,11 @@
 				usuarios u,grupos g 
 			WHERE 
 				login='?' AND g.gid=u.gid
+			ORDER BY login
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0027</code>
 		<sql>
 			SELECT 
@@ -345,15 +395,21 @@
 				usuarios u,grupos g 
 			WHERE 
 				g.gid=u.gid
+			ORDER BY login
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0028</code>
 		<sql>
-			SELECT DISTINCT g.gid,g.nombre_grupo FROM grupos g, usuarios u where u.gid=g.gid AND u.login ilike 'CV%';
+			SELECT DISTINCT g.gid,g.nombre_grupo 
+			FROM grupos g, usuarios u 
+			WHERE u.gid=g.gid AND u.login ILIKE 'CV%'
+			ORDER BY g.nombre_grupo
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>SEL0029</code>
 		<sql>
 			SELECT clave FROM usuarios u WHERE u.login='?'
@@ -361,6 +417,7 @@
 	</sentence>
 	<!--============================= Inserts ===============================-->
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>INS0001</code>
 		<sql>
 			INSERT INTO 
@@ -369,6 +426,7 @@
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>INS0002</code>
 		<sql>
 			INSERT INTO 
@@ -378,6 +436,7 @@
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>INS0003</code>
 		<sql>
 			INSERT INTO 
@@ -386,6 +445,7 @@
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>INS0004</code>
 		<sql>
 			INSERT INTO 
@@ -394,6 +454,7 @@
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>INS0005</code>
 		<sql>
 			INSERT INTO 
@@ -403,6 +464,7 @@
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>INS0006</code>
 		<sql>
 			INSERT INTO 
@@ -411,6 +473,7 @@
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>INS0007</code>
 		<sql>
 			INSERT INTO 
@@ -420,6 +483,7 @@
 	</sentence>
 	<!--====================== Delete======================================= -->
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>DEL0001</code>
 		<sql>
 			DELETE FROM 
@@ -429,18 +493,21 @@
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>DEL0002</code>
 		<sql>
 			DELETE FROM usuarios WHERE uid='?'
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>DEL0003</code>
 		<sql>
 			DELETE FROM grupos WHERE nombre_grupo='?'
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>DEL0004</code>
 		<sql>
 			DELETE FROM puntosv WHERE codigo='?'
@@ -448,20 +515,23 @@
 	</sentence>
 	<!-- ======================== Upate =====================================-->
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>UPD0001</code>
 		<sql>
 			UPDATE 
-			grupos set nombre_grupo='?',mostrable='?',zona='?'  
+			grupos SET nombre_grupo='?',mostrable='?',zona='?'  
 			WHERE nombre_grupo='?'
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>UPD0002</code>
 		<sql>
 			UPDATE usuarios SET clave='?' WHERE "login"='?'
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>UPD0003</code>
 		<sql>
 			UPDATE mensajes SET confirmado='?', fecha_confirmacion='?'
@@ -470,6 +540,7 @@
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>UPD0004</code>
 		<sql>
 			UPDATE usuarios SET 
@@ -478,6 +549,7 @@
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>UPD0005</code>
 		<sql>
 			UPDATE usuarios SET 
@@ -486,25 +558,28 @@
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>UPD0006</code>
 		<sql>
 			UPDATE usuarios_pventa SET codigo_pventa='?' 
-			WHERE codigo_pventa=(SELECT codigo FROM puntosv where nombre='?')
+			WHERE codigo_pventa=(SELECT codigo FROM puntosv WHERE nombre='?')
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>UPD0007</code>
 		<sql>
 			UPDATE puntosv SET codigo='?',nombre='?',ip='?',gid='?' WHERE nombre='?'
 		</sql>
 	</sentence>
 	<sentence>
+	<!--Descripcion: ... -->
 		<code>UPD0008</code>
 		<sql>
 			UPDATE
-				usuarios set gid=foo.gid
+				usuarios SET gid=foo.gid
 			FROM 
-				(SELECT pv.gid,up.uid FROM puntosv pv,usuarios_pventa up WHERE pv.codigo=up.codigo_pventa)as foo 
+				(SELECT pv.gid,up.uid FROM puntosv pv,usuarios_pventa up WHERE pv.codigo=up.codigo_pventa) AS foo 
 			WHERE foo.uid=usuarios.uid
 		</sql>
 	</sentence>

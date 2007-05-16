@@ -28,7 +28,7 @@ import org.jdom.Element;
  */
 public class ValidQuery {
     
-    private String [] args;
+    private String [] argsArray;
     private String id;
     private Element data;
     private String query;
@@ -40,26 +40,23 @@ public class ValidQuery {
 
     public boolean changeStructParam(){
         
-        try {
+        try {     
+            Element element = data.getChild("params");
+            id = data.getChild("id").getValue();   
+            int countParams = element.getContentSize();
+            argsArray = new String[countParams];
             
-            Element ref = data.getChild("params");
-            id = data.getChild("id").getValue();
-            
-            int countParams = ref.getContentSize();
-            args = new String[countParams];
-            
-            List lista = ref.getChildren();
+            List lista = element.getChildren();
             Iterator iterador = lista.iterator();
             
             for (int i =0 ;iterador.hasNext(); i++){
-                ref = (Element)iterador.next();
-                if(ref.getName().equals("arg")) {
-                    args[i] = ref.getValue();
+                element = (Element)iterador.next();
+                if(element.getName().equals("arg")) {
+                    argsArray[i] = element.getValue();
                 }
                 else {
                     return false;
                 }
-                
             }
             return true;
             
@@ -67,11 +64,10 @@ public class ValidQuery {
         catch(NullPointerException NPEe ) {
             return false;
         }
-        
     }
     
     public String [] getArgs(){
-        return args;
+        return argsArray;
     }
     
     public String getId() {

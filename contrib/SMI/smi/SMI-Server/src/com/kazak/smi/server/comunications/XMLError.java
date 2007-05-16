@@ -4,7 +4,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 
 /**
- * ErrorXML.java Creado el 14-jul-2004
+ * XMLError.java Creado el 14-jul-2004
  * 
  * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
@@ -35,30 +35,28 @@ public class XMLError extends Document {
 	/**
      * Este metodo genera el documento listo para ser enviado al
      * cliente, con su estructura XML correspondiente.
-     * @param Codigo Codigo del Error
+     * @param code Codigo del Error
      * @param empresa Hace referencia a la base de datos de la empresa que se esta manejando
-     * @param Mensaje Mensaje de error
+     * @param message Mensaje de error
      * @return Retorna el Doument ErrorXML 
      */
-	public Document returnError(int Codigo, String Mensaje) {
-
-		return returnError(Codigo,null,Mensaje);
+	public Document returnErrorMessage(int code, String message) {
+		return returnErrorMessage(code,null,message);
 	}
 
-	public Document returnError(int Codigo,String id_return,String Mensaje) {
+	public Document returnErrorMessage(int code,String returnID,String message) {
 		this.setRootElement(new Element("ERROR"));
-		Element	errorCode 	= new Element("errorCode");
-		Element idreturn = new Element("id");
-		Element errorMsg 	= new Element("errorMsg");
+		Element	errorCode = new Element("errorCode");
+		Element id        = new Element("id");
+		Element errorMsg  = new Element("errorMsg");
 
-		errorCode.setText(String.valueOf(Codigo));
-		errorMsg.setText(Mensaje);
-		
+		errorCode.setText(String.valueOf(code));
+		errorMsg.setText(message);
 		this.getRootElement().addContent(errorCode);
 		
-		if (id_return!=null) {
-		    idreturn.setText(id_return);
-			this.getRootElement().addContent(idreturn);
+		if (returnID!=null) {
+		    id.setText(returnID);
+			this.getRootElement().addContent(id);
 		}
 		
 		this.getRootElement().addContent(errorMsg);

@@ -1,6 +1,5 @@
 package com.kazak.smi.server.misc.settings;
 
-
 /**
  * ConfigFileNotLoadException.java Creado el 13-jul-2004
  * 
@@ -17,11 +16,13 @@ package com.kazak.smi.server.misc.settings;
  * o por un PROPOSITO PARTICULAR. Consulte la Licencia Publica General
  * GNU GPL para mas detalles.
  * <br>
- * Informacion de la clase
+ * Excepcion ejecutada cuando el archivo de configuracion del servidor
+ * no puede ser cargado.
  * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
+
 public class ConfigFileNotLoadException extends Exception {
 
 	/**

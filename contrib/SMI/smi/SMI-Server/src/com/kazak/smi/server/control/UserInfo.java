@@ -1,7 +1,8 @@
 package com.kazak.smi.server.control;
 
+// TODO: Preguntar que es esto? :S
 
-public class InfoUser extends Thread {
+public class UserInfo extends Thread {
 	
     /*private boolean loged = false;
     private String login;

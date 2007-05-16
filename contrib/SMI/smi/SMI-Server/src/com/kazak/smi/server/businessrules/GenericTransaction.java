@@ -32,7 +32,7 @@ public class GenericTransaction {
 				queryRunner = new QueryRunner(sqlCode,sqlArgs);
 				queryRunner.setAutoCommit(false);
 				queries.add(queryRunner);
-				queryRunner.runSQL();
+				queryRunner.executeSQL();
 				passed ++;
 			} catch (SQLException e) {
 				e.printStackTrace();

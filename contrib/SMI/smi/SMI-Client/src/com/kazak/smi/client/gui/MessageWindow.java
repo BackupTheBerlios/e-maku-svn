@@ -16,48 +16,46 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-//import javax.swing.UIManager;
 
-import org.jdom.Element;
+//import javax.swing.UIManager;
+//import org.jdom.Element;
 
 import com.kazak.smi.client.network.MessageSender;
 import com.kazak.smi.lib.misc.FixedSizePlainDocument;
 
 /**
- * @author     cristian
+ * @author     Cristian Cepeda
  */
 public class MessageWindow implements ActionListener {
 	
 	private JFrame frame;
 	private MessageArea messageArea = new MessageArea(true);
-	private GroupSelector groupSelector;
-	private JButton JBSend;
-	private JButton JBCanel;
-	private JTextField JTFSubject;
-	private GUIFactory fact;
+	private GroupsCombo groupsCombo;
+	private JButton sendButton;
+	private JButton cancelButton;
+	private JTextField subjectField;
+	private GUIFactory factory;
 	
 	public MessageWindow() {
-		//System.out.println("Nuevo Envio de mesaje");
-		fact = new GUIFactory();
-		JTFSubject = new JTextField(25);
-		JTFSubject.setDocument(new FixedSizePlainDocument(256));
+		factory = new GUIFactory();
+		subjectField = new JTextField(25);
+		subjectField.setDocument(new FixedSizePlainDocument(256));
 		Color color = Color.BLACK;
-		JTFSubject.setEnabled(true);
-		JTFSubject.setDisabledTextColor(color);
-		initComps();
+		subjectField.setEnabled(true);
+		subjectField.setDisabledTextColor(color);
+		initComponents();
 		frame.setVisible(true);
 	}
 	
-	public void forReply(String dest, String subject) {
-		//System.out.println("Reply Destino: " + dest);
-		groupSelector.setSelectedItem(dest);
-		JTFSubject.setText("[RE:"+subject+"]");
-		JTFSubject.setEditable(false);
-		JTFSubject.setCaretPosition(0);
+	public void forReply(String destination, String subject) {
+		groupsCombo.setSelectedItem(destination);
+		subjectField.setText("[RE:"+subject+"]");
+		subjectField.setEditable(false);
+		subjectField.setCaretPosition(0);
 	}
 	
-	private void initComps() {
-		frame = new JFrame("Envio de mensajes");
+	private void initComponents() {
+		frame = new JFrame("Envío de mensajes");
 		frame.setLayout(new BorderLayout());
 		frame.setSize(400,300);
 		frame.setLocationByPlatform(true);
@@ -71,55 +69,58 @@ public class MessageWindow implements ActionListener {
 			}
 		});
 		
-		groupSelector = new GroupSelector();
-		JBSend = fact.createButton("Enviar",'E',"send","send.png",SwingConstants.LEFT);
-		JBCanel = fact.createButton("Cancelar", 'C', "cancel","close.png",SwingConstants.LEFT);
-		JBSend.addActionListener(this);
-		JBCanel.addActionListener(this);
+		groupsCombo = new GroupsCombo();
+		sendButton = factory.createButton("Enviar",'E',"send","send.png",SwingConstants.LEFT);
+		cancelButton = factory.createButton("Cancelar", 'C', "cancel","close.png",SwingConstants.LEFT);
+		sendButton.addActionListener(this);
+		cancelButton.addActionListener(this);
 		
-		JPanel jpnorth = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		JPanel jpsouth = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		JPanel jpaux = new JPanel(new BorderLayout());
-		JPanel jpfields = new JPanel(new GridLayout(2,1));
-		JPanel jplabels = new JPanel(new GridLayout(2,1));
+		JPanel northPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		JPanel panelAux = new JPanel(new BorderLayout());
+		JPanel fieldsPanel = new JPanel(new GridLayout(2,1));
+		JPanel labelsPanel = new JPanel(new GridLayout(2,1));
 	
-		jplabels.add(new JLabel("Destino:  "));
-		jplabels.add(new JLabel("Asunto:   "));
-		jpaux.add(jplabels,BorderLayout.WEST);
+		labelsPanel.add(new JLabel("Destino:  "));
+		labelsPanel.add(new JLabel("Asunto:   "));
+		panelAux.add(labelsPanel,BorderLayout.WEST);
 	
-		jpfields.add(groupSelector);
-		jpfields.add(JTFSubject);
-		jpaux.add(jpfields,BorderLayout.CENTER);
-		jpnorth.add(jpaux);
+		fieldsPanel.add(groupsCombo);
+		fieldsPanel.add(subjectField);
+		panelAux.add(fieldsPanel,BorderLayout.CENTER);
+		northPanel.add(panelAux);
 
-		jpsouth.add(JBSend);
-		jpsouth.add(JBCanel);
+		southPanel.add(sendButton);
+		southPanel.add(cancelButton);
 		
-		frame.add(jpnorth,BorderLayout.NORTH);
+		frame.add(northPanel,BorderLayout.NORTH);
 		frame.add(messageArea,BorderLayout.CENTER);
-		frame.add(jpsouth,BorderLayout.SOUTH);
+		frame.add(southPanel,BorderLayout.SOUTH);
 	}
 
 	public void setVisible(boolean b) {
 		frame.setVisible(b);
 	}
 	
-	public JFrame getRefWindow() {
+	public JFrame getWindow() {
 		return frame;
 	}
-
+	
+	// TODO: Preguntar que hace este metodo?
+/*
 	public Element getPackage() {
 		return null;
 	}
+*/	
 	
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		
 		if ("send".equals(command)) {
-			JButton b = (JButton) e.getSource();
-			b.setEnabled(false);
-			String to = (String) groupSelector.getSelectedItem();
-			String subject = JTFSubject.getText();
+			JButton button = (JButton) e.getSource();
+			button.setEnabled(false);
+			String to      = (String) groupsCombo.getSelectedItem();
+			String subject = subjectField.getText();
 			String text    = messageArea.getText();
 			if (!"".equals(subject) && !"".equals(text)) {
 				new MessageSender(to,subject,text);
@@ -128,16 +129,16 @@ public class MessageWindow implements ActionListener {
 				JOptionPane.showMessageDialog(
 						frame,
 						"Información incompleta",
-						"Informacion",
+						"Información",
 						JOptionPane.INFORMATION_MESSAGE);
 				if ("".equals(subject) && "".equals(text) ||
 					"".equals(subject) && !"".equals(text)) {
-					JTFSubject.requestFocus();
+					subjectField.requestFocus();
 				}
 				else if (!"".equals(subject) && "".equals(text)) {
 					messageArea.requestFocus();
 				}
-				b.setEnabled(true);
+				button.setEnabled(true);
 			}
 		}
 		else if ("cancel".equals(command)) {

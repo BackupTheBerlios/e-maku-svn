@@ -14,7 +14,7 @@ import javax.swing.JTable;
 import com.kazak.smi.client.control.Cache;
 
 /**
- * @author     cristian
+ * @author     Cristian Cepeda
  */
 public class MessageViewer implements ActionListener {
 	
@@ -22,11 +22,11 @@ public class MessageViewer implements ActionListener {
 	private HistoryMessagePanel historyMessagePanel;
 	private HistoryDataPanel historyDataPanel;
 	private NavigationButtonsPanel buttons;
-	private static boolean displayed = false;
+	private static boolean isDisplayed = false;
 	
 	public static void show() {
-		if (!displayed) {
-			MessageViewer.displayed = true;
+		if (!isDisplayed) {
+			MessageViewer.isDisplayed = true;
 			new MessageViewer();
 		}
 		else {
@@ -46,7 +46,7 @@ public class MessageViewer implements ActionListener {
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				super.windowClosing(e);
-				MessageViewer.displayed = false;
+				MessageViewer.isDisplayed = false;
 			}
 			public void windowIconified(WindowEvent e) {
 				frame.setState(JFrame.NORMAL);
@@ -61,23 +61,23 @@ public class MessageViewer implements ActionListener {
 		frame.add(historyMessagePanel,BorderLayout.CENTER);
 		frame.add(buttons,BorderLayout.SOUTH);
 		
-		Dimension dimesion = historyDataPanel.getSize();
-		dimesion.setSize(dimesion.getWidth(),180);
-		historyDataPanel.setPreferredSize(dimesion);
+		Dimension dimension = historyDataPanel.getSize();
+		dimension.setSize(dimension.getWidth(),180);
+		historyDataPanel.setPreferredSize(dimension);
 		frame.setVisible(true);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if ("next".equals(command)) {
-			JTable table = historyDataPanel.getJTData();
+			JTable table = historyDataPanel.getTable();
 			int rowIndex = table.getSelectedRow();
 			if (rowIndex+1 < table.getRowCount()) {
 				table.changeSelection((rowIndex+1),0,false,false);
 			}
 		}
 		else if ("previus".equals(command)) {
-			JTable table = historyDataPanel.getJTData();
+			JTable table = historyDataPanel.getTable();
 			int rowIndex = table.getSelectedRow();
 			if (rowIndex >= 0) {
 				table.changeSelection((rowIndex-1),0,false,false);
@@ -92,18 +92,18 @@ public class MessageViewer implements ActionListener {
 					MessageWindow msgWindow = new MessageWindow();
 					msgWindow.forReply(from,subject);
 			        msgWindow.setVisible(true);
-			        MessageViewer.displayed = false;
+			        MessageViewer.isDisplayed = false;
 			        frame.dispose();
 				}
 				else {
 					JOptionPane.showMessageDialog(
 							frame,
-							"Debe seleccionar un mensaje");
+							"Por favor, seleccione un mensaje.");
 				}
 			}
 		}
 		else if ("close".equals(command)) {
-			MessageViewer.displayed = false;
+			MessageViewer.isDisplayed = false;
 			frame.dispose();
 		}
 	}

@@ -19,12 +19,12 @@
     </sentence>    
     <sentence>
         <key>CONFIGFILE</key>
-        <es_CO>Cargando archivo de configuración desde</es_CO>
+        <es_CO>Cargando archivo de configuracion desde</es_CO>
         <en_US>Loading settings from</en_US>
     </sentence>
     <sentence>
         <key>NODEBUG</key>
-        <es_CO>No hay mensaje de depuración</es_CO>
+        <es_CO>No hay mensaje de depuracion</es_CO>
         <en_US>No Debug Message</en_US>
     </sentence>    
     <sentence>
@@ -34,7 +34,7 @@
     </sentence>    
     <sentence>
         <key>LOADING_CF</key>
-        <es_CO>INFO: Cargando archivo de configuración...</es_CO>
+        <es_CO>INFO: Cargando archivo de configuracion...</es_CO>
         <en_US>INFO: Loading config file...</en_US>
     </sentence>
     <sentence>
@@ -69,12 +69,12 @@
     </sentence>
     <sentence>
         <key errorCode="003">ERR_CONFIG</key>
-        <es_CO>ERROR: No se pudo cargar el archivo de configuración</es_CO>
+        <es_CO>ERROR: No se pudo cargar el archivo de configuracion</es_CO>
         <en_US>ERROR: Can not load the settings file</en_US>
     </sentence>
     <sentence>
         <key errorCode="004">ERR_PARAMETERS_DOCUMENT</key>
-        <es_CO>ERROR: Parámetros incorrectos en el archivo de configuración</es_CO>
+        <es_CO>ERROR: Parametros incorrectos en el archivo de configuracion</es_CO>
         <en_US>ERROR: Incorrect parameters in the settings file</en_US>
     </sentence>
     <sentence>
@@ -83,39 +83,14 @@
         <en_US>Can not load SQL sentences in cache</en_US>
     </sentence>
     <sentence>
-        <key errorCode="101">ERR_HAVE_CHILDREN</key>
-        <es_CO>La cuenta no debe tener subcuentas para ser eliminada</es_CO>
-        <en_US>The account can not have sub-accounts if you want to delete it</en_US>
-    </sentence>
-    <sentence>
-        <key errorCode="102">ERR_HAVE_CHILDREN_EDIT</key>
-        <es_CO>Si desea convertir una cuenta en subcuenta, esta no puede tener subcuentas previas asociadas</es_CO>
-        <en_US>If you wish to convert an account in sub-account, this can not have sub-accounts associated previously</en_US>
-    </sentence>
-    <sentence>
-        <key errorCode="103">ERR_HAVE_DATA</key>
-        <es_CO>No se pudo eliminar la cuenta, posiblemente contiene registros contables</es_CO>
-        <en_US>Account can not be deleted, possibly it still have bookkeeping records</en_US>
-    </sentence>
-    <sentence>
         <key errorCode="104">ERR_LOADING_LG</key>
-        <es_CO>No se pudieron cargar las sentencias de lógica de negocios en cache</es_CO>
+        <es_CO>No se pudieron cargar las sentencias de logica de negocios en cache</es_CO>
         <en_US>Can not load bussines rules in cache</en_US>
     </sentence>
     <sentence>
         <key errorCode="105">ERR_MODULE_LG</key>
         <es_CO>No se pudo cargar el módulo de procesamiento de la transacción</es_CO>
         <en_US>Can not load the procesing module for the transaction</en_US>
-    </sentence>
-    <sentence>
-        <key errorCode="106">ERR_NOT_DRIVER_LG</key>
-        <es_CO>No se ha definido módulo para procesar la transacción</es_CO>
-        <en_US>There is not a defined module for procesing this transaction</en_US>
-    </sentence>
-    <sentence>
-        <key errorCode="107">ERR_INVALID_ARGS</key>
-        <es_CO>Argumentos inválidos para procesar la transacción</es_CO>
-        <en_US>Invalid arguments for processing the transaction</en_US>
     </sentence>
     <sentence>
         <key errorCode="108">ERR_FOUND_DRIVER_LG</key>
@@ -133,11 +108,6 @@
         <en_US>ERROR: Invalid arguments for the sentence</en_US>
     </sentence>
     <sentence>
-        <key errorCode="111">ERR_CONSECUTIVE</key>
-        <es_CO>Un problema ocurrió mientras se generaba el número consecutivo</es_CO>
-        <en_US>Can not create the consecutive number</en_US>
-    </sentence>
-    <sentence>
         <key errorCode="112">ERR_POOL</key>
         <es_CO>No pudo cargar el pool de conexiones en la base de datos</es_CO>
         <en_US>Can not load the connection pool in the database</en_US>
@@ -153,21 +123,6 @@
         <en_US>Can not create the statement</en_US>
     </sentence>
     <sentence>
-        <key errorCode="115">ERR_DELETE_DOCUMENT_NOT_FOUND</key>
-        <es_CO>El documento a borrar no existe</es_CO>
-        <en_US>Document not found, can not be deleted</en_US>
-    </sentence>
-    <sentence>
-        <key errorCode="116">ERR_ANNUL_DOCUMENT_NOT_FOUND</key>
-        <es_CO>El documento a anular no existe</es_CO>
-        <en_US>Document not found, can not be annulled</en_US>
-    </sentence>
-    <sentence>
-        <key errorCode="116">ERR_ANNUL_RF_DOCUMENT_NOT_FOUND</key>
-        <es_CO>El documento referencia al documento a anular no existe</es_CO>
-        <en_US>Document reference not found, can not be annulled</en_US>
-    </sentence>
-    <sentence>
         <key errorCode="117">ERR_RS</key>
         <es_CO>Inconsistencia en el resultado de la consulta</es_CO>
         <en_US>Invalid resultset</en_US>
@@ -176,11 +131,6 @@
         <key>LOADING_CACHE</key>
         <es_CO>INFO: Cargando cache de enlace</es_CO>
         <en_US>INFO: Loading links cache</en_US>
-    </sentence>
-    <sentence>
-        <key errorCode="118">ERROR_LOADING_SL</key>
-        <es_CO>El servidor no pudo cargar caches de las bases de datos</es_CO>
-        <en_US>Can not load caches from databases</en_US>
     </sentence>
     <sentence>
         <key>EXECUTE_IUD_OK</key>
@@ -229,32 +179,32 @@
     </sentence>
     <sentence>
         <key errorCode="122">ERR_CNX</key>
-        <es_CO>Autenticación fallída</es_CO>
+        <es_CO>Autenticación fallida</es_CO>
         <en_US>Authentication failed</en_US>
     </sentence>
     <sentence>
         <key errorCode="123">ERR_FORMAT_PROTOCOL</key>
-        <es_CO>Formato de paquete inválido</es_CO>
+        <es_CO>Formato de paquete invalido</es_CO>
         <en_US>Invalid package format</en_US>
     </sentence>
     <sentence>
         <key errorCode="124">SQL_ACCESS_DENIED</key>
-        <es_CO>Permiso denegado para ejecutar la instrucción SQL</es_CO>
+        <es_CO>Permiso denegado para ejecutar la instruccion SQL</es_CO>
         <en_US>Permission denied to execute the SQL instruction</en_US>
     </sentence>
     <sentence>
         <key errorCode="125">TRANSACTION_ACCESS_DENIED</key>
-        <es_CO>Permiso denegado para ejecutar la transacción</es_CO>
-        <en_US>Permission denied to execute the transaction</en_US>
+        <es_CO>Permiso denegado para ejecutar la transaccion</es_CO>
+        <en_US>Permission dennied to execute the transaction</en_US>
     </sentence>
     <sentence>
         <key>TRANSACTION_OK</key>
-        <es_CO>INFO: Transacción exitosa</es_CO>
+        <es_CO>INFO: Transaccion exitosa</es_CO>
         <en_US>INFO: Transaction successful</en_US>
     </sentence>
     <sentence>
         <key errorCode="126">ERR_ARGS</key>
-        <es_CO>Argumentos del componente inválidos</es_CO>
+        <es_CO>Argumentos del componente invalidos</es_CO>
         <en_US>Invalid arguments in component</en_US>
     </sentence>
     <sentence>
@@ -266,11 +216,6 @@
         <key errorCode="127">ERR_PACKAGE_NOT_FOUND</key>
         <es_CO>Etiqueta XML no encontrada</es_CO>
         <en_US>XML tag not found</en_US>
-    </sentence>
-    <sentence>
-        <key errorCode="128">ERR_DONT_HAVE_BALANCE_EXCEPTION</key>
-        <es_CO>No hay partida doble al finalizar los asientos contables</es_CO>
-        <en_US>There is not balance in accounts</en_US>
     </sentence>
     <sentence>
         <key errorCode="129">ERR_DONT_HAVE_KEY_EXCEPTION</key>
@@ -304,7 +249,7 @@
     </sentence>
     <sentence>
         <key errorCode="134">NO_SUCH_METHOD</key>
-        <es_CO>El siguiente método no fue encontrado: </es_CO>
+        <es_CO>El siguiente metodo no fue encontrado: </es_CO>
         <en_US>Can not found the method called </en_US>
     </sentence>
 </language>

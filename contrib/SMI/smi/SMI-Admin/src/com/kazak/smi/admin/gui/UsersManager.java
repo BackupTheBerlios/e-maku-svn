@@ -43,22 +43,22 @@ import com.kazak.smi.lib.misc.MD5Tool;
 public class UsersManager extends JFrame implements ActionListener, ItemListener {
 
 	private static final long serialVersionUID = 3920757441925057976L;
-	private AutoCompleteComboBox FieldLogin;
-	private JPasswordField FieldPassword;
-	private JTextField FieldNames;
-	private JTextField FieldMail;
-	private JCheckBox JCheckAdm;
-	private JCheckBox JCheckAudit;
-	private JPanel JPCenter;
-	private JPanel JPSouth;
-	private JButton JBAccept;
-	private JButton JBCancel;
-	private JButton JBClean;
-	private ArrayList<Component> listComps = new ArrayList<Component>();
+	private AutoCompleteComboBox loginField;
+	private JPasswordField passwdField;
+	private JTextField nameField;
+	private JTextField mailField;
+	private JCheckBox adminCheck;
+	private JCheckBox auditCheck;
+	private JPanel centerPanel;
+	private JPanel southPanel;
+	private JButton acceptButton;
+	private JButton cancelButton;
+	private JButton cleanButton;
+	private ArrayList<Component> componentsList = new ArrayList<Component>();
 	private UserTable table;
-	private JComboBox JCBGroups;
-	private JButton JBSearch;
-	private JPanel jpsearch;
+	private JComboBox groupsCombo;
+	private JButton searchButton;
+	private JPanel searchPanel;
 	private String oldLogin;
 	private enum ACTIONS  {ADD,EDIT,SEARCH,DELETE};
 	private ACTIONS ACTION;
@@ -77,14 +77,15 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 		this.setLayout(new BorderLayout());
 		this.setSize(350,370);
 		this.setLocationByPlatform(true);
+		this.setAlwaysOnTop(true);
 		this.setLocationRelativeTo(MainWindow.getFrame());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setResizable(false);
-		initComps();
-		addComps();
-		JBSearch.addActionListener(new ActionListener() {
+		initComponents();
+		addComponents();
+		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new SearcherCode(FieldLogin.getText());
+				new CodeSearchEngine(loginField.getText());
 			}
 		});
 	}
@@ -93,143 +94,142 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 		this.setTitle("Nuevo Usuario");
 		this.setVisible(true);
 		this.ACTION = ACTIONS.ADD;
-		JBAccept.setActionCommand("accept");
-		JBCancel.setActionCommand("cancel");
+		acceptButton.setActionCommand("accept");
+		cancelButton.setActionCommand("cancel");
 	}
 	
 	public void edit() {
 		this.setTitle("Editar Usuario");
 		for (int i=1 ; i< labels.length ; i++) {
-			Component comp = listComps.get(i);
-			comp.setEnabled(false);
-			if (comp instanceof JTextField) {
-				((JTextField)comp).setDisabledTextColor(Color.BLACK);
+			Component component = componentsList.get(i);
+			component.setEnabled(false);
+			if (component instanceof JTextField) {
+				((JTextField)component).setDisabledTextColor(Color.BLACK);
 			}
 		}
 		table.disableButtons();
 		table.setEnabled(false);
 		UIManager.put("ComboBox.disabledForeground",Color.BLACK);
-		JBAccept.setActionCommand("save");
-		JBCancel.setActionCommand("cancel");
-		JBAccept.setEnabled(false);
+		acceptButton.setActionCommand("save");
+		cancelButton.setActionCommand("cancel");
+		acceptButton.setEnabled(false);
 		this.ACTION = ACTIONS.EDIT;
-		this.setVisible(true);
 	}
 		
 	public void delete() {
 		this.setTitle("Borrar Usuario");
 		for (int i=1 ; i< labels.length ; i++) {
-			Component comp = listComps.get(i);
-			comp.setEnabled(false);
-			if (comp instanceof JTextField) {
-				((JTextField)comp).setDisabledTextColor(Color.BLACK);
+			Component component = componentsList.get(i);
+			component.setEnabled(false);
+			if (component instanceof JTextField) {
+				((JTextField)component).setDisabledTextColor(Color.BLACK);
 			}
 		}
 		table.disableButtons();
 		table.setEnabled(false);
 		UIManager.put("ComboBox.disabledForeground",Color.BLACK);
-		JBAccept.setActionCommand("remove");
-		JBCancel.setActionCommand("cancel");
-		JBAccept.setEnabled(false);
+		acceptButton.setActionCommand("remove");
+		cancelButton.setActionCommand("cancel");
+		acceptButton.setEnabled(false);
 		this.ACTION = ACTIONS.DELETE;
-		this.setVisible(true);
 	}
 	
 	public void search() {
 		this.setTitle("Buscar Usuario");
 		for (int i=1 ; i< labels.length ; i++) {
-			Component comp = listComps.get(i);
-			comp.setEnabled(false);
-			if (comp instanceof JTextField) {
-				((JTextField)comp).setDisabledTextColor(Color.BLACK);
+			Component component = componentsList.get(i);
+			component.setEnabled(false);
+			if (component instanceof JTextField) {
+				((JTextField)component).setDisabledTextColor(Color.BLACK);
 			}
 		}
 		table.disableButtons();
 		table.setEnabled(false);
 		UIManager.put("ComboBox.disabledForeground",Color.BLACK);
 		
-		
-		JBAccept.setEnabled(false);
-		JBCancel.setActionCommand("cancel");
-		this.setVisible(true);
+		acceptButton.setEnabled(false);
+		cancelButton.setActionCommand("cancel");
+		this.ACTION = ACTIONS.SEARCH;
 	}
 	
-	private void initComps() {
+	private void initComponents() {
 		
-		listComps.add(FieldLogin       = new AutoCompleteComboBox(Cache.getUsersList(),true,30));
-		listComps.add(FieldPassword    = new JPasswordField());
-		listComps.add(FieldNames       = new JTextField());
-		listComps.add(FieldMail        = new JTextField());
-		listComps.add(JCheckAdm        = new JCheckBox());
-		listComps.add(JCheckAudit      = new JCheckBox());
-		listComps.add(JCBGroups        = new JComboBox(Cache.getGroupsList()));
+		componentsList.add(loginField  = new AutoCompleteComboBox(Cache.getUsersList(),true,30));
+		componentsList.add(passwdField = new JPasswordField());
+		componentsList.add(nameField   = new JTextField());
+		componentsList.add(mailField   = new JTextField());
+		componentsList.add(adminCheck  = new JCheckBox());
+		componentsList.add(auditCheck  = new JCheckBox());
+		componentsList.add(groupsCombo = new JComboBox(Cache.getGroupsList()));
 		
-		FieldLogin.addItemListener(this);
-		FieldPassword.setDocument(new FixedSizePlainDocument(10));
-		FieldNames.setDocument(new FixedSizePlainDocument(100));
-		FieldMail.setDocument(new FixedSizePlainDocument(200));
+		loginField.addItemListener(this);
+		passwdField.setDocument(new FixedSizePlainDocument(10));
+		nameField.setDocument(new FixedSizePlainDocument(100));
+		mailField.setDocument(new FixedSizePlainDocument(200));
 		
 		table = new UserTable(this);
-		JBAccept = new JButton("Aceptar");
-		JBCancel = new JButton("Cancelar");
+		acceptButton = new JButton("Aceptar");
+		cancelButton = new JButton("Cancelar");
 		GUIFactory gui = new GUIFactory();
-		JBSearch = gui.createButton("search.png");
-		jpsearch = new JPanel();
-		jpsearch.setLayout(new BoxLayout(jpsearch,BoxLayout.Y_AXIS));
-		jpsearch.add(JBSearch);
+		searchButton = gui.createButton("search.png");
+		searchPanel = new JPanel();
+		searchPanel.setLayout(new BoxLayout(searchPanel,BoxLayout.Y_AXIS));
+		searchPanel.add(searchButton);
 		
-		JBAccept.addActionListener(this);
-		JBCancel.addActionListener(this);
+		acceptButton.addActionListener(this);
+		cancelButton.addActionListener(this);
 		
-		JCheckAdm.addItemListener(new ItemListener() {		
+		adminCheck.addItemListener(new ItemListener() {		
 			public void itemStateChanged(ItemEvent e) {
-				if (JCheckAdm.isSelected()){
-					JCheckAudit.setSelected(false);
+				if (adminCheck.isSelected()){
+					auditCheck.setSelected(false);
 				}
 			}
 		});
 		
-		JCheckAudit.addItemListener(new ItemListener() {		
+		auditCheck.addItemListener(new ItemListener() {		
 			public void itemStateChanged(ItemEvent e) {
-				if (JCheckAudit.isSelected()){
-					JCheckAdm.setSelected(false);
+				if (auditCheck.isSelected()){
+					adminCheck.setSelected(false);
 				}
 			}
 		});
 		
-		JPCenter = new JPanel(new BorderLayout());
-		JPSouth  = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		centerPanel = new JPanel(new BorderLayout());
+		southPanel  = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	}
 	
-	private void addComps() {
-		JPanel jplabels = new JPanel(new GridLayout(labels.length,0));
-		JPanel jpfields = new JPanel(new GridLayout(labels.length,0));
+	private void addComponents() {
+		JPanel labelsPanel = new JPanel(new GridLayout(labels.length,0));
+		JPanel fieldsPanel = new JPanel(new GridLayout(labels.length,0));
 		
 		for (int i=0 ; i< labels.length ; i++) {
-			jplabels.add(new JLabel(labels[i]));
-			jpfields.add(listComps.get(i));
+			labelsPanel.add(new JLabel(labels[i]));
+			fieldsPanel.add(componentsList.get(i));
 		}
 		
-		JPCenter.add(jplabels,BorderLayout.WEST);
-		JPCenter.add(jpfields,BorderLayout.CENTER);
-		JPanel center = new JPanel(new BorderLayout());
+		centerPanel.add(labelsPanel,BorderLayout.WEST);
+		centerPanel.add(fieldsPanel,BorderLayout.CENTER);
 
-		center.add(JPCenter,BorderLayout.NORTH);
+		JPanel center = new JPanel(new BorderLayout());
+		center.add(centerPanel,BorderLayout.NORTH);
 		center.add(table.getPanel(),BorderLayout.CENTER);
 		
-		JPSouth.add(JBAccept);
-		JPSouth.add(JBCancel);
+		southPanel.add(acceptButton);
+		southPanel.add(cancelButton);
 		
-		JBClean = new JButton("Limpiar");
-		JBClean.setActionCommand("clean");
-		JBClean.addActionListener(this);
-		JPSouth.add(JBClean);
+		cleanButton = new JButton("Limpiar");
+		cleanButton.setActionCommand("clean");
+		cleanButton.addActionListener(this);
+		southPanel.add(cleanButton);
 		
 		this.add(center,BorderLayout.CENTER);
-		this.add(JPSouth,BorderLayout.SOUTH);
+		this.add(southPanel,BorderLayout.SOUTH);
 		this.add(new JPanel(),BorderLayout.NORTH);
 		this.add(new JPanel(),BorderLayout.WEST);
-		this.add(jpsearch,BorderLayout.EAST);
+		this.add(searchPanel,BorderLayout.EAST);
+		
+		this.setVisible(true);
 	}
 	
 	
@@ -237,11 +237,11 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		Document document = null;
-		TreeManagerGroups.currTpath = new TreePath(
+		TreeManagerGroups.currentTreePath = new TreePath(
 				new Object[] {
 							new SortableTreeNode(MainWindow.getAppOwner()),
-							new SortableTreeNode(getJCBGroups().getSelectedItem()),
-							new SortableTreeNode(FieldLogin.getText())});
+							new SortableTreeNode(getGroupsCombo().getSelectedItem()),
+							new SortableTreeNode(loginField.getText())});
 		if (command.equals("cancel")) {
 			this.dispose();
 		}
@@ -249,99 +249,109 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 			this.clean();
 		}
 		else if (command.equals("accept")) {
-			String login = FieldLogin.getText();
+			String login = loginField.getText();
 			if (!"".equals(login)) {
 				User user = Cache.getUser(login);
 				if (user==null) {
-					String str = JCBGroups.getSelectedItem().toString();
-					Group group = Cache.getGroup(str);
-					if (group.getZone() && table.getRowCount() <= 0) {
+					String names = nameField.getText();
+					if(names.length() == 0) {
 						JOptionPane.showMessageDialog(
 								this,
-								"<html>" +
-								"<h3>" +
+								"<html><center>" +
+								"Debe asociar un nombre al usuario." +
+								"</center></html>");
+						nameField.requestFocus();
+						return;						
+					}
+					String string = groupsCombo.getSelectedItem().toString();
+					Group group = Cache.getGroup(string);
+					if (group.isZone() && table.getRowCount() <= 0) {
+						JOptionPane.showMessageDialog(
+								this,
+								"<html><center>" +
 								"Ha seleccionado un grupo que es zona.<br>" +
-								"Debe adicionar un punto de colocación." +
-								"<html>");
+								"Por favor, adicione un punto de colocación." +
+								"</center></html>");
 						return;
 					}
-					document = getDocumentForAdd();
+					document = getDocumentToAdd();
 					this.dispose();
 				}
 				else {
 					JOptionPane.showMessageDialog(
 							this,
-							"<html>" +
-							"<h3>" +
+							"<html><center>" +
 							"Ya existe un usuario con ese login.<br>" +
-							"Ingrese uno diferente o compruebe <br>" +
-							"con el botón de búsqueda"+
-							"<html>");
+							"Por favor, ingrese uno diferente o compruebe <br>" +
+							"con el botón de búsqueda."+
+							"</center></html>");
+					loginField.blankTextField();
 				}
 			}
 			else {
 				JOptionPane.showMessageDialog(
 					this,
-					"<html>" +
-					"<h3>" +
-					"Por lo menos debe digitar el login de usuario y seleccionar un grupo.<br>" +
-					"<html>");
+					"<html><center>" +
+					"Por lo menos debe digitar el login de usuario,<br>" + 
+					"su nombre y seleccionar un grupo." +
+					"</center></html>");
+				loginField.requestFocus();
 			}
 		}
 		else if (command.equals("save")) {
-			String login = FieldLogin.getText();
+			String login = loginField.getText();
 			if (!"".equals(login)) {
 				User user = Cache.getUser(oldLogin);
 				if (oldLogin.equals(login)) {
 					user = null;
 				}
 				if (user==null) {
-					String str = JCBGroups.getSelectedItem().toString();
-					Group group = Cache.getGroup(str);
-					if (group.getZone() && table.getRowCount() <= 0) {
+					String string = groupsCombo.getSelectedItem().toString();
+					Group group = Cache.getGroup(string);
+					if (group.isZone() && table.getRowCount() <= 0) {
 						JOptionPane.showMessageDialog(
 								this,
-								"<html>" +
-								"<h3>" +
+								"<html><center>" +
 								"Ha seleccionado un grupo que es zona.<br>" +
-								"Debe adicionar un punto de colocación." +
-								"<html>");
+								"Por favor, adicione un punto de colocación." +
+								"</center></html>");
 						return;
 					}
-					document = getDocumentForEdit();
+					document = getDocumentToEdit();
 					this.dispose();
 				}
 				else {
 					JOptionPane.showMessageDialog(
 							this,
-							"<html>" +
-							"<h3>" +
+							"<html><center>" +
 							"Ya existe un usuario con ese login.<br>" +
-							"Ingrese uno diferente o compruebe <br>" +
-							"con el botón de búsqueda"+
-							"<html>");
+							"Por favor, ingrese uno diferente o compruebe <br>" +
+							"con el botón de búsqueda."+
+							"</center></html>");
+					loginField.blankTextField();
 				}
 			}
 			else {
 				JOptionPane.showMessageDialog(
 					this,
-					"<html>" +
-					"<h3>" +
-					"Por lo menos debe digitar el login de usuario y seleccionar un grupo.<br>" +
-					"<html>");
+					"<html><center>" +
+					"Al menos debe digitar el login de usuario," +
+					"su nombre y seleccionar un grupo.<br>" +
+					"</center></html>");
+					loginField.requestFocus();
 			}
 			
 		}
 		else if (command.equals("remove")) {
-			document = getDocumentForDelete();
+			document = getDocumentToDelete();
 			this.dispose();
 		}
 		if (document!=null) {
 			try {
-				SocketWriter.writing(SocketHandler.getSock(),document);
+				SocketWriter.write(SocketHandler.getSock(),document);
 			} catch (IOException ex) {
-				System.out.println("Error de entrada y salida");
-				System.out.println("mensaje: " + ex.getMessage());
+				System.out.println("ERROR: Falla de entrada/salida");
+				System.out.println("Causa: " + ex.getMessage());
 				ex.printStackTrace();
 			}
 		}
@@ -349,28 +359,29 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 	
 	public void clean() {
 		for (int i=1 ; i< labels.length ; i++) {
-			Component comp = listComps.get(i);
-			comp.setEnabled(false);
-			if (comp instanceof JTextField) {
-				((JTextField)comp).setText("");
+			Component component = componentsList.get(i);
+			component.setEnabled(false);
+			if (component instanceof JTextField) {
+				((JTextField)component).setText("");
 			}
-			else if (comp instanceof JCheckBox) {
-				((JCheckBox)comp).setSelected(false);
+			else if (component instanceof JCheckBox) {
+				((JCheckBox)component).setSelected(false);
 			}
 		}
 		if (ACTION==ACTIONS.ADD) {
 			for (int i=1 ; i< labels.length ; i++) {
-				Component comp = listComps.get(i);
-				comp.setEnabled(true);
+				Component component = componentsList.get(i);
+				component.setEnabled(true);
 			}
-			FieldLogin.setEditable(true);
+			loginField.setEditable(true);
 		}
 		
-		FieldLogin.setSelectedIndex(0);
-		FieldLogin.requestFocus();
+		loginField.setSelectedIndex(0);
+		loginField.setEditable(true);
+		loginField.requestFocus();
 	}
 	
-	private Document getDocumentForAdd() {
+	private Document getDocumentToAdd() {
 		
 		Element transaction = new Element("Transaction");
 		Document doc = new Document(transaction);
@@ -385,31 +396,31 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
         
 		Element pack = new Element("package");
 		String password = null;
-		String admValue = JCheckAdm.isSelected() ? "true" : "false";
-		String auditValue = JCheckAudit.isSelected() ? "true" : "false";
-		password = new String(FieldPassword.getPassword());
-		MD5Tool md = new MD5Tool(password);
-		Cache.Group g = Cache.getGroup((String)JCBGroups.getSelectedItem());
+		String adminValue = adminCheck.isSelected() ? "true" : "false";
+		String auditorValue = auditCheck.isSelected() ? "true" : "false";
+		password = new String(passwdField.getPassword());
+		MD5Tool md5 = new MD5Tool(password);
+		Cache.Group group = Cache.getGroup((String)groupsCombo.getSelectedItem());
 
-		pack.addContent(createField(FieldLogin.getText()));
-		pack.addContent(createField(md.getDigest()));
-		pack.addContent(createField(FieldNames.getText()));
-		pack.addContent(createField(FieldMail.getText()));
-		pack.addContent(createField(admValue));
-		pack.addContent(createField(auditValue));
-		pack.addContent(createField(g.getId()));
+		pack.addContent(createField(loginField.getText()));
+		pack.addContent(createField(md5.getDigest()));
+		pack.addContent(createField(nameField.getText()));
+		pack.addContent(createField(mailField.getText()));
+		pack.addContent(createField(adminValue));
+		pack.addContent(createField(auditorValue));
+		pack.addContent(createField(group.getId()));
 		
 		transaction.addContent(pack);
 		
 		pack = new Element("package");
-		Vector<Vector> v = table.getData();
-		int max = v.size();
+		Vector<Vector> vector = table.getData();
+		int max = vector.size();
 		for (int i=0 ; i < max ; i++) {
-			Vector vrow = v.get(i);
+			Vector rowsVector = vector.get(i);
 			Element subpackage = new Element("subpackage");
-			subpackage.addContent(createField(FieldLogin.getText()));
-			subpackage.addContent(createField((String)vrow.get(0).toString()));
-			subpackage.addContent(createField((String)vrow.get(2).toString()));
+			subpackage.addContent(createField(loginField.getText()));
+			subpackage.addContent(createField((String)rowsVector.get(0).toString()));
+			subpackage.addContent(createField((String)rowsVector.get(2).toString()));
 			pack.addContent(subpackage);
 		}
 		
@@ -418,7 +429,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 		return doc;
 	}
 	
-	private Document getDocumentForEdit() {
+	private Document getDocumentToEdit() {
 		Element transaction = new Element("Transaction");
 		Document doc = new Document(transaction);
 		Element driver = new Element("driver");
@@ -427,23 +438,23 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
         
 		Element pack = new Element("package");
 		String password = null;
-		String admValue = JCheckAdm.isSelected() ? "true" : "false";
-		String auditValue = JCheckAudit.isSelected() ? "true" : "false";
-		password = new String(FieldPassword.getPassword());
-		MD5Tool md = new MD5Tool(password);
-		Cache.Group g = Cache.getGroup((String)JCBGroups.getSelectedItem());
+		String adminValue = adminCheck.isSelected() ? "true" : "false";
+		String auditorValue = auditCheck.isSelected() ? "true" : "false";
+		password = new String(passwdField.getPassword());
+		MD5Tool md5 = new MD5Tool(password);
+		Cache.Group group = Cache.getGroup((String)groupsCombo.getSelectedItem());
 		String id = Cache.getUser(oldLogin).getId();
-		Element field = createField(md.getDigest());
-		if ("".equals(new String(FieldPassword.getPassword()).trim())) {
+		Element field = createField(md5.getDigest());
+		if ("".equals(new String(passwdField.getPassword()).trim())) {
 			field.setAttribute(new Attribute("arg","edit"));
 		}
-		pack.addContent(createField(FieldLogin.getText()));
+		pack.addContent(createField(loginField.getText()));
 		pack.addContent(field);
-		pack.addContent(createField(FieldNames.getText()));
-		pack.addContent(createField(FieldMail.getText()));
-		pack.addContent(createField(admValue));
-		pack.addContent(createField(auditValue));
-		pack.addContent(createField(g.getId()));
+		pack.addContent(createField(nameField.getText()));
+		pack.addContent(createField(mailField.getText()));
+		pack.addContent(createField(adminValue));
+		pack.addContent(createField(auditorValue));
+		pack.addContent(createField(group.getId()));
 		pack.addContent(createField(id));
 		transaction.addContent(pack);
 		
@@ -452,23 +463,22 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 		transaction.addContent(pack);
 		
 		pack = new Element("package");
-		Vector<Vector> v = table.getData();
-		int max = v.size();
+		Vector<Vector> vector = table.getData();
+		int max = vector.size();
 		for (int i=0 ; i < max ; i++) {
-			Vector vrow = v.get(i);
+			Vector rowsVector = vector.get(i);
 			Element subpackage = new Element("subpackage");
-			subpackage.addContent(createField(FieldLogin.getText()));
-			subpackage.addContent(createField((String)vrow.get(0).toString()));
-			subpackage.addContent(createField((String)vrow.get(2).toString()));
+			subpackage.addContent(createField(loginField.getText()));
+			subpackage.addContent(createField((String)rowsVector.get(0).toString()));
+			subpackage.addContent(createField((String)rowsVector.get(2).toString()));
 			pack.addContent(subpackage);
 		}
-		
 		transaction.addContent(pack);
 		
 		return doc;
 	}
 	
-	private Document getDocumentForDelete() {
+	private Document getDocumentToDelete() {
 		Element transaction = new Element("Transaction");
 		Document doc = new Document(transaction);
 		
@@ -479,7 +489,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
         Element driver = new Element("driver");
         driver.setText("TR003");
         transaction.addContent(driver);
-        Cache.User user = Cache.getUser(FieldLogin.getText());
+        Cache.User user = Cache.getUser(loginField.getText());
 		Element pack = new Element("package");
 		pack.addContent(createField(user.getId()));
 		transaction.addContent(pack);
@@ -497,10 +507,10 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 		return element;
 	}
 	
-	class SearcherCode extends Thread {
+	class CodeSearchEngine extends Thread {
 		private String code;
 		
-		public SearcherCode(String code) {
+		public CodeSearchEngine(String code) {
 			this.code = code;
 			start();
 		}
@@ -509,101 +519,117 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 			
 			Cache.User user = Cache.getUser(code);
 			if (user!=null) {
-				oldLogin = FieldLogin.getText();
-				FieldNames.setText(user.getName());
-				FieldMail.setText(user.getEmail());
-				JCheckAdm.setSelected(user.getAdmin());
-				JCheckAudit.setSelected(user.getAudit());
-				JCBGroups.setSelectedItem(user.getGidname());
+				oldLogin = loginField.getText();
+				nameField.setText(user.getName());
+				mailField.setText(user.getEmail());
+				adminCheck.setSelected(user.getAdmin());
+				auditCheck.setSelected(user.getAudit());
+				groupsCombo.setSelectedItem(user.getGroupName());
 				table.clear();
-				ArrayList<Cache.UserPOS> pvs = Cache.getWorkStationsListByUser(code);
-				/*
-				if (pvs.size() > 0) {
-					TreeManagerGroups.currTpath = new TreePath(
-							new Object[] {
-										new SortableTreeNode(MainWindow.getAppOwner()),
-										new SortableTreeNode(getJCBGroups().getSelectedItem()),
-										new SortableTreeNode(pvs.get(0).getName()),
-										new SortableTreeNode(FieldLogin.getText())});	
-				}
-				else {
-					TreeManagerGroups.currTpath = new TreePath(
-							new Object[] {
-										new SortableTreeNode(MainWindow.getAppOwner()),
-										new SortableTreeNode(getJCBGroups().getSelectedItem()),
-										new SortableTreeNode(FieldLogin.getText())});
-				}*/
+				ArrayList<Cache.POS> posList = Cache.getWorkStationsListByUser(code);
 				
-				//TreeManagerGroups.expand();
-				//System.out.println("Actualizando Arbol desde UsersManager...");
-				
-				for (Cache.UserPOS upv : pvs) {
-					table.addData(upv.getCodepv(),upv.getName(),upv.getValidip());
+				for (Cache.POS upv : posList) {
+					table.addData(upv.getPOSCode(),upv.getName(),upv.getValidIP());
 				}
 				if (ACTION == ACTIONS.EDIT ) {
 					for (int i=1 ; i< labels.length ; i++) {
-						Component comp = listComps.get(i);
+						Component comp = componentsList.get(i);
 						comp.setEnabled(true);
 					}
-					FieldLogin.setEditable(false);
+					loginField.setEditable(false);
 					table.enableButtons();
 					table.setEnabled(true);
-					JBAccept.setEnabled(true);
+					acceptButton.setEnabled(true);
 				}
 				if (ACTION == ACTIONS.DELETE) {
-					JBAccept.setEnabled(true);
+					acceptButton.setEnabled(true);
+				}
+				if (ACTION == ACTIONS.ADD) {
+					JOptionPane.showMessageDialog(
+							UsersManager.this,
+							"<html><center>El usuario \"" 
+							+ loginField.getText() 
+							+ "\" ya existe.<br>Por favor, intente con otro login." +
+							"</center></html>");
+					loginField.blankTextField();
 				}
 			}
 			else {
-				if (ACTION == ACTIONS.EDIT) {
+				if (ACTION == ACTIONS.ADD) {
+					passwdField.setText("");
+					passwdField.requestFocus();
+					nameField.setText("");
+					mailField.setText("");
+					adminCheck.setSelected(false);
+					auditCheck.setSelected(false);
+					table.clear();
+					groupsCombo.setSelectedIndex(0);
+				}
+				if (ACTION == ACTIONS.SEARCH) {
+					JOptionPane.showMessageDialog(
+							UsersManager.this,
+							"<html><center>El usuario " 
+							+ loginField.getText() 
+							+ " no existe." +
+							"</center></html>");
+					loginField.blankTextField();
+				} else if (ACTION == ACTIONS.EDIT) {
 					for (int i=1 ; i< labels.length ; i++) {
-						Component comp = listComps.get(i);
-						comp.setEnabled(false);
+						Component component = componentsList.get(i);
+						component.setEnabled(false);
 					}
 					table.disableButtons();
 					table.setEnabled(false);
-					JBAccept.setEnabled(false);
+					acceptButton.setEnabled(false);
+					JOptionPane.showMessageDialog(
+							UsersManager.this,
+							"<html><center>El usuario \"" 
+							+ loginField.getText() 
+							+ "\" no existe.<br>" 
+							+ "Por favor, compruebe el login del usuario<br>"
+							+ " con la opción de búsqueda." +
+							"</center></html>");
+					loginField.blankTextField();
 				}
 			}
 
 		}
-	}
+	}	
 	
-	public void itemStateChanged(ItemEvent e) {
-		JBSearch.doClick();	
+	public void itemStateChanged(ItemEvent e) {	
 	}
 
 	public AutoCompleteComboBox getFieldLogin() {
-		return FieldLogin;
+		return loginField;
 	}
 
 	public void setFieldLogin(String fieldLogin) {
-		FieldLogin.setSelectedItem(fieldLogin);
-		FieldLogin.setEditable(false);
+		loginField.setSelectedItem(fieldLogin);
+		loginField.setEditable(false);
 	}
 
-	public JButton getJBSearch() {
-		return JBSearch;
+	public JButton getSearchButton() {
+		return searchButton;
 	}
 
 	public JTextField getFieldMail() {
-		return FieldMail;
+		return mailField;
 	}
 
 	public JTextField getFieldNames() {
-		return FieldNames;
+		return nameField;
 	}
 
 	public JPasswordField getFieldPassword() {
-		return FieldPassword;
+		return passwdField;
 	}
 
-	public JComboBox getJCBGroups() {
-		return JCBGroups;
+	public JComboBox getGroupsCombo() {
+		return groupsCombo;
 	}
 
-	public JCheckBox getJCheckAdm() {
-		return JCheckAdm;
+	public JCheckBox getAdminCheck() {
+		return adminCheck;
 	}
 
 	public UserTable getTable() {

@@ -24,19 +24,19 @@ public class TransactionsCache {
 		transactions = new Hashtable<String,Transaction>();
 		try {
 			QueryRunner runQuery = new QueryRunner("SRV0001");
-			ResultSet rs = runQuery.runSELECT();
-			while (rs.next()) {
-				String code = rs.getString("codigo");
-				String driver = rs.getString("driver");
-				String args = rs.getString("args");
-				byte[] bytes = args.getBytes();
+			ResultSet resultSet = runQuery.select();
+			while (resultSet.next()) {
+				String code   = resultSet.getString("codigo");
+				String driver = resultSet.getString("driver");
+				String args   = resultSet.getString("args");
+				byte[] bytes  = args.getBytes();
 				ByteArrayInputStream in = new ByteArrayInputStream(bytes);
 				SAXBuilder sax = new SAXBuilder(false);
-				Document doc = sax.build(in);
-				Transaction tr = new Transaction(driver,doc.getRootElement());
-				transactions.put(code,tr);
+				Document doc   = sax.build(in);
+				Transaction transaction = new Transaction(driver,doc.getRootElement());
+				transactions.put(code,transaction);
 			}
-			QueryClosingHandler.close(rs);
+			QueryClosingHandler.close(resultSet);
 		} catch (SQLNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLBadArgumentsException e) {

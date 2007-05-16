@@ -23,12 +23,14 @@ import com.kazak.smi.lib.network.PackageComingListener;
 public class HeadersValidator implements PackageComingListener {
 
     private static Element root;
-    private static ArrayList<MessageListener> messageListeners = new ArrayList<MessageListener>();
-    public void validPackage(ArrivedPackageEvent APe) {
-    	
+    private static ArrayList<MessageListener> msgListenersList = new ArrayList<MessageListener>();
+    
+    public void validPackage(ArrivedPackageEvent APe) {	
    		Document doc = APe.getDoc();
         root = doc.getRootElement();
-        String nombre = root.getName();
+        String name = root.getName();
+        
+        // Temporal code for degugging
     	/*XMLOutputter out = new XMLOutputter();
     	out.setFormat(Format.getPrettyFormat());
     	try {
@@ -37,23 +39,23 @@ public class HeadersValidator implements PackageComingListener {
 			e.printStackTrace();
 		}*/
 		
-    	if(nombre.equals("ACPBegin")) {
+    	if(name.equals("ACPBegin")) {
     		LoginWindow.quit();
-    		LoginWindow.setLoged(true);
-            Cache.loadCacheGroups();
-            Cache.loadHistoryMessages();
-            Element e = new Element("root");
-            e.addContent(new Element("type").setText("connection"));
-            TrayManager.setLoged(true);
+    		LoginWindow.setLogged(true);
+            Cache.loadGroupsCache();
+            Cache.loadMessagesHistory();
+            Element element = new Element("root");
+            element.addContent(new Element("type").setText("connection"));
+            TrayManager.setLogged(true);
         }
-    	else if(nombre.equals("Message")) {
+    	else if(name.equals("Message")) {
     		Cache.addMessages(root);
     		root.addContent(new Element("type").setText("message"));
-            MessageEvent evt = new MessageEvent(root,root);
-            notifyMessage(evt);
+            MessageEvent msgEvent = new MessageEvent(root,root);
+            notifyMessage(msgEvent);
             MessageViewer.show();
         }
-        else if(nombre.equals("ACPFAILURE")) {
+        else if(name.equals("ACPFAILURE")) {
             String message = root.getChildText("message");
             JOptionPane.showMessageDialog(LoginWindow.getFrame(),message);
             LoginWindow.setEnabled();
@@ -64,17 +66,17 @@ public class HeadersValidator implements PackageComingListener {
 				e.printStackTrace();
 			}
         }
-        else if(nombre.equals("ANSWER")) {
+        else if(name.equals("ANSWER")) {
             String id = root.getChildText("id");
-            QuerySender.putSpoolQuery(id,doc);
+            QuerySender.putResultOnPool(id,doc);
         }
-        else if(nombre.equals("SUCCESS")) {
+        else if(name.equals("SUCCESS")) {
             String id = root.getChildText("id");
-            QuerySender.putSpoolQuery(id,doc);
+            QuerySender.putResultOnPool(id,doc);
             String message = root.getChildText("successMessage");
             JOptionPane.showMessageDialog(null, message);
         }
-        else if(nombre.equals("ERROR")) {
+        else if(name.equals("ERROR")) {
 			displayError();
         }
         else {
@@ -98,17 +100,17 @@ public class HeadersValidator implements PackageComingListener {
     }
     
     private static void notifyMessage(MessageEvent event) {
-		for (int i = 0; i < messageListeners.size(); i++) {
-			MessageListener listener = messageListeners.get(i);
-			listener.arriveMessage(event);
+		for (int i = 0; i < msgListenersList.size(); i++) {
+			MessageListener listener = msgListenersList.get(i);
+			listener.getANewMessage(event);
 		}
 	}
 
 	public static synchronized void addMessageListener(MessageListener l) {
-		messageListeners.add(l);
+		msgListenersList.add(l);
 	}
 
 	public static synchronized void removeACPFormListener(MessageListener l) {
-		messageListeners.remove(l);
+		msgListenersList.remove(l);
 	}
 }

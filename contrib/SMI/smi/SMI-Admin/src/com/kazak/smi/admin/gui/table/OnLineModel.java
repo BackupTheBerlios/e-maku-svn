@@ -1,7 +1,6 @@
 package com.kazak.smi.admin.gui.table;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -12,16 +11,24 @@ import javax.swing.JLabel;
 import org.jdom.Document;
 import org.jdom.Element;
 
+import com.kazak.smi.admin.gui.table.ColumnSorter;
+
 public class OnLineModel extends AbstractTableModel {
+	
 	private static final long serialVersionUID = 1L;
-	private String[] titles = { "Codigo Usuario","Nombre","Dirección IP"};
-	private Class[] types = {String.class,String.class,String.class};
+	private String[] titles = { "Código Usuario","Nombre","Dirección IP","Inicio Conexión"};
+	private Class[] types = {String.class,String.class,String.class,String.class};
 	private Vector<Vector> tableData = new Vector<Vector>();
 	private int size;
 	private JLabel groupSize;
+	private int tab = 0;
 	
 	public void setLabel(JLabel gSize) {
 		groupSize = gSize;
+	}
+	
+	public void setTab(int tab){
+		this.tab = tab;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -30,16 +37,18 @@ public class OnLineModel extends AbstractTableModel {
 		v.add("");
 		v.add("");
 		v.add("");
+		v.add("");
 		tableData.add(v);
 		fireTableDataChanged();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void addRow(String code,String name,String ip) {
+	public void addRow(String code,String name,String ip,String time) {
 		Vector v = new Vector();
 		v.add(code);
 		v.add(name);
 		v.add(ip);
+		v.add(time);
 		tableData.add(v);
 		fireTableDataChanged();
 	}
@@ -53,6 +62,7 @@ public class OnLineModel extends AbstractTableModel {
 	public Vector<Vector> getData() {
 		return tableData;
 	}
+	
 	public void remove(int index) {
 		tableData.remove(index);
 		fireTableDataChanged();
@@ -88,7 +98,7 @@ public class OnLineModel extends AbstractTableModel {
 	}
 	
 	public void updateTable(int index, boolean asc) {
-        Collections.sort(tableData, new ColumnSorter(index,asc));
+        Collections.sort(tableData, new ColumnSorter(index,asc)); // TODO: Avoid this warning
         fireTableStructureChanged();
 	}
 
@@ -120,28 +130,32 @@ public class OnLineModel extends AbstractTableModel {
 		                List userDetails = oneUser.getChildren();
 		                if (tableData.size() <= i) {
 		    				Vector<String> tableRow = new Vector<String>();
-		        			for (int k=0;k<3;k++) {
+		        			for (int k=0;k<4;k++) {
 		        			     tableRow.add(((Element)userDetails.get(k)).getText());
 		        			}
 		        			// Adding a new row into the table 
 		        			tableData.add(tableRow);
 		        			fireTableDataChanged();
 		    			}
-		        		for (int j=0;j<3;j++) {
+		        		for (int j=0;j<4;j++) {
 		        			fireTableCellUpdated(i, j);
 		        		}
 
 		            }
-		            size = i;
-		            String s = "s";
-		            if (i==1) {
-		            	s = "";
+		            if (tab == 1) {
+		            	size = i;
+		            	String s = "s";
+		            	if (i==1) {
+		            		s = "";
+		            	}
+		            	groupSize.setText("( " + size + " usuario" + s + " )");
 		            }
-		            groupSize.setText("( " + size + " usuario" + s + " )");
 		        }
 		        else {
 		        	clear();
-		            groupSize.setText("");
+		        	if (tab == 1) {
+		        		groupSize.setText("");
+		        	}
 		        }
 		        
 		        updateTable(0, true);
@@ -152,50 +166,3 @@ public class OnLineModel extends AbstractTableModel {
     	new LoadData(doc).start();
     }
 }
-
-class ColumnSorter implements Comparator {
-    int colIndex;
-    boolean ascending;
-    
-    ColumnSorter(int colIndex, boolean ascending) {
-        this.colIndex = colIndex;
-        this.ascending = ascending;
-    }
-    public int compare(Object a, Object b) {
-        Vector v1 = (Vector)a;
-        Vector v2 = (Vector)b;
-        Object o1 = v1.get(colIndex);
-        Object o2 = v2.get(colIndex);
-
-        // Treat empty strains like nulls
-        if (o1 instanceof String && ((String)o1).length() == 0) {
-            o1 = null;
-        }
-        if (o2 instanceof String && ((String)o2).length() == 0) {
-            o2 = null;
-        }
-
-        // Sort nulls so they appear last, regardless
-        // of sort order
-        if (o1 == null && o2 == null) {
-            return 0;
-        } else if (o1 == null) {
-            return 1;
-        } else if (o2 == null) {
-            return -1;
-        } else if (o1 instanceof Comparable) {
-            if (ascending) {
-                return ((Comparable)o1).compareTo(o2);
-            } else {
-                return ((Comparable)o2).compareTo(o1);
-            }
-        } else {
-            if (ascending) {
-                return o1.toString().compareTo(o2.toString());
-            } else {
-                return o2.toString().compareTo(o1.toString());
-            }
-        }
-    }
-}
-

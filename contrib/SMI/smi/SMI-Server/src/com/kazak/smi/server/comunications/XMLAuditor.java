@@ -4,7 +4,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 
 /**
- * SuccessXML.java Creado el 25-ene-2005
+ * XMLAuditor.java Creado el 25-ene-2005
  * 
  * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
@@ -23,33 +23,33 @@ import org.jdom.Element;
  * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  */
+
 public class XMLAuditor extends Document {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = -5465540432378721520L;
 
-	public Document returnSuccess(String id_return,String Mensaje) {
+	public Document returnSuccessMessage(String id,String message) {
         this.setRootElement(new Element("SUCCESS"));
-		Element idreturn = new Element("id");
+		Element returnID = new Element("id");
         Element msg = new Element("successMessage");
-	    idreturn.setText(id_return);
-        msg.setText(Mensaje);
-        this.getRootElement().addContent(idreturn);
+	    returnID.setText(id);
+        msg.setText(message);
+        this.getRootElement().addContent(returnID);
         this.getRootElement().addContent(msg);
+
         return this;
     }
 
-	public Document returnSuccess(String id_return,String message,Element element) {
+	public Document returnSuccessMessage(String id,String message,Element element) {
         this.setRootElement(new Element("SUCCESS"));
-		Element idreturn = new Element("id");
+		Element returnID = new Element("id");
 		Element msg = new Element("successMessage");
-	    idreturn.setText(id_return);
+	    returnID.setText(id);
 	    msg.setText(message);
-        this.getRootElement().addContent(idreturn);
+        this.getRootElement().addContent(returnID);
         this.getRootElement().addContent(msg);
         this.getRootElement().addContent(element);
+        
         return this;
     }
 }

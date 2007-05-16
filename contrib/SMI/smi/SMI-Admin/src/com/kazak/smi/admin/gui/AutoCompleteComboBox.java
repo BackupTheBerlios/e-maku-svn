@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.Date;
-import java.util.Vector;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
@@ -18,72 +17,87 @@ public class AutoCompleteComboBox extends JComboBox implements KeySelectionManag
 	
 	private static final long serialVersionUID = 1L;
 	private String searchFor;
-	private long lap;
-	private boolean lowercase = true;
+	private long milliSeconds;
+	private boolean lowerCase = true;
 	private int length;
-	private Vector<String> collection; 
+	private String[] collection;
 	
-	public class CBDocument extends PlainDocument {
-		private static final long serialVersionUID = 1L;
-		private int maxSize;
-		public CBDocument(int max) {
-			this.maxSize = max;
-		}
-		public void insertString(int offset, String str, AttributeSet a) throws BadLocationException {
-			if (str == null)
-				return;
-			if ((getLength() + str.length()) <= maxSize) {
-				super.insertString(offset, lowercase ? str : str.toUpperCase(), a);
-			}
-			if (!isPopupVisible() && str.length() != 0)
-				fireActionEvent();	
-		}
-	}
-	
-	public AutoCompleteComboBox(Vector<String> collection,boolean wordcase, int length) {
+	public AutoCompleteComboBox(String[] collection,boolean wordCase, int length) {
 		addItem("");
-		for (String val : collection) {
-			addItem(val);
+		for (String value : collection) {
+			addItem(value);
 		}
-		this.collection = collection;
-		this.lowercase = wordcase;
+		this.collection = collection; 
+		this.lowerCase = wordCase;
 		this.length = length;
 		this.setEditable(true);
 		initAuto();
 	}
 	
+	public class ComboDocument extends PlainDocument {
+		private static final long serialVersionUID = 1L;
+		private int maxSize;
+		
+		public ComboDocument(int max) {
+			this.maxSize = max;
+		}
+		
+		public void insertString(int offset, String string, AttributeSet attribute) throws BadLocationException {
+			if (string == null)
+				return;
+			if ((getLength() + string.length()) <= maxSize) {
+				super.insertString(offset, lowerCase ? string : string.toUpperCase(), attribute);
+			}
+			if (!isPopupVisible() && string.length() != 0)
+				fireActionEvent();	
+		}
+	}
+	
+	public void blankTextField() {
+		JTextField textField = (JTextField) getEditor().getEditorComponent();
+		textField.setText("");
+		textField.requestFocus();
+	}
+		
+	public void unselectTextField() {
+		JTextField textField = (JTextField) getEditor().getEditorComponent();
+		textField.select(0,0);
+	}	
+	
 	private void initAuto() {
-		lap = new Date().getTime();
+		milliSeconds = new Date().getTime();
 		setLightWeightPopupEnabled(false);
 		setKeySelectionManager(this);
-		JTextField tf;
+		JTextField textField;
+		
 		if (getEditor() != null) {
-			tf = (JTextField) getEditor().getEditorComponent();
-			if (tf != null) {
-				tf.setDocument(new CBDocument(length));
+			textField = (JTextField) getEditor().getEditorComponent();
+			if (textField != null) {
+				textField.setDocument(new ComboDocument(length));
 				addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
-						JTextField tf = (JTextField) getEditor().getEditorComponent();
-						String text = tf.getText();
-						ComboBoxModel aModel = getModel();
+						JTextField jTextField = (JTextField) getEditor().getEditorComponent();
+						String text = jTextField.getText();
+						ComboBoxModel comboModel = getModel();
 						String current;
-						if (collection.contains(text)) { return; } 
-						
-						for (int i = 0; i < aModel.getSize(); i++) {
-							current = aModel.getElementAt(i).toString();
-							if (!lowercase){
+						if (collectionContains(text)) {
+							return; 
+						} 
+						for (int i = 0; i < comboModel.getSize(); i++) {
+							current = comboModel.getElementAt(i).toString();
+							if (!lowerCase){
 								if (current.toUpperCase().startsWith(text.toUpperCase())) {
-									tf.setText(current);
-									tf.setSelectionStart(text.length());
-									tf.setSelectionEnd(current.length());
+									jTextField.setText(current);
+									jTextField.setSelectionStart(text.length());
+									jTextField.setSelectionEnd(current.length());
 									break;
 								}
 							}
 							else {
 								if (current.toLowerCase().startsWith(text.toLowerCase())) {
-									tf.setText(current);
-									tf.setSelectionStart(text.length());
-									tf.setSelectionEnd(current.length());
+									jTextField.setText(current);
+									jTextField.setSelectionStart(text.length());
+									jTextField.setSelectionEnd(current.length());
 									break;
 								}
 							} 
@@ -95,29 +109,41 @@ public class AutoCompleteComboBox extends JComboBox implements KeySelectionManag
 		}
 	}
 	
-	public int selectionForKey(char aKey, ComboBoxModel aModel) {
-		long now = new java.util.Date().getTime();
-		if (searchFor != null && aKey == KeyEvent.VK_BACK_SPACE
+	public boolean collectionContains(String key) {
+		for(int i=0;i<collection.length;i++) {
+			if(collection[i].equals(key)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public int selectionForKey(char key, ComboBoxModel comboModel) {
+		long now = new Date().getTime();
+		
+		if(key == KeyEvent.VK_ENTER) {
+			System.out.println("Prueba: Di enter!!!!");
+		}
+		
+		if (searchFor != null && key == KeyEvent.VK_BACK_SPACE
 				&& searchFor.length() > 0) {
 			searchFor = searchFor.substring(0, searchFor.length() - 1);
 		} else {
-			// System.out.println(lap);
-			// Kam nie hier vorbei.
-			if (lap + 1000 < now)
-				searchFor = "" + aKey;
+			if (milliSeconds + 1000 < now)
+				searchFor = "" + key;
 			else
-				searchFor = searchFor + aKey;
+				searchFor = searchFor + key;
 		}
-		lap = now;
+		milliSeconds = now;
 		String current;
-		for (int i = 0; i < aModel.getSize(); i++) {
-			if (!lowercase) {
-				current = aModel.getElementAt(i).toString().toUpperCase();
+		for (int i = 0; i < comboModel.getSize(); i++) {
+			if (!lowerCase) {
+				current = comboModel.getElementAt(i).toString().toUpperCase();
 				if (current.toUpperCase().startsWith(searchFor.toUpperCase()))
 					return i;
 			}
 			else {
-				current = aModel.getElementAt(i).toString().toLowerCase();
+				current = comboModel.getElementAt(i).toString().toLowerCase();
 				if (current.toLowerCase().startsWith(searchFor.toLowerCase()))
 					return i;
 			}

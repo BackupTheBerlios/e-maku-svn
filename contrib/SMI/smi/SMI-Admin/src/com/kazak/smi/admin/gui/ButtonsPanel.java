@@ -9,24 +9,24 @@ import javax.swing.JPanel;
 public class ButtonsPanel extends JPanel{
 	
 	private static final long serialVersionUID = 8682203073690265957L;
-	private JButton JBAdd; 
-	private JButton JBEdit;
-	private JButton JBDelete;
+	private JButton addButton; 
+	private JButton editButton;
+	private JButton deleteButton;
 	
 	public ButtonsPanel() {
 		super(new FlowLayout(FlowLayout.CENTER));
 		GUIFactory guiFactory = new GUIFactory();
-		JBAdd   = guiFactory.createButton("Adicionar", 'A',"add");
-		JBEdit  = guiFactory.createButton("Editar",'S',"edit");
-		JBDelete= guiFactory.createButton("Eliminar",    'R',"delete");
-		add(JBAdd);
-		add(JBEdit);
-		add(JBDelete);
+		addButton    = guiFactory.createButton("Adicionar",'A',"add");
+		editButton   = guiFactory.createButton("Editar",'S',"edit");
+		deleteButton = guiFactory.createButton("Eliminar",'R',"delete");
+		add(addButton);
+		add(editButton);
+		add(deleteButton);
 	}
 	
-	public void setActioListener(ActionListener ac) {
-		JBAdd.addActionListener(ac);
-		JBEdit.addActionListener(ac);
-		JBDelete.addActionListener(ac);
+	public void setActioListener(ActionListener action) {
+		addButton.addActionListener(action);
+		editButton.addActionListener(action);
+		deleteButton.addActionListener(action);
 	}
 }

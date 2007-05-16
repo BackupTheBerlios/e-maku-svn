@@ -30,62 +30,57 @@ import org.jdom.input.SAXBuilder;
  * Esta clase covierte el flujo de entrada de un socket en paquetes XML <br>
  * 
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez </A>
- * @author <A href='mailto:cristian@qhatu.net'>Cristian David
- *         Cepeda </A>
+ * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda </A>
+ * 
  */
 public class PackageToXMLConverter {
 
-    private static ByteArrayOutputStream bufferOut;
+    private static ByteArrayOutputStream bufferOutputStream;
     private static Document doc;
-    private ByteBuffer buf;
-    private SAXBuilder builder;
-    private Vector <PackageComingListener>arrivePackageListener = new Vector<PackageComingListener>();
+    private ByteBuffer buffer;
+    private SAXBuilder saxBuilder;
+    private Vector <PackageComingListener>arrivedPackageListener = new Vector<PackageComingListener>();
     
     public PackageToXMLConverter() {
-        bufferOut = new ByteArrayOutputStream();
+        bufferOutputStream = new ByteArrayOutputStream();
     }
-
 
     public synchronized boolean work(SocketChannel socket) {
 
-        buf = ByteBuffer.allocateDirect(8192);
+        buffer = ByteBuffer.allocateDirect(8192);
         try {
 
-            int numRead = 1;
+            int bytesNum = 1;
+            while (bytesNum > 0) {
 
-            while (numRead > 0) {
+                buffer.rewind();                
+                bytesNum = socket.read(buffer);
+                buffer.rewind();
 
-                buf.rewind();
-                
-                numRead = socket.read(buf);
-                
-                
-                buf.rewind();
-
-                for (int i = 0; i < numRead; i++) {
-                    int character = buf.get(i);
+                for (int i = 0; i < bytesNum; i++) {
+                    int character = buffer.get(i);
                     if (character != 12) {
                         if (character!=0) {
-                        	bufferOut.write(character);
+                        	bufferOutputStream.write(character);
                         }
                     }
                     else {
-                        ByteArrayInputStream bufferIn = null;
-                        builder = new SAXBuilder(false);
-                        bufferIn = new ByteArrayInputStream(bufferOut.toByteArray());
+                        ByteArrayInputStream bufferInputStream = null;
+                        saxBuilder = new SAXBuilder(false);
+                        bufferInputStream = new ByteArrayInputStream(bufferOutputStream.toByteArray());
                         try {
-							doc = builder.build(bufferIn);
+							doc = saxBuilder.build(bufferInputStream);
 						} catch (JDOMException e) {
 							e.printStackTrace();
 						}
         	            ArrivedPackageEvent event = new ArrivedPackageEvent(this,doc);
-        	            notifyArrivePackage(event);
-                    	bufferOut.close();
-                        bufferOut = new ByteArrayOutputStream();
+        	            notifyArrivedPackage(event);
+                    	bufferOutputStream.close();
+                        bufferOutputStream = new ByteArrayOutputStream();
                     }
 
                 }
-                if (numRead == -1) {
+                if (bytesNum == -1) {
                     socket.close();
                     socket = null;
                     return false;
@@ -102,18 +97,18 @@ public class PackageToXMLConverter {
         return true;
     }
 
-    public synchronized void addPackageComingListener(PackageComingListener listener ) {
-        arrivePackageListener.addElement(listener);
+    public synchronized void addPackageComingListener(PackageComingListener listener) {
+        arrivedPackageListener.addElement(listener);
     }
 
-    public synchronized void removeSuccessListener(PackageComingListener listener ) {
-        arrivePackageListener.removeElement(listener);
+    public synchronized void removeSuccessListener(PackageComingListener listener) {
+        arrivedPackageListener.removeElement(listener);
     }
 
-    private synchronized void notifyArrivePackage(ArrivedPackageEvent event) {
-        for (int i=0; i<arrivePackageListener.size();i++) {
-            PackageComingListener listener = (PackageComingListener)arrivePackageListener.elementAt(i);
-            listener.validPackage(event);
+    private synchronized void notifyArrivedPackage(ArrivedPackageEvent packageEvent) {
+        for (int i=0; i<arrivedPackageListener.size();i++) {
+            PackageComingListener listener = (PackageComingListener)arrivedPackageListener.elementAt(i);
+            listener.validPackage(packageEvent);
         }
     }
 }

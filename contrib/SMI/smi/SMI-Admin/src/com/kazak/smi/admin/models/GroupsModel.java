@@ -8,16 +8,14 @@ import javax.swing.table.AbstractTableModel;
 import com.kazak.smi.admin.control.Cache;
 import com.kazak.smi.admin.control.Cache.Group;
 
-public class ModelGroups extends AbstractTableModel {
+public class GroupsModel extends AbstractTableModel {
 	
 	private static final long serialVersionUID = 1L;
-	private String[] titles = 
-	{"GID","NOMBRE DE GRUPO","MOSTRABLE","ZONA"};
-	private Class[] types   =  
-	{Integer.class,String.class,Boolean.class,Boolean.class};
+	private String[] titles = {"GID","NOMBRE DE GRUPO","MOSTRABLE","ZONA"};
+	private Class[] types   = {Integer.class,String.class,Boolean.class,Boolean.class};
 	private Vector<Group> values;
 	
-	public ModelGroups() {
+	public GroupsModel() {
 		Collection<Group> data = Cache.getList();
 		values = new Vector<Group>(data);
 	}
@@ -45,9 +43,9 @@ public class ModelGroups extends AbstractTableModel {
 		case 1:
 			return g.getName();
 		case 2:
-			return g.getVisible();
+			return g.isVisible();
 		case 3:
-			return  g.getZone();
+			return  g.isZone();
 		}
 		return null;
 	}

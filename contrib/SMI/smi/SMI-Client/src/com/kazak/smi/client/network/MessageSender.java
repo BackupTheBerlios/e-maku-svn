@@ -10,10 +10,11 @@ import com.kazak.smi.client.control.Cache;
 import com.kazak.smi.client.gui.LoginWindow;
 
 public class MessageSender {
+	
 	public MessageSender(String to,String subject, String message) {
 		Element xml = new Element("Message");
-		String idgroup = Cache.getIdGroup(to);
-		xml.addContent(new Element("idgroup").setText(idgroup));
+		String groupID = Cache.getGroupID(to);
+		xml.addContent(new Element("idgroup").setText(groupID));
 		xml.addContent(new Element("from").setText(LoginWindow.getLoginUser()));
 		xml.addContent(new Element("subject").setText(subject));
 		xml.addContent(new Element("message").setText(message));
@@ -21,8 +22,8 @@ public class MessageSender {
 		try {
 			SocketWriter.writing(sock,new Document(xml));
 		} catch (IOException e) {
-			System.out.println("Error de entrada y salida");
-			System.out.println("mensaje: " + e.getMessage());
+			System.out.println("ERROR: Falla de entrada / salida");
+			System.out.println("Causa: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}

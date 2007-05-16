@@ -27,23 +27,23 @@ public class SortButtonRenderer extends JButton implements TableCellRenderer {
 		downButton = new JButton();
 		downButton.setMargin(new Insets(0,0,0,0));
 		downButton.setHorizontalTextPosition(LEFT);
-		downButton.setIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, false));
-		downButton.setPressedIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, true));
+		downButton.setIcon(new ArrowIcon(ArrowIcon.DOWN, false, false));
+		downButton.setPressedIcon(new ArrowIcon(ArrowIcon.DOWN, false, true));
 
 		upButton = new JButton();
 		upButton.setMargin(new Insets(0,0,0,0));
 		upButton.setHorizontalTextPosition(LEFT);
-		upButton.setIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, false));
-		upButton.setPressedIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, true));
+		upButton.setIcon(new ArrowIcon(ArrowIcon.UP, false, false));
+		upButton.setPressedIcon(new ArrowIcon(ArrowIcon.UP, false, true));
 
 	}
 
 	public Component getTableCellRendererComponent(JTable table, Object value,
 			boolean isSelected, boolean hasFocus, int row, int column) {
 		JButton button = this;
-		Object obj = state.get(new Integer(column));
-		if (obj != null) {
-			if (((Integer)obj).intValue() == DOWN) {
+		Object object = state.get(new Integer(column));
+		if (object != null) {
+			if (((Integer)object).intValue() == DOWN) {
 				button = downButton;
 			} else {
 				button = upButton;
@@ -57,26 +57,26 @@ public class SortButtonRenderer extends JButton implements TableCellRenderer {
 		return button;
 	}
 
-	public void setPressedColumn(int col) {
-		pushedColumn = col;
+	public void setPressedColumn(int column) {
+		pushedColumn = column;
 	}
 
-	public void setSelectedColumn(int col) {
-		if (col < 0) 
+	public void setSelectedColumn(int column) {
+		if (column < 0) 
 			return;
 		Integer value = null;
-		Object obj = state.get(new Integer(col));
-		if (obj == null) {
+		Object object = state.get(new Integer(column));
+		if (object == null) {
 			value = new Integer(UP);
 		} else {
-			if (((Integer)obj).intValue() == DOWN) {
+			if (((Integer)object).intValue() == DOWN) {
 				value = new Integer(UP);
 			} else {
 				value = new Integer(DOWN);
 			}
 		}
 		state.clear();
-		state.put(new Integer(col), value);
+		state.put(new Integer(column), value);
 	} 
 	
 	public void setColumnForUpdate() {
@@ -84,9 +84,9 @@ public class SortButtonRenderer extends JButton implements TableCellRenderer {
 		state.put(new Integer(0), new Integer(UP));
 	} 	
 
-	public int getState(int col) {
+	public int getState(int column) {
 		int retValue;
-		Object obj = state.get(new Integer(col));
+		Object obj = state.get(new Integer(column));
 		if (obj == null) {
 			retValue = NONE;
 		} else {

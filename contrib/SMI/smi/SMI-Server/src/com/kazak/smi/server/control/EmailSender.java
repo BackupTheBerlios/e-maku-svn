@@ -10,8 +10,8 @@ public class EmailSender extends Thread {
 	private String subject;
 	private String message;
 	private Date date;
-	private String toNameFull;
-	private String colocationPoint;
+	private String toFullName;
+	private String workStation;
 	
 	public void setFrom(String from) {
 		this.from = from;
@@ -19,14 +19,13 @@ public class EmailSender extends Thread {
 
 	public void setMessage(String message) {
 		this.message = message;
-		
 	}
 
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
 
-	public void setTo(String to) {
+	public void setSender(String to) {
 		this.to = to;
 	}
 	
@@ -36,7 +35,7 @@ public class EmailSender extends Thread {
 	
 	public void run() {
 		String fulltext = 
-			toNameFull+" escribio desde "+colocationPoint+":\n" +
+			toFullName+" escribio desde "+workStation+":\n" +
 			"--------------------------------------------\n"+
 			message+ "\n"+
 			"--------------------------------------------\n" +
@@ -48,11 +47,11 @@ public class EmailSender extends Thread {
 		this.date = date;
 	}
 
-	public void setToFullName(String toNameFull) {
-		this.toNameFull = toNameFull;
+	public void setToFullName(String toFullName) {
+		this.toFullName = toFullName;
 	}
 
-	public void setColocationPoint(String colocationPoint) {
-		this.colocationPoint = colocationPoint;
+	public void setWorkStation(String workStation) {
+		this.workStation = workStation;
 	}
 }

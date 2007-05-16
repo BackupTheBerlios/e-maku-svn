@@ -12,11 +12,10 @@ import javax.swing.event.ListSelectionListener;
 
 import com.kazak.smi.admin.models.TableSorter;
 
-
 public class HistoryDataPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JTable JTData;
+	private JTable table;
 	private HistoryDataModel historyDataModel;
 	private HistoryMessagePanel messagePanel;
 	
@@ -24,20 +23,20 @@ public class HistoryDataPanel extends JPanel {
 		setLayout(new BorderLayout());
 		this.messagePanel = messagePanel;
 		historyDataModel = new HistoryDataModel(data);
-		TableSorter ts =new TableSorter(historyDataModel);
-		JTData = createTable();
-		JTData.setModel(ts);
-		ts.setTableHeader(JTData.getTableHeader());
-		JTData.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		JTData.setEnabled(true);
+		TableSorter tableSorter =new TableSorter(historyDataModel);
+		table = createTable();
+		table.setModel(tableSorter);
+		tableSorter.setTableHeader(table.getTableHeader());
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		table.setEnabled(true);
 		int columns = historyDataModel.getColumnCount();
 		for (int i =0 ; i <  columns ; i++) {
 			int width = historyDataModel.getWidth(i);
-			JTData.getColumnModel().getColumn(i).setMinWidth(0);
-			JTData.getColumnModel().getColumn(i).setPreferredWidth(width);	
+			table.getColumnModel().getColumn(i).setMinWidth(0);
+			table.getColumnModel().getColumn(i).setPreferredWidth(width);	
 		}
 		
-		JScrollPane jscroll = new JScrollPane(JTData);
+		JScrollPane jscroll = new JScrollPane(table);
 		jscroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		this.add(new JPanel(),BorderLayout.NORTH);
 		this.add(new JPanel(),BorderLayout.WEST);
@@ -50,15 +49,16 @@ public class HistoryDataPanel extends JPanel {
 	private JTable createTable() {
 		 JTable table = new JTable();
 		 table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
 		 return table;
 	}
 	
 	private void addEvents() {
-		JTData.getSelectionModel().addListSelectionListener(
+		table.getSelectionModel().addListSelectionListener(
 				new ListSelectionListener() {
 					public void valueChanged(ListSelectionEvent e) {
-						int rowIndex = JTData.getSelectedRow();
-						if (rowIndex < JTData.getRowCount()) {
+						int rowIndex = table.getSelectedRow();
+						if (rowIndex < table.getRowCount()) {
 							messagePanel.setData(getSelectedData());
 						}
 					}
@@ -66,15 +66,16 @@ public class HistoryDataPanel extends JPanel {
 	}
 	
 	public String[] getSelectedData() {
-		int rowIndex = JTData.getSelectedRow();
-		String[] data = new String[7];
-		for (int i =0 ; i < data.length ; i++) {
-			data[i] = String.valueOf(JTData.getValueAt(rowIndex,(i+1)));
+		int rowIndex = table.getSelectedRow();
+		String[] array = new String[7];
+		for (int i =0 ; i < array.length ; i++) {
+			array[i] = String.valueOf(table.getValueAt(rowIndex,(i+1)));
 		}
-		return data;
+		
+		return array;
 	}
 
-	public JTable getJTData() {
-		return JTData;
+	public JTable getTable() {
+		return table;
 	}
 }

@@ -28,31 +28,31 @@ import javax.swing.JTextField;
 
 import com.kazak.smi.admin.Run;
 import com.kazak.smi.admin.control.HeadersValidator;
-import com.kazak.smi.admin.misc.NumericDataValidator;
+//import com.kazak.smi.admin.misc.NumericDataValidator;
 import com.kazak.smi.admin.network.CNXSender;
 import com.kazak.smi.admin.network.SocketHandler;
-import com.kazak.smi.lib.misc.FixedSizePlainDocument;
+//import com.kazak.smi.lib.misc.FixedSizePlainDocument;
 import com.kazak.smi.lib.misc.MD5Tool;
 import com.kazak.smi.lib.network.PackageToXMLConverter;
 
 public class LoginWindow implements ActionListener, KeyListener {
 	
 	private static final long serialVersionUID = 4515846092744596420L;
-	private JTextField JTFHost;
-	private JTextField JTFPort;
-	private static JTextField JTFUser;
-	private JPasswordField JPFPassword;
-	private static JButton JBAccept;
-	private static JButton JBCancel;
+	private JTextField hostTextField;
+	private JTextField portTextField;
+	private static JTextField userTextField;
+	private JPasswordField passwdField;
+	private static JButton acceptButton;
+	private static JButton cancelButton;
 	private static JFrame frame;
-	private static boolean loged = false;
+	private static boolean logged = false;
 	
 	public LoginWindow() {
-		initComps();
+		initComponents();
 		frame.setVisible(true);
 	}
 	
-	public void initComps() {
+	public void initComponents() {
 		frame = new JFrame("Ingreso - Modulo Administrador");
 		frame.setLayout(new BorderLayout());
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -68,65 +68,75 @@ public class LoginWindow implements ActionListener, KeyListener {
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		
-		JTFHost     = new JTextField("server",12);
-		JTFPort     = new JTextField("9119",12);
-		JTFUser     = new JTextField("admin",12);
-		JPFPassword = new JPasswordField("12345",12);
-		JPFPassword.addKeyListener(this);
+		// TODO: Limpiar campos cuando se termine desarrollo
+		hostTextField = new JTextField("localhost",12);
+		hostTextField.setName("host");
+		hostTextField.addKeyListener(this);
+		portTextField = new JTextField("9119",12);
+		portTextField.setName("port");
+		portTextField.addKeyListener(this);		
+		userTextField = new JTextField("admin",12);
+		userTextField.setName("user");
+		userTextField.addKeyListener(this);
+		passwdField = new JPasswordField("12345",12);
+		passwdField.setName("passwd");
+		passwdField.addKeyListener(this);
 		
+		// TODO: Habilitar cuando se termine desarrollo
 		//JTFUser.setDocument(new FixedSizePlainDocument(30));
 		//JTFPort.setDocument(new NumericDataValidator(4));
 		
-		JBAccept = new JButton("Aceptar");
-		JBCancel = new JButton("Cancelar");
-		JBAccept.setMnemonic('A');
-		JBCancel.setMnemonic('C');
-		JBAccept.addActionListener(this);
-		JBCancel.addActionListener(this);
-		JBAccept.setActionCommand("accept");
-		JBCancel.setActionCommand("cancel");
+		acceptButton = new JButton("Aceptar");
+		cancelButton = new JButton("Cancelar");
+		acceptButton.setMnemonic('A');
+		cancelButton.setMnemonic('C');
+		acceptButton.addActionListener(this);
+		cancelButton.addActionListener(this);
+		acceptButton.setActionCommand("accept");
+		cancelButton.setActionCommand("cancel");
 		
-		JPanel JPCenter = new JPanel(new BorderLayout());
-		JPanel JPSouth  = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		JPanel JPLabels = new JPanel(new GridLayout(4,1));
-		JPanel JPFields = new JPanel(new GridLayout(4,1));
+		JPanel centerPanel = new JPanel(new BorderLayout());
+		JPanel southPanel  = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JPanel labelsPanel = new JPanel(new GridLayout(4,1));
+		JPanel fieldsPanel = new JPanel(new GridLayout(4,1));
 
-		JPCenter.add(JPLabels,BorderLayout.WEST);
-		JPCenter.add(JPFields,BorderLayout.CENTER);
+		centerPanel.add(labelsPanel,BorderLayout.WEST);
+		centerPanel.add(fieldsPanel,BorderLayout.CENTER);
 		
-		JPLabels.add(new JLabel("Host:"));
-		JPLabels.add(new JLabel("Puerto:"));
-		JPLabels.add(new JLabel("Usuario:"));
-		JPLabels.add(new JLabel("Clave:"));
+		labelsPanel.add(new JLabel("Servidor:"));
+		labelsPanel.add(new JLabel("Puerto:"));
+		labelsPanel.add(new JLabel("Usuario:"));
+		labelsPanel.add(new JLabel("Clave:"));
 		
-		JPFields.add(addWithPanel(JTFHost));
-		JPFields.add(addWithPanel(JTFPort));
-		JPFields.add(addWithPanel(JTFUser));
-		JPFields.add(addWithPanel(JPFPassword));
+		fieldsPanel.add(addWithPanel(hostTextField));
+		fieldsPanel.add(addWithPanel(portTextField));
+		fieldsPanel.add(addWithPanel(userTextField));
+		fieldsPanel.add(addWithPanel(passwdField));
 		
-		JPSouth.add(JBAccept);
-		JPSouth.add(JBCancel);
+		southPanel.add(acceptButton);
+		southPanel.add(cancelButton);
 		
 		JPanel centerAux = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		centerAux.add(JPCenter);
+		centerAux.add(centerPanel);
 		
 		frame.add(new JPanel(),BorderLayout.NORTH);
 		frame.add(centerAux,BorderLayout.CENTER);
-		frame.add(JPSouth,BorderLayout.SOUTH);
+		frame.add(southPanel,BorderLayout.SOUTH);
 	}
 	
-	private JPanel addWithPanel(Component comp) {
+	private JPanel addWithPanel(Component component) {
 		JPanel panel = new JPanel();
-		panel.add(comp);
+		panel.add(component);
+		
 		return panel;
 	}
 	
 	private String getUser() {
-		return LoginWindow.JTFUser.getText().trim();
+		return LoginWindow.userTextField.getText().trim();
 	}
 	
 	private String getPassword() {
-		return new String(this.JPFPassword.getPassword());
+		return new String(this.passwdField.getPassword());
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -139,168 +149,183 @@ public class LoginWindow implements ActionListener, KeyListener {
 		}
 	}
 
-	
-	private void connect() {
-		
-	JBAccept.setEnabled(false);
-	int typeCursor = Cursor.WAIT_CURSOR;
-	Cursor cursor = Cursor.getPredefinedCursor(typeCursor);
-	String host = JTFHost.getText().trim();
-    int port = 
-    		JTFPort.getText().trim().equals("") ? 
-    		0 :
-    		Integer.parseInt(JTFPort.getText().trim());
-    
-    if (!"".equals(host)              && 
-    		!"".equals(JTFPort.getText()) && 
-    		!"".equals(getUser())         &&
-    		!"".equals(getPassword())) {
-    	SocketHandler connect;
-    	frame.setCursor(cursor);
-    	try {
-    		PackageToXMLConverter packageXML = new PackageToXMLConverter();
-    		HeadersValidator valid = new HeadersValidator();
-    		packageXML.addPackageComingListener(valid);
-    		connect = new SocketHandler(host,port,packageXML);
-    		connect.start();
-    		SocketChannel socket = SocketHandler.getSock();
-    		MD5Tool md5 = new MD5Tool(getPassword());
-    		String pass = md5.getDigest();
-    		Run.login = getUser();
-    		new CNXSender(socket,getUser(),pass); 
-    	} catch (ConnectException CEe){
-    		CEe.printStackTrace();
-    		JOptionPane.showMessageDialog(
-    				frame,
-    				"No se pudo establecer comunicación con el servidor\n"+
-    				"Host: "+host+"\n"+
-    				"Puerto "+port,
-    				"Error de Conexión",
-    				JOptionPane.ERROR_MESSAGE);
+	private boolean connect() {
+		boolean success = true;
+		acceptButton.setEnabled(false);
+		int typeCursor = Cursor.WAIT_CURSOR;
+		Cursor cursor = Cursor.getPredefinedCursor(typeCursor);
+		frame.setCursor(cursor);
 
-    		JBAccept.setEnabled(true);
-    		typeCursor = Cursor.DEFAULT_CURSOR;
-    		cursor =Cursor.getPredefinedCursor(typeCursor);
-    		frame.setCursor(cursor);
-    	}catch (UnresolvedAddressException UAEe) {
-    		UAEe.printStackTrace();
-    		JOptionPane.showMessageDialog(
-    				frame,
-    				"No se pudo resolver la dirección\n" +
-    				"del servidor de mensajeria\n"+
-    				"Host: "+host+ 
-    				"Puerto:"+port,
-    				"Error de Conexión",
-    				JOptionPane.ERROR_MESSAGE);
-    		JBAccept.setEnabled(true);
-    		typeCursor = Cursor.DEFAULT_CURSOR;
-    		cursor =Cursor.getPredefinedCursor(typeCursor);
-    	} catch(NoRouteToHostException NRex) {
-    		JOptionPane.showMessageDialog(
-    				null,
-    				"El nombre del servidor o la dirección IP ingresada\n" +
-    				"no se encuentra disponible o no existe en la red.\n" +
-    				"Por favor, revise el valor ingresado en el campo Host.\n");
-    		JBAccept.setEnabled(true);
-    		typeCursor = Cursor.DEFAULT_CURSOR;
-    		cursor =Cursor.getPredefinedCursor(typeCursor);
-        } 
-    	catch(SocketException Nex) {
-    		JOptionPane.showMessageDialog(
-    				null,
-    				"Este equipo no tiene acceso a la red.\n" +
-    				"Por favor, revise la configuración de su sistema.\n");
-    		JBAccept.setEnabled(true);
-    		typeCursor = Cursor.DEFAULT_CURSOR;
-    		cursor =Cursor.getPredefinedCursor(typeCursor);
-        }
-    	catch (IOException IOEe) {
-    		IOEe.printStackTrace();
-    	}
-    }
-	if ("".equals(host)) {
-		JOptionPane.showMessageDialog(
-				frame,
-				"Información incompleta\n" +
-				"debe ingresar el host");
-	}
-	else if ("".equals(JTFPort.getText())) {
-		JOptionPane.showMessageDialog(
-				frame,
-				"Información incompleta\n" +
-				"debe ingresar el puerto");
-	}
-	else if ("".equals(getUser()) && "".equals(getPassword())) {
-		JOptionPane.showMessageDialog(
-				frame,
-				"Información incompleta\n" +
-				"debe digitar su nombre de usuario y clave");
-	}
-	else if ("".equals(getUser()) && "".equals(getPassword())) {
-		JOptionPane.showMessageDialog(
-				frame,
-				"Información incompleta\n" +
-				"debe digitar su nombre de usuario y clave");
-	}
-	else if (!"".equals(getUser()) && "".equals(getPassword())) {
-		JOptionPane.showMessageDialog(
-				frame,
-				"Debe digitar su clave\n");
-	}
-	else if ("".equals(getUser()) && !"".equals(getPassword())) {
-		JOptionPane.showMessageDialog(
-				frame,
-				"Debe digitar su nombre de usuario\n");
-	}
-	JBAccept.setEnabled(true);
-}	
-	
-	private void close() {
-		int op = JOptionPane.showConfirmDialog(
-					frame,
-					"Realmente desea salir?",
-					"",JOptionPane.YES_NO_OPTION);
+		String host = hostTextField.getText().trim();
+		int port = portTextField.getText().trim().equals("") ? 0 :
+					Integer.parseInt(portTextField.getText().trim());
 		
-		if (JOptionPane.YES_OPTION == op) {
+		if (!"".equals(host) && 
+				!"".equals(portTextField.getText()) && 
+				!"".equals(getUser()) && !"".equals(getPassword())) {
+			SocketHandler connect;
+			try {
+				PackageToXMLConverter packageXML = new PackageToXMLConverter();
+				HeadersValidator valid = new HeadersValidator();
+				packageXML.addPackageComingListener(valid);
+				connect = new SocketHandler(host,port,packageXML);
+				connect.start();
+				SocketChannel socket = SocketHandler.getSock();
+				MD5Tool md5 = new MD5Tool(getPassword());
+				String passwd = md5.getDigest();
+				Run.login = getUser();
+				new CNXSender(socket,getUser(),passwd); 
+			} catch (ConnectException CEe){
+				CEe.printStackTrace();
+				JOptionPane.showMessageDialog(
+						frame,
+						"No se pudo establecer comunicación con el servidor\n"+
+						"Servidor: "+host+"\n"+
+						"Puerto: "+port,
+						"Error de Conexión",
+						JOptionPane.ERROR_MESSAGE);
+				success = false;
+			}catch (UnresolvedAddressException UAEe) {
+				UAEe.printStackTrace();
+				JOptionPane.showMessageDialog(
+						frame,
+						"No se pudo resolver la dirección\n" +
+						"del Servidor de Mensajeria\n" +
+						"Servidor: " + host + 
+						"Puerto:" + port,
+						"Error de Conexión",
+						JOptionPane.ERROR_MESSAGE);
+				success = false;
+			} catch(NoRouteToHostException NRex) {
+				JOptionPane.showMessageDialog(
+						null,
+						"El nombre del servidor o la dirección IP ingresada\n" +
+						"no se encuentra disponible o no existe en la red.\n" +
+				"Por favor, revise el valor ingresado en el campo Servidor.\n");
+				success = false;
+			} 
+			catch(SocketException Nex) {
+				JOptionPane.showMessageDialog(
+						null,
+						"Este equipo no tiene acceso a la red.\n" +
+				"Por favor, revise la configuración de su sistema.\n");
+				success = false;
+			}
+			catch (IOException IOEe) {
+				IOEe.printStackTrace();
+				success = false;
+			}
+		}
+		if ("".equals(host)) {
+			JOptionPane.showMessageDialog(
+					frame,
+					"Información incompleta.\n" +
+			"Por favor, ingrese el nombre del servidor.");
+			success = false;
+		}
+		else if ("".equals(portTextField.getText())) {
+			JOptionPane.showMessageDialog(
+					frame,
+					"Información incompleta.\n" +
+			"Por favor, ingrese el puerto.");
+			success = false;
+		}
+		else if ("".equals(getUser()) && "".equals(getPassword())) {
+			JOptionPane.showMessageDialog(
+					frame,
+					"Información incompleta.\n" +
+			"Por favor, ingrese el nombre de usuario y la clave.");
+			success = false;
+		}
+		else if ("".equals(getUser()) && "".equals(getPassword())) {
+			JOptionPane.showMessageDialog(
+					frame,
+					"Información incompleta.\n" +
+			"Por favor, ingrese el nombre de usuario y la clave.");
+			success = false;
+		}
+		else if (!"".equals(getUser()) && "".equals(getPassword())) {
+			JOptionPane.showMessageDialog(
+					frame,
+			"Por favor, digite su clave.\n");
+			success = false;
+		}
+		else if ("".equals(getUser()) && !"".equals(getPassword())) {
+			JOptionPane.showMessageDialog(
+					frame,
+			"Por favor, digite su nombre de usuario.\n");
+			success = false;
+		}
+		acceptButton.setEnabled(true);
+		
+		typeCursor = Cursor.DEFAULT_CURSOR;
+		cursor = Cursor.getPredefinedCursor(typeCursor);
+		frame.setCursor(cursor);
+
+		return success;
+	}	
+
+	private void close() {
+		int option = JOptionPane.showConfirmDialog(
+				frame,
+				"Realmente desea salir?",
+				"Salir",JOptionPane.YES_NO_OPTION);
+
+		if (JOptionPane.YES_OPTION == option) {
 			frame.setVisible(false);
-			JTFUser.setText("");
-			JPFPassword.setText("");
+			userTextField.setText("");
+			passwdField.setText("");
 			frame.dispose();
 		}
 	}
-	
+
 	public static void setEnabled() {
-    	JBAccept.setEnabled(true);
-    }
-    
-    public static void setCursorState(int state) {
-    	frame.setCursor(Cursor.getPredefinedCursor(state));
-    }
-    
+		acceptButton.setEnabled(true);
+	}
+
+	public static void setCursorState(int state) {
+		frame.setCursor(Cursor.getPredefinedCursor(state));
+	}
+
 	public static void setVisible(boolean b) {
 		frame.setVisible(b);
 	}
-	
-	public static boolean isLoged() {
-		return loged;
+
+	public static boolean isLogged() {
+		return logged;
 	}
 
-	public static void setLoged(boolean loged) {
-		LoginWindow.loged = loged;
+	public static void setLogged(boolean logged) {
+		LoginWindow.logged = logged;
 	}
-	
+
 	public static String getLoginUser() {
-		return LoginWindow.JTFUser.getText();
+		return LoginWindow.userTextField.getText();
 	}
 
 	public void keyPressed(KeyEvent e) {
 	}
 
 	public void keyReleased(KeyEvent e) {
-        int keyCode = e.getKeyCode();
-        if (keyCode==KeyEvent.VK_ENTER){
-                connect();
-        }
+		String textField = ((JTextField) e.getSource()).getName();
+		int keyCode = e.getKeyCode();
+
+		if (keyCode==KeyEvent.VK_ENTER){
+			if (textField.equals("host")) {
+				portTextField.requestFocus();
+			}
+			if (textField.equals("port")) {
+				userTextField.requestFocus();
+			}
+			if (textField.equals("user")) {
+				passwdField.requestFocus();
+			}
+			if (textField.equals("passwd")) {
+				if (!connect()) {
+				    acceptButton.requestFocus();
+				}
+			}
+		}
 	}
 
 	public void keyTyped(KeyEvent e) {

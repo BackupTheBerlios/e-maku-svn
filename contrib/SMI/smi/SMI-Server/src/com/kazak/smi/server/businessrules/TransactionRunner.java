@@ -159,16 +159,16 @@ public class TransactionRunner {
     }
     
     public static void notifyErrorMessage(SocketChannel sock,
-            					     String id_transaction,
+            					     String transactionID,
             					     String message) {
         XMLError error = new XMLError();
         LogWriter.write(message);
         try {
-        	Document doc = error.returnError(
+        	Document doc = error.returnErrorMessage(
         			ServerConstants.ERROR,
-        			id_transaction,
+        			transactionID,
         			message);
-        	SocketWriter.writing(sock,doc);
+        	SocketWriter.write(sock,doc);
         } catch (IOException e) {
 			LogWriter.write("ERROR: Falla de entrada/salida");
 			LogWriter.write("Causa: " + e.getMessage());
@@ -181,9 +181,9 @@ public class TransactionRunner {
 									  String transactionID,
 									  String message) {
 		XMLAuditor auditor = new XMLAuditor();
-		LogWriter.write(message);
+		LogWriter.write("INFO: Operacion realizada exitosamente");
 		try {
-			SocketWriter.writing(sock,auditor.returnSuccess(transactionID,message));
+			SocketWriter.write(sock,auditor.returnSuccessMessage(transactionID,message));
 		} catch (IOException e) {
 			LogWriter.write("ERROR: Falla de entrada/salida");
 			LogWriter.write("Causa: " + e.getMessage());
@@ -200,10 +200,10 @@ public class TransactionRunner {
 		XMLAuditor auditor = new XMLAuditor();
 		LogWriter.write(message);
 		try {
-			SocketWriter.writing(sock,auditor.returnSuccess(transactionID,message,element));
+			SocketWriter.write(sock,auditor.returnSuccessMessage(transactionID,message,element));
 		} catch (IOException e) {
-			LogWriter.write("Error de entrada y salida");
-			LogWriter.write("mensaje: " + e.getMessage());
+			LogWriter.write("ERROR: Falla de entrada/salida");
+			LogWriter.write("Causa: " + e.getMessage());
 			e.printStackTrace();
 		}
     }

@@ -1,7 +1,5 @@
 package com.kazak.smi.server.misc;
 
-//import java.awt.Toolkit;
-
 /**
  * ServerConstants.java Creado el 29-jun-2004
  * 
@@ -23,14 +21,15 @@ package com.kazak.smi.server.misc;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
+
 public interface ServerConstants {
     
 	public final String KeyServer = "SMI";
 
-	public final String SMI_HOME       =  System.getenv("SMI_HOME");
+	public final String SMI_HOME    =  System.getenv("SMI_HOME");
 	public final String HOME 		= System.getProperty("user.home");
     public final String SEPARATOR 	= System.getProperty("file.separator");
-	public final String CONF            = SMI_HOME + SEPARATOR + "conf";
+	public final String CONF        = SMI_HOME + SEPARATOR + "conf";
     public final String TMP 		= System.getProperty("java.io.tmpdir");
     public final int ERROR 			= 0;
     public final int WARNING 		= 1;
@@ -48,4 +47,5 @@ public interface ServerConstants {
             						   "            </row>\n"};
     public final String [] TAGS_COL_HEAD = {"       <col type=\"","\">"};
     public final String [] TAGS_COL = {"                <col>","</col>\n"};    
+    
 }

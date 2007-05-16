@@ -40,7 +40,7 @@ public class MessageConfirmer {
 			try {
 				queryRunner = new QueryRunner(sqlCode,sqlArgs);
 				queryRunner.setAutoCommit(false);
-				queryRunner.runSQL();
+				queryRunner.executeSQL();
 				queryRunner.commit();
 				LogWriter.write(
 						"INFO: Confirmada lectura del mensaje con destino {" + 

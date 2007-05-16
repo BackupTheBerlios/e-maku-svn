@@ -27,22 +27,22 @@ import org.jdom.Document;
 public class ClassLogicDriver {
 
     private String driver=null;
-    private Document arg_driver=null;
+    private Document driverArgs=null;
     private String method=null;
-    private Document arg_method=null;
+    private Document methodArgs=null;
     
-    public ClassLogicDriver(String driver,Document arg_driver,String method,Document arg_method) {
+    public ClassLogicDriver(String driver,Document driverArgs,String method,Document methodArgs) {
         this.driver=driver;
-        this.arg_driver=arg_driver;
+        this.driverArgs=driverArgs;
         this.method=method;
-        this.arg_method=arg_method;
+        this.methodArgs=methodArgs;
     }
     
-    public Document getArg_driver() {
-        return arg_driver;
+    public Document getDriverArgs() {
+        return driverArgs;
     }
-    public Document getArg_method() {
-        return arg_method;
+    public Document getMethodArgs() {
+        return methodArgs;
     }
     public String getDriver() {
         return driver;

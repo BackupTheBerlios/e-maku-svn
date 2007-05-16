@@ -16,6 +16,7 @@ public class DailyIterator implements ScheduleIterator {
         this.hourOfDay = hourOfDay;
         this.minute = minute;
         this.second = second;
+        
         calendar.setTime(date);
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         calendar.set(Calendar.MINUTE, minute);

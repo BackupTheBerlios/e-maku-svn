@@ -3,7 +3,7 @@ package com.kazak.smi.admin.gui.table;
 import java.awt.*;
 import javax.swing.*;
 
-public class BevelArrowIcon implements Icon {
+public class ArrowIcon implements Icon {
 	public static final int UP    = 0;         // direction
 	public static final int DOWN  = 1;
 
@@ -15,7 +15,7 @@ public class BevelArrowIcon implements Icon {
 	private int size;
 	private int direction;
 
-	public BevelArrowIcon(int direction, boolean isRaisedView, boolean isPressedView) {
+	public ArrowIcon(int direction, boolean isRaisedView, boolean isPressedView) {
 		if (isRaisedView) {
 			if (isPressedView) {
 				init( UIManager.getColor("controlLtHighlight"),
@@ -43,11 +43,10 @@ public class BevelArrowIcon implements Icon {
 		}
 	}
 
-	public BevelArrowIcon(Color edge1, Color edge2, Color fill,
+	public ArrowIcon(Color edge1, Color edge2, Color fill,
 			int size, int direction) {
 		init(edge1, edge2, fill, size, direction);
 	}
-
 
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		switch (direction) {

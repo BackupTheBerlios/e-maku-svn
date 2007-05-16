@@ -4,8 +4,8 @@ import java.io.File;
 //import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import org.jdom.Document;
@@ -13,60 +13,57 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
-import com.kazak.smi.lib.misc.ClientConst;
+import com.kazak.smi.lib.misc.ClientConstants;
 
-public class ConfigFileClient {
+public class ClientConfigFile {
 
-    private static SAXBuilder builder;
+    private static SAXBuilder saxBuilder;
     private static Document doc;
     private static Element root;
-    private static int serverport;
+    private static int serverPort;
     private static String host;
     private static int time = -1;
     
     public static void loadSettings() { //throws ConfigFileNotLoadException {
 
     	String os = System.getProperty("os.name");
-        String path = ClientConst.unixConfigPath + "smi_client.conf";
+        String path = ClientConstants.unixConfigPath + "smi_client.conf";
         if (os.startsWith("Windows")) {
-            path = ClientConst.winConfigPath + "smi_client.conf";
+            path = ClientConstants.winConfigPath + "smi_client.conf";
         } 
         
-        File proof = new File(path);
-        if (!proof.exists()) {
-			JLabel label = new JLabel(
-					"No se encontró el archivo \n"+
-					"de configuración.\n" +
-					"Contacte al administrador del sistema.");
-			label.setHorizontalTextPosition(JLabel.CENTER);
+        File configFile = new File(path);
+        if (!configFile.exists()) {
 			JOptionPane.showMessageDialog(
 					null,
-					label,
-					"Error al iniciar",
+					"No se encontró el archivo de configuración.\n" +
+					"Por favor, Contacte al administrador del sistema.",
+					"Error del Sistema",
 					JOptionPane.ERROR_MESSAGE);
 			
 			System.exit(0);
         }
     	
         try {
-            builder = new SAXBuilder(false);
+            saxBuilder = new SAXBuilder(false);
                         
-            doc = builder.build(path);
+            doc = saxBuilder.build(path);
             root = doc.getRootElement();
-            java.util.List Lconfig = root.getChildren();
-            Iterator i = Lconfig.iterator();
-            while (i.hasNext()) {
-                Element data = (Element) i.next();
+            List configList = root.getChildren();
+            Iterator iterator = configList.iterator();
+            while (iterator.hasNext()) {
+                Element data = (Element) iterator.next();
                 String name = data.getName();
                 if (name.equals("host")) {
                     host = data.getValue();
                 } else if (name.equals("serverport")) {
-                    serverport = Integer.parseInt(data.getValue());
+                    serverPort = Integer.parseInt(data.getValue());
                 } else if (name.equals("time")) {
                     time = Integer.parseInt(data.getValue());
                 }
             }
         }
+        // TODO: Corregir el manejo de excepciones aqui / Precisar mensaje de error
         /* catch (FileNotFoundException FNFEe) {
             throw new ConfigFileNotLoadException();
         } */
@@ -84,7 +81,7 @@ public class ConfigFileClient {
     }
    
     public static int getServerPort() {
-        return serverport;
+        return serverPort;
     }
     
     public static int getTime() {

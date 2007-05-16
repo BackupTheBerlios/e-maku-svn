@@ -40,15 +40,14 @@ public class LogServerViewer extends Thread {
 		LogServerViewer.requestReceived = false;
 	}
 	
-	
 	public static void reset() {
 		textArea.setText("");
 		LogServerViewer.requestReceived = true;
 	}
 	
 	public static void loadLog(Document doc) {
-		Element e  = doc.getRootElement().getChild("text");
-		String text = e.getValue();
+		Element element  = doc.getRootElement().getChild("text");
+		String text = element.getValue();
 		textArea.append(text);
 		textArea.setCaretPosition(textArea.getText().length());
 	}
@@ -69,8 +68,7 @@ public class LogServerViewer extends Thread {
 		});
 		
 		scroll = new JScrollPane(textArea);
-		listener = new Listener();
-		
+		listener = new Listener();	
 		popup.add(new JLabel("Edición"));
 		popup.add(new JSeparator());
 		
@@ -88,7 +86,6 @@ public class LogServerViewer extends Thread {
 		item.setActionCommand("clean");
 		item.addActionListener(listener);
 		popup.add(item);
-		
 		popup.add(new JSeparator());
 		
 		item = new JMenuItem("Ver Registro del servidor");
@@ -96,15 +93,13 @@ public class LogServerViewer extends Thread {
 		item.addActionListener(listener);
 		popup.add(item);
 		
-		
-		
 		panel = new JPanel(new BorderLayout());
 		panel.add(scroll,BorderLayout.CENTER);
 	}
 	
 	public void run() {
 		try {
-			SocketWriter.writing(SocketHandler.getSock(),document);
+			SocketWriter.write(SocketHandler.getSock(),document);
 			int typeCursor = Cursor.WAIT_CURSOR;
 			Cursor cursor = Cursor.getPredefinedCursor(typeCursor);
 			int times = 0;
@@ -120,13 +115,13 @@ public class LogServerViewer extends Thread {
 					JOptionPane.showMessageDialog(
 							MainWindow.getFrame(),
 							"<html><h3>Tiempo de espera agotado para la solicitud del" +
-							"registro del servidor</h3></html>");
+							"registro del servidor.</h3></html>");
 					break;
 				}
 			}
 			textArea.setCursor(Cursor.getDefaultCursor());
 		} catch (IOException ex) {
-			System.out.println("Error de entrada y salida");
+			System.out.println("ERROR: Falla de entrada/salida");
 			System.out.println("mensaje: " + ex.getMessage());
 			ex.printStackTrace();
 		}

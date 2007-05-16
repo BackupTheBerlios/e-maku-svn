@@ -21,14 +21,12 @@ package com.kazak.smi.admin.transactions;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
+
 public class QuerySenderException extends Exception {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1278468904256344708L;
 
 	public String getMessage() {
-        return  "No se pudo ejecutar la transaccion";
+        return  "No se pudo ejecutar la transacción";
     }
 }

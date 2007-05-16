@@ -1,0 +1,63 @@
+2007-05-16 00:10:18 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=57225,localport=9119] 1
+2007-05-16 00:10:18 INFO: Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-16 00:10:18 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1
+2007-05-16 00:17:21 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=57274,localport=9119] 1
+2007-05-16 00:17:21 INFO: Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-16 00:17:21 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1
+2007-05-16 00:20:02 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=57275,localport=9119] 1
+2007-05-16 00:20:02 INFO: Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-16 00:20:02 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1
+2007-05-16 00:23:18 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=59664,localport=9119] 1
+2007-05-16 00:23:18 INFO: Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-16 00:23:18 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1
+2007-05-16 00:24:45 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=59665,localport=9119] 1
+2007-05-16 00:24:46 INFO: Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-16 00:24:46 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1
+2007-05-16 00:26:18 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=33394,localport=9119] 1
+2007-05-16 00:26:18 INFO: Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-16 00:26:18 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1
+2007-05-16 00:28:30 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=33395,localport=9119] 1
+2007-05-16 00:28:30 INFO: Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-16 00:28:30 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1
+2007-05-16 00:32:50 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=53180,localport=9119] 1
+2007-05-16 00:32:50 INFO: Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-16 00:32:50 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1
+2007-05-16 00:50:11 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=42689,localport=9119] 1
+2007-05-16 00:50:11 INFO: Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-16 00:50:11 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1
+2007-05-16 00:56:34 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=51434,localport=9119] 1
+2007-05-16 00:56:34 INFO: Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-16 00:56:34 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1
+2007-05-16 00:58:39 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=51435,localport=9119] 1
+2007-05-16 00:58:39 INFO: Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-16 00:58:39 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1
+2007-05-16 01:01:23 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=45629,localport=9119] 1
+2007-05-16 01:01:23 INFO: Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-16 01:01:23 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1
+2007-05-16 01:05:54 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=41732,localport=9119] 1
+2007-05-16 01:05:54 INFO: Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-16 01:05:54 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1
+2007-05-16 01:08:14 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=41733,localport=9119] 1
+2007-05-16 01:08:14 INFO: Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-16 01:08:14 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1
+2007-05-16 01:09:37 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=41734,localport=9119] 1
+2007-05-16 01:09:37 INFO: Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-16 01:09:37 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1
+2007-05-16 01:10:44 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=41735,localport=9119] 1
+2007-05-16 01:10:44 INFO: Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-16 01:10:44 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1
+2007-05-16 01:16:28 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=56346,localport=9119] 1
+2007-05-16 01:16:28 INFO: Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-16 01:16:28 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1
+2007-05-16 01:17:24 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=56347,localport=9119] 1
+2007-05-16 01:17:24 INFO: Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-16 01:17:24 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1
+2007-05-16 01:18:51 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=56348,localport=9119] 1
+2007-05-16 01:18:51 INFO: Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-16 01:18:51 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1
+2007-05-16 01:20:16 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=56349,localport=9119] 1
+2007-05-16 01:20:16 INFO: Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-16 01:20:16 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1
+2007-05-16 01:23:13 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=43197,localport=9119] 1
+2007-05-16 01:23:13 INFO: Inicio de autenticación para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-16 01:23:13 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1

@@ -9,7 +9,7 @@ public class HistoryDataModel extends AbstractTableModel {
 	private static final long serialVersionUID = -6111771046854883088L;
 	
 	private String[] titles = {
-			"No","Fecha","Hora","Remitente","Destinatario","Asunto","Mensaje","Leido"
+			"No","Fecha","Hora","Remitente","Destinatario","Asunto","Mensaje","Leído"
 	};
 	
 	private Class[] types = {
@@ -17,10 +17,10 @@ public class HistoryDataModel extends AbstractTableModel {
 			String.class,String.class,String.class,Boolean.class};
 	
 	private int[] width = {30,80,60,100,100,170,0,40};
-	private Vector<Vector<Object>> data;
+	private Vector<Vector<Object>> dataVector;
 	
 	public HistoryDataModel(Vector<Vector<Object>> data) {
-		this.data = data;
+		this.dataVector = data;
 	}
 	
 	public String getColumnName(int index) {
@@ -32,7 +32,7 @@ public class HistoryDataModel extends AbstractTableModel {
 	}
 
 	public int getRowCount() {
-		return data.size();
+		return dataVector.size();
 	}
 
 	public Class<?> getColumnClass(int columnIndex) {
@@ -40,11 +40,11 @@ public class HistoryDataModel extends AbstractTableModel {
 	}
 	
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Object val = data.get(rowIndex).get(columnIndex);
+		Object value = dataVector.get(rowIndex).get(columnIndex);
 		if (columnIndex==7) {
-			return Boolean.parseBoolean(val.toString());
+			return Boolean.parseBoolean(value.toString());
 		}
-		return val;
+		return value;
 	}
 	
 	public int getWidth(int i) {

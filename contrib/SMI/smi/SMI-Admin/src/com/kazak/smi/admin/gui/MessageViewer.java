@@ -15,10 +15,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
-
-
 /**
- * @author     cristian
+ * @author     Cristian Cepeda
  */
 public class MessageViewer implements ActionListener {
 	
@@ -53,14 +51,14 @@ public class MessageViewer implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if ("next".equals(command)) {
-			JTable table = historyDataPanel.getJTData();
+			JTable table = historyDataPanel.getTable();
 			int rowIndex = table.getSelectedRow();
 			if (rowIndex+1 < table.getRowCount()) {
 				table.changeSelection((rowIndex+1),0,false,false);
 			}
 		}
 		else if ("previus".equals(command)) {
-			JTable table = historyDataPanel.getJTData();
+			JTable table = historyDataPanel.getTable();
 			int rowIndex = table.getSelectedRow();
 			if (rowIndex >= 0) {
 				table.changeSelection((rowIndex-1),0,false,false);
@@ -75,23 +73,23 @@ public class MessageViewer implements ActionListener {
 		    if(returnVal == JFileChooser.APPROVE_OPTION) {
 		    	File file = chooser.getSelectedFile();
 		    	try {
-					FileOutputStream fos = new FileOutputStream(file);
-					JTable table = historyDataPanel.getJTData(); 
+					FileOutputStream outputStream = new FileOutputStream(file);
+					JTable table = historyDataPanel.getTable(); 
 					int maxRows = table.getRowCount();
 					int maxCols = table.getColumnCount();
 					byte[] tab = "\t".getBytes();
-					byte[] nl = "\n".getBytes();
+					byte[] endOfLine = "\n".getBytes();
 					for (int i=0; i < maxRows ; i++) {
 						for (int j=0; j < maxCols ; j++) {
 							String val = table.getValueAt(i,j).toString().trim();
-							fos.write(val.getBytes());
+							outputStream.write(val.getBytes());
 							if ( j< (maxCols-1) ) {
-								fos.write(tab);	
+								outputStream.write(tab);	
 							}
 						}
-						fos.write(nl);
+						outputStream.write(endOfLine);
 					}
-					fos.close();
+					outputStream.close();
 					JOptionPane.showMessageDialog(
 							frame,
 							"Archivo guardado con éxito.");

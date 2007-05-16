@@ -1,4 +1,5 @@
 package com.kazak.smi.server.businessrules;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -20,6 +21,7 @@ import org.jdom.Element;
 
 import com.kazak.smi.server.comunications.SocketWriter;
 import com.kazak.smi.server.control.DailyIterator;
+import com.kazak.smi.server.control.MessageDistributor;
 import com.kazak.smi.server.control.Scheduler;
 import com.kazak.smi.server.control.SchedulerTask;
 import com.kazak.smi.server.database.connection.ConnectionsPool;
@@ -56,9 +58,9 @@ public class SyncManager {
 	public SyncManager() {
 		try {
             oracleSQL =	getOracleSQLString();
-			LogWriter.write("INFO: Iniciando demonio de sincronización");
+			LogWriter.write("INFO: Iniciando demonio de sincronizacion");
 			loadSettings();
-			for (OracleSyncTask oraclesync:ConfigFileHandler.getOraclesync()) {				
+			for (OracleSyncTask oraclesync:ConfigFileHandler.getSyncTaskList()) {				
 				String minute = Integer.toString(oraclesync.getMinute());
 				String time = "am";
 				if (minute.length() == 1) {
@@ -84,26 +86,56 @@ public class SyncManager {
 	 */
 	public SyncManager (SocketChannel sock) {
 		this.sock = sock;
-		try {
+		
+		// If there is not access to Oracle, stop sync task
+    	if (!ConfigFileHandler.isConnectOnInit(1)) {
+    		LogWriter.write("ADVERTENCIA: Proceso de sincronizacion con Oracle aplazado");
+    		LogWriter.write("ADVERTENCIA: Motivo -> Base de datos deshabilitada desde configuracion [" 
+    				+ ConfigFileHandler.getDBName(1) + "]");	
+
+    		String msg = "ERROR: La base de datos Oracle se encuentra " + 
+    					"deshabilitada desde la configuración del sistema.\n" +
+    					"Para reactivar el servicio, modifique el archivo server.conf " + 
+    					"y reinicie el servidor SMI.";
+    		
+			Element syncErr = new Element("ERRSYNC");
+			Element message = new Element("message");
+			message.setText(msg);
+			syncErr.addContent(message);
+			
+			try {
+				SocketWriter.write(sock,new Document(syncErr));
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}	
+    		return;
+    	}
+
+    	try {
             oracleSQL =	getOracleSQLString();
 			loadSettings();
 		} catch (FileNotFoundException e) {
+			String msg = "ERROR: No se encontró el archivo de configuración de la sincronización.";
+			MessageDistributor.alarmSender("Archivo oracle.sql no encontrado",msg + "\nCausa:\n" + e.getMessage());
 			Element syncErr = new Element("ERRSYNC");
 			Element message = new Element("message");
-			message.setText(
-					"ERROR: No se encontró el archivo de configuración de la sincronización.");
+			message.setText(msg);
+			syncErr.addContent(message);
+			
 			try {
-				SocketWriter.writing(sock,new Document(syncErr));
+				SocketWriter.write(sock,new Document(syncErr));
 			} catch (IOException ex) {
 				ex.printStackTrace();
-			}
+			}	
 			e.printStackTrace();
+			
 		} catch (IOException e) {
 			Element syncErr = new Element("ERRSYNC");
 			Element message = new Element("message");
 			message.setText("ERROR: Falla de E/S durante la sincronización.");
+			syncErr.addContent(message);
 			try {
-				SocketWriter.writing(sock,new Document(syncErr));
+				SocketWriter.write(sock,new Document(syncErr));
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
@@ -122,8 +154,8 @@ public class SyncManager {
 				Element reload = new Element("RELOADTREE");
 				Element succesSync = new Element("SUCCESSSYNC");
 				try {
-					SocketWriter.writing(sock,new Document(reload));
-					SocketWriter.writing(sock,new Document(succesSync));
+					SocketWriter.write(sock,new Document(reload));
+					SocketWriter.write(sock,new Document(succesSync));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -140,35 +172,30 @@ public class SyncManager {
 	 * This method loads the Oracle SQL sentence string from a config file
 	 * @return
 	 */
-	public String getOracleSQLString() {
+	public String getOracleSQLString() throws FileNotFoundException, IOException {
 		String sql = "";
-		try {
-				String line="";
-				BufferedReader in = new BufferedReader(new FileReader(ServerConstants.CONF + ServerConstants.SEPARATOR + "oracle.sql"));
-				while ((line = in.readLine()) != null)   {
-						sql += " " + line;
-				}
-				in.close();
+		String path = ServerConstants.CONF + ServerConstants.SEPARATOR + "oracle.sql";
+		String line = "";
+		
+		BufferedReader in = new BufferedReader(new FileReader(path));
+		while ((line = in.readLine()) != null)   {
+			sql += " " + line;
+		}
+		in.close();
 
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		if(sql==null || sql.equals("")) {
+			LogWriter.write("ERROR: Sentencia SQL para sincronizacion es nula o vacia.");
+			LogWriter.write("ERROR: Revisar archivo de configuracion: " + path);
+		}
 
-			if(sql==null || sql.equals("")) {
-				LogWriter.write("ERROR: Sentencia SQL para sincronización es nula o vacía.");
-				LogWriter.write("ERROR: Revisar archivo de configuración: oracle.sql");
-			}
-			
-			return sql;
+		return sql;
 	}
 	
 	/**
 	 * This method initializes the vectors where the users and POS info is stored
 	 * 
 	 */
-	public void loadSettings() throws FileNotFoundException, IOException {
+	public void loadSettings() { //throws FileNotFoundException, IOException {
 		usersHash = new Hashtable<String, User>();
 		wsHash = new Hashtable<String, String>();
 		
@@ -189,7 +216,10 @@ public class SyncManager {
 			oracleConnection = ConfigFileHandler.getConnection(oracleDB);
 						
 			if (oracleConnection == null) {
-				LogWriter.write("ERROR: La conexion a la base de datos " + oracleDB + " es invalida.");
+				String msg = "ERROR: La conexion a la base de datos " + oracleDB + " es invalida.";
+				LogWriter.write(msg);
+				MessageDistributor.alarmSender("Conexion a Oracle -> " + oracleDB, msg);
+			
 				return false;
 			}
 			
@@ -198,15 +228,15 @@ public class SyncManager {
 			resultSet = statement.executeQuery(oracleSQL);
 			int i=0;
 			while (resultSet.next()) {
-				String code     = resultSet.getString(1).trim();
-				String wsCode   = resultSet.getString(2).trim();
+				String code = resultSet.getString(1).trim();
+				String wsCode = resultSet.getString(2).trim();
 				String wsPOSName = resultSet.getString(3).trim();
-				String userName   = resultSet.getString(4).trim();
-				User user     = new User();
-				user.code     = code;
+				String userName = resultSet.getString(4).trim();
+				User user = new User();
+				user.code = code;
 				user.password =  generatePassword(code);
-				user.name     = userName; 
-				user.posCode  = wsCode;
+				user.name = userName; 
+				user.posCode = wsCode;
 				
 				usersHash.put(code,user);
 				if (!wsHash.containsKey(wsCode)) {
@@ -218,13 +248,18 @@ public class SyncManager {
 			resultSet.close();
 			statement.close();
 			oracleConnection.close();
+			
 			return true;
 		}
 		catch (ClassNotFoundException e) {
 			e.printStackTrace();
+			
 			return false;
 		} catch (SQLException e) {
+			String msg = "ERROR: No se pudo realizar la consulta en la base de datos " + oracleDB + "\nCausa:\n" + e.getMessage();
+			MessageDistributor.alarmSender("Consulta a Oracle -> " + oracleDB, msg);
 			processSQLException(oracleDB,e,resultSet);
+			
 			return false;
 		}
 	}
@@ -250,7 +285,10 @@ public class SyncManager {
 			resultSet.close();
 			
 		} catch (SQLException e) {
+			String msg = "ERROR: Falla al consultar la base de datos PostgreSQL [" + pgdb + "].\nCausa:\n" + e.getMessage();
+			MessageDistributor.alarmSender("Conexion a PostgreSQL -> " + pgdb, msg);
 			processSQLException(pgdb,e,resultSet);
+			
 			return false;
 		}
 		
@@ -266,7 +304,10 @@ public class SyncManager {
 			resultSet.close();
 			statement.close();
 		} catch (SQLException e) {
+			String msg = "ERROR: Falla al consultar la base de datos PostgreSQL [" + pgdb + "].\nCausa:\n" + e.getMessage();
+			MessageDistributor.alarmSender("Conexion a PostgreSQL -> " + pgdb, msg);
 			processSQLException(pgdb,e,resultSet);
+			
 			return false;
 		}
 		
@@ -279,12 +320,12 @@ public class SyncManager {
 	public void processSQLException(String db, SQLException e, ResultSet rs) {
 		Element errSync = new Element("ERRSYNC");
 		Element message = new Element("message");		
-		String text = "Error en la base de datos " + db + "\nCausa: " + e.getMessage();
+		String text = "ERROR: Falla en la base de datos " + db + "\nCausa: " + e.getMessage();
 		message.setText(text);
 		errSync.addContent(message);
 		
 		try {
-			SocketWriter.writing(sock,new Document(errSync));
+			SocketWriter.write(sock,new Document(errSync));
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -316,6 +357,7 @@ public class SyncManager {
 			statement = ConnectionsPool.getConnection(pgdb).createStatement();
 		} catch (SQLException e) {
 			processSQLException(pgdb,e,null);
+
 			return false;
 		}
 
@@ -323,14 +365,18 @@ public class SyncManager {
 		LogWriter.write("INFO: Eliminando usuarios deshabilitados...");
 		for (String userCode : deletedUsersVector) {
 			try {
-				 SQL = "DELETE FROM " + "usuarios_pventa " + "WHERE uid=(SELECT uid FROM usuarios WHERE login='"+userCode+"')";
+				 SQL = "DELETE FROM " + "usuarios_pventa " + "WHERE uid=(SELECT uid FROM usuarios WHERE login='" + userCode + "')";
 				 statement.execute(SQL);
-				 SQL = "DELETE FROM usuarios WHERE login='"+userCode+"'";
+				 SQL = "DELETE FROM usuarios WHERE login='" + userCode + "'";
 				 statement.execute(SQL);
 			} catch (SQLException e) {
-				LogWriter.write("ERROR: Falla mientras se eliminaba el usuario (deshabilitado) con codigo: " + userCode);
+				String msg = "ERROR: Falla mientras se eliminaba el usuario (deshabilitado) con codigo: " + userCode;
+				MessageDistributor.alarmSender("Eliminando usuario deshabilitado",msg 
+						+ "\nSENTENCIA: " + SQL + "\nCausa:\n" + e.getMessage());
+				LogWriter.write(msg);
 				LogWriter.write("SENTENCIA: " + SQL);
 				processSQLException(pgdb,e,null);
+
 				return false;
 			}
 		}
@@ -338,10 +384,13 @@ public class SyncManager {
 		LogWriter.write("INFO: Eliminando puntos de venta deshabilitados...");
 		for (String wsCode : deletedWSVector) {
 			try {
-				SQL = "DELETE FROM puntosv WHERE codigo='"+wsCode+"'";
+				SQL = "DELETE FROM puntosv WHERE codigo='" + wsCode + "'";
 				statement.execute(SQL);
 			} catch (SQLException e) {
-				LogWriter.write("ERROR: Falla mientras se eliminaba el punto de venta (deshabilitado) con codigo: " + wsCode);
+				String msg = "ERROR: Falla mientras se eliminaba el punto de venta (deshabilitado) con codigo: " + wsCode;
+				MessageDistributor.alarmSender("Eliminando punto de venta deshabilitado",msg 
+						+ "\nSENTENCIA: " + SQL + "\nCausa:\n" + e.getMessage());
+				LogWriter.write(msg);
 				LogWriter.write("SENTENCIA: " + SQL);
 				processSQLException(pgdb,e,null);
 				return false;
@@ -356,16 +405,20 @@ public class SyncManager {
 			try {
 				name = wsHash.get(key);
 				if (key!=null && name!=null) {
-					SQL = "INSERT INTO puntosv (codigo,nombre) values('"+key+"','"+name+"')";
+					SQL = "INSERT INTO puntosv (codigo,nombre) values('" + key + "','" + name + "')";
 					statement.execute(SQL);
-					LogWriter.write("INFO: Punto de colocacion => " + name+ " almacenado");
+					LogWriter.write("INFO: Punto de colocacion => " + name + " almacenado");
 				} else {
 					LogWriter.write("ERROR: Codigo " + key + " no pertenece a ningun punto de venta.");
 				}
 			} catch (SQLException e) {
-				LogWriter.write("ERROR: Falla mientras se ingresaba el punto de colocacion: {" + name + "} con codigo {" + key + "}");
+				String msg = "ERROR: Falla mientras se ingresaba el punto de colocacion: {" + name + "} con codigo {" + key + "}";
+				MessageDistributor.alarmSender("Ingresando punto de colocacion",msg 
+						+ "\nSENTENCIA: " + SQL + "\nCausa:\n" + e.getMessage());
+				LogWriter.write(msg);
 				LogWriter.write("SENTENCIA: " + SQL);
 				processSQLException(pgdb,e,null);
+				
 				return false;
 			}
 		}
@@ -379,17 +432,21 @@ public class SyncManager {
 				user = usersHash.get(key);
 				if (user != null) {
 					SQL = "INSERT INTO usuarios (login,clave,nombres) " + 
-					      "values('"+user.code+"',md5('"+user.password+"'),'"+user.name+"')";
+					      "values('" + user.code + "',md5('" + user.password + "'),'" + user.name + "')";
 					statement.execute(SQL);
 					LogWriter.write("INFO: Colocador => " + user.name + " almacenado");
 				} else {
-					LogWriter.write("ERROR: Codigo " + key + " no pertenece a ningun usuario.");
+					LogWriter.write("ERROR: Codigo " + key + " no pertenece a ningun usuario");
 				}
 				
 			} catch (SQLException e) {
-				LogWriter.write("ERROR: Falla mientras se ingresaba el usuario: {" + user.code + "," + user.name + "}");
+				String msg = "ERROR: Falla mientras se ingresaba el usuario: {" + user.code + "," + user.name + "}";
+				MessageDistributor.alarmSender("Ingresando usuario",msg 
+						+ "\nSENTENCIA: " + SQL + "\nCausa:\n" + e.getMessage());
+				LogWriter.write(msg);
 				LogWriter.write("SENTENCIA: " + SQL);
 				processSQLException(pgdb,e,null);
+				
 				return false;
 			}
 		}
@@ -415,9 +472,13 @@ public class SyncManager {
 					} 
 
 				} catch (SQLException e) {
-					LogWriter.write("ERROR: Falla mientras se consultaba el usuario: {" + user.code + "}");
+					String msg = "ERROR: Falla mientras se consultaba el usuario: {" + user.code + "}";
+					MessageDistributor.alarmSender("Consultando usuario",msg 
+							+ "\nSENTENCIA: " + SQL + "\nCausa:\n" + e.getMessage());					
+					LogWriter.write(msg);
 					LogWriter.write("SENTENCIA: " + SQL);
 					processSQLException(pgdb,e,null);
+					
 					return false;
 				}
 
@@ -431,9 +492,13 @@ public class SyncManager {
 					posResultSet.close();
 					uidResultSet.close();
 				} catch (SQLException e) {
-					LogWriter.write("ERROR: Falla mientras se consultaba el punto de venta: {" + user.posCode + "}");
+					String msg = "ERROR: Falla mientras se consultaba el punto de venta: {" + user.posCode + "}";
+					MessageDistributor.alarmSender("Consultando punto de venta",msg 
+							+ "\nSENTENCIA: " + SQL + "\nCausa:\n" + e.getMessage());					
+					LogWriter.write(msg);
 					LogWriter.write("SENTENCIA: " + SQL);
 					processSQLException(pgdb,e,null);
+					
 					return false;
 				}
 
@@ -443,43 +508,59 @@ public class SyncManager {
 						try {
 							statement.execute(SQL);
 						} catch (SQLException e) {
-							LogWriter.write("ERROR: Falla mientras se ingresaba relacion usuario/pos: {" + uid + "," + posCode + "}");
+							String msg = "ERROR: Falla mientras se ingresaba relacion usuario/pos: {" + uid + "," + posCode + "}";
+							MessageDistributor.alarmSender("Insertando relacion usuario/pos",msg 
+									+ "\nSENTENCIA: " + SQL + "\nCausa:\n" + e.getMessage());					
+							LogWriter.write(msg);
 							LogWriter.write("SENTENCIA: " + SQL);
 							processSQLException(pgdb,e,null);
+							
 							return false;
 						}
 					} else {			
+						String msg = "ERROR: Falla sincronizando, el codigo del punto de venta {" +
+			              user.posCode + "} no existe, por favor verifique las bases de datos";
+						MessageDistributor.alarmSender("Punto de venta inexistente",msg); 
+													
 						Element syncErr = new Element("ERRSYNC");
 						Element message = new Element("message");
-						String text = "Error sincronizando, el codigo del punto de venta {" +
-						              user.posCode + "} no existe, por favor verifique las bases de datos";
-						message.setText(text);
+						message.setText(msg);
+						syncErr.addContent(message);
+						
 						try {
-							SocketWriter.writing(sock,new Document(syncErr));
+							SocketWriter.write(sock,new Document(syncErr));
 						} catch (IOException ex) {
 							ex.printStackTrace();
 						}
-						LogWriter.write(text);
+						LogWriter.write(msg);
+						
 						return false;
 					}
 				} else {
+					String msg = "Error sincronizando, el uid de usuario para el codigo {" +
+		              user.code + "} no existe, por favor verifique las bases de datos.";
+					MessageDistributor.alarmSender("Usuario inexistente",msg); 
+					
 					Element syncErr = new Element("ERRSYNC");
 					Element message = new Element("message");
-					String text = "Error sincronizando, el uid de usuario para el codigo {" +
-					              user.code + "} no existe, por favor verifique las bases de datos.";
-					message.setText(text);
+					message.setText(msg);
+					syncErr.addContent(message);
+					
 					try {
-						SocketWriter.writing(sock,new Document(syncErr));
+						SocketWriter.write(sock,new Document(syncErr));
 					} catch (IOException ex) {
 						ex.printStackTrace();
 					}
-					LogWriter.write(text);
+					LogWriter.write(msg);
+					
 					return false;
 				}
 				LogWriter.write("INFO: Asignando Colocador => " + user.name + " (" + user.code + ") " +
 						        "al punto => " + posName + " {" + user.posCode + "}");
 			} else {
-				LogWriter.write("ERROR: Codigo " + key + " no esta asignado a ningun punto de venta.");
+				String msg = "ERROR: Codigo " + key + " no esta asignado a ningun punto de venta";
+				MessageDistributor.alarmSender("Codigo de POS inexistente",msg);
+				LogWriter.write(msg);
 			}
 		}
 		try {
@@ -534,18 +615,27 @@ public class SyncManager {
 
 	    private Scheduler scheduler = new Scheduler();
 	    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss.SSS");
-	    private OracleSyncTask oraclesync;
+	    private OracleSyncTask oracleSyncTask;
 	    
 	    public Cron(OracleSyncTask oraclesync){
-	    	this.oraclesync=oraclesync;
+	    	this.oracleSyncTask = oraclesync;
 	    }
 	    
 	    public void start() {
+	    		    	
 	        scheduler.schedule(new SchedulerTask() {
 	            public void run() {
+	            	
+	            	if (!ConfigFileHandler.isConnectOnInit(1)) {
+	            		LogWriter.write("ADVERTENCIA: Tarea de sincronizacion con Oracle aplazada");
+	            		LogWriter.write("ADVERTENCIA: Motivo -> Base de datos deshabilitada desde configuracion [" 
+	            				+ ConfigFileHandler.getDBName(1) + "]");	
+	            		return;
+	            	}
+ 	            	
 	                LogWriter.write("INFO: Iniciando sincronizacion programada [" + dateFormat.format(new Date()) + "]");
-	                
 	                LogWriter.write("INFO: Procesando usuarios...");
+	                
 	                //Users sync
 					if (loadOracleData()) {
 						if (loadPostgresData()){
@@ -576,33 +666,35 @@ public class SyncManager {
 						}
 						
 					} catch (SQLException e) {
-							LogWriter.write(
-									"ERROR: Falla durante la sincronizacion.\n" +
-									"Causa: " +  e.getMessage());
+ 							String msg = "ERROR: Falla durante la sincronizacion\n" +
+ 								"Causa: " +  e.getMessage(); 
+ 							MessageDistributor.alarmSender("Error de SQL",msg);
+							LogWriter.write(msg);
 							e.printStackTrace();
 					}
 					
 					int limit = 0;
 						
 					try {	
-						sql = "SELECT count(*)-"+ConfigFileHandler.getMaxMessagesDataBase()+" FROM mensajes";
+						sql = "SELECT count(*)-"+ConfigFileHandler.getMaxMessagesNumAllowed()+" FROM mensajes";
 						LogWriter.write("INFO: Revisando cantidad de mensajes almacenados en la base de datos...");
 						resultSet = statement.executeQuery(sql);
 						resultSet.next();
 						limit = resultSet.getInt(1);
 						resultSet.close();
 					} catch (SQLException e) {
-						LogWriter.write(
-								"ERROR: Falla durante la sincronizacion.\n" +
-								"Causa: " +  e.getMessage());
-						e.printStackTrace();
+							String msg = "ERROR: Falla durante la sincronizacion\n" +
+								"Causa: " +  e.getMessage(); 
+							MessageDistributor.alarmSender("Error de SQL",msg);
+							LogWriter.write(msg);
+							e.printStackTrace();
 					}
 					
 					try {
 						if (limit > 0 ) {
 							LogWriter.write("INFO: El numero maximo de mensajes permitidos en la base de datos ha sido alcanzado.");
 							LogWriter.write("INFO: Procediendo a eliminar " + limit + " mensajes...");
-							sql = "SELECT mid FROM mensajes ORDER BY fecha ASC ,hora ASC LIMIT "+limit;
+							sql = "SELECT mid FROM mensajes ORDER BY fecha ASC ,hora ASC LIMIT " + limit;
 							resultSet = statement.executeQuery(sql);
 							ArrayList<Integer> mids = new ArrayList<Integer>();
 							while (resultSet.next()) {
@@ -610,30 +702,34 @@ public class SyncManager {
 							}
 							resultSet.close();	
 							for (Integer mid : mids) {
-								sql = "DELETE FROM mensajes WHERE mid="+mid+";";
+								sql = "DELETE FROM mensajes WHERE mid=" + mid + ";";
 								statement.addBatch(sql);
 							}
 							statement.executeBatch();
 						}
 						ConnectionsPool.CloseConnections();
 					} catch (SQLException e) {
-						LogWriter.write(
-								"ERROR: Falla durante la sincronizacion\n" +
-								"Causa: " +  e.getMessage());
+						String msg = "ERROR: Falla durante la sincronizacion\n" +
+						"Causa: " +  e.getMessage(); 
+						MessageDistributor.alarmSender("Error de SQL",msg);
+						LogWriter.write(msg);
 						e.printStackTrace();
 					}
 					finally {
-						LogWriter.write("INFO: Mensajes sincronizados satisfactoriamente.");
+						LogWriter.write("INFO: Mensajes sincronizados satisfactoriamente");
 						try {
-							if (resultSet!=null) resultSet.close();
+							if (resultSet!=null) { 
+								resultSet.close();
+							}
 							statement.close();
 						} catch (SQLException e1) {
+							LogWriter.write("ERROR: " + e1.getMessage());
 							e1.printStackTrace();
 						}
 					}
 					
 	            }
-	        },  new DailyIterator(oraclesync.getHour(), oraclesync.getMinute(), oraclesync.getSecond()));
+	        },  new DailyIterator(oracleSyncTask.getHour(), oracleSyncTask.getMinute(), oracleSyncTask.getSecond()));
 	    }
 	}
 

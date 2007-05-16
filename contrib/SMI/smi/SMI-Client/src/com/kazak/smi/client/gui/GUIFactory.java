@@ -33,19 +33,19 @@ public class GUIFactory {
 	}
 
 	public JTextField createTextField(int cols) {
-		JTextField jtf = new JTextField(cols);
+		JTextField textField = new JTextField(cols);
 		Color color = Color.BLACK;
-		jtf.setEnabled(false);		
-		jtf.setDisabledTextColor(color);
-		return jtf;
+		textField.setEnabled(false);		
+		textField.setDisabledTextColor(color);
+		return textField;
 	}
 	
 	public JTextField createTextField(int cols,boolean enabled) {
-		JTextField jtf = new JTextField(cols);
-		jtf.setDocument(new FixedSizePlainDocument(cols));
+		JTextField textField = new JTextField(cols);
+		textField.setDocument(new FixedSizePlainDocument(cols));
 		Color color = Color.BLACK;
-		jtf.setEnabled(enabled);
-		jtf.setDisabledTextColor(color);
-		return jtf;
+		textField.setEnabled(enabled);
+		textField.setDisabledTextColor(color);
+		return textField;
 	}
 }

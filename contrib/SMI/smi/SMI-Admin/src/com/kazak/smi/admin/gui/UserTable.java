@@ -20,17 +20,15 @@ import com.kazak.smi.admin.control.Cache;
 import com.kazak.smi.admin.gui.table.UserModel;
 
 public class UserTable {
-	
-	
+
 	private static final long serialVersionUID = 4182381331394270487L;
 	private UserModel model;
 	private JFrame frame;
 	private JTable table;
 	private JPanel panel;
-	private JButton JBAdd;
-	private JButton JBDel;
-	private JButton JBSearch;
-	private WorkStationsManager ws;
+	private JButton addButton;
+	private JButton deleteButton;
+	private WorkStationsManager ws;	
 	
 	public UserTable(JFrame parent) {
 		frame = parent;
@@ -38,20 +36,24 @@ public class UserTable {
 		model = new UserModel();
 		table = new JTable(model);
 		GUIFactory factory = new GUIFactory();
-		JBAdd = factory.createButton("add.png");
-		JBDel = factory.createButton("remove.png");
-		JBSearch = factory.createButton("search.png");
+		addButton = factory.createButton("add.png");
+		deleteButton = factory.createButton("remove.png");
 		table.setGridColor(Color.BLACK);
 		table.setDefaultEditor(String.class,new CellEditor());
 		table.setSurrendersFocusOnKeystroke(true);
 		ws = new WorkStationsManager();
-		JBAdd.addActionListener(new ActionListener() {
+		
+		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				model.addRow();
+				if (!ws.isVisible()) {
+					ws.clean();
+					ws.search(table);
+				}
 			}
 		});
-		
-		JBDel.addActionListener(new ActionListener() {
+			
+		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (table.getRowCount() > 0 ) {
 					int selected = table.getSelectedRow();
@@ -64,30 +66,20 @@ public class UserTable {
 				}
 			}
 		});
-		JBSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (!ws.isVisible()) {
-					ws.clean();
-					ws.search(table);
-				}
-			}
-		});
-		JPanel jpbuttons =new JPanel();
-		jpbuttons.setLayout(new BoxLayout(jpbuttons,BoxLayout.Y_AXIS));
-		jpbuttons.add(JBAdd);
-		jpbuttons.add(JBDel);
-		jpbuttons.add(JBSearch);
+
+		JPanel buttonsPanel =new JPanel();
+		buttonsPanel.setLayout(new BoxLayout(buttonsPanel,BoxLayout.Y_AXIS));
+		buttonsPanel.add(addButton);
+		buttonsPanel.add(deleteButton);
 		
-		JScrollPane js  = new JScrollPane(table);
-		
-		panel.add(js,BorderLayout.CENTER);
-		panel.add(jpbuttons,BorderLayout.WEST);
+		JScrollPane jscroll  = new JScrollPane(table);
+		panel.add(jscroll,BorderLayout.CENTER);
+		panel.add(buttonsPanel,BorderLayout.WEST);
 	}
 	
 	public void disableButtons() {
-		JBAdd.setEnabled(false);
-		JBDel.setEnabled(false);
-		JBSearch.setEnabled(false);
+		addButton.setEnabled(false);
+		deleteButton.setEnabled(false);
 	}
 	
 	public void setEnabled(boolean b) {
@@ -96,6 +88,10 @@ public class UserTable {
 	
 	public void addData(String code,String name,Boolean b) {
 		model.addRow(code,name,b);
+	}
+	
+	public UserModel getModel() {
+		return model;
 	}
 	
 	public void clear() {
@@ -108,6 +104,10 @@ public class UserTable {
 	
 	public int getRowCount () {
 		return model.getRowCount();
+	}
+	
+	public void removeRow() {
+		model.remove(table.getRowCount()-1);
 	}
 	
 	public Vector<Vector> getData() {
@@ -125,7 +125,7 @@ public class UserTable {
 	    public Object getCellEditorValue() {
 	    	String value = ((JTextField)getComponent()).getText();
 	        if (!Cache.containsWsByCode(value)) {
-	        	JOptionPane.showMessageDialog(frame,"El codigo no existe");
+	        	JOptionPane.showMessageDialog(frame,"El código no existe.");
 	        	((JTextField)getComponent()).setText("");
 	        	return "";
 	        }
@@ -134,8 +134,7 @@ public class UserTable {
 	}
 
 	public void enableButtons() {
-		JBAdd.setEnabled(true);
-		JBDel.setEnabled(true);
-		JBSearch.setEnabled(true);
+		addButton.setEnabled(true);
+		deleteButton.setEnabled(true);
 	}
 }

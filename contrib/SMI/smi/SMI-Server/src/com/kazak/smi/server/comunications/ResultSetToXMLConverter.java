@@ -19,7 +19,7 @@ import com.kazak.smi.server.misc.LogWriter;
 import com.kazak.smi.server.misc.ServerConstants;
 
 /**
- * ResultSetToXML.java Creado el 14-jul-2004
+ * ResultSetToXMLConverter.java Creado el 14-jul-2004
  * 
  * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
@@ -40,16 +40,14 @@ import com.kazak.smi.server.misc.ServerConstants;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
+
 public class ResultSetToXMLConverter extends Document {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6067284901344862308L;
 	private String sql;
-	private String [] args;
+	private String [] argsArray;
 
-	private ByteArrayOutputStream bufferSocket = null;
+	private ByteArrayOutputStream bufferOutputStream = null;
 
 	/**
 	 * Este constructor inicializa los objetos sql y bd nesesario para ejecutar
@@ -64,123 +62,126 @@ public class ResultSetToXMLConverter extends Document {
 	public ResultSetToXMLConverter(String sql) {
 		this.sql = sql;
 	}
+	
 	public ResultSetToXMLConverter(String sql, String [] args) {
 		this.sql = sql;
-		this.args = args; 
+		this.argsArray = args; 
 	}
 
 	/**
 	 * Metodo encargado de ejcutar y transmitir la sentencia sql
 	 */
-	public void transmition(SocketChannel sock, String id) {
+	public void transmit(SocketChannel socket, String id) {
 
-		synchronized(sock) {
+		synchronized(socket) {
 			try {
 				try {
-					bufferSocket = new ByteArrayOutputStream();
+					bufferOutputStream = new ByteArrayOutputStream();
 					XMLOutputter XMLformat = new XMLOutputter();
-					QueryRunner rselect;
+					QueryRunner qRunner;
 
-					if(args==null ) {
-						rselect = new QueryRunner(sql);
+					if(argsArray==null ) {
+						qRunner = new QueryRunner(sql);
 					}
 					else {
-						rselect = new QueryRunner(sql,args);
+						qRunner = new QueryRunner(sql,argsArray);
 					}
 
-					ResultSet rsData = rselect.runSELECT();
+					ResultSet resultSet = qRunner.select();
 
 					try {
 
-						ResultSetMetaData RSMDinfo = rsData.getMetaData();
-						int columns = RSMDinfo.getColumnCount();
-						writeBufferSocket(sock,
+						ResultSetMetaData rsMetaData = resultSet.getMetaData();
+						int columns = rsMetaData.getColumnCount();
+						writeSocketBuffer(socket,
 								ServerConstants.CONTEN_TYPE+
 								ServerConstants.TAGS_ANSWER[0]+
 								ServerConstants.TAGS_ID[0]+id+ServerConstants.TAGS_ID[1]+
 								ServerConstants.TAGS_HEAD[0]);
 
 						for (int i = 1; i <= columns; i++) {
-							writeBufferSocket(sock,
+							writeSocketBuffer(socket,
 									ServerConstants.TAGS_COL_HEAD[0]+
-									XMLformat.escapeAttributeEntities(RSMDinfo.getColumnTypeName(i))+
+									XMLformat.escapeAttributeEntities(rsMetaData.getColumnTypeName(i))+
 									ServerConstants.TAGS_COL_HEAD[1]+
-									XMLformat.escapeAttributeEntities(RSMDinfo.getColumnName(i))+
+									XMLformat.escapeAttributeEntities(rsMetaData.getColumnName(i))+
 									ServerConstants.TAGS_COL[1]);
 						}
-						writeBufferSocket(sock,ServerConstants.TAGS_HEAD[1]);
+						writeSocketBuffer(socket,ServerConstants.TAGS_HEAD[1]);
 
 						/**
-						 * Se recorre el resulset para a�adir los datos que contenga, y
+						 * Se recorre el resulset para añadir los datos que contenga, y
 						 * se escriben directamente en el socket en formato XML
 						 */
-						byte [] res;
+						byte [] data;
 						
-						while (rsData.next()) {
-							writeBufferSocket(sock,ServerConstants.TAGS_ROW[0]);
+						while (resultSet.next()) {
+							writeSocketBuffer(socket,ServerConstants.TAGS_ROW[0]);
 							for (int j = 1; j <= columns; j++) {
 
-								res = rsData.getBytes(j);
+								data = resultSet.getBytes(j);
 
-								if (res==null)
-									res= new String("").getBytes();
-								writeBufferSocket(sock,ServerConstants.TAGS_COL[0] + 
-										escapeCharacters(new String(res,"ISO-8859-1"))+
+								if (data==null)
+									data= new String("").getBytes();
+								writeSocketBuffer(socket,ServerConstants.TAGS_COL[0] + 
+										escapeCharacters(new String(data,"ISO-8859-1"))+
 										ServerConstants.TAGS_COL[1]
 								);
 							}
-							writeBufferSocket(sock,ServerConstants.TAGS_ROW[1]);
+							writeSocketBuffer(socket,ServerConstants.TAGS_ROW[1]);
 						}	
 							
-						writeBufferSocket(sock,ServerConstants.TAGS_ANSWER[1]);
-						bufferSocket.write(new String ("\n\r\f").getBytes());
-						SocketWriter.writing(sock,bufferSocket);
-						bufferSocket.close();
-						QueryClosingHandler.close(rsData);
+						writeSocketBuffer(socket,ServerConstants.TAGS_ANSWER[1]);
+						bufferOutputStream.write(new String ("\n\r\f").getBytes());
+						SocketWriter.write(socket,bufferOutputStream);
+						bufferOutputStream.close();
+						QueryClosingHandler.close(resultSet);
 					}
 					catch (SQLException SQLEe) {
-						String err = Language.getWord("ERR_RS") + " " +sql+" "+SQLEe.getMessage();
-						LogWriter.write(err);
+						String errorMessage = Language.getWord("ERR_RS") + " " +sql+" "+SQLEe.getMessage();
+						LogWriter.write(errorMessage);
 						XMLError error = new XMLError();
-						SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR, err));
+						SocketWriter.write(socket,error.returnErrorMessage(ServerConstants.ERROR, errorMessage));
 						SQLEe.printStackTrace();
 					}
 					catch (IOException e) {
 						e.printStackTrace();
 					}
-					rselect.closeStatement();
+					qRunner.closeStatement();
 				}
 				catch (SQLNotFoundException QNFEe) {
-					String err = QNFEe.getMessage();
-					LogWriter.write(err);
+					String errorMessage = QNFEe.getMessage();
+					LogWriter.write(errorMessage);
 					XMLError error = new XMLError();
-					SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR,err));
+					SocketWriter.write(socket,error.returnErrorMessage(ServerConstants.ERROR,errorMessage));
 					QNFEe.printStackTrace();
 
 				} 
 				catch (SQLException SQLEe) {
-					String err = Language.getWord("ERR_ST") + " "+sql+" "+ SQLEe.getMessage();
-					LogWriter.write(err);
+					String errorMessage = Language.getWord("ERR_ST") + " "+sql+" "+ SQLEe.getMessage();
+					LogWriter.write(errorMessage);
 					XMLError error = new XMLError();
-					SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR, err));
+					SocketWriter.write(socket,error.returnErrorMessage(ServerConstants.ERROR, errorMessage));
 					SQLEe.printStackTrace();
 				}
 				catch (SQLBadArgumentsException QBAEe) {
-					String err = QBAEe.getMessage();
-					LogWriter.write(err);
+					String errorMessage = QBAEe.getMessage();
+					LogWriter.write(errorMessage);
 					XMLError error = new XMLError();
-					SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR,err));
+					SocketWriter.write(socket,error.returnErrorMessage(ServerConstants.ERROR,errorMessage));
 					QBAEe.printStackTrace();
 				}
 			}catch (IOException e) {
-				LogWriter.write("Error de entrada y salida");
-				LogWriter.write("mensaje: " + e.getMessage());
+				LogWriter.write("ERROR: Falla de entrada y salida");
+				LogWriter.write("Causa: " + e.getMessage());
 				e.printStackTrace();
 			}
 		}
 
 	}
 
+	// Este metodo se encarga de traducir los caracteres especiales de los mensajes
+	// en valores codificados en XML
 	private String escapeCharacters(String word) {
 
 		word = word.replaceAll("&","&#38;");
@@ -204,18 +205,18 @@ public class ResultSetToXMLConverter extends Document {
 		return word;
 	}
 	
-	private void writeBufferSocket(SocketChannel sock,String data) {
+	private void writeSocketBuffer(SocketChannel sock,String data) {
 
 		byte[] bytes = data.getBytes();
 
 		for (int i=0;i<bytes.length;i++) {
 
-			if (bufferSocket.size()<8192) {
-				bufferSocket.write(bytes[i]);
+			if (bufferOutputStream.size()<8192) {
+				bufferOutputStream.write(bytes[i]);
 			}
 			else {
-				SocketWriter.writing(sock,bufferSocket);
-				bufferSocket = new ByteArrayOutputStream();
+				SocketWriter.write(sock,bufferOutputStream);
+				bufferOutputStream = new ByteArrayOutputStream();
 				i--;
 			}
 		}

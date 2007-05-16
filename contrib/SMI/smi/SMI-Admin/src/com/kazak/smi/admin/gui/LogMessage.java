@@ -42,10 +42,11 @@ public class LogMessage extends JFrame implements ActionListener, TreeSelectionL
 	private DefaultMutableTreeNode rootNode;
 	private JTree jTree;
 	private Hashtable<String,DefaultMutableTreeNode> years;
-	private JButton JBView;
-	private JButton JBClose;
-	private String[] args = null;
+	private JButton viewButton;
+	private JButton closeButton;
+	private String[] argsArray = null;
 	private String sqlCode = null;
+	
 	public LogMessage() {
 		super("Registro de mensajes");
 		this.setSize(400,500);
@@ -78,18 +79,18 @@ public class LogMessage extends JFrame implements ActionListener, TreeSelectionL
 		this.add(jscroll,BorderLayout.CENTER);
 		years = new Hashtable<String, DefaultMutableTreeNode>();
 		
-		JBView = new JButton("Ver");
-		JBClose = new JButton("Cerrar");
-		JBView.setActionCommand("view");
-		JBView.setEnabled(false);
-		JBClose.setActionCommand("close");
-		JBView.addActionListener(this);
-		JBClose.addActionListener(this);
-		JPanel jpsout = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		jpsout.add(JBView);
-		jpsout.add(JBClose);
+		viewButton = new JButton("Ver");
+		closeButton = new JButton("Cerrar");
+		viewButton.setActionCommand("view");
+		viewButton.setEnabled(false);
+		closeButton.setActionCommand("close");
+		viewButton.addActionListener(this);
+		closeButton.addActionListener(this);
+		JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		southPanel.add(viewButton);
+		southPanel.add(closeButton);
 		
-		this.add(jpsout,BorderLayout.SOUTH);
+		this.add(southPanel,BorderLayout.SOUTH);
 		
 	}
 	
@@ -101,8 +102,8 @@ public class LogMessage extends JFrame implements ActionListener, TreeSelectionL
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if ("view".equals(command)) {
-			if (sqlCode!=null && args!=null) {
-				Worker worker = new Worker(sqlCode,args);
+			if (sqlCode!=null && argsArray!=null) {
+				Worker worker = new Worker(sqlCode,argsArray);
 				worker.start();
 			}
 		}
@@ -111,43 +112,43 @@ public class LogMessage extends JFrame implements ActionListener, TreeSelectionL
 		}
 	}
 	
-	public void valueChanged(TreeSelectionEvent e) {
-		TreePath path = e.getPath();
-		int patCount = path.getPathCount();
+	public void valueChanged(TreeSelectionEvent event) {
+		TreePath path = event.getPath();
+		int pathCount = path.getPathCount();
 		String date1;
 		String date2;
 		
-		switch (patCount) {
-		case 2:
-			date1 = path.getPathComponent(1)+"-01-01";
-			date2 = path.getPathComponent(1)+"-12-31";
-			args = new String[] {date1,date2};
-			sqlCode = "SEL0018";
-			break;
-		case 3:
-			int indexMonth = getIndexOfMonth(path.getPathComponent(2).toString());
-			date1 = path.getPathComponent(1)+ "-" + indexMonth;
-			date2 = path.getPathComponent(1)+ "-" + (indexMonth+1);
-			args = new String[] {date1,date2};
-			sqlCode = "SEL0019";
-			break;
-		case 4:
-			date1 = 
-				path.getPathComponent(1) + "-" + 
-				getIndexOfMonth(path.getPathComponent(2).toString()) + "-" +
-				path.getPathComponent(3);
-			args = new String[] {date1};
-			sqlCode = "SEL0020";
-			break;
-		default :
-			args = null;
-			sqlCode = null;
+		switch (pathCount) {
+			case 2:
+				date1 = path.getPathComponent(1)+"-01-01";
+				date2 = path.getPathComponent(1)+"-12-31";
+				argsArray = new String[] {date1,date2};
+				sqlCode = "SEL0018";
+				break;
+			case 3:
+				int monthIndex = getIndexOfMonth(path.getPathComponent(2).toString());
+				date1 = path.getPathComponent(1)+ "-" + monthIndex;
+				date2 = path.getPathComponent(1)+ "-" + (monthIndex+1);
+				argsArray = new String[] {date1,date2};
+				sqlCode = "SEL0019";
+				break;
+			case 4:
+				date1 = path.getPathComponent(1) + "-" + 
+						getIndexOfMonth(path.getPathComponent(2).toString()) + "-" +
+						path.getPathComponent(3);
+				argsArray = new String[] {date1};
+				sqlCode = "SEL0020";
+				break;
+			default :
+				argsArray = null;
+				sqlCode = null;
 		}
-		if (sqlCode!=null && args!=null) {
-			JBView.setEnabled(true);
+		
+		if (sqlCode!=null && argsArray!=null) {
+			viewButton.setEnabled(true);
 		}
 		else {
-			JBView.setEnabled(false);
+			viewButton.setEnabled(false);
 		}
 	}
 
@@ -159,56 +160,58 @@ public class LogMessage extends JFrame implements ActionListener, TreeSelectionL
 		};
 		SwingUtilities.invokeLater(t);
 	}
+	
 	private int getIndexOfMonth(String month) {
 		for (int i=0; i < months.length ; i++) {
 			if (months[i].equals(month)) {
 				return (i+1);
 			}
 		}
+		
 		return -1;
 	}
 	
 	class Loader extends Thread {
 		public void run() {
 			try {
-				Document doc = QuerySender.getResultSetST("SEL0017",null);
+				Document doc = QuerySender.getResultSetFromST("SEL0017",null);
 				Element root = doc.getRootElement();
 				Iterator rows = root.getChildren("row").iterator();
 				while ( rows.hasNext() ) {
 					Element element = (Element)rows.next();
-					Iterator itCols = element.getChildren().iterator();
-					String year = ((Element)itCols.next()).getText();
-					String month = ((Element)itCols.next()).getText();
-					String day = ((Element)itCols.next()).getText();
+					Iterator columnsIterator = element.getChildren().iterator();
+					String year = ((Element)columnsIterator.next()).getText();
+					String month = ((Element)columnsIterator.next()).getText();
+					String day = ((Element)columnsIterator.next()).getText();
 					String monthString = months[Integer.valueOf(month)-1];
 					if (years.containsKey(year)) {
-						DefaultMutableTreeNode tn = years.get(year);
-						int nodes = tn.getChildCount();
+						DefaultMutableTreeNode mutableTreeNode = years.get(year);
+						int nodes = mutableTreeNode.getChildCount();
 						DefaultMutableTreeNode treeNode = null;
 						int i = 0;
 						for (; i < nodes ; i++) {
-							treeNode = (DefaultMutableTreeNode) tn.getChildAt(i);
+							treeNode = (DefaultMutableTreeNode) mutableTreeNode.getChildAt(i);
 							if (treeNode.toString().equals(monthString)) {
-								DefaultMutableTreeNode tnd = new DefaultMutableTreeNode(day);
-								treeNode.add(tnd);
+								DefaultMutableTreeNode mutableTreeNode2 = new DefaultMutableTreeNode(day);
+								treeNode.add(mutableTreeNode2);
 								break;
 							}
 						}
 						if (i==nodes) {
-							DefaultMutableTreeNode tnm = new DefaultMutableTreeNode(monthString);
-							DefaultMutableTreeNode tnd = new DefaultMutableTreeNode(day);
-							tnm.add(tnd);
-							tn.add(tnm);
+							DefaultMutableTreeNode mutableTreeNode2 = new DefaultMutableTreeNode(monthString);
+							DefaultMutableTreeNode mutableTreeNode3 = new DefaultMutableTreeNode(day);
+							mutableTreeNode2.add(mutableTreeNode3);
+							mutableTreeNode.add(mutableTreeNode2);
 						}
 					}
 					else {
-						DefaultMutableTreeNode tn = new DefaultMutableTreeNode(year);
-						DefaultMutableTreeNode tnm = new DefaultMutableTreeNode(monthString);
-						DefaultMutableTreeNode tnd = new DefaultMutableTreeNode(day);
-						tn.add(tnm);
-						tnm.add(tnd);
-						years.put(year,tn);
-						rootNode.add(tn);
+						DefaultMutableTreeNode mutableTreeNode  = new DefaultMutableTreeNode(year);
+						DefaultMutableTreeNode mutableTreeNode1 = new DefaultMutableTreeNode(monthString);
+						DefaultMutableTreeNode mutableTreeNode2 = new DefaultMutableTreeNode(day);
+						mutableTreeNode.add(mutableTreeNode1);
+						mutableTreeNode1.add(mutableTreeNode2);
+						years.put(year,mutableTreeNode);
+						rootNode.add(mutableTreeNode);
 					}
 					update();
 				}
@@ -222,27 +225,27 @@ public class LogMessage extends JFrame implements ActionListener, TreeSelectionL
 		private String sqlCode;
 		private String[] args;
 		
-		public Worker(String sqlCode , String[] args) {
+		public Worker(String sqlCode , String[] argsArray) {
 			this.sqlCode = sqlCode;
-			this.args = args;
+			this.args = argsArray;
 		}
 		
 		public void run() {
 			Document doc;
 			try {
-				doc = QuerySender.getResultSetST(sqlCode,args);
+				doc = QuerySender.getResultSetFromST(sqlCode,args);
 				Element root = doc.getRootElement();
 				Iterator rows = root.getChildren("row").iterator();
 				Vector<Vector<Object>> data = new Vector<Vector<Object>>(); 
 				while (rows.hasNext()) {
-					Vector<Object> v = new Vector<Object>();
-					Element cols = (Element) rows.next();
-					Iterator itCols = cols.getChildren().iterator();
-					while (itCols.hasNext()) {
-						Element e = (Element)itCols.next();
-						v.add(e.getText());
+					Vector<Object> vector = new Vector<Object>();
+					Element columns = (Element) rows.next();
+					Iterator iterator = columns.getChildren().iterator();
+					while (iterator.hasNext()) {
+						Element element = (Element)iterator.next();
+						vector.add(element.getText());
 					}
-					data.add(v);
+					data.add(vector);
 				}
 				new MessageViewer(data);
 			} catch (QuerySenderException e) {

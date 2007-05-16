@@ -1,4 +1,5 @@
 package com.kazak.smi.admin.control;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.io.IOException;
@@ -16,14 +17,13 @@ import com.kazak.smi.admin.gui.MainWindow;
 import com.kazak.smi.admin.network.SocketHandler;
 import com.kazak.smi.admin.network.SocketWriter;
 
-
-public class Sync {
+public class SyncManager {
 	
 	private static JDialog dialog;
-	public static boolean successsync = false;
-	public static boolean successssyncerror = false;
+	public static boolean isSuccessful = false;
+	public static boolean errorHappened = false;
 	
-	public void process() {
+	public void startSync() {
 		JLabel label = new JLabel();
 		label.setText("<html>"+
 				"Realmente desea sincronizar la base de datos?"+
@@ -32,12 +32,12 @@ public class Sync {
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		panel.add(label);
 		label.setHorizontalTextPosition(SwingConstants.CENTER);
-		int op = JOptionPane.showConfirmDialog(
+		int option = JOptionPane.showConfirmDialog(
 				MainWindow.getFrame(),
 				panel,
 				"Sincronización",
 				JOptionPane.YES_NO_OPTION);
-		if (op== JOptionPane.YES_OPTION) {
+		if (option== JOptionPane.YES_OPTION) {
 			dialog = new JDialog(MainWindow.getFrame());
 			dialog.setResizable(false);
 			dialog.setSize(200,100);
@@ -51,10 +51,10 @@ public class Sync {
 			Element transaction = new Element("Synchronization");
 			Document doc = new Document(transaction);
 	        try {
-				SocketWriter.writing(SocketHandler.getSock(),doc);
+				SocketWriter.write(SocketHandler.getSock(),doc);
 			} catch (IOException ex) {
-				System.out.println("Error de entrada y salida");
-				System.out.println("mensaje: " + ex.getMessage());
+				System.out.println("ERROR: Falla de entrada/salida");
+				System.out.println("Causa: " + ex.getMessage());
 				ex.printStackTrace();
 			}
 			dialog.setVisible(true);
@@ -69,11 +69,7 @@ public class Sync {
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-						if (Sync.successsync) {
-							dialog.setVisible(false);
-							return;
-						}
-						if (Sync.successssyncerror) {
+						if (SyncManager.isSuccessful || SyncManager.errorHappened) {
 							dialog.setVisible(false);
 							return;
 						}

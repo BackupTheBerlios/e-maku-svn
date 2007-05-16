@@ -12,48 +12,46 @@ import org.jdom.output.XMLOutputter;
 
 public class SocketWriter {
 
-    
     public static void writing(SocketChannel sock,Document doc) throws IOException {
         synchronized(sock) {
-            ByteArrayOutputStream bufferOut = new ByteArrayOutputStream();
+            ByteArrayOutputStream bufferOutputStream = new ByteArrayOutputStream();
             
             XMLOutputter xmlOutputter = new XMLOutputter();
-            //xmlOutputter.setFormat(Format.getPrettyFormat());
-            xmlOutputter.output(doc, bufferOut);
-            bufferOut.write(new String("\f").getBytes());
+            xmlOutputter.output(doc, bufferOutputStream);
+            bufferOutputStream.write(new String("\f").getBytes());
             
-            ByteArrayInputStream bufferIn = new ByteArrayInputStream(bufferOut.toByteArray());
-            bufferOut.close();
-            sendBuffer(sock,bufferIn);
+            ByteArrayInputStream bufferInputStream = new ByteArrayInputStream(bufferOutputStream.toByteArray());
+            bufferOutputStream.close();
+            sendBuffer(sock,bufferInputStream);
         }
     }
     
-    public static void writing(SocketChannel sock, String data) {
-        ByteArrayInputStream bufferIn = new ByteArrayInputStream(data.getBytes());
-        sendBuffer(sock,bufferIn);
+    public static void write(SocketChannel sock, String data) {
+        ByteArrayInputStream bufferInputStream = new ByteArrayInputStream(data.getBytes());
+        sendBuffer(sock,bufferInputStream);
     }
 
-    public static void writing(SocketChannel sock, ByteArrayOutputStream data) {
-        ByteArrayInputStream bufferIn = new ByteArrayInputStream(data.toByteArray());
-        sendBuffer(sock,bufferIn);
+    public static void write(SocketChannel sock, ByteArrayOutputStream data) {
+        ByteArrayInputStream bufferInputStream = new ByteArrayInputStream(data.toByteArray());
+        sendBuffer(sock,bufferInputStream);
     }
+    
     private static void sendBuffer(SocketChannel sock,ByteArrayInputStream buffer) {
         
         try {
-            ByteBuffer buf = ByteBuffer.allocate(8192);
+            ByteBuffer byteBuffer = ByteBuffer.allocate(8192);
             byte[] bytes = new byte[8192];
-
             int count = 0;
 
             while (count >= 0) {
-                buf.clear();
+                byteBuffer.clear();
                 count = buffer.read(bytes);
                 for (int i=0;i<count;i++) {
-                    buf.put(bytes[i]);
+                    byteBuffer.put(bytes[i]);
                 }
-                buf.flip();
-                while (buf.remaining()>0)
-                    sock.write(buf);
+                byteBuffer.flip();
+                while (byteBuffer.remaining()>0)
+                    sock.write(byteBuffer);
             }
         }
         catch (ClosedChannelException CCE) {
@@ -62,8 +60,6 @@ public class SocketWriter {
         }
         catch (IOException IOEe) {
         	IOEe.printStackTrace();
-            /*LogAdmin.setMessage(Language.getWord("ERR_WRITING_SOCKET") + "\n"
-                    + IOEe.getMessage(), CommonConst.ERROR);*/
         }
     }
 }

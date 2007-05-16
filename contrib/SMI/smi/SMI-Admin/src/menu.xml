@@ -5,16 +5,16 @@
 		<JMenuItem>
 			<Mnemonic>S</Mnemonic>
 			<Text>Sincronizar</Text>
-			<Clase>com.kazak.smi.admin.control.Sync</Clase>
-			<Metodo>process</Metodo>
+			<Class>com.kazak.smi.admin.control.SyncManager</Class>
+			<Method>startSync</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JSeparator/>
 		<JMenuItem>
 			<Mnemonic>a</Mnemonic>
 			<Text>Salir</Text>
-			<Clase>com.kazak.smi.admin.Run</Clase>
-			<Metodo>exit</Metodo>
+			<Class>com.kazak.smi.admin.Run</Class>
+			<Method>exit</Method>
 		</JMenuItem>
 	</JMenu>
 	<JMenu>
@@ -23,35 +23,35 @@
 		<JMenuItem>
 			<Mnemonic>B</Mnemonic>
 			<Text>Buscar</Text>
-			<Clase>com.kazak.smi.admin.gui.UsersManager</Clase>
-			<Metodo>search</Metodo>
+			<Class>com.kazak.smi.admin.gui.UsersManager</Class>
+			<Method>search</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>A</Mnemonic>
 			<Text>Adicionar</Text>
-			<Clase>com.kazak.smi.admin.gui.UsersManager</Clase>
-			<Metodo>add</Metodo>
+			<Class>com.kazak.smi.admin.gui.UsersManager</Class>
+			<Method>add</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>E</Mnemonic>
 			<Text>Editar</Text>
-			<Clase>com.kazak.smi.admin.gui.UsersManager</Clase>
-			<Metodo>edit</Metodo>
+			<Class>com.kazak.smi.admin.gui.UsersManager</Class>
+			<Method>edit</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>l</Mnemonic>
 			<Text>Eliminar</Text>
-			<Clase>com.kazak.smi.admin.gui.UsersManager</Clase>
-			<Metodo>delete</Metodo>
+			<Class>com.kazak.smi.admin.gui.UsersManager</Class>
+			<Method>delete</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>U</Mnemonic>
 			<Text>Listar Usuarios</Text>
-			<Clase>com.kazak.smi.admin.gui.UsersList</Clase>
+			<Class>com.kazak.smi.admin.gui.UsersList</Class>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 	</JMenu>
@@ -61,29 +61,29 @@
 		<JMenuItem>
 			<Mnemonic>B</Mnemonic>
 			<Text>Buscar</Text>
-			<Clase>com.kazak.smi.admin.gui.GroupsManager</Clase>
-			<Metodo>search</Metodo>
+			<Class>com.kazak.smi.admin.gui.GroupsManager</Class>
+			<Method>search</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>A</Mnemonic>
 			<Text>Adicionar</Text>
-			<Clase>com.kazak.smi.admin.gui.GroupsManager</Clase>
-			<Metodo>add</Metodo>
+			<Class>com.kazak.smi.admin.gui.GroupsManager</Class>
+			<Method>add</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>E</Mnemonic>
 			<Text>Editar</Text>
-			<Clase>com.kazak.smi.admin.gui.GroupsManager</Clase>
-			<Metodo>edit</Metodo>
+			<Class>com.kazak.smi.admin.gui.GroupsManager</Class>
+			<Method>edit</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>l</Mnemonic>
 			<Text>Eliminar</Text>
-			<Clase>com.kazak.smi.admin.gui.GroupsManager</Clase>
-			<Metodo>delete</Metodo>
+			<Class>com.kazak.smi.admin.gui.GroupsManager</Class>
+			<Method>delete</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 	</JMenu>
@@ -93,29 +93,29 @@
 		<JMenuItem>
 			<Mnemonic>B</Mnemonic>
 			<Text>Buscar</Text>
-			<Clase>com.kazak.smi.admin.gui.WorkStationsManager</Clase>
-			<Metodo>search</Metodo>
+			<Class>com.kazak.smi.admin.gui.WorkStationsManager</Class>
+			<Method>search</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>A</Mnemonic>
 			<Text>Adicionar</Text>
-			<Clase>com.kazak.smi.admin.gui.WorkStationsManager</Clase>
-			<Metodo>add</Metodo>
+			<Class>com.kazak.smi.admin.gui.WorkStationsManager</Class>
+			<Method>add</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>E</Mnemonic>
 			<Text>Editar</Text>
-			<Clase>com.kazak.smi.admin.gui.WorkStationsManager</Clase>
-			<Metodo>edit</Metodo>
+			<Class>com.kazak.smi.admin.gui.WorkStationsManager</Class>
+			<Method>edit</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>l</Mnemonic>
 			<Text>Eliminar</Text>
-			<Clase>com.kazak.smi.admin.gui.WorkStationsManager</Clase>
-			<Metodo>delete</Metodo>
+			<Class>com.kazak.smi.admin.gui.WorkStationsManager</Class>
+			<Method>delete</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 	</JMenu>
@@ -125,8 +125,8 @@
 		<JMenuItem>
 			<Mnemonic>V</Mnemonic>
 			<Text>Ver Mensajes</Text>
-			<Clase>com.kazak.smi.admin.gui.LogMessage</Clase>
-			<Metodo>display</Metodo>
+			<Class>com.kazak.smi.admin.gui.LogMessage</Class>
+			<Method>display</Method>
 			<UserLevel>2</UserLevel>
 		</JMenuItem>
 		<JSeparator />
@@ -135,25 +135,32 @@
 			<Acelerator></Acelerator>
 			<Mnemonic>B</Mnemonic>
 			<Text>Buscar Mensaje</Text>
-			<Clase>com.kazak.smi.admin.gui.MessageSercher</Clase>
-			<Metodo>search</Metodo>
+			<Class>com.kazak.smi.admin.gui.MessageSearcher</Class>
+			<Method>search</Method>
 			<UserLevel>2</UserLevel>
 		</JMenuItem>
 		<JSeparator />
 		<JMenuItem>
 			<Mnemonic>S</Mnemonic>
 			<Text>Ver mensajes de control</Text>
-			<Clase>com.kazak.smi.admin.gui.ControlMessageReport</Clase>
-			<Metodo>init</Metodo>
+			<Class>com.kazak.smi.admin.gui.ControlMessageReport</Class>
+			<Method>init</Method>
 			<UserLevel>2</UserLevel>
 		</JMenuItem>
 		<JSeparator />
 		<JMenuItem>
 			<Mnemonic>S</Mnemonic>
 			<Text>Ver Registro del servidor</Text>
-			<Clase>com.kazak.smi.admin.control.LogServerViewer</Clase>
-			<Metodo>start</Metodo>
+			<Class>com.kazak.smi.admin.control.LogServerViewer</Class>
+			<Method>start</Method>
 			<UserLevel>2</UserLevel>
 		</JMenuItem>
+                <JSeparator />
+                <JMenuItem>
+                        <Mnemonic>U</Mnemonic>
+                        <Text>Listar Usuarios</Text>
+                        <Class>com.kazak.smi.admin.gui.UsersList</Class>
+                        <UserLevel>2</UserLevel>
+                </JMenuItem>
 	</JMenu>
 </Menu>

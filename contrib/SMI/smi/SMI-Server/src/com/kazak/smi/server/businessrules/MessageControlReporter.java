@@ -61,7 +61,7 @@ public class MessageControlReporter {
 		
 		try {
 			queryRunner = new QueryRunner("SEL0022",sqlArgs);
-			resultSet = queryRunner.runSELECT();
+			resultSet = queryRunner.select();
 			HSSFWorkbook wb = new HSSFWorkbook();
 			HSSFSheet sheet = wb.createSheet("REPORTE DE CONTROL");
 			int i=0;

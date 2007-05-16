@@ -15,12 +15,12 @@ import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 
-public class PointSaleManager {
+public class PointOfSaleManager {
 
 	private Iterator argsIterator;
 	private ArrayList<QueryRunner> queries;
 	
-	public PointSaleManager(SocketChannel sock, Element args, Element packet, String id) {
+	public PointOfSaleManager(SocketChannel sock, Element args, Element packet, String id) {
 		this.argsIterator = args.getChildren("arg").iterator();
 		String type = args.getChildText("action");
 		boolean result = false;
@@ -52,7 +52,7 @@ public class PointSaleManager {
 			}
 			Element reload = new Element("RELOADTREE");
 			try {
-				SocketWriter.writing(sock,new Document(reload));
+				SocketWriter.write(sock,new Document(reload));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -82,7 +82,7 @@ public class PointSaleManager {
 			QueryRunner queryRunner = new QueryRunner(sqlCode,packArgs(element));
 			queries.add(queryRunner);
 			queryRunner.setAutoCommit(false);
-			queryRunner.runSQL();
+			queryRunner.executeSQL();
 		}
 		return true;
 	}

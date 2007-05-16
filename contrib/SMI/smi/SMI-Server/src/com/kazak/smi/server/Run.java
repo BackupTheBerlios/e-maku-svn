@@ -19,14 +19,13 @@ import com.kazak.smi.server.misc.settings.ConfigFileNotLoadException;
 
 public class Run {
 
-	public Run() {
-		
+	public Run() {		
 		String smiConfigFile = ServerConstants.CONF + ServerConstants.SEPARATOR + "server.conf";
 		boolean existsConfigFile = (new File(smiConfigFile)).exists();
 		new LogWriter();
 		if (!existsConfigFile) {
 			LogWriter.write("ERROR: Archivo de configuracion no encontrado -> [ " + smiConfigFile + " ]");
-			killServer();
+			shutDownServer();
 		}
 		try {	
 			ConfigFileHandler.loadConfigFile(smiConfigFile);
@@ -43,7 +42,7 @@ public class Run {
 			            LogWriter.write(
 			            		Language.getWord("UNLOADING_ST") + " " +
 			            		IOEe.getMessage());
-			            killServer();
+			            shutDownServer();
 			        }
 				}
 			};
@@ -52,17 +51,17 @@ public class Run {
     		LogWriter.write(
     				"ERROR: El archivo de configuracion estaba corrupto.\n" +
     				"Por favor verifique el archivo  " +smiConfigFile+" y reinicie el servidor");
-        	killServer();
+        	shutDownServer();
         } catch (PoolNotLoadException e) {
         	LogWriter.write(
         			e.getErrorCode()+","+
         			e.getMessage()+", "+
         			Language.getWord("NODEBUG"));
-			killServer();
+			shutDownServer();
 		} 
 	}
 	
-	public static void killServer() {
+	public static void shutDownServer() {
 		try {
 			ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).close();
 		} catch (SQLException e) {

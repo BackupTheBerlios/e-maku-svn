@@ -15,7 +15,6 @@ import com.kazak.smi.admin.transactions.QuerySender;
 import com.kazak.smi.lib.network.ArrivedPackageEvent;
 import com.kazak.smi.lib.network.PackageComingListener;
 
-
 public class HeadersValidator implements PackageComingListener {
 
     private static Element root;
@@ -24,20 +23,30 @@ public class HeadersValidator implements PackageComingListener {
     	
    		Document doc = arrivedPackageEvent.getDoc();
         root = doc.getRootElement();
-        String nombre = root.getName();
+        String name = root.getName();
+        
+        /* Temporal debugging code
+        XMLOutputter xmlOutputter = new XMLOutputter();
+        xmlOutputter.setFormat(Format.getPrettyFormat());
+        try {
+            xmlOutputter.output(doc,System.out);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }*/
 		
-    	if(nombre.equals("ACPBegin")) {
-    		LoginWindow.setLoged(true);
+    	if(name.equals("ACPBegin")) {
+    		LoginWindow.setLogged(true);
             LoginWindow.setVisible(false);
             new MainWindow(root.getChildText("AppOwner"),root.getChildText("UserLevel"));
         }
-    	else if(nombre.equals("LogContentInit")) {
+    	else if(name.equals("LogContentInit")) {
     		LogServerViewer.reset();
         }
-    	else if(nombre.equals("LogContent")) {
+    	else if(name.equals("LogContent")) {
     		LogServerViewer.loadLog(doc);
         }
-        else if(nombre.equals("ACPFAILURE")) {
+        else if(name.equals("ACPFAILURE")) {
             String message = root.getChildText("message");
             JOptionPane.showMessageDialog(null,message);
             LoginWindow.setEnabled();
@@ -48,50 +57,37 @@ public class HeadersValidator implements PackageComingListener {
 				e.printStackTrace();
 			}
         }
-        else if(nombre.equals("ANSWER")) {
+        else if(name.equals("ANSWER") || name.equals("SEARCHRESULT") || name.equals("USERLIST")) {
             String id = root.getChildText("id");
-            QuerySender.putSpoolQuery(id,doc);
-            /*XMLOutputter xmlOutputter = new XMLOutputter();
-            xmlOutputter.setFormat(Format.getPrettyFormat());
-            try {
-                xmlOutputter.output(doc,System.out);
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }*/
+            QuerySender.putResultOnPool(id,doc);
         }
-        else if(nombre.equals("ERROR")) {
-        	Sync.successssyncerror = true;
+        else if(name.equals("ERROR")) {
+        	SyncManager.errorHappened = true;
 			displayError();
         }
-        else if(nombre.equals("RELOADTREE")) {
-        	Cache.loadTree();
+        else if(name.equals("RELOADTREE")) {
+        	Cache.loadInfoTree(1);
         }
-        else if(nombre.equals("SUCCESS")) {
+        else if(name.equals("SUCCESS")) {
             String id = root.getChildText("id");
-            QuerySender.putSpoolQuery(id,doc);
+            QuerySender.putResultOnPool(id,doc);
             String message = root.getChildText("successMessage");
             JOptionPane.showMessageDialog(null, message);
         }
-        else if(nombre.equals("SUCCESSSYNC")) {
-        	Sync.successsync = true;
-        	JOptionPane.showMessageDialog(Sync.getDialog(), "Base de datos sincronizada con éxito.");
+        else if(name.equals("SUCCESSSYNC")) {
+        	SyncManager.isSuccessful = true;
+        	JOptionPane.showMessageDialog(null, "Base de datos sincronizada con éxito.");
         }
-        else if(nombre.equals("ERRSYNC")) {
-        	Sync.successssyncerror = true;
+        else if(name.equals("ERRSYNC")) {
+        	SyncManager.errorHappened = true;
             String message = root.getChildText("message");
-            JOptionPane.showMessageDialog(Sync.getDialog(), message);
+            JOptionPane.showMessageDialog(null, message);
         }
-        else if(nombre.equals("USERLIST")) {
-            String id = root.getChildText("id");
-            QuerySender.putSpoolQuery(id,doc);
-        }
-        else if(nombre.equals("ERROR")) {
+        else if(name.equals("ERROR")) {
 			displayError();
-        }
-        
+        }        
         else {
-        	System.out.println("Error en el formato del protocolo");
+        	System.out.println("ERROR: Inconsistencia en el formato del protocolo: " + name);
         }
     }
     

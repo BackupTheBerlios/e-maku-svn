@@ -1,11 +1,14 @@
 package com.kazak.smi.server.control;
 
-public class PointSaleInfo {
+// TODO: Preguntar quien usa esta clase?
+
+public class POSInfo {
+	/*
 	private String 	ip;
 	private String 	code;
 	private String 	name;
-	private String 	groupname;
-	private String 	groupid;
+	private String 	groupName;
+	private String 	groupID;
 	private Boolean validIp;
 	
 	public String getCode() {
@@ -29,19 +32,20 @@ public class PointSaleInfo {
 	public Boolean getValidIp() {
 		return validIp;
 	}
-	public void setValidIp(Boolean valid_ip) {
-		this.validIp = valid_ip;
+	public void setValidIp(Boolean validIp) {
+		this.validIp = validIp;
 	}
-	public String getGroupname() {
-		return groupname;
+	public String getGroupName() {
+		return groupName;
 	}
-	public void setGroupname(String groupname) {
-		this.groupname = groupname;
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
 	}
-	public String getGroupid() {
-		return groupid;
+	public String getGroupID() {
+		return groupID;
 	}
-	public void setGroupid(String groupid) {
-		this.groupid = groupid;
+	public void setGroupID(String groupID) {
+		this.groupID = groupID;
 	}
+	*/
 }

@@ -1,6 +1,7 @@
 package com.kazak.smi.admin.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,7 +36,7 @@ public class UsersList extends JFrame {
 	
 	public UsersList() {
 		this.setLayout(new BorderLayout());
-		this.setSize(600,400);
+		this.setSize(650,400);
 		initInterface();
 		this.setLocationByPlatform(true);
 		this.setLocationRelativeTo(MainWindow.getFrame());
@@ -57,19 +58,20 @@ public class UsersList extends JFrame {
 		updateGroupTable();
 	}
 
+	// Gets the total of users online
 	private void loadTotal() {
 		class Monitor extends Thread {
 			Document doc= null;
 			public void run() {
 				try {
-					doc = QuerySender.getResultSetST("TOTAL");
+					doc = QuerySender.getResultSetFromST("TOTAL");
 					XMLOutputter xmlOutputter = new XMLOutputter();
 		            xmlOutputter.setFormat(Format.getPrettyFormat());
-		    		Element elm = doc.getRootElement();
-		    		List list = elm.getChildren("row");
-		    		Element col = (Element)list.get(0);
-		    		String uTotal = col.getValue();
-		    		setWindowLabel(uTotal);
+		    		Element element = doc.getRootElement();
+		    		List list = element.getChildren("row");
+		    		Element columns = (Element)list.get(0);
+		    		String usersTotal = columns.getValue();
+		    		setWindowLabel(usersTotal);
 				} catch (QuerySenderException e) {
 					e.printStackTrace();
 				}
@@ -78,13 +80,13 @@ public class UsersList extends JFrame {
 		new Monitor().start();		
 	}
 	
-    // Captura la lista de usuarios solicitada  
+    // Catch the list of users requested  
 	private void loadUserList() {
                 class Monitor  extends Thread {			
                         Document doc= null;
                         public void run() {
                                 try {
-                                      doc = QuerySender.getResultSetST("LIST");
+                                      doc = QuerySender.getResultSetFromST("RESULT");
                                       groupPanel.updateUserList(doc);
                                 } catch (QuerySenderException e) {
                                       e.printStackTrace();
@@ -94,10 +96,8 @@ public class UsersList extends JFrame {
                 new Monitor().start();		
      }
 	
-	// Solicita el total de usuarios conectados
+	// This method requests the total of users online 
 	public void requestUsersTotal() {
-		// Enviando comando al servidor para ser aprobado
-		Cache.getGroup("key");
 		Element onlist = new Element("ONLINELIST");
 		Element id = new Element("id").setText("TOTAL");
 		onlist.addContent(id);
@@ -105,19 +105,18 @@ public class UsersList extends JFrame {
 
 		if (document!=null) {
 			try {
-				SocketWriter.writing(SocketHandler.getSock(),document);
+				SocketWriter.write(SocketHandler.getSock(),document);
 			} catch (IOException ex) {
-				System.out.println("Error de entrada y salida");
-				System.out.println("mensaje: " + ex.getMessage());
+				System.out.println("ERROR: Falla de entrada/salida");
+				System.out.println("Causa: " + ex.getMessage());
 				ex.printStackTrace();
 			}
 		}
 		
 	}
 	
-	// Solicita la lista de usuarios de un grupo determinado
+	// This method requests the list of users online
 	public void requestOnlineUsers() {
-		// Enviando comando al servidor para ser aprobado
 		Cache.getGroup("key");
 		Element onlist = new Element("ONLINELIST");
 		Element id = new Element("id").setText("LIST");
@@ -129,7 +128,7 @@ public class UsersList extends JFrame {
 
 		if (document!=null) {
 			try {
-				SocketWriter.writing(SocketHandler.getSock(),document);
+				SocketWriter.write(SocketHandler.getSock(),document);
 			} catch (IOException ex) {
 				System.out.println("Error de entrada y salida");
 				System.out.println("Causa: " + ex.getMessage());
@@ -140,8 +139,9 @@ public class UsersList extends JFrame {
 	}
 		
     public static String getFormattedDate() {
-    	SimpleDateFormat now = new SimpleDateFormat("E, dd MMM yyyy - HH:mm");
+    	SimpleDateFormat now = new SimpleDateFormat("E, dd MMM yyyy - HH:mm a");
     	Date date = new Date();
+    	
     	return now.format(date);
     }
     
@@ -158,15 +158,21 @@ public class UsersList extends JFrame {
 		updateGroupTable();
 	}
 	
-	private void setWindowTitle() {
+	public void setWindowTitle() {
 		loadTotal();
 		requestUsersTotal();
 	}
 	
 	public void updateGroupTable() {
+		int typeCursor = Cursor.WAIT_CURSOR;
+		Cursor cursor = Cursor.getPredefinedCursor(typeCursor);
+		setCursor(cursor);
 		loadUserList();
 		requestOnlineUsers();
 		setWindowTitle();
 		groupPanel.getTable().initHeader();
+		typeCursor = Cursor.DEFAULT_CURSOR;
+		cursor = Cursor.getPredefinedCursor(typeCursor);
+		setCursor(cursor);
 	}
 }

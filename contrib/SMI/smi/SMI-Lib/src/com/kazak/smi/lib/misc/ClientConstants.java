@@ -2,7 +2,7 @@ package com.kazak.smi.lib.misc;
 
 import java.awt.Toolkit;
 
-public interface ClientConst {
+public interface ClientConstants {
 
 	public final String KeyClient = "client";
 	public final String winConfigPath = "C:\\GAMBLE\\smiclient\\";

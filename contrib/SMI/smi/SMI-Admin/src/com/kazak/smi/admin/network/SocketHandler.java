@@ -26,11 +26,11 @@ public class SocketHandler extends Thread  {
 		socket = SocketChannel.open();
         socket.configureBlocking(false);
         this.packageXML = packageXML;
-        InetSocketAddress addr = new InetSocketAddress(host,port);
         
-       	socket.connect(addr);
-
-       	int times=0;
+        InetSocketAddress address = new InetSocketAddress(host,port);    
+       	socket.connect(address);
+       	int times = 0;
+       	
        	while(!socket.finishConnect()){
        		try {
        			Thread.sleep(100);
@@ -47,7 +47,7 @@ public class SocketHandler extends Thread  {
         try {
             Selector selector = Selector.open();
             socket.register(selector, SelectionKey.OP_READ);
-            boolean ret = true;
+            boolean result = true;
             while (true) {
                 int n = selector.select();
                 if (n > 0) {
@@ -56,22 +56,21 @@ public class SocketHandler extends Thread  {
                         SelectionKey key = (SelectionKey) iterador.next();
                         iterador.remove();
                         if (key.isReadable()) {
-                        	ret = packageXML.work(socket) ;
-                        	if (!ret) {
+                        	result = packageXML.work(socket) ;
+                        	if (!result) {
                         		JOptionPane.showMessageDialog(
                         				null,
                         				"Se perdio la conexión con el servidor\n" +
                         				"Contacte con los administradores del sistema\n"+
-                        				"Vuelva a conectarse mas tarde...");
-                        		
+                        				"Vuelva a conectarse más tarde...");
                         	}
                         }
-                        if (!ret) {
+                        if (!result) {
                         	break;
                         }
                     }
                 }
-                if (!ret) {
+                if (!result) {
                 	MainWindow.getFrame().dispose();
                 	new LoginWindow();
                 	break;
@@ -87,7 +86,7 @@ public class SocketHandler extends Thread  {
         return socket;
     }
     
-    public static boolean isConcected(){
+    public static boolean isConnected(){
         return socket.isConnected();
     }
 }

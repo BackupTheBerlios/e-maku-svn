@@ -16,19 +16,21 @@ public class Language  {
     
     /**
      * Metodo que carga se encarga de llenar el glosario para el idioma del ST
-     * @param lang idioma para el ST, Ej. <code>SPANISH</code>
+     * @param language idioma para el ST, Ej. <code>SPANISH</code>
      */
-    public void loadLanguage(String lang) {
+    public void loadLanguage(String language) {
+    	
         Language.glossary = new Hashtable<String,messageStructure>();
         try {
-            SAXBuilder builder = new SAXBuilder(false);
-            Document doc = builder.build(this.getClass().getResource("/language.xml"));
+            SAXBuilder saxBuilder = new SAXBuilder(false);
+            Document doc = saxBuilder.build(this.getClass().getResource("/language.xml"));
             Element root = doc.getRootElement();
             List words = root.getChildren("sentence");
-            Iterator i = words.iterator();
-            while (i.hasNext()) {
-                Element fields = (Element)i.next();
-            	String message = fields.getChildText(lang);
+            Iterator iterator = words.iterator();
+            
+            while (iterator.hasNext()) {
+                Element fields = (Element)iterator.next();
+            	String message = fields.getChildText(language);
             	
                 if (fields.getChild("key").getAttribute("errorCode")!=null) {
                 	String errorCode = fields.getChild("key").getAttribute("errorCode").getValue();
@@ -72,8 +74,8 @@ public class Language  {
     	private String errorCode = null;
     	
     	private messageStructure(String errorCode,String message){
-    		this.errorCode=errorCode;
-    		this.message=message;
+    		this.errorCode = errorCode;
+    		this.message = message;
     	}
     	
 		public String getErrorCode() {

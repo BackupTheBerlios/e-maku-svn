@@ -15,13 +15,12 @@
  * @author  Luis Felipe Hernandez Z.
  * @see e-mail felipe@qhatu.net
  *
- * NumericDataValidator.java
+ * TextDataValidator.java
  *
  * Created on 29 de mayo de 2002, 10:02
  */
 
 package com.kazak.smi.admin.misc;
-
 
 import java.awt.Toolkit;
 
@@ -43,14 +42,13 @@ public class TextDataValidator extends PlainDocument {
         return limit;
     }
     
-    public void insertString(int posicion, String s, AttributeSet attributeSet) throws BadLocationException {
+    public void insertString(int position, String string, AttributeSet attributeSet) throws BadLocationException {
         
-        int longitud = s.length();
-        
+        int size = string.length();
         if (this.getLength() < limit) {
-            if (longitud <= limit - posicion) {
-                if(posicion < limit) { 
-                    super.insertString(posicion,s,attributeSet);
+            if (size <= limit - position) {
+                if(position < limit) { 
+                    super.insertString(position,string,attributeSet);
                 }
                 else {
                     Toolkit.getDefaultToolkit().beep();

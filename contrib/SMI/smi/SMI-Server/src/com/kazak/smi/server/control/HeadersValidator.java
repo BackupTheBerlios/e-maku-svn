@@ -16,11 +16,10 @@ import com.kazak.smi.server.comunications.ResultSetToXMLConverter;
 import com.kazak.smi.server.comunications.SocketServer;
 import com.kazak.smi.server.comunications.SocketWriter;
 import com.kazak.smi.server.misc.LogWriter;
-//import com.kazak.smi.server.misc.ServerConst;
 import com.kazak.smi.server.misc.settings.ConfigFileHandler;
 
 /**
- * ClientHeaderValidator.java Creado el 22-jul-2004
+ * HeaderValidator.java Creado el 22-jul-2004
  * 
  * Este archivo es parte de E-Maku <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
@@ -42,7 +41,7 @@ import com.kazak.smi.server.misc.settings.ConfigFileHandler;
  *         Cepeda </A>
  */
 
-public class HeaderValidator {
+public class HeadersValidator {
     
     /**
      * Este metodo se encarga de revisar toda las raices de los documentos que llegan 
@@ -51,23 +50,26 @@ public class HeaderValidator {
      * @param sock Socket por que se esta comunicando
      */
 
-    public static void ValidClient(Document doc, final SocketChannel sock) {
+    public static void validClient(Document doc, final SocketChannel sock) {
         
         /*
          * Obtenemos la raiz del documento si el documento tiene raiz
          */
         final Element root = doc.getRootElement();
         String rootName = root.getName();
-/*        XMLOutputter xmlOutputter = new XMLOutputter();
+        
+        /* Codigo temporal para debuging
+        XMLOutputter xmlOutputter = new XMLOutputter();
         xmlOutputter.setFormat(Format.getPrettyFormat());
         try {
             xmlOutputter.output(doc,System.out);
         }
         catch (IOException e) {
             e.printStackTrace();
-        }
-*/        /*
-         *  Validaci�n de solicitud de paquetes, se verifica si el socket ya fue
+        } */
+        
+        /*
+         *  Validación de solicitud de paquetes, se verifica si el socket ya fue
          *  autenticado, si lo fue entonces se procede a validar la solicitud 
          *  del paquete requerido, si no se procede a validar un paquete CNX o la
          *  solicitud de paquetes no autorizados (solicitud de paquetes sin previa
@@ -75,7 +77,6 @@ public class HeaderValidator {
          */
         
         if (SocketServer.isLogged(sock)) {
-
         	if (rootName.equals("Message")) { 
                 LogWriter.write("INFO: Nuevo mensaje enviado desde " + sock.socket().getInetAddress().getHostAddress());
                 new MessageDistributor(root,false);
@@ -92,16 +93,16 @@ public class HeaderValidator {
                 t.start();
             }
         	else if (rootName.equals("RequestLogContent")) {
-        		LogWriter.write("Solicitud de envio del registro del servidor");
+        		LogWriter.write("INFO: Solicitud de envio del registro del servidor.");
         		
 				Thread t = new Thread() {
 				
 					public void run() {
 						try {
-							LogWriter.getFullLog(sock);
+							LogWriter.getFullLogFile(sock);
 						} catch (IOException e) {
-							LogWriter.write("Error de entrada y salida");
-							LogWriter.write("mensaje: " + e.getMessage());
+							LogWriter.write("ERROR: Falla de entrada/salida");
+							LogWriter.write("Causa: " + e.getMessage());
 							e.printStackTrace();
 						}
 					}
@@ -109,52 +110,66 @@ public class HeaderValidator {
 				};
 				t.start();
 				
-				LogWriter.write("Solicitud de envio del registro del servidor enviada");
+				LogWriter.write("INFO: Solicitud de envio del registro del servidor enviada.");
             }
            /* Validacion de una solicitud de consulta */
             else if (rootName.equals("QUERY")) {
             	Thread t = new Thread() {
                 	public void run() {
-                        ValidQuery valid = new ValidQuery(root);
+                        ValidQuery validQuery = new ValidQuery(root);
                         String code = "";
                         code = root.getChild("sql").getValue();
                         ResultSetToXMLConverter answer;
-                        if (valid.changeStructParam()) {
-                            answer = new ResultSetToXMLConverter(code, valid.getArgs());
+                        if (validQuery.changeStructParam()) {
+                            answer = new ResultSetToXMLConverter(code, validQuery.getArgs());
                         } else {
                             answer = new ResultSetToXMLConverter(code);
                         }
-                        answer.transmition(sock,valid.getId());   
+                        answer.transmit(sock,validQuery.getId());   
                 	}
                 };
                 t.start();         
             } 
             else if (rootName.equals("ONLINELIST")) {
             	String id = root.getChildText("id");
-            	Document list  = new Document();
+            	Document list = new Document();
             	if ("LIST".equals(id)) {
-            		list = SocketServer.getUsersOnLine(root.getText());
+            		list = SocketServer.getUsersOnLine(root.getText(),"3");
             	}
             	else if("TOTAL".equals(id)) {
             		list = SocketServer.getUsersTotal();
             	}
             	try {
-            	SocketWriter.writing(sock,list);
+            		SocketWriter.write(sock,list);
             	} catch (IOException e) {
-					LogWriter.write("Error de entrada y salida");
-					LogWriter.write("mensaje: " + e.getMessage());
+					LogWriter.write("ERROR: Falla de entrada/salida");
+					LogWriter.write("Causa: " + e.getMessage());
 					e.printStackTrace();
 				}
+            }
+            else if(rootName.equals("SEARCH")) {
+            	    //String id = root.getChildText("id");
+                	String pattern = root.getChildText("pattern");
+                	String area = root.getChildText("area");
+                	Document list = new Document();
+               		list = SocketServer.getUsersOnLine(pattern,area);
+                	try {
+                		SocketWriter.write(sock,list);
+                	} catch (IOException e) {
+    					LogWriter.write("ERROR: Falla de entrada/salida");
+    					LogWriter.write("Causa: " + e.getMessage());
+    					e.printStackTrace();
+    				}            		
             }
             else if (rootName.equals("USERSTOTAL")) {
             	Document list = SocketServer.getUsersTotal();
             	try {
-            	SocketWriter.writing(sock,list);
+            		SocketWriter.write(sock,list);
             	} catch (IOException e) {
-					LogWriter.write("Error de entrada y salida");
-					LogWriter.write("mensaje: " + e.getMessage());
-					e.printStackTrace();
-				}
+            		LogWriter.write("ERROR: Falla de entrada y salida");
+            		LogWriter.write("Causa: " + e.getMessage());
+            		e.printStackTrace();
+            	}
             }
             else {
                   LogWriter.write(Language.getWord("ERR_FORMAT_PROTOCOL") + ": " + sock.socket());
@@ -164,36 +179,37 @@ public class HeaderValidator {
         /* Validacion de una solicitud de un paquete conexión */
         else if (rootName.equals("CNX")) {
             UserLogin user = new UserLogin(root);
-        	if (user.valid()) {
+        	if (user.isValid()) {
         		String login = user.getLogin();
         		SocketServer.setLogin(sock, ConfigFileHandler.getMainDataBase(), login);
         		SocketServer.getSocketInfo(sock).setEmail(user.getEmail());
         		SocketServer.getSocketInfo(sock).setUid(user.getUid());
-        		SocketServer.getSocketInfo(sock).setGid(user.getGid());
+        		SocketServer.getSocketInfo(sock).setGroupID(user.getGid());
         		SocketServer.getSocketInfo(sock).setAdmin(user.getAdmin());
         		SocketServer.getSocketInfo(sock).setAudit(user.getAudit());
-        		SocketServer.getSocketInfo(sock).setCurrIp(user.getIp());
-        		SocketServer.getSocketInfo(sock).setPsName(user.getPsName());
-        		SocketServer.getSocketInfo(sock).setGName(user.getGName());
+        		SocketServer.getSocketInfo(sock).setCurrentIP(user.getIp());
+        		SocketServer.getSocketInfo(sock).setWsName(user.getWsName());
+        		SocketServer.getSocketInfo(sock).setGroupName(user.getGroupName());
         		SocketServer.getSocketInfo(sock).setNames(user.getNames());
+        		SocketServer.getSocketInfo(sock).setConnectionTime();
                 new ACPSender(sock,login,user.getUserLevel());
             } else {
                 try {
-					SocketWriter.writing(sock, new AcpFailure(Language.getWord("ACPFAILURE")));
+					SocketWriter.write(sock, new AcpFailure(Language.getWord("ACPFAILURE")));
 				} catch (IOException e) {
-					LogWriter.write("Error de entrada y salida");
-					LogWriter.write("mensaje: " + e.getMessage());
+					LogWriter.write("ERROR: Falla de entrada/salida");
+					LogWriter.write("Causa: " + e.getMessage());
 					e.printStackTrace();
 				}
             }
         } 
         /* Validación de solicitud de paquetes no autorizados */
         else {
-            LogWriter.write("paquete no autorizado");
-            XMLOutputter xmlOutputter = new XMLOutputter();
-            xmlOutputter.setFormat(Format.getPrettyFormat());
+            LogWriter.write("ERROR: Paquete no autorizado. Contenido:");
+            XMLOutputter xmlOutputter2 = new XMLOutputter();
+            xmlOutputter2.setFormat(Format.getPrettyFormat());
             try {
-                xmlOutputter.output(doc,System.out);
+                xmlOutputter2.output(doc,System.out);
             }
             catch (IOException e) {
                 e.printStackTrace();

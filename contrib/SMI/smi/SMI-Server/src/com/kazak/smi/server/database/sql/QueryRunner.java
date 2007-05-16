@@ -37,7 +37,7 @@ public class QueryRunner extends Element {
 
 	private static final long serialVersionUID = -5369073295276204778L;
     private String sqlCode;
-    private Statement st;
+    private Statement statement;
     private String sql;
     
     /**
@@ -48,6 +48,7 @@ public class QueryRunner extends Element {
      * @param sqlCode Codigo Sentencia SQL
      */
     public QueryRunner() {}
+    
     public QueryRunner(String sqlCode) throws SQLNotFoundException, SQLBadArgumentsException {
         this.sqlCode = sqlCode;
         sql = SQLInstructions.getSentence(sqlCode);
@@ -69,46 +70,46 @@ public class QueryRunner extends Element {
      * 
      * @return retorna el resultado de la consulta
      */
-    public ResultSet runSELECT() throws SQLException{
-        st = ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).createStatement();
-//        LogWriter.write("SENTENCIA SQL :: "+sql);
-        ResultSet rs = st.executeQuery(sql);
-        return rs;
+    public ResultSet select() throws SQLException{
+        statement = ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        
+        return resultSet;
     }
 
-    public boolean runSQL(String cod_sql,String[] args) 
+    public boolean runSQL(String sqlCode,String[] args) 
     throws SQLException,SQLNotFoundException, SQLBadArgumentsException {
-        this.sqlCode = cod_sql;
-        sql = SQLInstructions.getSentence(cod_sql,args);
-        st = ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).createStatement();
-//        LogWriter.write("SENTENCIA SQL :: "+sql);
-        boolean status = st.execute(sql);
-        st.close();
+        this.sqlCode = sqlCode;
+        sql = SQLInstructions.getSentence(sqlCode,args);
+        statement = ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).createStatement();
+        boolean status = statement.execute(sql);
+        statement.close();
+        
         return status;
     }
 
     public boolean runSQL(String[] args) 
     throws SQLException,SQLNotFoundException, SQLBadArgumentsException {
         sql = SQLInstructions.getSentence(sqlCode,args);
-        st = ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).createStatement();
+        statement = ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).createStatement();
         LogWriter.write("SENTENCIA SQL :: "+sql);
-        boolean status = st.execute(sql);
-        st.close();
+        boolean status = statement.execute(sql);
+        statement.close();
+
         return status;
-        
     }
+    
     /**
      * Metodo encargado de ejcutar la sentencia sql diferente 
      * a un Select
      * 
      * @return retorna TRUE si la transaccion es excitosa y FALSE si no
      */
-    public boolean runSQL() throws SQLException{
-        
-        st = ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).createStatement();
-        //System.out.println("SENTENCIA SQL :: "+sql);
-        boolean status = st.execute(sql);
-        st.close();
+    public boolean executeSQL() throws SQLException{
+        statement = ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).createStatement();
+        boolean status = statement.execute(sql);
+        statement.close();
+
         return status;
     }
     
@@ -117,7 +118,7 @@ public class QueryRunner extends Element {
      * la informacion del Resultset haya sido interpretada
      */
     public void closeStatement() {
-        QueryClosingHandler.close(st);
+        QueryClosingHandler.close(statement);
     }
     
     public void setAutoCommit(boolean autoCommit) {
@@ -125,7 +126,6 @@ public class QueryRunner extends Element {
         	ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).setAutoCommit(autoCommit);
         }
         catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -135,7 +135,6 @@ public class QueryRunner extends Element {
         	ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).commit();
         }
         catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     } 
@@ -145,7 +144,6 @@ public class QueryRunner extends Element {
         	ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).rollback();
         }
         catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

@@ -7,9 +7,8 @@ import java.util.Hashtable;
 import org.jdom.Document;
 import org.jdom.Element;
 
-
 /**
- * STResultSet.java Creado el 30-ago-2004
+ * QuerySender.java Creado el 30-ago-2004
  * 
  * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
@@ -30,11 +29,11 @@ import org.jdom.Element;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
+
 public class QuerySender {
 
-    private static Hashtable <String,Document> HspoolTransactions = new Hashtable<String,Document>();
+    private static Hashtable <String,Document> poolTransactionsHash = new Hashtable<String,Document>();
     private static long id = 0;
-
      
     /**
      * Este metodo es invocado en caso de que la consulta solicitada no se encuentre en
@@ -44,7 +43,7 @@ public class QuerySender {
      * @return returna la transaccion o query solicitado.
      * @throws QuerySenderException
      */
-    public static Document getResultSetST(Document doc) throws QuerySenderException {
+    public static Document getResultSetFromST(Document doc) throws QuerySenderException {
     	
         String id = "Q"+getId();
         doc.getRootElement().addContent(new Element("id").setText(id));
@@ -52,12 +51,12 @@ public class QuerySender {
         try {
         	SocketWriter.writing(socket,doc);
         } catch (IOException e) {
-			System.out.println("Error de entrada y salida");
-			System.out.println("mensaje: " + e.getMessage());
+			System.out.println("ERROR: Error de entrada y salida");
+			System.out.println("Causa: " + e.getMessage());
 			e.printStackTrace();
 		}    
         int i=0;
-        while (!HspoolTransactions.containsKey(id)) {
+        while (!poolTransactionsHash.containsKey(id)) {
             try {
                 Thread.sleep(100);
                 i++;
@@ -70,25 +69,25 @@ public class QuerySender {
             }
         }
     	
-        Document retorno = (Document)HspoolTransactions.get(id);
-        HspoolTransactions.remove(id);
-        return retorno;
+        Document result = (Document)poolTransactionsHash.get(id);
+        poolTransactionsHash.remove(id);
+        return result;
     }
 
-    public static Document getResultSetST(String codigo, String [] args)
+    public static Document getResultSetFromST(String code, String[] argsArray)
     throws QuerySenderException {
         Document doc = new Document();
         doc.setRootElement(new Element("QUERY"));
-        doc.getRootElement().addContent(new Element("sql").setText(codigo));
+        doc.getRootElement().addContent(new Element("sql").setText(code));
         
-        if( args != null ) {
-            Element params = new Element("params");
-            for (int i=0; i< args.length ; i++) {
-                params.addContent(new Element("arg").setText(args[i]));
+        if( argsArray != null ) {
+            Element element = new Element("params");
+            for (int i=0; i< argsArray.length ; i++) {
+                element.addContent(new Element("arg").setText(argsArray[i]));
             }
-            doc.getRootElement().addContent(params);
+            doc.getRootElement().addContent(element);
         }
-        return getResultSetST(doc);
+        return getResultSetFromST(doc);
     }
     
     /**
@@ -97,8 +96,8 @@ public class QuerySender {
      * @param id identificador de solicitud de consulta.
      * @param doc paquete answer,success o error retornado por el ST.
      */
-    public static void putSpoolQuery(String id, Document doc) {
-        HspoolTransactions.put(id,doc);
+    public static void putResultOnPool(String id, Document doc) {
+        poolTransactionsHash.put(id,doc);
     }
     
     public static synchronized String getId() {

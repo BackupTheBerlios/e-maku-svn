@@ -57,78 +57,89 @@ public class Pop3Handler extends Thread {
 				Message messages[] = folder.getMessages();
 				
 				for (Message message : messages) {
-					InternetAddress addr = (InternetAddress) message.getFrom()[0];
-					String fullSubject   =  message.getSubject();
-					fullSubject          = fullSubject!=null ? fullSubject.trim() : null;
-					int index1             = addr.getAddress().indexOf('@');
-					String from          = addr.getAddress().substring(0,index1);
-					int index2             = fullSubject!=null ? fullSubject.indexOf(',') : -1;
+					InternetAddress address = (InternetAddress) message.getFrom()[0];
+					String fullSubject =  message.getSubject();
+					fullSubject = fullSubject!=null ? fullSubject.trim() : null;
+					int index1  = address.getAddress().indexOf('@');
+					String from = address.getAddress().substring(0,index1);
+					int index2  = fullSubject!=null ? fullSubject.indexOf(',') : -1;
 
 					String to = "";
-					String sub = "";
+					String subject = "";
 					String content = message.getContent().toString();
-					LogWriter.write("INFO: Leyendo correo del buzon de mensajes.");
-					LogWriter.write("INFO: Nuevo mensaje desde {" + addr.getAddress() + "} con asunto [ " +  fullSubject + " ]");
-					if (index2==-1) {
+					LogWriter.write("INFO: Leyendo correo del buzon de mensajes");
+					LogWriter.write("INFO: Nuevo mensaje desde {" + address.getAddress() + "} con asunto [ " +  fullSubject + " ]");
+
+					if (index2==-1 && !fullSubject.startsWith("[Error SMI]")) {
 						if (!"Mailer-Daemon".equals(from)){
-						LogWriter.write("INFO: Error en el asunto del mensaje desde: "+addr.getAddress());
-						LogWriter.write("asunto escrito: "+fullSubject);
-						EmailSender ems = new EmailSender();
-						ems.setFrom	   (user+"@"+host);
-						ems.setTo	   (addr.getAddress());
-						ems.setSubject ("Error");
-						ems.setDate	   (new Date());
-						ems.setMessage (
-								"El correo no tiene el formato apropiado.\n" +
-								"Por favor verifique el asunto del mensaje\n" +
-								"Contenido Original\n" +
-								"-------------------------------------\n" +
-								"Asunto:"   + fullSubject+"\n" +
-								"Mensage:\n"+ content    +"\n" +
-								"-------------------------------------\n" +
-								"Este mensaje fue enviado por el Sistema de Mensajeria Instantanea" );
-						ems.send();
+							LogWriter.write("ERROR: Error en el asunto del mensaje escrito por {" + address.getAddress() + "}");
+							LogWriter.write("ERROR: Asunto escrito [" + fullSubject + "]");
+							EmailSender mail = new EmailSender();
+							mail.setFrom(user+"@"+host);
+							mail.setSender(address.getAddress());
+							mail.setSubject("Error");
+							mail.setDate(new Date());
+							mail.setMessage (
+									"El correo no tiene el formato apropiado.\n" +
+									"Por favor verifique el asunto del mensaje\n" +
+									"Contenido Original\n" +
+									"-------------------------------------\n" +
+									"Asunto:"   + fullSubject+"\n" +
+									"Mensage:\n"+ content    +"\n" +
+									"-------------------------------------\n" +
+							"Este mensaje fue generado automaticamente por el Sistema de Mensajeria Instantanea." );
+							mail.send();
 						}
 					}
 					else {
 						String[] strings = fullSubject.split(":");
-						String timeAlife = "-1";
+						String lifeTime = "-1";
 						if (strings.length > 0 ) {
-							timeAlife = strings[strings.length-1];
-							int timeAlifeInt = -1;
+							lifeTime = strings[strings.length-1];
+							int lifeTimeInteger = -1;
 							try {
-								timeAlifeInt= Integer.valueOf(timeAlife);
+								lifeTimeInteger= Integer.valueOf(lifeTime);
 							} catch (NumberFormatException NFEe) {
-								timeAlifeInt = -1;
+								lifeTimeInteger = -1;
 							}
-							if (timeAlifeInt < 1 || timeAlifeInt>99) {
-								timeAlife = "-1";
+							if (lifeTimeInteger < 1 || lifeTimeInteger>99) {
+								lifeTime = "-1";
 							}
 						}
-						to = fullSubject.substring(0,index2);
-						sub = fullSubject.substring(index2+1,fullSubject.length());
-						to = to.toUpperCase();
 						
-						QueryRunner runQuery = null;
-					    ResultSet rs = null;
-					    String idgroup = null;
-					    boolean all = false;
-					    if ("TODOS".equals(to)) { all=true; }
+						if (index2 == -1) {
+							to = "SMI";
+						} else {
+							to = fullSubject.substring(0,index2);
+							to = to.toUpperCase();
+						}
+						
+						subject = fullSubject.substring(index2+1,fullSubject.length());
+						
+						QueryRunner qRunner = null;
+					    ResultSet resultSet = null;
+					    String groupID = null;
+					    boolean toAllUsers = false;
+					    
+					    if ("TODOS".equals(to)) { 
+					    	toAllUsers=true; 
+					    }
+					    
 						try {
-							runQuery = all ?
+							qRunner = toAllUsers ?
 									new QueryRunner("SEL0028") :
 									new QueryRunner("SEL0024",new String[]{to,to});
-							rs = runQuery.runSELECT();
-							while (rs.next()) {
-								idgroup =  rs.getString(1);
-								if (idgroup!=null) {
+							resultSet = qRunner.select();
+							while (resultSet.next()) {
+								groupID =  resultSet.getString(1);
+								if (groupID!=null) {
 									Element xml = new Element("Message");
-									xml.addContent(create("idgroup",idgroup));
-									xml.addContent(create("toName",	all ? rs.getString(2): to ));
-									xml.addContent(create("from",   from));
-									xml.addContent(create("subject",sub));
-									xml.addContent(create("message",content));
-									xml.addContent(create("timeAlife",timeAlife));
+									xml.addContent(createXMLElement("idgroup",groupID));
+									xml.addContent(createXMLElement("toName",toAllUsers ? resultSet.getString(2): to ));
+									xml.addContent(createXMLElement("from",from));
+									xml.addContent(createXMLElement("subject",subject));
+									xml.addContent(createXMLElement("message",content));
+									xml.addContent(createXMLElement("timeAlife",lifeTime));
 									new MessageDistributor(xml,true);
 								}
 								else {
@@ -142,8 +153,8 @@ public class Pop3Handler extends Thread {
 						} catch (SQLException e) {
 							e.printStackTrace();
 						} finally {
-							QueryClosingHandler.close(rs);
-							runQuery.closeStatement();
+							QueryClosingHandler.close(resultSet);
+							qRunner.closeStatement();
 						}
 					}
 					message.setFlag(Flags.Flag.DELETED, true);
@@ -154,7 +165,7 @@ public class Pop3Handler extends Thread {
 				LogWriter.write("ERROR: Falla en la autenticacion del demonio pop3. No se podran obtener los correos.");
 				LogWriter.write("ERROR: Por favor, revise el archivo de configuracion y vuelva a iniciar el SMI.");
 				LogWriter.write("Causa: " + e.getMessage());
-				Run.killServer();
+				Run.shutDownServer();
 			} catch (NoSuchProviderException e) {
 				e.printStackTrace();
 			} catch (MessagingException e) {
@@ -170,10 +181,10 @@ public class Pop3Handler extends Thread {
 		}
 	}
 	
-	private Element create(String name,String value) {
-		Element el = new Element(name);
-		el.setText(value);
-		return el;
+	private Element createXMLElement(String name,String value) {
+		Element element = new Element(name);
+		element.setText(value);
+		return element;
 	}
 
 	public static String getHost() {

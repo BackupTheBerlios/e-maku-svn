@@ -9,7 +9,7 @@ public class HistoryDataModel extends AbstractTableModel {
 	private static final long serialVersionUID = -6111771046854883088L;
 	
 	private String[] titles = {
-			"No","Fecha","Hora","Remitente","Asunto","Mensaje","Leido"
+			"No","Fecha","Hora","Remitente","Asunto","Mensaje","Leído"
 	};
 	private Class[] types = {
 			Integer.class,String.class,String.class,

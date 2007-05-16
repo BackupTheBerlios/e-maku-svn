@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -28,30 +29,16 @@ public class TreeManagerGroups {
 	private static SortableTreeNode rootNode;
 	private JScrollPane jscroll;
 	private static JTree tree;
-	private JPopupMenu jpopup1 = new JPopupMenu();
-	private JPopupMenu jpopup2 = new JPopupMenu();
-	private JPopupMenu jpopup3 = new JPopupMenu();
+	private JPopupMenu groupsMenu = new JPopupMenu();
+	private JPopupMenu wsMenu = new JPopupMenu();
+	private JPopupMenu usersMenu = new JPopupMenu();
 	private Actions actions;
 	private ArrayList<String> lastPath = new ArrayList<String>();
-	//private static SortableTreeNode globalNode;
-	//private static SortableTreeNode globalLastNode;
-	public static TreePath currTpath;
-	
-	/*
-	public static void setNodes(SortableTreeNode node, SortableTreeNode finalNode) {
-		globalNode = node;
-		globalLastNode = finalNode;
-	}
-	
-	public static String getFinalNode() {
-		return globalLastNode.toString();
-	}
-	
-	public static String getGroupNode() {
-		return globalNode.toString();
-	}*/
-	
-	public TreeManagerGroups() {
+	public static TreePath currentTreePath;
+	public JFrame frame;
+		
+	public TreeManagerGroups(JFrame frame) {
+		this.frame = frame;
 		rootNode = new SortableTreeNode(MainWindow.getAppOwner());
 		rootNode.setAllowsChildren(true);
 		tree = new JTree(rootNode);
@@ -61,10 +48,8 @@ public class TreeManagerGroups {
 		renderer.setClosedIcon(null);
 		renderer.setOpenIcon(null);
 		renderer.setIcon(null);
-		//renderer.setBackgroundSelectionColor(Color.LIGHT_GRAY);
 		renderer.setRequestFocusEnabled(true);
 		renderer.setAutoscrolls(true);
-		//renderer.setBorderSelectionColor(Color.BLACK);
 		
 		tree.setCellRenderer(renderer);
 		tree.setExpandsSelectedPaths(true);
@@ -76,29 +61,28 @@ public class TreeManagerGroups {
 		tree.addMouseListener(new MouseAdapter() {
 			
 			public void mousePressed(MouseEvent e) {
-				//if ( e.getButton() == MouseEvent.BUTTON3 && e.isPopupTrigger() ) {
                 if ( e.getButton() == MouseEvent.BUTTON3) {
-                	currTpath = tree.getPathForLocation(e.getX(), e.getY());
-                	tree.setSelectionPath(currTpath);
-                	int count = currTpath.getPathCount();
+                	currentTreePath = tree.getPathForLocation(e.getX(), e.getY());
+                	tree.setSelectionPath(currentTreePath);
+                	int count = currentTreePath.getPathCount();
                 	SortableTreeNode node;
                 	switch (count) {
                 	case 2: // Puntos de Venta
                 		lastPath.clear();
-    	                jpopup1.show(e.getComponent(), e.getX(), e.getY());
+    	                groupsMenu.show(e.getComponent(), e.getX(), e.getY());
             			break;
             		case 3: // Usuarios 
-            			node = (SortableTreeNode) currTpath.getPathComponent(2);
+            			node = (SortableTreeNode) currentTreePath.getPathComponent(2);
             			String name = node.toString();
             			if (Cache.containsWs(name)){
-            				jpopup2.show(e.getComponent(), e.getX(), e.getY());
+            				wsMenu.show(e.getComponent(), e.getX(), e.getY());
             			}
             			if (Cache.containsUser(name)){
-            				jpopup3.show(e.getComponent(), e.getX(), e.getY());
+            				usersMenu.show(e.getComponent(), e.getX(), e.getY());
             			}
             			break;
             		case 4:
-            			jpopup3.show(e.getComponent(), e.getX(), e.getY());
+            			usersMenu.show(e.getComponent(), e.getX(), e.getY());
             			break;
                 	}
                 }
@@ -108,80 +92,80 @@ public class TreeManagerGroups {
 		int mode = TreeSelectionModel.SINGLE_TREE_SELECTION;
 		tree.getSelectionModel().setSelectionMode(mode);
 		jscroll = new JScrollPane(tree);
-		Cache.loadTree();
+		Cache.loadInfoTree(1);
 	}
 	
 	public void loadPopups() {
 		actions = new Actions();
 		
 		//--- Popup Grupos
-		jpopup1.add(new JLabel("Grupos"));
-		jpopup1.add(new JSeparator());
+		groupsMenu.add(new JLabel("Grupos"));
+		groupsMenu.add(new JSeparator());
 		JMenuItem item = new JMenuItem("Nuevo");
         item.setActionCommand("new_group");
         item.addActionListener(actions);
-        jpopup1.add(item);
+        groupsMenu.add(item);
         
         item = new JMenuItem("Editar");
         item.setActionCommand("edit_group");
         item.addActionListener(actions);
-        jpopup1.add(item);
+        groupsMenu.add(item);
         
         item = new JMenuItem("Eliminar");
         item.setActionCommand("delete_group");
         item.addActionListener(actions);
-        jpopup1.add(item);
+        groupsMenu.add(item);
         
         item = new JMenuItem("Buscar");
         item.setActionCommand("search_group");
         item.addActionListener(actions);
-        jpopup1.add(item);
+        groupsMenu.add(item);
         
         //--- Popup Puntos Venta
-        jpopup2.add(new JLabel("Puntos"));
-		jpopup2.add(new JSeparator());
+        wsMenu.add(new JLabel("Puntos"));
+		wsMenu.add(new JSeparator());
         item = new JMenuItem("Nuevo");
         item.setActionCommand("new_point");
         item.addActionListener(actions);
-        jpopup2.add(item);
+        wsMenu.add(item);
         
         item = new JMenuItem("Editar");
         item.setActionCommand("edit_point");
         item.addActionListener(actions);
-        jpopup2.add(item);
+        wsMenu.add(item);
         
         item = new JMenuItem("Eliminar");
         item.setActionCommand("delete_point");
         item.addActionListener(actions);
-        jpopup2.add(item);
+        wsMenu.add(item);
         
         item = new JMenuItem("Buscar");
         item.setActionCommand("search_point");
         item.addActionListener(actions);
-        jpopup2.add(item);
+        wsMenu.add(item);
         
         //--- Popup Usuarios
-        jpopup3.add(new JLabel("Usuarios"));
-		jpopup3.add(new JSeparator());
+        usersMenu.add(new JLabel("Usuarios"));
+		usersMenu.add(new JSeparator());
         item = new JMenuItem("Nuevo");
         item.setActionCommand("new_user");
         item.addActionListener(actions);
-        jpopup3.add(item);
+        usersMenu.add(item);
         
         item = new JMenuItem("Editar");
         item.setActionCommand("edit_user");
         item.addActionListener(actions);
-        jpopup3.add(item);
+        usersMenu.add(item);
         
         item = new JMenuItem("Eliminar");
         item.setActionCommand("delete_user");
         item.addActionListener(actions);
-        jpopup3.add(item);
+        usersMenu.add(item);
         
         item = new JMenuItem("Buscar");
         item.setActionCommand("search_user");
         item.addActionListener(actions);
-        jpopup3.add(item);
+        usersMenu.add(item);
 	}
 		
 	public void addMouseListener(MouseListener l) {
@@ -204,15 +188,15 @@ public class TreeManagerGroups {
 				return;
 			}
 			for (int j=0 ; j < node.getChildCount() ; j++)  {
-				SortableTreeNode subnode = (SortableTreeNode) node.getChildAt(j);
-				if (name.equals(subnode.toString())) {
-					node.remove((SortableTreeNode)subnode);
+				SortableTreeNode internalNode = (SortableTreeNode) node.getChildAt(j);
+				if (name.equals(internalNode.toString())) {
+					node.remove((SortableTreeNode)internalNode);
 					return;
 				}
-				for (int k=0 ; k < subnode.getChildCount() ; k++)  {
-					SortableTreeNode lastnode = (SortableTreeNode) subnode.getChildAt(k);
+				for (int k=0 ; k < internalNode.getChildCount() ; k++)  {
+					SortableTreeNode lastnode = (SortableTreeNode) internalNode.getChildAt(k);
 					if (name.equals(lastnode.toString())) {
-						subnode.remove((SortableTreeNode)lastnode);
+						internalNode.remove((SortableTreeNode)lastnode);
 						return;
 					}
 				}
@@ -227,14 +211,14 @@ public class TreeManagerGroups {
 				return node;
 			}
 			for (int j=0 ; j < node.getChildCount() ; j++)  {
-				SortableTreeNode subnode = (SortableTreeNode) node.getChildAt(j);
-				if (name.equals(subnode.toString())) {
-					return subnode;
+				SortableTreeNode internalNode = (SortableTreeNode) node.getChildAt(j);
+				if (name.equals(internalNode.toString())) {
+					return internalNode;
 				}
-				for (int k=0 ; k < subnode.getChildCount() ; k++)  {
-					SortableTreeNode lastnode = (SortableTreeNode) subnode.getChildAt(k);
+				for (int k=0 ; k < internalNode.getChildCount() ; k++)  {
+					SortableTreeNode lastnode = (SortableTreeNode) internalNode.getChildAt(k);
 					if (name.equals(lastnode.toString())) {
-						return subnode;
+						return internalNode;
 					}
 				}
 			}
@@ -243,19 +227,19 @@ public class TreeManagerGroups {
 	}
 		
 	public static synchronized void addGroup(String name) {
-		SortableTreeNode df = new SortableTreeNode(name);
-		rootNode.add(df);
+		SortableTreeNode treeNode = new SortableTreeNode(name);
+		rootNode.add(treeNode);
 	}
 	
 	//Metodo para añadir puntos de venta y funcionarios al arbol
-	public static synchronized void addChild(String z,String pv) {
-		SortableTreeNode df = new SortableTreeNode(pv);
+	public static synchronized void addChild(String user,String ws) {
+		SortableTreeNode node = new SortableTreeNode(ws);
 		int nodes = rootNode.getChildCount();
 		SortableTreeNode treeNode = null;
 		for (int i=0; i < nodes ; i++) {
 			treeNode = (SortableTreeNode) rootNode.getChildAt(i);
-			if (treeNode.toString().equals(z)) {
-				treeNode.add(df);
+			if (treeNode.toString().equals(user)) {
+				treeNode.add(node);
 				break;
 			}
 		}
@@ -287,18 +271,18 @@ public class TreeManagerGroups {
 		SwingUtilities.invokeLater(t);
 	}
 
-	public static synchronized void addChild(String gname, String codepv, String login) {
-		SortableTreeNode df = new SortableTreeNode(login);
+	public static synchronized void addChild(String groupName, String pos, String login) {
+		SortableTreeNode sortableTreeNode = new SortableTreeNode(login);
 		int nodes = rootNode.getChildCount();
 		SortableTreeNode treeNode = null;
 		for (int i=0; i < nodes ; i++) {
 			treeNode = (SortableTreeNode) rootNode.getChildAt(i);
-			if (treeNode.toString().equals(gname)) {
-				int pvs = treeNode.getChildCount();
-				for (int j=0; j < pvs ; j++) {
-					SortableTreeNode treeNodePV = (SortableTreeNode) treeNode.getChildAt(j);
-					if (treeNodePV.toString().equals(codepv)) {
-						treeNodePV.add(df);
+			if (treeNode.toString().equals(groupName)) {
+				int ws = treeNode.getChildCount();
+				for (int j=0; j < ws ; j++) {
+					SortableTreeNode posTreeNode = (SortableTreeNode) treeNode.getChildAt(j);
+					if (posTreeNode.toString().equals(pos)) {
+						posTreeNode.add(sortableTreeNode);
 						break;
 					}
 				}
@@ -315,9 +299,9 @@ public class TreeManagerGroups {
 			super(userObject);
 		}
 		public void add(SortableTreeNode newChild) {
-			int cc = getChildCount();
+			int childsTotal = getChildCount();
 			Comparable newObject = (Comparable)newChild.getUserObject();
-			for (int i = 0; i < cc; i++) {
+			for (int i = 0; i < childsTotal; i++) {
 				SortableTreeNode child = (SortableTreeNode)getChildAt(i);
 				Comparable childObject = (Comparable)child.getUserObject();
 				if (newObject.compareTo(childObject) <0) {
@@ -361,10 +345,10 @@ public class TreeManagerGroups {
 		
 		String name="";
 						
-		public void actionPerformed(ActionEvent e) {
-			String command = e.getActionCommand();
-			int count = TreeManagerGroups.currTpath.getPathCount();
-			name = TreeManagerGroups.currTpath.getPathComponent(count -1).toString();
+		public void actionPerformed(ActionEvent event) {
+			String command = event.getActionCommand();
+			int count = TreeManagerGroups.currentTreePath.getPathCount();
+			name = TreeManagerGroups.currentTreePath.getPathComponent(count -1).toString();
 
 			if ("new_user".equals(command)) {
 				UsersManager userManager = new UsersManager();
@@ -375,7 +359,7 @@ public class TreeManagerGroups {
 			else if ("edit_user".equals(command)) {
 				UsersManager userManager = new UsersManager();
 				userManager.setFieldLogin(name);
-				userManager.getJBSearch().doClick();
+				userManager.getSearchButton().doClick();
 				userManager.edit();
 				userManager.getFieldPassword().setEditable(true);
 				userManager.getFieldMail().setEditable(true);
@@ -386,13 +370,13 @@ public class TreeManagerGroups {
 			else if ("delete_user".equals(command)) {
 				UsersManager userManager = new UsersManager();
 				userManager.setFieldLogin(name);
-				userManager.getJBSearch().doClick();
+				userManager.getSearchButton().doClick();
 				userManager.delete();
 			}
 			else if ("search_user".equals(command)) {
 				UsersManager userManager = new UsersManager();
 				userManager.setFieldLogin(name);
-				userManager.getJBSearch().doClick();
+				userManager.getSearchButton().doClick();
 				userManager.search();
 			}
 			else if ("new_point".equals(command)) {
@@ -401,27 +385,25 @@ public class TreeManagerGroups {
 				ws.add();
 			}
 			else if ("edit_point".equals(command)) {
-				System.out.println("Inicio: Editando punto de venta...");
 				WorkStationsManager ws = new WorkStationsManager();
 				ws.setFieldName(name);
-				ws.getJBSearch().doClick();
+				ws.getSearchButton().doClick();
 				ws.edit();
 				ws.getFieldCode().setEditable(true);
 				ws.getFieldIp().setEditable(true);
-				ws.getJCBGroups().setEnabled(true);
-				System.out.println("Fin: Editando punto de venta...");
+				ws.getGroupsCombo().setEnabled(true);
 			}
 				
 			else if ("delete_point".equals(command)) {
 				WorkStationsManager ws = new WorkStationsManager();
 				ws.setFieldName(name);
-				ws.getJBSearch().doClick();
+				ws.getSearchButton().doClick();
 				ws.delete();
 			}
 			else if ("search_point".equals(command)) {
 				WorkStationsManager ws = new WorkStationsManager();
 				ws.setFieldName(name);
-				ws.getJBSearch().doClick();
+				ws.getSearchButton().doClick();
 				ws.delete();
 			}
 			else if ("new_group".equals(command)) {
@@ -431,23 +413,23 @@ public class TreeManagerGroups {
 			else if ("edit_group".equals(command)) {
 				GroupsManager group = new GroupsManager();
 				group.setFieldName(name);
-				group.getJBSearch().doClick();
+				group.getSearchButton().doClick();
 				group.edit();
-				group.getJCheckVisible().setEnabled(true);
-				group.getJCheckZone().setEnabled(true);
-				group.getJBAccept().setEnabled(true);
+				group.getVisibleCheck().setEnabled(true);
+				group.getZoneCheck().setEnabled(true);
+				group.getAcceptButton().setEnabled(true);
 			}
 			else if ("delete_group".equals(command)) {
 				GroupsManager group = new GroupsManager();
 				group.setFieldName(name);
-				group.getJBSearch().doClick();
+				group.getSearchButton().doClick();
 				group.delete();
-				group.getJBAccept().setEnabled(true);
+				group.getAcceptButton().setEnabled(true);
 			}
 			else if ("search_group".equals(command)) {
 				GroupsManager group = new GroupsManager();
 				group.setFieldName(name);
-				group.getJBSearch().doClick();
+				group.getSearchButton().doClick();
 				group.search();
 			}
 		}
@@ -505,55 +487,47 @@ public class TreeManagerGroups {
 	
 	public static void expand() {
 		
-		if (TreeManagerGroups.currTpath!=null) {
+		if (TreeManagerGroups.currentTreePath!=null) {
 			Thread t = new Thread () {
 				public void run() {
-					//collapseAll();
 
-					int pcount = currTpath.getPathCount();
-					SortableTreeNode globalNode = (SortableTreeNode) currTpath.getPathComponent(pcount-2);
-					SortableTreeNode globalLastNode = (SortableTreeNode) currTpath.getPathComponent(pcount-1);
+					int pcount = currentTreePath.getPathCount();
+					SortableTreeNode globalNode = (SortableTreeNode) currentTreePath.getPathComponent(pcount-2);
+					SortableTreeNode globalLastNode = (SortableTreeNode) currentTreePath.getPathComponent(pcount-1);
 					int ccount = getChildCount(globalNode.toString());
 					
-					System.out.println("globalNode: " + globalNode.toString());
-					System.out.println("globalLastNode: " + globalLastNode.toString());
-					
 					if (pcount==2) { // Seleccion de un grupo
-						System.out.println("Entrando a 2");
-						int row = getRowPath(currTpath);
+						int row = getRowPath(currentTreePath);
 						tree.expandRow(row);
-						tree.setSelectionPath(currTpath);
+						tree.setSelectionPath(currentTreePath);
 						tree.scrollRowToVisible(row+ccount);
 					}
 					if (pcount==3) { // Seleccion de un punto de venta - Extendiendo un Grupo
-						System.out.println("Entrando a 3");
-						int row = getRowPath(currTpath);
+						int row = getRowPath(currentTreePath);
 						if (getChildCount(globalLastNode.toString())>0) {
-							//TreeManagerGroups.setNodes(globalNode, globalLastNode);
 							tree.expandRow(row);
-							tree.setSelectionPath(currTpath);
-							tree.scrollPathToVisible(currTpath);
+							tree.setSelectionPath(currentTreePath);
+							tree.scrollPathToVisible(currentTreePath);
 							TreePath tp = new TreePath(new Object[] {
-									currTpath.getPathComponent(0),
-									currTpath.getPathComponent(1),
-									currTpath.getPathComponent(2),
+									currentTreePath.getPathComponent(0),
+									currentTreePath.getPathComponent(1),
+									currentTreePath.getPathComponent(2),
 									new SortableTreeNode("")});
 							row = getRowPath(tp);
 							tree.scrollRowToVisible(row);
 						}
 						else {
 							tree.expandRow(row);
-							tree.setSelectionPath(currTpath);
+							tree.setSelectionPath(currentTreePath);
 							tree.scrollRowToVisible(row+ccount);							
 						}
 					}
 					if (pcount==4) { // Seleccion punto de venta?
-						System.out.println("Entrando a 4");
-						int row = getRowPath(currTpath.getParentPath());
+						int row = getRowPath(currentTreePath.getParentPath());
 						tree.expandRow(row);
-						row = getRowPath(currTpath);
+						row = getRowPath(currentTreePath);
 						tree.expandRow(row);
-						tree.setSelectionPath(currTpath);
+						tree.setSelectionPath(currentTreePath);
 						tree.scrollRowToVisible(row+ccount);
 					}
 				}

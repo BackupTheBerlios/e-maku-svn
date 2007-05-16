@@ -8,14 +8,12 @@ import com.kazak.smi.admin.control.Cache.User;
 
 public class UsersModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
-	private String[] titles =
-	{"UID","LOGIN","NOMBRES","CORREO","ADMINISTRADOR"};
-	private Class[] types   =  
-	{String.class,String.class,String.class,String.class,Boolean.class};
-	private Vector<User> values;
+	private String[] titles = {"UID","LOGIN","NOMBRES","CORREO","ADMINISTRADOR"};
+	private Class[] types   = {String.class,String.class,String.class,String.class,Boolean.class};
+	private Vector<User> usersVector;
 	
-	public UsersModel(Vector<User> usr) {
-		values = usr;
+	public UsersModel(Vector<User> vector) {
+		usersVector = vector;
 	}
 	
 	public String getColumnName(int index) {
@@ -27,14 +25,15 @@ public class UsersModel extends AbstractTableModel {
 	}
 
 	public int getRowCount() {
-		return values.size();
+		return usersVector.size();
 	}
 
 	public Class<?> getColumnClass(int columnIndex) {
 		return types[columnIndex];
 	}
+	
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		User user = values.get(rowIndex);
+		User user = usersVector.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
 			return user.getId();
@@ -47,6 +46,7 @@ public class UsersModel extends AbstractTableModel {
 		case 4:
 			return user.getAdmin();
 		}
+		
 		return null;
 	}
 	

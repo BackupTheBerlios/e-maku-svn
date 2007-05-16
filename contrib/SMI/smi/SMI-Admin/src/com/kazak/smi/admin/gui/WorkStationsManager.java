@@ -42,24 +42,21 @@ import com.kazak.smi.lib.misc.FixedSizePlainDocument;
 public class WorkStationsManager extends JFrame implements ActionListener, ItemListener {
 
 	private static final long serialVersionUID = 3920757441925057976L;
-	private AutoCompleteComboBox FieldName;
-	private JTextField FieldCode;
-	private JTextField FieldIp;
-	private JPanel JPCenter;
-	private JPanel JPSouth;
-	private JButton JBAccept;
-	private JButton JBCancel;
-	private JButton JBClean;
-	private ArrayList<Component> listComps = new ArrayList<Component>();
-	private JComboBox JCBGroups;
-	private JButton JBSearch;
-	private JPanel jpsearch;
+	private AutoCompleteComboBox fieldName;
+	private JTextField fieldCode;
+	private JTextField fieldIP;
+	private JPanel centerPanel;
+	private JPanel southPanel;
+	private JButton acceptButton;
+	private JButton cancelButton;
+	private JButton cleanButton;
+	private ArrayList<Component> componentsList = new ArrayList<Component>();
+	private JComboBox groupsCombo;
+	private JButton searchButton;
+	private JPanel searchPanel;
 	private enum ACTIONS  {ADD,EDIT,SEARCH,DELETE};
 	private ACTIONS ACTION;
 	private String oldCode;
-
-	final JFrame frame = this;
-	
 	private String[]
     labels = {
 			"Nombre",
@@ -67,224 +64,230 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 			"IP",
 			"Grupo"};
 	private JTable table;
-	
+		
 	public WorkStationsManager() {
 		this.setLayout(new BorderLayout());
 		this.setSize(300,180);
 		this.setLocationByPlatform(true);
+		this.setAlwaysOnTop(true);		
 		this.setLocationRelativeTo(MainWindow.getFrame());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setResizable(false);
-		initComps();
-		addComps();
-		JBSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String key = FieldName.getText().toUpperCase();
-				oldCode = key;
-				
-				if (Cache.containsWs(key)) {
-					WorkStation ws = Cache.getWorkStation(key);
-					FieldCode.setText(ws.getCode());
-					FieldIp.setText(ws.getIp());
-					JCBGroups.setSelectedItem(ws.getGidName());
-					System.out.println("*** Actualizando arbol desde WorkStation (busqueda)");
-					/*
-					TreeManagerGroups.currTpath = new TreePath(
-							new Object[] {
-										new SortableTreeNode(MainWindow.getAppOwner()),
-										new SortableTreeNode(ws.getGidName()),
-										new SortableTreeNode(ws.getName())});*/
-										
-					//TreeManagerGroups.expand();
-					if (ACTION == ACTIONS.ADD) {
-						FieldName.setEditable(false);
-						FieldIp.setEditable(false);
-						JCBGroups.setEnabled(false);
-						JBAccept.setEnabled(false);
-					}
-					if (ACTION == ACTIONS.DELETE) {
-						FieldCode.setEditable(false);
-						FieldName.setEditable(false);
-						FieldIp.setEditable(false);
-						JCBGroups.setEnabled(false);
-						JBAccept.setEnabled(true);
-						
-					}
-					if (ACTION == ACTIONS.EDIT) {
-						FieldName.setEditable(false);
-					}
-				}
-				else {
-					if (ACTION == ACTIONS.ADD) {
-						FieldName.setEditable(true);
-						FieldIp.setEditable(true);
-						JBAccept.setEnabled(true);
-						JCBGroups.setEnabled(true);
-					}
-				}
-			}
-		});
+		initComponents();
+		addComponents();
+		searchButton.setActionCommand("search");
+		searchButton.addActionListener(this);
 	}
 	
-	private void initComps() {
+	private void initComponents() {
 		
-		listComps.add(FieldName = new AutoCompleteComboBox(Cache.getWorkStationsList(),false,50));
-		listComps.add(FieldCode = new JTextField());
-		listComps.add(FieldIp   = new JTextField());
-		listComps.add(JCBGroups = new JComboBox(Cache.getGroupsList()));
+		componentsList.add(fieldName = new AutoCompleteComboBox(Cache.getWorkStationsList(),false,50));
+		componentsList.add(fieldCode = new JTextField());
+		componentsList.add(fieldIP   = new JTextField());
+		componentsList.add(groupsCombo = new JComboBox(Cache.getGroupsList()));
 		
-		FieldCode.setDocument(new NumericDataValidator(4));
-		FieldIp.setDocument(new FixedSizePlainDocument(15));
+		fieldCode.setDocument(new NumericDataValidator(4));
+		fieldIP.setDocument(new FixedSizePlainDocument(15));
 		
-		FieldIp.addFocusListener(new FocusAdapter() {
+		fieldIP.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				String entrada =  FieldIp.getText();
-				if (!"".equals(entrada)) {
-					String octetos[] = entrada.split("\\.");
+				String input =  fieldIP.getText();
+				if (!"".equals(input)) {
+					String ipFields[] = input.split("\\.");
 					try {
-						if (Integer.parseInt(octetos[0]) < 255 &&
-							Integer.parseInt(octetos[1])  < 255 &&
-							Integer.parseInt(octetos[2])  < 255 &&
-							Integer.parseInt(octetos[3])  < 255) {
-							FieldIp.setBackground(Color.WHITE);
+						if (Integer.parseInt(ipFields[0]) < 255 &&
+							Integer.parseInt(ipFields[1]) < 255 &&
+							Integer.parseInt(ipFields[2]) < 255 &&
+							Integer.parseInt(ipFields[3]) < 255) {
+							fieldIP.setBackground(Color.WHITE);
 						}
 						else {
 							Toolkit.getDefaultToolkit().beep();
-							FieldIp.setBackground(Color.RED);
+							fieldIP.setBackground(Color.RED);
 						}
 						
 					} catch (NumberFormatException ex) {
 						Toolkit.getDefaultToolkit().beep();
-						FieldIp.setBackground(Color.RED);
+						fieldIP.setBackground(Color.RED);
 					}
 				}
 				else {
-					FieldIp.setBackground(Color.WHITE);
+					fieldIP.setBackground(Color.WHITE);
 				}
 			}
 		});
-		FieldName.addItemListener(this);
-		JBAccept = new JButton("Aceptar");
-		JBCancel = new JButton("Cancelar");
+		fieldName.addItemListener(this);
+		acceptButton = new JButton("Aceptar");
+		cancelButton = new JButton("Cancelar");
 		GUIFactory gui = new GUIFactory();
-		JBSearch = gui.createButton("search.png");
-		jpsearch = new JPanel();
-		jpsearch.setLayout(new BoxLayout(jpsearch,BoxLayout.Y_AXIS));
-		jpsearch.add(JBSearch);
+		searchButton = gui.createButton("search.png");
+		searchPanel = new JPanel();
+		searchPanel.setLayout(new BoxLayout(searchPanel,BoxLayout.Y_AXIS));
+		searchPanel.add(searchButton);
 		
-		JBAccept.addActionListener(this);
-		JBCancel.addActionListener(this);
+		acceptButton.addActionListener(this);
+		cancelButton.addActionListener(this);
 		
-		JPCenter = new JPanel(new BorderLayout());
-		JPSouth  = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		centerPanel = new JPanel(new BorderLayout());
+		southPanel  = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	}
 	
-	private void addComps() {
-		JPanel jplabels = new JPanel(new GridLayout(labels.length,0));
-		JPanel jpfields = new JPanel(new GridLayout(labels.length,0));
+	private void addComponents() {
+		JPanel labelsPanel = new JPanel(new GridLayout(labels.length,0));
+		JPanel fieldsPanel = new JPanel(new GridLayout(labels.length,0));
 		
 		for (int i=0 ; i< labels.length ; i++) {
-			jplabels.add(new JLabel(labels[i]));
-			jpfields.add(listComps.get(i));
+			labelsPanel.add(new JLabel(labels[i]));
+			fieldsPanel.add(componentsList.get(i));
 		}
 
-		JPCenter.add(jplabels,BorderLayout.WEST);
-		JPCenter.add(jpfields,BorderLayout.CENTER);
+		centerPanel.add(labelsPanel,BorderLayout.WEST);
+		centerPanel.add(fieldsPanel,BorderLayout.CENTER);
 
-		JPSouth.add(JBAccept);
-		JPSouth.add(JBCancel);
+		southPanel.add(acceptButton);
+		southPanel.add(cancelButton);
 		
-		JBClean = new JButton("Limpiar");
-		JBClean.setActionCommand("clean");
-		JBClean.setMnemonic('L');
-		JBClean.addActionListener(this);
-		JPSouth.add(JBClean);
+		cleanButton = new JButton("Limpiar");
+		cleanButton.setActionCommand("clean");
+		cleanButton.setMnemonic('L');
+		cleanButton.addActionListener(this);
+		southPanel.add(cleanButton);
 		
-		this.add(JPCenter,BorderLayout.CENTER);
-		this.add(JPSouth,BorderLayout.SOUTH);
+		this.add(centerPanel,BorderLayout.CENTER);
+		this.add(southPanel,BorderLayout.SOUTH);
 		this.add(new JPanel(),BorderLayout.NORTH);
 		this.add(new JPanel(),BorderLayout.WEST);
-		this.add(jpsearch,BorderLayout.EAST);
+		this.add(searchPanel,BorderLayout.EAST);
 	}
 	
 	public void add() {
 		this.setTitle("Nuevo Punto de Colocación");
-		JBAccept.setActionCommand("accept");
-		JBCancel.setActionCommand("cancel");
+		acceptButton.setActionCommand("accept");
+		cancelButton.setActionCommand("cancel");
+		acceptButton.setEnabled(false);
 		ACTION = ACTIONS.ADD;
 		this.setVisible(true);
-		
 	}
 	
 	public void edit() {
 		this.setTitle("Editar Punto de Colocación");
-		JBAccept.setActionCommand("save");
-		JBCancel.setActionCommand("cancel");
+		acceptButton.setActionCommand("save");
+		cancelButton.setActionCommand("cancel");
 		ACTION = ACTIONS.EDIT;
 		this.setVisible(true);
 	}
 	
 	public void delete() {
 		this.setTitle("Borrar Punto de Colocación");
-		FieldCode.setEditable(false);
-		FieldIp.setEditable(false);
-		JCBGroups.setEnabled(false);
+		fieldCode.setEditable(false);
+		fieldIP.setEditable(false);
+		groupsCombo.setEnabled(false);
 		ACTION = ACTIONS.DELETE;
-		JBAccept.setActionCommand("remove");
-		JBCancel.setActionCommand("cancel");
+		acceptButton.setActionCommand("remove");
+		cancelButton.setActionCommand("cancel");
 		this.setVisible(true);
 	}
 	
 	public void search() {
 		this.setTitle("Buscar Punto de Colocación");
-		FieldCode.setEditable(false);
-		FieldIp.setEditable(false);
-		JCBGroups.setEnabled(false);
+		fieldCode.setEditable(false);
+		fieldIP.setEditable(false);
+		groupsCombo.setEnabled(false);
 		UIManager.put("ComboBox.disabledForeground",Color.BLACK);
-		JBAccept.setEnabled(false);
-		JBCancel.setActionCommand("cancel");
+		acceptButton.setEnabled(false);
+		cancelButton.setActionCommand("cancel");
 		ACTION = ACTIONS.SEARCH;
 		this.setVisible(true);
 	}
-	public void search(JTable t) {
-		this.table = t;
+	
+	public void search(JTable jTable) {
+		this.table = jTable;
 		this.setTitle("Buscar Punto de Colocación");
-		FieldCode.setEditable(false);
-		FieldIp.setEditable(false);
-		JCBGroups.setEnabled(false);
+		fieldCode.setEditable(false);
+		fieldIP.setEditable(false);
+		groupsCombo.setEnabled(false);
 		UIManager.put("ComboBox.disabledForeground",Color.BLACK);
-		JBAccept.setActionCommand("search_code");
-		JBCancel.setActionCommand("cancel");
+		acceptButton.setActionCommand("search_code");
+		acceptButton.setEnabled(false);
+		cancelButton.setActionCommand("cancel");
 		ACTION = ACTIONS.SEARCH;
-		frame.addWindowListener(new WindowAdapter() {
+		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				super.windowClosing(e);
-				int lastrow = table.getRowCount()-1;
-				if (lastrow>=0) {
-					table.setValueAt(FieldCode.getText(),lastrow,0);
-					table.setValueAt(FieldName.getText(),lastrow,1);
+				int lastRow = table.getRowCount()-1;
+				System.out.println("Fila: " + lastRow);
+				if (lastRow>=0) {
+					table.setValueAt(fieldCode.getText(),lastRow,0);
+					table.setValueAt(fieldName.getText(),lastRow,1);
 					table.requestFocusInWindow();
-					table.changeSelection(lastrow,0,true,true);
+					table.changeSelection(lastRow,0,true,true);
 				}
 			}
 		});
 		this.setVisible(true);
 	}	
-	
-	public void actionPerformed(ActionEvent e) {
-		String command = e.getActionCommand();
+
+	private void searchConfirmation() {
+		String key = fieldName.getText().toUpperCase();
+		oldCode = key;
+
+		if (Cache.containsWs(key)) {
+			WorkStation ws = Cache.getWorkStation(key);
+			fieldCode.setText(ws.getCode());
+			fieldIP.setText(ws.getIp());
+			groupsCombo.setSelectedItem(ws.getGroupName());
+			acceptButton.setEnabled(true);
+
+			if (ACTION == ACTIONS.ADD) {
+				fieldName.setEditable(false);
+				fieldIP.setEditable(false);
+				groupsCombo.setEnabled(false);
+				acceptButton.setEnabled(false);
+			}
+			if (ACTION == ACTIONS.DELETE) {
+				fieldCode.setEditable(false);
+				fieldName.setEditable(false);
+				fieldIP.setEditable(false);
+				groupsCombo.setEnabled(false);
+				acceptButton.setEnabled(true);
+
+			}
+			if (ACTION == ACTIONS.EDIT) {
+				fieldName.setEditable(false);
+			}
+		}
+		else {
+			if (ACTION == ACTIONS.ADD) {
+				fieldName.setEditable(true);
+				fieldIP.setEditable(true);
+				acceptButton.setEnabled(true);
+				groupsCombo.setEnabled(true);
+			}
+		}
+	}
+
+	public void actionPerformed(ActionEvent event) {
+		String command = event.getActionCommand();
 		Document document = null;
+		
+		if (command.equals("search")) {
+			searchConfirmation();
+		}
 		if (command.equals("cancel")) {
+			int row = table.getRowCount()-1;
+			System.out.println("Row: " + row);
+			//table TODO: Search the way to delete a row
+			
 			this.dispose();
 		}
 		if (command.equals("search_code")) {
-			int lastrow = table.getRowCount()-1;
-			if (lastrow>=0) {
-				table.setValueAt(FieldCode.getText(),lastrow,0);
-				table.setValueAt(FieldName.getText(),lastrow,1);
+			int lastRow = table.getRowCount()-1;
+			if (lastRow>=0) {
+				table.setValueAt(fieldCode.getText(),lastRow,0);
+				table.setValueAt(fieldName.getText(),lastRow,1);
 				table.requestFocusInWindow();
-				table.changeSelection(lastrow,0,true,true);
+				table.changeSelection(lastRow,0,true,true);
 			}
 			this.dispose();
 		}
@@ -292,56 +295,45 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 			this.clean();
 		}
 		else if (command.equals("accept")) {
-			String name = FieldName.getText().toUpperCase();
+			String name = fieldName.getText().toUpperCase();
 			WorkStation ws = Cache.getWorkStation(name);
-			/* TreeManagerGroups.currTpath = new TreePath(
-					new Object[] {
-								new SortableTreeNode(MainWindow.getAppOwner()),
-								new SortableTreeNode(ws.getGidName()),
-								new SortableTreeNode(ws.getName())}); */  
 						
-			if (!"".equals(name) && ws==null && FieldCode.getText().length() == 4) {
+			if (!"".equals(name) && ws==null && fieldCode.getText().length() == 4) {
 				document = getDocumentForAdd();
 				this.dispose();
 			}
 			else {
 				if ("".equals(name)) {
 					JOptionPane.showMessageDialog(
-							frame,
+							this,
 							"<html>" +
 							"<h3>" +
-							"Debe ingresar por lo menos el código y el nombre<br>" +
+							"Debe ingresar por lo menos el código y el nombre.<br>" +
 							"del punto de colocación"+
 							"<html>");
 				}
-				else if (FieldCode.getText().length() < 4) {
+				else if (fieldCode.getText().length() < 4) {
 					JOptionPane.showMessageDialog(
-							frame,
+							this,
 							"<html>" +
 							"<h3>" +
-							"Debe ingresar un código con 4 digitos<br>"+
+							"Debe ingresar un código con 4 dígitos.<br>"+
 							"<html>");
 				}
 				else if (ws!=null) {
 					JOptionPane.showMessageDialog(
-						frame,
+						this,
 						"<html>" +
 						"<h3>" +
 						"El código o el nombre ya existe.<br>" +
-						"Verifique con el botón de busqueda"+
+						"Verifique con el botón de búsqueda."+
 						"<html>");
 				}
 			}
 		}
 		else if (command.equals("save")) {
-			String key = FieldCode.getText();
-			String name = FieldName.getText().toUpperCase();
-			/*
-			TreeManagerGroups.currTpath = new TreePath(
-					new Object[] {
-								new SortableTreeNode(MainWindow.getAppOwner()),
-								new SortableTreeNode(JCBGroups.getSelectedItem()),
-								new SortableTreeNode(name)});*/
+			String key = fieldCode.getText();
+			String name = fieldName.getText().toUpperCase();
 			if (!"".equals(key) && !"".equals(name)) {
 				document = getDocumentForEdit();
 				this.dispose();
@@ -349,25 +341,25 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 			else {
 				if ("".equals(key) || "".equals(name)) {
 					JOptionPane.showMessageDialog(
-							frame,
+							this,
 							"<html>" +
 							"<h3>" +
 							"Debe ingresar por lo menos el código y el nombre<br>" +
-							"del punto de colocación"+
+							"del punto de colocación."+
 							"<html>");
 				}
 				else if (key.length() < 4) {
 					JOptionPane.showMessageDialog(
-							frame,
+							this,
 							"<html>" +
 							"<h3>" +
-							"Debe ingresar un código con 4 digitos<br>"+
+							"Debe ingresar un código con 4 dígitos.<br>"+
 							"<html>");
 				}
 			}
 		}
 		else if (command.equals("remove")) {
-			String name = FieldName.getText().toUpperCase();
+			String name = fieldName.getText().toUpperCase();
 			WorkStation ws = Cache.getWorkStation(name);
 			if (ws!=null) {
 				if (ws.getUsers().size() == 0) {
@@ -376,12 +368,12 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 				}
 				else {
 					JOptionPane.showMessageDialog(
-							frame,
+							this,
 							"<html>" +
 							"<h3>" +
 							"El punto a eliminar no esta vació.<br>" +
 							"Para poder eliminar un punto no debe tener<br>" +
-							"puntos de colocación asignados" +
+							"puntos de colocación asignados." +
 							"<html>");
 				}
 			}
@@ -389,10 +381,10 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 		// Enviando comando al servidor para ser aprobado
 		if (document!=null) {
 			try {
-				SocketWriter.writing(SocketHandler.getSock(),document);
+				SocketWriter.write(SocketHandler.getSock(),document);
 			} catch (IOException ex) {
-				System.out.println("Error de entrada y salida");
-				System.out.println("mensaje: " + ex.getMessage());
+				System.out.println("ERROR: Falla de entrada/salida");
+				System.out.println("Causa: " + ex.getMessage());
 				ex.printStackTrace();
 			}
 		}
@@ -400,24 +392,24 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 	
 	public void clean() {
 		if (ACTION == ACTIONS.ADD) {
-			FieldName.setEditable(true);
-			FieldIp.setEditable(true);
-			JBAccept.setEnabled(true);
+			fieldName.setEditable(true);
+			fieldIP.setEditable(true);
+			acceptButton.setEnabled(true);
 		}
 		if (ACTION == ACTIONS.DELETE) {
-			JBAccept.setEnabled(true);
+			acceptButton.setEnabled(true);
 		}
-		FieldIp.setBackground(Color.WHITE);
-		FieldCode.setEnabled(true);
-		FieldName.setEditable(true);
-		FieldCode.setText("");
-		FieldName.setSelectedIndex(0);
-		FieldIp.setText("");
-		FieldName.requestFocus();
+		fieldIP.setBackground(Color.WHITE);
+		fieldCode.setEnabled(true);
+		fieldName.setEditable(true);
+		fieldCode.setText("");
+		fieldName.setSelectedIndex(0);
+		fieldIP.setText("");
+		fieldName.requestFocus();
+		acceptButton.setEnabled(false);
 	}
 	
 	private Document getDocumentForAdd() {
-		
 		Element transaction = new Element("Transaction");
 		Document doc = new Document(transaction);
 		
@@ -431,12 +423,12 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
         
 		Element pack = new Element("package");
 		String ip = 
-			"".equals(FieldIp.getText()) ? 
+			"".equals(fieldIP.getText()) ? 
 			"127.0.0.1" : 
-			FieldIp.getText();
-		Cache.Group g = Cache.getGroup((String)JCBGroups.getSelectedItem());
-		pack.addContent(createField(FieldCode.getText()));
-		pack.addContent(createField(FieldName.getText().toUpperCase()));
+			fieldIP.getText();
+		Cache.Group g = Cache.getGroup((String)groupsCombo.getSelectedItem());
+		pack.addContent(createField(fieldCode.getText()));
+		pack.addContent(createField(fieldName.getText().toUpperCase()));
 		pack.addContent(createField(ip));
 		pack.addContent(createField(g.getId()));
 		
@@ -453,21 +445,21 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
         transaction.addContent(driver);
         
 		Element pack = new Element("package");
-		pack.addContent(createField(FieldCode.getText()));
+		pack.addContent(createField(fieldCode.getText()));
 		pack.addContent(createField(oldCode));
 		transaction.addContent(pack);
 		
 		pack = new Element("package");
 		String ip = 
-			"".equals(FieldIp.getText()) ? 
+			"".equals(fieldIP.getText()) ? 
 			"127.0.0.1" : 
-			FieldIp.getText();
+			fieldIP.getText();
 		
-		Cache.Group g = Cache.getGroup((String)JCBGroups.getSelectedItem());
-		pack.addContent(createField(FieldCode.getText()));
-		pack.addContent(createField(FieldName.getText().toUpperCase()));
+		Cache.Group group = Cache.getGroup((String)groupsCombo.getSelectedItem());
+		pack.addContent(createField(fieldCode.getText()));
+		pack.addContent(createField(fieldName.getText().toUpperCase()));
 		pack.addContent(createField(ip));
-		pack.addContent(createField(g.getId()));
+		pack.addContent(createField(group.getId()));
 		pack.addContent(createField(oldCode));
 		
 		transaction.addContent(pack);
@@ -491,7 +483,7 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
         transaction.addContent(driver);
         
 		Element pack = new Element("package");
-		pack.addContent(createField(FieldCode.getText()));
+		pack.addContent(createField(fieldCode.getText()));
 		transaction.addContent(pack);
 		
 		return doc;
@@ -504,27 +496,26 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 	}
 
 	public void itemStateChanged(ItemEvent e) {
-		//JBSearch.doClick();	
 	}
 	
 	public void setFieldName(String name) {
-		FieldName.setSelectedItem(name);
-		FieldName.setEditable(false);
+		fieldName.setSelectedItem(name);
+		fieldName.setEditable(false);
 	}
 
-	public JButton getJBSearch() {
-		return JBSearch;
+	public JButton getSearchButton() {
+		return searchButton;
 	}
 
 	public JTextField getFieldCode() {
-		return FieldCode;
+		return fieldCode;
 	}
 
 	public JTextField getFieldIp() {
-		return FieldIp;
+		return fieldIP;
 	}
 
-	public JComboBox getJCBGroups() {
-		return JCBGroups;
+	public JComboBox getGroupsCombo() {
+		return groupsCombo;
 	}
 }

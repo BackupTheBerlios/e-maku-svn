@@ -1,48 +1,47 @@
 package com.kazak.smi.admin.gui.table;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-//import java.awt.event.MouseEvent;
-//import java.awt.event.MouseListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-//import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-/* import org.jdom.Document;
+import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
-import java.io.IOException;
-import java.util.List;
-import com.kazak.smi.admin.control.Cache;
+//import org.jdom.output.Format;
+//import org.jdom.output.XMLOutputter;
+
+import com.kazak.smi.admin.gui.table.OnLineUsersTable;
+import com.kazak.smi.admin.gui.GUIFactory;
+import com.kazak.smi.admin.gui.UsersList;
 import com.kazak.smi.admin.network.SocketHandler;
 import com.kazak.smi.admin.network.SocketWriter;
 import com.kazak.smi.admin.transactions.QuerySender;
-import com.kazak.smi.admin.transactions.QuerySenderException; */
-
-import com.kazak.smi.admin.gui.table.UsersTable;
-import com.kazak.smi.admin.gui.GUIFactory;
-import com.kazak.smi.admin.gui.UsersList;
+import com.kazak.smi.admin.transactions.QuerySenderException;
 
 // This class shows the Search Panel for users online
 
-public class UserSearchPanel extends JPanel implements ActionListener {
+public class UserSearchPanel extends JPanel implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	private JButton close;
 	private UsersList frame;
-	private UsersTable table;
-	private JButton searchBT;
-	private JTextField searchTF;
-	private JComboBox field;
+	private OnLineUsersTable table;
+	private JButton searchButton;
+	private JTextField searchTextField;
+	private JComboBox fieldCombo;
 	
 	// Search Panel Constructor
 	public UserSearchPanel(UsersList frame) {
@@ -50,27 +49,29 @@ public class UserSearchPanel extends JPanel implements ActionListener {
 		setLayout(new BorderLayout());
 
 		JLabel search = new JLabel("Buscar:");
-		searchTF = new JTextField(15);
+		searchTextField = new JTextField(15);
+		searchTextField.addKeyListener(this);
 		JLabel in = new JLabel(" en ");
 		GUIFactory gui = new GUIFactory();
-		searchBT = gui.createButton("search.png");
-		searchBT.setActionCommand("search");
-		searchBT.addActionListener(this);
+		searchButton = gui.createButton("search.png");
+		searchButton.setActionCommand("search");
+		searchButton.addActionListener(this);
 		String[] options = {"Códigos","Nombres","Direcciones IP"};
-		field = new JComboBox(options);
+		fieldCombo = new JComboBox(options);
 		
 		JPanel top = new JPanel();
 		top.setLayout(new FlowLayout(FlowLayout.CENTER));
 		top.add(search);
-		top.add(searchTF);
+		top.add(searchTextField);
 		top.add(in);
-		top.add(field);
-		top.add(searchBT);
+		top.add(fieldCombo);
+		top.add(searchButton);
 					
-		table = new UsersTable();
-		JScrollPane js = new JScrollPane(table);
-		js.setPreferredSize(new Dimension(500,300));
-		js.setAutoscrolls(true);
+		table = new OnLineUsersTable(frame);
+		table.setModelTab(0);
+		JScrollPane jscroll = new JScrollPane(table);
+		jscroll.setPreferredSize(new Dimension(500,300));
+		jscroll.setAutoscrolls(true);
 				
 		close = new JButton("Cerrar");
 		close.setActionCommand("close");
@@ -81,7 +82,7 @@ public class UserSearchPanel extends JPanel implements ActionListener {
 		down.add(close);
 		
 		add(top,BorderLayout.NORTH);
-		add(js,BorderLayout.CENTER);
+		add(jscroll,BorderLayout.CENTER);
 		add(down,BorderLayout.SOUTH);
 	}
 
@@ -89,11 +90,112 @@ public class UserSearchPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if (command.equals("search")) {
-			
+			startSearch();
 		}	
 		if (command.equals("close")) {
 			frame.dispose();
 		}	
+	}
+
+	private void startSearch() {
+		int typeCursor = Cursor.WAIT_CURSOR;
+		Cursor cursor = Cursor.getPredefinedCursor(typeCursor);
+		setCursor(cursor);
+		String pattern = searchTextField.getText();
+		
+		if (pattern.length() > 0) {
+			String field = Integer.toString(fieldCombo.getSelectedIndex());
+			if ((field.equals("2")) && (!hasIPFormat(pattern))) {
+				setNormalCursor();
+	            JOptionPane.showMessageDialog(
+	                    this,
+	                    "Por favor, Ingrese una dirección IP válida.");	
+	            return;
+			} else {
+				frame.setWindowTitle();
+				loadSearchResult();
+				requestASearch(pattern,field);
+				setNormalCursor();
+			}
+		} else {
+			setNormalCursor();
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Por favor, Ingrese un valor en el campo de búsqueda.");
+            return;
+		}
+	}
+	
+	private void setNormalCursor() {
+		int typeCursor = Cursor.DEFAULT_CURSOR;
+		Cursor cursor = Cursor.getPredefinedCursor(typeCursor);
+		setCursor(cursor);		
+	}
+	
+	public boolean hasIPFormat(String s) {
+		   for(int i = 0; i < s.length(); i++) { 
+		       char c = s.charAt(i);
+		       if (!Character.isDigit(c) && (c != '.')) {
+		    	   System.out.println("C " + c);
+		           return false;
+		       }
+		     }
+		   return true;
+	 }
+	
+	private void loadSearchResult() {
+		class Monitor extends Thread {
+			Document doc= null;
+			public void run() {
+				try {
+					doc = QuerySender.getResultSetFromST("RESULT");
+					updateUserList(doc);		            
+				} catch (QuerySenderException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		new Monitor().start();		
+	}
+	
+	// Solicita el total de usuarios conectados
+	public void requestASearch(String pattern,String area) {
+		// Enviando comando al servidor para ser aprobado
+		Element onlist = new Element("SEARCH");
+		Element id = new Element("id").setText("query");
+		Element element1 = new Element("pattern").setText(pattern);
+		Element element2 = new Element("area").setText(area);
+		onlist.addContent(id);
+		onlist.addContent(element1);
+		onlist.addContent(element2);
+		Document document = new Document(onlist);
+
+		if (document!=null) {
+			try {
+				SocketWriter.write(SocketHandler.getSock(),document);
+			} catch (IOException ex) {
+				System.out.println("ERROR: Falla de entrada/salida");
+				System.out.println("Causa: " + ex.getMessage());
+				ex.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateUserList(Document doc) {
+        table.getModel().setQuery(doc);
+ 	}
+
+	public void keyPressed(KeyEvent e) {
+		int keyCode = e.getKeyCode();
+		if (keyCode==KeyEvent.VK_ENTER) {
+			startSearch();
+		}
+	}
+
+	public void keyReleased(KeyEvent e) {
+	}
+
+	public void keyTyped(KeyEvent e) {
 	}
 	
 }

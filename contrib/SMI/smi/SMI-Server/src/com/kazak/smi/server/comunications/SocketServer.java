@@ -12,6 +12,8 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
@@ -45,7 +47,8 @@ import com.kazak.smi.server.misc.settings.ConfigFileHandler;
  * PARTICULAR. Consulte la Licencia Publica General GNU GPL para mas detalles.
  * <br>
  * Esta clase es la encargada de abrir los sockets servidores para atender las
- * peticiones de el un PA o un PC. <br>
+ * peticiones de un cliente. 
+ * <br>
  * 
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez </A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David
@@ -62,7 +65,7 @@ public class SocketServer {
 
     private static Hashtable <SocketChannel,SocketInfo>socketsInfoHash = new Hashtable<SocketChannel,SocketInfo>();
     private static ServerSocketChannel serverSocketChannel = null;
-    private static int SocketsCount = 0;
+    private static int SocketsCounter = 0;
 
     /**
      * Desde el constructor de esta clase se trabaja la administracion de
@@ -80,8 +83,8 @@ public class SocketServer {
 
             Selector selector = Selector.open();
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-
             LogWriter.write(Language.getWord("SOCKET_SERVER_OPEN") + " "+ ConfigFileHandler.getPort());
+            
             while (true) {
                 int n = selector.select();
                 if (n > 0) {
@@ -104,8 +107,8 @@ public class SocketServer {
                                 Thread.sleep(50);
 
                             } else if (password.isReadable()) {
-                                SocketChannel canalsocket = (SocketChannel) password.channel();
-                                PackageToXMLConverter packageXML2 = new PackageToXMLConverter(canalsocket);
+                                SocketChannel socketChannel = (SocketChannel) password.channel();
+                                PackageToXMLConverter packageXML2 = new PackageToXMLConverter(socketChannel);
                                 packageXML2.start();
                                 Thread.sleep(70);
                             }
@@ -142,7 +145,15 @@ public class SocketServer {
     public static String getLogin(SocketChannel sock) {
         return socketsInfoHash.get(sock).getLogin();
     }
+    
+    public static String getConnectionTime(SocketChannel sock) {
+        return socketsInfoHash.get(sock).getConnectionTime();
+    }
 
+    public static String getCurrentIp(SocketChannel sock) {
+        return socketsInfoHash.get(sock).getCurrentIp();
+    }
+    
     /**
      * Este metodo retorna el login asociado a una conexion
      * @param sock
@@ -152,30 +163,71 @@ public class SocketServer {
         return socketsInfoHash.get(sock).getNames();
     }
     
-    public static Document getUsersOnLine(String gid) {
+    public static Document getUsersOnLine(String pattern,String areaID) {
+    	int area = Integer.parseInt(areaID);
     	Document doc = new Document();
-    	Element root = new Element("USERLIST");
-    	Element id = new Element("id").setText("LIST");
+    	Element root = new Element("SEARCHRESULT");
+    	Element id = new Element("id").setText("RESULT");
     	doc.setRootElement(root);
-    	Element rows, user, name, ip;
     	root.addContent(id);
-
+    	
     	for ( Enumeration e = socketsInfoHash.keys() ; e.hasMoreElements() ; ) {
     		SocketChannel connection = (SocketChannel) e.nextElement();
-    		String group = Integer.toString(socketsInfoHash.get(connection).getGid());
-    		if (isLogged(connection) && group.equals(gid)) {
-    			rows = new Element("row");
-    			user = new Element("cols").setText(getLogin(connection));
-    			name = new Element("cols").setText(getName(connection));
-    			ip = new Element("cols").setText(connection.socket().getInetAddress().getHostAddress());
-    			rows.addContent(user);
-    			rows.addContent(name);
-    			rows.addContent(ip);
-    			root.addContent(rows);
+
+    		if (isLogged(connection)) {
+    			switch(area) {
+                // Search by code    			
+    			case 0:
+    				String login = socketsInfoHash.get(connection).getLogin();
+    				login = login.toLowerCase();
+    				pattern = pattern.toLowerCase();
+    				if (login.contains(pattern)) {
+    					root.addContent(addElement(connection));
+    				}
+    				break;
+    			// Search by names
+    			case 1:
+    				String name = socketsInfoHash.get(connection).getNames();
+    				name = name.toLowerCase();
+    				pattern = pattern.toLowerCase();
+    				if (name.contains(pattern)) {
+    					root.addContent(addElement(connection));
+    				}
+    				break;
+    			// Search by ip
+    			case 2:
+    				String ip = socketsInfoHash.get(connection).getCurrentIp();
+    				if (ip.contains(pattern)) {
+    					root.addContent(addElement(connection));
+    				}
+    				break;
+    			// Search by group id
+    			case 3:
+    				String group = Integer.toString(socketsInfoHash.get(connection).getGroupID());
+    	    		if (group.equals(pattern)) {
+    					root.addContent(addElement(connection));
+    	    		}
+    	    		break;
+    			}
     		}
     	}
 
     	return doc;
+    }
+    
+    public static Element addElement(SocketChannel connection) {
+    	Element rows, user, name, ip, time;
+		rows = new Element("row");
+		user = new Element("cols").setText(getLogin(connection));
+		name = new Element("cols").setText(getName(connection));
+		ip = new Element("cols").setText(getCurrentIp(connection));
+		time = new Element("cols").setText(getConnectionTime(connection));
+		rows.addContent(user);
+		rows.addContent(name);
+		rows.addContent(ip);
+		rows.addContent(time);
+    	
+    	return rows;
     }
     
     public static Document getUsersTotal() {
@@ -204,12 +256,12 @@ public class SocketServer {
         socketsInfoHash.remove(sock);
     }
     
-    public static ByteArrayOutputStream getBufferTmp(SocketChannel sock) {
-        return socketsInfoHash.get(sock).getBuffTmp();
+    public static ByteArrayOutputStream getTemporalBuffer(SocketChannel sock) {
+        return socketsInfoHash.get(sock).getTemporalBuffer();
     }
 
-    public static void setBufferTmp(SocketChannel sock,ByteArrayOutputStream buffTmp) {
-        socketsInfoHash.get(sock).setBuffTmp(buffTmp);
+    public static void setTemporalBuffer(SocketChannel sock,ByteArrayOutputStream temporalBuffer) {
+        socketsInfoHash.get(sock).setTemporalBuffer(temporalBuffer);
     }
     
     /**
@@ -218,29 +270,20 @@ public class SocketServer {
      * @return El nombre de la base de datos
      */
     public static String getDataBase(SocketChannel sock){
-    	return socketsInfoHash.get(sock).getDataBaseName();    	
+    	return socketsInfoHash.get(sock).getDBName();    	
     }
 
     /**
      * Este metodo actualiza el valor de las conexiones logeadas
      * @param sock
-     * @param bd
+     * @param db
      */
 
-    public static void setLogin(SocketChannel sock, String bd, String login) {
-        socketsInfoHash.get(sock).setLoged();
-        socketsInfoHash.get(sock).setBd(bd);
+    public static void setLogin(SocketChannel sock, String db, String login) {
+        socketsInfoHash.get(sock).setLogged();
+        socketsInfoHash.get(sock).setDB(db);
         socketsInfoHash.get(sock).setLogin(login);
     }
-
-    /**
-     * Este metodo retorna unicamente el numero de socket's
-     * conectados
-     * @return El numero de sockets conectados
-     *
-    public static int getSocketsCount() {
-        return SocketsCount;
-    }*/
 
     /**
      * Este metodo Incrementa el contador de socket's
@@ -248,7 +291,7 @@ public class SocketServer {
      * @return El numero de socket's conectados.
      */
     public static int setIncrementSocketsCount() {
-        return ++SocketsCount;
+        return ++SocketsCounter;
     }
 
     /**
@@ -257,9 +300,9 @@ public class SocketServer {
      * @return El numero de socket's conectados.
      */
     public static int setDecrementSocketsCount() {
-        return --SocketsCount;
+        return --SocketsCounter;
     }
-    public static Hashtable getHchannelclients() {
+    public static Hashtable getClientChannelsHash() {
         return socketsInfoHash;
     }
 
@@ -277,12 +320,12 @@ public class SocketServer {
     
     public static SocketInfo getSocketInfo(String login) {	
     	if (login == null) {
-    	    System.out.println("ERROR: Llamado a getInfoSocket con parametro nulo (login)");
+    		LogWriter.write("ERROR: Llamado a getInfoSocket con parametro nulo (login).");
     	}
     	
-    	for (SocketInfo ifs : socketsInfoHash.values()) {
-    		if (ifs.getLogin().equals(login)) {
-    			return ifs;
+    	for (SocketInfo socketInfo : socketsInfoHash.values()) {
+    		if (socketInfo.getLogin().equals(login)) {
+    			return socketInfo;
     		}
     	}
     	return null;
@@ -298,7 +341,7 @@ public class SocketServer {
     public static class SocketInfo extends Thread {
 
         private boolean logged = false;
-        private String bd;
+        private String db;
         private String login;
         private Socket sock;
         private String names;
@@ -307,33 +350,44 @@ public class SocketServer {
         private boolean admin;
         private boolean audit;
         private int gid;
-        private String currIp;
+        private String groupName;
+        private String currentIP;
         private String password;
-        private String psName;
-        private String gName;
+        private String wsName;
+        private String connectionTime;
+        private ByteArrayOutputStream temporalBuffer;
         
     	public SocketInfo() {}
-    	public String getCurrIp() {
-    		return currIp;
+    	
+        private String getFormattedDate() {
+        	SimpleDateFormat now = new SimpleDateFormat("dd MMM yyyy - HH:mm a");
+        	Date date = new Date();
+        	
+        	return now.format(date);
+        }
+    	
+    	public void setConnectionTime() {
+    		connectionTime = getFormattedDate();
+    	}
+    	
+    	public String getConnectionTime() {
+    		return connectionTime;
+    	}
+        
+    	public String getCurrentIp() {
+    		return currentIP;
     	}
 
-    	public void setCurrIp(String currIp) {
-    		this.currIp = currIp;
+    	public void setCurrentIP(String currentIP) {
+    		this.currentIP = currentIP;
     	}
 
-    	public int getGid() {
+    	public int getGroupID() {
     		return gid;
     	}
 
-    	public void setGid(int gid) {
+    	public void setGroupID(int gid) {
     		this.gid = gid;
-    	}
-    	public boolean isAudit() {
-    		return audit;
-    	}
-
-    	public void setAudit(boolean audit) {
-    		this.audit = audit;
     	}
 
     	public String getNames() {
@@ -344,12 +398,20 @@ public class SocketServer {
     		this.names = names;
     	}
     	
+    	public void setAudit(boolean audit) {
+    		this.audit = audit;
+    	}
+    	
+    	public boolean getAudit() { // TODO: Preguntar donde se llama? se necesita?
+    		return audit;
+    	}
+    	
         public int getUid() {
     		return uid;
     	}
 
-    	public void setUid(int idUser) {
-    		this.uid = idUser;
+    	public void setUid(int userID) {
+    		this.uid = userID;
     	}
 
     	public boolean isAdmin() {
@@ -367,14 +429,13 @@ public class SocketServer {
     	public void setEmail(String email) {
     		this.email = email;
     	}
-        private ByteArrayOutputStream buffTmp;
         
         /**
          * @param sock
          */
         public SocketInfo(Socket sock) {
             this.sock = sock;
-            buffTmp = new ByteArrayOutputStream();
+            temporalBuffer = new ByteArrayOutputStream();
             start();
         }
 
@@ -410,7 +471,7 @@ public class SocketServer {
          * Este metodo se encarga de pasar el estado
          * de no autenticado a autenticado.
          */
-        public void setLoged() {
+        public void setLogged() {
             this.logged = true;
         }
 
@@ -420,17 +481,17 @@ public class SocketServer {
          * referencia.
          * @return Nombre de la base de datos
          */
-        public String getDataBaseName() {
-            return bd;
+        public String getDBName() {
+            return db;
         }
 
         /**
          * Este metodo establece la base de datos
          * para la coneccion(socket).
-         * @param bd Nombre de la base de datos.
+         * @param db Nombre de la base de datos.
          */
-        public void setBd(String bd) {
-            this.bd = bd;
+        public void setDB(String db) {
+            this.db = db;
         }
 
         /**
@@ -451,71 +512,78 @@ public class SocketServer {
             this.login = login;
         }
         
-        public ByteArrayOutputStream getBuffTmp() {
-            return buffTmp;
+        public ByteArrayOutputStream getTemporalBuffer() {
+            return temporalBuffer;
         }
         
-        public void setBuffTmp(ByteArrayOutputStream buffTmp) {
-            this.buffTmp = buffTmp;
+        public void setTemporalBuffer(ByteArrayOutputStream temporalBuffer) {
+            this.temporalBuffer = temporalBuffer;
         }
+        
 		public String getPassword() {
 			return password;
 		}
+		
 		public void setPassword(String password) {
 			this.password = password;
 		}
+		
 		public Socket getSock() {
 			return sock;
 		}
-		public String getPsName() {
-			return psName;
+		
+		public String getWsName() {
+			return wsName;
 		}
-		public void setPsName(String psName) {
-			this.psName = psName;
+		
+		public void setWsName(String wsName) {
+			this.wsName = wsName;
 		}
-		public String getGName() {
-			return gName;
+		
+		public String getGroupName() {
+			return groupName;
 		}
-		public void setGName(String name) {
-			gName = name;
+		
+		public void setGroupName(String groupName) {
+			this.groupName = groupName;
 		}
     }
  
-    // Retorna todos los usuarios conectados al sistema y pertenecientes al grupo gidInt
+    // Retorna todos los usuarios conectados al sistema y pertenecientes al grupo groupID
     
-	public static Vector<SocketInfo> getAllClients(int gidInt) {
-		Vector<SocketInfo> vusers = new Vector<SocketInfo>();
-		QueryRunner runQuery = null;
-	    ResultSet rs = null;
+	public static Vector<SocketInfo> getAllClients(int groupID) {
+		Vector<SocketInfo> usersVector = new Vector<SocketInfo>();
+		QueryRunner qRunner = null;
+	    ResultSet resultSet = null;
 	    
-	    for (SocketInfo ifs : socketsInfoHash.values()) {    
-            if (ifs.getGid()==gidInt) {
-                vusers.add(ifs);
+	    for (SocketInfo socketInfo : socketsInfoHash.values()) {    
+            if (socketInfo.getGroupID()==groupID) {
+                usersVector.add(socketInfo);
             }
         }
 	    
 		try {
-			runQuery = new QueryRunner("SEL0027");
-			rs = runQuery.runSELECT();
-			while(rs.next()) {
-				SocketInfo ifuFrom = SocketServer.getInstaceOfSocketInfo();
-				ifuFrom.setUid(rs.getInt(1));
-				ifuFrom.setLogin(rs.getString(2));
-				ifuFrom.setNames(rs.getString(3));
-				ifuFrom.setEmail(rs.getString(4));
-				ifuFrom.setAdmin(rs.getBoolean(5));
-				ifuFrom.setAudit(rs.getBoolean(6));
-				ifuFrom.setGid(rs.getInt(7));
-				ifuFrom.setPsName(rs.getString(9));
-				ifuFrom.setGName(rs.getString(12));
+			qRunner = new QueryRunner("SEL0027");
+			resultSet = qRunner.select();
+			while(resultSet.next()) {
+				SocketInfo user = SocketServer.getInstaceOfSocketInfo();
+				user.setUid(resultSet.getInt(1));
+				user.setLogin(resultSet.getString(2));
+				user.setNames(resultSet.getString(3));
+				user.setEmail(resultSet.getString(4));
+				user.setAdmin(resultSet.getBoolean(5));
+				user.setAudit(resultSet.getBoolean(6));
+				user.setGroupID(resultSet.getInt(7));
+				user.setWsName(resultSet.getString(9));
+				user.setGroupName(resultSet.getString(12));
 				
-				if (!containsSocketInfo(vusers, ifuFrom)) {
-					boolean cont = ifuFrom.getGid()==gidInt ? true : false;
-					if (ifuFrom.getGid()==gidInt) {
-						vusers.add(ifuFrom);
+				if (!containsSocketInfo(usersVector, user)) {
+					boolean cont = user.getGroupID()==groupID ? true : false;
+					if (user.getGroupID()==groupID) {
+						usersVector.add(user);
 					}
 					else if (cont) {
-						vusers.add(ifuFrom);
+						usersVector.add(user);
 					}
 				}
 			}
@@ -526,57 +594,61 @@ public class SocketServer {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			QueryClosingHandler.close(rs);
-			runQuery.closeStatement();
+			QueryClosingHandler.close(resultSet);
+			qRunner.closeStatement();
 		}
-		return vusers;
+		return usersVector;
 	}
 	
-	private static boolean containsSocketInfo(Vector<SocketInfo> vusers,SocketInfo ifs) {
-		for (SocketInfo rifs : vusers) {
-			if (ifs.getLogin().equals(rifs.getLogin())) {
+	private static boolean containsSocketInfo(Vector<SocketInfo> usersVector,SocketInfo socketInfo) {
+		for (SocketInfo user : usersVector) {
+			if (socketInfo.getLogin().equals(user.getLogin())) {
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	public static Vector<SocketInfo> getAllClients(String toName) {
-		Vector<SocketInfo> vusers = new Vector<SocketInfo>();
-		QueryRunner runQuery = null;
-	    ResultSet rs = null;
+	public static Vector<SocketInfo> getAllClients(String groupName) {
+		Vector<SocketInfo> groupVector = new Vector<SocketInfo>();
+		QueryRunner qRunner = null;
+	    ResultSet resultSet = null;
 	    
-        for (SocketInfo user : socketsInfoHash.values()) {    
-            boolean cont = toName.equals(user.getGName());
-            if (toName.equals(user.getLogin())) {
-                vusers.add(user);
+        for (SocketInfo socketInfo : socketsInfoHash.values()) {    
+            boolean groupContainsUser = groupName.equals(socketInfo.getGroupName());
+            // TODO: Preguntar que hace este if ?
+            if (groupName.equals(socketInfo.getLogin())) { // TODO: Preguntar si el metodo correcto es socketInfo.getGroupName()
+                groupVector.add(socketInfo);
             }
-            else if (cont) {
-                vusers.add(user);
+            else if (groupContainsUser) {
+                groupVector.add(socketInfo);
             }
         }
         
 		try {
-			runQuery = new QueryRunner("SEL0027");
-			rs = runQuery.runSELECT();
-			while(rs.next()) {
-				SocketInfo ifuFrom = SocketServer.getInstaceOfSocketInfo();
-				ifuFrom.setUid(rs.getInt(1));
-				ifuFrom.setLogin(rs.getString(2));
-				ifuFrom.setNames(rs.getString(3));
-				ifuFrom.setEmail(rs.getString(4));
-				ifuFrom.setAdmin(rs.getBoolean(5));
-				ifuFrom.setAudit(rs.getBoolean(6));
-				ifuFrom.setGid(rs.getInt(7));
-				ifuFrom.setPsName(rs.getString(9));
-				ifuFrom.setGName(rs.getString(12));
-				if (!containsSocketInfo(vusers, ifuFrom)) {
-					boolean cont = ifuFrom.getGName().equals(toName);
-					if (ifuFrom.getLogin().equals(toName)) {
-						vusers.add(ifuFrom);
+			qRunner = new QueryRunner("SEL0027");
+			resultSet = qRunner.select();
+			
+			while(resultSet.next()) {
+				SocketInfo user = SocketServer.getInstaceOfSocketInfo();
+				user.setUid(resultSet.getInt(1));
+				user.setLogin(resultSet.getString(2));
+				user.setNames(resultSet.getString(3));
+				user.setEmail(resultSet.getString(4));
+				user.setAdmin(resultSet.getBoolean(5));
+				user.setAudit(resultSet.getBoolean(6));
+				user.setGroupID(resultSet.getInt(7));
+				user.setWsName(resultSet.getString(9));
+				user.setGroupName(resultSet.getString(12));
+				
+				if (!containsSocketInfo(groupVector, user)) {
+					boolean groupContainsUser = user.getGroupName().equals(groupName);
+					// TODO: Preguntar Que hace este if?
+					if (user.getLogin().equals(groupName)) {
+						groupVector.add(user);
 					}
-					else if (cont) {
-						vusers.add(ifuFrom);
+					else if (groupContainsUser) {
+						groupVector.add(user);
 					}
 				}
 			}
@@ -587,9 +659,9 @@ public class SocketServer {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			QueryClosingHandler.close(rs);
-			runQuery.closeStatement();
+			QueryClosingHandler.close(resultSet);
+			qRunner.closeStatement();
 		}
-		return vusers;
+		return groupVector;
 	}
 }

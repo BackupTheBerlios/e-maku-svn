@@ -3,6 +3,7 @@ package com.kazak.smi.client.network;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
+import java.net.SocketException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
@@ -23,15 +24,16 @@ public class SocketHandler extends Thread  {
 	private int port;
 	
 	public SocketHandler(String host,int port,PackageToXMLConverter packageXML) 
-	throws UnresolvedAddressException, IOException {
+	throws UnresolvedAddressException, SocketException, IOException  {
 		this.host = host;
 		this.port = port;
 		
 		socket = SocketChannel.open();
         socket.configureBlocking(false);
         this.packageXML = packageXML;
-        InetSocketAddress addr = new InetSocketAddress(host,port);
-        socket.connect(addr);
+        
+        InetSocketAddress address = new InetSocketAddress(host,port);
+        socket.connect(address);
         
         int times=0;
         while(!socket.finishConnect()){
@@ -51,33 +53,33 @@ public class SocketHandler extends Thread  {
         try {
             Selector selector = Selector.open();
             socket.register(selector, SelectionKey.OP_READ);
-            boolean ret = true;
+            boolean result = true;
             while (true) {
                 int n = selector.select();
                 if (n > 0) {
                     Iterator iterador = selector.selectedKeys().iterator();
                     while (iterador.hasNext()) {
-                        SelectionKey clave = (SelectionKey) iterador.next();
+                        SelectionKey key = (SelectionKey) iterador.next();
                         iterador.remove();
-                        if (clave.isReadable()) {
-                        	ret = packageXML.work(socket) ;
-                        	if (!ret) {
+                        if (key.isReadable()) {
+                        	result = packageXML.work(socket) ;
+                        	if (!result) {
                         		JOptionPane.showMessageDialog(
                         				null,
-                        				"Se perdio la conexión con el servidor\n" +
+                        				"Se perdió la conexión con el servidor\n" +
                         				"Contacte con los administradores del sistema\n"+
-                        				"Vuelva a conectarse mas tarde...");
+                        				"Vuelva a conectarse más tarde...");
                         	}
                         }
-                        if (!ret) {
+                        if (!result) {
                         	break;
                         }
                     }
                 }
-                if (!ret) {
-                	TrayManager.setLoged(false);
-                	LoginWindow.Show();
-                	LoginWindow.ontop = false;
+                if (!result) {
+                	TrayManager.setLogged(false);
+                	LoginWindow.show();
+                	LoginWindow.onTop = false;
                 	new Ping(host,port);
                 	break;
                 }

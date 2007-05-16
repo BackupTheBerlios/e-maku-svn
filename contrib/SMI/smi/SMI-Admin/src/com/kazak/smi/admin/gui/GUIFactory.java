@@ -10,11 +10,8 @@ import javax.swing.JTextField;
 public class GUIFactory {
 	
 	public JButton createButton(
-			String name,
-			char mnemonic,
-			String command,
-			String icon ,
-			int alignment) {
+			String name, char mnemonic,	String command,	String icon , int alignment) {
+		
 		URL url = this.getClass().getResource("/icons/"+icon);
 		JButton button = createButton(name, mnemonic, command);
 		if (url!=null) {
@@ -30,30 +27,33 @@ public class GUIFactory {
 		URL url = this.getClass().getResource("/icons/"+icon);
 		ImageIcon imageIcon = new ImageIcon(url);
 		JButton button = new JButton(imageIcon);
+
 		return button;
 	}
-	
 	
 	public JButton createButton(String name,char mnemonic, String command) {
 		JButton button = new JButton(name);
 		button.setActionCommand(command);
 		button.setMnemonic(mnemonic);
+
 		return button;
 	}
 
-	public JTextField createTextField(int cols) {
-		JTextField jtf = new JTextField(cols);
+	public JTextField createTextField(int columns) {
+		JTextField textField = new JTextField(columns);
 		Color color = Color.BLACK;
-		jtf.setEnabled(false);		
-		jtf.setDisabledTextColor(color);
-		return jtf;
+		textField.setEnabled(false);		
+		textField.setDisabledTextColor(color);
+
+		return textField;
 	}
 	
-	public JTextField createTextField(int cols,boolean enabled) {
-		JTextField jtf = new JTextField(cols);
+	public JTextField createTextField(int columns,boolean enabled) {
+		JTextField textField = new JTextField(columns);
 		Color color = Color.BLACK;
-		jtf.setEnabled(enabled);		
-		jtf.setDisabledTextColor(color);
-		return jtf;
+		textField.setEnabled(enabled);		
+		textField.setDisabledTextColor(color);
+
+		return textField;
 	}
 }

@@ -9,7 +9,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.kazak.smi.client.gui.LoginWindow;
-import com.kazak.smi.lib.misc.ConfigFileClient;
+import com.kazak.smi.lib.misc.ClientConfigFile;
 
 public class Ping {
 
@@ -20,14 +20,13 @@ public class Ping {
 	public Ping(String host, int port) {
 		this.host = host;
 		this.port = port;
-		System.out.println("Iniciando el ping");
-		myTimer = new MyTimer(ConfigFileClient.getTime());
+		myTimer = new MyTimer(ClientConfigFile.getTime());
 		myTimer.start();
 	}
 
 	class MyTimer {
+		
 		private final Timer timer = new Timer();
-
 		private final int minutes;
 
 		public MyTimer(int minutes) {
@@ -40,7 +39,7 @@ public class Ping {
 				public void run() {
 					work();
 					timer.cancel();
-					myTimer = new MyTimer(ConfigFileClient.getTime());
+					myTimer = new MyTimer(ClientConfigFile.getTime());
 					myTimer.start();
 				}
 			}, minutes);
@@ -59,24 +58,27 @@ public class Ping {
 		try {
 			SocketChannel socket = SocketChannel.open();
 			socket.configureBlocking(false);
-			InetSocketAddress addr = null;
-			addr = new InetSocketAddress(host, port);
-			socket.connect(addr);
+			InetSocketAddress address = new InetSocketAddress(host, port);
+			socket.connect(address);
+			
 			while (!socket.finishConnect()) {
 				try {
 					Thread.sleep(100);
 					System.out.println("@");
 				} catch (InterruptedException IEe) {}
 			}
-			LoginWindow.ontop = true;
-			System.out.println("Conexion re-establecida");
+			LoginWindow.onTop = true;
+			System.out.println("INFO: Conexion re-establecida");
 			socket.close();
 		} catch (NoRouteToHostException e) {
-			System.out.println("No es posible conectarse");
+			System.out.println("ERROR: No es posible crear la conexion");
+			System.out.println("Causa: " + e.getMessage());
 		} catch (ConnectException e) {
-			System.out.println("El servidor esta caido");
+			System.out.println("ERROR: El servidor no responde");
+			System.out.println("Causa: " + e.getMessage());
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("ERROR: Falla de entrada/salida");
+			System.out.println("Causa: " + e.getMessage());
 		}
 	}
 }

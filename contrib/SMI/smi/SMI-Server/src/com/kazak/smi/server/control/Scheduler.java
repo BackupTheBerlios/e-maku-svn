@@ -5,22 +5,24 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Scheduler {
-
+	
+    private final Timer timer = new Timer();
+    
     class SchedulerTimerTask extends TimerTask {
         private SchedulerTask schedulerTask;
         private ScheduleIterator iterator;
+        
         public SchedulerTimerTask(SchedulerTask schedulerTask,
                 ScheduleIterator iterator) {
             this.schedulerTask = schedulerTask;
             this.iterator = iterator;
         }
+        
         public void run() {
             schedulerTask.run();
-            reschedule(schedulerTask, iterator);
+            reasignSchedule(schedulerTask, iterator);
         }
     }
-
-    private final Timer timer = new Timer();
 
     public Scheduler() {
     }
@@ -48,7 +50,7 @@ public class Scheduler {
         }
     }
 
-    private void reschedule(SchedulerTask schedulerTask,
+    private void reasignSchedule(SchedulerTask schedulerTask,
             ScheduleIterator iterator) {
 
         Date time = iterator.next();
@@ -64,5 +66,4 @@ public class Scheduler {
             }
         }
     }
-
 }

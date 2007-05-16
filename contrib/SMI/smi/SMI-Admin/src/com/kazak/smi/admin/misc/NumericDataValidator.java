@@ -22,7 +22,6 @@
 
 package com.kazak.smi.admin.misc;
 
-
 import java.awt.Toolkit;
 
 import javax.swing.text.AttributeSet;
@@ -31,9 +30,6 @@ import javax.swing.text.PlainDocument;
 
 public class NumericDataValidator extends PlainDocument {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 4060866073050927871L;
 	private int limit;
     public NumericDataValidator(int limit) {
@@ -45,20 +41,18 @@ public class NumericDataValidator extends PlainDocument {
         return limit;
     }
     
-    public void insertString(int offset, String s, AttributeSet attributeSet) throws BadLocationException {
-        
-    	int longitud = s.length();
-
+    public void insertString(int offset, String string, AttributeSet attributeSet) throws BadLocationException {
+    	int size = string.length();
         if (this.getLength() < limit) {
-            if (longitud <= limit - offset) {
+            if (size <= limit - offset) {
                 if (offset < limit) {
-                    String Snum = new String();
+                    String finalString = new String();
                     try {
-                        for (int i = 0; i < s.length(); i++) {
-                            Snum = Snum + s.substring(i, i + 1);
+                        for (int i = 0; i < string.length(); i++) {
+                            finalString = finalString + string.substring(i, i + 1);
                         }
-                        Integer.parseInt(Snum);
-                        super.insertString(offset, s, attributeSet);
+                        Integer.parseInt(finalString);
+                        super.insertString(offset, string, attributeSet);
                     }
                     catch (NumberFormatException NFEe) {
                   		Toolkit.getDefaultToolkit().beep();

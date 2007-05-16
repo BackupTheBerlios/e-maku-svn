@@ -16,9 +16,8 @@ import org.jdom.Element;
 
 import com.kazak.smi.server.comunications.SocketWriter;
 
-
 /**
- * LogAdmin.java Creado el 29-jun-2004
+ * LogWriter.java Creado el 29-jun-2004
  * 
  * Este archivo es parte de E-Maku <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>
@@ -42,9 +41,10 @@ import com.kazak.smi.server.comunications.SocketWriter;
 public class LogWriter {
 
 	private static File logFile;
-	private static RandomAccessFile RAFlog;
+	private static RandomAccessFile randomFile;
 	private static String fileName = System.getenv("SMI_HOME")+"/log/smi_server.log";
 	private static final long MAX_SIZE_FILE_LOG = 1048576;
+
 	public LogWriter() {
 		newFile();
 	}
@@ -54,29 +54,28 @@ public class LogWriter {
 		writeToFile(message);
     }
 
-
 	private synchronized static void writeToFile(String message) {
 		try {
-			RAFlog.seek(RAFlog.length());
+			randomFile.seek(randomFile.length());
 			long max = logFile.length();
 			Date now = new Date();
 			SimpleDateFormat format = null;
 			if (max >= MAX_SIZE_FILE_LOG) {
-				byte[] Blog = new byte[(int) max];
+				byte[] byteArray = new byte[(int) max];
 				format = new SimpleDateFormat("yyyy-MM-dd");
-				File dateFile = new File(fileName + "-" + format.format(now) + ".gz");
-				FileOutputStream FOSfile = new FileOutputStream(dateFile);
-				GZIPOutputStream gzipfile = new GZIPOutputStream(FOSfile);
-				RAFlog.seek(0);
-				RAFlog.read(Blog);
-				gzipfile.write(Blog);
-				gzipfile.close();
-				FOSfile.close();
+				File file = new File(fileName + "-" + format.format(now) + ".gz");
+				FileOutputStream fileOuputStream = new FileOutputStream(file);
+				GZIPOutputStream gzipFile = new GZIPOutputStream(fileOuputStream);
+				randomFile.seek(0);
+				randomFile.read(byteArray);
+				gzipFile.write(byteArray);
+				gzipFile.close();
+				fileOuputStream.close();
 				logFile.delete();
 				newFile();
 			}
 			format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			RAFlog.writeBytes(format.format(now) + " " + message + "\n");
+			randomFile.writeBytes(format.format(now) + " " + message + "\n");
 		} catch (IOException IOEe) {
 			IOEe.getMessage();
 		}
@@ -86,28 +85,28 @@ public class LogWriter {
 	private static void newFile() {
 		try {
 			logFile = new File(fileName);
-			RAFlog = new RandomAccessFile(logFile, "rw");
+			randomFile = new RandomAccessFile(logFile, "rw");
 		} catch (FileNotFoundException FNFEe) {
 			FNFEe.printStackTrace();
 		}
 	}
 	
-	public static void getFullLog(SocketChannel sock) throws IOException {
+	public static void getFullLogFile(SocketChannel sock) throws IOException {
 		
 		try {
-			Element lci = new Element("LogContentInit");
-	    	SocketWriter.writing(sock, new Document(lci));
+			Element element = new Element("LogContentInit");
+	    	SocketWriter.write(sock, new Document(element));
 	    	
 			FileInputStream in = new FileInputStream(fileName);
-		    int len;
+		    int size;
 		    byte [] buf = new byte[255]; 
-	        while ((len = in.read(buf)) > 0) {
+	        while ((size = in.read(buf)) > 0) {
 	        	Element root = new Element("LogContent");
 	    		Element text = new Element("text");
 	    		root.addContent(text);
 	    		Document document = new Document(root);
-	        	text.setText(new String(buf,0,len));
-	        	SocketWriter.writing(sock, document);
+	        	text.setText(new String(buf,0,size));
+	        	SocketWriter.write(sock, document);
 	        }
 	        in.close();	        
 		} catch (FileNotFoundException e) {

@@ -13,70 +13,70 @@ public class HistoryMessagePanel extends JPanel {
 	
 	private static final long serialVersionUID = 4362803187589726889L;
 	private MessageArea messageArea;
-	private GUIFactory guiFact = new GUIFactory();
-	private JTextField JTFFrom = guiFact.createTextField(20);
-	private JTextField JTFSubject= guiFact.createTextField(20);
-	private JTextField JTFDate= guiFact.createTextField(10);
-	private JTextField JTFTime= guiFact.createTextField(10);
+	private GUIFactory guiFactory = new GUIFactory();
+	private JTextField fromTextField = guiFactory.createTextField(20);
+	private JTextField subjectTextField = guiFactory.createTextField(20);
+	private JTextField dateTextField = guiFactory.createTextField(10);
+	private JTextField timeTextField = guiFactory.createTextField(10);
 	
 	public HistoryMessagePanel() {
 		
 		super(new BorderLayout());
 		messageArea = new MessageArea(false);
 		
-		JPanel jpnort = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		JPanel jpaux = new JPanel(new BorderLayout());
-		JPanel jpfields = new JPanel(new GridLayout(2,1));
-		JPanel jplabels = new JPanel(new GridLayout(2,1));
+		JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JPanel auxPanel = new JPanel(new BorderLayout());
+		JPanel fieldsPanel = new JPanel(new GridLayout(2,1));
+		JPanel labelsPanel = new JPanel(new GridLayout(2,1));
 		
-		jplabels.add(new JLabel("Remitente: "));
-		jplabels.add(new JLabel("Asunto: "));
+		labelsPanel.add(new JLabel("Remitente: "));
+		labelsPanel.add(new JLabel("Asunto: "));
 		
-		jpfields.add(JTFFrom);
-		jpfields.add(JTFSubject);
+		fieldsPanel.add(fromTextField);
+		fieldsPanel.add(subjectTextField);
 		
-		jpaux.add(jplabels,BorderLayout.WEST);
-		jpaux.add(jpfields,BorderLayout.CENTER);
-		jpnort.add(jpaux);
+		auxPanel.add(labelsPanel,BorderLayout.WEST);
+		auxPanel.add(fieldsPanel,BorderLayout.CENTER);
+		topPanel.add(auxPanel);
 		
-		jpnort.add(Box.createHorizontalStrut(10));
+		topPanel.add(Box.createHorizontalStrut(10));
 		
-		jpaux = new JPanel(new BorderLayout());
-		jpfields = new JPanel(new GridLayout(2,1));
-		jplabels = new JPanel(new GridLayout(2,1));
+		auxPanel = new JPanel(new BorderLayout());
+		fieldsPanel = new JPanel(new GridLayout(2,1));
+		labelsPanel = new JPanel(new GridLayout(2,1));
 		
-		jplabels.add(new JLabel("Fecha: "));
-		jplabels.add(new JLabel("Hora: "));
+		labelsPanel.add(new JLabel("Fecha: "));
+		labelsPanel.add(new JLabel("Hora: "));
 		
-		jpfields.add(JTFDate);
-		jpfields.add(JTFTime);
+		fieldsPanel.add(dateTextField);
+		fieldsPanel.add(timeTextField);
 		
-		jpaux.add(jplabels,BorderLayout.WEST);
-		jpaux.add(jpfields,BorderLayout.CENTER);
+		auxPanel.add(labelsPanel,BorderLayout.WEST);
+		auxPanel.add(fieldsPanel,BorderLayout.CENTER);
 		
-		jpnort.add(jpaux);
+		topPanel.add(auxPanel);
 		
 		this.add(new JPanel(),BorderLayout.WEST);
 		this.add(new JPanel(),BorderLayout.EAST);
 		this.add(new JPanel(),BorderLayout.SOUTH);
 		
-		this.add(jpnort,BorderLayout.NORTH);
+		this.add(topPanel,BorderLayout.NORTH);
 		this.add(messageArea,BorderLayout.CENTER);
 	}
 	
 	public String getFrom() {
-		return JTFFrom.getText();
+		return fromTextField.getText();
 	}
 	
 	public String getSubject() {
-		return JTFSubject.getText();
+		return subjectTextField.getText();
 	}
 	
 	public void setData(String[] data) {
-		JTFFrom.setText(data[2]);
-		JTFSubject.setText(data[3]);
-		JTFDate.setText(data[0]);
-		JTFTime.setText(data[1]);
+		fromTextField.setText(data[2]);
+		subjectTextField.setText(data[3]);
+		dateTextField.setText(data[0]);
+		timeTextField.setText(data[1]);
 		messageArea.setText(data[4]);
 	}
 }
