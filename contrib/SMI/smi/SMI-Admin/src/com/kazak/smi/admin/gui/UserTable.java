@@ -19,12 +19,12 @@ import javax.swing.JTextField;
 import com.kazak.smi.admin.control.Cache;
 import com.kazak.smi.admin.gui.table.UserModel;
 
-public class UserTable {
+public class UserTable extends JTable {
 
 	private static final long serialVersionUID = 4182381331394270487L;
 	private UserModel model;
 	private JFrame frame;
-	private JTable table;
+	//private JTable table;
 	private JPanel panel;
 	private JButton addButton;
 	private JButton deleteButton;
@@ -34,31 +34,37 @@ public class UserTable {
 		frame = parent;
 		panel =  new JPanel(new BorderLayout());
 		model = new UserModel();
-		table = new JTable(model);
+		//table = new JTable(model);
+		this.setModel(model);
 		GUIFactory factory = new GUIFactory();
 		addButton = factory.createButton("add.png");
 		deleteButton = factory.createButton("remove.png");
-		table.setGridColor(Color.BLACK);
-		table.setDefaultEditor(String.class,new CellEditor());
-		table.setSurrendersFocusOnKeystroke(true);
+		this.setGridColor(Color.BLACK);
+		this.setDefaultEditor(String.class,new CellEditor());
+		this.setSurrendersFocusOnKeystroke(true);
 		ws = new WorkStationsManager();
-		
+		deleteButton.setEnabled(false);
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				model.addRow();
+				//model.addRow();
 				if (!ws.isVisible()) {
 					ws.clean();
-					ws.search(table);
+					//ws.searchPOS(table);
+					ws.searchPOS(UserTable.this);
 				}
 			}
 		});
 			
 		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (table.getRowCount() > 0 ) {
-					int selected = table.getSelectedRow();
+				int rows = UserTable.this.getRowCount()-1;
+				if (rows >= 0 ) {
+					if (rows == 0){
+						deleteButton.setEnabled(false);
+					}
+					int selected = UserTable.this.getSelectedRow();
 					if (selected == -1) {
-						model.remove(table.getRowCount()-1);
+						model.remove(UserTable.this.getRowCount()-1);
 					}
 					else {
 						model.remove(selected);	
@@ -72,7 +78,7 @@ public class UserTable {
 		buttonsPanel.add(addButton);
 		buttonsPanel.add(deleteButton);
 		
-		JScrollPane jscroll  = new JScrollPane(table);
+		JScrollPane jscroll  = new JScrollPane(UserTable.this);
 		panel.add(jscroll,BorderLayout.CENTER);
 		panel.add(buttonsPanel,BorderLayout.WEST);
 	}
@@ -82,19 +88,31 @@ public class UserTable {
 		deleteButton.setEnabled(false);
 	}
 	
-	public void setEnabled(boolean b) {
-		table.setEnabled(b);
+	public void enableDeleteButton() {
+		deleteButton.setEnabled(true);
+	}
+	
+	public void disableDeleteButton() {
+		deleteButton.setEnabled(false);
 	}
 	
 	public void addData(String code,String name,Boolean b) {
 		model.addRow(code,name,b);
 	}
 	
+	public boolean isAlreadyIn(String code) {
+		return model.isAlreadyIn(code);
+	}
+	
+	public void addRow() {
+		model.addRow();
+	}
+	
 	public UserModel getModel() {
 		return model;
 	}
 	
-	public void clear() {
+	public void clean() {
 		model.clear();
 	}
 	
@@ -106,8 +124,15 @@ public class UserTable {
 		return model.getRowCount();
 	}
 	
-	public void removeRow() {
-		model.remove(table.getRowCount()-1);
+	public void removeRow(int rows) {
+		//int rows = UserTable.this.getRowCount()-1;
+		System.out.println("Printing2: " + rows);
+		if (rows != -1) {
+			model.remove(UserTable.this.getRowCount()-1);
+			if (rows == 0){
+				deleteButton.setEnabled(false);
+			}
+		}
 	}
 	
 	public Vector<Vector> getData() {

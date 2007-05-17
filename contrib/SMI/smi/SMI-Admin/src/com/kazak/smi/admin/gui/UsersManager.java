@@ -102,12 +102,14 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 		this.setTitle("Editar Usuario");
 		for (int i=1 ; i< labels.length ; i++) {
 			Component component = componentsList.get(i);
+			System.out.println("Testing...");
 			component.setEnabled(false);
 			if (component instanceof JTextField) {
 				((JTextField)component).setDisabledTextColor(Color.BLACK);
 			}
 		}
 		table.disableButtons();
+		System.out.println("Deshabilitando tabla...");
 		table.setEnabled(false);
 		UIManager.put("ComboBox.disabledForeground",Color.BLACK);
 		acceptButton.setActionCommand("save");
@@ -281,8 +283,8 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 					JOptionPane.showMessageDialog(
 							this,
 							"<html><center>" +
-							"Ya existe un usuario con ese login.<br>" +
-							"Por favor, ingrese uno diferente o compruebe <br>" +
+							"El usuario \"" + login + "\" ya existe.<br>" +
+							"Por favor, ingrese uno diferente o compruebe<br>" +
 							"con el botón de búsqueda."+
 							"</center></html>");
 					loginField.blankTextField();
@@ -324,7 +326,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 					JOptionPane.showMessageDialog(
 							this,
 							"<html><center>" +
-							"Ya existe un usuario con ese login.<br>" +
+							"El usuario \"" + login + "\" ya existe.<br>" +
 							"Por favor, ingrese uno diferente o compruebe <br>" +
 							"con el botón de búsqueda."+
 							"</center></html>");
@@ -368,6 +370,8 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 				((JCheckBox)component).setSelected(false);
 			}
 		}
+		groupsCombo.setSelectedIndex(0);
+		table.clean();
 		if (ACTION==ACTIONS.ADD) {
 			for (int i=1 ; i< labels.length ; i++) {
 				Component component = componentsList.get(i);
@@ -516,7 +520,15 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 		}
 		
 		public void run() {
-			
+			if (code.length() == 0) {
+				JOptionPane.showMessageDialog(
+						UsersManager.this,
+						"<html><center>" +
+						"Por favor, ingrese un valor en el campo Login." +
+						"</center></html>");
+				loginField.requestFocus();
+				return;
+			}
 			Cache.User user = Cache.getUser(code);
 			if (user!=null) {
 				oldLogin = loginField.getText();
@@ -525,18 +537,20 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 				adminCheck.setSelected(user.getAdmin());
 				auditCheck.setSelected(user.getAudit());
 				groupsCombo.setSelectedItem(user.getGroupName());
-				table.clear();
+				table.clean();
 				ArrayList<Cache.POS> posList = Cache.getWorkStationsListByUser(code);
 				
 				for (Cache.POS upv : posList) {
 					table.addData(upv.getPOSCode(),upv.getName(),upv.getValidIP());
 				}
 				if (ACTION == ACTIONS.EDIT ) {
-					for (int i=1 ; i< labels.length ; i++) {
-						Component comp = componentsList.get(i);
-						comp.setEnabled(true);
-					}
 					loginField.setEditable(false);
+					passwdField.setEnabled(true);
+					nameField.setEnabled(true);
+					mailField.setEnabled(true);
+					adminCheck.setEnabled(true);
+					auditCheck.setEnabled(true);
+					groupsCombo.setEnabled(true);
 					table.enableButtons();
 					table.setEnabled(true);
 					acceptButton.setEnabled(true);
@@ -557,40 +571,27 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 			else {
 				if (ACTION == ACTIONS.ADD) {
 					passwdField.setText("");
-					passwdField.requestFocus();
+					if ((loginField.getText().length())>0) {
+						passwdField.requestFocus();
+					} else {
+						loginField.requestFocus();
+					}
 					nameField.setText("");
 					mailField.setText("");
 					adminCheck.setSelected(false);
 					auditCheck.setSelected(false);
-					table.clear();
+					table.clean();
 					groupsCombo.setSelectedIndex(0);
 				}
-				if (ACTION == ACTIONS.SEARCH) {
-					JOptionPane.showMessageDialog(
-							UsersManager.this,
-							"<html><center>El usuario " 
-							+ loginField.getText() 
-							+ " no existe." +
-							"</center></html>");
-					loginField.blankTextField();
-				} else if (ACTION == ACTIONS.EDIT) {
-					for (int i=1 ; i< labels.length ; i++) {
-						Component component = componentsList.get(i);
-						component.setEnabled(false);
-					}
-					table.disableButtons();
-					table.setEnabled(false);
-					acceptButton.setEnabled(false);
+				if (ACTION == ACTIONS.SEARCH || ACTION == ACTIONS.EDIT || ACTION == ACTIONS.DELETE) {
 					JOptionPane.showMessageDialog(
 							UsersManager.this,
 							"<html><center>El usuario \"" 
 							+ loginField.getText() 
-							+ "\" no existe.<br>" 
-							+ "Por favor, compruebe el login del usuario<br>"
-							+ " con la opción de búsqueda." +
-							"</center></html>");
+							+ "\" no existe." +
+					"</center></html>");
 					loginField.blankTextField();
-				}
+				} 	
 			}
 
 		}

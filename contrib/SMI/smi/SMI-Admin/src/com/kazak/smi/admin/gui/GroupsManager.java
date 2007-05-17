@@ -32,7 +32,7 @@ import com.kazak.smi.admin.transactions.QuerySender;
 public class GroupsManager extends JFrame implements ActionListener, ItemListener {
 
 	private static final long serialVersionUID = 3920757441925057976L;
-	private AutoCompleteComboBox fieldName;
+	private AutoCompleteComboBox nameField;
 	private JCheckBox visibleCheck;
 	private JCheckBox zoneCheck;
 	
@@ -111,10 +111,10 @@ public class GroupsManager extends JFrame implements ActionListener, ItemListene
 	
 	private void initComponents() {
 		String[] comboList = Cache.getGroupsList();
-		componentsList.add(fieldName   = new AutoCompleteComboBox(comboList,false,40));
+		componentsList.add(nameField   = new AutoCompleteComboBox(comboList,false,40));
 		componentsList.add(visibleCheck= new JCheckBox());
 		componentsList.add(zoneCheck   = new JCheckBox());
-		fieldName.addItemListener(this);
+		nameField.addItemListener(this);
 		acceptButton = new JButton("Aceptar");
 		cancelButton = new JButton("Cancelar");
 		GUIFactory gui = new GUIFactory();
@@ -173,7 +173,7 @@ public class GroupsManager extends JFrame implements ActionListener, ItemListene
 			this.clean();
 		}
 		else if (command.equals("accept")) {
-			String key = fieldName.getText().toUpperCase();
+			String key = nameField.getText().toUpperCase();
 			TreeManagerGroups.currentTreePath = new TreePath(
 					new Object[] {
 								new SortableTreeNode(MainWindow.getAppOwner()),
@@ -189,17 +189,17 @@ public class GroupsManager extends JFrame implements ActionListener, ItemListene
 							"Por favor, ingrese el nombre del grupo.");
 				}
 				else {
-					fieldName.blankTextField();
+					nameField.blankTextField();
 					JOptionPane.showMessageDialog(
 							frame,
-							"<html><center>El grupo " + key + " ya existe.<br>" +
+							"<html><center>El grupo \"" + key + "\" ya existe.<br>" +
 							"Por favor, ingrese uno diferente y compruebelo<br>" +
 					"con el botón de búsqueda.</center></html>");
 				}
 			}
 		}
 		else if (command.equals("save")) {
-			String key = fieldName.getText().toUpperCase();
+			String key = nameField.getText().toUpperCase();
 			TreeManagerGroups.currentTreePath = new TreePath(
 					new Object[] {
 								new SortableTreeNode(MainWindow.getAppOwner()),
@@ -213,18 +213,18 @@ public class GroupsManager extends JFrame implements ActionListener, ItemListene
 				this.dispose();
 			}
 			else {
-				fieldName.blankTextField();
+				nameField.blankTextField();
 				JOptionPane.showMessageDialog(
 						frame,
-						"<html><center>El grupo " + key + " ya existe.<br>" +
+						"<html><center>El grupo \"" + key + "\" ya existe.<br>" +
 						"Por favor, ingrese uno diferente y<br>" +
 						"compruebelo con el botón de búsqueda." +
 						"</center></html>");
 			}
 		}
 		else if (command.equals("remove")) {
-			if (!fieldName.getText().equals("")) {
-				String key = fieldName.getText().toUpperCase();
+			if (!nameField.getText().equals("")) {
+				String key = nameField.getText().toUpperCase();
 				TreeManagerGroups.currentTreePath = new TreePath(
 						new Object[] {
 									new SortableTreeNode(MainWindow.getAppOwner()),
@@ -236,7 +236,7 @@ public class GroupsManager extends JFrame implements ActionListener, ItemListene
 					this.dispose();	
 				}
 				else {
-					fieldName.blankTextField();
+					nameField.blankTextField();
 					JOptionPane.showMessageDialog(
 							frame,
 							"<html><center>" +
@@ -259,13 +259,24 @@ public class GroupsManager extends JFrame implements ActionListener, ItemListene
 	}
 
 	public void searchConfirmation() {
-		String groupName = fieldName.getText().toUpperCase();
+		String groupName = nameField.getText().toUpperCase();
+		
+		if (groupName.length() == 0) {
+			JOptionPane.showMessageDialog(
+					GroupsManager.this,
+					"<html><center>" +
+					"Por favor, ingrese un valor en el campo Nombre." +
+					"</center></html>");
+			nameField.requestFocus();
+			return;
+		}
+		
 		Cache.Group group = Cache.getGroup(groupName);
 		visibleCheck.setEnabled(true);
 		zoneCheck.setEnabled(true);
 		
 		if (group!=null) {
-			oldGroupName = fieldName.getText().toUpperCase();
+			oldGroupName = nameField.getText().toUpperCase();
 			visibleCheck.setSelected(group.isVisible());
 			zoneCheck.setSelected(group.isZone());
 
@@ -276,19 +287,19 @@ public class GroupsManager extends JFrame implements ActionListener, ItemListene
 				visibleCheck.setEnabled(false);
 				zoneCheck.setEnabled(false);
 				acceptButton.setEnabled(false);
-				fieldName.blankTextField();
+				nameField.blankTextField();
 				JOptionPane.showMessageDialog(
 						frame,
 						"El grupo \"" + groupName 
 						+ "\" ya existe.\nPor favor, Intente otro nombre.");
 				frame.requestFocus();
 			} else if (ACTION == ACTIONS.EDIT) {
-				fieldName.setEditable(false);
+				nameField.setEditable(false);
 				visibleCheck.setEnabled(true);
 				zoneCheck.setEnabled(true);
 				acceptButton.setEnabled(true);
 			} else if (ACTION == ACTIONS.DELETE) {
-				fieldName.setEditable(false);
+				nameField.setEditable(false);
 				acceptButton.setEnabled(true);
 			}
 		}
@@ -309,7 +320,7 @@ public class GroupsManager extends JFrame implements ActionListener, ItemListene
 				zoneCheck.setSelected(false);
 				visibleCheck.setEnabled(false);
 				zoneCheck.setEnabled(false);
-				fieldName.blankTextField();
+				nameField.blankTextField();
 				JOptionPane.showMessageDialog(
 						frame,
 						"El grupo \"" + groupName 
@@ -328,16 +339,16 @@ public class GroupsManager extends JFrame implements ActionListener, ItemListene
 	}	
 	
 	public void clean() {
-		fieldName.setSelectedIndex(0);
+		nameField.setSelectedIndex(0);
 		if (ACTION == ACTIONS.ADD || ACTION == ACTIONS.EDIT) {
 			visibleCheck.setEnabled(true);
 			zoneCheck.setEnabled(true);
-			fieldName.setEnabled(true);
-			fieldName.setEditable(true);
+			nameField.setEnabled(true);
+			nameField.setEditable(true);
 		}
 		visibleCheck.setSelected(false);
 		zoneCheck.setSelected(false);
-		fieldName.blankTextField();
+		nameField.blankTextField();
 	}
 	
 	private Document getDocumentToAdd() {
@@ -356,7 +367,7 @@ public class GroupsManager extends JFrame implements ActionListener, ItemListene
 		String visibleValue = Boolean.valueOf(visibleCheck.isSelected()).toString();
 		String zoneValue = Boolean.valueOf(zoneCheck.isSelected()).toString();
 
-		pack.addContent(createField(fieldName.getText().toUpperCase()));
+		pack.addContent(createField(nameField.getText().toUpperCase()));
 		pack.addContent(createField(visibleValue));
 		pack.addContent(createField(zoneValue));
 
@@ -377,7 +388,7 @@ public class GroupsManager extends JFrame implements ActionListener, ItemListene
 		String visibleValue = Boolean.valueOf(visibleCheck.isSelected()).toString();
 		String zoneValue = Boolean.valueOf(zoneCheck.isSelected()).toString();
 
-		pack.addContent(createField(fieldName.getText().toUpperCase()));
+		pack.addContent(createField(nameField.getText().toUpperCase()));
 		pack.addContent(createField(visibleValue));
 		pack.addContent(createField(zoneValue));
 		pack.addContent(createField(oldGroupName));
@@ -400,7 +411,7 @@ public class GroupsManager extends JFrame implements ActionListener, ItemListene
         transaction.addContent(driver);
         
 		Element pack = new Element("package");
-		pack.addContent(createField(fieldName.getText().toUpperCase()));
+		pack.addContent(createField(nameField.getText().toUpperCase()));
 		transaction.addContent(pack);
 		
 		return doc;
@@ -416,8 +427,8 @@ public class GroupsManager extends JFrame implements ActionListener, ItemListene
 	}
 
 	public void setFieldName(String name) {
-		fieldName.setSelectedItem(name);
-		fieldName.setEditable(false);
+		nameField.setSelectedItem(name);
+		nameField.setEditable(false);
 	}
 
 	public JButton getSearchButton() {

@@ -101,9 +101,7 @@ public class SocketServer {
                                 socketsInfoHash.put(socketChannel, new SocketInfo(socketChannel.socket()));
                                 LogWriter.write(Language.getWord("NEW_SOCKET_CLIENT")
                                             + " "
-                                            + socketChannel.socket()
-                                            + " "
-                                            + (setIncrementSocketsCount()));
+                                            + socketChannel.socket());
                                 Thread.sleep(50);
 
                             } else if (password.isReadable()) {

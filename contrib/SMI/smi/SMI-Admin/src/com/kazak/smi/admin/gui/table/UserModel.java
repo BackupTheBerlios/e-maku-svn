@@ -56,6 +56,18 @@ public class UserModel extends AbstractTableModel {
 	public int getRowCount() {
 		return data.size();
 	}
+	
+	public boolean isAlreadyIn(String code) {
+		for(int i=0;i<data.size();i++){
+			Vector<Object> records = (Vector<Object>)data.get(i);
+			String posCode = (String) records.get(0);
+			System.out.println(code + " : " + posCode);
+			if(posCode.equals(code)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		return data.get(rowIndex).get(columnIndex);

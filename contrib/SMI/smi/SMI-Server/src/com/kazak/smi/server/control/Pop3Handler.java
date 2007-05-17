@@ -72,8 +72,10 @@ public class Pop3Handler extends Thread {
 
 					if (index2==-1 && !fullSubject.startsWith("[Error SMI]")) {
 						if (!"Mailer-Daemon".equals(from)){
-							LogWriter.write("ERROR: Error en el asunto del mensaje escrito por {" + address.getAddress() + "}");
+							LogWriter.write("ERROR: Inconsistencia en el asunto del mensaje escrito por {" + address.getAddress() + "}");
 							LogWriter.write("ERROR: Asunto escrito [" + fullSubject + "]");
+							LogWriter.write("Contenido del mensaje:");
+							LogWriter.write(content);
 							EmailSender mail = new EmailSender();
 							mail.setFrom(user+"@"+host);
 							mail.setSender(address.getAddress());
