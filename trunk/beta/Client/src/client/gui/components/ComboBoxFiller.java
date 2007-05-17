@@ -384,26 +384,15 @@ public class ComboBoxFiller extends JComboBox implements
 					String [] args = null;
 					boolean cleanArgs = false;
 					int keysLength = keys!=null ? keys.length : 0 ; 
-					int ind=0;
-					if (constantValue!=null) {
-		    			args = new String[constantValue.size()+keysLength];
-		    			for (;ind<constantValue.size();ind++) {
-		        			args[ind]= constantValue.get(ind);
-		        		}
-		    		}
-					else {
-						args= keysLength > 0 ?  new String[keys.length] : null;
-					}
-					if (keysLength>0) {
-						for (int j=0 ; ind < args.length ; ind++ ,j++) {
-							args[ind] = GFforma.getExteralValuesString(keys[j]);
-							if (args[ind]==null || args[ind].equals("")) {
-								if (blankArgs) {
-									args[ind]="";
-								}
-								else {
-									cleanArgs=true;
-								}
+					args= keysLength > 0 ?  new String[keys.length] : null;
+					for (int ind=0 ; ind < keysLength ; ind++) {
+						args[ind] = GFforma.getExteralValuesString(keys[ind]);
+						if (args[ind]==null || args[ind].equals("")) {
+							if (blankArgs) {
+								args[ind]="";
+							}
+							else {
+								cleanArgs=true;
 							}
 						}
 					}

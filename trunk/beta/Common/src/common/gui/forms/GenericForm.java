@@ -521,6 +521,15 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
             	this.importTitle = e.getValue();
             }
             
+            /**/
+            else if (nombre.equals("exportValue")) {
+            	String s = e.getValue();
+            	int index = s.indexOf(","); 
+            	String key = s.substring(0,index);
+            	String value = s.substring(index+1,s.length());
+            	setExternalValues(key, value);
+            }
+            
             /*
              * Si esta etiqueta es encontrada se procede a evaluar que la configuracion local
              * coincida con la parametrizada en el Servidor de Transacciones, si no es asi,
