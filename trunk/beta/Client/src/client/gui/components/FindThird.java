@@ -115,6 +115,7 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
 	private String typeDocument;
 	private Vector<String> constantValue;
 	private boolean multiRecords = true;
+	private boolean containsSecondName= true;
 	
     public FindThird(GenericForm GFforma,Document doc) {
         
@@ -189,7 +190,10 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
 					constantValue = new Vector<String>();
 				}
 				constantValue.addElement(e.getValue());
-			}           
+			}
+            else if("withSecondName".equals(e.getAttributeValue("attribute"))) {
+            	containsSecondName = Boolean.parseBoolean(e.getValue());
+            }
             else if("typeDocument".equals(e.getAttributeValue("attribute"))) {
             		typeDocument = e.getValue();
             }
@@ -263,18 +267,23 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
         JCBver.setEnabled(enabled);
         JCBver.addItem(Language.getWord("NOMBRE"));
         JCBver.addItem(Language.getWord("ESTABLECIMIENTO"));
-        JPver.add(JCBver);
+    	JPver.add(JCBver);
+        	
         
         JCBdireccion = new JComboBox();
         JCBdireccion.setEnabled(enabled);
         JCBtelefono = new JComboBox();
         JCBtelefono.setEnabled(enabled);
 
-        JPetiquetas1.add(new JLabel(Language.getWord("VER")));
+        if (!containsSecondName) {
+        	JPetiquetas1.add(new JLabel(Language.getWord("VER")));
+        }
         JPetiquetas1.add(new JLabel(Language.getWord("ADDRESS")));
         JPetiquetas1.add(new JLabel(Language.getWord("PHONE")));
         
-        JPfields1.add(JPver);
+        if (!containsSecondName) {
+        	JPfields1.add(JPver);
+        }
         JPfields1.add(new JPanel().add(JCBdireccion));
         JPfields1.add(new JPanel().add(JCBtelefono));
 
