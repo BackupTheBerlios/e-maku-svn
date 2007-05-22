@@ -32,6 +32,7 @@ public class ColumnsArgsGenerator {
 
 	private String name;
     private int lengthCol;
+    private int size;
     private Object typeDate;
     private boolean editable;
     private int orderQuery= -1;
@@ -102,6 +103,9 @@ public class ColumnsArgsGenerator {
     		}
     		else if (attrib.equals("length")) {
     			lengthCol = Integer.parseInt(value);
+    		}
+    		else if (attrib.equals("size")) {
+    			size = Integer.parseInt(value);
     		}
     		else if (attrib.equals("exportValue")) {
     			exportValue = value;
@@ -489,5 +493,9 @@ public class ColumnsArgsGenerator {
 
 	public void setColumnIdWareHouse(short columnIdWareHouse) {
 		this.columnIdWareHouse = columnIdWareHouse;
+	}
+	
+	public int size() {
+		return size;
 	}
 }

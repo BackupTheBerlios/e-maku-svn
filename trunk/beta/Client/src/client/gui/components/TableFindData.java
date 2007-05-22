@@ -57,6 +57,7 @@ import common.gui.forms.ExternalValueChangeListener;
 import common.gui.forms.GenericForm;
 import common.gui.forms.InstanceFinishingListener;
 import common.gui.forms.NotFoundComponentException;
+import common.misc.text.TextDataValidator;
 import common.transactions.TransactionServerException;
 import common.transactions.TransactionServerResultSet;
 
@@ -500,6 +501,16 @@ public class TableFindData extends JPanel implements AnswerListener,
 					cellEditor = new EmakuTouchCellEditor(GFforma,ATFDargs[k].getElement());
 					dataColumn.setCellEditor(cellEditor);
 				}
+				/*
+				 * Si el editor es tipo String y se especifica maxima longitud de caracteres entonces
+				 */
+				else if (ATFDargs[k].getType().equals("STRING") &&
+						 ATFDargs[k].size()>0) {
+					TableColumn dataColumn = JTtabla.getColumn(JTtabla.getColumnName(k));
+					EmakuCellEditor cellEditor =  new EmakuCellEditor(String.class,ATFDargs[k].size());
+					dataColumn.setCellEditor(cellEditor);
+				}
+
 			} catch (IllegalArgumentException IAEe) {
 				IAEe.printStackTrace();
 			}
@@ -508,6 +519,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 		JTtabla.setDefaultRenderer(BigDecimal.class, new FortmaCell(Double.class));
 		JTtabla.setDefaultRenderer(Integer.class, new FortmaCell(Integer.class));
 		JTtabla.setDefaultRenderer(Date.class, new FortmaCell(Date.class));
+		
+		JTtabla.setDefaultEditor(BigDecimal.class,	new EmakuCellEditor(BigDecimal.class));
 		
 		JTtabla.setDefaultEditor(BigDecimal.class,	new EmakuCellEditor(BigDecimal.class));
 		JTtabla.setDefaultEditor(Integer.class,		new EmakuCellEditor(Integer.class));
@@ -974,6 +987,12 @@ public class TableFindData extends JPanel implements AnswerListener,
 	    	super(new JTextField());
 	        this._class = _class;
 	    }
+
+	    public EmakuCellEditor(Class _class,int size) {
+	    	super(new JTextField());
+	    	((JTextField)super.getComponent()).setDocument(new TextDataValidator(size));
+	        this._class = _class;
+	    }
 	    
 	    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 	    	((JTextField)super.getComponent()).setText("");
@@ -1001,6 +1020,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 	                value = new Integer(0);
 	            }
 	        }
+
 	        return value;
 	    }
 	}
