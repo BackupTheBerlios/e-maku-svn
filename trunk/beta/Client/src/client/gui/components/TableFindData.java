@@ -1020,7 +1020,9 @@ public class TableFindData extends JPanel implements AnswerListener,
 	                value = new Integer(0);
 	            }
 	        }
-
+	        else if (_class.equals(String.class)) {
+	        	return ((JTextField)super.getComponent()).getText();
+	        }
 	        return value;
 	    }
 	}
