@@ -191,10 +191,11 @@ public class LoginWindow implements ActionListener {
 					NRHEe.printStackTrace();
 					JOptionPane.showMessageDialog(
 		                    frame,
-		                    "No se pudo establecer comunicación con el servidor\n"+
-		                    "Host: "+ClientConfigFile.getHost()+"\n"+
-		                    "Puerto "+ClientConfigFile.getServerPort(),
-		                    "Error de Conexión",
+		                    "No se pudo establecer comunicación con el sistema.\n" +
+		                    "Host: " + ClientConfigFile.getHost() + "\n" +
+		                    "Puerto: " + ClientConfigFile.getServerPort() + "\n" +
+		                    "Por favor, comuniquese con soporte técnico.",
+		                    "Error de Conexión (No hay ruta al servidor)",
 		                    JOptionPane.ERROR_MESSAGE);
 					
 					acceptButton.setEnabled(true);
@@ -208,10 +209,11 @@ public class LoginWindow implements ActionListener {
 					CEe.printStackTrace();
 					JOptionPane.showMessageDialog(
 		                    frame,
-		                    "No se pudo establecer comunicación con el servidor\n"+
-		                    "Host: "+ClientConfigFile.getHost()+"\n"+
-		                    "Puerto "+ClientConfigFile.getServerPort(),
-		                    "Error de Conexión",
+		                    "No se pudo establecer comunicación con el sistema.\n"+
+		                    "Host: " + ClientConfigFile.getHost() + "\n" +
+		                    "Puerto: "+ClientConfigFile.getServerPort() + "\n" + 
+		                    "Por favor, comuniquese con soporte técnico.",
+		                    "Error de Conexión (Excepción de Conexión)",
 		                    JOptionPane.ERROR_MESSAGE);
 					
 					acceptButton.setEnabled(true);
@@ -226,7 +228,7 @@ public class LoginWindow implements ActionListener {
 					JOptionPane.showMessageDialog(
 		                    frame,
 		                    "No se pudo resolver la dirección\n" +
-		                    "del servidor de mensajeria\n"+
+		                    "del servidor de mensajería.\n"+
 		                    "Host: "+ClientConfigFile.getHost()+ 
 		                    "Puerto:"+ClientConfigFile.getServerPort(),
 		                    "Error de Conexión",

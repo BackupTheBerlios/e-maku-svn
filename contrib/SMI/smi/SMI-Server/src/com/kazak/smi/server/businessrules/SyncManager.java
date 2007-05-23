@@ -116,7 +116,7 @@ public class SyncManager {
 			loadSettings();
 		} catch (FileNotFoundException e) {
 			String msg = "ERROR: No se encontró el archivo de configuración de la sincronización.";
-			MessageDistributor.alarmSender("Archivo oracle.sql no encontrado",msg + "\nCausa:\n" + e.getMessage());
+			MessageDistributor.sendAlarm("Archivo oracle.sql no encontrado",msg + "\nCausa:\n" + e.getMessage());
 			Element syncErr = new Element("ERRSYNC");
 			Element message = new Element("message");
 			message.setText(msg);
@@ -218,7 +218,7 @@ public class SyncManager {
 			if (oracleConnection == null) {
 				String msg = "ERROR: La conexion a la base de datos " + oracleDB + " es invalida.";
 				LogWriter.write(msg);
-				MessageDistributor.alarmSender("Conexion a Oracle -> " + oracleDB, msg);
+				MessageDistributor.sendAlarm("Conexion a Oracle -> " + oracleDB, msg);
 			
 				return false;
 			}
@@ -257,7 +257,7 @@ public class SyncManager {
 			return false;
 		} catch (SQLException e) {
 			String msg = "ERROR: No se pudo realizar la consulta en la base de datos " + oracleDB + "\nCausa:\n" + e.getMessage();
-			MessageDistributor.alarmSender("Consulta a Oracle -> " + oracleDB, msg);
+			MessageDistributor.sendAlarm("Consulta a Oracle -> " + oracleDB, msg);
 			processSQLException(oracleDB,e,resultSet);
 			
 			return false;
@@ -286,7 +286,7 @@ public class SyncManager {
 			
 		} catch (SQLException e) {
 			String msg = "ERROR: Falla al consultar la base de datos PostgreSQL [" + pgdb + "].\nCausa:\n" + e.getMessage();
-			MessageDistributor.alarmSender("Conexion a PostgreSQL -> " + pgdb, msg);
+			MessageDistributor.sendAlarm("Conexion a PostgreSQL -> " + pgdb, msg);
 			processSQLException(pgdb,e,resultSet);
 			
 			return false;
@@ -305,7 +305,7 @@ public class SyncManager {
 			statement.close();
 		} catch (SQLException e) {
 			String msg = "ERROR: Falla al consultar la base de datos PostgreSQL [" + pgdb + "].\nCausa:\n" + e.getMessage();
-			MessageDistributor.alarmSender("Conexion a PostgreSQL -> " + pgdb, msg);
+			MessageDistributor.sendAlarm("Conexion a PostgreSQL -> " + pgdb, msg);
 			processSQLException(pgdb,e,resultSet);
 			
 			return false;
@@ -371,7 +371,7 @@ public class SyncManager {
 				 statement.execute(SQL);
 			} catch (SQLException e) {
 				String msg = "ERROR: Falla mientras se eliminaba el usuario (deshabilitado) con codigo: " + userCode;
-				MessageDistributor.alarmSender("Eliminando usuario deshabilitado",msg 
+				MessageDistributor.sendAlarm("Eliminando usuario deshabilitado",msg 
 						+ "\nSENTENCIA: " + SQL + "\nCausa:\n" + e.getMessage());
 				LogWriter.write(msg);
 				LogWriter.write("SENTENCIA: " + SQL);
@@ -388,11 +388,12 @@ public class SyncManager {
 				statement.execute(SQL);
 			} catch (SQLException e) {
 				String msg = "ERROR: Falla mientras se eliminaba el punto de venta (deshabilitado) con codigo: " + wsCode;
-				MessageDistributor.alarmSender("Eliminando punto de venta deshabilitado",msg 
+				MessageDistributor.sendAlarm("Eliminando punto de venta deshabilitado",msg 
 						+ "\nSENTENCIA: " + SQL + "\nCausa:\n" + e.getMessage());
 				LogWriter.write(msg);
 				LogWriter.write("SENTENCIA: " + SQL);
 				processSQLException(pgdb,e,null);
+				
 				return false;
 			}
 		}
@@ -413,7 +414,7 @@ public class SyncManager {
 				}
 			} catch (SQLException e) {
 				String msg = "ERROR: Falla mientras se ingresaba el punto de colocacion: {" + name + "} con codigo {" + key + "}";
-				MessageDistributor.alarmSender("Ingresando punto de colocacion",msg 
+				MessageDistributor.sendAlarm("Ingresando punto de colocacion",msg 
 						+ "\nSENTENCIA: " + SQL + "\nCausa:\n" + e.getMessage());
 				LogWriter.write(msg);
 				LogWriter.write("SENTENCIA: " + SQL);
@@ -441,7 +442,7 @@ public class SyncManager {
 				
 			} catch (SQLException e) {
 				String msg = "ERROR: Falla mientras se ingresaba el usuario: {" + user.code + "," + user.name + "}";
-				MessageDistributor.alarmSender("Ingresando usuario",msg 
+				MessageDistributor.sendAlarm("Ingresando usuario",msg 
 						+ "\nSENTENCIA: " + SQL + "\nCausa:\n" + e.getMessage());
 				LogWriter.write(msg);
 				LogWriter.write("SENTENCIA: " + SQL);
@@ -456,12 +457,11 @@ public class SyncManager {
 		
 		for (String key : keys) {
 			User user = usersHash.get(key);
-
 			if (user.posCode!=null) {
 				String posCode      = null;
 				String posName      = null;
 				String uid          = null;
-				ResultSet uidResultSet     = null;
+				ResultSet uidResultSet = null;
 				ResultSet posResultSet = null;
 
 				SQL = "SELECT uid FROM usuarios WHERE usuarios.login='" + user.code + "'";
@@ -473,7 +473,7 @@ public class SyncManager {
 
 				} catch (SQLException e) {
 					String msg = "ERROR: Falla mientras se consultaba el usuario: {" + user.code + "}";
-					MessageDistributor.alarmSender("Consultando usuario",msg 
+					MessageDistributor.sendAlarm("Consultando usuario",msg 
 							+ "\nSENTENCIA: " + SQL + "\nCausa:\n" + e.getMessage());					
 					LogWriter.write(msg);
 					LogWriter.write("SENTENCIA: " + SQL);
@@ -493,7 +493,7 @@ public class SyncManager {
 					uidResultSet.close();
 				} catch (SQLException e) {
 					String msg = "ERROR: Falla mientras se consultaba el punto de venta: {" + user.posCode + "}";
-					MessageDistributor.alarmSender("Consultando punto de venta",msg 
+					MessageDistributor.sendAlarm("Consultando punto de venta",msg 
 							+ "\nSENTENCIA: " + SQL + "\nCausa:\n" + e.getMessage());					
 					LogWriter.write(msg);
 					LogWriter.write("SENTENCIA: " + SQL);
@@ -509,7 +509,7 @@ public class SyncManager {
 							statement.execute(SQL);
 						} catch (SQLException e) {
 							String msg = "ERROR: Falla mientras se ingresaba relacion usuario/pos: {" + uid + "," + posCode + "}";
-							MessageDistributor.alarmSender("Insertando relacion usuario/pos",msg 
+							MessageDistributor.sendAlarm("Insertando relacion usuario/pos",msg 
 									+ "\nSENTENCIA: " + SQL + "\nCausa:\n" + e.getMessage());					
 							LogWriter.write(msg);
 							LogWriter.write("SENTENCIA: " + SQL);
@@ -520,7 +520,7 @@ public class SyncManager {
 					} else {			
 						String msg = "ERROR: Falla sincronizando, el codigo del punto de venta {" +
 			              user.posCode + "} no existe, por favor verifique las bases de datos";
-						MessageDistributor.alarmSender("Punto de venta inexistente",msg); 
+						MessageDistributor.sendAlarm("Punto de venta inexistente",msg); 
 													
 						Element syncErr = new Element("ERRSYNC");
 						Element message = new Element("message");
@@ -539,7 +539,7 @@ public class SyncManager {
 				} else {
 					String msg = "Error sincronizando, el uid de usuario para el codigo {" +
 		              user.code + "} no existe, por favor verifique las bases de datos.";
-					MessageDistributor.alarmSender("Usuario inexistente",msg); 
+					MessageDistributor.sendAlarm("Usuario inexistente",msg); 
 					
 					Element syncErr = new Element("ERRSYNC");
 					Element message = new Element("message");
@@ -559,7 +559,7 @@ public class SyncManager {
 						        "al punto => " + posName + " {" + user.posCode + "}");
 			} else {
 				String msg = "ERROR: Codigo " + key + " no esta asignado a ningun punto de venta";
-				MessageDistributor.alarmSender("Codigo de POS inexistente",msg);
+				MessageDistributor.sendAlarm("Codigo de POS inexistente",msg);
 				LogWriter.write(msg);
 			}
 		}
@@ -668,7 +668,7 @@ public class SyncManager {
 					} catch (SQLException e) {
  							String msg = "ERROR: Falla durante la sincronizacion\n" +
  								"Causa: " +  e.getMessage(); 
- 							MessageDistributor.alarmSender("Error de SQL",msg);
+ 							MessageDistributor.sendAlarm("Error de SQL",msg);
 							LogWriter.write(msg);
 							e.printStackTrace();
 					}
@@ -685,7 +685,7 @@ public class SyncManager {
 					} catch (SQLException e) {
 							String msg = "ERROR: Falla durante la sincronizacion\n" +
 								"Causa: " +  e.getMessage(); 
-							MessageDistributor.alarmSender("Error de SQL",msg);
+							MessageDistributor.sendAlarm("Error de SQL",msg);
 							LogWriter.write(msg);
 							e.printStackTrace();
 					}
@@ -711,7 +711,7 @@ public class SyncManager {
 					} catch (SQLException e) {
 						String msg = "ERROR: Falla durante la sincronizacion\n" +
 						"Causa: " +  e.getMessage(); 
-						MessageDistributor.alarmSender("Error de SQL",msg);
+						MessageDistributor.sendAlarm("Error de SQL",msg);
 						LogWriter.write(msg);
 						e.printStackTrace();
 					}

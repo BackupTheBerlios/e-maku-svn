@@ -112,7 +112,7 @@ public class Pop3Handler extends Thread {
 						if (index2 == -1) {
 							to = "SMI";
 						} else {
-							to = fullSubject.substring(0,index2);
+							to = fullSubject.substring(0,index2).trim();
 							to = to.toUpperCase();
 						}
 						

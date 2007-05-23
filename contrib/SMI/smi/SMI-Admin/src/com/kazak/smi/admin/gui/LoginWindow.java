@@ -28,10 +28,10 @@ import javax.swing.JTextField;
 
 import com.kazak.smi.admin.Run;
 import com.kazak.smi.admin.control.HeadersValidator;
-//import com.kazak.smi.admin.misc.NumericDataValidator;
+import com.kazak.smi.admin.misc.NumericDataValidator;
 import com.kazak.smi.admin.network.CNXSender;
 import com.kazak.smi.admin.network.SocketHandler;
-//import com.kazak.smi.lib.misc.FixedSizePlainDocument;
+import com.kazak.smi.lib.misc.FixedSizePlainDocument;
 import com.kazak.smi.lib.misc.MD5Tool;
 import com.kazak.smi.lib.network.PackageToXMLConverter;
 
@@ -69,22 +69,22 @@ public class LoginWindow implements ActionListener, KeyListener {
 		frame.setResizable(false);
 		
 		// TODO: Limpiar campos cuando se termine desarrollo
-		hostTextField = new JTextField("localhost",12);
+		hostTextField = new JTextField("",12);
 		hostTextField.setName("host");
 		hostTextField.addKeyListener(this);
-		portTextField = new JTextField("9119",12);
+		portTextField = new JTextField("",12);
 		portTextField.setName("port");
 		portTextField.addKeyListener(this);		
-		userTextField = new JTextField("admin",12);
+		userTextField = new JTextField("",12);
 		userTextField.setName("user");
 		userTextField.addKeyListener(this);
-		passwdField = new JPasswordField("12345",12);
+		passwdField = new JPasswordField("",12);
 		passwdField.setName("passwd");
 		passwdField.addKeyListener(this);
 		
 		// TODO: Habilitar cuando se termine desarrollo
-		//JTFUser.setDocument(new FixedSizePlainDocument(30));
-		//JTFPort.setDocument(new NumericDataValidator(4));
+		userTextField.setDocument(new FixedSizePlainDocument(30));
+		portTextField.setDocument(new NumericDataValidator(4));
 		
 		acceptButton = new JButton("Aceptar");
 		cancelButton = new JButton("Cancelar");
@@ -180,8 +180,8 @@ public class LoginWindow implements ActionListener, KeyListener {
 				JOptionPane.showMessageDialog(
 						frame,
 						"No se pudo establecer comunicación con el servidor\n"+
-						"Servidor: "+host+"\n"+
-						"Puerto: "+port,
+						"Servidor: " + host + "\n" +
+						"Puerto: " + port,
 						"Error de Conexión",
 						JOptionPane.ERROR_MESSAGE);
 				success = false;
@@ -191,8 +191,8 @@ public class LoginWindow implements ActionListener, KeyListener {
 						frame,
 						"No se pudo resolver la dirección\n" +
 						"del Servidor de Mensajeria\n" +
-						"Servidor: " + host + 
-						"Puerto:" + port,
+						"Servidor: " + host + "\n" +
+						"Puerto: " + port,
 						"Error de Conexión",
 						JOptionPane.ERROR_MESSAGE);
 				success = false;

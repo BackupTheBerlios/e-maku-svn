@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
@@ -23,6 +25,7 @@ public class OnLineUsersTable extends JTable implements MouseListener {
 	private JTableHeader header = new JTableHeader();
 	private TableHeaderListener listener;
 	private JFrame frame;
+	private JButton listButton;
 	
 	// Users Table Constructor
 	public OnLineUsersTable(JFrame frame) {
@@ -34,6 +37,7 @@ public class OnLineUsersTable extends JTable implements MouseListener {
 		this.setSurrendersFocusOnKeystroke(true);
 		this.addMouseListener(this);
 		this.setAutoCreateColumnsFromModel(false);
+		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		renderer = new SortButtonRenderer();
 	    TableColumnModel columnModel = this.getColumnModel();
 	    int n = model.getColumnCount(); 
@@ -61,10 +65,17 @@ public class OnLineUsersTable extends JTable implements MouseListener {
 
 	// This method catches a mouse event: "click"
 	public void mouseClicked(MouseEvent e) {
+		if (e.getClickCount() == 1) {
+			listButton.setEnabled(true);
+		}
 		if (e.getClickCount() == 2) {
 			String login = (String) model.getValueAt(((JTable)e.getSource()).getSelectedRow(), 0);
 			new MessagesDialog(frame,login);
 		} 		
+	}
+	
+	public void setListButton(JButton listButton) {
+		this.listButton = listButton;
 	}
 	
 	public void initHeader() {

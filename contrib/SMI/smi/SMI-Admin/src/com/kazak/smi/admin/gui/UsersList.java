@@ -171,6 +171,7 @@ public class UsersList extends JFrame {
 		requestOnlineUsers();
 		setWindowTitle();
 		groupPanel.getTable().initHeader();
+		groupPanel.setEnableListButton();
 		typeCursor = Cursor.DEFAULT_CURSOR;
 		cursor = Cursor.getPredefinedCursor(typeCursor);
 		setCursor(cursor);

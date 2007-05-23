@@ -64,7 +64,6 @@ public class QueryRunner extends Element {
         this.sql = sql;
     }
     
-    
     /**
      * Metodo encargado de ejcutar la sentencia sql
      * 

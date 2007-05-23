@@ -144,6 +144,8 @@ packaging_admin(){
    cd ../dist
    tar cfz smiadmin.tar.gz *
    mv smiadmin.tar.gz ../../../dist/Administrador
+   zip -qr smiadmin.zip *
+   mv smiadmin.zip ../../../dist/Administrador
    cd ../../../
 }
 

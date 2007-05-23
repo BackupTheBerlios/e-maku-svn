@@ -93,13 +93,9 @@
 	<!--Descripcion: ... -->
 		<code>SEL0008</code>
 		<sql>
-			SELECT 
-			nombres,u.correo,u.admin,g.nombre_grupo 
-			FROM 
-			usuarios u,grupos g 
-			WHERE 
-			u.login='?' AND u.gid=g.gid AND u.habilitado=true
-			ORDER BY nombres
+			SELECT uid
+			FROM usuarios 
+			WHERE login='?'
 		</sql>
 	</sentence>
 	<sentence>
@@ -286,52 +282,50 @@
 		</sql>
 	</sentence>
 	<sentence>
-	<!--Descripcion: ... -->
+	<!--Descripcion: Esta consulta genera el reporte de los mensajes de control -->
 		<code>SEL0022</code>
 		<sql>
-			SELECT u.login,u.nombres,pv.nombre AS punto_colocacion,foo.valido AS confirmado FROM (SELECT
-			u.login,
-			u.nombres,
-			(CAST(m.fecha AS timestamp)+m.hora) AS fecha_mensaje,
-			m.fecha_confirmacion,
-			m.minutos AS minutos_de_vida,
-			date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) AS diferencia,
-			'NO' AS valido
-			FROM
-			mensajes m,
-			usuarios u 
-			WHERE 
-			date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) > m.minutos and u.uid=m.uid_destino AND control=true
-			UNION
-			SELECT 
-			u.login,
-			u.nombres,
-			(CAST(m.fecha AS timestamp)+m.hora) AS fecha_mensaje,
-			null AS fecha_confirmacion,
-			m.minutos AS minutos_de_vida,
-			null AS diferencia,
-			'NO' AS valido
-			FROM 
-			mensajes m, usuarios u
-			WHERE 
-			u.uid=m.uid_destino AND control=true AND confirmado=false
-			UNION
-			SELECT
-			u.login,
-			u.nombres,
-			(CAST(m.fecha AS timestamp)+m.hora) AS fecha_mensaje,
-			m.fecha_confirmacion,
-			m.minutos AS minutos_de_vida,
-			date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) AS diferencia ,
-			'SI' AS valido
-			FROM
-			mensajes m,
-			usuarios u 
-			WHERE 
-			date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) &lt;= m.minutos AND u.uid=m.uid_destino AND control=true)
-			AS foo,usuarios u, puntosv pv, usuarios_pventa upv
+			SELECT u.login,u.nombres,pv.nombre AS punto_colocacion,foo.valido AS confirmado 
+                        FROM (
+                              SELECT u.login,u.nombres, (CAST(m.fecha AS timestamp)+m.hora) AS fecha_mensaje,
+				m.fecha_confirmacion, m.minutos AS minutos_de_vida,
+				date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) AS diferencia,
+				'NO' AS valido
+		              FROM
+			        mensajes m, usuarios u
+		  	      WHERE 
+				date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) > m.minutos 
+				AND u.uid=m.uid_destino AND control=true
+			      UNION
+			      SELECT 
+			        u.login, u.nombres,
+			        (CAST(m.fecha AS timestamp)+m.hora) AS fecha_mensaje,
+			        null AS fecha_confirmacion,
+			        m.minutos AS minutos_de_vida,
+			        null AS diferencia,
+			        'NO' AS valido
+			      FROM 
+			        mensajes m, usuarios u
+			      WHERE 
+			        u.uid=m.uid_destino AND control=true AND confirmado=false
+			      UNION
+			      SELECT
+			        u.login, u.nombres,
+			        (CAST(m.fecha AS timestamp)+m.hora) AS fecha_mensaje,
+			        m.fecha_confirmacion,
+			        m.minutos AS minutos_de_vida,
+			        date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) AS diferencia ,
+			        'SI' AS valido
+			      FROM
+			        mensajes m, usuarios u
+			      WHERE 
+			        date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) &lt;= m.minutos 
+                                AND u.uid=m.uid_destino AND control=true
+                             )
+			AS foo, usuarios u, puntosv pv, usuarios_pventa upv
 			WHERE
-			u.login=foo.login AND upv.uid=(SELECT uid FROM usuarios WHERE login=foo.login) AND pv.codigo=upv.codigo_pventa AND foo.fecha_mensaje&gt;'?' AND foo.fecha_mensaje&lt;'?'  
+			      u.login=foo.login AND upv.uid=(SELECT uid FROM usuarios WHERE login=foo.login) 
+                              AND pv.codigo=upv.codigo_pventa AND foo.fecha_mensaje&gt;'?' AND foo.fecha_mensaje&lt;'?'  
 			ORDER BY valido,diferencia DESC
 		</sql>
 	</sentence>

@@ -36,7 +36,7 @@ import com.kazak.smi.admin.transactions.QuerySenderException;
 public class UserSearchPanel extends JPanel implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
-	private JButton close;
+	private JButton close, viewMsg;
 	private UsersList frame;
 	private OnLineUsersTable table;
 	private JButton searchButton;
@@ -72,13 +72,20 @@ public class UserSearchPanel extends JPanel implements ActionListener, KeyListen
 		JScrollPane jscroll = new JScrollPane(table);
 		jscroll.setPreferredSize(new Dimension(500,300));
 		jscroll.setAutoscrolls(true);
-				
+	
+		viewMsg = new JButton("Ver Mensajes");
+		viewMsg.setActionCommand("view");
+		viewMsg.addActionListener(this);
+		viewMsg.setEnabled(false);
+		table.setListButton(viewMsg);		
+		
 		close = new JButton("Cerrar");
 		close.setActionCommand("close");
 		close.addActionListener(this);
 		
 		JPanel down = new JPanel();
 		down.setLayout(new FlowLayout(FlowLayout.CENTER));
+		down.add(viewMsg);
 		down.add(close);
 		
 		add(top,BorderLayout.NORTH);
@@ -92,6 +99,13 @@ public class UserSearchPanel extends JPanel implements ActionListener, KeyListen
 		if (command.equals("search")) {
 			startSearch();
 		}	
+		if (command.equals("view")) {
+			int row = table.getSelectedRow();
+			if(row != -1) {
+				String login = (String) table.getModel().getValueAt(row, 0);
+				new MessagesDialog(frame,login);
+			}
+		}
 		if (command.equals("close")) {
 			frame.dispose();
 		}	
@@ -183,6 +197,9 @@ public class UserSearchPanel extends JPanel implements ActionListener, KeyListen
 	
 	public void updateUserList(Document doc) {
         table.getModel().setQuery(doc);
+        if (table.getGroupSize() == 0 && viewMsg.isEnabled()) {
+        	viewMsg.setEnabled(false);
+        }
  	}
 
 	public void keyPressed(KeyEvent e) {

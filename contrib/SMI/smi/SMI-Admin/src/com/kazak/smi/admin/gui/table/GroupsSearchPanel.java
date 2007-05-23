@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+//import javax.swing.JTable;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
@@ -30,7 +31,7 @@ public class GroupsSearchPanel extends JPanel implements PopupMenuListener, Acti
 	private JLabel groupSize;
 	private HashMap<String,String> groupsHash;
 	private OnLineUsersTable table;
-	private JButton update,close;
+	private JButton update,viewMsg,close;
 	private UsersList frame;
 	
 	public GroupsSearchPanel(UsersList frame) {
@@ -50,10 +51,16 @@ public class GroupsSearchPanel extends JPanel implements PopupMenuListener, Acti
 		jscroll.setPreferredSize(new Dimension(500,300));
 		jscroll.setAutoscrolls(true);
 
-		update = new JButton("Actualizar");
+		update = new JButton("Actualizar Listado");
 		update.setActionCommand("update");
 		update.addActionListener(this);
 
+		viewMsg = new JButton("Ver Mensajes");
+		viewMsg.setActionCommand("view");
+		viewMsg.addActionListener(this);
+		viewMsg.setEnabled(false);
+		table.setListButton(viewMsg);
+		
 		close = new JButton("Cerrar");
 		close.setActionCommand("close");
 		close.addActionListener(this);
@@ -67,6 +74,7 @@ public class GroupsSearchPanel extends JPanel implements PopupMenuListener, Acti
 		JPanel down = new JPanel();
 		down.setLayout(new FlowLayout(FlowLayout.CENTER));
 		down.add(update);
+		down.add(viewMsg);
 		down.add(close);
 		
 		add(top,BorderLayout.NORTH);
@@ -74,12 +82,11 @@ public class GroupsSearchPanel extends JPanel implements PopupMenuListener, Acti
 		add(down,BorderLayout.SOUTH);
 	}
 
-	public void popupMenuCanceled(PopupMenuEvent e) {
-		
+	public void popupMenuCanceled(PopupMenuEvent e) {		
 	}
 
 	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-		frame.updateGroupTable();	
+		updateList();
 	}
 
 	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
@@ -88,13 +95,30 @@ public class GroupsSearchPanel extends JPanel implements PopupMenuListener, Acti
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if (command.equals("update")) {
-			frame.updateGroupTable();
+			updateList();
+		}
+		if (command.equals("view")) {
+			int row = table.getSelectedRow();
+			if(row != -1) {
+				String login = (String) table.getModel().getValueAt(row, 0);
+				new MessagesDialog(frame,login);
+			}
 		}
 		if (command.equals("close")) {
 			frame.dispose();
 		}
 	}
 
+	private void updateList() {
+		frame.updateGroupTable();
+	}
+	
+	public void setEnableListButton() {
+        if (table.getGroupSize() == 0 && viewMsg.isEnabled()) {
+    		viewMsg.setEnabled(false);
+        }
+	}
+	
 	public OnLineUsersTable getTable(){
 		return table;
 	}

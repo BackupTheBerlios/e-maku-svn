@@ -47,5 +47,5 @@ public interface ServerConstants {
             						   "            </row>\n"};
     public final String [] TAGS_COL_HEAD = {"       <col type=\"","\">"};
     public final String [] TAGS_COL = {"                <col>","</col>\n"};    
-    
+    public final int ADMINGROUP = 6;
 }

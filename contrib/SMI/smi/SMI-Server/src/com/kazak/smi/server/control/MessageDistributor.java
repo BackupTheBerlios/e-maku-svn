@@ -25,8 +25,9 @@ import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
 import com.kazak.smi.server.misc.LogWriter;
 import com.kazak.smi.server.misc.settings.ConfigFileHandler;
+import com.kazak.smi.server.misc.ServerConstants;
 
-// Esta clase se encarga de distribuir un mensaje a sus destinos
+// This class delivers all the messages received by the smi account
 
 public class MessageDistributor {
 	
@@ -49,7 +50,7 @@ public class MessageDistributor {
 		groupIDString  = element.getChildText("idgroup");
 		groupID        = Integer.parseInt(groupIDString);
 		date           = Calendar.getInstance().getTime();
-		from           = element.getChildText("from");
+		from           = (element.getChildText("from")).trim();
 		dateString     = formatDate.format(date);
 		hourString     = formatHour.format(date);
 		subject        = element.getChildText("subject");
@@ -57,6 +58,7 @@ public class MessageDistributor {
 		Element mailLifeTime = element.getChild("timeAlife");
 		lifeTime = mailLifeTime != null ? Integer.parseInt(mailLifeTime.getValue()) : 0;
 
+		// This is a message control
 		if (lifeTime > 0) {
 			control = true;
 			body += "\n====================================\n" +
@@ -67,17 +69,26 @@ public class MessageDistributor {
 		SocketInfo sender = null;
 		
 		if (!senderIsMailUser) {	
-			// Consultando usuarios de puntos de venta
+			// Querying the info of the sender (a pos user)
 			sender = SocketServer.getSocketInfo(from);
+			// If sender doesn't exist, this operation is aborted
+			if (sender==null) {
+				String msg = "ERROR: El Colocador {" + from + "} no esta registrado en el sistema.";
+				LogWriter.write(msg);
+				sendAlarm("Error procesando mensaje de colocador",msg);
+				return;
+			}
 		}
 		else {
-			// Consultando usuarios de correo pop
+			// Querying users from the pop server (admin user)
 			QueryRunner qRunner = null;
 		    ResultSet resultSet = null;
+		    int i=0;
 			try {
 				qRunner = new QueryRunner("SEL0026",new String[]{from});
 				resultSet = qRunner.select();
 				if (resultSet.next()) {
+					i++;
 					sender = SocketServer.getInstaceOfSocketInfo();
 					sender.setUid(resultSet.getInt(1));
 					sender.setLogin(resultSet.getString(2));
@@ -94,21 +105,22 @@ public class MessageDistributor {
 			} catch (SQLBadArgumentsException e) {
 				e.printStackTrace();
 			} catch (SQLException e) {
+				LogWriter.write("ERROR: Falla mientras se consultaba la informacion del usuario: " + from);
 				e.printStackTrace();
 			} finally {
 				QueryClosingHandler.close(resultSet);
 				qRunner.closeStatement();
 			}
-		}
 
-		// Si el usuario pertenece al servidor POP y no existe en el sistema, es ingresado
-		if (sender==null) {
-			LogWriter.write("ADVERTENCIA: El usuario {" + from + "} no esta registrado en el sistema. Adicionando usuario...");
-			insertPopUser(from);
-			return;
+			if (i==0) {
+				sender = insertPopUser(from);
+				if (sender == null) {
+					return;
+				}
+			}
 		}
 		
-		// Capturando lista de usuarios destino del mensaje 
+		// Getting the destination list for this message 
 		Vector<SocketInfo> usersVector;
 		if (!senderIsMailUser) {
 			usersVector = SocketServer.getAllClients(groupID);
@@ -121,13 +133,12 @@ public class MessageDistributor {
 		groupSize = usersVector.size();
 		LogWriter.write("INFO: Enviando mensaje a "+ groupSize + " usuarios");
 
-		// Aqui se define a quien se envia el mensage
-		// Los Mensajes deben enviarse a los grupos.
+		// In this cycle, the message is sent to every user in the destination list 
 
 		for (SocketInfo destination : usersVector) {
 			SocketChannel sock = destination.getSock()!=null ? destination.getSock().getChannel() : null;
 			
-			// Si el usuario esta en linea
+			// If the POS user is online
 			if (sock!=null) {
 				Element message = new Element("Message");
 				Element root = new Element("root");
@@ -141,12 +152,12 @@ public class MessageDistributor {
 				root.addContent(addColumn("f"));
 				
 				Document doc = new Document((Element) message.clone());
-				// Enviando mensaje a colocadores en linea
+				// Sending message to POS user online
 				try {
 					SocketWriter.write(sock,doc);
-					LogWriter.write("INFO: [Envio a Punto de Venta] Remitente -> " + sender.getLogin() 
-							        + " / Destino: " + destination.getLogin() 
-							        + " / Asunto: " + subject);
+					LogWriter.write("INFO: [Envio a Punto de Venta] Remitente {" + sender.getLogin() 
+							        + "} - Destino: " + destination.getLogin() 
+							        + " - Asunto: " + subject);
 				} catch (ClosedChannelException e) {
 					LogWriter.write("INFO: El colocador " + destination.getLogin() + " no se encuentra en linea.");
 					e.printStackTrace();
@@ -155,7 +166,7 @@ public class MessageDistributor {
 				}
 			}
 
-			// Enviando mensaje a usuarios del servidor de correo (personal administrativo)
+			// Sending message to pop users (admin users)
 			if (!senderIsMailUser) {
 				EmailSender mail = new EmailSender();
 				mail.setFrom(Pop3Handler.getUser()+"@"+Pop3Handler.getHost());
@@ -163,19 +174,19 @@ public class MessageDistributor {
 				mail.setSubject(sender.getLogin() + "," + subject);
 				mail.setDate(date);
 				mail.setMessage(body);
-				mail.setToFullName(sender.getNames());
+				mail.setSenderFullName(sender.getNames());
 				mail.setWorkStation(sender.getWsName());
 				mail.send();
-				LogWriter.write("INFO: [Envio a Cuenta de Correo] Remitente -> " + sender.getLogin() 
-				        + " / Destino: " + destination.getLogin() 
-				        + " / Asunto: " + subject);
+				LogWriter.write("INFO: [Envio a Cuenta de Correo] Remitente {" + sender.getLogin() 
+				        + "} - Destino: " + destination.getLogin() 
+				        + " - Asunto: " + subject);
 			}
 			
 			String isValid = groupSize > 0 ? "true" : "false";
 			String[] argsArray = {String.valueOf(destination.getUid()),String.valueOf(sender.getUid()),
 									dateString,hourString,subject.trim(),body.trim(),isValid,
-			String.valueOf(ConfigFileHandler.getMessageLifeTimeForClients()),
-			String.valueOf(control),String.valueOf(lifeTime)};
+									String.valueOf(ConfigFileHandler.getMessageLifeTimeForClients()),
+									String.valueOf(control),String.valueOf(lifeTime)};
 			
 			QueryRunner qRunner = null;
 			try {
@@ -199,8 +210,8 @@ public class MessageDistributor {
 		}	
 	}
 	
-	// This method sends an alarm message when the system fails
-	public static void alarmSender(String subject, String body) {
+	// This method sends an alarm message to the SMI group when the system fails
+	public static void sendAlarm(String subject, String body) {
 		Vector<SocketInfo> usersVector = SocketServer.getAllClients("SMI");
 		int groupSize = usersVector.size();
 		Date date = Calendar.getInstance().getTime();
@@ -214,7 +225,7 @@ public class MessageDistributor {
 			mail.setSubject("[Error SMI]: " + subject);
 			mail.setDate(date);
 			mail.setMessage(body);
-			mail.setToFullName("Sistema SMI");
+			mail.setSenderFullName("Sistema SMI");
 			mail.setWorkStation("Servidor");
 			mail.send();
 			LogWriter.write("INFO: Enviando notificacion de alarma a {" + destination.getEmail() + "} / Asunto: [" + subject + "]");
@@ -248,52 +259,106 @@ public class MessageDistributor {
 	}
 	
 	// This method insert a pop user into the SMI system
-	private void insertPopUser(String login) {		
+	private SocketInfo insertPopUser(String login) {
+		SocketInfo socketInfo = null;
+		String line = "";
+		String names = "";
+		boolean userExists = false;
+
 		try {
-			String line="";
-			String names = "";
 			BufferedReader in = new BufferedReader(new FileReader("/etc/passwd"));
+
 			while ((line = in.readLine()) != null)   {
-			   if(line.startsWith(login)) {
-				   String[] userData = line.split(":");
-				   names = userData[4];
-        		   if (names.length() == 0) {
-        			   names = "Usuario de Correo";
-        		   }
-        		   int index = names.indexOf(',');
-        		   if (index > 0) {
-        			   names = names.substring(0,index);
-                   }
-                   break;
-			   }
+				if(line.startsWith(login)) {
+					userExists = true;
+					String[] userData = line.split(":");
+					names = userData[4];
+					if (names.length() == 0) {
+						names = "Usuario de Correo";
+					}
+					int index = names.indexOf(',');
+					if (index > 0) {
+						names = names.substring(0,index);
+					}
+					break;
+				}
 			}
 			in.close();
-			String[] userInfoArray = {login,
-					"d41d8cd98f00b204e9800998ecf8427e",
-					names,
-					login+"@"+Pop3Handler.getHost(),
-					"true",
-					"false",
-					"6"};
-			try {
-				QueryRunner qRunner = new QueryRunner("INS0001",userInfoArray);
-				qRunner.setAutoCommit(false);
-				qRunner.executeSQL();
-				LogWriter.write("INFO: Usuario {" + login + "} adicionado satisfactoriamente al sistema");
-			} catch(SQLNotFoundException SNFE) {
-				SNFE.printStackTrace();
-			} catch(SQLBadArgumentsException SBAE) {
-				SBAE.printStackTrace();
-			} catch(SQLException SQLE){
-				SQLE.printStackTrace();
-			}
-			
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
+		// If the user doesn't exist in the file /etc/passwd, do not add him to the SMI server
+		if(!userExists){
+			LogWriter.write("ERROR: El usuario {" + login + "} no existe en el servidor de correo");
+			return null;
+		}
+						
+		String[] userInfoArray = {login,
+				"d41d8cd98f00b204e9800998ecf8427e",
+				names,
+				login+"@"+Pop3Handler.getHost(),
+				"true",
+				"false",
+		ServerConstants.ADMINGROUP + ""};
+
+		try {
+			QueryRunner qRunner = new QueryRunner("INS0001",userInfoArray);
+			qRunner.setAutoCommit(false);
+			qRunner.executeSQL();
+			LogWriter.write("INFO: Usuario {" + login + "} adicionado satisfactoriamente al sistema");
+		} catch(SQLNotFoundException SNFE) {
+			SNFE.printStackTrace();
+		} catch(SQLBadArgumentsException SBAE) {
+			SBAE.printStackTrace();
+		} catch(SQLException SQLE){
+			String msg = "ERROR: Falla mientras se ingresaba un nuevo usuario de correo\n" +
+				"que no estaba registrado en el sistema.\nLogin: " + login;
+			LogWriter.write(msg);
+			sendAlarm("Error adicionando usuario",msg);
+			SQLE.printStackTrace();
+			return null;
+		}
+		
+		QueryRunner qRunner = null;
+		ResultSet resultSet = null;
+		int uid = -1;
+		try {
+			qRunner = new QueryRunner("SEL0008",new String[]{login});
+			resultSet = qRunner.select();
+			int i=0;
+			if (resultSet.next()) {
+				i++;
+				uid = resultSet.getInt(1);
+			}
+		} catch (SQLNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLBadArgumentsException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			LogWriter.write("ERROR: Falla mientras se consultaba la informacion del usuario: " + login);
+			e.printStackTrace();
+			return null;
+		} finally {
+			QueryClosingHandler.close(resultSet);
+			qRunner.closeStatement();
+		}
+	
+		socketInfo = SocketServer.getInstaceOfSocketInfo();
+		socketInfo.setUid(uid);
+		socketInfo.setLogin(userInfoArray[0]);
+		socketInfo.setNames(userInfoArray[2]);
+		socketInfo.setEmail(userInfoArray[3]);
+		socketInfo.setAdmin(new Boolean(userInfoArray[4]).booleanValue());
+		socketInfo.setAudit(new Boolean(userInfoArray[5]).booleanValue());
+		socketInfo.setGroupID(Integer.parseInt(userInfoArray[6]));
+		socketInfo.setWsName("");
+		socketInfo.setGroupName(""); // TODO: Modificar consulta para traer nombre de grupo	
+		
+		return socketInfo;
 	}
 	
 	private Element addColumn(String val) {
