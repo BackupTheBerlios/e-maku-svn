@@ -13,7 +13,7 @@ import javax.swing.SwingConstants;
 import org.jdom.Document;
 import org.jdom.Element;
 
-import com.kazak.smi.admin.gui.MainWindow;
+import com.kazak.smi.admin.gui.main.MainWindow;
 import com.kazak.smi.admin.network.SocketHandler;
 import com.kazak.smi.admin.network.SocketWriter;
 

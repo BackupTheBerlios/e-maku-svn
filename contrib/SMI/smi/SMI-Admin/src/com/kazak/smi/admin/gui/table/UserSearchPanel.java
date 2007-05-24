@@ -24,8 +24,8 @@ import org.jdom.Element;
 //import org.jdom.output.XMLOutputter;
 
 import com.kazak.smi.admin.gui.table.OnLineUsersTable;
-import com.kazak.smi.admin.gui.GUIFactory;
-import com.kazak.smi.admin.gui.UsersList;
+import com.kazak.smi.admin.gui.misc.GUIFactory;
+import com.kazak.smi.admin.gui.misc.UsersList;
 import com.kazak.smi.admin.network.SocketHandler;
 import com.kazak.smi.admin.network.SocketWriter;
 import com.kazak.smi.admin.transactions.QuerySender;

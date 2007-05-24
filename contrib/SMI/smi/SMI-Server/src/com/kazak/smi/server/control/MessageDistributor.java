@@ -182,31 +182,35 @@ public class MessageDistributor {
 				        + " - Asunto: " + subject);
 			}
 			
-			String isValid = groupSize > 0 ? "true" : "false";
-			String[] argsArray = {String.valueOf(destination.getUid()),String.valueOf(sender.getUid()),
-									dateString,hourString,subject.trim(),body.trim(),isValid,
-									String.valueOf(ConfigFileHandler.getMessageLifeTimeForClients()),
-									String.valueOf(control),String.valueOf(lifeTime)};
-			
-			QueryRunner qRunner = null;
-			try {
-				LogWriter.write("INFO: Almacenando registro de mensaje en la base de datos...");
-				qRunner = new QueryRunner("INS0003",argsArray);
-				qRunner.setAutoCommit(false);
-				qRunner.executeSQL();
-				qRunner.commit();
-				qRunner.closeStatement();
-			} catch (SQLNotFoundException e) {
-				LogWriter.write("ERROR: No se pudo almacenar mensaje en la base de datos. Instruccion SQL no encontrada");
-				qRunner.rollback();
-				e.printStackTrace();
-			} catch (SQLBadArgumentsException e) {
-				LogWriter.write("ERROR: No se pudo almacenar mensaje en la base de datos. Argumentos Invalidos");
-				e.printStackTrace();
-			} catch (SQLException e) {
-				LogWriter.write("ERROR: No se pudo almacenar mensaje en la base de datos. Excepcion SQL");
-				e.printStackTrace();
-			}
+			//if (!control || (control && (sock!=null))) {
+				String isValid = groupSize > 0 ? "true" : "false";
+				String[] argsArray = {String.valueOf(destination.getUid()),String.valueOf(sender.getUid()),
+						dateString,hourString,subject.trim(),body.trim(),isValid,
+						String.valueOf(ConfigFileHandler.getMessageLifeTimeForClients()),
+						String.valueOf(control),String.valueOf(lifeTime)};
+
+				QueryRunner qRunner = null;
+				try {
+					LogWriter.write("INFO: Almacenando registro de mensaje en la base de datos [" + destination.getLogin() + ":" + control + "]");
+					qRunner = new QueryRunner("INS0003",argsArray);
+					qRunner.setAutoCommit(false);
+					qRunner.executeSQL();
+					qRunner.commit();
+				} catch (SQLNotFoundException e) {
+					LogWriter.write("ERROR: No se pudo almacenar mensaje en la base de datos. Instruccion SQL no encontrada");
+					qRunner.rollback();
+					e.printStackTrace();
+				} catch (SQLBadArgumentsException e) {
+					LogWriter.write("ERROR: No se pudo almacenar mensaje en la base de datos. Argumentos Invalidos");
+					e.printStackTrace();
+				} catch (SQLException e) {
+					LogWriter.write("ERROR: No se pudo almacenar mensaje en la base de datos. Excepcion SQL");
+					e.printStackTrace();
+				} finally {
+					qRunner.closeStatement();
+					qRunner.setAutoCommit(true);
+				}
+			//}
 		}	
 	}
 	
@@ -243,17 +247,21 @@ public class MessageDistributor {
 				qRunner.setAutoCommit(false);
 				qRunner.executeSQL();
 				qRunner.commit();
-				qRunner.closeStatement();
 			} catch (SQLNotFoundException e) {
-				LogWriter.write("ERROR: No se pudo almacenar mensaje en la base de datos. Instruccion SQL no encontrada");
 				qRunner.rollback();
+				LogWriter.write("ERROR: No se pudo almacenar mensaje en la base de datos. Instruccion SQL no encontrada");
 				e.printStackTrace();
 			} catch (SQLBadArgumentsException e) {
+				qRunner.rollback();
 				LogWriter.write("ERROR: No se pudo almacenar mensaje en la base de datos. Argumentos Invalidos");
 				e.printStackTrace();
 			} catch (SQLException e) {
+				qRunner.rollback();
 				LogWriter.write("ERROR: No se pudo almacenar mensaje en la base de datos. Excepcion SQL");
 				e.printStackTrace();
+			} finally {
+				qRunner.closeStatement();	
+				qRunner.setAutoCommit(true);
 			}
 		}
 	}
@@ -305,25 +313,32 @@ public class MessageDistributor {
 				"false",
 		ServerConstants.ADMINGROUP + ""};
 
+		QueryRunner qRunner = null;
 		try {
-			QueryRunner qRunner = new QueryRunner("INS0001",userInfoArray);
+			qRunner = new QueryRunner("INS0001",userInfoArray);
 			qRunner.setAutoCommit(false);
 			qRunner.executeSQL();
+			qRunner.commit();
 			LogWriter.write("INFO: Usuario {" + login + "} adicionado satisfactoriamente al sistema");
 		} catch(SQLNotFoundException SNFE) {
+			qRunner.rollback();
 			SNFE.printStackTrace();
 		} catch(SQLBadArgumentsException SBAE) {
+			qRunner.rollback();
 			SBAE.printStackTrace();
 		} catch(SQLException SQLE){
+			qRunner.rollback();
 			String msg = "ERROR: Falla mientras se ingresaba un nuevo usuario de correo\n" +
 				"que no estaba registrado en el sistema.\nLogin: " + login;
 			LogWriter.write(msg);
 			sendAlarm("Error adicionando usuario",msg);
 			SQLE.printStackTrace();
 			return null;
+		} finally {
+			qRunner.closeStatement();
+			qRunner.setAutoCommit(true);
 		}
 		
-		QueryRunner qRunner = null;
 		ResultSet resultSet = null;
 		int uid = -1;
 		try {
@@ -361,9 +376,9 @@ public class MessageDistributor {
 		return socketInfo;
 	}
 	
-	private Element addColumn(String val) {
+	private Element addColumn(String value) {
 		Element element = new Element("col");
-		element.setText(val);
+		element.setText(value);
 		return element;
 	}
 }

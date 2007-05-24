@@ -6,8 +6,8 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import com.kazak.smi.admin.gui.LoginWindow;
-import com.kazak.smi.admin.gui.MainWindow;
+import com.kazak.smi.admin.gui.main.LoginWindow;
+import com.kazak.smi.admin.gui.main.MainWindow;
 
 import de.javasoft.plaf.synthetica.SyntheticaBlueIceLookAndFeel;
 

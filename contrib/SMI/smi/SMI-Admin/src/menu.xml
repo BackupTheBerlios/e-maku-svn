@@ -23,35 +23,35 @@
 		<JMenuItem>
 			<Mnemonic>B</Mnemonic>
 			<Text>Buscar</Text>
-			<Class>com.kazak.smi.admin.gui.UsersManager</Class>
+			<Class>com.kazak.smi.admin.gui.managers.UsersManager</Class>
 			<Method>search</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>A</Mnemonic>
 			<Text>Adicionar</Text>
-			<Class>com.kazak.smi.admin.gui.UsersManager</Class>
+			<Class>com.kazak.smi.admin.gui.managers.UsersManager</Class>
 			<Method>add</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>E</Mnemonic>
 			<Text>Editar</Text>
-			<Class>com.kazak.smi.admin.gui.UsersManager</Class>
+			<Class>com.kazak.smi.admin.gui.managers.UsersManager</Class>
 			<Method>edit</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>l</Mnemonic>
 			<Text>Eliminar</Text>
-			<Class>com.kazak.smi.admin.gui.UsersManager</Class>
+			<Class>com.kazak.smi.admin.gui.managers.UsersManager</Class>
 			<Method>delete</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>U</Mnemonic>
 			<Text>Listar Usuarios</Text>
-			<Class>com.kazak.smi.admin.gui.UsersList</Class>
+			<Class>com.kazak.smi.admin.gui.misc.UsersList</Class>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 	</JMenu>
@@ -61,28 +61,28 @@
 		<JMenuItem>
 			<Mnemonic>B</Mnemonic>
 			<Text>Buscar</Text>
-			<Class>com.kazak.smi.admin.gui.GroupsManager</Class>
+			<Class>com.kazak.smi.admin.gui.managers.GroupsManager</Class>
 			<Method>search</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>A</Mnemonic>
 			<Text>Adicionar</Text>
-			<Class>com.kazak.smi.admin.gui.GroupsManager</Class>
+			<Class>com.kazak.smi.admin.gui.managers.GroupsManager</Class>
 			<Method>add</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>E</Mnemonic>
 			<Text>Editar</Text>
-			<Class>com.kazak.smi.admin.gui.GroupsManager</Class>
+			<Class>com.kazak.smi.admin.gui.managers.GroupsManager</Class>
 			<Method>edit</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>l</Mnemonic>
 			<Text>Eliminar</Text>
-			<Class>com.kazak.smi.admin.gui.GroupsManager</Class>
+			<Class>com.kazak.smi.admin.gui.managers.GroupsManager</Class>
 			<Method>delete</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
@@ -93,28 +93,28 @@
 		<JMenuItem>
 			<Mnemonic>B</Mnemonic>
 			<Text>Buscar</Text>
-			<Class>com.kazak.smi.admin.gui.WorkStationsManager</Class>
+			<Class>com.kazak.smi.admin.gui.managers.WorkStationsManager</Class>
 			<Method>search</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>A</Mnemonic>
 			<Text>Adicionar</Text>
-			<Class>com.kazak.smi.admin.gui.WorkStationsManager</Class>
+			<Class>com.kazak.smi.admin.gui.managers.WorkStationsManager</Class>
 			<Method>add</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>E</Mnemonic>
 			<Text>Editar</Text>
-			<Class>com.kazak.smi.admin.gui.WorkStationsManager</Class>
+			<Class>com.kazak.smi.admin.gui.managers.WorkStationsManager</Class>
 			<Method>edit</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>l</Mnemonic>
 			<Text>Eliminar</Text>
-			<Class>com.kazak.smi.admin.gui.WorkStationsManager</Class>
+			<Class>com.kazak.smi.admin.gui.managers.WorkStationsManager</Class>
 			<Method>delete</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
@@ -125,7 +125,7 @@
 		<JMenuItem>
 			<Mnemonic>V</Mnemonic>
 			<Text>Ver Mensajes</Text>
-			<Class>com.kazak.smi.admin.gui.LogMessage</Class>
+			<Class>com.kazak.smi.admin.gui.misc.LogMessage</Class>
 			<Method>display</Method>
 			<UserLevel>2</UserLevel>
 		</JMenuItem>
@@ -135,22 +135,22 @@
 			<Acelerator></Acelerator>
 			<Mnemonic>B</Mnemonic>
 			<Text>Buscar Mensaje</Text>
-			<Class>com.kazak.smi.admin.gui.MessageSearcher</Class>
+			<Class>com.kazak.smi.admin.gui.misc.MessageSearcher</Class>
 			<Method>search</Method>
 			<UserLevel>2</UserLevel>
 		</JMenuItem>
 		<JSeparator />
 		<JMenuItem>
 			<Mnemonic>S</Mnemonic>
-			<Text>Ver mensajes de control</Text>
-			<Class>com.kazak.smi.admin.gui.ControlMessageReport</Class>
+			<Text>Ver Mensajes de Control</Text>
+			<Class>com.kazak.smi.admin.gui.misc.ControlMessageReporter</Class>
 			<Method>init</Method>
 			<UserLevel>2</UserLevel>
 		</JMenuItem>
 		<JSeparator />
 		<JMenuItem>
 			<Mnemonic>S</Mnemonic>
-			<Text>Ver Registro del servidor</Text>
+			<Text>Ver Registro del Servidor</Text>
 			<Class>com.kazak.smi.admin.control.LogServerViewer</Class>
 			<Method>start</Method>
 			<UserLevel>2</UserLevel>
@@ -159,7 +159,7 @@
                 <JMenuItem>
                         <Mnemonic>U</Mnemonic>
                         <Text>Listar Usuarios</Text>
-                        <Class>com.kazak.smi.admin.gui.UsersList</Class>
+                        <Class>com.kazak.smi.admin.gui.misc.UsersList</Class>
                         <UserLevel>2</UserLevel>
                 </JMenuItem>
 	</JMenu>

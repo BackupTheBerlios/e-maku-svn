@@ -12,8 +12,8 @@ import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
-import com.kazak.smi.admin.gui.LoginWindow;
-import com.kazak.smi.admin.gui.MainWindow;
+import com.kazak.smi.admin.gui.main.LoginWindow;
+import com.kazak.smi.admin.gui.main.MainWindow;
 import com.kazak.smi.lib.network.PackageToXMLConverter;
 
 public class SocketHandler extends Thread  {

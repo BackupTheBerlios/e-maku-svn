@@ -11,9 +11,11 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
-import com.kazak.smi.admin.gui.table.OnLineModel;
-import com.kazak.smi.admin.gui.table.SortButtonRenderer;
 import com.kazak.smi.admin.gui.table.MessagesDialog;
+import com.kazak.smi.admin.gui.table.models.CellEditor;
+import com.kazak.smi.admin.gui.table.models.OnLineModel;
+import com.kazak.smi.admin.gui.table.models.SortButtonRenderer;
+import com.kazak.smi.admin.gui.table.models.TableHeaderListener;
 
 // This class shows the online users list as a JTable 
 

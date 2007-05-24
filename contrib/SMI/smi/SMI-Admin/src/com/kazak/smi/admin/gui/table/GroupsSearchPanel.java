@@ -20,7 +20,7 @@ import org.jdom.Document;
 import java.util.HashMap;
 
 import com.kazak.smi.admin.control.Cache;
-import com.kazak.smi.admin.gui.UsersList;
+import com.kazak.smi.admin.gui.misc.UsersList;
 import com.kazak.smi.admin.gui.table.OnLineUsersTable;
 
 public class GroupsSearchPanel extends JPanel implements PopupMenuListener, ActionListener {

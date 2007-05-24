@@ -16,7 +16,7 @@ import javax.swing.JFrame;
 import org.jdom.Document;
 import org.jdom.Element;
 
-import com.kazak.smi.admin.gui.TreeManagerGroups;
+import com.kazak.smi.admin.gui.main.TreeManagerGroups;
 import com.kazak.smi.admin.transactions.QuerySender;
 import com.kazak.smi.admin.transactions.QuerySenderException;
 

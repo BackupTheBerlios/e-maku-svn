@@ -34,7 +34,7 @@ public class Pop3Handler extends Thread {
 	
 	public Pop3Handler() {
 		LogWriter.write("INFO: Iniciando demonio pop3");
-		LogWriter.write("INFO: Servidor " + ConfigFileHandler.getMailServer());
+		LogWriter.write("INFO: Servidor de correo {" + ConfigFileHandler.getMailServer() + "}");
 		Pop3Handler.host = ConfigFileHandler.getMailServer();
 		Pop3Handler.user = ConfigFileHandler.getUserMail();
 		Pop3Handler.password = ConfigFileHandler.getPassWordMail();

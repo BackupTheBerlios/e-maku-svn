@@ -19,7 +19,7 @@ import com.kazak.smi.lib.network.PackageToXMLConverter;
 public class SocketHandler extends Thread  {
 
 	private static SocketChannel socket;
-	private PackageToXMLConverter packageXML;
+	private PackageToXMLConverter xmlPackage;
 	private String host;
 	private int port;
 	
@@ -30,7 +30,7 @@ public class SocketHandler extends Thread  {
 		
 		socket = SocketChannel.open();
         socket.configureBlocking(false);
-        this.packageXML = packageXML;
+        this.xmlPackage = packageXML;
         
         InetSocketAddress address = new InetSocketAddress(host,port);
         socket.connect(address);
@@ -62,13 +62,12 @@ public class SocketHandler extends Thread  {
                         SelectionKey key = (SelectionKey) iterador.next();
                         iterador.remove();
                         if (key.isReadable()) {
-                        	result = packageXML.work(socket) ;
+                        	result = xmlPackage.work(socket) ;
                         	if (!result) {
                         		JOptionPane.showMessageDialog(
                         				null,
-                        				"Se perdió la conexión con el servidor\n" +
-                        				"Contacte con los administradores del sistema\n"+
-                        				"Vuelva a conectarse más tarde...");
+                        				"Se ha perdido la conexión con el servidor.\n" +
+                        				"Por favor, contacte a soporte técnico.");
                         	}
                         }
                         if (!result) {

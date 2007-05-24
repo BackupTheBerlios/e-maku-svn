@@ -8,8 +8,8 @@ import javax.swing.JOptionPane;
 import org.jdom.Document;
 import org.jdom.Element;
 
-import com.kazak.smi.admin.gui.LoginWindow;
-import com.kazak.smi.admin.gui.MainWindow;
+import com.kazak.smi.admin.gui.main.LoginWindow;
+import com.kazak.smi.admin.gui.main.MainWindow;
 import com.kazak.smi.admin.network.SocketHandler;
 import com.kazak.smi.admin.transactions.QuerySender;
 import com.kazak.smi.lib.network.ArrivedPackageEvent;
@@ -57,7 +57,8 @@ public class HeadersValidator implements PackageComingListener {
 				e.printStackTrace();
 			}
         }
-        else if(name.equals("ANSWER") || name.equals("SEARCHRESULT") || name.equals("USERLIST")) {
+        else if(name.equals("ANSWER") || name.equals("SEARCHRESULT") 
+        		|| name.equals("USERLIST") || name.equals("CONTROLRESULT")) {
             String id = root.getChildText("id");
             QuerySender.putResultOnPool(id,doc);
         }

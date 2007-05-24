@@ -113,7 +113,7 @@ public class QueryRunner extends Element {
     }
     
     /**
-     * Este metodo se encarga de cerrar el Statement una vez el
+     * Este metodo se encarga de cerrar el Statement una vez
      * la informacion del Resultset haya sido interpretada
      */
     public void closeStatement() {
