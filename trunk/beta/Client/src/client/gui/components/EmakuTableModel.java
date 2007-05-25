@@ -121,6 +121,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 			  		  Document doc,
 			  		  ArrayList formulas,
 			  		  HashMap exportTotalCols,
+            		  HashMap importTotalCols,
             		  int[] totales,
             		  Hashtable externalValues,
 			  		  ColumnsArgsGenerator[] ATFDargs) {
@@ -135,8 +136,8 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		this.initSQL=true;
 		VdataRows = new Vector<Vector<Object>>();
         totalCol = new Hashtable<String,Double>();
-        importTotalCol 	= new HashMap<String,String>();
-
+        //importTotalCol 	= new HashMap<String,String>();
+        this.importTotalCol	= importTotalCols;
 		List Lrows = doc.getRootElement().getChildren("row");
         Iterator Irows = Lrows.iterator();
         GFforma.addInitiateFinishListener(this);
@@ -606,6 +607,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         String newVar=reemplazarFormula(var,rowIndex,valueOld);
         Object result = null;
         int col= getColIndex(key);
+
         if (tipoFormula) {
         	result = FormulaCalculator.operar(newVar);	
         }

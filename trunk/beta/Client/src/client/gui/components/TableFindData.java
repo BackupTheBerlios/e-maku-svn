@@ -547,7 +547,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 				try {
 					doc = TransactionServerResultSet.getResultSetST(initSQL, initArgs);
 					TMFDtabla = new EmakuTableModel(GFforma, sqlCode, doc, formulas,
-							exportTotalCols, totales, externalValues, ATFDargs);
+							exportTotalCols, importTotalCol,totales, externalValues, ATFDargs);
 					JTtabla.setModel(TMFDtabla);
 					propertiesTable();
 

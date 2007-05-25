@@ -89,7 +89,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
     private JDesktopPane JDPpanel;
     private Dimension size;
     private boolean child;
-    private HashMap <Object,Object>externalValues;
+    private HashMap <Object,Object>externalValues = new HashMap<Object,Object>();;
     /*
      * En esta variable se almacena el id de la transaccion que genera la forma,
      * este parametro es recibido por referencia
@@ -182,7 +182,6 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
         this.size = size;
         this.idTransaction = idTransaction;
         this.password = password;
-        this.externalValues = new HashMap<Object,Object>();
         this.addInternalFrameListener(this);
         generar(doc);
         EndEventGenerator event = new EndEventGenerator(this);
@@ -205,7 +204,6 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
         this.JDPpanel = JDPpanel;
         this.size = size;
         this.idTransaction = idTransaction;
-        this.externalValues = new HashMap<Object,Object>();
         this.addInternalFrameListener(this);
         new InitShell();
         generar(doc);
@@ -1585,7 +1583,17 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 		if (child) {
 			return GFforma.eval(script);
 		}
-		return shellScript.eval(script);
+		try {
+			return shellScript.eval(script);
+		}
+		catch(Exception e) {
+			System.out.println("La evaluacion de la formula fallo, retornando 0");
+			System.out.println("causa: "+e.getCause());
+			System.out.println("mensaje: "+e.getMessage());
+			System.out.println("pila:");
+			e.printStackTrace();
+			return new Integer(0);
+		}
 	}
 	
 	class InitShell extends Thread {
@@ -1604,6 +1612,19 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 	}
 
 	public void internalFrameClosed(InternalFrameEvent e) {
+		/*
+		 * Cuando tenga tiempo reviso este codigo .....
+		 * os los juro, y ojala no lea esto el xtingray
+		 * porque se inmonla.
+		 * 
+		 * La razon de que se comenta es porque causa bloqueos
+		 * de la aplicacion cuando una GenericForm es cerrada
+		 * desde el boton y luego abrir una nueva forma.
+		 * 
+		 * Attn.
+		 * 
+		 * pipelx
+		 * 
         if (!child) {
 	
 			Hcomps = null;
@@ -1622,6 +1643,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 			shellScript = null; 					
 			System.gc();
         }
+        */
 	}
 
 	public void clearAllComps() {
