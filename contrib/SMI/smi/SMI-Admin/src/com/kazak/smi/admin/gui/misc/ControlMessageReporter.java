@@ -136,7 +136,6 @@ public class ControlMessageReporter extends JFrame implements ActionListener {
 		    if (!calendar1.equals(calendar2)) {
 				if (calendar2.after(calendar1)) {					
 					getControlMessages(date1,date2);					
-					//frame.dispose();
 				}
 				else {
 					JOptionPane.showMessageDialog(frame,"La fecha de fin debe ser posterior a la de inicio.");
@@ -153,6 +152,7 @@ public class ControlMessageReporter extends JFrame implements ActionListener {
 		Thread t = new Thread() {
 			public void run() {
 				try {
+					System.out.println("Date1: " + initDate.toString());
 					String[] args = {initDate.toString(),finalDate.toString()};
 					Document doc = QuerySender.getResultSetFromST("SEL0015",args);
 					SimpleDateFormat dateFormat = new SimpleDateFormat("E, dd MMM yyyy - HH:mm a");
@@ -160,7 +160,8 @@ public class ControlMessageReporter extends JFrame implements ActionListener {
 					String date2 = dateFormat.format(finalDate);
 
 					if(!queryIsEmpty(doc)) {
-					   new ControlDialog(frame,date1 + " / " + date2,doc);
+						frame.dispose();
+					    new ControlDialog(frame,date1 + " / " + date2,doc);
 					} else {
                         JOptionPane.showMessageDialog(
                                 frame,

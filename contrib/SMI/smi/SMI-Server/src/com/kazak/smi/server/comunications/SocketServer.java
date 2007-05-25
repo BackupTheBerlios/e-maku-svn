@@ -74,7 +74,6 @@ public class SocketServer {
 
     public SocketServer() throws IOException{
         try {
-
             serverSocketChannel = ServerSocketChannel.open();
             serverSocketChannel.configureBlocking(false);
             ServerSocket socketForClient = serverSocketChannel.socket();

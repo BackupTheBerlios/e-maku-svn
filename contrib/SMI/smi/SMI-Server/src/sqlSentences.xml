@@ -392,7 +392,7 @@
         <!--Descripcion: Listado de usuarios que respondieron tarde el mensaje de control -->
                 <code>SEL0030</code>
                 <sql>
-                        SELECT u.login,u.nombres,pv.nombre AS punto_colocacion,foo.valido AS confirmado,foo.diferencia AS diferencia
+                        SELECT u.login,u.nombres,pv.nombre AS punto_colocacion,foo.diferencia AS diferencia
                         FROM (
                               SELECT u.login,u.nombres, (CAST(m.fecha AS timestamp)+m.hora) AS fecha_mensaje,
                                 m.fecha_confirmacion, m.minutos AS minutos_de_vida,
@@ -407,7 +407,7 @@
                         AS foo, usuarios u, puntosv pv, usuarios_pventa upv
                         WHERE
                               u.login=foo.login AND upv.uid=(SELECT uid FROM usuarios WHERE login=foo.login)
-                              AND pv.codigo=upv.codigo_pventa AND foo.fecha_mensaje='?'
+                              AND pv.codigo=upv.codigo_pventa AND foo.fecha_mensaje=(CAST('?' AS timestamp)+'?')
                         ORDER BY diferencia ASC
                 </sql>
         </sentence>
@@ -415,14 +415,13 @@
         <!--Descripcion: Lista de usuarios que estaban conectados y nunca respondieron al mensaje de control-->
                 <code>SEL0031</code>
                 <sql>
-                        SELECT u.login,u.nombres,pv.nombre AS punto_colocacion,foo.valido AS confirmado
+                        SELECT u.login,u.nombres,pv.nombre AS punto_colocacion
                         FROM (
                               SELECT
                                 u.login, u.nombres,
                                 (CAST(m.fecha AS timestamp)+m.hora) AS fecha_mensaje,
                                 null AS fecha_confirmacion,
-                                m.minutos AS minutos_de_vida,
-                                'NO' AS valido
+                                m.minutos AS minutos_de_vida
                               FROM
                                 mensajes m, usuarios u
                               WHERE
@@ -431,7 +430,7 @@
                         AS foo, usuarios u, puntosv pv, usuarios_pventa upv
                         WHERE
                               u.login=foo.login AND upv.uid=(SELECT uid FROM usuarios WHERE login=foo.login)
-                              AND pv.codigo=upv.codigo_pventa AND foo.fecha_mensaje='?'
+                              AND pv.codigo=upv.codigo_pventa AND foo.fecha_mensaje=(CAST('?' AS timestamp)+'?')
                         ORDER BY foo.login ASC
                 </sql>
         </sentence>
@@ -439,15 +438,14 @@
         <!--Descripcion: Lista de usuarios que estaban conectados y respondieron a tiempo el mensaje de control -->
                 <code>SEL0032</code>
                 <sql>
- 			SELECT u.login,u.nombres,pv.nombre AS punto_colocacion,foo.valido AS confirmado
+ 			SELECT u.login,u.nombres,pv.nombre AS punto_colocacion,diferencia
                         FROM (
 			      SELECT
                                 u.login, u.nombres,
                                 (CAST(m.fecha AS timestamp)+m.hora) AS fecha_mensaje,
                                 m.fecha_confirmacion,
                                 m.minutos AS minutos_de_vida,
-                                date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) AS diferencia ,
-                                'SI' AS valido
+                                date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) AS diferencia
                               FROM
                                 mensajes m, usuarios u
                               WHERE
@@ -457,11 +455,27 @@
                         AS foo, usuarios u, puntosv pv, usuarios_pventa upv
                         WHERE
                               u.login=foo.login AND upv.uid=(SELECT uid FROM usuarios WHERE login=foo.login)
-                              AND pv.codigo=upv.codigo_pventa AND foo.fecha_mensaje='?'
+                              AND pv.codigo=upv.codigo_pventa AND foo.fecha_mensaje=(CAST('?' AS timestamp)+'?')
                         ORDER BY diferencia ASC
                 </sql>
         </sentence>
         <sentence>
+        <!--Descripcion: Lista de usuarios que no estaban conectados al momento del mensaje de control y que no son administrativos -->
+                <code>SEL0033</code>
+                <sql>
+                        SELECT u.login AS login, u.nombres, pv.nombre AS punto_colocacion 
+			FROM usuarios u, puntosv pv, usuarios_pventa upv
+                        WHERE login LIKE 'CV%' AND upv.uid=u.uid AND pv.codigo=upv.codigo_pventa 
+			      AND NOT EXISTS 
+                        	(
+                                 SELECT usuario.login FROM mensajes m, usuarios usuario
+                                 WHERE m.control=true AND usuario.uid=m.uid_destino
+                                 AND (CAST(m.fecha AS timestamp)+m.hora)=(CAST('?' AS timestamp)+'?')
+				 AND u.login=usuario.login
+                        	)
+			ORDER BY login
+                </sql>
+        </sentence>
 	<!--============================= Inserts ===============================-->
 	<sentence>
 	<!--Descripcion: ... -->

@@ -182,7 +182,7 @@ public class MessageDistributor {
 				        + " - Asunto: " + subject);
 			}
 			
-			//if (!control || (control && (sock!=null))) {
+			if (!control || (control && (sock!=null))) {
 				String isValid = groupSize > 0 ? "true" : "false";
 				String[] argsArray = {String.valueOf(destination.getUid()),String.valueOf(sender.getUid()),
 						dateString,hourString,subject.trim(),body.trim(),isValid,
@@ -210,7 +210,7 @@ public class MessageDistributor {
 					qRunner.closeStatement();
 					qRunner.setAutoCommit(true);
 				}
-			//}
+			}
 		}	
 	}
 	

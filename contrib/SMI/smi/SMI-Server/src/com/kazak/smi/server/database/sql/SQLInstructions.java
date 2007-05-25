@@ -49,41 +49,39 @@ public class SQLInstructions {
         args = addSlashes(args);
     	String sql = CacheLoader.getSQLSentence("K-"+code);
     	if (sql!=null) {
-	        StringTokenizer STsql = new StringTokenizer(sql,"?");
+	        StringTokenizer sqlToken = new StringTokenizer(sql,"?");
 	        
-	        if(STsql.countTokens() - (1)  == args.length){
-	            boolean nulo = false;
+	        if(sqlToken.countTokens() - (1)  == args.length){
+	            boolean nullFlag = false;
 	            for (int i = 0 ; i<args.length; i++) {
-            		String salto = nullToken(STsql.nextToken(),nulo);
-	            	if (nulo) {
-                        nulo=false;
+            		String jump = nullToken(sqlToken.nextToken(),nullFlag);
+	            	if (nullFlag) {
+                        nullFlag=false;
                      } 
 	            	if (!args[i].equals("NULL")) {
-                        sentence += salto + args[ i ];
+                        sentence += jump + args[ i ];
 	                }
 	                else {
-                        sentence+=salto.substring(0,salto.length()-1) + "NULL";
-	                    nulo=true;
+                        sentence+=jump.substring(0,jump.length()-1) + "NULL";
+	                    nullFlag=true;
 	                }
 		        }
-            	sentence+=nullToken(STsql.nextToken(),nulo);
+            	sentence+=nullToken(sqlToken.nextToken(),nullFlag);
             	
 		        return sentence;
 	        }
 	        else {
-	            LogWriter.write("numero de tokens: "+(STsql.countTokens()-1)+" numero de args: "+args.length);
+	            LogWriter.write("ERROR: Numero de tokens: " + (sqlToken.countTokens()-1) + " / Numero de args: " + args.length);
 	            for (int i=0;i<args.length;i++) {
-	            	LogWriter.write("argumento "+i+": "+args[i]);
+	            	LogWriter.write("ERROR: Argumento[" + i + "]: " + args[i]);
 	            }
 	            throw new SQLBadArgumentsException(code);
 	        }
 	        
     	}
-    	else
+    	else {
     	    throw new SQLNotFoundException(code);
-    	
-    	
-    	
+    	}
     }
     
     public  static String[] addSlashes(String[] args) {
@@ -93,8 +91,8 @@ public class SQLInstructions {
     	return args;
     }
     
-    private static String nullToken(String value,boolean nulo) {
-    	if (nulo) {
+    private static String nullToken(String value,boolean nullFlag) {
+    	if (nullFlag) {
             return value.substring(1);
     	}
     	else {

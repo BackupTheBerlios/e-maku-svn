@@ -60,9 +60,8 @@ public class SocketHandler extends Thread  {
                         	if (!result) {
                         		JOptionPane.showMessageDialog(
                         				null,
-                        				"Se perdio la conexión con el servidor\n" +
-                        				"Contacte con los administradores del sistema\n"+
-                        				"Vuelva a conectarse más tarde...");
+                        				"Se ha perdido la conexión con el servidor.\n" +
+                        				"Por favor, contacte a los administradores del sistema.");
                         	}
                         }
                         if (!result) {
