@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="dist/libs/synthetica.jar"/>
 	<classpathentry kind="lib" path="dist/libs/syntheticaBlueIce.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/SMI-Lib"/>
+	<classpathentry kind="lib" path="dist/libs/poi.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

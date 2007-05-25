@@ -25,7 +25,6 @@ public class ApprovedUsersTable extends JTable {
 		this.setModel(model);
 		
 		this.setGridColor(Color.BLACK);
-		//this.setDefaultEditor(String.class,new CellEditor());
 		this.setSurrendersFocusOnKeystroke(true);
 		this.setAutoCreateColumnsFromModel(false);
 				

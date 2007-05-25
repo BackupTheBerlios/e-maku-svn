@@ -17,7 +17,6 @@ public class ApprovedUsersModel extends AbstractTableModel {
 	private String[] titles = {"Login","Nombres","Punto de Venta","Tiempo de Respuesta"};
 	private Class[] types = {String.class,String.class,String.class,Integer.class};
 	private Vector<Vector> tableData = new Vector<Vector>();
-	// private Vector<String> messagesVector = new Vector<String>();
 		
 	@SuppressWarnings("unchecked")
 	public void addRow() {
@@ -89,12 +88,7 @@ public class ApprovedUsersModel extends AbstractTableModel {
         Collections.sort(tableData, new ColumnSorter(index,asc)); // TODO: Eliminar este warning
         fireTableStructureChanged();
 	}
-	
-	/*
-	public String getMessage(int index) {
-		return (String) messagesVector.get(index);
-	}*/
-		
+			
 	// This method fills the table of users online
     public synchronized void setQuery(Document doc) {
 
@@ -111,15 +105,12 @@ public class ApprovedUsersModel extends AbstractTableModel {
     			List messagesList = doc.getRootElement().getChildren("row");
     			Iterator messageIterator = messagesList.iterator();
     			// Loading new info 
-    			//int i=0;
-    			for (;messageIterator.hasNext();) {  //i++) {
+    			for (;messageIterator.hasNext();) {  
     				Element oneMessage = (Element) messageIterator.next();
     				List messagesDetails = oneMessage.getChildren();
-    				//if (tableData.size() <= i) {
     				Vector<Object> tableRow = new Vector<Object>();
     				for (int k=0;k<4;k++) {
     					String data = ((Element)messagesDetails.get(k)).getText();
-    					System.out.println("Capturando dato: " + data);
     					if (k==3) {
     						Integer integer = new Integer(data);
     						tableRow.add(integer);
@@ -129,7 +120,6 @@ public class ApprovedUsersModel extends AbstractTableModel {
        				}
     				// Adding a new row into the table 
     				tableData.add(tableRow);
-    				//}
     			}
     			fireTableDataChanged();
     			updateTable(0, true);

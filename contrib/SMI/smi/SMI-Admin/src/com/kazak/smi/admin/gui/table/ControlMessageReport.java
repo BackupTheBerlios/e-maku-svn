@@ -6,13 +6,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+//import java.awt.event.MouseEvent;
+//import java.awt.event.MouseListener;
+//import java.util.Iterator;
 import java.util.List;
+//import java.util.Vector;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -20,66 +28,63 @@ import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
 
 import org.jdom.Document;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
 
+import com.kazak.smi.admin.gui.misc.XLSExporter;
 import com.kazak.smi.admin.gui.table.OfflineUsersTable;
 
-public class ControlMessageReport extends JDialog implements ActionListener, MouseListener, KeyListener {
+public class ControlMessageReport extends JDialog implements ActionListener, KeyListener {
 	
 	private static final long serialVersionUID = 1L;
-	JButton xlsButton;
-	JButton closeButton;
+	private JButton xlsButton;
+	private JButton closeButton;
+	private Document[] docs;
+	private String[] pageTitles = new String[4];
+	private int columns[] = new int[4];
 
 	public ControlMessageReport(JFrame frame,
-			Document goodUsers,Document lateUsers,
-			Document noAnswerUsers,Document offlineUsers, String title){
-		
+			Document[] docs, String title){
 		super(frame, true);
+		this.docs = docs;
 		setTitle("Reporte de Mensajes de Control [" + title + "]");
+		        				
+		ApprovedUsersTable table0 = new ApprovedUsersTable(docs[0]);
+		table0.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table0.addKeyListener(this);	
+		columns[0] = table0.getColumnCount();
+		JScrollPane jscroll0 = new JScrollPane(table0);
+		jscroll0.setAutoscrolls(true);
 		
-        XMLOutputter xmlOutputter = new XMLOutputter();
-        xmlOutputter.setFormat(Format.getPrettyFormat());
-        try {
-            xmlOutputter.output(goodUsers,System.out);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        				
-		ApprovedUsersTable table1 = new ApprovedUsersTable(goodUsers);
+		LateUsersTable table1 = new LateUsersTable(docs[1]);
 		table1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table1.addMouseListener(this);
-		table1.addKeyListener(this);		
-		JScrollPane jscroll = new JScrollPane(table1);
-		jscroll.setAutoscrolls(true);
-		
-		LateUsersTable table2 = new LateUsersTable(lateUsers);
-		table2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table2.addMouseListener(this);
-		table2.addKeyListener(this);		
-		JScrollPane jscroll2 = new JScrollPane(table2);
-		jscroll.setAutoscrolls(true);
+		table1.addKeyListener(this);
+		columns[1] = table1.getColumnCount();
+		JScrollPane jscroll1 = new JScrollPane(table1);
+		jscroll1.setAutoscrolls(true);
 				
-		NoAnswerUsersTable table3 = new NoAnswerUsersTable(noAnswerUsers);
-		table3.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table3.addMouseListener(this);
-		table3.addKeyListener(this);		
-		JScrollPane jscroll3 = new JScrollPane(table3);
-		jscroll.setAutoscrolls(true);
+		NoAnswerUsersTable table2 = new NoAnswerUsersTable(docs[2]);
+		table2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table2.addKeyListener(this);
+		columns[2] = table2.getColumnCount();
+		JScrollPane jscroll2 = new JScrollPane(table2);
+		jscroll2.setAutoscrolls(true);
 		
-		OfflineUsersTable table4 = new OfflineUsersTable(offlineUsers);
-		table4.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table4.addMouseListener(this);
-		table4.addKeyListener(this);		
-		JScrollPane jscroll4 = new JScrollPane(table4);
-		jscroll.setAutoscrolls(true);
+		OfflineUsersTable table3 = new OfflineUsersTable(docs[3]);
+		table3.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table3.addKeyListener(this);
+		columns[3] = table3.getColumnCount();
+		JScrollPane jscroll3 = new JScrollPane(table3);
+		jscroll3.setAutoscrolls(true);
+		
+		pageTitles[0] = "Aprobados [Respondieron a Tiempo:"+getResultSize(docs[0])+"]";
+		pageTitles[1] = "Reprobados [Respondieron Tarde:"+getResultSize(docs[1])+"]";
+		pageTitles[2] = "Reprobados [No Respondieron:"+getResultSize(docs[2])+"]";
+		pageTitles[3] = "Reprobados [No Conectados:"+getResultSize(docs[3])+"]";
 		
 		JTabbedPane tabbedPane = new JTabbedPane();
-		tabbedPane.add("Aprobados [Respondieron a Tiempo:"+getResultSize(goodUsers)+"]", jscroll);		
-		tabbedPane.add("Reprobados [Respondieron Tarde:"+getResultSize(lateUsers)+"]", jscroll2);
-		tabbedPane.add("Reprobados [No Respondieron:"+getResultSize(noAnswerUsers)+"]", jscroll3);
-		tabbedPane.add("Reprobados [No Conectados:"+getResultSize(offlineUsers)+"]", jscroll4);
+		tabbedPane.add(pageTitles[0], jscroll0);		
+		tabbedPane.add(pageTitles[1], jscroll1);
+		tabbedPane.add(pageTitles[2], jscroll2);
+		tabbedPane.add(pageTitles[3], jscroll3);
 		
 		JPanel centerPanel = new JPanel();
 		centerPanel.setLayout(new BorderLayout());
@@ -112,7 +117,13 @@ public class ControlMessageReport extends JDialog implements ActionListener, Mou
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if (command.equals("export")) {
-
+			JFileChooser chooser = new JFileChooser("reporte-FECHA.xls");
+		    int returnVal = chooser.showSaveDialog(this);
+		    if(returnVal == JFileChooser.APPROVE_OPTION) {
+		    	File file = chooser.getSelectedFile();
+			    XLSExporter xls = new XLSExporter(docs,pageTitles,columns);
+			    saveXLSFile(xls.getXLSFile(),file);
+		    }
 		}		
 		if (command.equals("close")) {
 			this.dispose();
@@ -123,7 +134,24 @@ public class ControlMessageReport extends JDialog implements ActionListener, Mou
         List messagesList = doc.getRootElement().getChildren("row");
         return messagesList.size();
 	}
-
+	
+	private void saveXLSFile(HSSFWorkbook wb,File file) {
+		try {
+			FileOutputStream outputFile = new FileOutputStream(file);
+			wb.write(outputFile);
+			outputFile.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("No se pudo procesar la operación:\n" +
+					"Causa:\n"+e.getMessage()); 
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("No se pudo procesar la operación:\n" +
+					"Causa:\n"+e.getMessage()); 
+		}
+	}
+	
+	/*
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
@@ -147,7 +175,7 @@ public class ControlMessageReport extends JDialog implements ActionListener, Mou
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
-	}
+	}*/
 
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub

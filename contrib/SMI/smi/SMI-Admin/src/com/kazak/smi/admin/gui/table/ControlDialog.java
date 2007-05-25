@@ -132,17 +132,18 @@ public class ControlDialog extends JDialog implements ActionListener, MouseListe
 			public void run() {
 				try {
 					String[] args = {date,hour};
-					// Late bad users
-					Document doc0 = QuerySender.getResultSetFromST("SEL0030",args);
-					// No answer bad users
-					Document doc1 = QuerySender.getResultSetFromST("SEL0031",args);
 					// Good users
-					Document doc2 = QuerySender.getResultSetFromST("SEL0032",args);
+					Document[] docs = new Document[4];
+					docs[0] = QuerySender.getResultSetFromST("SEL0032",args);
+					// Late bad users
+					docs[1] = QuerySender.getResultSetFromST("SEL0030",args);
+					// No answer bad users
+					docs[2] = QuerySender.getResultSetFromST("SEL0031",args);
 					// Offline users
-					Document doc3 = QuerySender.getResultSetFromST("SEL0033",args);
+					docs[3] = QuerySender.getResultSetFromST("SEL0033",args);
 										
 					dialog.setVisible(false);
-					new ControlMessageReport(frame,doc2,doc0,doc1,doc3,date + "/" + hour);
+					new ControlMessageReport(frame,docs,date + "/" + hour);
 					
 				} catch (QuerySenderException e) {
 					dialog.setVisible(false);
