@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -23,9 +24,9 @@ import org.jdom.Element;
 //import org.jdom.output.Format;
 //import org.jdom.output.XMLOutputter;
 
-import com.kazak.smi.admin.gui.table.OnLineUsersTable;
+import com.kazak.smi.admin.gui.table.UsersOnlineTable;
 import com.kazak.smi.admin.gui.misc.GUIFactory;
-import com.kazak.smi.admin.gui.misc.UsersList;
+import com.kazak.smi.admin.gui.misc.UsersOnlineFrame;
 import com.kazak.smi.admin.network.SocketHandler;
 import com.kazak.smi.admin.network.SocketWriter;
 import com.kazak.smi.admin.transactions.QuerySender;
@@ -37,14 +38,15 @@ public class UserSearchPanel extends JPanel implements ActionListener, KeyListen
 
 	private static final long serialVersionUID = 1L;
 	private JButton close, viewMsg;
-	private UsersList frame;
-	private OnLineUsersTable table;
+	private UsersOnlineFrame frame;
+	private UsersOnlineTable userPanelTable;
 	private JButton searchButton;
 	private JTextField searchTextField;
 	private JComboBox fieldCombo;
+	private JLabel resultsLabel;
 	
 	// Search Panel Constructor
-	public UserSearchPanel(UsersList frame) {
+	public UserSearchPanel(UsersOnlineFrame frame) {
 		this.frame = frame;
 		setLayout(new BorderLayout());
 
@@ -56,8 +58,9 @@ public class UserSearchPanel extends JPanel implements ActionListener, KeyListen
 		searchButton = gui.createButton("search.png");
 		searchButton.setActionCommand("search");
 		searchButton.addActionListener(this);
-		String[] options = {"Códigos","Nombres","Direcciones IP"};
+		String[] options = {"Códigos","Nombres","Puntos de Venta","Direcciones IP"};
 		fieldCombo = new JComboBox(options);
+		resultsLabel = new JLabel("");
 		
 		JPanel top = new JPanel();
 		top.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -66,10 +69,11 @@ public class UserSearchPanel extends JPanel implements ActionListener, KeyListen
 		top.add(in);
 		top.add(fieldCombo);
 		top.add(searchButton);
+		top.add(resultsLabel);
 					
-		table = new OnLineUsersTable(frame);
-		table.setModelTab(0);
-		JScrollPane jscroll = new JScrollPane(table);
+		userPanelTable = new UsersOnlineTable(frame);
+		userPanelTable.setModelTab(0);
+		JScrollPane jscroll = new JScrollPane(userPanelTable);
 		jscroll.setPreferredSize(new Dimension(500,300));
 		jscroll.setAutoscrolls(true);
 	
@@ -77,7 +81,7 @@ public class UserSearchPanel extends JPanel implements ActionListener, KeyListen
 		viewMsg.setActionCommand("view");
 		viewMsg.addActionListener(this);
 		viewMsg.setEnabled(false);
-		table.setListButton(viewMsg);		
+		userPanelTable.setListButton(viewMsg);		
 		
 		close = new JButton("Cerrar");
 		close.setActionCommand("close");
@@ -100,10 +104,11 @@ public class UserSearchPanel extends JPanel implements ActionListener, KeyListen
 			startSearch();
 		}	
 		if (command.equals("view")) {
-			int row = table.getSelectedRow();
+			int row = userPanelTable.getSelectedRow();
 			if(row != -1) {
-				String login = (String) table.getModel().getValueAt(row, 0);
-				new MessagesDialog(frame,login);
+				String login = (String) userPanelTable.getModel().getValueAt(row, 0);
+				userPanelTable.getMessages(login);
+				//new MessagesDialog(frame,login);
 			}
 		}
 		if (command.equals("close")) {
@@ -119,7 +124,7 @@ public class UserSearchPanel extends JPanel implements ActionListener, KeyListen
 		
 		if (pattern.length() > 0) {
 			String field = Integer.toString(fieldCombo.getSelectedIndex());
-			if ((field.equals("2")) && (!hasIPFormat(pattern))) {
+			if ((field.equals("3")) && (!hasIPFormat(pattern))) {
 				setNormalCursor();
 	            JOptionPane.showMessageDialog(
 	                    this,
@@ -150,7 +155,6 @@ public class UserSearchPanel extends JPanel implements ActionListener, KeyListen
 		   for(int i = 0; i < s.length(); i++) { 
 		       char c = s.charAt(i);
 		       if (!Character.isDigit(c) && (c != '.')) {
-		    	   System.out.println("C " + c);
 		           return false;
 		       }
 		     }
@@ -195,10 +199,25 @@ public class UserSearchPanel extends JPanel implements ActionListener, KeyListen
 		}
 	}
 	
-	public void updateUserList(Document doc) {
-        table.getModel().setQuery(doc);
-        if (table.getGroupSize() == 0 && viewMsg.isEnabled()) {
-        	viewMsg.setEnabled(false);
+	private int getResultSize(Document doc) {
+        List messagesList = doc.getRootElement().getChildren("row");
+        return messagesList.size();
+	}
+	
+	private void updateUserList(Document doc) {
+        userPanelTable.getModel().setQuery(doc);
+        int total = getResultSize(doc);
+        if(total==0) {
+            if (viewMsg.isEnabled()) {
+            	viewMsg.setEnabled(false);
+            }
+            resultsLabel.setText("(No hubo resultados)");
+        } else {
+        	String letter = "";
+        	if (total>1) {
+        		letter = "s";
+        	}
+            resultsLabel.setText("(" + total + " usuario"+letter+")");
         }
  	}
 

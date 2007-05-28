@@ -15,6 +15,7 @@ import com.kazak.smi.server.comunications.SocketWriter;
 import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
+import com.kazak.smi.server.misc.LogWriter;
 
 public class GroupManager {
 
@@ -40,12 +41,18 @@ public class GroupManager {
 		} catch (SQLNotFoundException e) {
 			result = false;
 			message = e.getMessage();
+			LogWriter.write("ERROR: Ocurrio una falla mientras se procesaba operacion de Grupo [Tipo:"+type+"]");
+			LogWriter.write("Causa: " + message);
 		} catch (SQLBadArgumentsException e) {
 			result = false;
 			message = e.getMessage();
+			LogWriter.write("ERROR: Ocurrio una falla mientras se procesaba operacion de Grupo [Tipo:"+type+"]");
+			LogWriter.write("Causa: " + message);
 		} catch (SQLException e) {
 			result = false;
 			message = e.getMessage();
+			LogWriter.write("ERROR: Ocurrio una falla mientras se procesaba operacion de Grupo [Tipo:"+type+"]");
+			LogWriter.write("Causa: " + message);
 		}
 		if (result) {
 			for (QueryRunner qRunner :queries) {
@@ -58,7 +65,7 @@ public class GroupManager {
 				e.printStackTrace();
 			}
 			message = "Los datos fueron almacenados satisfactoriamente.";
-			TransactionRunner.notifyMessageReception(sock,id,message);
+			TransactionRunner.notifyMessageReception(sock,id,message,"Transaccion sobre Grupos");
 		}
 		else {
 			for (QueryRunner qRunner :queries) {

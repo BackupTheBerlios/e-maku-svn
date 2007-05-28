@@ -9,7 +9,6 @@ import javax.swing.table.TableColumnModel;
 
 import org.jdom.Document;
 
-import com.kazak.smi.admin.gui.table.models.CellEditor;
 import com.kazak.smi.admin.gui.table.models.MessagesHeaderListener;
 import com.kazak.smi.admin.gui.table.models.MessagesModel;
 import com.kazak.smi.admin.gui.table.models.SortButtonRenderer;
@@ -24,11 +23,11 @@ public class MessagesTable extends JTable {
 	private JTableHeader header = new JTableHeader();
 	private MessagesHeaderListener listener;
 	
-	public MessagesTable(String login) {
+	public MessagesTable(Document doc) {
 		model = new MessagesModel();
 		this.setModel(model);
+		this.getModel().setQuery(doc);
 		this.setGridColor(Color.BLACK);
-		this.setDefaultEditor(String.class,new CellEditor());
 		this.setSurrendersFocusOnKeystroke(true);
 		this.setAutoCreateColumnsFromModel(false);
 		
@@ -45,9 +44,10 @@ public class MessagesTable extends JTable {
 	    listener = new MessagesHeaderListener(header,model,renderer);
 		header.addMouseListener(listener);
 		
-		getMessages(login);
+		//getMessages(login);
 	}
 		
+	/*
 	// This method gets the inbox mail titles from a user
 	public static void getMessages(final String user) {
 		Thread t = new Thread() {
@@ -65,19 +65,20 @@ public class MessagesTable extends JTable {
 			}
 		};
 		t.start();
-	}
+	} */
 	
 	public MessagesModel getModel() {
 		return model;
 	}
 	
+	/*
 	private static boolean queryIsEmpty(Document doc) {
         List messagesList = doc.getRootElement().getChildren("row");
         if (messagesList.size() == 0) {
         	return true;
         }
         return false;
-	}
+	}*/
 	
 	public int getRowCount() {
 		return model.getRowCount();

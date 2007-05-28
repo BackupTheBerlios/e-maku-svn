@@ -1,6 +1,7 @@
 package com.kazak.smi.admin.gui.table;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -111,6 +112,9 @@ public class ControlDialog extends JDialog implements ActionListener, MouseListe
 	}
 	
 	private void openWaitingDialog() {
+		int typeCursor = Cursor.WAIT_CURSOR;
+		Cursor cursor = Cursor.getPredefinedCursor(typeCursor);
+		setCursor(cursor);
 		dialog = new JDialog(frame);
 		dialog.setTitle("Generando Informe...");
 		dialog.setResizable(false);
@@ -127,7 +131,7 @@ public class ControlDialog extends JDialog implements ActionListener, MouseListe
 	}
 	
 	// This method gets the list of users who answer the message control
-	public static void getControlReportData(final String date, final String hour) {
+	private static void getControlReportData(final String date, final String hour) {
 		Thread t = new Thread() {
 			public void run() {
 				try {
@@ -141,12 +145,14 @@ public class ControlDialog extends JDialog implements ActionListener, MouseListe
 					docs[2] = QuerySender.getResultSetFromST("SEL0031",args);
 					// Offline users
 					docs[3] = QuerySender.getResultSetFromST("SEL0033",args);
-										
+					
 					dialog.setVisible(false);
-					new ControlMessageReport(frame,docs,date + "/" + hour);
+					setNormalCursor();
+					new ControlMessageReport(frame,docs,date,hour);
 					
 				} catch (QuerySenderException e) {
 					dialog.setVisible(false);
+					setNormalCursor();
 					// TODO: poner un mensaje de error si algo sucede aqui
 					System.out.println("ERROR: No se pudo consultar el reporte de mensajes de control");
 					e.printStackTrace();
@@ -155,8 +161,14 @@ public class ControlDialog extends JDialog implements ActionListener, MouseListe
 		};
 		t.start();
 	}
+	
+	private static void setNormalCursor() {
+		int typeCursor = Cursor.DEFAULT_CURSOR;
+		Cursor cursor = Cursor.getPredefinedCursor(typeCursor);
+		ControlDialog.dialog.setCursor(cursor);		
+	}
 		
-	public void setMessage(ControlTable table, int i) {
+	private void setMessage(ControlTable table, int i) {
 		int index = table.getSelectedRow();
 		int max = table.getRowCount();
 		index = index + i;

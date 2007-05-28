@@ -5,7 +5,6 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-
 public class SortButtonRenderer extends JButton implements TableCellRenderer {
 
 	private static final long serialVersionUID = 1L;

@@ -7,7 +7,6 @@ import javax.swing.table.TableColumnModel;
 
 import org.jdom.Document;
 
-import com.kazak.smi.admin.gui.table.models.CellEditor;
 import com.kazak.smi.admin.gui.table.models.LateUsersHeaderListener;
 import com.kazak.smi.admin.gui.table.models.LateUsersModel;
 import com.kazak.smi.admin.gui.table.models.SortButtonRenderer;
@@ -26,14 +25,12 @@ public class LateUsersTable extends JTable {
 		this.setModel(model);
 		
 		this.setGridColor(Color.BLACK);
-		//this.setDefaultEditor(String.class,new CellEditor());
 		this.setSurrendersFocusOnKeystroke(true);
 		this.setAutoCreateColumnsFromModel(false);
 				
 		renderer = new SortButtonRenderer();
 	    TableColumnModel columnModel = this.getColumnModel();
 	    int n = model.getColumnCount(); 
-	    System.out.println("n: " + n);
 		int columnWidth[] = {70,200,150,150};
 	    for (int i=0;i<n;i++) {
 	      columnModel.getColumn(i).setHeaderRenderer(renderer);

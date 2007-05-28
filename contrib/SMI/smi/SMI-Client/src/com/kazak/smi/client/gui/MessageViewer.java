@@ -76,7 +76,7 @@ public class MessageViewer implements ActionListener {
 				table.changeSelection((rowIndex+1),0,false,false);
 			}
 		}
-		else if ("previus".equals(command)) {
+		else if ("previous".equals(command)) {
 			JTable table = historyDataPanel.getTable();
 			int rowIndex = table.getSelectedRow();
 			if (rowIndex >= 0) {

@@ -31,7 +31,6 @@ public class ApprovedUsersTable extends JTable {
 		renderer = new SortButtonRenderer();
 	    TableColumnModel columnModel = this.getColumnModel();
 	    int n = model.getColumnCount(); 
-	    System.out.println("n aut: " + n);
 		int columnWidth[] = {70,200,150,150};
 	    for (int i=0;i<n;i++) {
 	      columnModel.getColumn(i).setHeaderRenderer(renderer);

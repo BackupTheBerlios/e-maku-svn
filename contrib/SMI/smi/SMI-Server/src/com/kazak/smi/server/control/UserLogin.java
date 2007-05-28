@@ -62,7 +62,7 @@ public class UserLogin {
 	    ip = data.getChild("ip").getValue();
 	    boolean validate = data.getChild("validate")!=null ? true : false ;
 	    
-	    LogWriter.write("INFO: Inicio de autenticación para el usuario {"+login+"} con la clave {"+password+"}");
+	    LogWriter.write("INFO: Inicio de autenticacion para el usuario {"+login+"} con la clave {"+password+"}");
 	    QueryRunner queryRunner = null;
 	    ResultSet resultSet = null;
 	    int count = 0;

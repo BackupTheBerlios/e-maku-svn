@@ -21,13 +21,11 @@ import com.kazak.smi.admin.gui.table.models.UserModel;
 import com.kazak.smi.admin.gui.managers.WorkStationsManager;
 import com.kazak.smi.admin.gui.misc.GUIFactory;
 
-
 public class UserTable extends JTable {
 
 	private static final long serialVersionUID = 4182381331394270487L;
 	private UserModel model;
 	private JFrame frame;
-	//private JTable table;
 	private JPanel panel;
 	private JButton addButton;
 	private JButton deleteButton;
@@ -37,7 +35,6 @@ public class UserTable extends JTable {
 		frame = parent;
 		panel =  new JPanel(new BorderLayout());
 		model = new UserModel();
-		//table = new JTable(model);
 		this.setModel(model);
 		GUIFactory factory = new GUIFactory();
 		addButton = factory.createButton("add.png");
@@ -49,10 +46,8 @@ public class UserTable extends JTable {
 		deleteButton.setEnabled(false);
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//model.addRow();
 				if (!ws.isVisible()) {
 					ws.clean();
-					//ws.searchPOS(table);
 					ws.searchPOS(UserTable.this);
 				}
 			}
@@ -76,12 +71,12 @@ public class UserTable extends JTable {
 			}
 		});
 
-		JPanel buttonsPanel =new JPanel();
+		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new BoxLayout(buttonsPanel,BoxLayout.Y_AXIS));
 		buttonsPanel.add(addButton);
 		buttonsPanel.add(deleteButton);
 		
-		JScrollPane jscroll  = new JScrollPane(UserTable.this);
+		JScrollPane jscroll = new JScrollPane(UserTable.this);
 		panel.add(jscroll,BorderLayout.CENTER);
 		panel.add(buttonsPanel,BorderLayout.WEST);
 	}
@@ -128,8 +123,6 @@ public class UserTable extends JTable {
 	}
 	
 	public void removeRow(int rows) {
-		//int rows = UserTable.this.getRowCount()-1;
-		System.out.println("Printing2: " + rows);
 		if (rows != -1) {
 			model.remove(UserTable.this.getRowCount()-1);
 			if (rows == 0){
@@ -153,7 +146,7 @@ public class UserTable extends JTable {
 	    public Object getCellEditorValue() {
 	    	String value = ((JTextField)getComponent()).getText();
 	        if (!Cache.containsWsByCode(value)) {
-	        	JOptionPane.showMessageDialog(frame,"El código no existe.");
+	        	JOptionPane.showMessageDialog(frame,"El código no existe. ");
 	        	((JTextField)getComponent()).setText("");
 	        	return "";
 	        }

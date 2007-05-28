@@ -13,8 +13,8 @@ import javax.swing.event.PopupMenuEvent;
 
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
+//import org.jdom.output.Format;
+//import org.jdom.output.XMLOutputter;
 
 import com.kazak.smi.admin.control.Cache;
 import com.kazak.smi.admin.network.SocketHandler;
@@ -29,15 +29,15 @@ import com.kazak.smi.admin.gui.main.MainWindow;
  *  This class searchs for users online and shows them as a list
  */
 
-public class UsersList extends JFrame {  
+public class UsersOnlineFrame extends JFrame {  
 	
 	private static final long serialVersionUID = 3920757441925057976L;
 	private GroupsSearchPanel groupPanel;
 	private UserSearchPanel userPanel;
 	
-	public UsersList() {
+	public UsersOnlineFrame() {
 		this.setLayout(new BorderLayout());
-		this.setSize(650,400);
+		this.setSize(710,400);
 		initInterface();
 		this.setLocationByPlatform(true);
 		this.setLocationRelativeTo(MainWindow.getFrame());
@@ -66,8 +66,8 @@ public class UsersList extends JFrame {
 			public void run() {
 				try {
 					doc = QuerySender.getResultSetFromST("TOTAL");
-					XMLOutputter xmlOutputter = new XMLOutputter();
-		            xmlOutputter.setFormat(Format.getPrettyFormat());
+					//XMLOutputter xmlOutputter = new XMLOutputter();
+		            //xmlOutputter.setFormat(Format.getPrettyFormat());
 		    		Element element = doc.getRootElement();
 		    		List list = element.getChildren("row");
 		    		Element columns = (Element)list.get(0);
@@ -113,7 +113,6 @@ public class UsersList extends JFrame {
 				ex.printStackTrace();
 			}
 		}
-		
 	}
 	
 	// This method requests the list of users online
@@ -136,7 +135,6 @@ public class UsersList extends JFrame {
 				ex.printStackTrace();
 			}
 		}
-		
 	}
 		
     public static String getFormattedDate() {

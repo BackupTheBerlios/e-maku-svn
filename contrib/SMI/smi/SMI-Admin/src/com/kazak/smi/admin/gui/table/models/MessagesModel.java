@@ -107,46 +107,40 @@ public class MessagesModel extends AbstractTableModel {
     		}
 
     		public void run() {
-    			List messagesList = doc.getRootElement().getChildren("row");
-    			Iterator messageIterator = messagesList.iterator();
     			// Cleaning the table
     			clear();
+    			List messagesList = doc.getRootElement().getChildren("row");
+    			Iterator messageIterator = messagesList.iterator();
     			// Loading new info 
-    			int i=0;
-    			for (;messageIterator.hasNext();i++) {
+    			for (;messageIterator.hasNext();){
     				Element oneMessage = (Element) messageIterator.next();
     				List messagesDetails = oneMessage.getChildren();
-    				if (tableData.size() <= i) {
-    					Vector<Object> tableRow = new Vector<Object>();
-    					for (int k=0;k<6;k++) {
-    						String data = ((Element)messagesDetails.get(k)).getText();
-    						switch (k) {
-    						case 4:
-    							Boolean flag;
-    							if (data.equals("t")) {
-    								flag = new Boolean(true);
-    							}
-    							else {
-    								flag = new Boolean(false);
-    							}
-    							tableRow.add(flag);
-    							break;
-    						case 5:
-    							messagesVector.add(data);
-    							break;
-    						default:
-    							tableRow.add(data);
+    				Vector<Object> tableRow = new Vector<Object>();
+    				for (int k=0;k<6;k++) {
+    					String data = ((Element)messagesDetails.get(k)).getText();
+    					switch (k) {
+    					case 4:
+    						Boolean flag;
+    						if (data.equals("t")) {
+    							flag = new Boolean(true);
     						}
+    						else {
+    							flag = new Boolean(false);
+    						}
+    						tableRow.add(flag);
+    						break;
+    					case 5:
+    						messagesVector.add(data);
+    						break;
+    					default:
+    						tableRow.add(data);
     					}
-    					// Adding a new row into the table 
-    					tableData.add(tableRow);
-    					fireTableDataChanged();
     				}
-    				for (int j=0;j<5;j++) {
-    					fireTableCellUpdated(i, j);
-    				}
+    				// Adding a new row into the table 
+    				tableData.add(tableRow);
+    				System.out.println();
     			}
-
+    			fireTableDataChanged();
     			updateTable(0, true);
     			doc = null;
     			System.gc();

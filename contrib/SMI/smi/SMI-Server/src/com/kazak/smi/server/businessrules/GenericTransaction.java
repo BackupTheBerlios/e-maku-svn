@@ -70,7 +70,7 @@ public class GenericTransaction {
 			
 			TransactionRunner.
 			notifyMessageReception
-			(sock,id,"Los datos fueron almacenados satisfactoriamente.");
+			(sock,id,"Los datos fueron almacenados satisfactoriamente.","Transaccion Generica");
 		}
 		else {
 			for (QueryRunner rq :queries) {

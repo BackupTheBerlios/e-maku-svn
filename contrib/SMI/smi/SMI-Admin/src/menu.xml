@@ -51,7 +51,7 @@
 		<JMenuItem>
 			<Mnemonic>U</Mnemonic>
 			<Text>Listar Usuarios</Text>
-			<Class>com.kazak.smi.admin.gui.misc.UsersList</Class>
+			<Class>com.kazak.smi.admin.gui.misc.UsersOnlineFrame</Class>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 	</JMenu>
@@ -159,7 +159,7 @@
                 <JMenuItem>
                         <Mnemonic>U</Mnemonic>
                         <Text>Listar Usuarios</Text>
-                        <Class>com.kazak.smi.admin.gui.misc.UsersList</Class>
+                        <Class>com.kazak.smi.admin.gui.misc.UsersOnlineFrame</Class>
                         <UserLevel>2</UserLevel>
                 </JMenuItem>
 	</JMenu>

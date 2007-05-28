@@ -162,7 +162,6 @@ public class TransactionRunner {
             					     String transactionID,
             					     String message) {
         XMLError error = new XMLError();
-        LogWriter.write(message);
         try {
         	Document doc = error.returnErrorMessage(
         			ServerConstants.ERROR,
@@ -179,9 +178,9 @@ public class TransactionRunner {
     
     public static void notifyMessageReception(SocketChannel sock,
 									  String transactionID,
-									  String message) {
+									  String message, String type) {
 		XMLAuditor auditor = new XMLAuditor();
-		LogWriter.write("INFO: Operacion realizada exitosamente");
+		LogWriter.write("INFO: Operacion realizada exitosamente ["+type+"]");
 		try {
 			SocketWriter.write(sock,auditor.returnSuccessMessage(transactionID,message));
 		} catch (IOException e) {

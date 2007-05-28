@@ -46,18 +46,23 @@ public class UserManager {
 		} catch (SQLNotFoundException e) {
 			result = false;
 			message = e.getMessage();
+			LogWriter.write("ERROR: Ocurrio una falla mientras se procesaba operacion de Usuario [Tipo:"+type+"]");
+			LogWriter.write("Causa: " + message);
 		} catch (SQLBadArgumentsException e) {
 			result = false;
 			message = e.getMessage();
+			LogWriter.write("ERROR: Ocurrio una falla mientras se procesaba operacion de Usuario [Tipo:"+type+"]");
+			LogWriter.write("Causa: " + message);
 		} catch (SQLException e) {
 			result = false;
 			message = e.getMessage();
+			LogWriter.write("ERROR: Ocurrio una falla mientras se procesaba operacion de Usuario [Tipo:"+type+"]");
+			LogWriter.write("Causa: " + message);
 		}
 		if (result) {
 			for (QueryRunner qRunner :queries) {
 				qRunner.commit();
 			}
-						
 			Element reload = new Element("RELOADTREE");
 			try {
 				SocketWriter.write(sock,new Document(reload));
@@ -65,7 +70,7 @@ public class UserManager {
 				e.printStackTrace();
 			}
 			message = "La operación fue realizada satisfactoriamente.";
-			TransactionRunner.notifyMessageReception(sock,id,message);
+			TransactionRunner.notifyMessageReception(sock,id,message,"Transaccion sobre Usuarios");
 		}
 		else {
 			for (QueryRunner qRunner :queries) {
@@ -73,7 +78,7 @@ public class UserManager {
 			}
 			TransactionRunner.
 			notifyErrorMessage
-			(sock,id,"No se pudo insertar el usuario. Causa:\n" + message);
+			(sock,id,"ERROR: No se pudo insertar el usuario.\nCausa:\n" + message + " ");
 		}
 	}
 	

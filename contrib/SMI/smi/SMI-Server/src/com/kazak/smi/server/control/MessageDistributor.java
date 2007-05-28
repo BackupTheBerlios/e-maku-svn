@@ -197,13 +197,15 @@ public class MessageDistributor {
 					qRunner.executeSQL();
 					qRunner.commit();
 				} catch (SQLNotFoundException e) {
-					LogWriter.write("ERROR: No se pudo almacenar mensaje en la base de datos. Instruccion SQL no encontrada");
 					qRunner.rollback();
+					LogWriter.write("ERROR: No se pudo almacenar mensaje en la base de datos. Instruccion SQL no encontrada");
 					e.printStackTrace();
 				} catch (SQLBadArgumentsException e) {
+					qRunner.rollback();
 					LogWriter.write("ERROR: No se pudo almacenar mensaje en la base de datos. Argumentos Invalidos");
 					e.printStackTrace();
 				} catch (SQLException e) {
+					qRunner.rollback();
 					LogWriter.write("ERROR: No se pudo almacenar mensaje en la base de datos. Excepcion SQL");
 					e.printStackTrace();
 				} finally {
@@ -341,6 +343,7 @@ public class MessageDistributor {
 		
 		ResultSet resultSet = null;
 		int uid = -1;
+		String groupName = "";
 		try {
 			qRunner = new QueryRunner("SEL0008",new String[]{login});
 			resultSet = qRunner.select();
@@ -348,6 +351,7 @@ public class MessageDistributor {
 			if (resultSet.next()) {
 				i++;
 				uid = resultSet.getInt(1);
+				groupName = resultSet.getString(2);
 			}
 		} catch (SQLNotFoundException e) {
 			e.printStackTrace();
@@ -371,7 +375,7 @@ public class MessageDistributor {
 		socketInfo.setAudit(new Boolean(userInfoArray[5]).booleanValue());
 		socketInfo.setGroupID(Integer.parseInt(userInfoArray[6]));
 		socketInfo.setWsName("");
-		socketInfo.setGroupName(""); // TODO: Modificar consulta para traer nombre de grupo	
+		socketInfo.setGroupName(groupName);	
 		
 		return socketInfo;
 	}

@@ -27,6 +27,7 @@ public class HistoryDataPanel extends JPanel {
 		TableSorter tableSorter =new TableSorter(historyDataModel);
 		table = createTable();
 		table.setModel(tableSorter);
+		table.setSurrendersFocusOnKeystroke(true);
 		tableSorter.setTableHeader(table.getTableHeader());
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setEnabled(true);

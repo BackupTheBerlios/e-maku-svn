@@ -19,6 +19,8 @@ import javax.swing.JTextArea;
 import javax.swing.JSplitPane;
 import javax.swing.ListSelectionModel;
 
+import org.jdom.Document;
+
 import com.kazak.smi.admin.gui.table.MessagesTable;
 
 class MessagesDialog extends JDialog implements ActionListener, MouseListener, KeyListener {
@@ -28,10 +30,10 @@ class MessagesDialog extends JDialog implements ActionListener, MouseListener, K
 	private JButton closeButton;
 	private JTextArea messageArea;
 	
-	public MessagesDialog(JFrame frame, String login) {
+	public MessagesDialog(JFrame frame, String login, Document doc) {
 		super(frame, true);
 		setTitle("Mensajes del usuario " + login);
-		table = new MessagesTable(login);
+		table = new MessagesTable(doc);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.addMouseListener(this);
 		table.addKeyListener(this);
@@ -64,6 +66,8 @@ class MessagesDialog extends JDialog implements ActionListener, MouseListener, K
         pack();
         setSize(570,380);
         setLocationRelativeTo(frame);
+        setAlwaysOnTop(true);
+        setResizable(false);
         setVisible(true);
 	}
 

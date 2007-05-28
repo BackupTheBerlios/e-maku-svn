@@ -87,12 +87,7 @@ public class LateUsersModel extends AbstractTableModel {
         Collections.sort(tableData, new ColumnSorter(index,asc)); // TODO: Eliminar este warning
         fireTableStructureChanged();
 	}
-	
-	/*
-	public String getMessage(int index) {
-		return (String) messagesVector.get(index);
-	}*/
-		
+			
 	// This method fills the table of users online
     public synchronized void setQuery(Document doc) {
 
@@ -122,11 +117,9 @@ public class LateUsersModel extends AbstractTableModel {
     			List messagesList = doc.getRootElement().getChildren("row");
     			Iterator messageIterator = messagesList.iterator();
     			// Loading new info 
-    			//int i=0;
-    			for (;messageIterator.hasNext();) {  //i++) {
+    			for (;messageIterator.hasNext();) {
     				Element oneMessage = (Element) messageIterator.next();
     				List messagesDetails = oneMessage.getChildren();
-    				//if (tableData.size() <= i) {
     				Vector<Object> tableRow = new Vector<Object>();
     				for (int k=0;k<4;k++) {
     					String data = ((Element)messagesDetails.get(k)).getText();
@@ -139,10 +132,11 @@ public class LateUsersModel extends AbstractTableModel {
        				}
     				// Adding a new row into the table 
     				tableData.add(tableRow);
-    				//}
     			}
     			fireTableDataChanged();
-    			updateTable(0, true);
+    			if(messagesList.size() > 0) {
+    				updateTable(0, true);
+    			}
     			doc = null;
     			System.gc();
     		}

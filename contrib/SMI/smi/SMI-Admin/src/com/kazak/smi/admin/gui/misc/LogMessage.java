@@ -49,11 +49,12 @@ public class LogMessage extends JFrame implements ActionListener, TreeSelectionL
 	private String sqlCode = null;
 	
 	public LogMessage() {
-		super("Registro de mensajes");
+		super("Registro de Mensajes");
 		this.setSize(400,500);
 		this.setLayout(new BorderLayout());
 		this.setLocationByPlatform(true);
 		this.setLocationRelativeTo(null);
+		this.setAlwaysOnTop(true);
 		rootNode = new DefaultMutableTreeNode(MainWindow.getAppOwner());
 		rootNode.setAllowsChildren(true);
 		jTree = new JTree(rootNode) {

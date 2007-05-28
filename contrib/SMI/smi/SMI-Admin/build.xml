@@ -11,7 +11,10 @@
     <path id="project.classpath">
         <pathelement location="bin"/>
         <pathelement location="${SMI-Lib.location}/bin"/>
+        <pathelement location="${SMI-Admin.location}/dist/libs/mail.jar"/>
+        <pathelement location="${SMI-Admin.location}/dist/libs/activation.jar"/>
         <pathelement location="${SMI-Admin.location}/dist/libs/jdom.jar"/>
+        <pathelement location="${SMI-Admin.location}/dist/libs/poi.jar"/>
         <pathelement location="${SMI-Admin.location}/dist/libs/jcalendar.jar"/>
         <pathelement location="${SMI-Admin.location}/dist/libs/synthetica.jar"/>
         <pathelement location="${SMI-Admin.location}/dist/libs/syntheticaBlueIce.jar"/>

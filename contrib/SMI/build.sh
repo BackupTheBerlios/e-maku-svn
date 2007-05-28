@@ -141,7 +141,10 @@ packaging_admin(){
    cp ../src/menu.xml .
    jar -cf smiadmin.jar *
    mv smiadmin.jar ../dist
-   cd ../dist
+   cd ..
+   jar -cf icons.jar icons
+   mv icons.jar dist/libs
+   cd dist
    tar cfz smiadmin.tar.gz *
    mv smiadmin.tar.gz ../../../dist/Administrador
    zip -qr smiadmin.zip *
@@ -156,8 +159,8 @@ packaging_client(){
    jar -cf smiclient.jar *
    mv smiclient.jar ../dist
    cd ..
-   #jar -cf icons.jar icons
-   #mv icons.jar dist/libs
+   jar -cf icons.jar icons
+   mv icons.jar dist/libs
    cd dist
    tar cfz smiclient.tar.gz *
    mv smiclient.tar.gz ../../../dist/Cliente

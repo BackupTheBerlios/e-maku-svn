@@ -15,8 +15,8 @@ import org.jdom.Element;
 public class OnLineModel extends AbstractTableModel {
 	
 	private static final long serialVersionUID = 1L;
-	private String[] titles = { "Código Usuario","Nombre","Dirección IP","Inicio Conexión"};
-	private Class[] types = {String.class,String.class,String.class,String.class};
+	private String[] titles = {"Usuario","Nombre","Punto de Venta","Dirección IP","Inicio Conexión"};
+	private Class[] types = {String.class,String.class,String.class,String.class,String.class};
 	private Vector<Vector> tableData = new Vector<Vector>();
 	private int size;
 	private JLabel groupSize;
@@ -37,15 +37,17 @@ public class OnLineModel extends AbstractTableModel {
 		v.add("");
 		v.add("");
 		v.add("");
+		v.add("");
 		tableData.add(v);
 		fireTableDataChanged();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void addRow(String code,String name,String ip,String time) {
+	public void addRow(String code,String name,String pos,String ip,String time) {
 		Vector v = new Vector();
 		v.add(code);
 		v.add(name);
+		v.add(pos);
 		v.add(ip);
 		v.add(time);
 		tableData.add(v);
@@ -101,7 +103,7 @@ public class OnLineModel extends AbstractTableModel {
         fireTableStructureChanged();
 	}
 
-	public int getGroupSize() {
+	public int getResultSize() {
 		return size;
 	}
 	
@@ -116,50 +118,45 @@ public class OnLineModel extends AbstractTableModel {
     		}
 
     		public void run() {
-		        List usersList = doc.getRootElement().getChildren("row");
-		        Iterator userData = usersList.iterator();
-		        int max = usersList.size();
-		        if (max>0) {
-		             // Cleaning the table
-		            clear();
-		             // Loading new info 
-		            int i=0;
-		            for (;userData.hasNext();i++) {
-		                Element oneUser = (Element) userData.next();
-		                List userDetails = oneUser.getChildren();
-		                if (tableData.size() <= i) {
-		    				Vector<String> tableRow = new Vector<String>();
-		        			for (int k=0;k<4;k++) {
-		        			     tableRow.add(((Element)userDetails.get(k)).getText());
-		        			}
-		        			// Adding a new row into the table 
-		        			tableData.add(tableRow);
-		        			fireTableDataChanged();
-		    			}
-		        		for (int j=0;j<4;j++) {
-		        			fireTableCellUpdated(i, j);
-		        		}
+    			List usersList = doc.getRootElement().getChildren("row");
+    			Iterator userData = usersList.iterator();
+    			int max = usersList.size();
+    			if (max>0) {
+    				// Cleaning the table
+    				clear();
+    				// Loading new info 
+    				int i=0;
+    				for (;userData.hasNext();i++) {
+    					Element oneUser = (Element) userData.next();
+    					List userDetails = oneUser.getChildren();
+    					Vector<String> tableRow = new Vector<String>();
+    					for (int k=0;k<5;k++) {
+    						tableRow.add(((Element)userDetails.get(k)).getText());
+    					}
+    					// Adding a new row into the table 
+    					tableData.add(tableRow);
+    				}
+    				fireTableDataChanged();
 
-		            }
-		            if (tab == 1) {
-		            	size = i;
-		            	String s = "s";
-		            	if (i==1) {
-		            		s = "";
-		            	}
-		            	groupSize.setText("( " + size + " usuario" + s + " )");
-		            }
-		        }
-		        else {
-		        	clear();
-		        	if (tab == 1) {
-		        		groupSize.setText("");
-		        	}
-		        }
-		        
-		        updateTable(0, true);
-		        doc = null;
-		        System.gc();
+    				if (tab == 1) {
+    					size = i;
+    					String s = "s";
+    					if (i==1) {
+    						s = "";
+    					}
+    					groupSize.setText("( " + size + " usuario" + s + " )");
+    				}
+    			}
+    			else {
+    				clear();
+    				if (tab == 1) {
+    					groupSize.setText("");
+    				}
+    			}
+
+    			updateTable(0, true);
+    			doc = null;
+    			System.gc();
     		}
     	}
     	new LoadData(doc).start();

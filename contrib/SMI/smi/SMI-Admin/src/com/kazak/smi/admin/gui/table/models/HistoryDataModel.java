@@ -16,7 +16,7 @@ public class HistoryDataModel extends AbstractTableModel {
 			Integer.class,String.class,String.class,String.class,
 			String.class,String.class,String.class,Boolean.class};
 	
-	private int[] width = {30,80,60,100,100,170,0,40};
+	private int[] width = {40,80,60,80,80,194,0,40};
 	private Vector<Vector<Object>> dataVector;
 	
 	public HistoryDataModel(Vector<Vector<Object>> data) {

@@ -83,8 +83,8 @@ public class UserModel extends AbstractTableModel {
 	}
 
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		if (columnIndex==2)
-			return true;
+		/*if (columnIndex==2)
+			return true;*/
 		return false;
 	}
 }

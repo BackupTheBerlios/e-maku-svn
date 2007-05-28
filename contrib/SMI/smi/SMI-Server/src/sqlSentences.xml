@@ -71,9 +71,9 @@
 	<!--Descripcion: ... -->
 		<code>SEL0008</code>
 		<sql>
-			SELECT uid
-			FROM usuarios 
-			WHERE login='?'
+			SELECT u.uid,g.nombre_grupo 
+			FROM usuarios u, grupos g 
+			WHERE login='?' AND g.gid=u.gid
 		</sql>
 	</sentence>
 	<sentence>
@@ -101,9 +101,11 @@
 	<!--Descripcion: Consulta la lista de mensajes de un usuario a partir de su login -->
 	<code>SEL0011</code>
 	<sql>
-			SELECT DISTINCT m.fecha,m.hora,u.login,m.asunto,m.confirmado,m.texto AS login 
-			FROM usuarios u, mensajes m 
-			WHERE u.uid=m.uid_origen AND m.uid_destino=(SELECT uid FROM usuarios WHERE login='?') 
+			SELECT m.fecha,m.hora,u.login,m.asunto,m.confirmado,m.texto 
+			FROM mensajes m,usuarios u 
+			WHERE 
+  			uid_destino=(SELECT uid FROM usuarios WHERE login='?') 
+  			AND u.login=(SELECT login FROM usuarios WHERE uid=m.uid_origen)
 			ORDER BY m.fecha
         </sql>
 	</sentence>
@@ -258,54 +260,6 @@
 			bar.name ILIKE '%?%'AND
 			asunto ILIKE '%?%'
 			ORDER BY m.mid
-		</sql>
-	</sentence>
-	<sentence>
-	<!--Descripcion: Esta consulta genera el reporte de los mensajes de control -->
-		<code>SEL0022</code>
-		<sql>
-			SELECT u.login,u.nombres,pv.nombre AS punto_colocacion,foo.valido AS confirmado 
-                        FROM (
-                              SELECT u.login,u.nombres, (CAST(m.fecha AS timestamp)+m.hora) AS fecha_mensaje,
-				m.fecha_confirmacion, m.minutos AS minutos_de_vida,
-				date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) AS diferencia,
-				'NO' AS valido
-		              FROM
-			        mensajes m, usuarios u
-		  	      WHERE 
-				date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) &gt; m.minutos 
-				AND u.uid=m.uid_destino AND control=true
-			      UNION
-			      SELECT 
-			        u.login, u.nombres,
-			        (CAST(m.fecha AS timestamp)+m.hora) AS fecha_mensaje,
-			        null AS fecha_confirmacion,
-			        m.minutos AS minutos_de_vida,
-			        null AS diferencia,
-			        'NO' AS valido
-			      FROM 
-			        mensajes m, usuarios u
-			      WHERE 
-			        u.uid=m.uid_destino AND control=true AND confirmado=false
-			      UNION
-			      SELECT
-			        u.login, u.nombres,
-			        (CAST(m.fecha AS timestamp)+m.hora) AS fecha_mensaje,
-			        m.fecha_confirmacion,
-			        m.minutos AS minutos_de_vida,
-			        date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) AS diferencia ,
-			        'SI' AS valido
-			      FROM
-			        mensajes m, usuarios u
-			      WHERE 
-			        date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) &lt;= m.minutos 
-                                AND u.uid=m.uid_destino AND control=true
-                             )
-			AS foo, usuarios u, puntosv pv, usuarios_pventa upv
-			WHERE
-			      u.login=foo.login AND upv.uid=(SELECT uid FROM usuarios WHERE login=foo.login) 
-                              AND pv.codigo=upv.codigo_pventa AND foo.fecha_mensaje='?'
-			ORDER BY valido,diferencia DESC
 		</sql>
 	</sentence>
 	<sentence>

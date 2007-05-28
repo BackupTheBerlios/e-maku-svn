@@ -83,8 +83,9 @@ public class SyncManager {
 	/**
 	 * This constructor method executes once a sync task directly to the system
 	 * @param sock
+	 * @throws SQLException 
 	 */
-	public SyncManager (SocketChannel sock) {
+	public SyncManager (SocketChannel sock) throws SQLException {
 		this.sock = sock;
 		
 		// If there is not access to Oracle, stop sync task
@@ -256,7 +257,9 @@ public class SyncManager {
 			
 			return false;
 		} catch (SQLException e) {
-			String msg = "ERROR: No se pudo realizar la consulta en la base de datos " + oracleDB + "\nCausa:\n" + e.getMessage();
+			String msg = "ERROR: No se pudo realizar la consulta en la base de datos " + oracleDB + ".\n" +
+							"Proceso de sincronizacion cancelado." + 
+							"\nCausa:\n" + e.getMessage();
 			MessageDistributor.sendAlarm("Consulta a Oracle -> " + oracleDB, msg);
 			processSQLException(oracleDB,e,resultSet);
 			
@@ -285,7 +288,8 @@ public class SyncManager {
 			resultSet.close();
 			
 		} catch (SQLException e) {
-			String msg = "ERROR: Falla al consultar la base de datos PostgreSQL [" + pgdb + "].\nCausa:\n" + e.getMessage();
+			String msg = "ERROR: Falla al consultar la base de datos PostgreSQL [" + pgdb + "] durante la sincronizacion.\n" +
+								"Causa:\n" + e.getMessage();
 			MessageDistributor.sendAlarm("Conexion a PostgreSQL -> " + pgdb, msg);
 			processSQLException(pgdb,e,resultSet);
 			
@@ -347,14 +351,17 @@ public class SyncManager {
 	
 	/**
 	 * This method saves data in the Postgresql Data Base Server
+	 * @throws SQLException 
 	 */
 	private boolean storePostgresData() {
 		
 		String pgdb = ConfigFileHandler.getMainDataBase();
+		Connection pgConnection = null;
 		
 		try {
 			LogWriter.write("INFO: Sincronizando... [ Oracle -> PostgreSQL ]");
-			statement = ConnectionsPool.getConnection(pgdb).createStatement();
+			pgConnection = ConnectionsPool.getConnection(pgdb);
+			statement = pgConnection.createStatement();
 		} catch (SQLException e) {
 			processSQLException(pgdb,e,null);
 
@@ -407,12 +414,19 @@ public class SyncManager {
 				name = wsHash.get(key);
 				if (key!=null && name!=null) {
 					SQL = "INSERT INTO puntosv (codigo,nombre) values('" + key + "','" + name + "')";
+					pgConnection.setAutoCommit(false);
 					statement.execute(SQL);
+					pgConnection.commit();
 					LogWriter.write("INFO: Punto de colocacion => " + name + " almacenado");
 				} else {
 					LogWriter.write("ERROR: Codigo " + key + " no pertenece a ningun punto de venta.");
 				}
 			} catch (SQLException e) {
+				try {
+					pgConnection.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
 				String msg = "ERROR: Falla mientras se ingresaba el punto de colocacion: {" + name + "} con codigo {" + key + "}";
 				MessageDistributor.sendAlarm("Ingresando punto de colocacion",msg 
 						+ "\nSENTENCIA: " + SQL + "\nCausa:\n" + e.getMessage());
@@ -421,6 +435,13 @@ public class SyncManager {
 				processSQLException(pgdb,e,null);
 				
 				return false;
+			}
+			finally {
+				try {
+					pgConnection.setAutoCommit(true);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}				
 			}
 		}
 
@@ -434,13 +455,20 @@ public class SyncManager {
 				if (user != null) {
 					SQL = "INSERT INTO usuarios (login,clave,nombres) " + 
 					      "values('" + user.code + "',md5('" + user.password + "'),'" + user.name + "')";
+					pgConnection.setAutoCommit(false);
 					statement.execute(SQL);
+					pgConnection.commit();
 					LogWriter.write("INFO: Colocador => " + user.name + " almacenado");
 				} else {
 					LogWriter.write("ERROR: Codigo " + key + " no pertenece a ningun usuario");
 				}
 				
 			} catch (SQLException e) {
+				try {
+					pgConnection.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}				
 				String msg = "ERROR: Falla mientras se ingresaba el usuario: {" + user.code + "," + user.name + "}";
 				MessageDistributor.sendAlarm("Ingresando usuario",msg 
 						+ "\nSENTENCIA: " + SQL + "\nCausa:\n" + e.getMessage());
@@ -449,6 +477,13 @@ public class SyncManager {
 				processSQLException(pgdb,e,null);
 				
 				return false;
+			}
+			finally {
+				try {
+					pgConnection.setAutoCommit(true);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}				
 			}
 		}
 		
@@ -506,8 +541,15 @@ public class SyncManager {
 					if (posCode!=null) {
 						SQL = "INSERT INTO usuarios_pventa (uid,codigo_pventa) VALUES (" + uid + "," + posCode + ")";
 						try {
+							pgConnection.setAutoCommit(false);
 							statement.execute(SQL);
+							pgConnection.commit();							
 						} catch (SQLException e) {
+							try {
+								pgConnection.rollback();
+							} catch (SQLException e1) {
+								e1.printStackTrace();
+							}				
 							String msg = "ERROR: Falla mientras se ingresaba relacion usuario/pos: {" + uid + "," + posCode + "}";
 							MessageDistributor.sendAlarm("Insertando relacion usuario/pos",msg 
 									+ "\nSENTENCIA: " + SQL + "\nCausa:\n" + e.getMessage());					
@@ -516,6 +558,13 @@ public class SyncManager {
 							processSQLException(pgdb,e,null);
 							
 							return false;
+						}
+						finally {
+							try {
+								pgConnection.setAutoCommit(true);
+							} catch (SQLException e) {
+								e.printStackTrace();
+							}				
 						}
 					} else {			
 						String msg = "ERROR: Falla sincronizando, el codigo del punto de venta {" +

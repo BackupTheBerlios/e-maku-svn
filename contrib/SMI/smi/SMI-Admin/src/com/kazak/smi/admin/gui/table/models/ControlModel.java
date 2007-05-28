@@ -112,11 +112,9 @@ public class ControlModel extends AbstractTableModel {
     			// Cleaning the table
     			clear();
     			// Loading new info 
-    			//int i=0;
-    			for (;messageIterator.hasNext();) {  //i++) {
+    			for (;messageIterator.hasNext();) {
     				Element oneMessage = (Element) messageIterator.next();
     				List messagesDetails = oneMessage.getChildren();
-    				//if (tableData.size() <= i) {
     				Vector<Object> tableRow = new Vector<Object>();
     				for (int k=0;k<6;k++) {
     					String data = ((Element)messagesDetails.get(k)).getText();
@@ -129,7 +127,6 @@ public class ControlModel extends AbstractTableModel {
     				}
     				// Adding a new row into the table 
     				tableData.add(tableRow);
-    				//}
     			}
     			fireTableDataChanged();
     			updateTable(0, true);

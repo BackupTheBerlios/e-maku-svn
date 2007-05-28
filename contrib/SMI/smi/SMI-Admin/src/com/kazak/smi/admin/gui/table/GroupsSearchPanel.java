@@ -20,8 +20,8 @@ import org.jdom.Document;
 import java.util.HashMap;
 
 import com.kazak.smi.admin.control.Cache;
-import com.kazak.smi.admin.gui.misc.UsersList;
-import com.kazak.smi.admin.gui.table.OnLineUsersTable;
+import com.kazak.smi.admin.gui.misc.UsersOnlineFrame;
+import com.kazak.smi.admin.gui.table.UsersOnlineTable;
 
 public class GroupsSearchPanel extends JPanel implements PopupMenuListener, ActionListener {
 
@@ -30,11 +30,11 @@ public class GroupsSearchPanel extends JPanel implements PopupMenuListener, Acti
 	private JLabel groupsLabel;
 	private JLabel groupSize;
 	private HashMap<String,String> groupsHash;
-	private OnLineUsersTable table;
+	private UsersOnlineTable groupPanelTable;
 	private JButton update,viewMsg,close;
-	private UsersList frame;
+	private UsersOnlineFrame frame;
 	
-	public GroupsSearchPanel(UsersList frame) {
+	public GroupsSearchPanel(UsersOnlineFrame frame) {
 
 		this.frame = frame;
 		this.setLayout(new BorderLayout());
@@ -44,10 +44,10 @@ public class GroupsSearchPanel extends JPanel implements PopupMenuListener, Acti
 		groupsHash = Cache.getGroupsHash();		
 		groups.addPopupMenuListener(this);
 		
-		table = new OnLineUsersTable(frame);
-		table.setModelTab(1);
-		table.getModel().setLabel(groupSize);
-		JScrollPane jscroll = new JScrollPane(table);
+		groupPanelTable = new UsersOnlineTable(frame);
+		groupPanelTable.setModelTab(1);
+		groupPanelTable.getModel().setLabel(groupSize);
+		JScrollPane jscroll = new JScrollPane(groupPanelTable);
 		jscroll.setPreferredSize(new Dimension(500,300));
 		jscroll.setAutoscrolls(true);
 
@@ -59,7 +59,7 @@ public class GroupsSearchPanel extends JPanel implements PopupMenuListener, Acti
 		viewMsg.setActionCommand("view");
 		viewMsg.addActionListener(this);
 		viewMsg.setEnabled(false);
-		table.setListButton(viewMsg);
+		groupPanelTable.setListButton(viewMsg);
 		
 		close = new JButton("Cerrar");
 		close.setActionCommand("close");
@@ -98,10 +98,10 @@ public class GroupsSearchPanel extends JPanel implements PopupMenuListener, Acti
 			updateList();
 		}
 		if (command.equals("view")) {
-			int row = table.getSelectedRow();
+			int row = groupPanelTable.getSelectedRow();
 			if(row != -1) {
-				String login = (String) table.getModel().getValueAt(row, 0);
-				new MessagesDialog(frame,login);
+				String login = (String) groupPanelTable.getModel().getValueAt(row, 0);
+				groupPanelTable.getMessages(login);
 			}
 		}
 		if (command.equals("close")) {
@@ -114,13 +114,13 @@ public class GroupsSearchPanel extends JPanel implements PopupMenuListener, Acti
 	}
 	
 	public void setEnableListButton() {
-        if (table.getGroupSize() == 0 && viewMsg.isEnabled()) {
+        if (groupPanelTable.getResultSize() == 0 && viewMsg.isEnabled()) {
     		viewMsg.setEnabled(false);
         }
 	}
 	
-	public OnLineUsersTable getTable(){
-		return table;
+	public UsersOnlineTable getTable(){
+		return groupPanelTable;
 	}
 	
 	public String getGroupsSelection() {
@@ -132,7 +132,7 @@ public class GroupsSearchPanel extends JPanel implements PopupMenuListener, Acti
 	}
 	
 	public void updateUserList(Document doc) {
-        table.getModel().setQuery(doc);
+        groupPanelTable.getModel().setQuery(doc);
  	}
 	
 }

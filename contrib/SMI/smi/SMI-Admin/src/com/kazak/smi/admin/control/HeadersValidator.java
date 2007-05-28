@@ -58,7 +58,8 @@ public class HeadersValidator implements PackageComingListener {
 			}
         }
         else if(name.equals("ANSWER") || name.equals("SEARCHRESULT") 
-        		|| name.equals("USERLIST") || name.equals("CONTROLRESULT")) {
+        		|| name.equals("USERLIST") || name.equals("CONTROLRESULT")
+        		|| name.equals("MAILINFO")) {
             String id = root.getChildText("id");
             QuerySender.putResultOnPool(id,doc);
         }

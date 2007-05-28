@@ -25,6 +25,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 
 import com.kazak.smi.lib.misc.Language;
+import com.kazak.smi.server.control.Pop3Handler;
 import com.kazak.smi.server.database.sql.QueryClosingHandler;
 import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
@@ -154,10 +155,19 @@ public class SocketServer {
     /**
      * Este metodo retorna el login asociado a una conexion
      * @param sock
-     * @return algo
+     * @return user's login
      */
     public static String getName(SocketChannel sock) {
         return socketsInfoHash.get(sock).getNames();
+    }
+    
+    /**
+     * Este metodo retorna el nombre del POS asociado a una conexion
+     * @param sock
+     * @return user's pos name
+     */
+    public static String getPosName(SocketChannel sock) {
+        return socketsInfoHash.get(sock).getWsName();
     }
     
     public static Document getUsersOnLine(String pattern,String areaID) {
@@ -191,15 +201,25 @@ public class SocketServer {
     					root.addContent(addElement(connection));
     				}
     				break;
-    			// Search by ip
+       			// Search by pos name
     			case 2:
+    				String posName = socketsInfoHash.get(connection).getWsName();
+    				posName = posName.toLowerCase();
+    				pattern = pattern.toLowerCase();
+    	    		if (posName.contains(pattern)) {
+    					root.addContent(addElement(connection));
+    	    		}
+    	    		break;    	    		
+
+    			// Search by ip
+    			case 3:
     				String ip = socketsInfoHash.get(connection).getCurrentIp();
     				if (ip.contains(pattern)) {
     					root.addContent(addElement(connection));
     				}
     				break;
     			// Search by group id
-    			case 3:
+    			case 4:
     				String group = Integer.toString(socketsInfoHash.get(connection).getGroupID());
     	    		if (group.equals(pattern)) {
     					root.addContent(addElement(connection));
@@ -211,16 +231,23 @@ public class SocketServer {
 
     	return doc;
     }
-    
+
+    // Captures the info of the connection's user
     public static Element addElement(SocketChannel connection) {
-    	Element rows, user, name, ip, time;
+    	Element rows, user, name, posName, ip, time;
 		rows = new Element("row");
 		user = new Element("cols").setText(getLogin(connection));
 		name = new Element("cols").setText(getName(connection));
+		String pos = getPosName(connection);
+		if (pos == null) {
+			pos = "Punto de Colocación NO asignado";
+		}
+		posName = new Element("cols").setText(pos);
 		ip = new Element("cols").setText(getCurrentIp(connection));
 		time = new Element("cols").setText(getConnectionTime(connection));
 		rows.addContent(user);
 		rows.addContent(name);
+		rows.addContent(posName);
 		rows.addContent(ip);
 		rows.addContent(time);
     	
@@ -239,6 +266,22 @@ public class SocketServer {
  		root.addContent(rows);
  		
  		return doc;
+    }
+    
+    public static Document getMailInfo(SocketChannel sock) {
+    	Document doc = new Document();
+		Element root = new Element("MAILINFO");
+		doc.setRootElement(root);
+		Element id = new Element("id").setText("MAILPARAMS");
+		root.addContent(id);
+		Element mailServer = new Element("mailServer").setText(ConfigFileHandler.getMailServer());
+		root.addContent(mailServer);
+		Element to = new Element("to").setText(getSocketInfo(sock).getEmail());
+		root.addContent(to);		
+    	Element from = new Element("from").setText(Pop3Handler.getUser()+"@"+Pop3Handler.getHost());
+		root.addContent(from);
+		
+    	return doc;
     }
     
     /**

@@ -5,7 +5,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.table.JTableHeader;
 
-
 public class MessagesHeaderListener extends MouseAdapter {
 	
     JTableHeader   header;

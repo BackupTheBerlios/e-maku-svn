@@ -14,6 +14,7 @@ import com.kazak.smi.server.comunications.SocketWriter;
 import com.kazak.smi.server.database.sql.QueryRunner;
 import com.kazak.smi.server.database.sql.SQLBadArgumentsException;
 import com.kazak.smi.server.database.sql.SQLNotFoundException;
+import com.kazak.smi.server.misc.LogWriter;
 
 public class PointOfSaleManager {
 
@@ -39,12 +40,18 @@ public class PointOfSaleManager {
 		} catch (SQLNotFoundException e) {
 			result = false;
 			message = e.getMessage();
+			LogWriter.write("ERROR: Ocurrio una falla mientras se procesaba operacion de Punto de Venta [Tipo:"+type+"]");
+			LogWriter.write("Causa: " + message);
 		} catch (SQLBadArgumentsException e) {
 			result = false;
 			message = e.getMessage();
+			LogWriter.write("ERROR: Ocurrio una falla mientras se procesaba operacion de Punto de Venta [Tipo:"+type+"]");
+			LogWriter.write("Causa: " + message);
 		} catch (SQLException e) {
 			result = false;
 			message = e.getMessage();
+			LogWriter.write("ERROR: Ocurrio una falla mientras se procesaba operacion de Punto de Venta [Tipo:"+type+"]");
+			LogWriter.write("Causa: " + message);
 		}
 		if (result) {
 			for (QueryRunner queryRunner :queries) {
@@ -57,7 +64,7 @@ public class PointOfSaleManager {
 				e.printStackTrace();
 			}
 			message = "Los datos fueron almacenados satisfactoriamente";
-			TransactionRunner.notifyMessageReception(sock,id,message);
+			TransactionRunner.notifyMessageReception(sock,id,message,"Transaccion sobre POS");
 		}
 		else {
 			for (QueryRunner qRunner :queries) {
@@ -69,7 +76,7 @@ public class PointOfSaleManager {
 					"para poder ser eliminado\n";
 			}
 			TransactionRunner.notifyErrorMessage(sock,id,
-							"No se pudo procesar la transacción. Causa:\n" + message);
+							"ERROR: No se pudo procesar la transaccion.\nCausa:\n" + message + " ");
 		}
 	}
 	

@@ -254,7 +254,9 @@ public class TableSorter extends AbstractTableModel {
         return viewToModel;
     }
 
-    public int modelIndex(int viewIndex) {
+    public int getModelIndex(int viewIndex) {
+    	//System.out.println("Indice: " + viewIndex);
+    	//System.out.println("Entero: " + getViewToModel()[viewIndex].modelIndex);
         return getViewToModel()[viewIndex].modelIndex;
     }
 
@@ -263,7 +265,7 @@ public class TableSorter extends AbstractTableModel {
             int n = getViewToModel().length;
             modelToView = new int[n];
             for (int i = 0; i < n; i++) {
-                modelToView[modelIndex(i)] = i;
+                modelToView[getModelIndex(i)] = i;
             }
         }
         return modelToView;
@@ -288,15 +290,15 @@ public class TableSorter extends AbstractTableModel {
     }
 
     public boolean isCellEditable(int row, int column) {
-        return tableModel.isCellEditable(modelIndex(row), column);
+        return tableModel.isCellEditable(getModelIndex(row), column);
     }
 
     public Object getValueAt(int row, int column) {
-        return tableModel.getValueAt(modelIndex(row), column);
+        return tableModel.getValueAt(getModelIndex(row), column);
     }
 
     public void setValueAt(Object aValue, int row, int column) {
-        tableModel.setValueAt(aValue, modelIndex(row), column);
+        tableModel.setValueAt(aValue, getModelIndex(row), column);
     }
 
     // Helper classes

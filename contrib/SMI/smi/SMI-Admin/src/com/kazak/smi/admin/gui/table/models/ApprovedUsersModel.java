@@ -122,7 +122,9 @@ public class ApprovedUsersModel extends AbstractTableModel {
     				tableData.add(tableRow);
     			}
     			fireTableDataChanged();
-    			updateTable(0, true);
+    			if(messagesList.size() > 0) {
+    				updateTable(0, true);
+    			}
     			doc = null;
     			System.gc();
     		}

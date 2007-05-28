@@ -2,6 +2,7 @@ package com.kazak.smi.server.control;
 
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
+import java.sql.SQLException;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -87,7 +88,12 @@ public class HeadersValidator {
         	else if (rootName.equals("Synchronization")) {
         		Thread t = new Thread() {
                 	public void run() {
-                		new SyncManager(sock);
+                		try {
+							new SyncManager(sock);
+						} catch (SQLException e) {
+			                LogWriter.write("ERROR: Ocurrio una falla durante el proceso de sincronizacion");
+							e.printStackTrace();
+						}
                 	}
                 };
                 t.start();
@@ -134,13 +140,23 @@ public class HeadersValidator {
             	String id = root.getChildText("id");
             	Document list = new Document();
             	if ("LIST".equals(id)) {
-            		list = SocketServer.getUsersOnLine(root.getText(),"3");
+            		list = SocketServer.getUsersOnLine(root.getText(),"4");
             	}
             	else if("TOTAL".equals(id)) {
             		list = SocketServer.getUsersTotal();
             	}
             	try {
             		SocketWriter.write(sock,list);
+            	} catch (IOException e) {
+					LogWriter.write("ERROR: Falla de entrada/salida");
+					LogWriter.write("Causa: " + e.getMessage());
+					e.printStackTrace();
+				}
+            }
+            else if (rootName.equals("GETMAILINFO")) {
+            	Document mailInfo = SocketServer.getMailInfo(sock);
+            	try {
+            		SocketWriter.write(sock,mailInfo);
             	} catch (IOException e) {
 					LogWriter.write("ERROR: Falla de entrada/salida");
 					LogWriter.write("Causa: " + e.getMessage());

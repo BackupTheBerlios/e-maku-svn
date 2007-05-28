@@ -2,6 +2,7 @@ package com.kazak.smi.admin.gui.misc;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -111,6 +112,9 @@ public class ControlMessageReporter extends JFrame implements ActionListener {
 			this.dispose();
 		}
 		else if (command.equals("search")) {
+			int typeCursor = Cursor.WAIT_CURSOR;
+			Cursor cursor = Cursor.getPredefinedCursor(typeCursor);
+			setCursor(cursor);
 			new Worker().start();
 		}
 	}
@@ -120,11 +124,11 @@ public class ControlMessageReporter extends JFrame implements ActionListener {
 			Date date1 = dateField1.getDate();
 			Date date2 = dateField2.getDate();
 			if (date1==null) {
-				JOptionPane.showMessageDialog(frame,"Por favor, digite la fecha de inicio");
+				JOptionPane.showMessageDialog(frame,"Por favor, seleccione una fecha de inicio ");
 				return;
 			}
 			if (date2==null) {
-				JOptionPane.showMessageDialog(frame,"Por favor, digite la fecha final");
+				JOptionPane.showMessageDialog(frame,"Por favor, seleccione una fecha final ");
 				return;
 			}
 			
@@ -138,11 +142,11 @@ public class ControlMessageReporter extends JFrame implements ActionListener {
 					getControlMessages(date1,date2);					
 				}
 				else {
-					JOptionPane.showMessageDialog(frame,"La fecha de fin debe ser posterior a la de inicio.");
+					JOptionPane.showMessageDialog(frame,"La fecha de fin debe ser posterior a la de inicio. ");
 				}
 		    }
 		    else {
-				JOptionPane.showMessageDialog(frame,"La fecha de fin debe ser posterior a la de inicio.");
+				JOptionPane.showMessageDialog(frame,"La fecha de fin debe ser posterior a la de inicio. ");
 			}
 		}
 	}
@@ -152,17 +156,18 @@ public class ControlMessageReporter extends JFrame implements ActionListener {
 		Thread t = new Thread() {
 			public void run() {
 				try {
-					System.out.println("Date1: " + initDate.toString());
 					String[] args = {initDate.toString(),finalDate.toString()};
 					Document doc = QuerySender.getResultSetFromST("SEL0015",args);
 					SimpleDateFormat dateFormat = new SimpleDateFormat("E, dd MMM yyyy - HH:mm a");
 					String date1 = dateFormat.format(initDate);
 					String date2 = dateFormat.format(finalDate);
-
+					
 					if(!queryIsEmpty(doc)) {
 						frame.dispose();
+						setNormalCursor();
 					    new ControlDialog(frame,date1 + " / " + date2,doc);
 					} else {
+						setNormalCursor();
                         JOptionPane.showMessageDialog(
                                 frame,
                                 "<html><center>" +
@@ -180,6 +185,12 @@ public class ControlMessageReporter extends JFrame implements ActionListener {
 			}
 		};
 		t.start();
+	}
+	
+	private static void setNormalCursor() {
+		int typeCursor = Cursor.DEFAULT_CURSOR;
+		Cursor cursor = Cursor.getPredefinedCursor(typeCursor);
+		frame.setCursor(cursor);		
 	}
 	
 	private static boolean queryIsEmpty(Document doc) {

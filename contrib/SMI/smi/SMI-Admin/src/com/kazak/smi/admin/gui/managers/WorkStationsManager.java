@@ -8,8 +8,6 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -38,7 +36,7 @@ import com.kazak.smi.admin.gui.main.MainWindow;
 import com.kazak.smi.admin.gui.misc.GUIFactory;
 import com.kazak.smi.lib.misc.FixedSizePlainDocument;
 
-public class WorkStationsManager extends JFrame implements ActionListener, ItemListener {
+public class WorkStationsManager extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 3920757441925057976L;
 	private AutoCompleteComboBox nameField;
@@ -58,10 +56,10 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 	private String oldCode;
 	private String[]
     labels = {
-			"Nombre",
-			"Código",
-			"IP",
-			"Grupo"};
+			"Nombre ",
+			"Código ",
+			"IP ",
+			"Grupo "};
 	private UserTable table;
 		
 	public WorkStationsManager() {
@@ -88,7 +86,6 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 		codeField.setDocument(new NumericDataValidator(4));
 		ipField.setDocument(new FixedSizePlainDocument(15));
 		
-		nameField.addItemListener(this);
 		acceptButton = new JButton("Aceptar");
 		cancelButton = new JButton("Cancelar");
 		GUIFactory gui = new GUIFactory();
@@ -162,6 +159,7 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 		ACTION = ACTIONS.DELETE;
 		acceptButton.setActionCommand("remove");
 		cancelButton.setActionCommand("cancel");
+		acceptButton.setEnabled(false);
 		this.setVisible(true);
 	}
 	
@@ -198,7 +196,7 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 			JOptionPane.showMessageDialog(
 					this,
 					"<html><center>" +
-					"Por favor, ingrese un valor en el campo Nombre." +
+					"Por favor, ingrese un valor en el campo Nombre. " +
 					"</center></html>");
 			nameField.requestFocus();
 			return;
@@ -219,7 +217,7 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 				JOptionPane.showMessageDialog(
 						this,
 						"<html><center>" +
-						"El punto de colocación \"" + key + "\" ya existe." +
+						"El punto de colocación \"" + key + "\" ya existe. " +
 				"</center></html>");
 				nameField.requestFocus();
 				groupsCombo.setEnabled(false);
@@ -233,12 +231,10 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 				acceptButton.setEnabled(true);
 			} else if (ACTION == ACTIONS.EDIT) {
 				nameField.setEditable(false);
-				//ipField.setEnabled(true);
 				ipField.setEditable(true);
 				groupsCombo.setEnabled(true);
 				acceptButton.setEnabled(true);
 				codeField.setEnabled(true);
-				//codeField.setEditable(true);
 				codeField.requestFocus();
 			}
 		}
@@ -246,8 +242,8 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 			if (ACTION == ACTIONS.ADD) {
 				nameField.setEnabled(true);
 				nameField.setEditable(true);
-				//ipField.setEnabled(true);
 				ipField.setEditable(true);
+				groupsCombo.setSelectedIndex(0);
 				groupsCombo.setEnabled(true);
 				acceptButton.setEnabled(true);
 				codeField.setEnabled(true);
@@ -255,15 +251,15 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 				codeField.setText("");
 				codeField.requestFocus();
 			}
-			else if ((ACTION == ACTIONS.SEARCH) || (ACTION == ACTIONS.EDIT)) {
+			else if ((ACTION == ACTIONS.SEARCH) || (ACTION == ACTIONS.EDIT)
+					|| (ACTION == ACTIONS.DELETE)) {
 				JOptionPane.showMessageDialog(
 						this,
 						"<html><center>" +
-						"El punto de colocación \"" + key + "\" no existe." +
+						"El punto de colocación \"" + key + "\" no existe. " +
 				"</center></html>");
 				nameField.requestFocus();
 			}
-
 		}
 	}
 
@@ -294,7 +290,7 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 					JOptionPane.showMessageDialog(
 							this,
 							"<html><center>" +
-							"Este punto de colocación ya fue asociado al usuario." +
+							"Este punto de colocación ya fue asociado al usuario. " +
 							"</center></html>");
 					return;
 				}
@@ -322,8 +318,8 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 					JOptionPane.showMessageDialog(
 							this,
 							"<html><center>" +
-							"Debe ingresar por lo menos el código y el nombre<br>" +
-							"del punto de colocación."+
+							"Debe ingresar por lo menos el código y el nombre <br>" +
+							"del punto de colocación. "+
 							"</center></html>");
 				}
 				else if (codeField.getText().length() < 4) {
@@ -338,8 +334,8 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 					JOptionPane.showMessageDialog(
 						this,
 						"<html><center>" +
-						"El código o el nombre ya existe.<br>" +
-						"Verifique con el botón de búsqueda."+
+						"El código o el nombre ya existe. <br>" +
+						"Verifique con el botón de búsqueda. "+
 						"</center></html>");
 				}
 			}
@@ -361,8 +357,8 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 					JOptionPane.showMessageDialog(
 							this,
 							"<html><center>" +
-							"Debe ingresar por lo menos el código y el nombre<br>" +
-							"del punto de colocación."+
+							"Debe ingresar por lo menos el código y el nombre <br>" +
+							"del punto de colocación. "+
 							"</center></html>");				
 					codeField.requestFocus();
 				}
@@ -388,9 +384,9 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 					JOptionPane.showMessageDialog(
 							this,
 							"<html><center>" +
-							"El punto a eliminar no esta vacío.<br>" +
-							"Para poder eliminar un punto no debe tener<br>" +
-							"puntos de colocación asignados." +
+							"El punto a eliminar no esta vacío. <br>" +
+							"Para poder eliminar un punto no debe tener <br>" +
+							"puntos de colocación asignados. " +
 							"</center></html>");
 				}
 			}
@@ -420,16 +416,16 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 	}
 	
 	public void clean() {
-		if (ACTION == ACTIONS.ADD || ACTION == ACTIONS.EDIT) {
+		if (ACTION == ACTIONS.ADD || ACTION == ACTIONS.EDIT 
+				|| ACTION == ACTIONS.DELETE) {
 			resetWsForm();
-		} else if (ACTION == ACTIONS.DELETE) {
-			acceptButton.setEnabled(true);
 		} else {
 		ipField.setBackground(Color.WHITE);
 		codeField.setEnabled(true);
 		nameField.setEditable(true);
 		codeField.setText("");
 		nameField.setSelectedIndex(0);
+		groupsCombo.setSelectedIndex(0);
 		ipField.setText("");
 		nameField.requestFocus();
 		acceptButton.setEnabled(false);
@@ -515,6 +511,19 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 	public boolean isAValidIP(String input) {
 		if (!"".equals(input)) {
 			String ipFields[] = input.split("\\.");
+			
+			if (ipFields.length < 4) {
+				Toolkit.getDefaultToolkit().beep();
+				JOptionPane.showMessageDialog(
+						WorkStationsManager.this,
+						"<html><center>" +
+						"Formato inválido de dirección IP. <br>Por favor, ingrese un valor apropiado. <br>Ej: 127.0.0.1 " +
+				"</center></html>");
+				ipField.setText("");
+				ipField.requestFocus();
+				return false;				
+			}
+			
 			try {
 				if (Integer.parseInt(ipFields[0]) < 255 &&
 						Integer.parseInt(ipFields[1]) < 255 &&
@@ -527,7 +536,7 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 					JOptionPane.showMessageDialog(
 							WorkStationsManager.this,
 							"<html><center>" +
-							"Formato inválido de dirección IP.<br>Por favor, ingrese un valor apropiado." +
+							"Formato inválido de dirección IP. <br>Por favor, ingrese un valor apropiado. <br>Ej: 127.0.0.1 " +
 					"</center></html>");
 					ipField.requestFocus();
 					return false;
@@ -538,7 +547,7 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 				JOptionPane.showMessageDialog(
 						WorkStationsManager.this,
 						"<html><center>" +
-						"Rangos inválidos de dirección IP.<br>Por favor, corrija los valores incorrectos." +
+						"Rangos inválidos de dirección IP. <br>Por favor, corrija los valores incorrectos. <br>Ej: 127.0.0.1 " +
 				"</center></html>");
 				ipField.requestFocus();
 				return false;
@@ -548,7 +557,7 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 			JOptionPane.showMessageDialog(
 					WorkStationsManager.this,
 					"<html><center>" +
-					"Debe ingresar una dirección IP.<br>Ej: 127.0.0.1" +
+					"Debe ingresar una dirección IP. <br>Ej: 127.0.0.1 " +
 			"</center></html>");
 			ipField.requestFocus();
 			return false;
@@ -561,9 +570,6 @@ public class WorkStationsManager extends JFrame implements ActionListener, ItemL
 		return element;
 	}
 
-	public void itemStateChanged(ItemEvent e) {
-	}
-	
 	public void setFieldName(String name) {
 		nameField.setSelectedItem(name);
 		nameField.setEditable(false);

@@ -18,7 +18,7 @@ public class NavigationButtonsPanel extends JPanel{
 	public NavigationButtonsPanel() {
 		super(new FlowLayout(FlowLayout.RIGHT));
 		GUIFactory guiFactory = new GUIFactory();
-		previousButton = guiFactory.createButton("Ver Anterior", 'A',"previus","previus.png",SwingConstants.RIGHT);
+		previousButton = guiFactory.createButton("Ver Anterior", 'A',"previous","previous.png",SwingConstants.RIGHT);
 		nextButton     = guiFactory.createButton("Ver Siguiente",'S',"next","next.png",SwingConstants.LEFT);
 		replyButton    = guiFactory.createButton("Responder",    'R',"reply","reply.png",SwingConstants.LEFT);
 		closeButton    = guiFactory.createButton("Cerrar",       'C',"close","close.png",SwingConstants.LEFT);
