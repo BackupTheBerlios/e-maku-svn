@@ -54,7 +54,6 @@ public class LogMessage extends JFrame implements ActionListener, TreeSelectionL
 		this.setLayout(new BorderLayout());
 		this.setLocationByPlatform(true);
 		this.setLocationRelativeTo(null);
-		this.setAlwaysOnTop(true);
 		rootNode = new DefaultMutableTreeNode(MainWindow.getAppOwner());
 		rootNode.setAllowsChildren(true);
 		jTree = new JTree(rootNode) {

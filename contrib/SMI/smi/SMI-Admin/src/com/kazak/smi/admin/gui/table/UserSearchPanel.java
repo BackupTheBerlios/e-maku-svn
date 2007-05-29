@@ -115,6 +115,10 @@ public class UserSearchPanel extends JPanel implements ActionListener, KeyListen
 			frame.dispose();
 		}	
 	}
+	
+	public void getFocus() {
+		searchTextField.requestFocus();
+	}
 
 	private void startSearch() {
 		int typeCursor = Cursor.WAIT_CURSOR;

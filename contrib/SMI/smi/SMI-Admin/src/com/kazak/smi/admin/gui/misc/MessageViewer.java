@@ -35,7 +35,6 @@ public class MessageViewer implements ActionListener {
 		frame.setLocationByPlatform(true);
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
-		frame.setAlwaysOnTop(true);
 		frame.setLayout(new BorderLayout());
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		historyMessagePanel = new HistoryMessagePanel();

@@ -42,9 +42,8 @@ public class UsersOnlineFrame extends JFrame {
 		this.setLocationByPlatform(true);
 		this.setLocationRelativeTo(MainWindow.getFrame());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setResizable(false);
-		this.setAlwaysOnTop(true);
 		this.setVisible(true);
+		userPanel.getFocus();
 	}
 	
 	public void initInterface() {		

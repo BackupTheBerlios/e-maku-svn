@@ -122,7 +122,7 @@ public class LogServerViewer extends Thread {
 			textArea.setCursor(Cursor.getDefaultCursor());
 		} catch (IOException ex) {
 			System.out.println("ERROR: Falla de entrada/salida");
-			System.out.println("mensaje: " + ex.getMessage());
+			System.out.println("Causa: " + ex.getMessage());
 			ex.printStackTrace();
 		}
 	}

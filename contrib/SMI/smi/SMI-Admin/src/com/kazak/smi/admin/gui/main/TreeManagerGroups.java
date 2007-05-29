@@ -391,7 +391,7 @@ public class TreeManagerGroups {
 				WorkStationsManager ws = new WorkStationsManager();
 				ws.setFieldName(name);
 				ws.getSearchButton().doClick();
-				ws.edit();
+				ws.editFromTree();
 				ws.getFieldCode().setEditable(true);
 				ws.getFieldIp().setEditable(true);
 				ws.getGroupsCombo().setEnabled(true);

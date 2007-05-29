@@ -19,6 +19,25 @@
 			ORDER BY nombre_grupo 
 		</sql>
 	</sentence>
+        <sentence>
+                <!--Descripcion: Esta consulta muestra las direcciones ip que deben ser validadas dado un login -->
+                <code>SEL0002</code>
+                <sql>
+			SELECT DISTINCT pv.ip
+			FROM usuarios_pventa up, puntosv pv 
+			WHERE up.uid = (SELECT uid FROM usuarios WHERE login='?') 
+      			AND up.valid_ip='true' AND up.codigo_pventa=pv.codigo
+                </sql>
+        </sentence>
+        <sentence>
+                <!--Descripcion: Esta consulta muestra las direcciones ip que deben ser validadas dado un login -->
+                <code>SEL0003</code>
+                <sql>
+			SELECT nombre 
+			FROM puntosv 
+			WHERE ip='?'
+                </sql>
+        </sentence>
 	<sentence>
 	<!--Descripcion: ... -->
 		<code>SEL0004</code>
@@ -279,22 +298,23 @@
 	<!--Descripcion: ... -->
 		<code>SEL0025</code>
 		<sql>
-			SELECT 
+                        SELECT DISTINCT * FROM (
+			SELECT
 				u.uid,login,nombres,correo,
-				admin,audit,u.gid,upv.valid_ip,
-				pv.nombre,pv.gid AS gidpv,ip,g.nombre_grupo 
+				admin,audit,u.gid,
+				g.nombre_grupo 
 			FROM 
 				usuarios u ,puntosv pv,usuarios_pventa upv,grupos g 
 			WHERE 
-				login='?' AND pv.codigo=upv.codigo_pventa AND u.uid=upv.uid AND g.gid=u.gid 
-			UNION SELECT 
+				u.login='?' AND pv.codigo=upv.codigo_pventa AND u.uid=upv.uid AND g.gid=u.gid 
+			UNION SELECT
 				u.uid,login,nombres,correo,
-				admin,audit,u.gid,false,'sin punto',g.gid,null,g.nombre_grupo 
+				admin,audit,u.gid,g.nombre_grupo 
 			FROM 
 				usuarios u,grupos g 
 			WHERE 
 				login='?' AND (admin=true OR audit=true) AND g.gid=u.gid
-			ORDER BY login
+			ORDER BY login ) AS foo
 		</sql>
 	</sentence>
 	<sentence>
@@ -303,7 +323,7 @@
 		<sql>
 			SELECT 
 				u.uid,login,nombres,correo,
-				admin,audit,u.gid,false,'sin punto',g.gid,null,g.nombre_grupo 
+				admin,audit,u.gid,false,'Sin punto asignado',g.gid,null,g.nombre_grupo 
 			FROM 
 				usuarios u,grupos g 
 			WHERE 
@@ -317,7 +337,7 @@
 		<sql>
 			SELECT 
 				u.uid,login,nombres,correo,
-				admin,audit,u.gid,false,'sin punto',g.gid,null,g.nombre_grupo 
+				admin,audit,u.gid,false,'Sin punto asignado',g.gid,null,g.nombre_grupo 
 			FROM 
 				usuarios u,grupos g 
 			WHERE 

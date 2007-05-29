@@ -65,8 +65,7 @@ public class WorkStationsManager extends JFrame implements ActionListener {
 	public WorkStationsManager() {
 		this.setLayout(new BorderLayout());
 		this.setSize(300,180);
-		this.setLocationByPlatform(true);
-		this.setAlwaysOnTop(true);		
+		this.setLocationByPlatform(true);		
 		this.setLocationRelativeTo(MainWindow.getFrame());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setResizable(false);
@@ -144,13 +143,21 @@ public class WorkStationsManager extends JFrame implements ActionListener {
 		this.setTitle("Editar Punto de Colocación");
 		acceptButton.setActionCommand("save");
 		cancelButton.setActionCommand("cancel");
-		
 		resetWsForm();
 		
 		ACTION = ACTIONS.EDIT;
 		this.setVisible(true);
 	}
 	
+	public void editFromTree() {
+		this.setTitle("Editar Punto de Colocación");
+		acceptButton.setActionCommand("save");
+		cancelButton.setActionCommand("cancel");
+		
+		ACTION = ACTIONS.EDIT;
+		this.setVisible(true);
+	}
+		
 	public void delete() {
 		this.setTitle("Borrar Punto de Colocación");
 		codeField.setEditable(false);
@@ -236,6 +243,8 @@ public class WorkStationsManager extends JFrame implements ActionListener {
 				acceptButton.setEnabled(true);
 				codeField.setEnabled(true);
 				codeField.requestFocus();
+			} else if (ACTION == ACTIONS.SEARCH) {
+				acceptButton.setEnabled(false);
 			}
 		}
 		else {

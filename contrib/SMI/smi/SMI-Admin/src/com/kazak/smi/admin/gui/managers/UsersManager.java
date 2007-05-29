@@ -54,6 +54,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 	private JTextField mailField;
 	private JCheckBox adminCheck;
 	private JCheckBox auditCheck;
+	private JCheckBox ipControlCheck;
 	private JPanel centerPanel;
 	private JPanel southPanel;
 	private JButton acceptButton;
@@ -76,13 +77,13 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 			"E-Mail",
 			"Administrador",
 			"Auditor",
-			"Grupo"};
+			"Grupo",
+			"Control de Acceso por IP"};
 	
 	public UsersManager() {
 		this.setLayout(new BorderLayout());
 		this.setSize(350,370);
 		this.setLocationByPlatform(true);
-		this.setAlwaysOnTop(true);
 		this.setLocationRelativeTo(MainWindow.getFrame());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setResizable(false);
@@ -107,14 +108,12 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 		this.setTitle("Editar Usuario");
 		for (int i=1 ; i< labels.length ; i++) {
 			Component component = componentsList.get(i);
-			System.out.println("Testing...");
 			component.setEnabled(false);
 			if (component instanceof JTextField) {
 				((JTextField)component).setDisabledTextColor(Color.BLACK);
 			}
 		}
 		table.disableButtons();
-		System.out.println("Deshabilitando tabla...");
 		table.setEnabled(false);
 		UIManager.put("ComboBox.disabledForeground",Color.BLACK);
 		acceptButton.setActionCommand("save");
@@ -168,6 +167,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 		componentsList.add(adminCheck  = new JCheckBox());
 		componentsList.add(auditCheck  = new JCheckBox());
 		componentsList.add(groupsCombo = new JComboBox(Cache.getGroupsList()));
+		componentsList.add(ipControlCheck = new JCheckBox());
 		
 		loginField.addItemListener(this);
 		passwdField.setDocument(new FixedSizePlainDocument(10));
@@ -421,6 +421,12 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 		
 		transaction.addContent(pack);
 		
+		Boolean checkIp = false;
+		if(ipControlCheck.isSelected()) {
+		   checkIp = true;
+		}
+		
+		// Saving pos data from table to package
 		pack = new Element("package");
 		Vector<Vector> vector = table.getData();
 		int max = vector.size();
@@ -429,7 +435,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 			Element subpackage = new Element("subpackage");
 			subpackage.addContent(createField(loginField.getText()));
 			subpackage.addContent(createField((String)rowsVector.get(0).toString()));
-			subpackage.addContent(createField((String)rowsVector.get(2).toString()));
+			subpackage.addContent(createField(checkIp.toString()));
 			pack.addContent(subpackage);
 		}
 		
@@ -470,7 +476,13 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 		pack = new Element("package");
 		pack.addContent(createField(id));
 		transaction.addContent(pack);
-		
+
+		Boolean checkIp = false;
+		if(ipControlCheck.isSelected()) {
+		   checkIp = true;
+		}
+ 		
+		// Saving pos data from table to package
 		pack = new Element("package");
 		Vector<Vector> vector = table.getData();
 		int max = vector.size();
@@ -479,7 +491,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 			Element subpackage = new Element("subpackage");
 			subpackage.addContent(createField(loginField.getText()));
 			subpackage.addContent(createField((String)rowsVector.get(0).toString()));
-			subpackage.addContent(createField((String)rowsVector.get(2).toString()));
+			subpackage.addContent(createField(checkIp.toString()));
 			pack.addContent(subpackage);
 		}
 		transaction.addContent(pack);
@@ -542,11 +554,18 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 				adminCheck.setSelected(user.getAdmin());
 				auditCheck.setSelected(user.getAudit());
 				groupsCombo.setSelectedItem(user.getGroupName());
+				if(user.isSeller()) {
+					ipControlCheck.setSelected(user.getValidIp());
+				} else {
+					ipControlCheck.setSelected(false);
+					ipControlCheck.setEnabled(false);
+				}
 				table.clean();
 				ArrayList<Cache.POS> posList = Cache.getWorkStationsListByUser(code);
 				
 				for (Cache.POS upv : posList) {
-					table.addData(upv.getPOSCode(),upv.getName(),upv.getValidIP());
+					//table.addData(upv.getPOSCode(),upv.getName(),upv.getValidIP());
+					table.addData(upv.getPOSCode(),upv.getName());
 				}
 				if (ACTION == ACTIONS.EDIT ) {
 					loginField.setEditable(false);
@@ -556,6 +575,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 					adminCheck.setEnabled(true);
 					auditCheck.setEnabled(true);
 					groupsCombo.setEnabled(true);
+					ipControlCheck.setEnabled(true);
 					table.enableButtons();
 					table.setEnabled(true);
 					acceptButton.setEnabled(true);
@@ -587,6 +607,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 					auditCheck.setSelected(false);
 					table.clean();
 					groupsCombo.setSelectedIndex(0);
+					ipControlCheck.setSelected(false);
 				}
 				if (ACTION == ACTIONS.SEARCH || ACTION == ACTIONS.EDIT || ACTION == ACTIONS.DELETE) {
 					JOptionPane.showMessageDialog(
@@ -636,6 +657,10 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 
 	public JCheckBox getAdminCheck() {
 		return adminCheck;
+	}
+	
+	public JCheckBox ipControlCheck() {
+		return ipControlCheck;
 	}
 
 	public UserTable getTable() {

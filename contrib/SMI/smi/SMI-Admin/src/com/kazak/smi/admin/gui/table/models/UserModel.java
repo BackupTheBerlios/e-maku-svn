@@ -7,8 +7,8 @@ import javax.swing.table.AbstractTableModel;
 public class UserModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
-	private String[] titles = { "Código Punto","Nombre","Validar IP"};
-	private Class[] types = {String.class,String.class,Boolean.class};
+	private String[] titles = { "Código Punto","Nombre"};
+	private Class[] types = {String.class,String.class};
 	private Vector<Vector> data = new Vector<Vector>();
 	
 	@SuppressWarnings("unchecked")
@@ -16,17 +16,15 @@ public class UserModel extends AbstractTableModel {
 		Vector v = new Vector();
 		v.add("");
 		v.add("");
-		v.add(false);
 		data.add(v);
 		fireTableDataChanged();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void addRow(String code,String name,Boolean b) {
+	public void addRow(String code,String name) {
 		Vector v = new Vector();
 		v.add(code);
 		v.add(name);
-		v.add(b);
 		data.add(v);
 		fireTableDataChanged();
 	}
@@ -61,7 +59,6 @@ public class UserModel extends AbstractTableModel {
 		for(int i=0;i<data.size();i++){
 			Vector<Object> records = (Vector<Object>)data.get(i);
 			String posCode = (String) records.get(0);
-			System.out.println(code + " : " + posCode);
 			if(posCode.equals(code)) {
 				return true;
 			}
@@ -83,8 +80,9 @@ public class UserModel extends AbstractTableModel {
 	}
 
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		/*if (columnIndex==2)
-			return true;*/
+		//if (columnIndex==2) {
+			//return true;
+		//}
 		return false;
 	}
 }

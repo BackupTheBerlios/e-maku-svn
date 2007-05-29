@@ -63,7 +63,6 @@ public class GroupsManager extends JFrame implements ActionListener, ItemListene
 		this.setLayout(new BorderLayout());
 		this.setSize(340,160);
 		this.setLocationByPlatform(true);
-		this.setAlwaysOnTop(true);
 		this.setLocationRelativeTo(MainWindow.getFrame());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setResizable(false);

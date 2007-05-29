@@ -134,7 +134,7 @@
     </sentence>
     <sentence>
         <key>EXECUTE_IUD_OK</key>
-        <es_CO>INFO: La instrucción fue ejecutada con éxito</es_CO>
+        <es_CO>INFO: La instruccion fue ejecutada con exito</es_CO>
         <en_US>INFO: The instruction was executed successfully</en_US>
     </sentence>
     <sentence>
@@ -144,7 +144,7 @@
     </sentence>
     <sentence>
         <key>OK_CREATING_XML</key>
-        <es_CO>INFO: Estructura XML creada con éxito</es_CO>
+        <es_CO>INFO: Estructura XML creada con exito</es_CO>
         <en_US>INFO: The XML structure was created successfully</en_US>
     </sentence>
     <sentence>
@@ -154,7 +154,7 @@
     </sentence>
     <sentence>
         <key>NEW_SOCKET_CLIENT</key>
-        <es_CO>INFO: Se ha establecido una nueva conexión TCP/IP</es_CO>
+        <es_CO>INFO: Se ha establecido una nueva conexion TCP/IP</es_CO>
         <en_US>INFO: A new TCP/IP connection has been established</en_US>
     </sentence>
     <sentence>
@@ -174,12 +174,12 @@
     </sentence>
     <sentence>
         <key>OK_CNX</key>
-        <es_CO>INFO: Autenticación exitosa</es_CO>
-        <en_US>INFO: Autentication successful</en_US>
+        <es_CO>INFO: Autenticacion exitosa</es_CO>
+        <en_US>INFO: Authentication successful</en_US>
     </sentence>
     <sentence>
         <key errorCode="122">ERR_CNX</key>
-        <es_CO>Autenticación fallida</es_CO>
+        <es_CO>Autenticacion erronea</es_CO>
         <en_US>Authentication failed</en_US>
     </sentence>
     <sentence>

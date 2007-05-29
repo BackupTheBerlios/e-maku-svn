@@ -78,7 +78,7 @@ public class Cache {
 					
 					//Loading jtree with users (admin)
 					while (rows.hasNext()) {						
-						String[] data = addUserItem(rows); // Group name and user name
+						String[] data = addAdminUserItem(rows); // Group name and user name
 						if(mode == VISUAL) {
 							TreeManagerGroups.addChild(data[0],data[1]);
 						}
@@ -158,7 +158,7 @@ public class Cache {
 		return result;
 	}
 
-	public static String[] addUserItem(Iterator userIterator) {
+	public static String[] addAdminUserItem(Iterator userIterator) {
 		String[] result = new String[2];
 		Element row = (Element) userIterator.next();
 		Iterator columns = row.getChildren().iterator();
@@ -171,6 +171,8 @@ public class Cache {
 		user.audit = ((Element)columns.next()).getValue().equals("t") ? true : false;
 		user.gid = ((Element)columns.next()).getValue();
 		user.groupName = ((Element)columns.next()).getValue();
+		user.validIp = false;
+		user.setSeller(false);
 		groupsList.get(user.groupName).add(user);
 
 		result[0] = user.groupName;
@@ -195,6 +197,7 @@ public class Cache {
 		String wsName = ((Element)columns.next()).getValue();
 		user.validIp = ((Element)columns.next()).getValue().equals("t") ? true : false;
 		user.groupName = ((Element)columns.next()).getValue();
+		user.setSeller(true);
 		
 		result[0] = wsName;
 		result[1] = user;
@@ -412,6 +415,7 @@ public class Cache {
 		private Boolean audit = false;
 		private Boolean validIp = false;
 		private String groupName;
+		private Boolean seller=false;
 		
 		public Boolean getAdmin() {
 			return admin;
@@ -419,6 +423,14 @@ public class Cache {
 		
 		public void setAdmin(Boolean admin) {
 			this.admin = admin;
+		}
+		
+		public Boolean isSeller() {
+			return seller;
+		}
+		
+		public void setSeller(Boolean seller) {
+			this.seller = seller;
 		}
 		
 		public String getEmail() {

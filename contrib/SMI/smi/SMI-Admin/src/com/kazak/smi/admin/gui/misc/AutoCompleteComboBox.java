@@ -121,10 +121,6 @@ public class AutoCompleteComboBox extends JComboBox implements KeySelectionManag
 	public int selectionForKey(char key, ComboBoxModel comboModel) {
 		long now = new Date().getTime();
 		
-		if(key == KeyEvent.VK_ENTER) {
-			System.out.println("Prueba: Di enter!!!!");
-		}
-		
 		if (searchFor != null && key == KeyEvent.VK_BACK_SPACE
 				&& searchFor.length() > 0) {
 			searchFor = searchFor.substring(0, searchFor.length() - 1);

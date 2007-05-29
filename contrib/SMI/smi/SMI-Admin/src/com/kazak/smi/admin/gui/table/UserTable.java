@@ -94,8 +94,8 @@ public class UserTable extends JTable {
 		deleteButton.setEnabled(false);
 	}
 	
-	public void addData(String code,String name,Boolean b) {
-		model.addRow(code,name,b);
+	public void addData(String code,String name) {
+		model.addRow(code,name);
 	}
 	
 	public boolean isAlreadyIn(String code) {

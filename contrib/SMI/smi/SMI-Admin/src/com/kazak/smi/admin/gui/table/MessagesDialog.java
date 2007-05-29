@@ -66,7 +66,6 @@ class MessagesDialog extends JDialog implements ActionListener, MouseListener, K
         pack();
         setSize(570,380);
         setLocationRelativeTo(frame);
-        setAlwaysOnTop(true);
         setResizable(false);
         setVisible(true);
 	}

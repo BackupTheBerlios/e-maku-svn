@@ -41,7 +41,6 @@ public class ControlDialog extends JDialog implements ActionListener, MouseListe
 	
 	public ControlDialog(JFrame frame, String dates, Document doc) {
 		super(frame, true);
-		this.setAlwaysOnTop(true);
 		ControlDialog.frame = frame;
 		setTitle("Mensajes de Control [" + dates + "]");
 		table = new ControlTable(doc);
@@ -81,6 +80,7 @@ public class ControlDialog extends JDialog implements ActionListener, MouseListe
 		getContentPane().add(main);
         pack();
         setSize(570,380);
+        setResizable(false);
         setLocationRelativeTo(frame);
         setVisible(true);
 	}

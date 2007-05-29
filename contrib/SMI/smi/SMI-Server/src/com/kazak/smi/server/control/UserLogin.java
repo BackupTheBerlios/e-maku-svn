@@ -2,6 +2,7 @@ package com.kazak.smi.server.control;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
 
 import org.jdom.Element;
 
@@ -45,12 +46,12 @@ public class UserLogin {
     private Integer gid;
     private String groupName;
     private String ip;
-    private boolean validIp;
-    private String wsName;
+    private String wsName = "";
     
     public String getLogin() {
         return login;
     }
+    
     public UserLogin(Element data){
     	this.data = data;
     }
@@ -60,9 +61,9 @@ public class UserLogin {
 	    login = data.getChild("login").getValue();
 	    String password = data.getChild("password").getValue();
 	    ip = data.getChild("ip").getValue();
-	    boolean validate = data.getChild("validate")!=null ? true : false ;
+	    boolean validate = data.getChild("validate")!=null ? true : false;
 	    
-	    LogWriter.write("INFO: Inicio de autenticacion para el usuario {"+login+"} con la clave {"+password+"}");
+	    LogWriter.write("INFO: Inicio de autenticacion para el usuario {" + login + "} con la clave {" + password + "}");
 	    QueryRunner queryRunner = null;
 	    ResultSet resultSet = null;
 	    int count = 0;
@@ -81,9 +82,65 @@ public class UserLogin {
 			QueryClosingHandler.close(resultSet);
 			queryRunner.closeStatement();
 		}
-	    if (count==1) {
+		
+	    if (count==1) {	
+	    	Vector<String> ips = new Vector<String>();
+	    	
+	    	// Querying for ip address with validation flag on
+	    	try {	    		
+				queryRunner = new QueryRunner("SEL0002",new String[]{login});
+				resultSet = queryRunner.select();
+				while (resultSet.next()) {
+					String ipAddress = resultSet.getString(1);
+					if(ipAddress.length()>0) {
+						ips.add(ipAddress);
+					}
+				}
+	    	} catch (SQLNotFoundException e) {
+				e.printStackTrace();
+			} catch (SQLBadArgumentsException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				QueryClosingHandler.close(resultSet);
+				queryRunner.closeStatement();
+			}
+			
+			// Check if is "ip control access" enabled for user 
+			if ((ips.size() > 0)) {
+				LogWriter.write("INFO: Realizando control de acceso sobre direcciones ip...");
+				if (!ips.contains(ip)) {
+					LogWriter.write("ADVERTENCIA: La ip {" + ip + "} no esta autorizada para el usuario " + login);
+					return false;
+				}
+			} else {
+				LogWriter.write("INFO: Control de acceso sobre direcciones ip no habilitado para este usuario");
+			}
+
+	    	// Querying for pos name for a ip address given
+	    	try {	    		
+				queryRunner = new QueryRunner("SEL0003",new String[]{ip});
+				resultSet = queryRunner.select();
+				if (resultSet.next()) {
+					wsName = resultSet.getString(1);
+				}
+				if (wsName.length() == 0) {
+					wsName = "Punto sin nombre [" + ip + "]";
+				}
+	    	} catch (SQLNotFoundException e) {
+				e.printStackTrace();
+			} catch (SQLBadArgumentsException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				QueryClosingHandler.close(resultSet);
+				queryRunner.closeStatement();
+			}
     		
-	    	try {
+			// Querying user data
+	    	try {	    		
 				queryRunner = new QueryRunner("SEL0025",new String[]{login,login});
 				resultSet = queryRunner.select();
 				if (resultSet.next()) {
@@ -94,15 +151,8 @@ public class UserLogin {
 					admin	= resultSet.getBoolean(5);
 					audit	= resultSet.getBoolean(6);
 					gid		= resultSet.getInt(7);
-					validIp	= resultSet.getBoolean(8);
-					wsName	= resultSet.getString(9);
-					String posIP = resultSet.getString(11);
-					groupName	= resultSet.getString(12);
-					
-					if ( validIp && (!ip.equals(posIP))) {
-						LogWriter.write("ADVERTENCIA: La ip {" + ip + "} no esta autorizada para el usuario " + login);
-						return false;
-					}
+					groupName	 = resultSet.getString(8);
+																				
 					if (validate) {
 		    			if (admin) {
 		    				LogWriter.write("INFO: Usuario Administrador autenticado {" + login + "} desde la ip " + ip);
@@ -110,7 +160,7 @@ public class UserLogin {
 				    		return true;
 		    			}
 		    			else if (audit) {
-		    				LogWriter.write("INFO: Auditor Autenticado {"+login+"} desde la ip "+ ip);
+		    				LogWriter.write("INFO: Auditor Autenticado {" + login + "} desde la ip "+ ip);
 			    			userLevel = 2;
 				    		return true;
 		    			}
@@ -169,5 +219,4 @@ public class UserLogin {
 	public String getGroupName() {
 		return groupName;
 	}
-	
 }

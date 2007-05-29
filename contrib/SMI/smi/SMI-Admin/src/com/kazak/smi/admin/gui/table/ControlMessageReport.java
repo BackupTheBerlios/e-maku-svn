@@ -134,6 +134,7 @@ public class ControlMessageReport extends JDialog implements ActionListener {
 		add(main,BorderLayout.CENTER);
         pack();
         setSize(570,380);
+        setResizable(false);
         setLocationRelativeTo(frame);
         setVisible(true);
 	}

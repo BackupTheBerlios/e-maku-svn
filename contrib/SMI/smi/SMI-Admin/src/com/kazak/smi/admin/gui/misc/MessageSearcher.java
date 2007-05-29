@@ -2,6 +2,7 @@ package com.kazak.smi.admin.gui.misc;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -12,6 +13,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -42,6 +44,7 @@ public class MessageSearcher extends JFrame implements ActionListener {
 	private ArrayList<Component> componentsList = new ArrayList<Component>();
 
 	final JFrame frame = this;
+	private JDialog dialog;
 	
 	private String[]
     labels = {
@@ -117,8 +120,34 @@ public class MessageSearcher extends JFrame implements ActionListener {
 			this.dispose();
 		}
 		else if (command.equals("search")) {
+			openWaitingDialog();
 			new Worker().start();
 		}
+	}
+	
+	private void openWaitingDialog() {
+		int typeCursor = Cursor.WAIT_CURSOR;
+		Cursor cursor = Cursor.getPredefinedCursor(typeCursor);
+		setCursor(cursor);
+		dialog = new JDialog(frame);
+		dialog.setTitle("Realizando búsqueda...");
+		dialog.setResizable(false);
+		dialog.setSize(250,60);
+		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		dialog.setLocationByPlatform(true);
+		dialog.setLocationRelativeTo(frame);
+		dialog.setAlwaysOnTop(true);
+		JLabel label1 = new JLabel("Por favor, espere un momento.",JLabel.CENTER);
+		JPanel main = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		main.add(label1);
+		dialog.add(main);
+		dialog.setVisible(true);		
+	}
+	
+	private void setNormalCursor() {
+		int typeCursor = Cursor.DEFAULT_CURSOR;
+		Cursor cursor = Cursor.getPredefinedCursor(typeCursor);
+		setCursor(cursor);		
 	}
 	
 	class Worker extends Thread {		
@@ -160,7 +189,10 @@ public class MessageSearcher extends JFrame implements ActionListener {
 					}
 					data.add(vector);
 				}
+				dialog.setVisible(false);
+				setNormalCursor();
 				new MessageViewer(data);
+
 			} catch (QuerySenderException e) {
 				e.printStackTrace();
 			}

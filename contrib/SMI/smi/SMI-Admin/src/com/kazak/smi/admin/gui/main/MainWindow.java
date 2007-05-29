@@ -43,7 +43,7 @@ public class MainWindow implements TreeSelectionListener {
 
 	public MainWindow(String appOwner,String UserLevel) {
 		MainWindow.appOwner = appOwner;
-		frame = new JFrame("Administración SMI - " + appOwner);
+		frame = new JFrame("Administración SMI - " + appOwner + " - [Usuario: " + Run.login + "]");
 		frame.setSize(800,600);
 		frame.setJMenuBar(new MenuBar(UserLevel));
 		frame.setLayout(new BorderLayout());
