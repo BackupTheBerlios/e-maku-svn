@@ -1,17 +1,12 @@
-2007-05-29 18:08:33 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=44089,localport=9119]
-2007-05-29 18:08:34 INFO: Inicio de autenticacion para el usuario {auditor} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-05-29 18:08:34 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-05-29 18:08:34 INFO: Auditor Autenticado {auditor} desde la ip 127.0.0.1
-2007-05-29 18:17:28 INFO: Se ha establecido una nueva conexión TCP/IP Socket[addr=/127.0.0.1,port=50071,localport=9119]
-2007-05-29 18:17:28 INFO: Inicio de autenticacion para el usuario {auditor} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-05-29 18:17:28 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-05-29 18:17:28 INFO: Auditor Autenticado {auditor} desde la ip 127.0.0.1
-2007-05-29 18:24:46 INFO: ConfigFile -> /home/emaku/SMI/smi/SMI-Server/smiserver/conf/server.conf
-2007-05-29 18:24:46 INFO: Cargando archivo de configuracion...
-2007-05-29 18:24:46 INFO: Cargando base de datos... smi
-2007-05-29 18:24:46 INFO: Cargando base de datos... oracle
-2007-05-29 18:24:47 INFO: Cargando cache de enlace [smi]
-2007-05-29 18:24:47 INFO: Iniciando demonio pop3
-2007-05-29 18:24:47 INFO: Servidor de correo {localhost}
-2007-05-29 18:24:47 INFO: Iniciando demonio de sincronizacion
-2007-05-29 18:24:47 INFO: Servidor SMI escuchando por el puerto 9119
+2007-05-29 20:17:54 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=39921,localport=9119]
+2007-05-29 20:17:54 INFO: Inicio de autenticacion para el usuario {auditor} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-29 20:17:54 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-05-29 20:17:54 INFO: Auditor Autenticado {auditor} desde la ip 127.0.0.1
+2007-05-29 20:26:18 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=33833,localport=9119]
+2007-05-29 20:26:18 INFO: Inicio de autenticacion para el usuario {auditor} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-29 20:26:18 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-05-29 20:26:18 INFO: Auditor Autenticado {auditor} desde la ip 127.0.0.1
+2007-05-29 20:28:07 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=48796,localport=9119]
+2007-05-29 20:28:07 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-05-29 20:28:07 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-05-29 20:28:07 INFO: Usuario Administrador autenticado {admin} desde la ip 127.0.0.1

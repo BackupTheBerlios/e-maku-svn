@@ -78,12 +78,14 @@ public class UserSearchPanel extends JPanel implements ActionListener, KeyListen
 		jscroll.setAutoscrolls(true);
 	
 		viewMsg = new JButton("Ver Mensajes");
+		viewMsg.setMnemonic('V');
 		viewMsg.setActionCommand("view");
 		viewMsg.addActionListener(this);
 		viewMsg.setEnabled(false);
 		userPanelTable.setListButton(viewMsg);		
 		
 		close = new JButton("Cerrar");
+		close.setMnemonic('C');
 		close.setActionCommand("close");
 		close.addActionListener(this);
 		

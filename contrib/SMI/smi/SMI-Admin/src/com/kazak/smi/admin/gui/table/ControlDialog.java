@@ -30,7 +30,7 @@ import com.kazak.smi.admin.transactions.QuerySenderException;
 
 // This class shows the list of control messages sent during a date range
 
-public class ControlDialog extends JDialog implements ActionListener, MouseListener, KeyListener {
+public class ControlDialog extends JFrame implements ActionListener, MouseListener, KeyListener {
 	private static final long serialVersionUID = 1L;
 	private ControlTable table;
 	private JButton closeButton;
@@ -40,7 +40,7 @@ public class ControlDialog extends JDialog implements ActionListener, MouseListe
 	private static JDialog dialog;
 	
 	public ControlDialog(JFrame frame, String dates, Document doc) {
-		super(frame, true);
+		//super(frame, true);
 		ControlDialog.frame = frame;
 		setTitle("Mensajes de Control [" + dates + "]");
 		table = new ControlTable(doc);
@@ -62,10 +62,12 @@ public class ControlDialog extends JDialog implements ActionListener, MouseListe
 		split.setDividerLocation(160);
 	
 		viewButton = new JButton("Ver Reporte");
+		viewButton.setMnemonic('V');
 		viewButton.setActionCommand("view");
 		viewButton.addActionListener(this);
 		viewButton.setEnabled(false);
 		closeButton = new JButton("Cerrar");
+		closeButton.setMnemonic('C');
 		closeButton.setActionCommand("close");
 		closeButton.addActionListener(this);
 		JPanel southPanel = new JPanel();

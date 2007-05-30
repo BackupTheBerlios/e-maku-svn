@@ -75,7 +75,9 @@ public class ControlMessageReporter extends JFrame implements ActionListener {
 		dateField1.getCalendarButton().addActionListener(new MyActionListener(dateField1));
 		dateField2.getCalendarButton().addActionListener(new MyActionListener(dateField2));
 		searchButton = new JButton("Buscar");
+		searchButton.setMnemonic('B');
 		cancelButton = new JButton("Cancelar");
+		cancelButton.setMnemonic('C');
 		
 		searchButton.addActionListener(this);
 		cancelButton.addActionListener(this);

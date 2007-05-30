@@ -5,7 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import javax.swing.JDialog;
+//import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -37,7 +37,7 @@ import com.kazak.smi.admin.transactions.QuerySenderException;
 
 // This class shows a complete report of control messages at specific date/hour
 
-public class ControlMessageReport extends JDialog implements ActionListener {
+public class ControlMessageReport extends JFrame implements ActionListener {
 	
 	private static final long serialVersionUID = 1L;
 	private JButton xlsButton;
@@ -47,18 +47,19 @@ public class ControlMessageReport extends JDialog implements ActionListener {
 	private int columns[] = new int[4];
 	private TableColumnModel[] columnsModelArray = new TableColumnModel[4];
 	private String date, hour;
-	private static JDialog dialog;
+	private static JFrame frame;
 	private String fileName;
 	private XLSExporter xls;
 
 	public ControlMessageReport(JFrame frame,
 			Document[] docs, String date, String hour){
-		super(frame, true);
+		//super(frame, true);
 		setTitle("Reporte de Mensajes de Control [" + date + "/" + hour + "]");
 		this.date = date;
 		this.hour = hour;
-		dialog = this;
-		fileName = "reporteControl_" + date + "_" + hour;
+		frame = this;
+		
+		fileName = "reporteControl_" + date + "_" + hour.replace(':', '_');
 		        				
 		ApprovedUsersTable table0 = new ApprovedUsersTable(docs[0]);
 		columnsModelArray[0] = table0.getColumnModel();
@@ -109,12 +110,15 @@ public class ControlMessageReport extends JDialog implements ActionListener {
 		centerPanel.add(tabbedPane);
 		
 		xlsButton = new JButton("Exportar a Hoja de Cálculo");
+		xlsButton.setMnemonic('H');
 		xlsButton.setActionCommand("export");
 		xlsButton.addActionListener(this);
 		mailButton = new JButton("Enviar a mi Correo");
+		mailButton.setMnemonic('E');
 		mailButton.setActionCommand("mail");
 		mailButton.addActionListener(this);		
 		closeButton = new JButton("Cerrar");
+		closeButton.setMnemonic('C');
 		closeButton.setActionCommand("close");
 		closeButton.addActionListener(this);
 		
@@ -203,7 +207,7 @@ public class ControlMessageReport extends JDialog implements ActionListener {
 			public void run() {
 				try {
 					doc = QuerySender.getResultSetFromST("MAILPARAMS");
-		    		MailSender mail = new MailSender(dialog,doc,date,hour,getXLSFile(xls.getXLSFile()));
+		    		MailSender mail = new MailSender(frame,doc,date,hour,getXLSFile(xls.getXLSFile()));
 		    		if(mail.sentOk()) {
 		    			mailButton.setEnabled(false);
 		    		}

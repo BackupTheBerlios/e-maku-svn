@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -28,7 +30,7 @@ import com.kazak.smi.admin.transactions.QuerySenderException;
 import com.kazak.smi.lib.misc.FixedSizePlainDocument;
 import com.toedter.calendar.JDateChooser;
 
-public class MessageSearcher extends JFrame implements ActionListener {
+public class MessageSearcher extends JFrame implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = 3920757441925057976L;
 	private JTextField fromField;
@@ -65,7 +67,7 @@ public class MessageSearcher extends JFrame implements ActionListener {
 	}
 	
 	public void search() {
-		this.setTitle("Buscar mensajes");
+		this.setTitle("Buscar Mensajes");
 		searchButton.setActionCommand("search");
 		cancelButton.setActionCommand("cancel");
 		this.setVisible(true);
@@ -73,9 +75,17 @@ public class MessageSearcher extends JFrame implements ActionListener {
 	
 	private void initComponents() {
 		componentsList.add(fromField = new JTextField());
+		fromField.addKeyListener(this);
+		fromField.setName("from");
 		componentsList.add(toField = new JTextField());
+		toField.addKeyListener(this);
+		toField.setName("to");
 		componentsList.add(fieldDate = new JDateChooser());
+		fieldDate.addKeyListener(this);
+		fieldDate.setName("date");
 		componentsList.add(subjectField = new JTextField());
+		subjectField.addKeyListener(this);
+		subjectField.setName("subject");
 		
 		fieldDate.setDateFormatString("yyyy-MM-dd");
 		
@@ -84,7 +94,9 @@ public class MessageSearcher extends JFrame implements ActionListener {
 		subjectField.setDocument(new FixedSizePlainDocument(100));
 		
 		searchButton = new JButton("Buscar");
+		searchButton.setMnemonic('B');
 		cancelButton = new JButton("Cancelar");
+		cancelButton.setMnemonic('C');
 		
 		searchButton.addActionListener(this);
 		cancelButton.addActionListener(this);
@@ -198,5 +210,31 @@ public class MessageSearcher extends JFrame implements ActionListener {
 			}
 			
 		}
+	}
+
+	public void keyPressed(KeyEvent e) {
+	}
+
+	public void keyReleased(KeyEvent e) {
+		String textField = ((JTextField) e.getSource()).getName();
+		int keyCode = e.getKeyCode();
+		
+		if (keyCode==KeyEvent.VK_ENTER){
+			if (textField.equals("from")) {
+				toField.requestFocus();
+			}
+			if (textField.equals("to")) {
+				fieldDate.requestFocus();
+			}
+			if (textField.equals("date")) {
+				subjectField.requestFocus();
+			}
+			if (textField.equals("subject")) {
+				searchButton.doClick();
+			}
+		}		
+	}
+
+	public void keyTyped(KeyEvent e) {
 	}
 }

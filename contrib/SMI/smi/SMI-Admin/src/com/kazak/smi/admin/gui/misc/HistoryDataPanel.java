@@ -80,4 +80,8 @@ public class HistoryDataPanel extends JPanel {
 	public JTable getTable() {
 		return table;
 	}
+	
+	public int getMessagesTotal() {
+		return table.getRowCount();
+	}
 }

@@ -30,7 +30,7 @@ public class MessageViewer implements ActionListener {
 	private NavigationButtonsPanel buttons;
 	
 	public MessageViewer(Vector<Vector<Object>> data) {
-		frame = new JFrame("Mensajes");
+		frame = new JFrame();
 		frame.setSize(620,500);
 		frame.setLocationByPlatform(true);
 		frame.setLocationRelativeTo(null);
@@ -45,6 +45,8 @@ public class MessageViewer implements ActionListener {
 		frame.add(historyDataPanel,BorderLayout.NORTH);
 		frame.add(historyMessagePanel,BorderLayout.CENTER);
 		frame.add(buttons,BorderLayout.SOUTH);
+		
+		frame.setTitle(historyDataPanel.getMessagesTotal()+" Mensajes");
 		
 		Dimension dimesion = historyDataPanel.getSize();
 		dimesion.setSize(dimesion.getWidth(),180);

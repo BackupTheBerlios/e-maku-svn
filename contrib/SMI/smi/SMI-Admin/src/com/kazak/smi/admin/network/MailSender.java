@@ -4,8 +4,9 @@ import java.io.File;
 import java.util.Date;
 import java.util.Properties;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JDialog;
+//import javax.swing.JDialog;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -34,14 +35,14 @@ public class MailSender {
 	
 	boolean success = false;
 	
-	public MailSender(JDialog dialog, Document doc,String date,String hour,File file) {
+	public MailSender(JFrame frame, Document doc,String date,String hour,File file) {
 
 		Element root = doc.getRootElement();
 		String mailServer = root.getChild("mailServer").getText();
 		String destination = root.getChild("to").getText();
 		
 		if (destination==null || destination.length() == 0) {
-			JOptionPane.showMessageDialog(dialog,"El usuario \"" + Run.login + "\" no tiene asociada\n" + 
+			JOptionPane.showMessageDialog(frame,"El usuario \"" + Run.login + "\" no tiene asociada\n" + 
 					"una cuenta de correo electrónico.\n" +
 					"Por favor, contacte al administrador del SMI\n" + 
 					"para que modifique su perfíl.");
@@ -71,18 +72,18 @@ public class MailSender {
 			mimeMessage.setContent(multipart);
 			Transport.send(mimeMessage);
 
-			JOptionPane.showMessageDialog(dialog,"El reporte de control fue enviado a :\n" +
+			JOptionPane.showMessageDialog(frame,"El reporte de control fue enviado a :\n" +
 					destination +".\n" +	"Por favor, revise su correo.");
 			success = true;
 		} catch (SendFailedException e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(dialog,"Ocurrió un error mientras se enviaba el reporte.\nCausa:\n" + e.getMessage());
+			JOptionPane.showMessageDialog(frame,"Ocurrió un error mientras se enviaba el reporte.\nCausa:\n" + e.getMessage());
 		} catch (AddressException e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(dialog,"Ocurrió un error mientras se enviaba el reporte.\nCausa:\n" + e.getMessage());
+			JOptionPane.showMessageDialog(frame,"Ocurrió un error mientras se enviaba el reporte.\nCausa:\n" + e.getMessage());
 		} catch (MessagingException e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(dialog,"Ocurrió un error mientras se enviaba el reporte.\nCausa:\n" + e.getMessage());
+			JOptionPane.showMessageDialog(frame,"Ocurrió un error mientras se enviaba el reporte.\nCausa:\n" + e.getMessage());
 		}		
 	}
 	

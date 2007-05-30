@@ -65,6 +65,7 @@ public class LogMessage extends JFrame implements ActionListener, TreeSelectionL
 				super.paintComponent(g);
 			}
 		};
+		
 		DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
 		renderer.setLeafIcon(null);
 		renderer.setClosedIcon(null);
@@ -81,7 +82,9 @@ public class LogMessage extends JFrame implements ActionListener, TreeSelectionL
 		years = new Hashtable<String, DefaultMutableTreeNode>();
 		
 		viewButton = new JButton("Ver");
+		viewButton.setMnemonic('V');
 		closeButton = new JButton("Cerrar");
+		closeButton.setMnemonic('C');
 		viewButton.setActionCommand("view");
 		viewButton.setEnabled(false);
 		closeButton.setActionCommand("close");

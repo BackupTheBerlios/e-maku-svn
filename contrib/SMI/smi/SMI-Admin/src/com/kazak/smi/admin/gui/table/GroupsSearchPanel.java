@@ -52,16 +52,19 @@ public class GroupsSearchPanel extends JPanel implements PopupMenuListener, Acti
 		jscroll.setAutoscrolls(true);
 
 		update = new JButton("Actualizar Listado");
+		update.setMnemonic('A');
 		update.setActionCommand("update");
 		update.addActionListener(this);
 
 		viewMsg = new JButton("Ver Mensajes");
+		viewMsg.setMnemonic('V');
 		viewMsg.setActionCommand("view");
 		viewMsg.addActionListener(this);
 		viewMsg.setEnabled(false);
 		groupPanelTable.setListButton(viewMsg);
 		
 		close = new JButton("Cerrar");
+		close.setMnemonic('C');
 		close.setActionCommand("close");
 		close.addActionListener(this);
 
