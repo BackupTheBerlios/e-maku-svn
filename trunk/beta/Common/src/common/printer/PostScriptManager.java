@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.awt.print.Printable;
@@ -41,6 +42,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 	private int width;
 	private int height;
 	private Element rootTransact;
+	private String idTransaction="";
 	
 	/**
 	 * 
@@ -149,6 +151,16 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 				int row2 = attribs.get("row2").getIntValue();
 				int col2 = attribs.get("col2").getIntValue();
 				g2d.drawLine(col,row, col2,row2);
+			}
+			else if ("roundedRectangle".equals(name)) {
+				int width = attribs.get("width").getIntValue();
+				int height = attribs.get("height").getIntValue();
+				g2d.draw(new RoundRectangle2D.Double(col,row,width,height,10,10));
+			}
+			else if ("rectangle".equals(name)) {
+				int width = attribs.get("width").getIntValue();
+				int height = attribs.get("height").getIntValue();
+				g2d.drawRect(col,row,width,height);
 			}
 			else if ("field".equals(name)) {
 				String value = e.getTextTrim();
@@ -311,7 +323,8 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 	 */
 	public synchronized void cathSuccesEvent(SuccessEvent e) {
 		String numeration = e.getNdocument();
-		if (numeration!=null && !"".equals(numeration)) {
+		
+		if (numeration!=null && !"".equals(numeration) && idTransaction.equals(e.getIdPackage())) {
 			success = true;
 			ndocument = numeration;
 		}
@@ -335,7 +348,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 	public boolean isSuccessful() {
 		return this.successful;
 	}
-
+	
 	/**
 	 * 
 	 */
@@ -355,4 +368,12 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 	}
 	
 	public void process(Element template, Element packages) {}
+	
+	public void setIdTransaction(String idTransaction) {
+		this.idTransaction = idTransaction;
+	}
+	
+	public String getNdocument() {
+		return ndocument;
+	}
 }

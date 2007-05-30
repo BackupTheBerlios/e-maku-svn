@@ -595,7 +595,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
         idTransaction = "T"+TransactionServerResultSet.getId();
         id.setText(idTransaction);
         plainManager.setIdTransaction(idTransaction);
-
+        postScriptManager.setIdTransaction(idTransaction);
         transaction.getRootElement().addContent(driver);
         transaction.getRootElement().addContent(id);
 
