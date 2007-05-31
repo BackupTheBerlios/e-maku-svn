@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Vector;
@@ -14,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import client.Run;
 import client.gui.xmlmenu.MenuLoader;
@@ -102,7 +104,14 @@ public class MainWindow extends JFrame {
         		}
         	}
         };
-        t.start();
+        //t.start();
+        try {
+			SwingUtilities.invokeAndWait(t);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		} catch (InvocationTargetException e1) {
+			e1.printStackTrace();
+		}
 
         /**
          * Adicionando componentes al panel central
