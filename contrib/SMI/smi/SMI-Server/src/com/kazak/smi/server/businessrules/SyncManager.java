@@ -664,6 +664,7 @@ public class SyncManager {
 
 	    private Scheduler scheduler = new Scheduler();
 	    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss.SSS");
+        private String currentDate =  dateFormat.format(new Date());
 	    private OracleSyncTask oracleSyncTask;
 	    
 	    public Cron(OracleSyncTask oraclesync){
@@ -682,7 +683,7 @@ public class SyncManager {
 	            		return;
 	            	}
  	            	
-	                LogWriter.write("INFO: Iniciando sincronizacion programada [" + dateFormat.format(new Date()) + "]");
+	                LogWriter.write("INFO: Iniciando sincronizacion programada [" + currentDate + "]");
 	                LogWriter.write("INFO: Procesando usuarios...");
 	                
 	                //Users sync
@@ -703,77 +704,111 @@ public class SyncManager {
 					
 					//Messages sync 
 					LogWriter.write("INFO: Procesando mensajes...");
+					int lifeTimeInDB = ConfigFileHandler.getMessageLifeTimeInDataBase();
 					ResultSet resultSet = null;
 					String sql = "";
 					
-					try {
-						statement = ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).createStatement();
-						sql = "DELETE FROM mensajes WHERE current_date=(fecha+" + ConfigFileHandler.getMessageLifeTimeInDataBase() + ")";
-						LogWriter.write("INFO: Eliminando mensajes con tiempo de vida igual a " + ConfigFileHandler.getMessageLifeTimeInDataBase());
-						if (statement.execute(sql)) {
-							LogWriter.write("INFO: Mensajes antiguos borrados satisfactoriamente.");
-						}
+					if (lifeTimeInDB>0) { 
 						
-					} catch (SQLException e) {
- 							String msg = "ERROR: Falla durante la sincronizacion\n" +
- 								"Causa: " +  e.getMessage(); 
- 							MessageDistributor.sendAlarm("Error de SQL",msg);
-							LogWriter.write(msg);
-							e.printStackTrace();
-					}
-					
-					int limit = 0;
-						
-					try {	
-						sql = "SELECT count(*)-"+ConfigFileHandler.getMaxMessagesNumAllowed()+" FROM mensajes";
-						LogWriter.write("INFO: Revisando cantidad de mensajes almacenados en la base de datos...");
-						resultSet = statement.executeQuery(sql);
-						resultSet.next();
-						limit = resultSet.getInt(1);
-						resultSet.close();
-					} catch (SQLException e) {
+						int total = 0;
+
+						try {	
+							sql = "SELECT count(*) FROM mensajes WHERE current_date=(fecha+" + lifeTimeInDB + ")";
+							LogWriter.write("INFO: Revisando cantidad de mensajes vencidos en la base de datos...");
+							resultSet = statement.executeQuery(sql);
+							resultSet.next();
+							total = resultSet.getInt(1);
+							LogWriter.write("INFO: Total de mensajes vencidos -> " + total);
+							resultSet.close();
+						} catch (SQLException e) {
 							String msg = "ERROR: Falla durante la sincronizacion\n" +
-								"Causa: " +  e.getMessage(); 
+							"Causa: " +  e.getMessage(); 
 							MessageDistributor.sendAlarm("Error de SQL",msg);
 							LogWriter.write(msg);
 							e.printStackTrace();
+						}
+												
+						if(total > 0) {
+							try {
+								statement = ConnectionsPool.getConnection(ConfigFileHandler.getMainDataBase()).createStatement();
+								sql = "DELETE FROM mensajes WHERE current_date=(fecha+" + lifeTimeInDB + ")";
+								LogWriter.write("INFO: Eliminando mensajes con tiempo de vida superior a " + lifeTimeInDB + " dias");
+								if (statement.execute(sql)) {
+									LogWriter.write("SENTENCIA: " + sql);
+									LogWriter.write("INFO: Mensajes antiguos borrados satisfactoriamente.");
+								}
+
+							} catch (SQLException e) {
+								String msg = "ERROR: Falla durante la sincronizacion\n" +
+								"Causa: " +  e.getMessage(); 
+								MessageDistributor.sendAlarm("Error de SQL",msg);
+								LogWriter.write(msg);
+								e.printStackTrace();
+							}
+						}
 					}
 					
-					try {
-						if (limit > 0 ) {
-							LogWriter.write("INFO: El numero maximo de mensajes permitidos en la base de datos ha sido alcanzado.");
-							LogWriter.write("INFO: Procediendo a eliminar " + limit + " mensajes...");
-							sql = "SELECT mid FROM mensajes ORDER BY fecha ASC ,hora ASC LIMIT " + limit;
+					int msgMaxTotal = ConfigFileHandler.getMaxMessagesNumAllowed();
+					
+					if(msgMaxTotal>0) {
+
+						int difference = 0;
+						int total = 0;
+
+						try {	
+							sql = "SELECT count(*) FROM mensajes";
+							LogWriter.write("INFO: Revisando cantidad de mensajes almacenados en la base de datos...");
 							resultSet = statement.executeQuery(sql);
-							ArrayList<Integer> mids = new ArrayList<Integer>();
-							while (resultSet.next()) {
-								mids.add(resultSet.getInt(1));
-							}
-							resultSet.close();	
-							for (Integer mid : mids) {
-								sql = "DELETE FROM mensajes WHERE mid=" + mid + ";";
-								statement.addBatch(sql);
-							}
-							statement.executeBatch();
+							resultSet.next();
+							total = resultSet.getInt(1);
+							LogWriter.write("INFO: Total de mensajes en el sistema -> " + total);
+							resultSet.close();
+						} catch (SQLException e) {
+							String msg = "ERROR: Falla durante la sincronizacion\n" +
+							"Causa: " +  e.getMessage(); 
+							MessageDistributor.sendAlarm("Error de SQL",msg);
+							LogWriter.write(msg);
+							e.printStackTrace();
 						}
-						ConnectionsPool.CloseConnections();
-					} catch (SQLException e) {
-						String msg = "ERROR: Falla durante la sincronizacion\n" +
-						"Causa: " +  e.getMessage(); 
-						MessageDistributor.sendAlarm("Error de SQL",msg);
-						LogWriter.write(msg);
-						e.printStackTrace();
-					}
-					finally {
-						LogWriter.write("INFO: Mensajes sincronizados satisfactoriamente");
+
+						difference = total - ConfigFileHandler.getMaxMessagesNumAllowed();
+
 						try {
-							if (resultSet!=null) { 
-								resultSet.close();
+							if (difference > 0 ) {
+								LogWriter.write("INFO: El numero maximo de mensajes permitidos en la base de datos ha sido alcanzado.");
+								LogWriter.write("INFO: Procediendo a eliminar los " + difference + " mensajes mas antiguos...");
+								sql = "SELECT mid FROM mensajes ORDER BY fecha ASC ,hora ASC LIMIT " + difference;
+								resultSet = statement.executeQuery(sql);
+								ArrayList<Integer> mids = new ArrayList<Integer>();
+								while (resultSet.next()) {
+									mids.add(resultSet.getInt(1));
+								}
+								resultSet.close();	
+								for (Integer mid : mids) {
+									sql = "DELETE FROM mensajes WHERE mid=" + mid + ";";
+									statement.addBatch(sql);
+								}
+								statement.executeBatch();
 							}
-							statement.close();
-						} catch (SQLException e1) {
-							LogWriter.write("ERROR: " + e1.getMessage());
-							e1.printStackTrace();
+							ConnectionsPool.CloseConnections();
+						} catch (SQLException e) {
+							String msg = "ERROR: Falla durante la sincronizacion\n" +
+							"Causa: " +  e.getMessage(); 
+							MessageDistributor.sendAlarm("Error de SQL",msg);
+							LogWriter.write(msg);
+							e.printStackTrace();
+						}
+						finally {
+							LogWriter.write("INFO: Mensajes sincronizados satisfactoriamente");
+							try {
+								if (resultSet!=null) { 
+									resultSet.close();
+								}
+								statement.close();
+							} catch (SQLException e1) {
+								LogWriter.write("ERROR: " + e1.getMessage());
+								e1.printStackTrace();
+							}
 						}
 					}
 					

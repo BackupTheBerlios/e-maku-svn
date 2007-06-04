@@ -25,7 +25,8 @@ import javax.swing.tree.TreeSelectionModel;
 import com.kazak.smi.admin.control.Cache;
 import com.kazak.smi.admin.gui.managers.GroupsManager;
 import com.kazak.smi.admin.gui.managers.UsersManager;
-import com.kazak.smi.admin.gui.managers.WorkStationsManager;
+//import com.kazak.smi.admin.gui.managers.WorkStationsManager;
+import com.kazak.smi.admin.gui.managers.PosManager;
 
 public class TreeManagerGroups {
 	
@@ -383,31 +384,46 @@ public class TreeManagerGroups {
 				userManager.search();
 			}
 			else if ("new_point".equals(command)) {
+				/*
 				WorkStationsManager ws = new WorkStationsManager();
 				ws.clean();
-				ws.add();
+				ws.add(); */
+				
+				PosManager posManager = new PosManager();
+				posManager.addPos();
 			}
 			else if ("edit_point".equals(command)) {
+				/*
 				WorkStationsManager ws = new WorkStationsManager();
 				ws.setFieldName(name);
 				ws.getSearchButton().doClick();
 				ws.editFromTree();
 				ws.getFieldCode().setEditable(true);
 				ws.getFieldIp().setEditable(true);
-				ws.getGroupsCombo().setEnabled(true);
+				ws.getGroupsCombo().setEnabled(true); */
+				PosManager posManager = new PosManager();
+				posManager.editPos(name);
 			}
 				
 			else if ("delete_point".equals(command)) {
+				/*
 				WorkStationsManager ws = new WorkStationsManager();
 				ws.setFieldName(name);
 				ws.getSearchButton().doClick();
-				ws.delete();
+				ws.delete();*/
+				PosManager posManager = new PosManager();
+				posManager.deletePos(name);
+
 			}
 			else if ("search_point".equals(command)) {
-				WorkStationsManager ws = new WorkStationsManager();
+				
+				/* WorkStationsManager ws = new WorkStationsManager();
 				ws.setFieldName(name);
 				ws.getSearchButton().doClick();
-				ws.delete();
+				ws.delete(); */
+				
+				PosManager posManager = new PosManager();
+				posManager.searchPos(name);
 			}
 			else if ("new_group".equals(command)) {
 				GroupsManager group = new GroupsManager();

@@ -23,10 +23,10 @@
                 <!--Descripcion: Esta consulta muestra las direcciones ip que deben ser validadas dado un login -->
                 <code>SEL0002</code>
                 <sql>
-			SELECT DISTINCT pv.ip
-			FROM usuarios_pventa up, puntosv pv 
-			WHERE up.uid = (SELECT uid FROM usuarios WHERE login='?') 
-      			AND up.valid_ip='true' AND up.codigo_pventa=pv.codigo
+                        SELECT DISTINCT pv.nombre,pv.ip,up.valid_ip
+                        FROM usuarios_pventa up, puntosv pv
+                        WHERE up.uid = (SELECT uid FROM usuarios WHERE login='?')
+                        AND up.codigo_pventa=pv.codigo;
                 </sql>
         </sentence>
         <sentence>
@@ -450,6 +450,15 @@
 			ORDER BY login
                 </sql>
         </sentence>
+        <sentence>
+        <!--Descripcion: Lista de usuarios que no estaban conectados al momento del mensaje de control y que no son administrativos -->
+                <code>SEL0034</code>
+                <sql>
+			SELECT CAST(codigo AS integer)+1 
+			FROM puntosv 
+			ORDER BY codigo DESC LIMIT 1
+                </sql>
+        </sentence>
 	<!--============================= Inserts ===============================-->
 	<sentence>
 	<!--Descripcion: ... -->
@@ -566,27 +575,18 @@
 	</sentence>
 	<sentence>
 	<!--Descripcion: ... -->
+		<code>UPD0005</code>
+		<sql>
+			UPDATE puntosv SET ip='?',gid='?' WHERE nombre='?'
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
 		<code>UPD0006</code>
 		<sql>
-			UPDATE usuarios_pventa SET codigo_pventa='?' 
-			WHERE codigo_pventa=(SELECT codigo FROM puntosv WHERE nombre='?')
-		</sql>
-	</sentence>
-	<sentence>
-	<!--Descripcion: ... -->
-		<code>UPD0007</code>
-		<sql>
-			UPDATE puntosv SET codigo='?',nombre='?',ip='?',gid='?' WHERE nombre='?'
-		</sql>
-	</sentence>
-	<sentence>
-	<!--Descripcion: ... -->
-		<code>UPD0008</code>
-		<sql>
-			UPDATE
-				usuarios SET gid=foo.gid
-			FROM 
-				(SELECT pv.gid,up.uid FROM puntosv pv,usuarios_pventa up WHERE pv.codigo=up.codigo_pventa) AS foo 
+			UPDATE usuarios SET gid=foo.gid
+			FROM
+			(SELECT pv.gid,up.uid FROM puntosv pv,usuarios_pventa up WHERE pv.codigo=up.codigo_pventa) AS foo 
 			WHERE foo.uid=usuarios.uid
 		</sql>
 	</sentence>

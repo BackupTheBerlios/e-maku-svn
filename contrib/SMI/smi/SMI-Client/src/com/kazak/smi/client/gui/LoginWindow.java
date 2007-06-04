@@ -88,6 +88,7 @@ public class LoginWindow implements ActionListener {
 				frame.setVisible(true);
 			}
 		});
+		
 		frame.getRootPane().setBorder(new LineBorder(Color.BLACK,4));
 		Font font = new Font("Dialog",Font.BOLD,13);
 		LoginWindow.userTextField  = new JTextField(12);

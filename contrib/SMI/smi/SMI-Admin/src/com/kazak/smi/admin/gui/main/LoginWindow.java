@@ -75,7 +75,7 @@ public class LoginWindow implements ActionListener, KeyListener {
 		portTextField = new JTextField("9119",12);
 		portTextField.setName("port");
 		portTextField.addKeyListener(this);		
-		userTextField = new JTextField("auditor",12);
+		userTextField = new JTextField("admin",12);
 		userTextField.setName("user");
 		userTextField.addKeyListener(this);
 		passwdField = new JPasswordField("12345",12);

@@ -59,6 +59,9 @@ help(){
    echo " Donde las opciones pueden ser:"
    echo "  help                     : Despliega este mensaje "
    echo "  compile                  : Compila SMI"
+   echo "  compile client           : Compila el cliente SMI"
+   echo "  compile server           : Compila el servidor SMI"
+   echo "  compile admin            : Compila el admin SMI"
    echo "  -c                       : Elimina archivos .class "
    echo "  clean                    : Elimina archivos .class "
    echo

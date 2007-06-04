@@ -7,6 +7,11 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,7 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.text.JTextComponent;
+//import javax.swing.text.JTextComponent;
 
 import org.jdom.Document;
 
@@ -30,7 +35,7 @@ import com.toedter.calendar.JDateChooser;
 
 // This class creates the reports about control messages
 
-public class ControlMessageReporter extends JFrame implements ActionListener {
+public class ControlMessageReporter extends JFrame implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = 3920757441925057976L;
 	private JDateChooser dateField1;
@@ -63,28 +68,72 @@ public class ControlMessageReporter extends JFrame implements ActionListener {
 		searchButton.setActionCommand("search");
 		cancelButton.setActionCommand("cancel");
 		this.setVisible(true);
+		this.dateField1.requestFocus();
 	}
 	
 	private void initComponents() {
 		
 		componentsList.add(dateField1 = new JDateChooser());
 		componentsList.add(dateField2 = new JDateChooser());
+		dateField1.setName("date1");
+		dateField2.setName("date2");
+		setDateChooser(dateField1);
+		setDateChooser(dateField2);
 		
 		dateField1.setDateFormatString("yyyy-MM-dd h:mm a");
 		dateField2.setDateFormatString("yyyy-MM-dd h:mm a");
-		dateField1.getCalendarButton().addActionListener(new MyActionListener(dateField1));
-		dateField2.getCalendarButton().addActionListener(new MyActionListener(dateField2));
+		//dateField1.getCalendarButton().addActionListener(new MyActionListener(dateField1));
+		//dateField2.getCalendarButton().addActionListener(new MyActionListener(dateField2));
 		searchButton = new JButton("Buscar");
 		searchButton.setMnemonic('B');
 		cancelButton = new JButton("Cancelar");
 		cancelButton.setMnemonic('C');
 		
 		searchButton.addActionListener(this);
+		searchButton.addKeyListener(this);
+		searchButton.setName("button");
 		cancelButton.addActionListener(this);
 		
 		centerPanel = new JPanel(new BorderLayout());
 		southPanel  = new JPanel(new FlowLayout(FlowLayout.CENTER));
 	}
+	
+    private void setDateChooser(final JDateChooser dateField) {
+        dateField.setFocusCycleRoot(true);
+        dateField.addFocusListener(new FocusAdapter() {
+                public void focusGained(FocusEvent e) {
+                        dateField.getDateEditor().getUiComponent().requestFocusInWindow();
+                }
+        });
+        dateField.getDateEditor().getUiComponent().addKeyListener(new KeyAdapter() {
+
+                public void keyPressed(final KeyEvent e) {
+                        Thread t = new Thread() {
+                                public void run() {
+                                        try {
+                                                Thread.sleep(100);
+                                        }
+                                        catch (InterruptedException e1) {
+                                                e1.printStackTrace();
+                                        }
+                                        int keyCode = e.getKeyCode();
+                                        switch (keyCode) {
+                                                case KeyEvent.VK_ENTER:
+                                                	String date = dateField.getName();
+                                                	if(date.equals("date1")) {
+                                                		dateField2.requestFocus();
+                                                	} else {
+                                                		searchButton.requestFocus();
+                                                	}
+                                                        
+                                                	break;
+                                        }
+                                }
+                        };
+                        t.start();
+                }
+        });
+    }	
 	
 	private void addComponents() {
 		JPanel labelsPanel = new JPanel(new GridLayout(labels.length,0));
@@ -202,6 +251,7 @@ public class ControlMessageReporter extends JFrame implements ActionListener {
         }
         return false;
 	}
+	/*
 	
 	class MyActionListener implements ActionListener {
 		
@@ -214,5 +264,19 @@ public class ControlMessageReporter extends JFrame implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			((JTextComponent)this.chooser.getDateEditor()).requestFocus();
 		}
+	}*/
+
+	public void keyPressed(KeyEvent e) {
+	}
+
+	public void keyReleased(KeyEvent e) {
+		String button = ((JButton) e.getSource()).getName();
+		if (button.equals("button")) {
+			this.requestFocus();
+			searchButton.doClick();
+		}
+	}
+
+	public void keyTyped(KeyEvent e) {
 	}
 }

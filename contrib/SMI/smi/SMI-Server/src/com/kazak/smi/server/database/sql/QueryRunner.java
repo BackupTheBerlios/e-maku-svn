@@ -57,6 +57,7 @@ public class QueryRunner extends Element {
     public QueryRunner(String sqlCode,String[] args) throws SQLNotFoundException, SQLBadArgumentsException{
         this.sqlCode = sqlCode;
         sql = SQLInstructions.getSentence(sqlCode,args);
+        System.out.println("SQL: " + sql);
     }
     
     public QueryRunner(String sqlCode,String sql) {

@@ -54,6 +54,7 @@ public class WorkStationsManager extends JFrame implements ActionListener {
 	private enum ACTIONS  {ADD,EDIT,SEARCH,DELETE};
 	private ACTIONS ACTION;
 	private String oldCode;
+	private boolean addPOS = false;
 	private String[]
     labels = {
 			"Nombre ",
@@ -77,7 +78,7 @@ public class WorkStationsManager extends JFrame implements ActionListener {
 	
 	private void initComponents() {
 		
-		componentsList.add(nameField = new AutoCompleteComboBox(Cache.getWorkStationsList(),false,50));
+		componentsList.add(nameField = new AutoCompleteComboBox(Cache.getWorkStationsList(),false,50,getSearchButton()));
 		componentsList.add(codeField = new JTextField());
 		componentsList.add(ipField   = new JTextField());
 		componentsList.add(groupsCombo = new JComboBox(Cache.getGroupsList()));
@@ -179,12 +180,13 @@ public class WorkStationsManager extends JFrame implements ActionListener {
 		acceptButton.setEnabled(false);
 		cancelButton.setActionCommand("cancel");
 		ACTION = ACTIONS.SEARCH;
+		addPOS = false;
 		this.setVisible(true);
 	}
 	
 	public void searchPOS(UserTable jTable) {
 		table = jTable;
-		setTitle("Buscar Punto de Colocación");
+		setTitle("Adicionar Punto de Colocación");
 		codeField.setEditable(false);
 		ipField.setEditable(false);
 		groupsCombo.setEnabled(false);
@@ -193,6 +195,7 @@ public class WorkStationsManager extends JFrame implements ActionListener {
 		acceptButton.setEnabled(false);
 		cancelButton.setActionCommand("cancel");
 		ACTION = ACTIONS.SEARCH;
+		addPOS = true;
 		this.setVisible(true);
 	}	
 
@@ -244,7 +247,9 @@ public class WorkStationsManager extends JFrame implements ActionListener {
 				codeField.setEnabled(true);
 				codeField.requestFocus();
 			} else if (ACTION == ACTIONS.SEARCH) {
-				acceptButton.setEnabled(false);
+				if(addPOS) {
+					acceptButton.setEnabled(true);
+				}
 			}
 		}
 		else {
@@ -271,7 +276,7 @@ public class WorkStationsManager extends JFrame implements ActionListener {
 			}
 		}
 	}
-
+	
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
 		Document document = null;
@@ -476,26 +481,21 @@ public class WorkStationsManager extends JFrame implements ActionListener {
         transaction.addContent(driver);
         
 		Element pack = new Element("package");
-		pack.addContent(createField(codeField.getText()));
-		pack.addContent(createField(oldCode));
-		transaction.addContent(pack);
-		
-		pack = new Element("package");
+
 		String ip = ipField.getText();
 		
-		Cache.Group group = Cache.getGroup((String)groupsCombo.getSelectedItem());
-		pack.addContent(createField(codeField.getText()));
-		pack.addContent(createField(nameField.getText().toUpperCase()));
+		Cache.Group groupObject = Cache.getGroup((String)groupsCombo.getSelectedItem());
 		pack.addContent(createField(ip));
-		pack.addContent(createField(group.getId()));
+		pack.addContent(createField(groupObject.getId()));
 		pack.addContent(createField(oldCode));
-		
+					
 		transaction.addContent(pack);
 		
 		pack = new Element("package");
 		transaction.addContent(pack);
 		
 		return doc;
+		
 	}
 	
 	private Document getDocumentToDelete() {

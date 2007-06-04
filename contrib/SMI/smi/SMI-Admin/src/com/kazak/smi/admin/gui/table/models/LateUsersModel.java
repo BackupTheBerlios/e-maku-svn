@@ -134,9 +134,9 @@ public class LateUsersModel extends AbstractTableModel {
     				tableData.add(tableRow);
     			}
     			fireTableDataChanged();
-    			if(messagesList.size() > 0) {
+    			/* if(messagesList.size() > 0) {
     				updateTable(0, true);
-    			}
+    			}*/
     			doc = null;
     			System.gc();
     		}

@@ -7,6 +7,9 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -35,7 +38,7 @@ public class MessageSearcher extends JFrame implements ActionListener, KeyListen
 	private static final long serialVersionUID = 3920757441925057976L;
 	private JTextField fromField;
 	private JTextField toField;
-	private JDateChooser fieldDate;
+	private JDateChooser dateField;
 	private JTextField subjectField;
 	
 	private JPanel centerPanel;
@@ -66,12 +69,46 @@ public class MessageSearcher extends JFrame implements ActionListener, KeyListen
 		addComponents();
 	}
 	
+	// This method is called from menu.xml
 	public void search() {
 		this.setTitle("Buscar Mensajes");
 		searchButton.setActionCommand("search");
 		cancelButton.setActionCommand("cancel");
 		this.setVisible(true);
 	}
+	
+    private void setDateChooser() {
+        //dateField = new JDateChooser();
+        //dateField.setDateFormatString("yyyy-MM-dd");
+        dateField.setFocusCycleRoot(true);
+        dateField.addFocusListener(new FocusAdapter() {
+                public void focusGained(FocusEvent e) {
+                        dateField.getDateEditor().getUiComponent().requestFocusInWindow();
+                }
+        });
+        dateField.getDateEditor().getUiComponent().addKeyListener(new KeyAdapter() {
+
+                public void keyPressed(final KeyEvent e) {
+                        Thread t = new Thread() {
+                                public void run() {
+                                        try {
+                                                Thread.sleep(100);
+                                        }
+                                        catch (InterruptedException e1) {
+                                                e1.printStackTrace();
+                                        }
+                                        int keyCode = e.getKeyCode();
+                                        switch (keyCode) {
+                                                case KeyEvent.VK_ENTER:
+                                                        subjectField.requestFocus();
+                                                        break;
+                                        }
+                                }
+                        };
+                        t.start();
+                }
+        });
+    }
 	
 	private void initComponents() {
 		componentsList.add(fromField = new JTextField());
@@ -80,14 +117,13 @@ public class MessageSearcher extends JFrame implements ActionListener, KeyListen
 		componentsList.add(toField = new JTextField());
 		toField.addKeyListener(this);
 		toField.setName("to");
-		componentsList.add(fieldDate = new JDateChooser());
-		fieldDate.addKeyListener(this);
-		fieldDate.setName("date");
+		componentsList.add(dateField = new JDateChooser());
 		componentsList.add(subjectField = new JTextField());
 		subjectField.addKeyListener(this);
 		subjectField.setName("subject");
 		
-		fieldDate.setDateFormatString("yyyy-MM-dd");
+		dateField.setDateFormatString("yyyy-MM-dd");
+		setDateChooser();
 		
 		fromField.setDocument(new FixedSizePlainDocument(50));
 		toField.setDocument(new FixedSizePlainDocument(50));
@@ -99,6 +135,7 @@ public class MessageSearcher extends JFrame implements ActionListener, KeyListen
 		cancelButton.setMnemonic('C');
 		
 		searchButton.addActionListener(this);
+		searchButton.addKeyListener(this);
 		cancelButton.addActionListener(this);
 		
 		centerPanel = new JPanel(new BorderLayout());
@@ -141,6 +178,9 @@ public class MessageSearcher extends JFrame implements ActionListener, KeyListen
 		int typeCursor = Cursor.WAIT_CURSOR;
 		Cursor cursor = Cursor.getPredefinedCursor(typeCursor);
 		setCursor(cursor);
+		JLabel label1 = new JLabel("Por favor, espere un momento.",JLabel.CENTER);
+		JPanel main = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		main.add(label1);
 		dialog = new JDialog(frame);
 		dialog.setTitle("Realizando búsqueda...");
 		dialog.setResizable(false);
@@ -149,9 +189,6 @@ public class MessageSearcher extends JFrame implements ActionListener, KeyListen
 		dialog.setLocationByPlatform(true);
 		dialog.setLocationRelativeTo(frame);
 		dialog.setAlwaysOnTop(true);
-		JLabel label1 = new JLabel("Por favor, espere un momento.",JLabel.CENTER);
-		JPanel main = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		main.add(label1);
 		dialog.add(main);
 		dialog.setVisible(true);		
 	}
@@ -164,7 +201,7 @@ public class MessageSearcher extends JFrame implements ActionListener, KeyListen
 	
 	class Worker extends Thread {		
 		public void run() {
-			Date date = fieldDate.getDate();
+			Date date = dateField.getDate();
 			frame.dispose();
 			String [] argsArray = null;
 			String sqlCode = "";
@@ -180,7 +217,7 @@ public class MessageSearcher extends JFrame implements ActionListener, KeyListen
 				argsArray = new String[]{
 						fromField.getText(),
 						toField.getText(),
-						fieldDate.getDate().toString(),
+						dateField.getDate().toString(),
 						subjectField.getText()		
 						};
 				sqlCode = "SEL0016";
@@ -216,23 +253,34 @@ public class MessageSearcher extends JFrame implements ActionListener, KeyListen
 	}
 
 	public void keyReleased(KeyEvent e) {
-		String textField = ((JTextField) e.getSource()).getName();
 		int keyCode = e.getKeyCode();
-		
-		if (keyCode==KeyEvent.VK_ENTER){
-			if (textField.equals("from")) {
-				toField.requestFocus();
-			}
-			if (textField.equals("to")) {
-				fieldDate.requestFocus();
-			}
-			if (textField.equals("date")) {
-				subjectField.requestFocus();
-			}
-			if (textField.equals("subject")) {
+		String object = e.getSource().getClass().toString();
+		if ("class javax.swing.JButton".equals(object)) {
+			if (keyCode==KeyEvent.VK_ENTER && searchButton.hasFocus()){
 				searchButton.doClick();
 			}
-		}		
+		}
+		
+		if ("class javax.swing.JTextField".equals(object)) {
+			JTextField JText = ((JTextField) e.getSource());
+			String textField = JText.getName();
+			if (keyCode==KeyEvent.VK_ENTER){
+				if (textField.equals("from")) {
+					toField.requestFocus();
+				}
+				if (textField.equals("to")) {
+					dateField.requestFocus();
+				}
+				if (textField.equals("subject")) {
+					String value = JText.getText();
+					if (value.length() > 0) {
+						searchButton.doClick();
+					} else {
+						searchButton.requestFocus();
+					}
+				}
+			}		
+		}
 	}
 
 	public void keyTyped(KeyEvent e) {

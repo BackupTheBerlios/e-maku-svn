@@ -28,13 +28,7 @@ public class PointOfSaleManager {
 		String message = "";
 		queries = new ArrayList<QueryRunner>();
 		try {
-			if ("add".equals(type)) {
-				result = processPointOfSale(packet);
-			}
-			else if ("edit".equals(type)) {
-				result = processPointOfSale(packet);
-			}
-			else if ("remove".equals(type)) {
+			if ("add".equals(type) || "edit".equals(type) || "remove".equals(type) ) {
 				result = processPointOfSale(packet);
 			}
 		} catch (SQLNotFoundException e) {

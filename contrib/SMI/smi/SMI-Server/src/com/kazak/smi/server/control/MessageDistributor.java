@@ -97,7 +97,7 @@ public class MessageDistributor {
 					sender.setAdmin(resultSet.getBoolean(5));
 					sender.setAudit(resultSet.getBoolean(6));
 					sender.setGroupID(resultSet.getInt(7));
-					sender.setWsName(resultSet.getString(9));
+					sender.setWsName(resultSet.getString(9) + " [" + sender.getCurrentIp() + "]");
 					sender.setGroupName(resultSet.getString(12));	
 				}
 			} catch (SQLNotFoundException e) {
@@ -175,7 +175,7 @@ public class MessageDistributor {
 				mail.setDate(date);
 				mail.setMessage(body);
 				mail.setSenderFullName(sender.getNames());
-				mail.setWorkStation(sender.getWsName());
+				mail.setWorkStation(sender.getWsName() + " [" + sender.getCurrentIp() + "]");
 				mail.send();
 				LogWriter.write("INFO: [Envio a Cuenta de Correo] Remitente {" + sender.getLogin() 
 				        + "} - Destino: " + destination.getLogin() 
@@ -191,7 +191,7 @@ public class MessageDistributor {
 
 				QueryRunner qRunner = null;
 				try {
-					LogWriter.write("INFO: Almacenando registro de mensaje en la base de datos [" + destination.getLogin() + ":" + control + "]");
+					LogWriter.write("INFO: Almacenando registro de mensaje en la base de datos [" + destination.getLogin() + "]");
 					qRunner = new QueryRunner("INS0003",argsArray);
 					qRunner.setAutoCommit(false);
 					qRunner.executeSQL();

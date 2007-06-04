@@ -3,17 +3,21 @@ package com.kazak.smi.admin.gui.misc;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Date;
 
 import javax.swing.ComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JComboBox.KeySelectionManager;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
-public class AutoCompleteComboBox extends JComboBox implements KeySelectionManager {
+public class AutoCompleteComboBox extends JComboBox implements KeySelectionManager, KeyListener, PopupMenuListener {
 	
 	private static final long serialVersionUID = 1L;
 	private String searchFor;
@@ -21,8 +25,10 @@ public class AutoCompleteComboBox extends JComboBox implements KeySelectionManag
 	private boolean lowerCase = true;
 	private int length;
 	private String[] collection;
+	private JButton searchButton;
 	
 	public AutoCompleteComboBox(String[] collection,boolean wordCase, int length) {
+		this.addPopupMenuListener(this);
 		addItem("");
 		for (String value : collection) {
 			addItem(value);
@@ -32,7 +38,21 @@ public class AutoCompleteComboBox extends JComboBox implements KeySelectionManag
 		this.length = length;
 		this.setEditable(true);
 		initAuto();
-	}
+	}	
+	
+	public AutoCompleteComboBox(String[] collection,boolean wordCase, int length, JButton ws) {
+		this.addPopupMenuListener(this);
+		addItem("");
+		for (String value : collection) {
+			addItem(value);
+		}
+		this.collection = collection; 
+		this.lowerCase = wordCase;
+		this.length = length;
+		this.searchButton = ws;
+		this.setEditable(true);
+		initAuto();
+	}		
 	
 	public class ComboDocument extends PlainDocument {
 		private static final long serialVersionUID = 1L;
@@ -72,8 +92,11 @@ public class AutoCompleteComboBox extends JComboBox implements KeySelectionManag
 		
 		if (getEditor() != null) {
 			textField = (JTextField) getEditor().getEditorComponent();
+			textField.setFocusTraversalKeysEnabled(false);
+			textField.addKeyListener(this);
 			if (textField != null) {
 				textField.setDocument(new ComboDocument(length));
+				
 				addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
 						JTextField jTextField = (JTextField) getEditor().getEditorComponent();
@@ -153,5 +176,37 @@ public class AutoCompleteComboBox extends JComboBox implements KeySelectionManag
 	
 	public String getText() {
 		return getSelectedItem().toString();
+	}
+
+	public void keyPressed(KeyEvent e) {
+	}
+
+	public void keyReleased(KeyEvent e) {
+		int keyCode = e.getKeyCode();
+        if (keyCode==KeyEvent.VK_ENTER || keyCode==KeyEvent.VK_TAB){
+        	if (searchButton != null) {
+        		JTextField textField = (JTextField) getEditor().getEditorComponent();
+        		String text = textField.getText();
+        		textField.setText(text.toUpperCase());
+        		if(text.length()>0) {
+        			searchButton.doClick();
+        		}
+        	}
+        }
+	}
+
+	public void keyTyped(KeyEvent e) {
+	}
+
+	public void popupMenuCanceled(PopupMenuEvent e) {
+	}
+
+	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+		if (searchButton != null) {
+			searchButton.doClick();	
+		}
+	}
+
+	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
 	}
 }

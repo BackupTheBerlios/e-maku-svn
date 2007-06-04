@@ -42,6 +42,6 @@ public class PoolNotLoadException extends Exception {
     }
     public String getMessage() {
         return
-        	Language.getWord("ERR_POOL") + " " + this.bd;
+        	Language.getWord("ERR_POOL") + " [" + this.bd + "]";
     }
 }

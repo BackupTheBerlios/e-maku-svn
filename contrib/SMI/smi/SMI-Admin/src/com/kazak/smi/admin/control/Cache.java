@@ -137,8 +137,8 @@ public class Cache {
 		String[] result = new String[2];
 		Element row = (Element) wsIterator.next();
 		Iterator columns = row.getChildren().iterator();
-		
-		String code = ((Element)columns.next()).getValue();
+
+		String code = ((Element)columns.next()).getValue();		
 		String name = ((Element)columns.next()).getValue();						
 		String ip = ((Element)columns.next()).getValue();
 		String gid = ((Element)columns.next()).getValue();

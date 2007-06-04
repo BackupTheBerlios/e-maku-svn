@@ -79,7 +79,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 			"Auditor",
 			"Grupo",
 			"Control de Acceso por IP"};
-	
+		
 	public UsersManager() {
 		this.setLayout(new BorderLayout());
 		this.setSize(350,370);
@@ -95,7 +95,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 			}
 		});
 	}
-	
+		
 	public void add() {
 		this.setTitle("Nuevo Usuario");
 		this.setVisible(true);
@@ -165,7 +165,7 @@ public class UsersManager extends JFrame implements ActionListener, ItemListener
 		componentsList.add(nameField   = new JTextField());
 		componentsList.add(mailField   = new JTextField());
 		componentsList.add(adminCheck  = new JCheckBox());
-		componentsList.add(auditCheck  = new JCheckBox());
+		componentsList.add(auditCheck  = new JCheckBox());		
 		componentsList.add(groupsCombo = new JComboBox(Cache.getGroupsList()));
 		componentsList.add(ipControlCheck = new JCheckBox());
 		

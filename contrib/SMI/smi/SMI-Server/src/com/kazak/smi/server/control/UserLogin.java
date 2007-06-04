@@ -85,15 +85,25 @@ public class UserLogin {
 		
 	    if (count==1) {	
 	    	Vector<String> ips = new Vector<String>();
+	    	Vector<String> posNameVector = new Vector<String>();
+	    	boolean doControl = false;
 	    	
 	    	// Querying for ip address with validation flag on
 	    	try {	    		
 				queryRunner = new QueryRunner("SEL0002",new String[]{login});
 				resultSet = queryRunner.select();
 				while (resultSet.next()) {
-					String ipAddress = resultSet.getString(1);
+					String posName = resultSet.getString(1);
+					if(posName.length()>0) {
+						posNameVector.add(posName);
+					}
+					String ipAddress = resultSet.getString(2);
 					if(ipAddress.length()>0) {
 						ips.add(ipAddress);
+					}
+					Boolean flag = resultSet.getBoolean(3);
+					if(flag) {
+						doControl = true;
 					}
 				}
 	    	} catch (SQLNotFoundException e) {
@@ -108,7 +118,7 @@ public class UserLogin {
 			}
 			
 			// Check if is "ip control access" enabled for user 
-			if ((ips.size() > 0)) {
+			if (doControl) {
 				LogWriter.write("INFO: Realizando control de acceso sobre direcciones ip...");
 				if (!ips.contains(ip)) {
 					LogWriter.write("ADVERTENCIA: La ip {" + ip + "} no esta autorizada para el usuario " + login);
@@ -126,7 +136,17 @@ public class UserLogin {
 					wsName = resultSet.getString(1);
 				}
 				if (wsName.length() == 0) {
-					wsName = "Punto sin nombre [" + ip + "]";
+					if (posNameVector.size() > 0) {
+						String place = posNameVector.get(0);
+						if(place != null) {
+							wsName = place;
+						} else {
+							wsName = "Ubicación Administrativa";
+						}
+					} else {
+						wsName = "Ubicación Administrativa";
+					}
+
 				}
 	    	} catch (SQLNotFoundException e) {
 				e.printStackTrace();
@@ -155,18 +175,21 @@ public class UserLogin {
 																				
 					if (validate) {
 		    			if (admin) {
-		    				LogWriter.write("INFO: Usuario Administrador autenticado {" + login + "} desde la ip " + ip);
+		    				LogWriter.write("INFO: Usuario Administrador autenticado {" + login + "} desde " 
+		    						+ wsName + " [" + ip + "]");
 		    				userLevel = 1;
 				    		return true;
 		    			}
 		    			else if (audit) {
-		    				LogWriter.write("INFO: Auditor Autenticado {" + login + "} desde la ip "+ ip);
+		    				LogWriter.write("INFO: Auditor Autenticado {" + login + "} desde " 
+		    						+ wsName + " [" + ip + "]");
 			    			userLevel = 2;
 				    		return true;
 		    			}
 					}
 					else {
-		    			LogWriter.write("INFO: Colocador Autenticado {" + login + "} desde la ip " + ip);
+		    			LogWriter.write("INFO: Colocador Autenticado {" + login + "} desde " + wsName 
+		    					+ " [" + ip + "]");
 		    			userLevel = 3;
 			    		return true;
 					}

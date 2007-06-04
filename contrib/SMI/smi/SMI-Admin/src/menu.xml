@@ -2,6 +2,7 @@
 <Menu>
 	<JMenu>
 		<Text>Archivo</Text>
+		<Mnemonic>A</Mnemonic>
 		<JMenuItem>
 			<Mnemonic>S</Mnemonic>
 			<Text>Sincronizar</Text>
@@ -61,29 +62,29 @@
 		<JMenuItem>
 			<Mnemonic>B</Mnemonic>
 			<Text>Buscar</Text>
-			<Class>com.kazak.smi.admin.gui.managers.GroupsManager</Class>
-			<Method>search</Method>
+			<Class>com.kazak.smi.admin.gui.managers.GroupManager</Class>
+			<Method>searchGroup</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>A</Mnemonic>
 			<Text>Adicionar</Text>
-			<Class>com.kazak.smi.admin.gui.managers.GroupsManager</Class>
-			<Method>add</Method>
+			<Class>com.kazak.smi.admin.gui.managers.GroupManager</Class>
+			<Method>addGroup</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>E</Mnemonic>
 			<Text>Editar</Text>
-			<Class>com.kazak.smi.admin.gui.managers.GroupsManager</Class>
-			<Method>edit</Method>
+			<Class>com.kazak.smi.admin.gui.managers.GroupManager</Class>
+			<Method>editGroup</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>l</Mnemonic>
 			<Text>Eliminar</Text>
-			<Class>com.kazak.smi.admin.gui.managers.GroupsManager</Class>
-			<Method>delete</Method>
+			<Class>com.kazak.smi.admin.gui.managers.GroupManager</Class>
+			<Method>deleteGroup</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 	</JMenu>
@@ -93,29 +94,29 @@
 		<JMenuItem>
 			<Mnemonic>B</Mnemonic>
 			<Text>Buscar</Text>
-			<Class>com.kazak.smi.admin.gui.managers.WorkStationsManager</Class>
-			<Method>search</Method>
+			<Class>com.kazak.smi.admin.gui.managers.PosManager</Class>
+			<Method>searchPos</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>A</Mnemonic>
 			<Text>Adicionar</Text>
-			<Class>com.kazak.smi.admin.gui.managers.WorkStationsManager</Class>
-			<Method>add</Method>
+			<Class>com.kazak.smi.admin.gui.managers.PosManager</Class>
+			<Method>addPos</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>E</Mnemonic>
 			<Text>Editar</Text>
-			<Class>com.kazak.smi.admin.gui.managers.WorkStationsManager</Class>
-			<Method>edit</Method>
+			<Class>com.kazak.smi.admin.gui.managers.PosManager</Class>
+			<Method>editPos</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>
 			<Mnemonic>l</Mnemonic>
 			<Text>Eliminar</Text>
-			<Class>com.kazak.smi.admin.gui.managers.WorkStationsManager</Class>
-			<Method>delete</Method>
+			<Class>com.kazak.smi.admin.gui.managers.PosManager</Class>
+			<Method>deletePos</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 	</JMenu>

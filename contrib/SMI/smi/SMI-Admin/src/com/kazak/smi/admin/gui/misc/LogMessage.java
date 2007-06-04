@@ -8,6 +8,10 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
@@ -32,7 +36,7 @@ import com.kazak.smi.admin.gui.main.MainWindow;
 import com.kazak.smi.admin.transactions.QuerySender;
 import com.kazak.smi.admin.transactions.QuerySenderException;
 
-public class LogMessage extends JFrame implements ActionListener, TreeSelectionListener {
+public class LogMessage extends JFrame implements ActionListener, TreeSelectionListener, MouseListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	private String[] months = {
@@ -77,6 +81,9 @@ public class LogMessage extends JFrame implements ActionListener, TreeSelectionL
 		int mode = TreeSelectionModel.SINGLE_TREE_SELECTION;
 		jTree.getSelectionModel().setSelectionMode(mode);
 		
+		jTree.addMouseListener(this);
+		jTree.addKeyListener(this);
+		
 		JScrollPane jscroll = new JScrollPane(jTree);
 		this.add(jscroll,BorderLayout.CENTER);
 		years = new Hashtable<String, DefaultMutableTreeNode>();
@@ -119,40 +126,47 @@ public class LogMessage extends JFrame implements ActionListener, TreeSelectionL
 	public void valueChanged(TreeSelectionEvent event) {
 		TreePath path = event.getPath();
 		int pathCount = path.getPathCount();
-		String date1;
-		String date2;
-		
-		switch (pathCount) {
-			case 2:
-				date1 = path.getPathComponent(1)+"-01-01";
-				date2 = path.getPathComponent(1)+"-12-31";
-				argsArray = new String[] {date1,date2};
-				sqlCode = "SEL0018";
-				break;
-			case 3:
-				int monthIndex = getIndexOfMonth(path.getPathComponent(2).toString());
-				date1 = path.getPathComponent(1)+ "-" + monthIndex;
-				date2 = path.getPathComponent(1)+ "-" + (monthIndex+1);
-				argsArray = new String[] {date1,date2};
-				sqlCode = "SEL0019";
-				break;
-			case 4:
-				date1 = path.getPathComponent(1) + "-" + 
-						getIndexOfMonth(path.getPathComponent(2).toString()) + "-" +
-						path.getPathComponent(3);
-				argsArray = new String[] {date1};
-				sqlCode = "SEL0020";
-				break;
-			default :
-				argsArray = null;
-				sqlCode = null;
-		}
+		getJTreeValues(pathCount,path);
 		
 		if (sqlCode!=null && argsArray!=null) {
 			viewButton.setEnabled(true);
 		}
 		else {
 			viewButton.setEnabled(false);
+		}
+	}
+
+	private void getJTreeValues(int pathCount, TreePath path) {
+		String date1;
+		String date2;
+
+		switch (pathCount) {
+		case 2:
+			// Get a complete year messages set
+			date1 = path.getPathComponent(1)+"-01-01";
+			date2 = path.getPathComponent(1)+"-12-31";
+			argsArray = new String[] {date1,date2};
+			sqlCode = "SEL0018";
+			break;
+		case 3:
+			// Get a complete month messages set
+			int monthIndex = getIndexOfMonth(path.getPathComponent(2).toString());
+			date1 = path.getPathComponent(1)+ "-" + monthIndex;
+			date2 = path.getPathComponent(1)+ "-" + (monthIndex+1);
+			argsArray = new String[] {date1,date2};
+			sqlCode = "SEL0019";
+			break;
+		case 4:
+			// Get a complete day messages set
+			date1 = path.getPathComponent(1) + "-" + 
+			getIndexOfMonth(path.getPathComponent(2).toString()) + "-" +
+			path.getPathComponent(3);
+			argsArray = new String[] {date1};
+			sqlCode = "SEL0020";
+			break;
+		default :
+			argsArray = null;
+			sqlCode = null;
 		}
 	}
 
@@ -257,5 +271,65 @@ public class LogMessage extends JFrame implements ActionListener, TreeSelectionL
 			}
 		}
 	}
+
+	public void mouseClicked(MouseEvent e) {
+		if (e.getClickCount() == 2) {
+			JTree tree = (JTree) e.getSource();
+			TreePath path = tree.getPathForLocation(e.getX(),e.getY());
+			int pathCount = path.getPathCount();
+			if (pathCount == 4) {
+				openADayReport(path);
+			}
+		}
+	}
 	
+	private void openADayReport(TreePath path) {
+			// Get a complete day messages set
+			String date1 = path.getPathComponent(1) + "-" + 
+			getIndexOfMonth(path.getPathComponent(2).toString()) + "-" +
+			path.getPathComponent(3);
+			argsArray = new String[] {date1};
+			sqlCode = "SEL0020";
+			Worker worker = new Worker(sqlCode,argsArray);
+			worker.start();
+	}
+
+	public void mouseEntered(MouseEvent e) {
+	}
+
+	public void mouseExited(MouseEvent e) {
+	}
+
+	public void mousePressed(MouseEvent e) {
+	}
+
+	public void mouseReleased(MouseEvent e) {	
+	}
+
+	public void keyPressed(KeyEvent e) {
+	}
+
+	public void keyReleased(KeyEvent e) {
+		int keyCode = e.getKeyCode();
+		if (keyCode==KeyEvent.VK_ENTER){
+			JTree tree = (JTree) e.getSource();
+			TreePath path = tree.getSelectionPath();
+			int pathCount = path.getPathCount();
+			switch(pathCount) {
+			case 2:
+			case 3:
+				if (tree.isCollapsed(path))
+					tree.expandPath(path);
+				else
+					tree.collapsePath(path);				
+				break;
+			case 4:
+				openADayReport(path);
+				break;
+			}
+		}
+	}
+
+	public void keyTyped(KeyEvent e) {
+	}	
 }

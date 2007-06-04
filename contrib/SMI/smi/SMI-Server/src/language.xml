@@ -104,13 +104,13 @@
     </sentence>
     <sentence>
         <key errorCode="110">ERR_COD_ARGS</key>
-        <es_CO>ERROR: Argumentos inválidos para la sentencia</es_CO>
+        <es_CO>ERROR: Argumentos invalidos para la sentencia</es_CO>
         <en_US>ERROR: Invalid arguments for the sentence</en_US>
     </sentence>
     <sentence>
         <key errorCode="112">ERR_POOL</key>
-        <es_CO>No pudo cargar el pool de conexiones en la base de datos</es_CO>
-        <en_US>Can not load the connection pool in the database</en_US>
+        <es_CO>Ocurrio una falla mientras se cargaba el pool de conexiones en la base de datos</es_CO>
+        <en_US>Can not load the connection pool from the database</en_US>
     </sentence>
     <sentence>
         <key errorCode="113">ERR_PERFIL_CTA</key>

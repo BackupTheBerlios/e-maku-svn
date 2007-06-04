@@ -54,7 +54,8 @@ public class Run {
         	shutDownServer();
         } catch (PoolNotLoadException e) {
         	LogWriter.write(
-        			e.getErrorCode()+","+
+        			//e.getErrorCode()+","+
+				"ERROR: "+
         			e.getMessage()+", "+
         			Language.getWord("NODEBUG"));
 			shutDownServer();
