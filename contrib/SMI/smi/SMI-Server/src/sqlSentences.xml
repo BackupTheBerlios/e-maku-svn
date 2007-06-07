@@ -281,6 +281,11 @@
 			ORDER BY m.mid
 		</sql>
 	</sentence>
+        <sentence>
+        <!--Descripcion: ... -->
+                <code>SEL0022</code>
+                <sql>SELECT COUNT(*) FROM usuarios WHERE login='?'</sql>
+        </sentence>
 	<sentence>
 	<!--Descripcion: ... -->
 		<code>SEL0023</code>

@@ -63,10 +63,34 @@ public class UserLogin {
 	    ip = data.getChild("ip").getValue();
 	    boolean validate = data.getChild("validate")!=null ? true : false;
 	    
-	    LogWriter.write("INFO: Inicio de autenticacion para el usuario {" + login + "} con la clave {" + password + "}");
 	    QueryRunner queryRunner = null;
 	    ResultSet resultSet = null;
 	    int count = 0;
+
+	    LogWriter.write("INFO: Inicio de autenticacion para el usuario {" + login + "} con la clave {" + password + "}");
+	    
+		try {
+			queryRunner = new QueryRunner("SEL0022",new String[]{login});
+			resultSet = queryRunner.select();
+		    count = resultSet.next() ? resultSet.getInt(1) : 0;
+		} catch (SQLNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLBadArgumentsException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			QueryClosingHandler.close(resultSet);
+			queryRunner.closeStatement();
+		}
+		
+		if(count==0) {
+			String msg = "ADVERTENCIA: El usuario {" + login + "} no aparece registrado en el servidor SMI.\n" +
+			"Por favor, verifique este codigo en las base de datos para detectar algun error en el sistema.";
+			LogWriter.write("ADVERTENCIA: El usuario {" + login + "} no aparece registrado en el servidor SMI");
+			MessageDistributor.sendAlarm("Usuario no registrado", msg);
+			return false;
+		}
 	    
 		try {
 			queryRunner = new QueryRunner("SEL0023",new String[]{login,password});
@@ -208,7 +232,7 @@ public class UserLogin {
 	    }
 	    LogWriter.write(
 	    		"INFO: Acceso denegado a {" + login + "} desde la ip " + ip + 
-	    		" ingresando como " + (validate ? "Administrador/Auditor" :"Colocador"));
+	    		" ingresando como " + (validate ? "Administrador/Auditor" :"Colocador") + " [Clave incorrecta]");
 	    return false;
     }
     

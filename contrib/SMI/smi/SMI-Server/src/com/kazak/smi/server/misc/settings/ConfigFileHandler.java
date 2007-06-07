@@ -110,7 +110,7 @@ public class ConfigFileHandler {
     				messageLifeTimeForClients = Integer.parseInt(records.getValue());
     			}else if (records.getName().equals("MessageLifeTimeInDataBase")) {
     				messageLifeTimeInDB = Integer.parseInt(records.getValue());
-    			} else if (records.getName().equals("MaxMessagesDataBase")) {
+    			} else if (records.getName().equals("MessagesMaxLimit")) {
     				maxMessagesNumAllowed = Integer.parseInt(records.getValue());
     			} else if (records.getName().equalsIgnoreCase("SyncTask")) {
     				syncTaskList.add(createSyncTask(records));

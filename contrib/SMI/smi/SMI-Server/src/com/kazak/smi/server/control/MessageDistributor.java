@@ -97,7 +97,7 @@ public class MessageDistributor {
 					sender.setAdmin(resultSet.getBoolean(5));
 					sender.setAudit(resultSet.getBoolean(6));
 					sender.setGroupID(resultSet.getInt(7));
-					sender.setWsName(resultSet.getString(9) + " [" + sender.getCurrentIp() + "]");
+					sender.setWsName(resultSet.getString(9));
 					sender.setGroupName(resultSet.getString(12));	
 				}
 			} catch (SQLNotFoundException e) {
@@ -131,7 +131,13 @@ public class MessageDistributor {
 		}
 				
 		groupSize = usersVector.size();
-		LogWriter.write("INFO: Enviando mensaje a "+ groupSize + " usuarios");
+		
+		String many = "";
+		if (groupSize > 1) {
+		    many = "s";
+		}
+			
+		LogWriter.write("INFO: Enviando mensaje a "+ groupSize + " usuario" + many);
 
 		// In this cycle, the message is sent to every user in the destination list 
 

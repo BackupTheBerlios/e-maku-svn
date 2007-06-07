@@ -23,9 +23,9 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import com.kazak.smi.admin.control.Cache;
-import com.kazak.smi.admin.gui.managers.GroupsManager;
 import com.kazak.smi.admin.gui.managers.UsersManager;
 //import com.kazak.smi.admin.gui.managers.WorkStationsManager;
+import com.kazak.smi.admin.gui.managers.GroupManager;
 import com.kazak.smi.admin.gui.managers.PosManager;
 
 public class TreeManagerGroups {
@@ -383,73 +383,38 @@ public class TreeManagerGroups {
 				userManager.getSearchButton().doClick();
 				userManager.search();
 			}
-			else if ("new_point".equals(command)) {
-				/*
-				WorkStationsManager ws = new WorkStationsManager();
-				ws.clean();
-				ws.add(); */
-				
+			else if ("new_point".equals(command)) {				
 				PosManager posManager = new PosManager();
 				posManager.addPos();
 			}
 			else if ("edit_point".equals(command)) {
-				/*
-				WorkStationsManager ws = new WorkStationsManager();
-				ws.setFieldName(name);
-				ws.getSearchButton().doClick();
-				ws.editFromTree();
-				ws.getFieldCode().setEditable(true);
-				ws.getFieldIp().setEditable(true);
-				ws.getGroupsCombo().setEnabled(true); */
 				PosManager posManager = new PosManager();
 				posManager.editPos(name);
 			}
 				
 			else if ("delete_point".equals(command)) {
-				/*
-				WorkStationsManager ws = new WorkStationsManager();
-				ws.setFieldName(name);
-				ws.getSearchButton().doClick();
-				ws.delete();*/
 				PosManager posManager = new PosManager();
 				posManager.deletePos(name);
-
 			}
-			else if ("search_point".equals(command)) {
-				
-				/* WorkStationsManager ws = new WorkStationsManager();
-				ws.setFieldName(name);
-				ws.getSearchButton().doClick();
-				ws.delete(); */
-				
+			else if ("search_point".equals(command)) {				
 				PosManager posManager = new PosManager();
 				posManager.searchPos(name);
 			}
 			else if ("new_group".equals(command)) {
-				GroupsManager group = new GroupsManager();
-				group.add();
+				GroupManager group = new GroupManager();
+				group.addGroup();
 			}
 			else if ("edit_group".equals(command)) {
-				GroupsManager group = new GroupsManager();
-				group.setFieldName(name);
-				group.getSearchButton().doClick();
-				group.edit();
-				group.getVisibleCheck().setEnabled(true);
-				group.getZoneCheck().setEnabled(true);
-				group.getAcceptButton().setEnabled(true);
+				GroupManager group = new GroupManager();
+				group.editGroup(name);
 			}
 			else if ("delete_group".equals(command)) {
-				GroupsManager group = new GroupsManager();
-				group.setFieldName(name);
-				group.getSearchButton().doClick();
-				group.delete();
-				group.getAcceptButton().setEnabled(true);
+				GroupManager group = new GroupManager();
+				group.deleteGroup(name);				
 			}
 			else if ("search_group".equals(command)) {
-				GroupsManager group = new GroupsManager();
-				group.setFieldName(name);
-				group.getSearchButton().doClick();
-				group.search();
+				GroupManager group = new GroupManager();
+				group.searchGroup(name);
 			}
 		}
 		

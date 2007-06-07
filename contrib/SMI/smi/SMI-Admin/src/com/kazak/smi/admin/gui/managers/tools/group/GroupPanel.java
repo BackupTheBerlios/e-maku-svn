@@ -112,12 +112,18 @@ public class GroupPanel extends JPanel implements ActionListener, KeyListener {
 			
 			switch(action) {
 			case ToolsConstants.ADD:
+				JOptionPane.showMessageDialog(mainFrame,"El grupo " + target + " ya existe. ");
+				nameField.blankTextField();
+				nameField.requestFocus();
 				break;
 			case ToolsConstants.EDIT:
 			case ToolsConstants.EDIT_PREFILLED:
+				visibleCheck.setSelected(group.isVisible());
+				zoneCheck.setSelected(group.isZone());				
 				break;
 			case ToolsConstants.DELETE:
 			case ToolsConstants.DELETE_PREFILLED:
+				disableFields();
 				buttonBar.setEnabledAcceptButton(true);
 			case ToolsConstants.SEARCH:
 			case ToolsConstants.SEARCH_PREFILLED:
@@ -128,8 +134,8 @@ public class GroupPanel extends JPanel implements ActionListener, KeyListener {
 			}
 		} else {
 			if (action != ToolsConstants.ADD) {
-				JOptionPane.showMessageDialog(mainFrame,"El grupo no existe. ");
-				reset();
+				JOptionPane.showMessageDialog(mainFrame,"El grupo " + target + " no existe. ");
+				resetPanel();
 			} else {
 				buttonBar.setEnabledAcceptButton(true);
 			}
@@ -137,12 +143,11 @@ public class GroupPanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public String[] getFormData(){
-		String[] data = new String[5];	
+		String[] data = new String[4];	
 		data[0] = target;
-		data[1] = "";
-		data[2] = "";
-		data[3] = "";
-		data[4] = "";
+		data[1] = Boolean.toString(visibleCheck.isSelected());
+		data[2] = Boolean.toString(zoneCheck.isSelected());
+		data[3] = nameField.getText();
 		
 		return data;
 	}	
@@ -200,17 +205,13 @@ public class GroupPanel extends JPanel implements ActionListener, KeyListener {
 		
 	public void clean() {
 		switch(action) {
-			// To Add
+			// To Add, To Edit, To Delete, To Search
 		case ToolsConstants.ADD:
-			break;
-			// To Edit
 		case ToolsConstants.EDIT:
-			break;
-			// To Delete
 		case ToolsConstants.DELETE:
-			break;
-			// To Search
 		case ToolsConstants.SEARCH:
+		case ToolsConstants.SEARCH_PREFILLED:
+			reset();
 			break;
 		}	
 	}
@@ -218,6 +219,8 @@ public class GroupPanel extends JPanel implements ActionListener, KeyListener {
 	private void reset() {
 		nameField.setEditable(true);
 		nameField.blankTextField();
+		visibleCheck.setSelected(false);
+		zoneCheck.setSelected(false);
 	}
 	
 	private void resetPanel() {
@@ -226,6 +229,8 @@ public class GroupPanel extends JPanel implements ActionListener, KeyListener {
 	}
 	
 	private void disableFields() {
+		visibleCheck.setEnabled(false);
+		zoneCheck.setEnabled(false);
 	}
 
 	private void doFilledSearch() {
@@ -248,5 +253,9 @@ public class GroupPanel extends JPanel implements ActionListener, KeyListener {
 	}
 	
 	public void actionPerformed(ActionEvent e) {	
+		String command = e.getActionCommand();
+		if (command.equals("search")) {
+			doSearch();
+		}
 	}
 }

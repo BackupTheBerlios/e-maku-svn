@@ -3,20 +3,19 @@ package com.kazak.smi.admin.gui.managers.tools.Transactions;
 import org.jdom.Document;
 import org.jdom.Element;
 
-import com.kazak.smi.admin.control.Cache;
 import com.kazak.smi.admin.transactions.QuerySender;
 
 public class GroupDocument {
 	private String name;
-	private String code;
-	private String ip;
-	private String group;
+	private String isVisible;
+	private String isZone;
+	private String newName;
 	
 	public GroupDocument(String[] data) {
 		name = data[0];
-		code = data[1];
-		ip = data[2];
-		group = data[3];
+		isVisible = data[1];
+		isZone = data[2];
+		newName = data[3];
 	}
 	
 	public Document getDocumentToAdd() {
@@ -28,17 +27,15 @@ public class GroupDocument {
         transaction.addContent(id);
         
         Element driver = new Element("driver");
-        driver.setText("TR007");
+        driver.setText("TR004");
         transaction.addContent(driver);
         
 		Element pack = new Element("package");
-		 
-		Cache.Group g = Cache.getGroup(group);
-		pack.addContent(createField(code));
+
 		pack.addContent(createField(name));
-		pack.addContent(createField(ip));
-		pack.addContent(createField(g.getId()));
-		
+		pack.addContent(createField(isVisible));
+		pack.addContent(createField(isZone));
+
 		transaction.addContent(pack);
 		
 		return doc;
@@ -48,19 +45,16 @@ public class GroupDocument {
 		Element transaction = new Element("Transaction");
 		Document doc = new Document(transaction);
 		Element driver = new Element("driver");
-        driver.setText("TR008");
+        driver.setText("TR005");
         transaction.addContent(driver);
         
 		Element pack = new Element("package");
 
-		Cache.Group groupObject = Cache.getGroup(group);
-		pack.addContent(createField(ip));
-		pack.addContent(createField(groupObject.getId()));
+		pack.addContent(createField(newName));
+		pack.addContent(createField(isVisible));
+		pack.addContent(createField(isZone));
 		pack.addContent(createField(name));
-					
-		transaction.addContent(pack);
 		
-		pack = new Element("package");
 		transaction.addContent(pack);
 		
 		return doc;
@@ -75,11 +69,11 @@ public class GroupDocument {
         transaction.addContent(id);
         
         Element driver = new Element("driver");
-        driver.setText("TR009");
+        driver.setText("TR006");
         transaction.addContent(driver);
         
 		Element pack = new Element("package");
-		pack.addContent(createField(code));
+		pack.addContent(createField(name));
 		transaction.addContent(pack);
 		
 		return doc;

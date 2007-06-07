@@ -142,7 +142,7 @@ public class SyncManager {
 			}
 			e.printStackTrace();
 		}
-		
+				
 		if (loadOracleData()) {
 			if (loadPostgresData()){
 				filterInvalidData();
@@ -245,7 +245,7 @@ public class SyncManager {
 				}
 				i++;
 			}
-			LogWriter.write("INFO: Total de usuarios registrados: " + i);
+			LogWriter.write("INFO: Total de usuarios consultados desde Oracle = " + i);
 			resultSet.close();
 			statement.close();
 			oracleConnection.close();
@@ -277,14 +277,14 @@ public class SyncManager {
 		try {
 			LogWriter.write("INFO: Cargando registros actuales de la base de datos PostgreSQL [" + pgdb + "]");
 			statement = ConnectionsPool.getConnection(pgdb).createStatement();
-			resultSet = statement.executeQuery("SELECT login FROM usuarios WHERE login LIKE 'CV%'");
+			resultSet = statement.executeQuery("SELECT login FROM usuarios WHERE login LIKE 'CV%' ORDER BY login");
 			int i=0;
 			while (resultSet.next()) {
 				String code = resultSet.getString(1).trim();
 				currentUsersVector.add(code);
 				i++;
 			}
-			LogWriter.write("INFO: Total de colocadores registrados: " + i);
+			LogWriter.write("INFO: Total de colocadores actualmente registrados en PostgreSQL = " + i);
 			resultSet.close();
 			
 		} catch (SQLException e) {
@@ -297,14 +297,14 @@ public class SyncManager {
 		}
 		
 		try {	
-			resultSet = statement.executeQuery("SELECT codigo FROM puntosv");
+			resultSet = statement.executeQuery("SELECT codigo FROM puntosv ORDER BY codigo");
 			int i=0;
 			while (resultSet.next()) {
-				String code   = resultSet.getString(1).trim();
+				String code = resultSet.getString(1).trim();
 				currentWSVector.add(code);
 				i++;
 			}
-			LogWriter.write("INFO: Total de puntos de venta registrados: " + i);
+			LogWriter.write("INFO: Total de puntos de venta actualmente registrados en PostgreSQL = " + i);
 			resultSet.close();
 			statement.close();
 		} catch (SQLException e) {
@@ -369,7 +369,7 @@ public class SyncManager {
 		}
 
 		String SQL = "";
-		LogWriter.write("INFO: Eliminando usuarios deshabilitados...");
+		LogWriter.write("INFO: Eliminando usuarios deshabilitados (Total = " + deletedUsersVector.size() + ")");
 		for (String userCode : deletedUsersVector) {
 			try {
 				 SQL = "DELETE FROM " + "usuarios_pventa " + "WHERE uid=(SELECT uid FROM usuarios WHERE login='" + userCode + "')";
@@ -388,7 +388,7 @@ public class SyncManager {
 			}
 		}
 
-		LogWriter.write("INFO: Eliminando puntos de venta deshabilitados...");
+		LogWriter.write("INFO: Eliminando puntos de venta deshabilitados (Total = " + deletedWSVector.size() + ")");
 		for (String wsCode : deletedWSVector) {
 			try {
 				SQL = "DELETE FROM puntosv WHERE codigo='" + wsCode + "'";
@@ -417,7 +417,7 @@ public class SyncManager {
 					pgConnection.setAutoCommit(false);
 					statement.execute(SQL);
 					pgConnection.commit();
-					LogWriter.write("INFO: Punto de colocacion => " + name + " almacenado");
+					LogWriter.write("INFO: Punto de colocacion => " + name + " adicionado");
 				} else {
 					LogWriter.write("ERROR: Codigo " + key + " no pertenece a ningun punto de venta.");
 				}
@@ -458,7 +458,7 @@ public class SyncManager {
 					pgConnection.setAutoCommit(false);
 					statement.execute(SQL);
 					pgConnection.commit();
-					LogWriter.write("INFO: Colocador => " + user.name + " almacenado");
+					LogWriter.write("INFO: Colocador => " + user.name + " adicionado");
 				} else {
 					LogWriter.write("ERROR: Codigo " + key + " no pertenece a ningun usuario");
 				}
@@ -627,24 +627,30 @@ public class SyncManager {
 	private void filterInvalidData() {
 		
         LogWriter.write("INFO: Filtrando lista de usuarios a eliminar...");
+        int i = 0;
 		for (String userCode : currentUsersVector) {
+			// If current user 
 			if (usersHash.containsKey(userCode)) {
 				usersHash.remove(userCode);
 			}
 			else {
-				deletedUsersVector.add(userCode);
+				deletedUsersVector.add(userCode); // Invalid users vector
+				i++;
 			}
 		}
-
+		LogWriter.write("INFO: Cantidad = " + i);
+		i=0;
         LogWriter.write("INFO: Filtrando puntos de venta a eliminar...");
 		for (String wsCode : currentWSVector) {
 			if (wsHash.containsKey(wsCode)) {
 				wsHash.remove(wsCode);
 			}
 			else {
-				deletedWSVector.add(wsCode);
+				deletedWSVector.add(wsCode); // Invalid pos vector
+				i++;
 			}
 		}
+		LogWriter.write("INFO: Cantidad = " + i);
 	}
 	
 	/**
@@ -686,6 +692,7 @@ public class SyncManager {
 	                LogWriter.write("INFO: Iniciando sincronizacion programada [" + currentDate + "]");
 	                LogWriter.write("INFO: Procesando usuarios...");
 	                
+	                loadSettings();
 	                //Users sync
 					if (loadOracleData()) {
 						if (loadPostgresData()){
@@ -694,7 +701,7 @@ public class SyncManager {
 							if (storePostgresData()) {
 								result = " satisfactoriamente.";
 							}
-							LogWriter.write("INFO: Usuarios sincronizados " + result);
+							LogWriter.write("INFO: Usuarios sincronizados" + result);
 						} else {
 							LogWriter.write("ERROR: Ocurrio un problema mientras se consultaban los datos desde PostgreSQL");
 						}
@@ -708,6 +715,8 @@ public class SyncManager {
 					ResultSet resultSet = null;
 					String sql = "";
 					
+					LogWriter.write("INFO: Tiempo de vida de mensajes en DB segun configuracion = " + lifeTimeInDB);
+					
 					if (lifeTimeInDB>0) { 
 						
 						int total = 0;
@@ -718,7 +727,7 @@ public class SyncManager {
 							resultSet = statement.executeQuery(sql);
 							resultSet.next();
 							total = resultSet.getInt(1);
-							LogWriter.write("INFO: Total de mensajes vencidos -> " + total);
+							LogWriter.write("INFO: Total de mensajes vencidos = " + total);
 							resultSet.close();
 						} catch (SQLException e) {
 							String msg = "ERROR: Falla durante la sincronizacion\n" +
@@ -735,7 +744,7 @@ public class SyncManager {
 								LogWriter.write("INFO: Eliminando mensajes con tiempo de vida superior a " + lifeTimeInDB + " dias");
 								if (statement.execute(sql)) {
 									LogWriter.write("SENTENCIA: " + sql);
-									LogWriter.write("INFO: Mensajes antiguos borrados satisfactoriamente.");
+									LogWriter.write("INFO: Mensajes antiguos borrados satisfactoriamente");
 								}
 
 							} catch (SQLException e) {
@@ -750,6 +759,8 @@ public class SyncManager {
 					
 					int msgMaxTotal = ConfigFileHandler.getMaxMessagesNumAllowed();
 					
+					LogWriter.write("INFO: Maximo numero de mensajes permitidos en DB: " + msgMaxTotal);
+					
 					if(msgMaxTotal>0) {
 
 						int difference = 0;
@@ -761,7 +772,7 @@ public class SyncManager {
 							resultSet = statement.executeQuery(sql);
 							resultSet.next();
 							total = resultSet.getInt(1);
-							LogWriter.write("INFO: Total de mensajes en el sistema -> " + total);
+							LogWriter.write("INFO: Total de mensajes en el sistema = " + total);
 							resultSet.close();
 						} catch (SQLException e) {
 							String msg = "ERROR: Falla durante la sincronizacion\n" +
