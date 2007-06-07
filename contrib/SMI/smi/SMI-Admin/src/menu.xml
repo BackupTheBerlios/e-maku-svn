@@ -24,8 +24,8 @@
 		<JMenuItem>
 			<Mnemonic>B</Mnemonic>
 			<Text>Buscar</Text>
-			<Class>com.kazak.smi.admin.gui.managers.UsersManager</Class>
-			<Method>search</Method>
+			<Class>com.kazak.smi.admin.gui.managers.UserManager</Class>
+			<Method>searchUser</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>

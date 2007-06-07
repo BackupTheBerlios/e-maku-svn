@@ -69,7 +69,7 @@ public class LoginWindow implements ActionListener, KeyListener {
 		frame.setResizable(false);
 		
 		// Edit this section for debugging tasks
-		hostTextField = new JTextField("localhost",12);
+		hostTextField = new JTextField("192.168.8.18",12);
 		hostTextField.setName("host");
 		hostTextField.addKeyListener(this);
 		portTextField = new JTextField("9119",12);

@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="dist/libs/poi.jar"/>
 	<classpathentry kind="lib" path="dist/libs/mail.jar"/>
 	<classpathentry kind="lib" path="dist/libs/activation.jar"/>
+	<classpathentry kind="lib" path="dist/libs/samskivert.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

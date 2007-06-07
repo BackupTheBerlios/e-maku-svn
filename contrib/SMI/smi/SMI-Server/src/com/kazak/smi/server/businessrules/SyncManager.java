@@ -59,7 +59,7 @@ public class SyncManager {
 		try {
             oracleSQL =	getOracleSQLString();
 			LogWriter.write("INFO: Iniciando demonio de sincronizacion");
-			loadSettings();
+			initGlobalVariables();
 			for (OracleSyncTask oraclesync:ConfigFileHandler.getSyncTaskList()) {				
 				String minute = Integer.toString(oraclesync.getMinute());
 				String time = "am";
@@ -114,7 +114,7 @@ public class SyncManager {
 
     	try {
             oracleSQL =	getOracleSQLString();
-			loadSettings();
+			initGlobalVariables();
 		} catch (FileNotFoundException e) {
 			String msg = "ERROR: No se encontró el archivo de configuración de la sincronización.";
 			MessageDistributor.sendAlarm("Archivo oracle.sql no encontrado",msg + "\nCausa:\n" + e.getMessage());
@@ -196,7 +196,7 @@ public class SyncManager {
 	 * This method initializes the vectors where the users and POS info is stored
 	 * 
 	 */
-	public void loadSettings() { //throws FileNotFoundException, IOException {
+	public void initGlobalVariables() { //throws FileNotFoundException, IOException {
 		usersHash = new Hashtable<String, User>();
 		wsHash = new Hashtable<String, String>();
 		
@@ -692,7 +692,7 @@ public class SyncManager {
 	                LogWriter.write("INFO: Iniciando sincronizacion programada [" + currentDate + "]");
 	                LogWriter.write("INFO: Procesando usuarios...");
 	                
-	                loadSettings();
+	                initGlobalVariables();
 	                //Users sync
 					if (loadOracleData()) {
 						if (loadPostgresData()){

@@ -9,6 +9,8 @@ import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import com.kazak.smi.admin.gui.managers.tools.user.UserDialog;
+
 public class ButtonBar extends JPanel implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
@@ -16,6 +18,7 @@ public class ButtonBar extends JPanel implements ActionListener, KeyListener {
 	private JButton cancelButton;
 	private JButton cleanButton;
 	private MainForm mainFrame;
+	private UserDialog userDialog;
 	private int component;
 	private int action;
 	
@@ -29,6 +32,16 @@ public class ButtonBar extends JPanel implements ActionListener, KeyListener {
 		addButtons();
 	}
 
+	public ButtonBar(UserDialog userDialog, int action) {
+		super();
+		this.setLayout(new FlowLayout(FlowLayout.CENTER));
+		this.userDialog = userDialog;
+		this.component = ToolsConstants.USER;
+		this.action = action;
+		initButtons();		
+		addButtons();
+	}
+	
 	private void initAcceptButton() {
 		System.out.println("Iniciando boton aceptar...");
 		acceptButton = new JButton("Aceptar");
@@ -133,7 +146,14 @@ public class ButtonBar extends JPanel implements ActionListener, KeyListener {
 		}
 		
 		if (command.equals("cancel")) {
-			mainFrame.dispose();
+			if (component == ToolsConstants.GROUP 
+					|| component == ToolsConstants.POS) {
+				mainFrame.dispose();
+			}
+			if (component == ToolsConstants.USER) {
+				userDialog.dispose();
+			}
+
 		}			
 	}
 
@@ -148,9 +168,10 @@ public class ButtonBar extends JPanel implements ActionListener, KeyListener {
 			mainFrame.getPosPanel().executeOperation();
 			break;
 			// User
+	
 		case ToolsConstants.USER:
-			mainFrame.getUserPanel().executeOperation();
-			break;
+			userDialog.executeOperation();
+			break; 
 		}
 	}
 	
@@ -166,7 +187,7 @@ public class ButtonBar extends JPanel implements ActionListener, KeyListener {
 			break;
 			// To User
 		case ToolsConstants.USER:
-			mainFrame.clean(2);
+			userDialog.clean();
 			break;
 		}
 	}

@@ -68,7 +68,8 @@ public class UserLogin {
 	    int count = 0;
 
 	    LogWriter.write("INFO: Inicio de autenticacion para el usuario {" + login + "} con la clave {" + password + "}");
-	    
+	 
+	    // Check if login exists in the system
 		try {
 			queryRunner = new QueryRunner("SEL0022",new String[]{login});
 			resultSet = queryRunner.select();
@@ -85,13 +86,13 @@ public class UserLogin {
 		}
 		
 		if(count==0) {
-			String msg = "ADVERTENCIA: El usuario {" + login + "} no aparece registrado en el servidor SMI.\n" +
-			"Por favor, verifique este codigo en las base de datos para detectar algun error en el sistema.";
 			LogWriter.write("ADVERTENCIA: El usuario {" + login + "} no aparece registrado en el servidor SMI");
-			MessageDistributor.sendAlarm("Usuario no registrado", msg);
+			LogWriter.write("             Es posible que el login haya sido mal digitado o que no exista en la base de datos");
+			
 			return false;
 		}
 	    
+		// Check if login and password are correct in the system
 		try {
 			queryRunner = new QueryRunner("SEL0023",new String[]{login,password});
 			resultSet = queryRunner.select();
@@ -170,7 +171,6 @@ public class UserLogin {
 					} else {
 						wsName = "Ubicación Administrativa";
 					}
-
 				}
 	    	} catch (SQLNotFoundException e) {
 				e.printStackTrace();

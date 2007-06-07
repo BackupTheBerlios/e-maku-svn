@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import com.kazak.smi.admin.gui.main.MainWindow;
 import com.kazak.smi.admin.gui.managers.tools.pos.PosPanel;
 import com.kazak.smi.admin.gui.managers.tools.group.GroupPanel;
-import com.kazak.smi.admin.gui.managers.tools.user.UserPanel;
+//import com.kazak.smi.admin.gui.managers.tools.user.UserPanel;
 
 public class MainForm extends JFrame {
 
@@ -16,7 +16,7 @@ public class MainForm extends JFrame {
 	private ButtonBar buttonBar;
 	private GroupPanel groupPanel;
 	private PosPanel posPanel;
-	private UserPanel userPanel;
+	// private UserPanel userPanel;
 	
 	public MainForm(int component, int action, String target) {
 		super();
@@ -48,10 +48,10 @@ public class MainForm extends JFrame {
 			this.add(posPanel,BorderLayout.CENTER);
 			break;
 			// User
-		case ToolsConstants.USER:
+		/* case ToolsConstants.USER:
 			userPanel = new UserPanel(this,buttonBar,action,target);
 			this.add(userPanel,BorderLayout.CENTER);
-			break;
+			break; */
 		}
 		
 		this.add(buttonBar,BorderLayout.SOUTH);
@@ -68,9 +68,9 @@ public class MainForm extends JFrame {
 			posPanel.clean();
 			break;
 			// To User
-		case ToolsConstants.USER:
+	/*	case ToolsConstants.USER:
 			userPanel.clean();
-			break;
+			break; */
 		}
 	}
 	
@@ -82,9 +82,10 @@ public class MainForm extends JFrame {
 		return posPanel;
 	}
 
+	/*
 	public UserPanel getUserPanel() {
 		return userPanel;
-	}
+	}*/
 	
 	public ButtonBar getButtonBar(){
 		return buttonBar;
