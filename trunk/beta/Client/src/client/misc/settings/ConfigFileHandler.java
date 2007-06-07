@@ -206,7 +206,8 @@ public class ConfigFileHandler extends EmakuParametersStructure {
         }
 
 		String jar  = null;
-		if (System.getProperty("os.name").equals("LINUX")) {
+		
+		if (System.getProperty("os.name").equals("Linux")) {
 			jar="jar:file:/usr/local/emaku/lib/emaku/"+jarFile+"!/";
 		}
 		else {
