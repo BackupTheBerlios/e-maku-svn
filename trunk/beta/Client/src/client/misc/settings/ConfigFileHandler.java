@@ -205,7 +205,13 @@ public class ConfigFileHandler extends EmakuParametersStructure {
             }
         }
 
-		String jar = "jar:file:/usr/local/emaku/lib/emaku/"+jarFile+"!/";
+		String jar  = null;
+		if (System.getProperty("os.name").equals("LINUX")) {
+			jar="jar:file:/usr/local/emaku/lib/emaku/"+jarFile+"!/";
+		}
+		else {
+			jar="jar:file:C:/ARCHIV~1/emaku/lib/emaku/"+jarFile+"!/";
+		}
 		jarDirectory = jar+directory;
         EmakuParametersStructure.setJarDirectoryTemplates(jarDirectory+"/printer-templates");
 
