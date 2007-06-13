@@ -825,6 +825,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 	}
 
 	private void reloadData() {
+		System.out.println("Recargando ....");
 		for (int i = 0; !"".equals(TMFDtabla.getValueAt(i, 0))
 				&& i < TMFDtabla.getRowCount(); i++) {
 			TMFDtabla.setValueAt(TMFDtabla.getValueAt(i, 0), i, 0);
@@ -832,8 +833,31 @@ public class TableFindData extends JPanel implements AnswerListener,
 	}
 
 	public void changeExternalValue(ExternalValueChangeEvent e) {
+		
 		if (TMFDtabla.impValuesSize() > 0 && e.getExternalValue()!= null) {
-			reloadData();
+			boolean valueChange = false;
+			
+			/*
+			 * Como el evento se ejecuta cuando una llave exportada cambia,
+			 * el siguiente codigo verifica si los valores que cambiaron
+			 * corresponden a alguna llave importada de este componente,
+			 * si asi fuera, entonces se procede a recargar la información
+			 * de la tabla.
+			 * 
+			 * Codigo adicionado el 12-06-2007 por pipelx
+			 */
+			
+	    	for (int i=1 ; i < TMFDtabla.getSizeArgsQuery() ; i++) {
+	    		String valueImport = GFforma.getExteralValuesString(TMFDtabla.getImpValue(i-1));
+	    		String valueTable = TMFDtabla.getArgQuery(i); 
+	    		if (!valueImport.equals(valueTable)) {
+	    			valueChange = true;
+	    			break;
+	    		}
+	    	}
+	    	if (valueChange) {
+	    		reloadData();
+	    	}
 		}
 
 	}

@@ -101,6 +101,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     private int tagDataColumn = -1;
     private int currentIndex = 0;
     private boolean isInitQuery;
+    private String [] argsQuery;
     
     public EmakuTableModel(GenericForm GFforma,
             		  String sqlCode,
@@ -134,6 +135,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         this.externalValues=externalValues;
 		this.ATFDargs=ATFDargs;
 		this.initSQL=true;
+    	argsQuery = new String[1];
 		VdataRows = new Vector<Vector<Object>>();
         totalCol = new Hashtable<String,Double>();
         //importTotalCol 	= new HashMap<String,String>();
@@ -206,7 +208,8 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         keysExports = new HashMap<String,Integer>();
         deleteLink = new Vector<String>();
         this.importTotalCol = importTotalCols;
-        GFforma.addInitiateFinishListener(this);
+    	argsQuery = new String[impValues.size()+1];
+    	GFforma.addInitiateFinishListener(this);
         
         for (int i=0;i<rows;i++) {
             Vector<Object> newRows = new Vector<Object>();
@@ -354,8 +357,6 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		        try {
 		        	
 		            /* Generando la consulta  */
-		        	int NroImps = impValues.size();
-		        	String [] argsQuery = new String[NroImps+1];
 		        	int ind = 0;
 		        	argsQuery[ind] = (String)value;
 		        	ind++;
@@ -2041,6 +2042,10 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		return impValues;
 	}
 	
+	public String getImpValue(int index) {
+		return (String)impValues.get(index);
+	}
+	
 	public int impValuesSize() {
 		if (impValues!=null) {
 			return impValues.size();
@@ -2077,6 +2082,15 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	public int getCurrentIndex() {
 		return currentIndex;
 	}
+
+	public String getArgQuery(int index) {
+		return argsQuery[index];
+	}
+	
+	public int getSizeArgsQuery() {
+		return argsQuery.length;
+	}
+
 }
 
 class StructureSubPackage {
