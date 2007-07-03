@@ -1,5 +1,4 @@
 #!/bin/sh
-
 ROOT=$PWD
 
 check_root() {

@@ -169,13 +169,19 @@
 
    % sh build.sh compile
 
-   Nota: Esta opcion compila tanto el cliente como el servidor 
-         de E-Maku.
-         Asegurese de utilizar una version de Java igual o
-         superior a la 1.5
-         Para consultar otras opciones del script build.sh, 
-         ejecute:
-         % sh build.sh -h
+   Nota 1:Esta opcion compila tanto el cliente como el servidor 
+          de E-Maku.
+          Asegurese de utilizar una version de Java igual o
+          superior a la 1.5
+          Para consultar otras opciones del script build.sh, 
+          ejecute:
+	 % sh build.sh -h
+
+   Nota 2: Si se encuentra en Ubuntu, debera compilar el codigo
+	  fuente ejecutando la instrucción:
+	  % bash build.sh compile
+	  Ya que el shell por defecto de Ubuntu es Dash 
+	  y el "/bin/sh" apunta a "/bin/dash".
 
  - Para continuar con la instalacion de E-Maku es necesario 
    ingresar a la cuenta del usuario "root", para ello ejecute:
