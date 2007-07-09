@@ -1,15 +1,12 @@
 package com.kazak.smi.admin.gui.managers.tools.user;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -19,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 
 import com.kazak.smi.admin.control.Cache;
-import com.kazak.smi.admin.control.Cache.User;
 import com.kazak.smi.admin.gui.managers.tools.Operation;
 import com.kazak.smi.admin.gui.managers.tools.ToolsConstants;
 import com.kazak.smi.admin.gui.managers.tools.Transactions.UserDocument;
@@ -35,10 +31,8 @@ public class UserPanel extends JPanel implements ActionListener, KeyListener {
 	private int action;
 	private String target;
 	private ButtonBar buttonBar;
-	private ArrayList<Component> componentsList = new ArrayList<Component>();
 	private AutoCompleteComboBox nameField;
 	private JButton searchButton;
-	private JPanel tmp = new JPanel();
 	
 	public UserPanel(UserDialog userDialog, ButtonBar buttonBar,int action, String target) {
 		this.setLayout(new BorderLayout());
@@ -57,7 +51,7 @@ public class UserPanel extends JPanel implements ActionListener, KeyListener {
 		searchButton.setActionCommand("search");
 		searchButton.addActionListener(this);
 
-		nameField = new AutoCompleteComboBox(Cache.getUsersList(),false,50,searchButton);
+		nameField = new AutoCompleteComboBox(Cache.getUsersList(),true,50,searchButton);
 		
 		setInitMode();
 		this.setVisible(true);
@@ -180,47 +174,40 @@ public class UserPanel extends JPanel implements ActionListener, KeyListener {
 			break;
 			// To Search
 		case ToolsConstants.SEARCH:
+			nameField.setEnabled(true);
+			nameField.blankTextField();
+			nameField.requestFocus();
+			searchButton.setEnabled(true);
+			userDialog.collapseInternalPanel();
 			break;
 		}	
 	}
-	
+		
 	private void doSearch() {
 		target = nameField.getText();
-		userDialog.expandInternalPanel(target);
-		//fillForm();		
+		boolean isValid = checkUser();
+		if (isValid) {
+			nameField.setEnabled(false);
+			searchButton.setEnabled(false);
+			userDialog.expandInternalPanel(target);
+		}
 	}
 
-	private void fillForm() {
+	private boolean checkUser() {
 		if (Cache.containsUser(target)) {
-			User user = Cache.getUser(target);
-			
+			//User user = Cache.getUser(target);			
 			switch(action) {
 			case ToolsConstants.ADD:
 				JOptionPane.showMessageDialog(userDialog,"El usuario " + target + " ya existe. ");
-				nameField.blankTextField();
-				nameField.requestFocus();
-				break;
-			case ToolsConstants.EDIT:
-			case ToolsConstants.EDIT_PREFILLED:
-				break;
-			case ToolsConstants.DELETE:
-			case ToolsConstants.DELETE_PREFILLED:
-				buttonBar.setEnabledAcceptButton(true);
-			case ToolsConstants.SEARCH:
-			case ToolsConstants.SEARCH_PREFILLED:
-				nameField.requestFocus();
-				tmp.add(new JLabel("Bullet proof!"));
-				tmp.updateUI();
-				break;
+				return false;
 			}
 		} else {
 			if (action != ToolsConstants.ADD) {
 				JOptionPane.showMessageDialog(userDialog,"El usuario " + target + " no existe. ");
-				//resetPanel();
-			} else {
-				buttonBar.setEnabledAcceptButton(true);
-			}
-		}			
+				return false;
+			} 
+		}
+		return true;
 	}
 	
 	public void keyPressed(KeyEvent e) {

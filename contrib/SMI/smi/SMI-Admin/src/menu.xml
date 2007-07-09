@@ -31,8 +31,8 @@
 		<JMenuItem>
 			<Mnemonic>A</Mnemonic>
 			<Text>Adicionar</Text>
-			<Class>com.kazak.smi.admin.gui.managers.UsersManager</Class>
-			<Method>add</Method>
+			<Class>com.kazak.smi.admin.gui.managers.UserManager</Class>
+			<Method>addUser</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
 		<JMenuItem>

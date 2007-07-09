@@ -181,7 +181,7 @@ public class MessageDistributor {
 				mail.setDate(date);
 				mail.setMessage(body);
 				mail.setSenderFullName(sender.getNames());
-				mail.setWorkStation(sender.getWsName() + " [" + sender.getCurrentIp() + "]");
+				mail.setWorkStation(sender.getWsName());
 				mail.send();
 				LogWriter.write("INFO: [Envio a Cuenta de Correo] Remitente {" + sender.getLogin() 
 				        + "} - Destino: " + destination.getLogin() 

@@ -224,4 +224,9 @@ public class ButtonBar extends JPanel implements ActionListener, KeyListener {
 		else
 			System.out.println("El boton es nulo");
 	}
+	
+	public void setEnabledClearButton(boolean active) {
+		cleanButton.setEnabled(active);
+	}
+	
 }
