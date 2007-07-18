@@ -1,0 +1,83 @@
+.gurtl0norm {
+	padding: 4px;
+	font: 11px Trebuchet MS, Verdana,Arial,Helvetica, sanserif;
+	text-decoration: none;
+	/*background: #639C31;*/
+	background: #E6EBF9;
+	/*background-image:url(menu.gif);	
+	background-repeat:no-repeat;*/
+	color: navy;
+	cursor: hand;
+	border-left:1px solid #7B80B7;
+	border-right:1px solid #7B80B7;
+}
+.gurtl0over {
+	padding:4px;
+	font: 11px Trebuchet MS, Verdana,Arial,Helvetica, sanserif;
+	text-decoration: none;
+	border: 1px solid #A4A4A4;
+	border-left: 1px solid #E1B700;
+	background: #CFD9F3;
+	color: black;
+	cursor: hand;
+}
+.gurtl0clck {
+	padding:4px;
+	font: 11px Trebuchet MS, Verdana,Arial,Helvetica, sanserif;
+	text-decoration: none;
+	border: 1px solid #A4A4A4;
+	border-left: 4px solid #E1B700;
+	background: #CFD9F3;
+	color: white;
+	cursor: hand;
+}
+.gurtl1norm {
+	padding: 4px;
+	font: 11px Trebuchet MS, Verdana,Arial,Helvetica, sanserif;
+	text-decoration: none;
+	border: 1px solid #7B80B7;
+	background: #E6EBF9;
+	color: #243D4B;
+	cursor: hand;
+}
+.gurtl1over {
+	padding: 4px;
+	font: 11px Trebuchet MS, Verdana,Arial,Helvetica, sanserif;
+	text-decoration: none;
+	border: 1px solid #E1B700;
+	background: #CFD9F3;
+	color: #243D4B;
+	cursor: hand;
+}
+.gurtl1clck {
+	padding: 4px;
+	font: 11px Trebuchet MS, Verdana,Arial,Helvetica, sanserif;
+	text-decoration: none;
+	border: 1px solid white;
+	border-left: 4px solid #E1B700;
+	background: #CFD9F3;
+	color: #243D4B;
+	cursor: hand;
+}
+.headernorm ,.headerover, .headerclck  {
+	padding: 4px;
+	font: 11px Trebuchet MS, Verdana,Arial,Helvetica, sanserif;
+	font-weight:bold;
+	text-align:center;
+	text-decoration: none;
+	/*background: #639C31;*/
+	background-image:url(../../s/imgs/headmenu.gif);
+	background-repeat:no-repeat;
+	color: white;
+	cursor: hand;
+}
+.footernorm ,.footerover, .footerclck  {
+	padding: 4px;
+	font: 11px Trebuchet MS, Verdana,Arial,Helvetica, sanserif;
+	text-decoration: none;
+	/*background: #639C31;*/
+	background-image:url(../../s/imgs/footmenu.gif);
+	background-repeat:no-repeat;
+	color: white;
+	cursor: hand;
+}

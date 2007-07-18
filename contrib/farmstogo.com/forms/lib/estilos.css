@@ -1,0 +1,33 @@
+.verde {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #415706;
+}
+.blanco {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #FFFFFF;
+}
+.form {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #415706;
+	border: thin solid #86B30C;
+}
+.boton {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #415706;
+	border: thin solid #86B30C;
+	background-color: #DDFF9C;
+}
+.negro {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #000000;
+}
+.texto {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #000000;
+}

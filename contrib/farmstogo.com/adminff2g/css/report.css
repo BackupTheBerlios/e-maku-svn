@@ -1,0 +1,40 @@
+a,a:visited, a:link { text-decoration:none; color:#000000; }
+.hover {
+	color: brown;
+	text-decoration:none;
+}
+
+
+/* ".collapsed * { display: none}" is set from demo.js (lines 2-3) */
+.collapsed H1,
+.collapsed H2,
+.collapsed H3,
+.collapsed H4,
+.collapsed H5,
+.collapsed H6 {
+	display: block;
+}
+
+
+LI.unfolded UL {
+	/* no style set */
+}
+LI.folded UL {
+	display: none;
+}
+
+
+/* "invalid" class is added/removed by the validate() function */
+FORM .invalid {
+	color: red;
+}
+/* "alert" class is added by checkForm() if field is "invalid", ("alert" is
+    removed by validate() ) */
+FORM .alert { 
+	background: yellow;
+}
+
+
+IMG {
+	border: none;
+}

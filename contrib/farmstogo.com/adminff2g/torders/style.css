@@ -1,0 +1,55 @@
+.linksmenu
+{
+    FONT-FAMILY: Trebuchet Ms,ArialHelvetica;
+    FONT-SIZE: 11px
+}
+
+body 		{	    
+	COLOR: #000000;
+    FONT-FAMILY: Trebuchet Ms,ArialHelvetica;
+    FONT-SIZE: 11px;
+    background: #ffffff; padding:0px; margin:0px;	}
+
+P
+{
+    COLOR: #000000;
+    FONT-FAMILY: Trebuchet Ms,ArialHelvetica;
+    FONT-SIZE: 11px
+}
+	
+TD
+{
+    COLOR: #000000;
+    FONT-FAMILY: Trebuchet Ms,ArialHelvetica;
+    FONT-SIZE: 11px
+}
+
+TH
+{
+    COLOR: #000000;
+    FONT-FAMILY: Trebuchet Ms,ArialHelvetica;
+    FONT-SIZE: 11px;
+    FONT-WEIGHT: Bold;
+}
+
+
+TR
+{
+    COLOR: #000000;
+    FONT-FAMILY: Trebuchet Ms,ArialHelvetica;
+    FONT-SIZE: 11px
+}
+
+button, submit 
+{
+  FONT-FAMILY: Trebuchet Ms,ArialHelvetica; 
+  FONT-SIZE: 11px;
+  font-weight:bold
+} 
+
+input, select, textarea
+{
+  FONT-FAMILY: Trebuchet Ms,ArialHelvetica; 
+  FONT-SIZE: 11px;
+  COLOR: green
+} 
