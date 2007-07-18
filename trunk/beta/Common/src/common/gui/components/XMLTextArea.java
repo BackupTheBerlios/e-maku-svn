@@ -3,12 +3,10 @@ package common.gui.components;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
@@ -44,7 +42,7 @@ import common.gui.forms.NotFoundComponentException;
  * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  */
-public class XMLTextArea extends JTextArea implements Couplable, FocusListener {
+public class XMLTextArea extends JTextArea implements Couplable, FocusListener, RecordListener {
 
     private static final long serialVersionUID = -1097007812890286286L;
     private JScrollPane JSPpanel;
@@ -55,6 +53,8 @@ public class XMLTextArea extends JTextArea implements Couplable, FocusListener {
     private String mode;
 	private String namebutton = "SAVE";
     private String exportValue;
+    private int fieldIndexRecord = -1;
+    private ArrayList<String> recordEvent;
     
     public XMLTextArea(GenericForm GFforma) {
     	this.GFforma = GFforma;
@@ -67,6 +67,7 @@ public class XMLTextArea extends JTextArea implements Couplable, FocusListener {
         JSPpanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         JSPpanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         driverEvent = new Vector<String>();
+        recordEvent = new ArrayList<String>();
         keySQL = new Vector<String>();
         Font font = null;
         
@@ -97,8 +98,20 @@ public class XMLTextArea extends JTextArea implements Couplable, FocusListener {
             else if ("cols".equals(subargs.getAttributeValue("attribute"))) {
             	this.setColumns(Integer.parseInt(value));
             }
+            else if ("fieldIndexRecord".equals(subargs.getAttributeValue("attribute"))) {
+            	this.fieldIndexRecord = Integer.parseInt(value);
+            }
             else if ("colorBackground".equals(subargs.getAttributeValue("attribute"))) {
             	this.setBackground(getColor(subargs.getValue()));
+            }
+            else if ("colorForeground".equals(subargs.getAttributeValue("attribute"))) {
+            	this.setForeground(getColor(subargs.getValue()));
+            }
+            else if ("background".equals(subargs.getAttributeValue("attribute"))) {
+            	this.setBackground(getColor(subargs.getValue()));
+            }
+            else if ("foreground".equals(subargs.getAttributeValue("attribute"))) {
+            	this.setForeground(getColor(subargs.getValue()));
             }
             else if ("font".equals(subargs.getAttributeValue("attribute"))) {
 				try {
@@ -128,7 +141,16 @@ public class XMLTextArea extends JTextArea implements Couplable, FocusListener {
 			else if ("exportValue".equals(subargs.getAttributeValue("attribute"))) {
 				exportValue = value;
 			}
-
+			else if ("exportValue".equals(subargs.getAttributeValue("attribute"))) {
+				exportValue = value;
+			}
+			else if ("driverEventRecord".equals(subargs.getAttributeValue("attribute"))) {
+				String id = "";
+				if (subargs.getAttributeValue("id") != null) {
+					id = subargs.getAttributeValue("id");
+				}
+				recordEvent.add(subargs.getValue() + id);
+			} 
         }
         if (font!=null) {
         	this.setFont(font);
@@ -205,10 +227,11 @@ public class XMLTextArea extends JTextArea implements Couplable, FocusListener {
 		        	Iterator it = e.getChildren().iterator();
 		        	while(it.hasNext()) {
 		        		String val = ((Element)it.next()).getValue().trim();
-		        		/*if (!"".equals(val))*/
-                        Element field = new Element("field");
-                        field.setText(val);
-                        printPack.addContent(field);
+		        		if (!"".equals(val)) {
+		        			Element field = new Element("field");
+                        	field.setText(val);
+                        	printPack.addContent(field);
+		        		}
 		        		this.append(val+"\n");
 		        	}
 					if (mode != null) {
@@ -241,11 +264,21 @@ public class XMLTextArea extends JTextArea implements Couplable, FocusListener {
 
 	public void initiateFinishEvent(EndEventGenerator e) {
 		try {
+			Class[] ac = new Class[]{AnswerListener.class};
+			Class[] rc = new Class[]{RecordListener.class};
+			Object[] o = new Object[]{this};
 			for (int i=0 ; i < driverEvent.size() ; i++) {
 				GFforma.invokeMethod(
-						(String)driverEvent.get(i),
-						"addAnswerListener",
-						new Class[]{AnswerListener.class},new Object[]{this});
+						(String)driverEvent.get(i),"addAnswerListener",ac,o);
+			}
+			for (int n = 0; n < recordEvent.size(); n++) {
+				try {
+					GFforma.invokeMethod(recordEvent.get(n),"addRecordListener",rc,o);
+				} catch (InvocationTargetException e1) {
+					e1.printStackTrace();
+				} catch (NotFoundComponentException e1) {
+					e1.printStackTrace();
+				}
 			}
 		}
 		catch(NotFoundComponentException NFCEe) {
@@ -254,13 +287,8 @@ public class XMLTextArea extends JTextArea implements Couplable, FocusListener {
 		catch (InvocationTargetException ITEe) {
 			ITEe.printStackTrace();
 		}
+		
 	}
-	public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                            RenderingHints.VALUE_ANTIALIAS_ON);
-        super.paintComponent(g);
-    }
 
 	public void focusGained(FocusEvent e) {
 		// TODO Auto-generated method stub
@@ -295,4 +323,37 @@ public class XMLTextArea extends JTextArea implements Couplable, FocusListener {
 			return false;
 	}
 
+	public synchronized void arriveRecordEvent(RecordEvent e) {
+		Element element = e.getElement();
+		Element row = element.getChild("row");
+		String newText = "";
+		boolean passed = true;
+		int currIndex = 0;
+		if (row!=null) {
+			Iterator iterator = row.getChildren().iterator();
+			if (iterator.hasNext()) {
+				this.setText("");
+			}
+			while (iterator.hasNext()) {
+				Element col = (Element) iterator.next();
+				String text = col.getText();
+				if (currIndex==fieldIndexRecord) {
+					if (text.equals("") || text.equals("0")) {
+						passed = false;
+						break;
+					}
+				}
+				if ("\\n".equals(text)) {
+					newText+="\n";
+				}
+				else {
+					newText+=text;	
+				}
+				currIndex++;
+			}
+		}
+		if (passed) {
+			this.setText(newText);
+		}
+	}
 }

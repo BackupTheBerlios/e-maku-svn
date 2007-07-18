@@ -19,6 +19,8 @@ import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
+import com.sun.org.apache.xml.internal.serialize.OutputFormat;
+
 import server.comunications.EmakuServerSocket;
 import server.database.sql.LinkingCache;
 import server.database.sql.DontHaveKeyException;
@@ -252,6 +254,7 @@ public class LNDocuments {
 	                	String numero = subpackage.getValue();
     	                String primaryKey = getPrimaryKey(numero);
 	                	numero="0000000000".substring(0,10-numero.length())+numero;
+	                	consecutive=numero;
 
                     if (primaryKey==null) {
                     		undoTransaction(Language.getWord("ERR_ANNUL_DOCUMENT_NOT_FOUND"));
@@ -389,6 +392,12 @@ public class LNDocuments {
 		            	}
 
 		            	if (((Element)subpackage.getChildren().iterator().next()).getName().equals("field")) {
+		            		XMLOutputter out = new XMLOutputter();
+		            		out.setFormat(Format.getPrettyFormat());
+		            		
+		            		if ("discardBadArguments".equals(sql.getAttributeValue("attribute"))) {
+		            			LNGtransaccion.setDiscardBadArgument(true);
+		            		}
 			                getTransaction(LNGtransaccion,sql.getValue(), subpackage);
 			            }
 			            else {
@@ -878,6 +887,9 @@ public class LNDocuments {
     private static void undoTransaction(String message) {
     	LNGtransaccion.rollback();
         LNUndoSaldos.undoSaldos();
-        RunTransaction.errorMessage(sock,idTransaction,message);
+        Element ndocument = new Element("ndocument");
+        ndocument.setText(consecutive);
+        System.out.println("consecutivo: "+consecutive+" transaccion "+idTransaction);
+        RunTransaction.errorMessage(sock,idTransaction,message,ndocument);
     }
 }

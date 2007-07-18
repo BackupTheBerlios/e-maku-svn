@@ -401,18 +401,18 @@ public class AccountsAdmin extends JPanel implements ActionListener,FocusListene
 				JTpuc.setModel(new TableRenderer(sql));
 				JTpuc.getColumnModel().setColumnMargin(5);
 				JTpuc.getColumn(JTpuc.getColumnName(0)).setPreferredWidth(
-						(JTpuc.getWidth() * 20) / 100);
+						(JTpuc.getWidth() * 25) / 100);
 				JTpuc.getColumn(JTpuc.getColumnName(1)).setPreferredWidth(
-						(JTpuc.getWidth() * 80) / 100);
+						(JTpuc.getWidth() * 75) / 100);
 				JTpuc.addAncestorListener(new AncestorListener() {
 
 					public void ancestorMoved(AncestorEvent event) {
 						JTpuc.getColumn(JTpuc.getColumnName(0))
 								.setPreferredWidth(
-										(JTpuc.getWidth() * 20) / 100);
+										(JTpuc.getWidth() * 25) / 100);
 						JTpuc.getColumn(JTpuc.getColumnName(1))
 								.setPreferredWidth(
-										(JTpuc.getWidth() * 80) / 100);
+										(JTpuc.getWidth() * 75) / 100);
 					}
 
 					public void ancestorRemoved(AncestorEvent event) {

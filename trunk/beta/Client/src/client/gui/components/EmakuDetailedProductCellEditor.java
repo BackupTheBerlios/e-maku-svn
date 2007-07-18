@@ -29,6 +29,7 @@ public class EmakuDetailedProductCellEditor  extends AbstractCellEditor implemen
 		detailedProduc.setColumnCredit(ATFDargs[index].getColumnCredit());
 		detailedProduc.setColumnIdProdServ(ATFDargs[index].getColumnIdProdServ());
 		detailedProduc.setColumnIdWareHouse(ATFDargs[index].getColumnIdWareHouse());
+		detailedProduc.setColumnValue(ATFDargs[index].getColumnValue());
 	}
 	
 	public Component getTableCellEditorComponent(
@@ -36,6 +37,7 @@ public class EmakuDetailedProductCellEditor  extends AbstractCellEditor implemen
 		detailedProduc.setCode(value.toString());
 		detailedProduc.setRowIndex(row);
 		detailedProduc.setColumnIndex(column);
+		detailedProduc.setEnabled(table.getModel().isCellEditable(row, column));
 		return detailedProduc;
 	}
 

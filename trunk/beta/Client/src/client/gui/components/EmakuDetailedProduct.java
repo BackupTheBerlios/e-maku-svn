@@ -73,7 +73,9 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 	private short columnAmount;
 	private short columnIdProdServ;
 	private short columnIdWareHouse;
+	private short columnValue;
 	private Vector<XMLTextField> VFields = new Vector<XMLTextField>();
+	
 	
 	public EmakuDetailedProduct(GenericForm GFforma,
 							   String sql,
@@ -141,12 +143,12 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 		
 		XMLTFDescription = new XMLTextField("DESCRIPCION",15, 100, XMLTextField.TEXT);
 		//Compra,Inventario,Catalogos, Hay que parametrizar la consulta
-		comboBoxCatalogue= new ComboBoxFiller(genericForm,"SEL0398","catalogue",true);
-		comboBoxWarehouse= new ComboBoxFiller(genericForm,"SEL0088","warehouse",false);
+		comboBoxCatalogue= new ComboBoxFiller(genericForm,"SCS0069","catalogue",true);
+		comboBoxWarehouse= new ComboBoxFiller(genericForm,"SCS0070","warehouse",true);
 		
 		XMLTFAmount		 = new XMLTextField("CANTIDAD", 15, 10, XMLTextField.NUMERIC);
 		XMLTFIdProd		 = new XMLTextField("IDPROD", 15, 10, XMLTextField.NUMERIC);
-		XMLTFValue		 = new XMLTextField("VALOR", 15, 10, XMLTextField.NUMERIC);
+		XMLTFValue		 = new XMLTextField("VALUE", 15, 10, XMLTextField.NUMERIC);
 		XMLTFTotal		 = new XMLTextField("TOTAL", 15, 10, XMLTextField.NUMERIC);
 		JRDebit			 = new JRadioButton();
 		JRCredit		 = new JRadioButton();
@@ -168,18 +170,50 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 		XMLTFTotal.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		XMLTFDescription.setEnabled(false);
-		XMLTFValue.setEnabled(false);
 		XMLTFTotal.setEnabled(false);
 		
 		XMLTFCode.addFocusListener(new FocusAdapter() {
 			public void focusLost(FocusEvent e) {
 				String s = getValue(); 
 				genericForm.setExternalValues(XMLTFCode.getExportvalue(),s);
+				comboBoxCatalogue.exportar();
+				comboBoxWarehouse.exportar();
 			}
 		});
 		
-		XMLTFValue.setSqlLocal("SEL0399");
-		XMLTFDescription.setSqlLocal("SEL0400");
+		XMLTFValue.addFocusListener(new FocusAdapter() {
+			public void focusLost(FocusEvent e) {
+				try {
+					XMLTFValue.setNumberValue(Double.parseDouble(XMLTFValue.getText()));
+				} catch (NumberFormatException NFEe) {}
+				fieldFormater(XMLTFValue);
+				calculateAmount();
+			}
+		});
+		
+		
+		JRCredit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				XMLTFValue.setEditable(!JRCredit.isSelected());
+				comboBoxCatalogue.setEnabled(!JRCredit.isSelected());
+				if (JRCredit.isSelected()) {
+					XMLTFValue.setSqlLocal("SCS0066");
+					comboBoxWarehouse.exportar();
+				}
+			}
+		});
+		
+		JRDebit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				XMLTFValue.setEditable(JRDebit.isSelected());
+				comboBoxCatalogue.setEnabled(JRDebit.isSelected());
+				XMLTFValue.setSqlLocal("SCS0067");
+				comboBoxCatalogue.exportar();
+			}
+		});
+		
+		XMLTFValue.setSqlLocal("SCS0067");
+		XMLTFDescription.setSqlLocal("SCS0068");
 		
 		ButtonGroup group = new ButtonGroup();
 		group.add(JRDebit);
@@ -209,13 +243,13 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 		
 		JPLabels.add(XMLTFCode.getLabel());
 		JPLabels.add(XMLTFDescription.getLabel());
-		/* Pendiente de traducir */
+		JPLabels.add(p1);
 		JPLabels.add(new JLabel("Bodega"));
 		JPLabels.add(new JLabel("Precio"));
 		JPLabels.add(XMLTFAmount.getLabel());
 		JPLabels.add(XMLTFValue.getLabel());
 		JPLabels.add(XMLTFTotal.getLabel());
-		JPLabels.add(p1);
+		
 		
 		JPanel panelPrice = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		panelPrice.add(comboBoxCatalogue);
@@ -225,12 +259,12 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 		
 		JPFields.add(XMLTFCode.getJPtext());
 		JPFields.add(XMLTFDescription.getJPtext());
+		JPFields.add(p2);
 		JPFields.add(panelWareHouse);
 		JPFields.add(panelPrice);
 		JPFields.add(XMLTFAmount.getJPtext());
 		JPFields.add(XMLTFValue.getJPtext());
 		JPFields.add(XMLTFTotal.getJPtext());
-		JPFields.add(p2);
 		
 		contentPane.add(JPLabels,BorderLayout.WEST);
 		contentPane.add(JPFields,BorderLayout.CENTER);
@@ -246,7 +280,7 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 	}
 	
 	public void showDetailed() {
-		if (!JPMpopup.isVisible()) {
+		if (isEnabled() && isValid() &&!JPMpopup.isVisible()) {
 			updateUI();
 			visible = true;
 			clean();
@@ -254,7 +288,7 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 			int x = this.getWidth() - psize;
 			int y = this.getY();
 			try { JPMpopup.show(this,x,y); }
-			catch (IllegalComponentStateException e) { e.printStackTrace(); }
+			catch (IllegalComponentStateException e) { }
 		}
 		XMLTFCode.requestFocus();
 	}
@@ -273,7 +307,7 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 	}
 	
 	public void showDataSearch() {
-		if (!dataSearch.getPopup().isVisible()) {
+		if (!dataSearch.getPopup().isVisible() && isVisible()) {
 			updateUI();
 			int psize = (int) dataSearch.getPopup().getPreferredSize().getWidth();
 			int x = this.getWidth() - psize;
@@ -291,9 +325,9 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 		int keyCode = e.getKeyCode();
 		Object s = e.getSource();
 		switch(keyCode) {
-			case KeyEvent.VK_ESCAPE:
+			/*case KeyEvent.VK_ESCAPE:
 				JPMpopup.setVisible(false);
-				break;
+				break;*/
 			case KeyEvent.VK_F2:
 				if (s.equals(XMLTFCode)) {
 					showDataSearch();
@@ -320,8 +354,9 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 			table.setValueAt(comboBoxWarehouse.getItemAt(index), rowIndex, columnIdWareHouse);
 			table.setValueAt(XMLTFAmount.getText(), rowIndex, columnAmount);
 			table.setValueAt(XMLTFIdProd.getText(), rowIndex, columnIdProdServ);
+			table.setValueAt(XMLTFValue.getNumberValue(), rowIndex, columnValue);
 			table.setValueAt(
-					XMLTFValue.getNumberValue(),
+					XMLTFTotal.getNumberValue(),
 					rowIndex,
 					b ? columnDebit : columnCredit);
 			close();
@@ -344,10 +379,13 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 		JPMpopup.setVisible(visible);
 		table.requestFocus();
 		table.changeSelection(rowIndex, columnIndex, false,false);
-		table.getCellEditor().stopCellEditing();
+		try {
+			table.getCellEditor().stopCellEditing();
+		}
+		catch(NullPointerException NPEe) {}
 	}
 
-	public void calculateAmount() {
+	public synchronized void calculateAmount() {
 		try {
 			int cant = Integer.valueOf(XMLTFAmount.getText());
 			double val = XMLTFValue.getNumberValue();
@@ -362,7 +400,10 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 		String key = e.getExternalValue();
 		String value = genericForm.getExteralValuesString(key);
 		if ("".equals(value)) { return; }
-		if (key.equals("catalogue")) {
+		if (key.equals("catalogue") || key.equals("warehouse")) {
+			if (key.equals("warehouse") && JRDebit.isSelected()) {
+				return;
+			}
 			Vector<String> vconst = new Vector<String>();
 			vconst.add(XMLTFCode.getText().trim());
 			vconst.add(value);
@@ -371,7 +412,7 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 			processQuery(XMLTFValue);
 			calculateAmount();
 		}
-		if (key.equals("code")) {
+		else if (key.equals("code")) {
 			Vector<String> vconst = new Vector<String>();
 			vconst.add(XMLTFCode.getText().trim());
 			XMLTFDescription.setConstantValue(vconst);
@@ -483,5 +524,13 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 
 	public void setColumnIdWareHouse(short columnIdWareHouse) {
 		this.columnIdWareHouse = columnIdWareHouse;
+	}
+
+	public short getColumnValue() {
+		return columnValue;
+	}
+
+	public void setColumnValue(short columnValue) {
+		this.columnValue = columnValue;
 	}
 }

@@ -36,9 +36,11 @@ public class SuccessEvent extends EventObject {
     private String ndocument;
     private String message;
     
-    public SuccessEvent(Object source, String idPackage) {
+    public SuccessEvent(Object source, String idPackage,String ndocument,String message) {
         super(source);
         this.idPackage = idPackage;
+        this.ndocument=ndocument;
+        this.message=message;
     }
 
     
@@ -59,9 +61,6 @@ public class SuccessEvent extends EventObject {
         this.idPackage = idPackage;
     }
     
-    public synchronized void setNdocument(String ndocument){
-    	this.ndocument = ndocument;
-    }
     
     public synchronized String getNdocument() {
 		return ndocument;
@@ -71,7 +70,4 @@ public class SuccessEvent extends EventObject {
 		return message;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
 }

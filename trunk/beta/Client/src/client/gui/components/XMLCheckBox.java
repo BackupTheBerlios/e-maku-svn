@@ -182,9 +182,14 @@ public class XMLCheckBox extends JCheckBox implements ActionListener, AnswerList
 	        else {
 	        	this.setSelected(false);
 	        }
+	        
         }
 		catch (NullPointerException NPEe) {
 			this.setSelected(false);
+		}
+		
+		if (exportValue!=null) {
+			GFforma.setExternalValues(exportValue,String.valueOf(this.isSelected()));
 		}
 	}
 

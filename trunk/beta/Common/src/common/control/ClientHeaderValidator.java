@@ -39,6 +39,7 @@ public class ClientHeaderValidator {
     private static Vector <UpdateCodeListener>updateCodeListener = new Vector<UpdateCodeListener>();
     private static Vector <ReportListener> reportListener = new Vector<ReportListener>();
     private static Vector<SuccessListener> successListener = new Vector<SuccessListener>();
+    private static Vector<ErrorListener> errorListener = new Vector<ErrorListener>();
     
     /**
      * Este metodo se encarga de revisar toda las raices de los documentos que
@@ -49,7 +50,7 @@ public class ClientHeaderValidator {
      */
 
     public ClientHeaderValidator() {}
-    public static boolean validGeneral(Document doc) {
+    public static boolean validGeneral(Document doc) throws ErrorMessageException {
 
         /*
          * Obtenemos la raiz del documento si el documento no tiene raiz
@@ -153,13 +154,7 @@ public class ClientHeaderValidator {
             	message = EsuccessMessage.getText();
             	ndocument = Endocument!=null?Endocument.getValue():"";
         	}
-            SuccessEvent event = new SuccessEvent(new ClientHeaderValidator(),id);
-            if (!"".equals(ndocument)) {
-            	event.setNdocument(ndocument);
-            }
-            if (!"".equals(message)) {
-            	event.setMessage(message);
-            }
+            SuccessEvent event = new SuccessEvent(new ClientHeaderValidator(),id,ndocument,message);
 
             notifySuccess(event);
 	        System.gc();
@@ -172,6 +167,47 @@ public class ClientHeaderValidator {
         else if (nombre.equals("CACHE-ANSWER")) {
             new Cache(doc);
             return true;
+        }
+        /*
+         *  Validacion paquetes de Error
+         */
+        
+        else if(nombre.equals("ERROR")) {
+            String id = raiz.getChildText("id");
+            /*
+             * Si existe id quiere decir que una consulta o una transaccion
+             * retorno error
+             */
+/*	        	XMLOutputter out = new XMLOutputter();
+        	out.setFormat(Format.getPrettyFormat());
+        	try {
+				out.output(doc,System.out);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+*/
+            String ndocument = "";
+            String message  = "";
+            
+            if(id!=null && "Q".equals(id.substring(0,1))) {
+                /*
+                 * si fue una consulta entonces ...
+                 */
+                TransactionServerResultSet.putSpoolQuery(id,doc);
+            }
+            /*
+             * si por el contrario fue una transaccion entonces ...
+             */
+            else if ("T".equals(id.substring(0,1))){
+            	Element EerrorMessage = raiz.getChild("errorMessage");
+            	Element Endocument = raiz.getChild("ndocument");
+            	message = EerrorMessage!=null?EerrorMessage.getText():"";
+            	ndocument = Endocument!=null?Endocument.getValue():"";
+            	System.out.println("numero del documento: "+ndocument+" id transaccion: "+id);
+        	}
+            ErrorEvent event = new ErrorEvent(new ClientHeaderValidator(),id,ndocument,message);
+            notifyError(event);
+			throw new ErrorMessageException(id);
         }
         
         return false;
@@ -237,4 +273,21 @@ public class ClientHeaderValidator {
             l.cathSuccesEvent(event);
         }
     }
+    
+    public static void addErrorListener(ErrorListener listener ) {
+        errorListener.addElement(listener);
+    }
+
+    public static void removeErrorListener(ErrorListener listener ) {
+        errorListener.removeElement(listener);
+    }
+
+    private static void notifyError(ErrorEvent event) {
+        for (ErrorListener l : errorListener) {
+            l.cathErrorEvent(event);
+        }
+    }
+    
+    
+
 }

@@ -426,7 +426,7 @@ public class LNContabilidad {
 		asiento[1] = CacheKeys.getDate();
 		asiento[2] = concepto;
 
-		for (int k = 3; i.hasNext(); k++) {
+		for (int k = 3; i.hasNext() && k<asiento.length; k++) {
 			if (k == 3 && centroCosto != null) {
 				if (centroCosto.equals("getname") && CacheKeys.getKey("centrocosto")!=null) {
 					asiento[k] = CacheKeys.getKey("centrocosto");
@@ -442,9 +442,7 @@ public class LNContabilidad {
 			else if(k==5) {
 				Element elm2 = (Element) i.next();
 				asiento[k] = "NULL";
-				System.out.println("Consultando tercero: "+asiento[4]+" "+LinkingCache.isPCTerceros(bd, asiento[4]));
 				if(LinkingCache.isPCTerceros(bd, asiento[4])) {
-					System.out.println("La cuenta es de terceros el tercero es: "+elm2.getText().trim());
 					/*
 					 * Si el tercero viene en el paquete entonces se toma ese tercero
 					 */
@@ -478,6 +476,7 @@ public class LNContabilidad {
 			else {
 				Element elm2 = (Element) i.next();
 				asiento[k] = elm2.getText().trim();
+				System.out.println("indice "+k+" valor "+asiento[k]);
 			}
 			if (debug) {
 				System.out.println("asiento[" + k + "] = " + asiento[k]);
@@ -825,17 +824,28 @@ public class LNContabilidad {
 						 * Se verifica si en una de las columnas de la tabla
 						 * viene especificado el codigo del producto.
 						 */
-
 						if (colCost == col) {
+							String bodega ="";
+							if (CacheKeys.getKey("bodegaSaliente")!=null) {
+								bodega = CacheKeys.getKey("bodegaSaliente");
+							}
+							else { 
+								bodega = CacheKeys.getKey("bodegaEntrante");
+							}
+							
+							System.out.println("Valor de la columna: "+
+												valueAccount+
+												" pinventario: "+
+												LinkingCache.getPCosto(bd,bodega, idProdServ));
 							valueAccount = valueAccount
-									* LinkingCache.getPCosto(bd, CacheKeys
-											.getKey("idBodega"), idProdServ);
+									* LinkingCache.getPCosto(bd,bodega, idProdServ);
 							try {
 								BigDecimal bigDecimal = new BigDecimal(
 										valueAccount);
 								bigDecimal = bigDecimal.setScale(2,
 										BigDecimal.ROUND_HALF_UP);
 								valueAccount = bigDecimal.doubleValue();
+								System.out.println("Valor del registor: "+valueAccount);
 							} catch (NumberFormatException NFEe) {
 							}
 

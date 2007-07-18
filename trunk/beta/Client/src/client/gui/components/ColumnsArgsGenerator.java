@@ -66,6 +66,8 @@ public class ColumnsArgsGenerator {
 	private short columnAmount = -1;
 	private short columnIdProdServ = -1;
 	private short columnIdWareHouse = -1;
+	private short columnValue = -1;
+	private String valideEnabledCol = null;
 	
     public boolean isDataBeep() {
 		return dataBeep;
@@ -263,6 +265,15 @@ public class ColumnsArgsGenerator {
     				columnIdWareHouse = (short) Integer.parseInt(value);
     			}
     			catch(NumberFormatException NFEe) {}
+    		}
+    		else if ("columnValue".equals(attrib)) {
+    			try {
+    				columnValue = (short) Integer.parseInt(value);
+    			}
+    			catch(NumberFormatException NFEe) {}
+    		}
+    		else if ("valideEnabledCol".equals(attrib)) {
+   				valideEnabledCol = value;
     		}
     	}
 
@@ -497,5 +508,28 @@ public class ColumnsArgsGenerator {
 	
 	public int size() {
 		return size;
+	}
+
+	public short getColumnValue() {
+		return columnValue;
+	}
+
+	public void setColumnValue(short columnValue) {
+		this.columnValue = columnValue;
+	}
+
+	public String getValideEnabledCol() {
+		return valideEnabledCol;
+	}
+
+	public void setValideEnabledCol(String valideEnabledCol) {
+		this.valideEnabledCol = valideEnabledCol;
+	}
+	
+	public boolean isValideEnabledCol() {
+		if (valideEnabledCol==null) {
+			return false;
+		}
+		return true;
 	}
 }

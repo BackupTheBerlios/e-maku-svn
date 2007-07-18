@@ -5,12 +5,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.RenderingHints;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.InvocationTargetException;
@@ -116,13 +115,14 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
 	private Vector<String> constantValue;
 	private boolean multiRecords = true;
 	private boolean containsSecondName= true;
+	private String exportValue;
 	
-    public FindThird(GenericForm GFforma,Document doc) {
+    public FindThird(final GenericForm form,Document doc) {
         
         /*
          * Captura de argumentos de la clase
          */
-    	this.GFforma = GFforma; 
+    	this.GFforma = form; 
         Element args = doc.getRootElement();
         Iterator i = args.getChildren().iterator();
         Hthird = new Hashtable<String,DataThird>();
@@ -206,6 +206,9 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
             else if ("tab2".equals(e.getAttributeValue("attribute"))) {
             		tab2 = Language.getWord(e.getValue());
             }
+            else if ("exportValue".equals(e.getAttributeValue("attribute"))) {
+        		exportValue  = e.getValue();
+            }
             else if ("subarg".equals(e.getName())) {
 	            	Iterator it = e.getChildren().iterator();
 	            	while (it.hasNext()) {
@@ -243,6 +246,22 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
         JCBfined.setPreferredSize(new Dimension(300,80));
         JCBfined.setRenderer(new WrappableListCellRenderer());
         JCBfined.setEnabled(enabled);
+        JCBfined.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				int index = JCBfined.getSelectedIndex();
+				if (index>=0) {
+					String keyFind = Vkeys.get(index);
+					if (exportValue!=null) {
+						GFforma.setExternalValues(exportValue,keyFind);
+					}
+				}
+				else {
+					if (exportValue!=null) {
+						GFforma.setExternalValues(exportValue,null);
+					}
+				}
+			}
+		});
         JPnorth.add(XMLTFfind.getLabel(),BorderLayout.WEST);
         JPnorth.add(XMLTFfind.getJPtext(),BorderLayout.CENTER);
        
@@ -943,13 +962,6 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
 		} catch (NotFoundComponentException e1) {
 			e1.printStackTrace();
 		}	
-	}
-	
-	public void paintComponent(Graphics g) {
-	    Graphics2D g2 = (Graphics2D)g;
-	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-	                        RenderingHints.VALUE_ANTIALIAS_ON);
-	    super.paintComponent(g);
 	}
 	
 	public void addAnswerListener(AnswerListener listener ) {

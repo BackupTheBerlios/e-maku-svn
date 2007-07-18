@@ -31,6 +31,8 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 import common.control.ClientHeaderValidator;
+import common.control.ErrorEvent;
+import common.control.ErrorListener;
 import common.control.SuccessEvent;
 import common.control.SuccessListener;
 import common.gui.forms.GenericForm;
@@ -67,7 +69,7 @@ import common.transactions.TransactionServerResultSet;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David
  *         Cepeda </A>
  */
-public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,SuccessListener{
+public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,SuccessListener,ErrorListener{
 
     private static final long serialVersionUID = 8883108186183650115L;
 
@@ -83,13 +85,14 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 	private String typePackage = "TRANSACTION";
 	private String lastNumber;
 	private boolean actionFinish;
-
+	private boolean badActionFinish;
     
     public ButtonsPanel(GenericForm GFforma, Document doc) {
 
         this.GFforma = GFforma;
         this.setLayout(new FlowLayout(FlowLayout.TRAILING));
 		ClientHeaderValidator.addSuccessListener(this);
+		ClientHeaderValidator.addErrorListener(this);
 
         Heventos = new Hashtable<String,Vector<?>>();
         Hbuttons = new Hashtable<String,JButton>();
@@ -312,6 +315,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
         else if (obj instanceof Element) {
         	for (Object object : vec) {
         		actionFinish=false;
+        		badActionFinish=false;
 	        	Element element= (Element) object;
 	    		String type = element.getChildText("type");
 	    		String idManualTransaction = element.getChildText("idManualTransaction");
@@ -612,7 +616,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
         GFforma.sendTransaction(transaction);
 
         int times = 0;
-		while (!actionFinish && "TRANSACTION".equals(packageName)) {
+		while (!actionFinish && !badActionFinish && "TRANSACTION".equals(packageName)) {
 			try {
 				if (times<=5000) {
 					Thread.sleep(100);
@@ -624,6 +628,9 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+		}
+		if (badActionFinish) {
+			System.out.println("Accion terminada por error ...");
 		}
     }
 
@@ -640,7 +647,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
      *  Metodo encargado de devolver el Id de la ultima transaccion ejecutada
      * @return retorna el id de la transaccion
      */
-    public synchronized String getIdTransaction() {
+    public String getIdTransaction() {
         return idTransaction;
     }
         
@@ -695,6 +702,17 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 			actionFinish=true;
 		}
 
+	}
+
+	public void cathErrorEvent(ErrorEvent e) {
+		// TODO Auto-generated method stub
+		String numeration = e.getNdocument();
+		System.out.println("evento de error, transaccion: "+numeration+" transaccion: "+idTransaction+" transaccion obtenida "+e.getIdPackage());
+		if (e.getIdPackage().equals(idTransaction)) {
+			lastNumber = numeration;
+			badActionFinish=true;
+			System.out.println("Estado cambiado ...");
+		}
 	}
 }
 

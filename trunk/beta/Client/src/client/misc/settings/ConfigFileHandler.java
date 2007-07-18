@@ -126,7 +126,7 @@ public class ConfigFileHandler extends EmakuParametersStructure {
         try {
             
             builder = new SAXBuilder(false);
-            doc = builder.build(new File(ClientConstants.CONF+"client.conf"));
+            doc = builder.build(ClientConstants.CONF+"client.conf");
             raiz = doc.getRootElement();
             List Lconfig = raiz.getChildren();
             Iterator i = Lconfig.iterator();
@@ -205,14 +205,7 @@ public class ConfigFileHandler extends EmakuParametersStructure {
             }
         }
 
-		String jar  = null;
-		
-		if (System.getProperty("os.name").equals("Linux")) {
-			jar="jar:file:/usr/local/emaku/lib/emaku/"+jarFile+"!/";
-		}
-		else {
-			jar="jar:file:C:/ARCHIV~1/emaku/lib/emaku/"+jarFile+"!/";
-		}
+		String jar = "jar:file:/usr/local/emaku/lib/emaku/"+jarFile+"!/";
 		jarDirectory = jar+directory;
         EmakuParametersStructure.setJarDirectoryTemplates(jarDirectory+"/printer-templates");
 

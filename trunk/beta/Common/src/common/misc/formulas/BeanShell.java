@@ -15,6 +15,7 @@ public class BeanShell {
 		try {
 			b = (Boolean)shellScript.eval(condition);
 		} catch (EvalError e) {
+			e.printStackTrace();
 			return false;
 		}
 		return b.booleanValue();

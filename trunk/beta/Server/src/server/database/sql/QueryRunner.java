@@ -60,6 +60,7 @@ public class QueryRunner extends Element {
         this.bd = bd;
         this.cod_sql = cod_sql;
         sql = SQLFormatAgent.getSentencia(bd,cod_sql,args);
+        //System.out.println("SENTENCIA SQL :: "+sql);
     }
     
     public QueryRunner(String bd,String cache,String sql) {
@@ -78,34 +79,49 @@ public class QueryRunner extends Element {
      * @return retorna el resultado de la consulta
      */
     public ResultSet ejecutarSELECT() throws SQLException{
-        st = ConnectionsPool.getConnection(bd).createStatement();
-       // System.out.println("SENTENCIA SQL :: "+sql);
-        ResultSet rs = st.executeQuery(sql);
-        return rs;
+        try {
+	    	st = ConnectionsPool.getConnection(bd).createStatement();
+	       // System.out.println("SENTENCIA SQL :: "+sql);
+	        ResultSet rs = st.executeQuery(sql);
+	        return rs;
+    	}
+		catch(SQLException SQLEe) {
+			throw new SQLException(cod_sql+" "+SQLEe.getMessage());
+		}
     }
 
     public boolean ejecutarSQL(String cod_sql,String[] args) 
     throws SQLException,SQLNotFoundException, SQLBadArgumentsException {
-        this.cod_sql = cod_sql;
-        sql = SQLFormatAgent.getSentencia(bd,cod_sql,args);
-        st = ConnectionsPool.getConnection(bd).createStatement();
-        //System.out.println("SENTENCIA SQL :: "+sql);
-        boolean status = st.execute(sql);
-        st.close();
-        st=null;
-        return status;
+    	try {
+	        this.cod_sql = cod_sql;
+	        sql = SQLFormatAgent.getSentencia(bd,cod_sql,args);
+	        st = ConnectionsPool.getConnection(bd).createStatement();
+	        //System.out.println("SENTENCIA SQL :: "+sql);
+	        boolean status = st.execute(sql);
+	        st.close();
+	        st=null;
+	        return status;
+    	}
+    	catch(SQLException SQLEe) {
+    		throw new SQLException(cod_sql+" "+SQLEe.getMessage());
+    	}
     }
 
     public boolean ejecutarSQL(String[] args) 
     throws SQLException,SQLNotFoundException, SQLBadArgumentsException {
-        sql = SQLFormatAgent.getSentencia(bd,cod_sql,args);
-        st = ConnectionsPool.getConnection(bd).createStatement();
-        //System.out.println("SENTENCIA SQL :: "+sql);
-        boolean status = st.execute(sql);
-        st.close();
-        st=null;
-        return status;
-        
+    	try{
+	        sql = SQLFormatAgent.getSentencia(bd,cod_sql,args);
+	        st = ConnectionsPool.getConnection(bd).createStatement();
+	        //System.out.println("SENTENCIA SQL :: "+sql);
+	        boolean status = st.execute(sql);
+	        st.close();
+	        st=null;
+	        return status;
+    	}
+    	catch(SQLException SQLEe) {
+    		throw new SQLException(cod_sql+" "+SQLEe.getMessage());
+    	}
+	        
     }
     /**
      * Metodo encargado de ejcutar la sentencia sql diferente 
@@ -114,13 +130,17 @@ public class QueryRunner extends Element {
      * @return retorna TRUE si la transaccion es excitosa y FALSE si no
      */
     public boolean ejecutarSQL() throws SQLException{
-        
-        st = ConnectionsPool.getConnection(bd).createStatement();
-   //     System.out.println("SENTENCIA SQL :: "+sql);
-        boolean status = st.execute(sql);
-        st.close();
-        st=null;
-        return status;
+    	try{
+	        st = ConnectionsPool.getConnection(bd).createStatement();
+	   //     System.out.println("SENTENCIA SQL :: "+sql);
+	        boolean status = st.execute(sql);
+	        st.close();
+	        st=null;
+	        return status;
+    	}
+    	catch(SQLException SQLEe) {
+    		throw new SQLException(cod_sql+" "+SQLEe.getMessage());
+    	}
     }
     
     /**

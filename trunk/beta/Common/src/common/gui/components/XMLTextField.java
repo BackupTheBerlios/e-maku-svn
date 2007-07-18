@@ -90,6 +90,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	private String sqlInit = null;
 	private String sqlLocal = null;
 	private Vector<String> sqlCode = null;
+	protected String lastText;
 	
 	public XMLTextField() {}
 	public XMLTextField(String label, int length, int chars) {
@@ -131,33 +132,31 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 				this.setDocument(new TextDataValidator(nChars));
 			}
 		}
-		JLlabel = new JLabel(stringLabel) {
-			
-			private static final long serialVersionUID = -8298738505192648533L;
-			public void paintComponent(Graphics g) {
-		        Graphics2D g2 = (Graphics2D)g;
-		        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-		                            RenderingHints.VALUE_ANTIALIAS_ON);
-		        super.paintComponent(g);
-		    }
-		
-		};
+		JLlabel = new JLabel(stringLabel);
 		JLlabel.setName(stringLabel);
 		JPtext = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPtext.add(this);
 		
 		this.addKeyListener(new KeyAdapter() {
-			public void keyTyped(KeyEvent e) {
-				int keyCode = e.getKeyCode();
+			/*public void keyTyped(KeyEvent e) {
 				typed=true;
-				if (NUMERIC.equals(getType()) &&
-					((keyCode>=48 && keyCode<=57) ||( keyCode==0))) {
+				System.out.println("Typed + " + cleaning);
+				if (NUMERIC.equals(getType())) {
 					if (cleaning) {
 						setText("");
 						cleaning = false;
 					}					
 				}
-				
+			}*/
+			
+			public void keyPressed(KeyEvent e) {
+				int keyCode = e.getKeyCode();
+				if (NUMERIC.equals(getType())) {
+					if (cleaning && keyCode!=10) {
+						setText("");
+						cleaning = false;
+					}
+				}
 			}
 			
 			public void keyReleased(KeyEvent e) {
@@ -166,6 +165,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 				if ( (keyCode==KeyEvent.VK_ENTER) || (keyCode==KeyEvent.VK_TAB)) {
 					transferFocus();
 				}
+				
 			}
 		});
 		
@@ -177,6 +177,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 		
 		this.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
+				lastText = getText();
 				cleaning = true;
 			}
 		});
@@ -657,6 +658,12 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	}
 	public void setNChars(int chars) {
 		nChars = chars;
+	}
+	public boolean isTyped() {
+		return typed;
+	}
+	public void setTyped(boolean typed) {
+		this.typed = typed;
 	}
 
 }

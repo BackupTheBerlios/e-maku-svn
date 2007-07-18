@@ -25,18 +25,24 @@ import common.misc.language.Language;
  */
 public class VoidPackageException extends Exception {
 
-    /**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -4658473311250735174L;
-    private String mensaje;
+    private String message;
     
-    public VoidPackageException(String component) {
-        this.mensaje = Language.getWord("VOID_PACKAGE") + component;
+    public VoidPackageException(String message,boolean single) {
+    	if (single) {
+    		this.message = message;
+    	}
+    	else {
+    		this.message = Language.getWord("VOID_PACKAGE") + message;	
+    	}
+    }
+    
+    public VoidPackageException(String message) {
+    	this.message = Language.getWord("VOID_PACKAGE") + message;
     }
 
     public String getMessage() {
-        return  mensaje;
+        return  message;
     }
-
 }

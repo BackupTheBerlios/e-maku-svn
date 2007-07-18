@@ -147,6 +147,7 @@ public class FormulaCalculator {
                 pila.addElement(new Double(c));
             }
         }
+        //System.out.println("pila: "+pila.get(0));
         BigDecimal bDecimal = new BigDecimal(((Double)pila.get(0)).doubleValue());
         bDecimal = bDecimal.setScale(2,BigDecimal.ROUND_HALF_UP);
         return Double.valueOf(bDecimal.doubleValue());

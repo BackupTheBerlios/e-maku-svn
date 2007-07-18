@@ -232,7 +232,17 @@ public class LNSelectedField {
 	private String formulaReplacer(String var,List lpack) {
 		String newVar = "";
 		for (int j = 0; j < var.length(); j++) {
-			if ((var.charAt(j) >= 65 && var.charAt(j) <= 90) ||
+			if (j+10<var.length() && var.substring(j,j+11).equals(".startsWith")) {
+				String s = ".startsWith("+var.substring(j+12,var.indexOf(")",j+12))+")";
+				newVar+=s;
+				j=var.indexOf(")",j);
+			}
+			else if (j+7<var.length() && var.substring(j,j+7).equals(".equals")) {
+				String s = ".equals("+var.substring(j+8,var.indexOf(")",j+8))+")";
+				newVar+=s;
+				j=var.indexOf(")",j);
+			}
+			else if ((var.charAt(j) >= 65 && var.charAt(j) <= 90) ||
 				(var.charAt(j) >= 97 && var.charAt(j) <= 122)) {
 					int col;
 
@@ -249,6 +259,10 @@ public class LNSelectedField {
 				newVar += var.substring(j, j + 1);
 			}
 		}
+		System.out.println("Condicion reemplazanda: "+
+							newVar+
+							" resultado condicional: "+
+							BeanShell.eval(newVar));
 		return newVar;
 	}
 }

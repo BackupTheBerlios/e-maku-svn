@@ -85,8 +85,8 @@ public class ComboBoxFiller extends JComboBox implements
 	private boolean saveKey = true;
 	private boolean clean;
 	private String nameField = null;
-	private String driverEvent;
-	private String keySQL;
+	private Vector <String>driverEvent;
+    private Vector <String>keySQL;
 	private boolean whitPanel = true;
 	private int preferredLength =0;
 	private boolean returnNullValue;
@@ -96,6 +96,7 @@ public class ComboBoxFiller extends JComboBox implements
     private Vector<AnswerListener> answerListener = new Vector<AnswerListener>();
 	private Vector<String> constantValue;
 	private boolean displayIcons;
+	private boolean withOutFirstField;
 	/**
 	 * Este constructor es invocado desde un componente
 	 * @param GFforma
@@ -233,7 +234,9 @@ public class ComboBoxFiller extends JComboBox implements
 		importValue = new Vector<String>();
 		importValueCode = new Vector<String>();
 		sqlCode = new ArrayList<String>();
-		
+		driverEvent = new Vector<String>();
+        keySQL = new Vector<String>();
+        
 		while(i.hasNext()) {
 			Element element = (Element) i.next();
 			String value = element.getValue();
@@ -296,13 +299,14 @@ public class ComboBoxFiller extends JComboBox implements
          	}
          	else if ("driverEvent".equals(element.getAttributeValue("attribute"))) {
          		String id="";
-         		if (element.getAttributeValue("id")!= null) {
-         			id=element.getAttributeValue("id");
-            		}
-                driverEvent = value+id;
+            	if (element.getAttributeValue("id")!= null) {
+            		id=element.getAttributeValue("id");
+            	}
+            	if (!driverEvent.contains(value+id))
+            		driverEvent.addElement(value+id);
          	}
          	else if ("keySQL".equals(element.getAttributeValue("attribute"))) {
-                keySQL = value;
+         		keySQL.addElement(value);
          	}
          	else if ("saveKey".equals(element.getAttributeValue("attribute"))) {
                 saveKey = Boolean.parseBoolean(value);
@@ -318,6 +322,9 @@ public class ComboBoxFiller extends JComboBox implements
          	}
          	else if ("noDataMessage".equals(element.getAttributeValue("attribute"))) {
                 noDataMessage = value;
+         	}
+         	else if ("withOutFirstField".equals(element.getAttributeValue("attribute"))) {
+         		withOutFirstField = Boolean.parseBoolean(value);;
          	}
          	else if ("displayIcon".equals(element.getAttributeValue("attribute"))) {
                 displayIcons = Boolean.parseBoolean(value);
@@ -410,7 +417,7 @@ public class ComboBoxFiller extends JComboBox implements
 								java.awt.Toolkit.getDefaultToolkit().beep();
 							}
 							if (noDataMessage!=null) {
-								if (saveKey) {
+								if (saveKey && !withOutFirstField) {
 									keysCombo.addElement("");
 								}
 								setData(noDataMessage);
@@ -436,9 +443,11 @@ public class ComboBoxFiller extends JComboBox implements
 	
 	protected void clear() {
 		this.removeAllItems();
-		this.addItem("");
 		keysCombo.removeAllElements();
-		keysCombo.addElement("");
+		if (!withOutFirstField) {
+			this.addItem("");
+			keysCombo.addElement("");
+		}
 	}
 
 	/**
@@ -592,18 +601,21 @@ public class ComboBoxFiller extends JComboBox implements
 	            }
 	            
 	            public void run() {
-	                String sql;
+	                String sql; 
 			        for (int i=0;i<sqlCode.size();i++) {
 			            Document doc = new EmptyTransaction();
 	                    sql = sqlCode.get(i);
+	                    int index = getSelectedIndex();
+	                    boolean b = withOutFirstField ? true : index > 0 ? true : false;
 	                    try {
-	                    	if (getSelectedIndex()>0) {
+	                    	if ( b ) {
 	                    		doc = TransactionServerResultSet.getResultSetST(sql,args);
 	                    	}
 	                    }
 	                    catch (TransactionServerException e) {
 	                        e.printStackTrace();
 	                    }
+	                    
                         AnswerEvent event = new AnswerEvent(this,sql,doc);
 	                    notificando(event);
                     }
@@ -658,7 +670,7 @@ public class ComboBoxFiller extends JComboBox implements
 		try {
 	        this.setSelectedIndex(0);
 			Document doc = AEe.getDocument();
-	        String select = doc.getRootElement().getChild("row").getChildText("col");
+	        String select = doc.getRootElement().getChild("row").getChildText("col").trim();
 	        this.setSelectedItem(select);
 	        exportar();
         }
@@ -669,8 +681,10 @@ public class ComboBoxFiller extends JComboBox implements
 	
 	public void initiateFinishEvent(EndEventGenerator e) {
 		try {
-			if (driverEvent!=null) {
-			   GFforma.invokeMethod(driverEvent,"addAnswerListener",new Class[]{AnswerListener.class},new Object[]{this});
+			Class[] ac = new Class[]{AnswerListener.class};
+			Object[] o = new Object[]{this};
+			for (int i=0 ; i < driverEvent.size() ; i++) {
+				GFforma.invokeMethod((String)driverEvent.get(i),"addAnswerListener",ac,o);
 			}
 			SwingUtilities.invokeLater(new Thread() {
 				public void run() {

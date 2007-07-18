@@ -147,10 +147,15 @@ implements KeyListener, DocumentListener, AnswerListener, InstanceFinishingListe
     }
 
     public Element getPrintPackage() {
-    	return getPackage();
+    	try {
+			return getPackage();
+		} catch (VoidPackageException e) {
+			// TODO Auto-generated catch block
+			return new Element("Package").addContent(new Element("field"));
+		}
     }
     
-    public Element getPackage() {
+    public Element getPackage() throws VoidPackageException {
         Element pack = new Element("package");
         if (!this.getDate().equals("")) {
             Element field = new Element("field");
@@ -200,7 +205,18 @@ implements KeyListener, DocumentListener, AnswerListener, InstanceFinishingListe
 		}
 	}
 
-	
+	public boolean containData() {
+		try {
+			Element elm = getPackage();
+			if (elm.getChildren().size() > 0) {
+				return true;
+			}
+		} catch (VoidPackageException e) {
+			return false;
+		}
+		return false;
+	}
+
 	public void clean() {
 		editor.setText("");
 	}

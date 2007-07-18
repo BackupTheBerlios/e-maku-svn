@@ -1,6 +1,7 @@
 package client.gui.components;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.util.EventObject;
 
@@ -94,5 +95,9 @@ implements TableCellEditor {
 			dataSearch.setEditable(ATFDargs[column].isSpecializedCellEditable());	
 		}
 		return dataSearch;
+	}
+
+	public void setFont(Font font) {
+		dataSearch.setFont(font);
 	}
 }

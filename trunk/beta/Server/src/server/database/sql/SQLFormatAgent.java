@@ -68,7 +68,7 @@ public class SQLFormatAgent {
 		        return sentencia;
 	        }
 	        else {
-	            System.out.println("numero de tokens: "+(STsql.countTokens()-1)+" numero de args: "+args.length);
+	            System.out.println("["+codigo+"] numero de tokens: "+(STsql.countTokens()-1)+" numero de args: "+args.length);
 	            for (int i=0;i<args.length;i++) {
 	            	System.out.println("argumento "+i+": "+args[i]);
 	            }

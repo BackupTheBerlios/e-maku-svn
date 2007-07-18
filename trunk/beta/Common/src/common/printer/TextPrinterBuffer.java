@@ -120,7 +120,9 @@ public class TextPrinterBuffer {
 		for (; i< buffer.size()-1;i++) {
 			string.append(buffer.get(i)+"\n");
 		}
-		string.append(buffer.get(i));
+		if (buffer.size()>0) {
+			string.append(buffer.get(i));	
+		}
 		return string.toString();
 	}
 	
@@ -147,5 +149,11 @@ public class TextPrinterBuffer {
 			NFEe.printStackTrace();
 			return null;
 		}
+	}
+	
+	public void clear() {
+		buffer.clear();
+		buffer = null;
+		buffer = new ArrayList<StringBuilder>();
 	}
 }

@@ -1,6 +1,7 @@
 package client.control;
 
 import java.awt.Cursor;
+import java.awt.HeadlessException;
 import java.io.IOException;
 
 import javax.swing.JOptionPane;
@@ -18,8 +19,8 @@ import common.comunications.ArrivedPackageEvent;
 import common.comunications.ArrivedPackageListener;
 import common.comunications.SocketConnector;
 import common.control.ClientHeaderValidator;
+import common.control.ErrorMessageException;
 import common.misc.parameters.EmakuParametersStructure;
-import common.transactions.TransactionServerResultSet;
 
 /**
  * ClientHeaderValidator.java Creado el 22-jul-2004
@@ -76,91 +77,74 @@ public class HeadersValidator implements ArrivedPackageListener {
          * common
          */
         
-        if (!ClientHeaderValidator.validGeneral(doc)) {
-	        /*
-	         *  Validacion paquete ACP
-	         */
-	        if(nombre.equals("ACPBegin")) {
-	            Connection.dispose();          
-	            ACPHandler.ACPBegin(doc);
-	            String company = raiz.getChildText("companyName");
-	            String companyID = raiz.getChildText("companyID");
-	            title = "Emaku - Qhatu Ltda";
+        try {
+			if (!ClientHeaderValidator.validGeneral(doc)) {
+			    /*
+			     *  Validacion paquete ACP
+			     */
+			    if(nombre.equals("ACPBegin")) {
+			        Connection.dispose();          
+			        ACPHandler.ACPBegin(doc);
+			        String company = raiz.getChildText("companyName");
+			        String companyID = raiz.getChildText("companyID");
+			        title = "Emaku - Qhatu Ltda";
 
-	            /*
-	             * Cargando configuración dependiendo de la empresa ...
-	             */
-	            String bd = EmakuParametersStructure.getParameter("dataBase");
-	            ConfigFileHandler.loadJarFile(bd);
+			        /*
+			         * Cargando configuración dependiendo de la empresa ...
+			         */
+			        String bd = EmakuParametersStructure.getParameter("dataBase");
+			        ConfigFileHandler.loadJarFile(bd);
 
-	            if(company != null && companyID != null)
-	            	title = company + " - Nit: " + companyID;
-           		new MainWindow(ConfigFileHandler.getJarDirectory()+"/misc",title);
-	        }
-	        
-	        else if(nombre.equals("ACPZip")) {
-	        	ACPHandler.ACPData(doc);
-	        }
-	        else if(nombre.equals("ACPFAILURE")) {
-	            String message = raiz.getChildText("message");
-	            JOptionPane.showMessageDialog(null,message);
-	            Connection.setEnabled();
-	            Connection.setCursorState(Cursor.DEFAULT_CURSOR);
-	            try {
-					SocketConnector.getSock().close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-	        }
-	        
-	        
-	        /*
-	         *  Validacion paquetes de Error
-	         */
-	        
-	        else if(nombre.equals("ERROR")) {
-	            String id = raiz.getChildText("id");
-	            /*
-	             * Si existe id quiere decir que una consulta o una transaccion
-	             * retorno error
-	             */
-/*	        	XMLOutputter out = new XMLOutputter();
-	        	out.setFormat(Format.getPrettyFormat());
-	        	try {
-					out.output(doc,System.out);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-*/
-	            if(id!=null && "Q".equals(id.substring(0,1))) {
-	                /*
-	                 * si fue una consulta entonces ...
-	                 */
-                    TransactionServerResultSet.putSpoolQuery(id,doc);
-	            }
-				displayError();
-	        }
-	        
-	        
-	        
-	        
-	        /*
-	         *  Si no corresponde a ninguno de los paquetes anteriores es porque 
-	         *  el formato del protocolo esta errado.
-	         */
-	        
-	        else {
-	            System.out.println("Error en el formato del protocolo");
-		        	XMLOutputter out = new XMLOutputter();
-		        	out.setFormat(Format.getPrettyFormat());
-		        	try {
-						out.output(doc,System.out);
+			        if(company != null && companyID != null)
+			        	title = company + " - Nit: " + companyID;
+			   		new MainWindow(ConfigFileHandler.getJarDirectory()+"/misc",title);
+			    }
+			    
+			    else if(nombre.equals("ACPZip")) {
+			    	ACPHandler.ACPData(doc);
+			    }
+			    else if(nombre.equals("ACPFAILURE")) {
+			        String message = raiz.getChildText("message");
+			        JOptionPane.showMessageDialog(null,message);
+			        Connection.setEnabled();
+			        Connection.setCursorState(Cursor.DEFAULT_CURSOR);
+			        try {
+						SocketConnector.getSock().close();
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-	
-		        }
-        }
+			    }
+			    
+			    
+
+			    
+			    
+			    
+			    
+			    /*
+			     *  Si no corresponde a ninguno de los paquetes anteriores es porque 
+			     *  el formato del protocolo esta errado.
+			     */
+			    
+			    else {
+			        System.out.println("Error en el formato del protocolo");
+			        	XMLOutputter out = new XMLOutputter();
+			        	out.setFormat(Format.getPrettyFormat());
+			        	try {
+							out.output(doc,System.out);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+
+			        }
+			}
+		} catch (HeadlessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ErrorMessageException e) {
+			// TODO Auto-generated catch block
+			displayError();
+		}
     }
     
     private static void displayError() {

@@ -229,6 +229,14 @@ public class LinkingCache {
                 }
 
                 /*
+                 * Se almacena los saldos actuales de los inventarios
+                 */
+                try {
+                	st.execute(SQLFormatAgent.getSentencia(ConfigFileHandler.getDBName(i),"SCS0063"));
+                }
+                catch(SQLNotFoundException SQLNFEe) {}
+                
+                /*
                  * Esta metodo carga el perfil de todas las cuentas contables generadas.
                  */
 
@@ -285,10 +293,10 @@ public class LinkingCache {
         rs=null;
     }
 
-    public static void removeAsientosPr(String bd,String[] args) 
+    public static void removeAsientosPr(String bd,String sql,String[] args) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
     	Statement st = ConnectionsPool.getConnection(bd).createStatement();
-        ResultSet rs= st.executeQuery(SQLFormatAgent.getSentencia(bd,"SCS0056",args));
+        ResultSet rs= st.executeQuery(SQLFormatAgent.getSentencia(bd,sql,args));
         
         while (rs.next()) {
         	String key = "K-"+bd+"-"+rs.getString(1).trim()+"-"+rs.getString(2).trim();
@@ -315,9 +323,9 @@ public class LinkingCache {
         rs=null;
     }
 
-    public static void reloadAsientosPr(String bd,String[] args) 
+    public static void reloadAsientosPr(String bd,String sql,String[] args) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
-    	Hasientos_pr.putAll(loadCache(bd,"SCS0056",args, new String[]{"id_prod_serv","id_asientos_prod_serv"},"id_asientos_pr"));
+    	Hasientos_pr.putAll(loadCache(bd,sql,args, new String[]{"id_prod_serv","id_asientos_prod_serv"},"id_asientos_pr"));
     }
 
     public static void reloadCtasAsientos(String bd,String[] args) 
@@ -400,19 +408,21 @@ public class LinkingCache {
         	for (String subData:key) {
         		subkey+=rs.getString(subData).trim()+"-";
         	}
-/*            System.out.println("K-" + 
+        	/*
+            System.out.println("K-" + 
           		  bd + 
           		  "-" +
           		  subkey.substring(0,subkey.length()-1)+" valor: "+
-                    rs.getObject(rsValue));
-*/            tabla.put("K-" + 
+                    rs.getObject(rsValue));*/
+            tabla.put("K-" + 
             		  bd + 
             		  "-" +
             		  subkey.substring(0,subkey.length()-1),
                       rs.getObject(rsValue));
+                      
         }
-//        rs.last();
-//        System.out.println("Numero de registros: "+rs.getRow());
+        rs.last();
+        //System.out.println("Numero de registros: "+rs.getRow());
         StatementsClosingHandler.close(st);
         StatementsClosingHandler.close(rs);
         st=null;
@@ -442,11 +452,11 @@ public class LinkingCache {
                 LogAdmin.setMessage(Language.getWord("ERR_CONSECUTIVE") + " "
                         + nombreBD + NFEe.getMessage(),
                         ServerConstants.ERROR);
-                return "0000000000";
+                return "0000000001";
             }
         }
         else {
-            return "0000000000";
+            return "0000000001";
         }
     }
     
@@ -480,12 +490,37 @@ public class LinkingCache {
     public static void setSaldoInventario(String bd, String bodega,
             String id_prod_serv, double saldo) {
         String ktmp = "K-"+bd+"-"+bodega+"-"+id_prod_serv;
-        if (Hinventarios.containsKey(ktmp)) {
-            Hinventarios.get(ktmp).setSaldo(saldo);
-        }
-        else {
-            Hinventarios.put(ktmp,new InfoInventario(0,saldo,0));
-        }
+        Statement st;
+		try {
+			st = ConnectionsPool.getConnection(bd).createStatement();
+	        if (Hinventarios.containsKey(ktmp)) {
+	            Hinventarios.get(ktmp).setSaldo(saldo);
+	            st.execute(SQLFormatAgent.getSentencia(bd,"SCS0064",new String[]{id_prod_serv,
+	            																 bodega}));
+	            st.execute(SQLFormatAgent.getSentencia(bd,"SCS0065",new String[]{String.valueOf(saldo),
+	       																				 id_prod_serv,
+	       																				 bodega}));
+	            																 
+	        }
+	        else {
+	            Hinventarios.put(ktmp,new InfoInventario(0,saldo,0));
+	            st.execute(SQLFormatAgent.getSentencia(bd,"SCS0065",new String[]{String.valueOf(saldo),
+																				 id_prod_serv,
+																				 bodega}));
+	        }
+	        System.out.println("Saldos Actualizados..");
+	        st.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLBadArgumentsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
     }
 
     /**
@@ -756,7 +791,7 @@ public class LinkingCache {
             return Hconsecutive.get("K-"+bd+"-"+key);
         }
         else {
-            return "0000000000";
+            return "0000000001";
         }
     }
     

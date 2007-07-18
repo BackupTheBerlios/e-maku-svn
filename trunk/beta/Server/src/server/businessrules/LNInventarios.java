@@ -44,6 +44,7 @@ public class LNInventarios {
     private final String ENTRADA = "entrada";
     private final String SALIDA = "salida";
     private final String AJUSTE = "ajuste";
+    private final String NOTA = "nota";
     private final String GASTOS = "gastosydescuentos";
     private final String ANULAR = "anular";
     double saldo;
@@ -126,11 +127,24 @@ public class LNInventarios {
     	else if (AJUSTE.equals(tipoMovimiento)) {
     		ajustes(pack);
     	}
-    	else if (ANULAR.endsWith(tipoMovimiento)) {
+    	else if (ANULAR.equals(tipoMovimiento)) {
     		anular(); 
+    	}
+    	else if (NOTA.equals(tipoMovimiento)) {
+    		nota(pack);
     	}
     }
 
+    /**
+     * Este metodo hace un movimiento de inventarios apartir de una nota contable
+     * definiendo si es una entrada o una salida dependiendo si la nota debita o
+     * acredita una cuenta de la 14
+     */
+    
+    private void nota(Element pack) {
+    	
+    }
+    
     /**
      * Este metodo genera ajustes automaticos apartir de la cantidad, dependiendo
      * si el valor es positivo o negativo decide si el movimiento de ajuste sera 
@@ -364,7 +378,7 @@ public class LNInventarios {
 		            	
 		        double ventrada = gastos.get(j).doubleValue();
 		        vsaldo+=ventrada;
-		        double pcosto=(vsaldo/saldo);
+		        double pcosto=saldo>0?(vsaldo/saldo):0;
 		        BigDecimal bigDecimal = new BigDecimal(pcosto);
 		        bigDecimal = bigDecimal.setScale(2,BigDecimal.ROUND_HALF_UP);
 		        pcosto = bigDecimal.doubleValue();

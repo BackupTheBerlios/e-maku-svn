@@ -51,7 +51,7 @@ public class LNGenericSQL {
 
 	private boolean generable = true;
 
-	private boolean discardBadArgument = true;
+	private boolean discardBadArgument = false;
 	
 	private Map <String,String>keyvalue;
 
@@ -77,7 +77,7 @@ public class LNGenericSQL {
 		try {
 			while (i.hasNext()) {
 				Element elm = (Element) i.next();
-				if ("discardBadArgument".equals(elm.getAttributeValue("attribute"))){
+				if ("discardBadArguments".equals(elm.getAttributeValue("attribute"))){
 					discardBadArgument=true;
 				}
 				generar(elm.getValue());
@@ -113,7 +113,7 @@ public class LNGenericSQL {
 	 * paquetes y/o subpaquetes.
 	 */
 
-	public void compactarArgumentos() {
+	private void compactarArgumentos() {
 
 		List lista = pack.getChildren();
 		Iterator iterador = lista.iterator();
@@ -130,10 +130,11 @@ public class LNGenericSQL {
 		if (Efirst.getAttributeValue("nameField")!=null  && !"".equals(Efirst.getAttributeValue("nameField"))) {
 			SattributeName = Efirst.getAttributeValue("nameField");
 		}
-
+		
+		
 		if ("".equals(SvalueFirst))
 			countParams = 0;
-
+		
 		// Si la etiqueta contiene el atributo disableKey, se le asigna el valor
 		// de falso a la
 		// variable keyfield, si eliminar el contenido del vector de llaves
@@ -156,83 +157,79 @@ public class LNGenericSQL {
 		 * asigna como argumentos el contenido del vector keyvalue
 		 */
 
-		if (keyfield) {
-			args = new String[countParams + keyvalue.size()];
 
-			if (!"finalKey".equals(SattributeFirst)) {
-				Iterator val = keyvalue.values().iterator();
-				
-				for (; val.hasNext(); j++) {
-					args[j] = (String) val.next();
-				}
-			} else {
-				finalKey = true;
-			}
-		} else
-			args = new String[countParams];
-		// Si la primera etiqueta del paquete contiene una llave en el primer
-		// registro, se la
-		// asigna al vector de llaves y se le da el valor de true a la
-		// variable keyfield.
-
-		if ("key".equals(SattributeFirst)) {
-			keyfield = true;
-			if (SattributeName == null) {
-				SattributeName = new String("");
-			}
-			keyvalue.put(SattributeName, SvalueFirst);
-		}
-
-		if (countParams > 0)
-			args[j] = SvalueFirst;
-
-		j++;
-
-		for (; iterador.hasNext(); j++) {
-			pack = (Element) iterador.next();
-			if (pack.getName().equals("field")) {
-				if (!pack.getValue().equals("")) {
-					args[j] = pack.getValue();
-				} else if (pack.getAttributeValue("attribute") != null
-						&& "NULL".equals(pack.getAttributeValue("attribute"))) {
-					args[j] = "NULL";
-				} else {
-					args[j] = "";
-				}
-				try {
-					// Si existen mas llaves en el contenido del paquete, estas
-					// se van adicionando al vector de
-					// llaves y se le da el valor de true a la variable
-					// keyfield.
-					if ("key".equals(pack.getAttribute("attribute").getValue())) {
-						keyfield = true;
-						if (SattributeName == null) {
-							SattributeName = new String("");
-						}
-						keyvalue.put(SattributeName, args[j]);
-
+			if (keyfield) {
+				args = new String[countParams + keyvalue.size()];
+	
+				if (!"finalKey".equals(SattributeFirst)) {
+					Iterator val = keyvalue.values().iterator();
+					
+					for (; val.hasNext(); j++) {
+						args[j] = (String) val.next();
 					}
-				} catch (NullPointerException NPEe) {
+				} else {
+					finalKey = true;
 				}
+			} else
+				args = new String[countParams];
+			// Si la primera etiqueta del paquete contiene una llave en el primer
+			// registro, se la
+			// asigna al vector de llaves y se le da el valor de true a la
+			// variable keyfield.
+	
+			if ("key".equals(SattributeFirst)) {
+				keyfield = true;
+				if (SattributeName == null) {
+					SattributeName = new String("");
+				}
+				keyvalue.put(SattributeName, SvalueFirst);
 			}
-
-		}
-
-		if (finalKey) {
-			Iterator val = keyvalue.values().iterator();
-			for (int i = 0; val.hasNext(); i++, j++) {
-				args[j] = (String) val.next();
-				// System.out.println("args: "+args[j]);
+	
+			if (countParams > 0)
+				args[j] = SvalueFirst;
+	
+			j++;
+	
+			for (; iterador.hasNext(); j++) {
+				pack = (Element) iterador.next();
+				if (pack.getName().equals("field")) {
+					if (!pack.getValue().equals("")) {
+						args[j] = pack.getValue();
+					} else if (pack.getAttributeValue("attribute") != null
+							&& "NULL".equals(pack.getAttributeValue("attribute"))) {
+						args[j] = "NULL";
+					} else {
+						args[j] = "";
+					}
+					try {
+						// Si existen mas llaves en el contenido del paquete, estas
+						// se van adicionando al vector de
+						// llaves y se le da el valor de true a la variable
+						// keyfield.
+						if ("key".equals(pack.getAttribute("attribute").getValue())) {
+							keyfield = true;
+							if (SattributeName == null) {
+								SattributeName = new String("");
+							}
+							keyvalue.put(SattributeName, args[j]);
+	
+						}
+					} catch (NullPointerException NPEe) {
+					}
+				}
+	
 			}
-
-			finalKey = false;
-		}
-		/*
-		 * 
-		 * System.out.println("No. de argumentos: "+args.length); for (int i=0;i<args.length;i++)
-		 * System.out.println("Argumento "+i+" posicion "+args[i]);
-		 * 
-		 */
+	
+			if (finalKey) {
+				Iterator val = keyvalue.values().iterator();
+				for (int i = 0; val.hasNext(); i++, j++) {
+					args[j] = (String) val.next();
+					// System.out.println("args: "+args[j]);
+				}
+	
+				finalKey = false;
+			}
+		
 	}
 
 	public void generar(String sql) throws SQLException, SQLNotFoundException,
@@ -244,6 +241,9 @@ public class LNGenericSQL {
 			catch(SQLBadArgumentsException SQLBAEe) {
 				if (!discardBadArgument) {
 					throw new SQLBadArgumentsException(sql);
+				}
+				else {
+					discardBadArgument=false;
 				}
 			}
 		}
@@ -298,5 +298,9 @@ public class LNGenericSQL {
 
 	public void setGenerable(boolean generable) {
 		this.generable = generable;
+	}
+
+	public void setDiscardBadArgument(boolean discardBadArgument) {
+		this.discardBadArgument = discardBadArgument;
 	}
 }

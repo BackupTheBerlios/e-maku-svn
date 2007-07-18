@@ -224,7 +224,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
     	exportFields = new Hashtable<Integer,String>();
         Hcomps = new Hashtable<String,Componentes>();
         
-
+        setExternalValues("userLogin", EmakuParametersStructure.getParameter("userLogin"));
         Element elm = doc.getRootElement();
         List listaRaiz = elm.getChildren();
 
@@ -249,10 +249,14 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 
             if (nombre.equals("preferences")) {
                 if (!preferences(e)) {
-                    JOptionPane.showInternalMessageDialog(JDPpanel,
-                            							  Language.getWord("ERR_LOCAL_PARAMETERS"),
-                            							  Language.getWord("ERROR_MESSAGE"),
-                            							  JOptionPane.ERROR_MESSAGE);
+                	SwingUtilities.invokeLater(new Runnable() {
+                		public void run() {
+                            JOptionPane.showInternalMessageDialog(JDPpanel,
+      							  Language.getWord("ERR_LOCAL_PARAMETERS"),
+      							  Language.getWord("ERROR_MESSAGE"),
+      							  JOptionPane.ERROR_MESSAGE);
+                		}
+                	});
                     this.close();
                     try {
                         this.finalize();
@@ -1203,25 +1207,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
     }
 
     private void notificandoExternalValue(ExternalValueChangeEvent event) {
-    		/*
-    		class notificacionExterna extends Thread {
-    			private ExternalValueChangeEvent event;
-    			
-    			public notificacionExterna(ExternalValueChangeEvent event) {
-    				this.event=event;
-    			}
-    			
-    			public void run() {
-    				Vector lista;
-    				lista = (Vector)changeExternalValueListener.clone();
-			        for (int i=0; i<lista.size();i++) {
-			            ExternalValueChangeListener listener = (ExternalValueChangeListener)lista.elementAt(i);
-			            listener.changeExternalValue(event);
-			        }
-    			}
-    		}
-    		new notificacionExterna(event).start();
-    		*/
+ 
     	synchronized(changeExternalValueListener) {
 	        for (ExternalValueChangeListener l:changeExternalValueListener) {
 	            l.changeExternalValue(event);
@@ -1257,6 +1243,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
         			externalValues.remove(key);
         		}
         	}
+        	setExternalValues("userLogin", EmakuParametersStructure.getParameter("userLogin"));
     	}
 	}
 	
@@ -1266,7 +1253,13 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
         }
         else {
         	try {
-        		return ((Double)externalValues.get(key)).doubleValue();
+        		Object o = externalValues.get(key);
+        		if (o instanceof String) {
+        			return Double.parseDouble(o.toString());
+        		}
+        		else {
+        			return ((Double)o).doubleValue();
+        		}
         	}
         	catch(NullPointerException NPEe) {
         		return 0;
@@ -1277,7 +1270,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
         }
 	}
 
-	public synchronized String getExteralValuesString(Object key) {
+	public String getExteralValuesString(Object key) {
     	if (child) {
         	return GFforma.getExteralValuesString(key);
         }
@@ -1535,6 +1528,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 			Iterator it = elm.getChildren().iterator();
 			int cont = 0;
 			String mensaje="";
+			int maxValue =-1 ;
 			while(it.hasNext()) {
 				
 				Element element = (Element) it.next();
@@ -1553,12 +1547,26 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 					catch (NotFoundComponentException e) {}
 
 				}
-				if ("errorMessage".equals(element.getAttributeValue("attribute"))) {
+				else if ("errorMessage".equals(element.getAttributeValue("attribute"))) {
 					mensaje=value;
 				}
+				else if ("maxValue".equals(element.getAttributeValue("attribute"))) {
+					try {
+						maxValue = Integer.parseInt(value);
+					} catch(NumberFormatException e) {
+						maxValue = -1; 
+					}
+				}
 			}
-			if (cont!=1) {
-				throw new MultiPackageException(mensaje);
+			if (maxValue > 0) {
+				if (cont>maxValue) {
+					throw new MultiPackageException(mensaje);
+				}	
+			}
+			else {
+				if (cont!=1) {
+					throw new MultiPackageException(mensaje);
+				}
 			}
 		}
 		else {
@@ -1683,6 +1691,11 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 	public void internalFrameOpened(InternalFrameEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void setIdTransaction(String mnuTransaction) {
+		// TODO Auto-generated method stub
+		this.idTransaction = mnuTransaction;
 	}
 }
 

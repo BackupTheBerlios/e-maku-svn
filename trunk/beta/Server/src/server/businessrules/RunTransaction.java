@@ -204,6 +204,14 @@ public class RunTransaction extends Thread {
 
 	}
 
+	public static void errorMessage(SocketChannel sock, String id_transaction,
+			String message,Element element) {
+		ErrorXML error = new ErrorXML();
+		LogAdmin.setMessage(message, ServerConstants.ERROR);
+		SocketWriter.writing(sock, error.returnError(id_transaction, message,element));
+
+	}
+
 	public static void successMessage(SocketChannel sock,
 			String id_transaction, String message) {
 		SuccessXML success = new SuccessXML();

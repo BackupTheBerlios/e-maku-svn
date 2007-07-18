@@ -36,9 +36,9 @@ import common.comunications.DateSender;
 import common.control.ClientHeaderValidator;
 import common.control.DateEvent;
 import common.control.DateListener;
+import common.gui.forms.EndEventGenerator;
 import common.gui.forms.ExternalValueChangeEvent;
 import common.gui.forms.ExternalValueChangeListener;
-import common.gui.forms.EndEventGenerator;
 import common.gui.forms.GenericForm;
 import common.gui.forms.InstanceFinishingListener;
 import common.gui.forms.NotFoundComponentException;
@@ -203,6 +203,7 @@ public class GenericData extends JPanel implements DateListener,
 				String addAttribute = null;
 				String sendRecord = null;
 				String cname = null;
+				String defaultText = null;
 				boolean queryOnInit = false;
 				boolean withOutArgsQuery = false;
 				String sqlInit = null;
@@ -337,6 +338,8 @@ public class GenericData extends JPanel implements DateListener,
 						withOutArgsQuery = Boolean.parseBoolean(elm.getValue());
 					} else if ("sqlInit".equals(elm.getAttributeValue("attribute"))) {
 						sqlInit = elm.getValue();
+					} else if ("defaultText".equals(elm.getAttributeValue("attribute"))) {
+						defaultText = elm.getValue();
 					} 
 				}
 				XMLText = new XMLTextField(lab, width, nroChars, format,mask);
@@ -360,6 +363,9 @@ public class GenericData extends JPanel implements DateListener,
 				
 				if (exportValue != null) {
 					XMLText.setExportvalue(exportValue);
+				}
+				if (defaultText != null) {
+					XMLText.setText(defaultText);
 				}
 				if (importValue != null) {
 					XMLText.setImportValue(importValue);
@@ -439,6 +445,20 @@ public class GenericData extends JPanel implements DateListener,
 				if (addAttribute != null) {
 					XMLText.setAddAttribute(addAttribute);
 				}
+				/*
+				 * Codigo adicionado para eliminar variables exportadas con la tecla delete
+				 */
+				
+				XMLText.addKeyListener(new KeyAdapter() {
+					public void keyReleased(KeyEvent e) {
+						XMLTextField xout = (XMLTextField)e.getSource();
+						if (xout.isExportvalue() && !"NUMERIC".equals(xout.getType()))
+							if (e.getKeyCode()==KeyEvent.VK_DELETE) {
+								GFforma.setExternalValues(xout.getExportvalue(),xout.getText());
+							}
+					}
+				});
+				
 				XMLText.addFocusListener(new FocusAdapter() {
 					public void focusLost(FocusEvent e) {
 						
@@ -514,7 +534,7 @@ public class GenericData extends JPanel implements DateListener,
 						Document doc = null; 
 						doc = TransactionServerResultSet.getResultSetST(field.getSqlInit(),getArgsForQuery(field));
 						Iterator i = doc.getRootElement().getChildren("row").iterator();
-			            while (i.hasNext()) {
+			            if (i.hasNext()) {
 			                Element e = (Element) i.next();
 		                    Iterator j = e.getChildren().iterator();
 	                        Element f = (Element)j.next();
@@ -523,12 +543,15 @@ public class GenericData extends JPanel implements DateListener,
 	                        	NumberFormat nf = NumberFormat.getNumberInstance();
 			        			DecimalFormat form = (DecimalFormat) nf;
 			        			form.applyPattern("###,###,##0.00");
-			        			field.setText(nf.format(Double.parseDouble(text)));
-			        			field.setNumberValue(nf.parse(text).doubleValue());
+			        			try {
+				        			field.setText(nf.format(Double.parseDouble(text)));
+				        			field.setNumberValue(nf.parse(text).doubleValue());
+			        			} catch (NumberFormatException NFE) {}
 	                        }
 	                        else {
 	                        	field.setText(text);
 	                        }
+	                        exportar(field);
 			            }
 					} catch (TransactionServerException STEe) {
 						//STEe.printStackTrace();
@@ -538,6 +561,7 @@ public class GenericData extends JPanel implements DateListener,
 				}
 			}
 		};
+		//SwingUtilities.invokeLater(t);
 		t.start();
 	}
 
@@ -548,11 +572,12 @@ public class GenericData extends JPanel implements DateListener,
 		int argumentos = imps.length + field.getConstantSize();
 		impValues = new String[argumentos];
 		int i = 0;
+		int j = 0;
 		for (; i < field.getConstantSize(); i++) {
 			impValues[i] = field.getConstantValue(i);
 		}
-		for (; i < imps.length; i++) {
-			impValues[i] = GFforma.getExteralValuesString(imps[i]);
+		for (; i < impValues.length ; i++,j++) {
+			impValues[i] = GFforma.getExteralValuesString(imps[j]);
 		}
 		return impValues;
 	}
@@ -767,6 +792,11 @@ public class GenericData extends JPanel implements DateListener,
 				} catch (NoSuchElementException NSEe) {
 					error=true;
 				}
+			}
+			if ("conditional".equals(arg.getAttributeValue("attribute"))){
+				String s = arg.getValue();
+				s = GFforma.parseFormula(s);
+				error = !(Boolean) GFforma.eval(s);
 			}
 			if ("errorMessage".equals(arg.getAttributeValue("attribute"))) {
 				errorMessage = arg.getValue();
@@ -1043,15 +1073,13 @@ public class GenericData extends JPanel implements DateListener,
 			XMLTextField xmltf = ((XMLTextField) fields.get(i));
 			synchronized (xmltf) {
 				String oldValue = xmltf.getText();
-				/* Problemas con consulta de datos atravez de sqlCode
-				 * .
-				 * if (xmltf.getImportValues()!=null) {
+				if (xmltf.getImportValues()!=null) {
 					for (String valor:xmltf.getImportValues()) {
 						if (valor.equals(e.getExternalValue())){
 							xmltf.setText(GFforma.getExteralValuesString(valor));
 						}
 					}
-				}*/
+				}
 				
 				if (xmltf.isCalculateExportvalue()) {
 					String formula = xmltf.getCalculateExportValue();

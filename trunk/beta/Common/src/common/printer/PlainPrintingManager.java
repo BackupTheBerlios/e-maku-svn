@@ -46,15 +46,18 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 	
 	public PlainPrintingManager() {
 		ClientHeaderValidator.addSuccessListener(this);
+		textPrinterBuffer.clear();
 	}
 	
 	public PlainPrintingManager(String ndocument) {
 		this();
 		impresionType = ImpresionType.PLAIN;
 		this.ndocument = ndocument;
+		textPrinterBuffer.clear();
 	}
 	
 	public void process(Element rootTemplate,Element rootTransact) {
+		textPrinterBuffer.clear();
 		try {
 			Attribute ATTRequesNumeration = rootTemplate.getAttribute("requestNumeration");
 			if (ATTRequesNumeration!=null && ATTRequesNumeration.getBooleanValue()) {
@@ -329,6 +332,8 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 		
 		int col =  attribs.get("col").getIntValue();
 		
+		Attribute attrIncrement = attribs.get("incrementRow");
+		boolean passed = false;
 		Attribute attribute = attribs.get("type");
 		String type = attribute!=null ? attribute.getValue() : null ;
 		value = !"NULL".equals(value) && !"".equals(value) ?value:"";
@@ -336,6 +341,7 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 			int width = attribs.get("width").getIntValue();
 			int height = attribs.get("height").getIntValue();
 			textPrinterBuffer.insertTextArea(value,row,col,width,height,true);
+			passed = true;
 		}
 		else if ("STRING".equals(type)) {
 			/*value = " ".equals(value) || "".equals(value) ? "   " : value.trim();
@@ -348,6 +354,7 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 				int colCharSeparator = attribs.get("separatorcol").getIntValue();
 				textPrinterBuffer.insertString(att.getValue(),row,colCharSeparator,null);
 			}
+			passed = true;
 		}
 		else if ("DATE".equals(type)) {
 			
@@ -379,6 +386,7 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 				int colCharSeparator = attribs.get("separatorcol").getIntValue();
 				textPrinterBuffer.insertString(att.getValue(),row,colCharSeparator,null);
 			}
+			passed = true;
 		}
 		else if ("STRINGCONCAT".equals(type)) {
 			if (concatData.containsKey(row)) {
@@ -394,6 +402,7 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 				textPrinterBuffer.insertString(value,row,col,null);
 				concatData.put(row, new String[]{String.valueOf(col),value});
 			}
+			passed = true;
 		}
 		else if ("NUMERIC".equals(type)) {
 			String mask = attribs.get("mask").getValue();
@@ -405,6 +414,7 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 				int colCharSeparator = attribs.get("separatorcol").getIntValue();
 				textPrinterBuffer.insertString(att.getValue(),row,colCharSeparator,null);
 			}
+			passed = true;
 		}
 		else if ("ABSTRACT".equals(type)) {
 			int height = attribs.get("height").getIntValue();
@@ -418,13 +428,18 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
                 Double d = Double.parseDouble(value);
                 String letters = String.valueOf(d.intValue());
                 letters = NumberToLetterConversor.letters(letters, null);
-                
                 textPrinterBuffer.insertTextArea(letters,row,col,width,height,true);
+                if (attrIncrement!=null && attrIncrement.getBooleanValue()) {
+                	currentRow+=height;
+                }
             } catch (NumberFormatException NFE) {
                 // Pendiente por traducir
                 System.out.printf("No se puede convertir %s  a letras\n%s",value,NFE.getMessage());
             }
         }
+		if (passed && attrIncrement!=null && attrIncrement.getBooleanValue()) {
+			currentRow++;
+		} 
 	}
 	
 	public String getBufferString() {

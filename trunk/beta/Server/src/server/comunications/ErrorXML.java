@@ -66,5 +66,16 @@ public class ErrorXML extends Document {
 		
 		return this;
 	}
-	
+
+	public Document returnError(String id_return,String message,Element element) {
+        this.setRootElement(new Element("ERROR"));
+		Element idreturn = new Element("id");
+		Element msg = new Element("errorMsg");
+	    idreturn.setText(id_return);
+	    msg.setText(message);
+        this.getRootElement().addContent(idreturn);
+        this.getRootElement().addContent(msg);
+        this.getRootElement().addContent(element);
+        return this;
+    }
 }

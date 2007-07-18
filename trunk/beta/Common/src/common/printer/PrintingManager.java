@@ -2,6 +2,7 @@ package common.printer;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.print.Doc;
 import javax.print.DocFlavor;
@@ -60,9 +61,15 @@ public class PrintingManager {
 			PrintService ps = selectPrinservice(printer);
 			if (ps!=null) {
 				print(ps,is,pras);
+				try {
+					is.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				is = null;
 			}
 			else {
-				System.out.println("Impresora "+printer+"no econtrada");
+				System.out.println("Impresora ["+printer+"] no econtrada");
 			}
 		}
 	}
@@ -96,7 +103,7 @@ public class PrintingManager {
 				print(ps,postScriptManager,pras);
 			}
 			else {
-				System.out.println("Impresora "+printer+" no econtrada");
+				System.out.println("Impresora ["+printer+"] no econtrada");
 			}
 		}
 	}
@@ -109,7 +116,7 @@ public class PrintingManager {
 	
 	private PrintService selectPrinservice(String printer) {
 		for (PrintService ps : jps) {
-			if (ps.getName().equals(printer)) {
+			if (ps!=null && ps.getName().equals(printer)) {
 				return ps;
 			}
 		}

@@ -41,9 +41,9 @@ import common.gui.components.ChangeValueEvent;
 import common.gui.components.ChangeValueListener;
 import common.gui.components.DataErrorException;
 import common.gui.components.VoidPackageException;
+import common.gui.forms.EndEventGenerator;
 import common.gui.forms.ExternalValueChangeEvent;
 import common.gui.forms.ExternalValueChangeListener;
-import common.gui.forms.EndEventGenerator;
 import common.gui.forms.GenericForm;
 import common.gui.forms.InstanceFinishingListener;
 import common.gui.forms.NotFoundComponentException;
@@ -71,7 +71,7 @@ import common.transactions.TransactionServerResultSet;
  * Esta clase se encarga de crear genear TableModel para la clase TableFindData
  * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
- * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
+ * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>o
  */
 public class EmakuTableModel extends AbstractTableModel 
 implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeListener{
@@ -313,6 +313,17 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         	}
     		if (rowIndex == 0) {
     			if (ATFDargs[colIndex].isEditable() && val==0) {
+    				if (ATFDargs[colIndex].isValideEnabledCol()) {
+    					String var = ATFDargs[colIndex].getValideEnabledCol();
+    					String newVar=reemplazarFormula(var,rowIndex,null);
+    					
+   			        	try {
+							boolean result = (Boolean)Run.shellScript.eval(newVar);
+							return result;
+						} catch (EvalError e) {
+							e.printStackTrace();
+						}
+    				}
     	            return true;
     	        }
     	        return false;
@@ -324,6 +335,16 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     			}
     			else {
     				if (ATFDargs[colIndex].isEditable()  && val==0) {
+    					if (ATFDargs[colIndex].isValideEnabledCol()) {
+        					String var = ATFDargs[colIndex].getValideEnabledCol();
+        					String newVar=reemplazarFormula(var,rowIndex,null);
+       			        	try {
+    							boolean result = (Boolean)Run.shellScript.eval(newVar);
+    							return result;
+    						} catch (EvalError e) {
+    							e.printStackTrace();
+    						}
+        				}
         	            return true;
         	        }
         	        return false;
@@ -434,7 +455,9 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 			        	updateCells(ATFDargs[0].getTypeDate(),rowIndex,0);
 			        	updateCells(ATFDargs[2].getTypeDate(),rowIndex,2);
 			        	message("ERR_NOCODE");
-			        	currentIndex--;
+			        	if (currentIndex<rowIndex) {
+			        		currentIndex = rowIndex ;	
+			        	}
 		        }
 		        
 		        /* Y ni que decir de este mundo de excepciones */
@@ -512,7 +535,13 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
      * @param rowIndex almacena la fila sobre la que se calculara la informacion
      */
     
-    private synchronized void calcular(int rowIndex,int colIndex,boolean initQuery) {
+    /*
+     * 
+     * Eliminado el modificador synchronized por bloqueos de la aplicacion
+     * 2007-06-26      pipelx
+     */
+    
+    private void calcular(int rowIndex,int colIndex,boolean initQuery) {
 	    	boolean calc = false;
 	    	if (rowIndex>=0) {
 	    		if (rowIndex>0) {
@@ -530,7 +559,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		        		for (int i=0;i<formulas.size();i++) {
 		                    Formula formula = (Formula)formulas.get(i);
 		                    String var = formula.getFormula();
-		                    if ( getColIndex(var) != colIndex ) {
+		                    if ( getColIndex(var) != colIndex || formula.getType()!=SIMPLE ) {
 			                    switch(formula.getType()) {
 					            case SIMPLE:
 					            		procesarFormulas(var,rowIndex,true);
@@ -705,8 +734,10 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     					if (var.substring(2,var.length()).startsWith("ROUND")) {
     						String args = var.substring(6,var.length()-1);
     						int sep = args.indexOf(',');
-    						String arg1  = args.substring(0,sep);
+    						String arg1  = args.substring(2,sep);
     						String arg2  = args.substring(sep+1,args.length());
+    						//System.out.println("Obteniendo formula round: "+arg1+" "+arg2);
+
     						newVar+= round(arg1, arg2, rowIndex);
     						j+=var.length();
     					}
@@ -741,6 +772,11 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     					else if (var.length()>=j+5 && var.substring(j,j+5).equals("false")) {
     						newVar+="false";
     						j+=4;
+    					}
+    					else if (var.length()>=j+10 && var.substring(j,j+10).equals("startsWith")) {
+    						String s = "startsWith("+var.substring(j+11,var.indexOf(")",j+11))+")";
+    						newVar+=s;
+    						j=var.indexOf(")",j);
     					}
     					else {
     						/* cuando la letra es mayuscula */
@@ -944,9 +980,13 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
      * @param rowIndex fila 
      * @param colIndex columna
      */
-    public synchronized void updateCells(Object value,int rowIndex,int colIndex) {
-		VdataRows.get(rowIndex).set(colIndex,value);
-		currentIndex += (rowIndex < currentIndex) ? 0: 1;
+    
+    /*
+     * Eliminada sincronizacion del metodo por bloqueos de la aplicacion
+     * 2007-06-26                pipelx
+     */
+    public void updateCells(Object value,int rowIndex,int colIndex) {
+    	
         class RunInternalQuery extends Thread {
         	
         		int rowIndex;
@@ -1044,7 +1084,14 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 										//if (argConstructor!=null) {
 											VdataRows.get(rowIndex).set(col,obj);
 											fireTableCellUpdated(rowIndex,col);
-											/* Este codigo analiza las columnas por beanshell antes de insertarlas */
+											calcular(rowIndex,colIndex);	
+						                    totalizar();
+											/* Comentado para añadir llamado a metodo calcular y totalizar por 
+											 * inconcistencia en generacion de formulas por valores obtenidos
+											 * desde una consulta.
+											 * 2007-06-23   pipelx
+											 * 
+											 * Este codigo analiza las columnas por beanshell antes de insertarlas 
 											if (formulas!=null) {
 												try{
 									        		for (int i=0;i<formulas.size();i++) {
@@ -1075,6 +1122,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 
 
 											}
+											*/
 										//}
 				        			}
 				        		}
@@ -1082,6 +1130,9 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 			        }
         		}
         }
+
+        VdataRows.get(rowIndex).set(colIndex,value);
+		currentIndex += (rowIndex < currentIndex) ? 0: 1;
         if (loadingQuery) {
         	fireTableCellUpdated(rowIndex, colIndex);
         } else {
@@ -1501,32 +1552,40 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         return pack;
     }
     
-    public void ValidPackage (Element args) throws VoidPackageException {
+    public void ValidPackage(Element args) throws VoidPackageException {
     	Iterator it = args.getChildren().iterator();
     	Vector<String> vector = new Vector<String>();
+    	String defaultMessage = "Error validando tabla";
+    	String message = null;
     	while (it.hasNext()) {
     		Element element = (Element)it.next();
     		String formula = element.getValue();
     		if ("beanshell".equals(element.getAttributeValue("attribute"))) {
     			vector.add(formula);
     		}
+    		if ("message".equals(element.getAttributeValue("attribute"))) {
+    			message=element.getValue();
+    		}
     	}
     	for (int j = 0; j< vector.size(); j++) {
     		String formula = vector.get(j);
     		int count = 0;
 	    	for (int i=0; i < rows && !getValueAt(i,0).equals("") ; i++) {
+	    		String script = reemplazarFormula(formula,i,null);
 	    		try {
-	    			String script = reemplazarFormula(formula,i,null);
-					Integer result = (Integer)Run.shellScript.eval(script);
-					if (result.intValue() == 0) {
-						count ++;
+	    			Object obj = Run.shellScript.eval(script);
+					if (!(((obj instanceof Integer) && (((Integer)obj).intValue() == 0)) ||
+					    ((obj instanceof Boolean) && ((Boolean)obj)))) {
+						count++;
 					}
 				} catch (EvalError e) {
-					System.out.println("Capturada EvalError mensaje: " + e.getMessage());
+					message = "Error en el script:\n"+script;
+					System.out.println(message);
+					break;
 				}
 	    	}
-	    	if (count ==0 ) {
-	    		throw new VoidPackageException("Sin Mensaje Aun: pero es en El ValidPackage");
+	    	if (count > 0 ) {
+	    		throw new VoidPackageException(message!=null?message:defaultMessage,true);
 	    	}
     	}
     }
@@ -1609,6 +1668,10 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
                    	   field.setText(tmp);
 
                 }
+                else if (ATFDargs[k].getType().equals("DATE")) {
+                	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	           	    field.setText(sdf.format(value));
+                }
                 else {
                     if (ATFDargs[k].getNameField()!=null) {
                     	field.setAttribute("name",ATFDargs[k].getNameField());
@@ -1688,9 +1751,9 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         
         for (int i=0;i<VdataRows.size(); i++) {
             Element subpack = new Element("subpackage");
-            boolean add = true;
-    		int max = evaluates.size();
-    		if (max  > 0) {
+            
+    		if (evaluates.size()>0) {
+    			boolean add = true;
     			for(String var:evaluates) {
     				Object valueAt = getValueAt(i,0);
     				if (valueAt==null || "".equals(valueAt)) { break; } 
@@ -1702,28 +1765,67 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     					e.printStackTrace();
     				}
     			}
+	            for (int j=0;j<getColumnCount() && add;j++) {
+	            	Object valueAt = getValueAt(i,j);
+	            	if (ATFDargs[j].isPrintable()) {
+	            		if (valueAt==null || "".equals(valueAt)) {
+	                		i=rows;
+	                		break;
+	                	}
+	            		if (ATFDargs[j].getType().equals("DATE")) {
+	            			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	            			valueAt = sdf.format(valueAt);
+	            		}
+	           			subpack.addContent(createXMLField(valueAt.toString()));	
+	            	}
+	            }
+	            if (subpack.getContentSize()>0) {
+	            	pack.addContent(subpack);
+	            }
     		}
-            for (int j=0;j<getColumnCount() && add;j++) {
-            	Object valueAt = getValueAt(i,j);
-            	if (ATFDargs[j].isPrintable()) {
-            		if (valueAt==null || "".equals(valueAt)) {
-                		i=rows;
-                		break;
-                	}
-            		if (ATFDargs[j].getType().equals("DATE")) {
-            			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            			valueAt = sdf.format(valueAt);
-            		}
-           			subpack.addContent(createXMLField(valueAt.toString()));	
-            	}
-            }
-            if (subpack.getContentSize()>0) {
-            	pack.addContent(subpack);
-            }
         }
         return pack;
     }
     
+    public Element getPrintPackageOrderBy(Element args) {
+        
+    	Element pack = new Element("package");
+    	Vector<Integer> orderCols = new Vector<Integer>();
+		Iterator it = args.getChildren().iterator();
+		while (it.hasNext()) {
+			Element e = (Element)it.next();
+			String value = e.getValue();
+			if ("orderCol".equals(e.getAttributeValue("attribute"))) {
+				orderCols.add(Integer.parseInt(value));
+			}
+		}
+    	
+    	if (orderCols.size()>0) {
+    		 for (int i=0;i<VdataRows.size(); i++) {
+    			 Element subpack = new Element("subpackage");
+    			 int numCols = orderCols.size();
+    			 for (int j=0;j<numCols;j++) {
+	            	Object valueAt = getValueAt(i,orderCols.get(j));
+	            	Object firstValue = getValueAt(i,0);
+            		if (firstValue==null || "".equals(firstValue)) {
+	                		i=rows;
+	                		break;
+            		}
+            		Element field = new Element("field");
+            		if (ATFDargs[j].getType().equals("DATE")) {
+            			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            			valueAt = sdf.format(valueAt);
+            		}
+            		field.setText(valueAt.toString());
+            		subpack.addContent(field);
+    			 }
+    			 pack.addContent(subpack);
+    		 }
+    	}
+    	orderCols.clear();
+    	orderCols=null;
+        return pack;
+    }
     
 	@SuppressWarnings("unchecked")
 	public Element getAgrupedPrintPackage(Element arguments) {
@@ -1734,7 +1836,6 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		Iterator iterator = arguments.getChildren("subarg").iterator();
 		
 		HashMap<String, Vector> tuples = new HashMap<String, Vector>();
-		
 		
 		while (iterator.hasNext()) {
 			
@@ -1819,108 +1920,140 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		return pack;
     }
     
-    public void setQuery(Document doc) {
+    public synchronized void setQuery(Document doc) {
     	setQuery(doc,false);
     }
     
-    public synchronized void setQuery(Document doc,boolean search) {
-//    	Thread t = new Thread() {public void }
-    	class LoadData extends Thread {
-    		private Document doc;
-    		private boolean search;
-    		LoadData(Document doc,boolean search) {
-    			this.doc=doc;
-    			this.search=search;
-    		}
-    		public void run() {
+    /**
+     * Este metodo se encarga de cargar la tabla a partir de un
+     * Documento.
+     * @param doc
+     * @param search
+     */
+    public void setQuery(Document doc,boolean search) {
+    	
+    	/*
+    	 * Anteriormente la carga de los datos se hacia en un hilo,
+    	 * el hilo lo elimine porque no encontre razon para trabajarlo,
+    	 * debido a que la información ya se encuentra disponible para 
+    	 * que este efectue el barrido de la misma.
+    	 * 
+    	 * Al existir un hilo lo que se conseguia era que si por alguna
+    	 * razon se lanzaba una excepcion, el hilo se bloqueaba pero la
+    	 * aplicación no. Al haberlo eliminado se puede correr el riesgo
+    	 * de que la aplicación bloquee, el codigo queda en testeo para
+    	 * capturar las excepciones que podrian dar a lugar.
+    	 * 
+    	 * 2007-06-25                         pipelx.
+    	 */
     			
-		    	loadingQuery = true;
-		        List Lrows = doc.getRootElement().getChildren("row");
-		        Iterator Irows = Lrows.iterator();
-		        int max = Lrows.size();
-		        
-		        if (tagDataColumn==-1 && max > 0) {
-		            /*
-		             * Se limpia la tabla antes de desplegar la consulta nueva
-		             */
-		            clean();
-		            /*
-		             * Cargando informacion
-		             */
-		            
-		            //for (int i=0;Irows.hasNext() && i<rows;i++) {
-		            int i=0;
-		            for (;Irows.hasNext();i++) {
-		                Element Erow = (Element) Irows.next();
-		                List Lcol = Erow.getChildren();
-		            	//try {
-		                if (VdataRows.size() <= i) {
-		    				Vector<Object> col = new Vector<Object>();
-		        			for (int k=0;k<ATFDargs.length;k++) {
-		        			    col.add(addCols(k,Lcol));
-		        			}
-		        			/* Se adiciona la nueva fila al vector de filas */
-		        			VdataRows.add(col);
-		        			rows++;
-		        			fireTableDataChanged();
-		    			}
-		        		for (int j=0;j<ATFDargs.length;j++) {
-		        			updateCells(addCols(j,Lcol),i,j);
-		        		}
-		            	/*}
-		            	catch (ArrayIndexOutOfBoundsException IAOBEe) {
-		            		
-		                }*/
-		                
-			            if (formulas!=null) {
-		                    calcular(i,0,false);
-		                }
+    	loadingQuery = true;
+        List Lrows = doc.getRootElement().getChildren("row");
+        Iterator Irows = Lrows.iterator();
+        int max = Lrows.size();
+        
+        if (tagDataColumn==-1 && max > 0) {
+            /*
+             * Se limpia la tabla antes de desplegar la consulta nueva
+             */
+            clean();
+            /*
+             * Cargando informacion
+             */
+            
+            //for (int i=0;Irows.hasNext() && i<rows;i++) {
+            int i=0;
+            for (;Irows.hasNext();i++) {
+                Element Erow = (Element) Irows.next();
+                List Lcol = Erow.getChildren();
+            	//try {
+                if (VdataRows.size() <= i) {
+    				Vector<Object> col = new Vector<Object>();
+        			for (int k=0;k<ATFDargs.length;k++) {
+        			    col.add(addCols(k,Lcol));
+        			}
+        			/* Se adiciona la nueva fila al vector de filas */
+        			VdataRows.add(col);
+        			rows++;
+        			fireTableDataChanged();
+    			}
+        		for (int j=0;j<ATFDargs.length;j++) {
+        			updateCells(addCols(j,Lcol),i,j);
+        		}
+            	/*}
+            	catch (ArrayIndexOutOfBoundsException IAOBEe) {
+            		
+                }*/
+                
+	            if (formulas!=null) {
+                    calcular(i,0,false);
+                }
+            }
+        }
+        else if (tagDataColumn>-1 && max > 0 ) {
+        	Element Erow = null;
+        	String tagDataValue = null;
+        	Erow = (Element) Lrows.get(0);
+        	/*
+        	 * Esta validacion la añadi por problemas al exportar datos
+        	 * desde un combo, cuando el combo no tiene seleccion de 
+        	 * registros, esta exportando un answer por codigo que envia 
+        	 * un solo col, si la tabla tiene mas de una columna y el 
+        	 * tagDataColumn es mayor a 0 (es mayor a 0 cuado se trabaja
+        	 * con sendRecord) entonces ocurre una excepcion.
+        	 * Codigo por revisar..
+        	 * 
+        	 * 2007-07-05				pipelx
+        	 */
+        	
+        	if (tagDataColumn<=Erow.getChildren().size()) {
+	        	Element element = (Element) Erow.getChildren().get(tagDataColumn);
+	        	tagDataValue = element.getValue().trim();
+	        	
+	        	for(int i=0; i < VdataRows.size() && currentIndex > 0 ; i++) {
+	        		Object strData = getValueAt(i,tagDataColumn);
+	        		if (tagDataValue.equals(strData.toString().trim())){
+	        			deleteRow(i);
+	        			i --;
+	        		}
+	        	}
+	        	
+	        	/*Aqui va la llenada de datos.*/
+	        	int currentRow = currentIndex;
+	        	for (int i=0;  i < max ; i++) {
+	        		Element RowQuery = (Element) Lrows.get(i);
+	        		List Lcol = RowQuery.getChildren();
+	                if (VdataRows.size() <= i) {
+	    				Vector<Object> col = new Vector<Object>();
+	        			for (int k=0;k<ATFDargs.length;k++) {
+	        			    col.add(addCols(k,Lcol));
+	        			}
+	        			VdataRows.add(col);
+	        			rows++;
+	        			fireTableDataChanged();
+	    			}
+	                
+	        		for (int j=0;j<ATFDargs.length;j++) {
+	        			if (search && j==0){
+	        				setValueAt(addCols(j,Lcol), currentRow,0);
+	        			}
+	        			else {
+	        				updateCells(addCols(j,Lcol),currentRow,j);
+	        			}
 		            }
-		        }
-		        else if (tagDataColumn>-1 && max > 0) {
-		        	Element Erow = null;
-		        	String tagDataValue = null;
-		        	Erow = (Element) Lrows.get(0);
-		        	Element element = (Element) Erow.getChildren().get(tagDataColumn);
-		        	tagDataValue = element.getValue().trim();
-		        	
-		        	for(int i=0; i < VdataRows.size(); i++) {
-		        		Object strData = getValueAt(i,tagDataColumn);
-		        		if (tagDataValue.equals(strData.toString().trim())){
-		        			deleteRow(i);
-		       				i --;
-		        		}
-		        	}
-		        	/*Aqui va la llenada de datos.*/
-		        	int currentRow = currentIndex;
-		        	for (int i=0;  i < max ; i++) {
-		        		Element RowQuery = (Element) Lrows.get(i);
-		        		List Lcol = RowQuery.getChildren();
-		        		for (int j=0;j<ATFDargs.length;j++) {
-		        			if (search && j==0){
-		        				setValueAt(addCols(j,Lcol), currentRow,0);
-		        			}
-		        			else {
-		        				updateCells(addCols(j,Lcol),currentRow,j);
-		        			}
-			            }
-		        		currentRow++;
-			            if (formulas!=null) {
-		                    calcular(i,0,false);
-		                }
-		        	}
-		        }
-		        else if (max==0) {
-		        	clean();
-		        }
-		        totalizar();
-		        loadingQuery = false;
-		        
-		        doc = null;
-		        System.gc();
-    		}
-    	}
-    	new LoadData(doc,search).start();
+	        		currentRow++;
+		            if (formulas!=null) {
+	                    calcular(i,0,false);
+	                }
+	        	}
+        	}
+        }
+        else if (max==0) {
+        	clean();
+        }
+        totalizar();
+        loadingQuery = false;
+        doc = null;
     }
 
     private Object addCols(int j,List Lcol) {
@@ -1928,20 +2061,18 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         try {
             Element Ecol = (Element) Lcol.get(j); 
             String newValue = Ecol.getValue();
-                
+            
             /*  Que mierdero todo esto */
             if (ATFDargs[j].getType().equals("BOOLEAN")) {
-		            	if (newValue.equals("t") ||
-                        newValue.equals("T") ||    
-                        newValue.equals("true") ||    
-                        newValue.equals("TRUE") ||
-                        newValue.equals("True") ||
-                        newValue.equals("1")) {
-		            		obj= new Boolean(true);
-		            	}
-                    else {
-                        obj =new Boolean(false);
-                    }
+            	String condicion = newValue.toUpperCase().trim();
+            	if (condicion.equals("T") ||    
+        			condicion.equals("TRUE") ||
+        			condicion.equals("1")) {
+		            obj= new Boolean(true);
+            	}
+                else {
+                	obj =new Boolean(false);
+                }
             }
             else if (ATFDargs[j].getType().equals("DATE")) {
             	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

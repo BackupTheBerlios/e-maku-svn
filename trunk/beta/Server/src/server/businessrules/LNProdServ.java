@@ -28,7 +28,7 @@ public class LNProdServ {
 			boolean exit = false;
 			while (fields.hasNext()) {
 				Element field = (Element)fields.next();
-				if ("key".equals(field.getAttributeValue("attribute"))) {
+				if ("key".equals(field.getAttributeValue("attribute")) || "code".equals(field.getAttributeValue("name"))) {
 					code=field.getText();
 					exit=true;
 					break;
@@ -44,18 +44,18 @@ public class LNProdServ {
 					   new Document((Element)doc.getRootElement().getChild("subarg").clone()),
 					   (Element)sn_pack.clone(),
 					   id_transaction);
-			LinkingCache.reloadAsientosPr(EmakuServerSocket.getBd(sock),new String[]{code});
+			LinkingCache.reloadAsientosPr(EmakuServerSocket.getBd(sock),"SCS0056",new String[]{code});
 		}
 		else if (action.equals("edit")) {
-			LinkingCache.removeAsientosPr(EmakuServerSocket.getBd(sock),new String[]{code});
+			LinkingCache.removeAsientosPr(EmakuServerSocket.getBd(sock),"SCS0062",new String[]{code});
 			new LNMultiPackage(sock,
 					   new Document((Element)doc.getRootElement().getChild("subarg").clone()),
 					   (Element)sn_pack.clone(),
 					   id_transaction);
-			LinkingCache.reloadAsientosPr(EmakuServerSocket.getBd(sock),new String[]{code});
+			LinkingCache.reloadAsientosPr(EmakuServerSocket.getBd(sock),"SCS0062",new String[]{code});
 		}
 		else if (action.equals("delete")) {
-			LinkingCache.removeAsientosPr(EmakuServerSocket.getBd(sock),new String[]{code});
+			LinkingCache.removeAsientosPr(EmakuServerSocket.getBd(sock),"SCS0062",new String[]{code});
 			new LNGenericSQL(sock,
 					   new Document((Element)doc.getRootElement().getChild("subarg").clone()),
 					   (Element)sn_pack.clone(),

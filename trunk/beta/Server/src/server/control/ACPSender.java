@@ -151,7 +151,7 @@ public class ACPSender extends Thread{
 	                Element transaction = new Element("transaction");
 	
 	                Element driver = new Element("driver");
-	                driver.setText(rs.getString("codigo"));
+	                driver.setText(rs.getString("codigo").trim());
 	                driver.setAttribute("type",validPass(rs.getString("password")));
 	                
 	                ByteArrayInputStream bufferIn;
