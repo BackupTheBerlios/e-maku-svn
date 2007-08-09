@@ -59,7 +59,7 @@ public class HeadersValidator {
         final Element root = doc.getRootElement();
         String rootName = root.getName();
         
-        /* Codigo temporal para debuging
+        /* Codigo temporal para debuging */
         XMLOutputter xmlOutputter = new XMLOutputter();
         xmlOutputter.setFormat(Format.getPrettyFormat());
         try {
@@ -67,7 +67,7 @@ public class HeadersValidator {
         }
         catch (IOException e) {
             e.printStackTrace();
-        } */
+        }
         
         /*
          *  Validación de solicitud de paquetes, se verifica si el socket ya fue

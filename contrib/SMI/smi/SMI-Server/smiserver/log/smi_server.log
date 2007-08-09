@@ -1,28 +1,13 @@
-2007-07-02 16:04:17 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=59968,localport=9119]
-2007-07-02 16:04:17 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-07-02 16:04:17 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-07-02 16:04:17 INFO: Usuario Administrador autenticado {admin} desde ESTONIA [127.0.0.1]
-2007-07-02 16:19:58 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=58679,localport=9119]
-2007-07-02 16:19:58 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-07-02 16:19:58 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-07-02 16:19:58 INFO: Usuario Administrador autenticado {admin} desde ESTONIA [127.0.0.1]
-2007-07-02 16:28:15 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=47932,localport=9119]
-2007-07-02 16:28:15 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-07-02 16:28:15 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-07-02 16:28:15 INFO: Usuario Administrador autenticado {admin} desde ESTONIA [127.0.0.1]
-2007-07-02 16:39:52 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=57723,localport=9119]
-2007-07-02 16:39:52 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-07-02 16:39:52 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-07-02 16:39:52 INFO: Usuario Administrador autenticado {admin} desde ESTONIA [127.0.0.1]
-2007-07-02 16:44:55 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=43884,localport=9119]
-2007-07-02 16:44:55 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-07-02 16:44:55 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-07-02 16:44:55 INFO: Usuario Administrador autenticado {admin} desde ESTONIA [127.0.0.1]
-2007-07-02 16:51:43 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=55632,localport=9119]
-2007-07-02 16:51:43 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-07-02 16:51:43 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-07-02 16:51:43 INFO: Usuario Administrador autenticado {admin} desde ESTONIA [127.0.0.1]
-2007-07-02 16:54:56 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=38794,localport=9119]
-2007-07-02 16:54:56 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-07-02 16:54:56 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-07-02 16:54:56 INFO: Usuario Administrador autenticado {admin} desde ESTONIA [127.0.0.1]
+2007-07-25 15:29:54 INFO: ConfigFile -> /home/emaku/SMI/smi/SMI-Server/smiserver/conf/server.conf
+2007-07-25 15:29:54 INFO: Cargando archivo de configuracion...
+2007-07-25 15:29:54 INFO: Cargando base de datos... smi
+2007-07-25 15:29:54 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-07-25 15:29:54 INFO: Cargando cache de enlace [smi]
+2007-07-25 15:29:55 INFO: Iniciando demonio pop3
+2007-07-25 15:29:55 INFO: Servidor de correo {localhost}
+2007-07-25 15:29:55 INFO: Iniciando demonio de sincronizacion
+2007-07-25 15:29:55 INFO: Servidor SMI escuchando por el puerto 9119
+2007-07-25 15:30:10 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=40130,localport=9119]
+2007-07-25 15:30:10 INFO: Inicio de autenticacion para el usuario {CV5} con la clave {2782a80a4f6e5ea7f2544479b1b76548}
+2007-07-25 15:30:10 INFO: Realizando control de acceso sobre direcciones ip...
+2007-07-25 15:30:10 INFO: Colocador Autenticado {CV5} desde ESTONIA [127.0.0.1]
