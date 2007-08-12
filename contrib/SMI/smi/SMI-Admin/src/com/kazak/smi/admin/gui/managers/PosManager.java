@@ -9,6 +9,7 @@ import com.kazak.smi.admin.transactions.QuerySender;
 import com.kazak.smi.admin.transactions.QuerySenderException;
 import com.kazak.smi.admin.gui.managers.tools.MainForm;
 import com.kazak.smi.admin.gui.managers.tools.ToolsConstants;
+import com.kazak.smi.admin.gui.table.UserPosTable;
 
 public class PosManager {
 
@@ -20,6 +21,10 @@ public class PosManager {
 
 	public void addPos() {
 		openForm();
+	}
+	
+	public void linkPos(UserPosTable table) {
+		form = new MainForm(ToolsConstants.POS,ToolsConstants.LINK,"",table);
 	}
 	
 	public void editPos() {

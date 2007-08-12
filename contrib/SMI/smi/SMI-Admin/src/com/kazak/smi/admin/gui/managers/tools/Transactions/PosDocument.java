@@ -61,8 +61,10 @@ public class PosDocument {
 					
 		transaction.addContent(pack);
 		
+		/*
 		pack = new Element("package");
 		transaction.addContent(pack);
+		*/
 		
 		return doc;
 	}
@@ -81,6 +83,22 @@ public class PosDocument {
         
 		Element pack = new Element("package");
 		pack.addContent(createField(code));
+		transaction.addContent(pack);
+		
+		return doc;
+	}
+	
+	public Document getDocumentToLink() {
+		Element transaction = new Element("Transaction");
+		Document doc = new Document();
+
+		Element driver = new Element("driver");
+        driver.setText("TR000-TO-CHECK");
+        transaction.addContent(driver);
+        
+		Element pack = new Element("package");
+		pack.addContent(createField(code));
+		pack.addContent(createField(name));
 		transaction.addContent(pack);
 		
 		return doc;

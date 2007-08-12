@@ -11,36 +11,40 @@ import java.util.Vector;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
+//import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import org.jdom.Document;
+import org.jdom.Element;
+
 import com.kazak.smi.admin.control.Cache;
 import com.kazak.smi.admin.gui.table.models.UserModel;
-import com.kazak.smi.admin.gui.managers.WorkStationsManager;
+import com.kazak.smi.admin.gui.managers.PosManager;
+//import com.kazak.smi.admin.gui.managers.WorkStationsManager;
 import com.kazak.smi.admin.gui.misc.GUIFactory;
 
 public class UserPosTable extends JTable implements ActionListener {
 
 	private static final long serialVersionUID = 4182381331394270487L;
 	private UserModel model;
-	private JDialog frame;
+	//private JDialog frame;
 	private JPanel panel;
 	private JButton addButton;
 	private JButton deleteButton;
-	private WorkStationsManager ws;
+	//private WorkStationsManager ws;
 	private String username;
 	
 	public UserPosTable(JDialog frame, String username, boolean withButtons) {
 		this.username = username;
-		this.frame = frame;
+		//this.frame = frame;
 		panel =  new JPanel(new BorderLayout());
 		model = new UserModel();
 		this.setModel(model);
 		this.setGridColor(Color.BLACK);
 		this.setSurrendersFocusOnKeystroke(true);
-		ws = new WorkStationsManager();
+
 		fillTable();
 		
 		JScrollPane jscroll = new JScrollPane(UserPosTable.this);
@@ -64,6 +68,8 @@ public class UserPosTable extends JTable implements ActionListener {
 		String command = e.getActionCommand();
 		if (command.equals("ADD")) {
 			System.out.println("Abrir la opcion de adicionar punto");
+			PosManager pos = new PosManager();
+			pos.linkPos(this);
 		}
 		if (command.equals("DEL")) {
 			int rows = getRowCount()-1;
@@ -156,6 +162,11 @@ public class UserPosTable extends JTable implements ActionListener {
 	public void enableButtons() {
 		addButton.setEnabled(true);
 		deleteButton.setEnabled(true);
+	}
+	
+	public void insertData(Document doc){
+		Element root = doc.getRootElement();
+		root.getChildText("AppOwner");
 	}
 
 }

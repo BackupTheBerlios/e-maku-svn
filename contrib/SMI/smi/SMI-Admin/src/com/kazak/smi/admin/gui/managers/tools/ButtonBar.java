@@ -80,6 +80,7 @@ public class ButtonBar extends JPanel implements ActionListener, KeyListener {
 		switch(action) {
 			// To Add
 		case ToolsConstants.ADD:
+		case ToolsConstants.LINK:
 			acceptButton.setToolTipText("Adicionar");
 			break;
 			// To Edit
@@ -111,12 +112,13 @@ public class ButtonBar extends JPanel implements ActionListener, KeyListener {
 	
 	private void addButtons(){
 		switch(action) {
-		// To Add, To Edit, To Delete (unfilled/filled)
+		// To Add, To Edit, To Delete (unfilled/filled), To Link
 		case ToolsConstants.ADD:
 		case ToolsConstants.EDIT:
 		case ToolsConstants.EDIT_PREFILLED:
 		case ToolsConstants.DELETE:
 		case ToolsConstants.DELETE_PREFILLED:
+		case ToolsConstants.LINK:
 			System.out.println("Añadiendo botones...");
 			this.add(acceptButton);
 			this.add(cleanButton);		

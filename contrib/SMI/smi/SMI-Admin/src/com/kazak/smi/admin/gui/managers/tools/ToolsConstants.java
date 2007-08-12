@@ -13,4 +13,5 @@ public class ToolsConstants {
 	public static final int DELETE_PREFILLED = 4;
 	public static final int SEARCH = 5;
 	public static final int SEARCH_PREFILLED = 6;
+	public static final int LINK = 7;
 }

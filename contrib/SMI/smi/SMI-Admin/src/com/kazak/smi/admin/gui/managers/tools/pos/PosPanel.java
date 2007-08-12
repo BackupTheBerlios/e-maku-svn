@@ -27,6 +27,7 @@ import com.kazak.smi.admin.gui.managers.tools.MainForm;
 import com.kazak.smi.admin.gui.managers.tools.ButtonBar;
 import com.kazak.smi.admin.gui.managers.tools.ToolsConstants;
 import com.kazak.smi.admin.gui.managers.tools.Operation;
+import com.kazak.smi.admin.gui.table.UserPosTable;
 import com.kazak.smi.lib.misc.FixedSizePlainDocument;
 
 public class PosPanel extends JPanel implements ActionListener, KeyListener { 
@@ -44,12 +45,14 @@ public class PosPanel extends JPanel implements ActionListener, KeyListener {
 	private JComboBox groupsCombo;
 	private String[] labels = {"Nombre: ","Código: ","IP: ","Grupo: "};
 	private String newCode = "";
+	private UserPosTable table;
 
-	public PosPanel(MainForm mainFrame, ButtonBar buttonBar, int action, String target) {
+	public PosPanel(MainForm mainFrame, ButtonBar buttonBar, int action, String target, UserPosTable table) {
 		this.mainFrame = mainFrame;
 		this.buttonBar = buttonBar;
 		this.action = action;
 		this.target = target;
+		this.table = table;
 		initInterface();
 		packPanels();
 	}
@@ -120,11 +123,14 @@ public class PosPanel extends JPanel implements ActionListener, KeyListener {
 			break;
 			// Search pre-filled
 		case ToolsConstants.SEARCH_PREFILLED:
-			mainFrame.setTitle("Buscar Punto de Colocación");
-			
+			mainFrame.setTitle("Buscar Punto de Colocación");		
 			doFilledSearch();
 			disableFields();
 			break;
+		case ToolsConstants.LINK:
+			mainFrame.setTitle("Asignar Punto a Usuario");
+			disableFields();
+			break;			
 		}	
 	}
 	
@@ -150,6 +156,7 @@ public class PosPanel extends JPanel implements ActionListener, KeyListener {
 				buttonBar.setEnabledAcceptButton(true);
 			case ToolsConstants.SEARCH:
 			case ToolsConstants.SEARCH_PREFILLED:
+			case ToolsConstants.LINK:
 				codeField.setText(ws.getCode());
 				ipField.setText(ws.getIp());
 				groupsCombo.setSelectedItem(ws.getGroupName());
@@ -214,7 +221,13 @@ public class PosPanel extends JPanel implements ActionListener, KeyListener {
 			Operation.execute(doc.getDocumentToDelete());
 			mainFrame.dispose();
 			break;
+		case ToolsConstants.LINK:
+			//Operation.execute(doc.getDocumentToLink());
+			table.insertData(doc.getDocumentToLink());
+			mainFrame.dispose();
+			break;
 		}	   
+		
 	}
 	
 	private void packPanels() {

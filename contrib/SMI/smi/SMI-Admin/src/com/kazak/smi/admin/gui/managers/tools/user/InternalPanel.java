@@ -155,6 +155,7 @@ public class InternalPanel extends JPanel {
 			groupsCombo.setSelectedItem(user.getGroupName());
 			mailField.setText(user.getEmail());
 			nameField.setEditable(false);
+			passwdField.setEnabled(false);
 			groupsCombo.setEnabled(false);
 			nameField.setText(user.getName());
 			break;
@@ -185,6 +186,7 @@ public class InternalPanel extends JPanel {
 			ipControlCheck.setSelected(user.getValidIp());
 			nameField.setText(user.getName());
 			nameField.setEditable(false);
+			passwdField.setEnabled(false);
 			ipControlCheck.setEnabled(false);
 			table = new UserPosTable(dialog,username,false);
 			break;

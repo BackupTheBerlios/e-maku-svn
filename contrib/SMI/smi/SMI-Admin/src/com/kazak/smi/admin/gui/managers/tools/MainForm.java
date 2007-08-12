@@ -8,6 +8,7 @@ import com.kazak.smi.admin.gui.main.MainWindow;
 import com.kazak.smi.admin.gui.managers.tools.pos.PosPanel;
 import com.kazak.smi.admin.gui.managers.tools.group.GroupPanel;
 //import com.kazak.smi.admin.gui.managers.tools.user.UserPanel;
+import com.kazak.smi.admin.gui.table.UserPosTable;
 
 public class MainForm extends JFrame {
 
@@ -16,6 +17,7 @@ public class MainForm extends JFrame {
 	private ButtonBar buttonBar;
 	private GroupPanel groupPanel;
 	private PosPanel posPanel;
+	private UserPosTable table;
 	// private UserPanel userPanel;
 	
 	public MainForm(int component, int action, String target) {
@@ -31,6 +33,20 @@ public class MainForm extends JFrame {
 		this.setVisible(true);
 	}
 	
+	public MainForm(int component, int action, String target, UserPosTable table) {
+		super();
+		this.target = target;
+		this.table = table;
+		this.setLayout(new BorderLayout());
+		
+		setPanels(component,action);		
+		
+		this.pack();
+		this.setResizable(false);
+		this.setLocationRelativeTo(MainWindow.getFrame());
+		this.setVisible(true);
+	}	
+	
 	private void setPanels(int component,int action) {
 		
 	    buttonBar = new ButtonBar(this,component,action);
@@ -44,7 +60,7 @@ public class MainForm extends JFrame {
 			break;
 			// Pos
 		case ToolsConstants.POS:
-			posPanel = new PosPanel(this,buttonBar,action,target);
+			posPanel = new PosPanel(this,buttonBar,action,target,table);
 			this.add(posPanel,BorderLayout.CENTER);
 			break;
 			// User
