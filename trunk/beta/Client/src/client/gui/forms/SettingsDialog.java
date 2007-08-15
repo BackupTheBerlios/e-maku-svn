@@ -59,7 +59,7 @@ public class SettingsDialog extends JDialog {
 
     private JTextField JTFPort;
     
-    private JTextField JTBox;
+    private JTextField JTCash;
     
     private JComboBox JCBLang;
     
@@ -88,7 +88,7 @@ public class SettingsDialog extends JDialog {
         
         String host = "localhost";
         String port = "9117";
-        Hashtable<String,String> boxID = new Hashtable<String,String>();
+        String cash = "CA001";
         String currentLanguage = "es_CO";
         String currentLogMode = "Default";
         
@@ -98,7 +98,7 @@ public class SettingsDialog extends JDialog {
         		ConfigFileHandler.loadSettings();        		
         		host = ConfigFileHandler.getHost();
         		port = String.valueOf(ConfigFileHandler.getServerPort());
-        		boxID = ConfigFileHandler.getBoxID();
+        		cash = ConfigFileHandler.getCash();
         		currentLanguage = ConfigFileHandler.getLanguage();
         		currentLogMode = ConfigFileHandler.getLogMode();
         	} catch (ConfigFileNotLoadException e1) {
@@ -154,8 +154,8 @@ public class SettingsDialog extends JDialog {
         JCBLang.setRenderer(new FlagRenderer());
         JCBLang.setSelectedItem(currentLanguage);
    
-        JTBox = new JTextField(10);
-        JTBox.setText(boxID.get("cash"));      
+        JTCash = new JTextField(10);
+        JTCash.setText(cash);      
 
         Object[] logItems = { "Default", "Verbose", "VerboseFile", "None" };
         JCBLogs = new JComboBox(logItems);
@@ -171,7 +171,7 @@ public class SettingsDialog extends JDialog {
         JPPort.add(JTFPort);
         
         JPanel JPBox = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JPBox.add(JTBox);    
+        JPBox.add(JTCash);    
         
         JPanel JPLogs = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPLogs.add(JCBLogs);
@@ -237,7 +237,7 @@ public class SettingsDialog extends JDialog {
     }
     
     public String getBox() {
-    	String boxCode = JTBox.getText();
+    	String boxCode = JTCash.getText();
     	return boxCode;
     }
     
@@ -286,7 +286,7 @@ public class SettingsDialog extends JDialog {
     	String language      = getLanguage();
     	String logType       = getLog();
     	String pos           = getBox();    
-
+   
     	if (serverAddress.length() < 1) {
     		JOptionPane.showMessageDialog(this,"El campo servidor se encuentra vacio!\nPor favor, ingrese un valor.");
     		cleanServer();

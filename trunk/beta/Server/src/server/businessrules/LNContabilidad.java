@@ -612,8 +612,16 @@ public class LNContabilidad {
 				if (LinkingCache.isPCTerceros(bd, charCta.trim())) {
 					if (accountTh >= 0) {
 						asientosConTipo(idCta, 
+								valueAccount, 
+								((Element) lpack.get(accountTh)).getValue(), 
+								naturaleza.booleanValue(), 
+								LIBRO_AUX_TER,
+								LinkingCache.isPCNaturaleza(bd,charCta.trim()));
+					}
+					else if ("getname".equals(tercero) && CacheKeys.getKey("idTercero")!=null) {
+						asientosConTipo(idCta, 
 										valueAccount, 
-										((Element) lpack.get(accountTh)).getValue(), 
+										CacheKeys.getKey("idTercero"), 
 										naturaleza.booleanValue(), 
 										LIBRO_AUX_TER,
 										LinkingCache.isPCNaturaleza(bd,charCta.trim()));

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -51,10 +52,11 @@ public class ConfigFileHandler extends EmakuParametersStructure {
     private static String host;
     private static String language;
     private static String logMode;
-    private static Hashtable<String,String> boxID = new Hashtable<String,String>();
     private static String jarDirectory;
     private static String classLookAndFeel;
     private static String URLJarLookAndFeel;
+    private static String cash;
+    private static ArrayList<Element> company;
     /**
      * Este metodo sirve para crear un nuevo archivo de configuracion
      * 
@@ -78,15 +80,18 @@ public class ConfigFileHandler extends EmakuParametersStructure {
         rootNode.addContent(new Element("serverport").setText(Port));
         rootNode.addContent(new Element("log").setText(log));
         rootNode.addContent(new Element("cash").setText(cash));
-        rootNode.addContent(new Element("classLookAndFeel"));
-        rootNode.addContent(new Element("jarLookAndFeel"));
-        
+        rootNode.addContent(new Element("classLookAndFeel").setText(classLookAndFeel));
+        rootNode.addContent(new Element("jarLookAndFeel").setText(URLJarLookAndFeel));
+
+        /*
         Element company = new Element("Company");
         company.addContent(new Element("name").setText("mi_empresa"));
         company.addContent(new Element("jarFile").setText("mi_empresa.jar"));
         company.addContent(new Element("directory").setText("mi_empresa"));
-        
-        rootNode.addContent(company);
+        */
+        for(Element elm:company) {
+        	rootNode.addContent(elm);
+        }
         
         XMLOutputter out = new XMLOutputter();
         out.setFormat(Format.getPrettyFormat());
@@ -124,9 +129,11 @@ public class ConfigFileHandler extends EmakuParametersStructure {
      */
     public static void loadSettings() throws ConfigFileNotLoadException {
         try {
-            
+            company = new ArrayList<Element>();
             builder = new SAXBuilder(false);
-            doc = builder.build(ClientConstants.CONF+"client.conf");
+            String path = ClientConstants.CONF+"client.conf";
+            File file = new File(path);
+            doc = builder.build(file);
             raiz = doc.getRootElement();
             List Lconfig = raiz.getChildren();
             Iterator i = Lconfig.iterator();
@@ -149,15 +156,19 @@ public class ConfigFileHandler extends EmakuParametersStructure {
                     serverport = Integer.parseInt(datos.getValue());
                 } else if (nombre.equals("log")) {
                 	logMode = datos.getValue();
-                } else if (nombre.equals("cash")) {
-                    boxID.put(datos.getValue(),"");
-	            }
+                } 
                 else if (nombre.equals("classLookAndFeel")) {
                     classLookAndFeel = datos.getValue();
 	            }
                 else if (nombre.equals("jarLookAndFeel")) {
                     URLJarLookAndFeel = datos.getValue();
 	            }
+                else if (nombre.equals("cash")) {
+                	cash = datos.getValue();
+                }
+                else if (nombre.equals("Company")) {
+                	company.add((Element)datos.clone());
+                }
                 EmakuParametersStructure.addParameter(nombre,datos.getValue());
             }
             
@@ -205,7 +216,7 @@ public class ConfigFileHandler extends EmakuParametersStructure {
             }
         }
 
-		String jar = "jar:file:/usr/local/emaku/lib/emaku/"+jarFile+"!/";
+		String jar = "jar:file:"+System.getenv("EMAKU_HOME")+"/lib/emaku/"+jarFile+"!/";
 		jarDirectory = jar+directory;
         EmakuParametersStructure.setJarDirectoryTemplates(jarDirectory+"/printer-templates");
 
@@ -224,10 +235,6 @@ public class ConfigFileHandler extends EmakuParametersStructure {
         return host;
     }
     
-    public static Hashtable<String,String> getBoxID() {
-        return boxID;
-    }
-    
     public static String getLanguage() {
         return language;
     }
@@ -236,6 +243,21 @@ public class ConfigFileHandler extends EmakuParametersStructure {
         return logMode;
     }
    
+    public static ArrayList getCompany() {
+    	return company;
+    }
+    
+    public static String getCash() {
+    	return cash;
+    }
+    
+    public static String getClassLookAndFeel() {
+    	return classLookAndFeel;
+    }
+    
+    public static String getURLJarLookAndFeel() {
+    	return URLJarLookAndFeel;
+    }
     /**
      * 
      * @return algo

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ROOT=/home/emaku/beta
+ROOT=/home/emaku/beta.berlios/beta
 
 COMPILE=`which compile`
 

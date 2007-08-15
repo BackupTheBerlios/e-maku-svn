@@ -44,7 +44,13 @@ public class PrintingManager {
 		PrintService defaultService =null;
 		System.out.println("Printer name " + printer);
 		if (this.type.equals(ImpresionType.PLAIN)) {
-			docFlavor = DocFlavor.INPUT_STREAM.TEXT_PLAIN_UTF_8;
+			String os = System.getProperty("os.name");
+			if (os.equals("Linux")){
+				docFlavor = DocFlavor.INPUT_STREAM.TEXT_PLAIN_HOST;
+			}
+			else {
+				docFlavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
+			}
 		}
 		else if (type.equals(ImpresionType.PDF)) {
 			docFlavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
@@ -111,6 +117,7 @@ public class PrintingManager {
 	private void print(PrintService ps, Object printData, PrintRequestAttributeSet pras) throws PrintException {
 		DocPrintJob job = ps.createPrintJob();
 		Doc doc = new SimpleDoc(printData, docFlavor, null);
+		System.out.println(docFlavor);
 		job.print(doc, pras);
 	}
 	

@@ -49,7 +49,7 @@ public class XMLTextArea extends JTextArea implements Couplable, FocusListener, 
     private GenericForm GFforma;
     private Vector <String>driverEvent;
     private Vector <String>keySQL;
-    private Element printPack;
+    //private Element printPack;
     private String mode;
 	private String namebutton = "SAVE";
     private String exportValue;
@@ -213,7 +213,20 @@ public class XMLTextArea extends JTextArea implements Couplable, FocusListener, 
     }
     
     public Element getSeparatedPrintPackage() {
-        return printPack;
+    	String acumText = "";
+    	Element pack = new Element("package");
+    	for (char c : getText().toCharArray()) {
+    		if (c!='\n') {
+    			acumText+=c;
+    		}
+    		else {
+    			Element field = new Element("field");
+                field.setText(acumText);
+                pack.addContent(field);
+                acumText="";
+    		}
+    	}
+        return pack;
     }
 
 	public void arriveAnswerEvent(AnswerEvent AEe) {
@@ -223,14 +236,14 @@ public class XMLTextArea extends JTextArea implements Couplable, FocusListener, 
 		        int row = e.getChildren().size();
 		        clean();
 		        if (row>0) {
-                    printPack = new Element("package");
+                    //printPack = new Element("package");
 		        	Iterator it = e.getChildren().iterator();
 		        	while(it.hasNext()) {
 		        		String val = ((Element)it.next()).getValue().trim();
 		        		if (!"".equals(val)) {
 		        			Element field = new Element("field");
                         	field.setText(val);
-                        	printPack.addContent(field);
+                        	//printPack.addContent(field);
 		        		}
 		        		this.append(val+"\n");
 		        	}

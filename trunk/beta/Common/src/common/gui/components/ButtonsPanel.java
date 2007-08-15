@@ -30,6 +30,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
+import common.comunications.DateSender;
 import common.control.ClientHeaderValidator;
 import common.control.ErrorEvent;
 import common.control.ErrorListener;
@@ -597,6 +598,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
         
         Element id = new Element("id");
         idTransaction = "T"+TransactionServerResultSet.getId();
+        System.out.println("Id Transaccion :" + idTransaction);
         id.setText(idTransaction);
         plainManager.setIdTransaction(idTransaction);
         postScriptManager.setIdTransaction(idTransaction);
@@ -612,7 +614,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
         for (int i = 0; i < pack.size(); i++) {
             transaction.getRootElement().addContent((Element) pack.elementAt(i));
         }
-        
+        GFforma.sendTransaction(DateSender.getPackage());
         GFforma.sendTransaction(transaction);
 
         int times = 0;
@@ -708,7 +710,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 		// TODO Auto-generated method stub
 		String numeration = e.getNdocument();
 		System.out.println("evento de error, transaccion: "+numeration+" transaccion: "+idTransaction+" transaccion obtenida "+e.getIdPackage());
-		if (e.getIdPackage().equals(idTransaction)) {
+		if (idTransaction!=null && idTransaction.equals(e.getIdPackage())) {
 			lastNumber = numeration;
 			badActionFinish=true;
 			System.out.println("Estado cambiado ...");

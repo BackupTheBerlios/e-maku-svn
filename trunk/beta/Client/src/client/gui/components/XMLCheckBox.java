@@ -103,6 +103,7 @@ public class XMLCheckBox extends JCheckBox implements ActionListener, AnswerList
 		            }
 					else if ("exportValue".equals(subargs.getAttributeValue("attribute"))) {
 						exportValue = value;
+						GFforma.setExternalValues(exportValue,"0");
 					}
 		         	else if ("exportField".equals(subargs.getAttributeValue("attribute"))) {
 		         		try {

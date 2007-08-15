@@ -68,7 +68,8 @@ import common.transactions.TransactionServerResultSet;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
 public class GenericData extends JPanel implements DateListener,
-		AnswerListener, InstanceFinishingListener, ExternalValueChangeListener {
+		AnswerListener, InstanceFinishingListener, ExternalValueChangeListener,
+		RecordListener {
 
 	private static final long serialVersionUID = 3911530078319143164L;
 	private GenericForm GFforma;
@@ -89,6 +90,7 @@ public class GenericData extends JPanel implements DateListener,
 	private Vector<AnswerListener> answerListener = new Vector<AnswerListener>();
 	private Vector<ChangeValueListener> changeValueListener = new Vector<ChangeValueListener>();
 	private Vector<RecordListener> recordListener = new Vector<RecordListener>();
+	private String driverEventRecord;
 	
 	public GenericData() {}
 
@@ -151,6 +153,13 @@ public class GenericData extends JPanel implements DateListener,
 					id = subargs.getAttributeValue("id");
 				}
 				driverEvent = subargs.getValue() + id;
+			} else if ("driverEventRecord".equals(subargs
+					.getAttributeValue("attribute"))) {
+				String id = "";
+				if (subargs.getAttributeValue("id") != null) {
+					id = subargs.getAttributeValue("id");
+				}
+				driverEventRecord = subargs.getValue() + id;
 			} else if ("returnValue".equals(subargs
 					.getAttributeValue("attribute"))) {
 				returnValue = value;
@@ -740,7 +749,15 @@ public class GenericData extends JPanel implements DateListener,
 			xmltemp.setSendQuery(false);
 			if (xmltemp.isClean()) {
 				xmltemp.setText("");
-				if (xmltemp.getType().equals("NUMERIC")) {
+				/* 
+				 * Adicionada validacion para constatar si el componente importa 
+				 * valores, si es asi, entonces su valor no se debe setear a 0
+				 * ya que esto se haria automaticamente cuando el valor importado
+				 * lo haga.
+				 * 
+				 * 2007-07-24 popayan                                pipelx
+				 */
+				if (xmltemp.getType().equals("NUMERIC") && !xmltemp.isImportvalue()) {
 					xmltemp.setText("0,00");
 					xmltemp.setNumberValue(0.00);
 				}
@@ -912,79 +929,86 @@ public class GenericData extends JPanel implements DateListener,
 		answerListener.removeElement(listener);
 	}
 
-	public void arriveAnswerEvent(AnswerEvent AEe) {
-			Document doc = AEe.getDocument();
-			Iterator i = doc.getRootElement().getChildren("row").iterator();
-			int row = doc.getRootElement().getChildren("row").size();
+	public void setData(Element rootElement) {
+		Iterator i = rootElement.getChildren("row").iterator();
+		int row = rootElement.getChildren("row").size();
+		clean();
+		if (row > 0) {
+			while (i.hasNext()) {
+				Element e = (Element) i.next();
+				Iterator j = e.getChildren().iterator();
+				for (int k = 0; j.hasNext(); k++) {
+					Element f = (Element) j.next();
+					XMLTextField XMLRefText = ((XMLTextField) VFields
+							.get(k));
 
-			clean();
-			if (row > 0) {
-				while (i.hasNext()) {
-					Element e = (Element) i.next();
-					Iterator j = e.getChildren().iterator();
-					for (int k = 0; j.hasNext(); k++) {
-						Element f = (Element) j.next();
-						XMLTextField XMLRefText = ((XMLTextField) VFields
-								.get(k));
-
-						if (XMLRefText.getFormatDate() != null) {
-							try {
-								Format formatter = new SimpleDateFormat(
-										XMLRefText.getFormatDate());
-								XMLRefText.setText(formatter
-										.format(Timestamp.valueOf(f
-												.getValue().trim())));
-							} catch (IllegalArgumentException IAEe) {
-								XMLRefText.setText(f.getValue().trim());
-							}
-						} else if (XMLTextField.NUMERIC.equals(XMLRefText
-								.getType())) {
-							try {
-								XMLRefText.setNumberValue(Double
-										.parseDouble(f.getValue().trim()));
-								// XMLRefText.setText(Double.parseDouble(f.getValue().trim())));
-							} catch (NumberFormatException NFEe) {
-							}
-						} else {
+					if (XMLRefText.getFormatDate() != null) {
+						try {
+							Format formatter = new SimpleDateFormat(
+									XMLRefText.getFormatDate());
+							XMLRefText.setText(formatter
+									.format(Timestamp.valueOf(f
+											.getValue().trim())));
+						} catch (IllegalArgumentException IAEe) {
 							XMLRefText.setText(f.getValue().trim());
 						}
-						if (XMLRefText.isExportvalue()) {
-							exportar(XMLRefText);
-						}
-					}
-				}
-				if (Sargs != null) {
-					if ("NEW".equals(Sargs)) {
-						GFforma.setEnabledButton(namebutton, false);
-					} else {
-						GFforma.setEnabledButton(namebutton, true);
-						// clean();
-					}
-				}
-			} else {
-				for (int j = 0; j < VFields.size(); j++) {
-					XMLTextField XMLRefText = ((XMLTextField) VFields
-							.get(j));
-					if (XMLTextField.NUMERIC.equals(XMLRefText.getType())) {
+					} else if (XMLTextField.NUMERIC.equals(XMLRefText
+							.getType())) {
 						try {
-							XMLRefText.setNumberValue(0);
+							XMLRefText.setNumberValue(Double
+									.parseDouble(f.getValue().trim()));
+							// XMLRefText.setText(Double.parseDouble(f.getValue().trim())));
 						} catch (NumberFormatException NFEe) {
 						}
-						if (XMLRefText.isExportvalue()) {
-							exportar(XMLRefText);
-						}
-
-					}
-				}
-				if (Sargs != null) {
-					if ("NEW".equals(Sargs)) {
-						GFforma.setEnabledButton(namebutton, true);
 					} else {
-						GFforma.setEnabledButton(namebutton, false);
-						// clean();
+						XMLRefText.setText(f.getValue().trim());
 					}
+					if (XMLRefText.isExportvalue()) {
+						exportar(XMLRefText);
+					}
+					//TODO Adicionada para que consulte información en el momento
+					// de llenarse la información mediante una consulta externa
+					search=true;
+					processQuery(XMLRefText);
+					//---
 				}
 			}
+			if (Sargs != null) {
+				if ("NEW".equals(Sargs)) {
+					GFforma.setEnabledButton(namebutton, false);
+				} else {
+					GFforma.setEnabledButton(namebutton, true);
+					// clean();
+				}
+			}
+		} else {
+			for (int j = 0; j < VFields.size(); j++) {
+				XMLTextField XMLRefText = ((XMLTextField) VFields
+						.get(j));
+				if (XMLTextField.NUMERIC.equals(XMLRefText.getType())) {
+					try {
+						XMLRefText.setNumberValue(0);
+					} catch (NumberFormatException NFEe) {
+					}
+					if (XMLRefText.isExportvalue()) {
+						exportar(XMLRefText);
+					}
+
+				}
+			}
+			if (Sargs != null) {
+				if ("NEW".equals(Sargs)) {
+					GFforma.setEnabledButton(namebutton, true);
+				} else {
+					GFforma.setEnabledButton(namebutton, false);
+					// clean();
+				}
+			}
+		}
+	}
+	
+	public void arriveAnswerEvent(AnswerEvent AEe) {
+			setData(AEe.getDocument().getRootElement());
 	}
 
 	public Vector getVFields() {
@@ -1005,6 +1029,12 @@ public class GenericData extends JPanel implements DateListener,
 			GFforma.invokeMethod(driverEvent, "addAnswerListener",
 							new Class[] { AnswerListener.class },
 							new Object[] { this });
+		}
+		if (driverEventRecord != null) {
+				GFforma.invokeMethod(
+						driverEventRecord,"addRecordListener",
+						new Class[] { RecordListener.class },
+						new Object[] { this });
 		}
 
 	}
@@ -1073,13 +1103,16 @@ public class GenericData extends JPanel implements DateListener,
 			XMLTextField xmltf = ((XMLTextField) fields.get(i));
 			synchronized (xmltf) {
 				String oldValue = xmltf.getText();
-				if (xmltf.getImportValues()!=null) {
+				//TODO
+				//Comentado por Cristian, asunto: ImportValues dentro de
+				// GenericData
+				/*if (xmltf.getImportValues()!=null) {
 					for (String valor:xmltf.getImportValues()) {
 						if (valor.equals(e.getExternalValue())){
 							xmltf.setText(GFforma.getExteralValuesString(valor));
 						}
 					}
-				}
+				}*/
 				
 				if (xmltf.isCalculateExportvalue()) {
 					String formula = xmltf.getCalculateExportValue();
@@ -1174,9 +1207,8 @@ public class GenericData extends JPanel implements DateListener,
 		for (int i = 0; i < VFields.size(); i++) {
 			XMLTextField xmltf = (XMLTextField) VFields.get(i);
 			if (xmltf.getFormatDate() != null && xmltf.isSystemDate()) {
-				// Format formatter = new
-				// SimpleDateFormat(xmltf.getFormatDate());
-				// xmltf.setText(formatter.format(Timestamp.valueOf(e.getDate())));
+				//Format formatter = new SimpleDateFormat(xmltf.getFormatDate());
+				//xmltf.setText(formatter.format(Timestamp.valueOf(e.getDate())));
 				xmltf.setText(e.getDate());
 				if (xmltf.isExportvalue())
 					GFforma.setExternalValues(xmltf.getExportvalue(), xmltf.getText());
@@ -1258,15 +1290,20 @@ public class GenericData extends JPanel implements DateListener,
 	}
 	
 	/**
-	 * Metodo encargado de notificar la llegada de un paquete <answer/>
-	 * 
+	 * Metodo encargado de notificar la llegada de un paquete <answer/> 
 	 * @param event
 	 */
+	
 	private void notificando(AnswerEvent event) {
 		for(AnswerListener l:answerListener) {
 			if (l.containSqlCode(event.getSqlCode())) {
 				l.arriveAnswerEvent(event);
 			}
 		}
+	}
+
+	public void arriveRecordEvent(RecordEvent e) {
+		Element element = e.getElement();
+		setData(element);
 	}
 }

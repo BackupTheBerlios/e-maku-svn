@@ -86,38 +86,73 @@ public class TableFindData extends JPanel implements AnswerListener,
 		ExternalValueChangeListener, RecordListener, InstanceFinishingListener {
 
 	private static final long serialVersionUID = 3348132353954885841L;
+
 	private GenericForm GFforma;
+
 	private JTable JTtabla;
+
 	private EmakuTableModel TMFDtabla;
+
 	private ColumnsArgsGenerator[] ATFDargs;
+
 	private int rows;
+
 	private String sqlCode = "";
+
 	private ArrayList<Formula> formulas;
+
 	private HashMap<String, String> exportTotalCols;
+
 	private Hashtable<String, String> externalValues;
+
 	private int[] totales;
+
 	private ArrayList<String> driverEvent;
+
 	private ArrayList<String> recordEvent;
+
 	private ArrayList<String> keySQL = null;
+
 	private String initSQL;
+
 	private String[] initArgs;
+
 	private Color colorSelected;
+
 	private Color colorBackground;
+
 	private boolean enabled = true;
+
 	private boolean protectSelected;
+
 	private int valideLink = -1;
+
 	private int keyLink = -1;
+
 	private boolean returnNullValue;
+
 	private String mode;
+
 	private HashMap<String, String> importTotalCol;
+
 	private String sendRecord;
+
 	private String singleSendRecord;
+
 	private Vector<RecordListener> recordListener = new Vector<RecordListener>();
+
 	private int rowHeight = -1;
+
 	private Font font;
+
 	private boolean sendRecordOnSelectedRow;
+
+	private boolean arriveAnswerEvent;
+
 	private String[] initImps;
-	private HashMap<String,Integer> lastValue = new HashMap<String,Integer>();
+
+	private HashMap<String, Integer> lastValue = new HashMap<String, Integer>();
+
 	/**
 	 * Constructor ...
 	 * 
@@ -162,14 +197,12 @@ public class TableFindData extends JPanel implements AnswerListener,
 				} catch (NumberFormatException NFEe) {
 					NFEe.printStackTrace();
 				}
-			}
-			else if ("font".equals(args.getAttributeValue("attribute"))) {
+			} else if ("font".equals(args.getAttributeValue("attribute"))) {
 				try {
-					StringTokenizer STfont = new StringTokenizer(args.getValue(), ",");
-					font = new Font(
-					                STfont.nextToken(),
-					                Integer.parseInt(STfont.nextToken()),
-					                Integer.parseInt(STfont.nextToken()));
+					StringTokenizer STfont = new StringTokenizer(args
+							.getValue(), ",");
+					font = new Font(STfont.nextToken(), Integer.parseInt(STfont
+							.nextToken()), Integer.parseInt(STfont.nextToken()));
 				} catch (NumberFormatException NFEe) {
 					font = null;
 				} catch (NoSuchElementException NSEEe) {
@@ -179,54 +212,62 @@ public class TableFindData extends JPanel implements AnswerListener,
 			/* Se captura la formula aplicada en la tabla */
 			else if (args.getAttributeValue("attribute").equals("formula")) {
 				formulas.add(new Formula(args.getValue(), Formula.SIMPLE));
-			}
-			else if (args.getAttributeValue("attribute").equals("beanshell")) {
+			} else if (args.getAttributeValue("attribute").equals("beanshell")) {
 				formulas.add(new Formula(args.getValue(), Formula.BEANSHELL));
-			} else if (args.getAttributeValue("attribute").equals("superformulas")) {
+			} else if (args.getAttributeValue("attribute").equals(
+					"superformulas")) {
 				formulas.add(new Formula(args.getValue(), Formula.SUPER));
 			} else if (args.getAttributeValue("attribute").equals("formulaNQ")) {
 				formulas.add(new Formula(args.getValue(), Formula.SIMPLENQ));
-			} else if (args.getAttributeValue("attribute").equals("beanshellNQ")) {
+			} else if (args.getAttributeValue("attribute")
+					.equals("beanshellNQ")) {
 				formulas.add(new Formula(args.getValue(), Formula.BEANSHELLNQ));
-			} else if (args.getAttributeValue("attribute").equals("superformulaNQ")) {
+			} else if (args.getAttributeValue("attribute").equals(
+					"superformulaNQ")) {
 				formulas.add(new Formula(args.getValue(), Formula.SUPERNQ));
-			} else if (args.getAttributeValue("attribute").equals("superBeanNQ")) {
+			} else if (args.getAttributeValue("attribute")
+					.equals("superBeanNQ")) {
 				formulas.add(new Formula(args.getValue(), Formula.SUPERBEANNQ));
-			} else if (args.getAttributeValue("attribute").equals("exportTotalCol")) {
-				StringTokenizer STexportTotalCols = new StringTokenizer(args.getValue(), ",");
-				exportTotalCols.put(new String(STexportTotalCols.nextToken()).toUpperCase(), STexportTotalCols.nextToken());
+			} else if (args.getAttributeValue("attribute").equals(
+					"exportTotalCol")) {
+				StringTokenizer STexportTotalCols = new StringTokenizer(args
+						.getValue(), ",");
+				exportTotalCols.put(new String(STexportTotalCols.nextToken())
+						.toUpperCase(), STexportTotalCols.nextToken());
 			} else if (args.getAttributeValue("attribute").equals("tagData")) {
 				tagDataColumn = Integer.parseInt(args.getValue());
 			} else if (args.getAttributeValue("attribute").equals("sendRecord")) {
 				this.sendRecord = args.getValue();
-			} else if (args.getAttributeValue("attribute").equals("singleSendRecord")) {
+			} else if (args.getAttributeValue("attribute").equals(
+					"singleSendRecord")) {
 				this.singleSendRecord = args.getValue();
 			}
 			/*
 			 * Se captura las columnas que generaran totales
 			 */
 			else if (args.getAttributeValue("attribute").equals("totales")) {
-				StringTokenizer STtotal = new StringTokenizer(args.getValue(),",");
+				StringTokenizer STtotal = new StringTokenizer(args.getValue(),
+						",");
 				totales = new int[STtotal.countTokens()];
 				for (int j = 0; j < totales.length; j++) {
 					int tmpTotal = 0;
 					String col = STtotal.nextToken();
 					if (col.charAt(0) <= 74) {
 						tmpTotal = col.charAt(0) - 65;
-					}
-					else { /* cuando es minuscula */
+					} else { /* cuando es minuscula */
 						tmpTotal = col.charAt(0) - 97;
 					}
 					totales[j] = tmpTotal;
 				}
-			}
-			else if (args.getAttributeValue("attribute").equals("driverEvent")) {
+			} else if (args.getAttributeValue("attribute")
+					.equals("driverEvent")) {
 				String id = "";
 				if (args.getAttributeValue("id") != null) {
 					id = args.getAttributeValue("id");
 				}
 				driverEvent.add(args.getValue() + id);
-			} else if (args.getAttributeValue("attribute").equals("driverEventRecord")) {
+			} else if (args.getAttributeValue("attribute").equals(
+					"driverEventRecord")) {
 				String id = "";
 				if (args.getAttributeValue("id") != null) {
 					id = args.getAttributeValue("id");
@@ -237,40 +278,54 @@ public class TableFindData extends JPanel implements AnswerListener,
 			} else if (args.getAttributeValue("attribute").equals("initSQL")) {
 				initSQL = args.getValue();
 			} else if (args.getAttributeValue("attribute").equals("initArgs")) {
-				StringTokenizer STargs = new StringTokenizer(args.getValue(),":");
+				StringTokenizer STargs = new StringTokenizer(args.getValue(),
+						":");
 				initArgs = new String[STargs.countTokens()];
 				for (int j = 0; j < initArgs.length; j++) {
 					initArgs[j] = STargs.nextToken();
 				}
 			} else if (args.getAttributeValue("attribute").equals("initImps")) {
-				StringTokenizer STargs = new StringTokenizer(args.getValue(),":");
+				StringTokenizer STargs = new StringTokenizer(args.getValue(),
+						":");
 				initImps = new String[STargs.countTokens()];
 				for (int j = 0; j < initImps.length; j++) {
-					initImps[j] = GFform.getExteralValuesString(STargs.nextToken());
+					initImps[j] = GFform.getExteralValuesString(STargs
+							.nextToken());
 				}
-			} else if (args.getAttributeValue("attribute").equals("colorSelected")) {
+			} else if (args.getAttributeValue("attribute").equals(
+					"colorSelected")) {
 				colorSelected = getColor(args.getValue());
-			} else if (args.getAttributeValue("attribute").equals("colorBackground")) {
+			} else if (args.getAttributeValue("attribute").equals(
+					"colorBackground")) {
 				colorBackground = getColor(args.getValue());
 			} else if (args.getAttributeValue("attribute").equals("enabled")) {
 				enabled = Boolean.parseBoolean(args.getValue());
-			} else if (args.getAttributeValue("attribute").equals("protectSelected")) {
+			} else if (args.getAttributeValue("attribute").equals(
+					"protectSelected")) {
 				protectSelected = Boolean.parseBoolean(args.getValue());
-			} else if (args.getAttributeValue("attribute").equals("sendRecordOnSelectedRow")) {
+			} else if (args.getAttributeValue("attribute").equals(
+					"sendRecordOnSelectedRow")) {
 				sendRecordOnSelectedRow = Boolean.parseBoolean(args.getValue());
 			} else if (args.getAttributeValue("attribute").equals("valideLink")) {
 				valideLink = Integer.parseInt(args.getValue());
 			} else if (args.getAttributeValue("attribute").equals("keyLink")) {
 				keyLink = Integer.parseInt(args.getValue());
-			} else if (args.getAttributeValue("attribute").equals("importValue")) {
+			} else if (args.getAttributeValue("attribute")
+					.equals("importValue")) {
 				impValues.add(args.getValue());
-			} else if (args.getAttributeValue("attribute").equals("importTotalCol")) {
-				StringTokenizer STexportTotalCols = new StringTokenizer(args.getValue(), ",");
-				importTotalCol.put(STexportTotalCols.nextToken().toUpperCase(),STexportTotalCols.nextToken());
-			} else if (args.getAttributeValue("attribute").equals("returnNullValue")) {
+			} else if (args.getAttributeValue("attribute").equals(
+					"importTotalCol")) {
+				StringTokenizer STexportTotalCols = new StringTokenizer(args
+						.getValue(), ",");
+				importTotalCol.put(STexportTotalCols.nextToken().toUpperCase(),
+						STexportTotalCols.nextToken());
+			} else if (args.getAttributeValue("attribute").equals(
+					"returnNullValue")) {
 				returnNullValue = Boolean.parseBoolean(args.getValue());
-			} else if (args.getAttributeValue("attribute").equals("externalValue")) {
-				StringTokenizer STexternalValue = new StringTokenizer(args.getValue(), ",");
+			} else if (args.getAttributeValue("attribute").equals(
+					"externalValue")) {
+				StringTokenizer STexternalValue = new StringTokenizer(args
+						.getValue(), ",");
 				try {
 					String idDriver = STexternalValue.nextToken();
 					String driver = STexternalValue.nextToken();
@@ -279,7 +334,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 				} catch (NoSuchElementException NSEEe) {
 					NSEEe.printStackTrace();
 				}
-			}  else if (args.getAttributeValue("attribute").equals("rowHeight")) {
+			} else if (args.getAttributeValue("attribute").equals("rowHeight")) {
 				rowHeight = Integer.parseInt(args.getValue());
 			}
 		}
@@ -298,8 +353,10 @@ public class TableFindData extends JPanel implements AnswerListener,
 
 				private static final long serialVersionUID = -9216942827014115821L;
 
-				public Component prepareRenderer(TableCellRenderer renderer,int rowIndex, int vColIndex) {
-					Component c = super.prepareRenderer(renderer, rowIndex,vColIndex);
+				public Component prepareRenderer(TableCellRenderer renderer,
+						int rowIndex, int vColIndex) {
+					Component c = super.prepareRenderer(renderer, rowIndex,
+							vColIndex);
 					if (rowIndex % 2 == 0
 							&& !isCellSelected(rowIndex, vColIndex)) {
 						if (colorBackground != null) {
@@ -322,16 +379,16 @@ public class TableFindData extends JPanel implements AnswerListener,
 			loadingQuery();
 		} else {
 			if (valideLink > 0) {
-				TMFDtabla = new EmakuTableModel(GFforma, sqlCode, rows, formulas,
-						exportTotalCols, importTotalCol, impValues, totales,
-						externalValues, ATFDargs, valideLink, keyLink);
+				TMFDtabla = new EmakuTableModel(GFforma, sqlCode, rows,
+						formulas, exportTotalCols, importTotalCol, impValues,
+						totales, externalValues, ATFDargs, valideLink, keyLink);
 			} else {
-				TMFDtabla = new EmakuTableModel(GFforma, sqlCode, rows, formulas,
-						exportTotalCols, importTotalCol, impValues, totales,
-						externalValues, ATFDargs);
+				TMFDtabla = new EmakuTableModel(GFforma, sqlCode, rows,
+						formulas, exportTotalCols, importTotalCol, impValues,
+						totales, externalValues, ATFDargs);
 			}
 			TMFDtabla.setTagDataColumn(tagDataColumn);
-			//TableSorter sorter = new TableSorter(TMFDtabla);
+			// TableSorter sorter = new TableSorter(TMFDtabla);
 			JTtabla = new JTable(TMFDtabla) {
 
 				private static final long serialVersionUID = -8579166961142646633L;
@@ -357,7 +414,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 					return c;
 				}
 			};
-			//sorter.setTableHeader(JTtabla.getTableHeader());
+			// sorter.setTableHeader(JTtabla.getTableHeader());
 			propertiesTable();
 		}
 
@@ -366,7 +423,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 		 */
 
 		GFform.addInitiateFinishListener(this);
-		if (font!=null) {
+		if (font != null) {
 			JTtabla.setFont(font);
 			JTtabla.getTableHeader().setFont(font);
 		}
@@ -386,10 +443,9 @@ public class TableFindData extends JPanel implements AnswerListener,
 	private Color getColor(String color) {
 		try {
 			StringTokenizer STcolor = new StringTokenizer(color, ",");
-			return new Color(
-			                 Integer.parseInt(STcolor.nextToken()),
-			                 Integer.parseInt(STcolor.nextToken()),
-			                 Integer.parseInt(STcolor.nextToken()));
+			return new Color(Integer.parseInt(STcolor.nextToken()), Integer
+					.parseInt(STcolor.nextToken()), Integer.parseInt(STcolor
+					.nextToken()));
 		} catch (NumberFormatException NFEe) {
 			return null;
 		} catch (NoSuchElementException NSEEe) {
@@ -399,45 +455,13 @@ public class TableFindData extends JPanel implements AnswerListener,
 
 	private void propertiesTable() {
 
-		//JTtabla.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		// JTtabla.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		JTtabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		if (rowHeight>0) {
-			JTtabla.setRowHeight(rowHeight);	
+		if (rowHeight > 0) {
+			JTtabla.setRowHeight(rowHeight);
 		}
 		JTtabla.setEnabled(enabled);
-		
-		JTtabla.getSelectionModel().addListSelectionListener(
-				new ListSelectionListener() {
-					public void valueChanged(ListSelectionEvent e) {
-						int sel = JTtabla.getSelectedRow();
-						if (sel==-1) { return; }
-						
-						for (int i=0; i < ATFDargs.length ; i++) {
-							ColumnsArgsGenerator c = ATFDargs[i];
-							if (c.isExporValue()) {
-								Object obj = TMFDtabla.getValueAt(sel,i);
-								 TMFDtabla.updateCells(obj,sel,i);
-							}
-						}
-						
-						if (sendRecordOnSelectedRow) {
-							Element element = new Element("table");
-							boolean fullRow = sendRecord(sel,element,singleSendRecord);
-							if (fullRow) {
-								RecordEvent event = new RecordEvent(this, element);
-								notificando(event);
-							}
-						}
-						
-						if (protectSelected) {
-							if (sel > 0) {
-								if (TMFDtabla.getValueAt(sel - 1, 0)==null || "".equals(TMFDtabla.getValueAt(sel - 1, 0))) {
-									JTtabla.changeSelection(sel - 1, 0, false,false);
-								}
-							}
-						}
-					}
-				});
+
 		JTtabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		JTtabla.setAutoscrolls(true);
 		JTtabla.setColumnSelectionAllowed(true);
@@ -446,10 +470,11 @@ public class TableFindData extends JPanel implements AnswerListener,
 				if (e.getKeyCode() == KeyEvent.VK_DELETE
 						&& JTtabla.isCellEditable(JTtabla.getSelectedRow(),
 								JTtabla.getSelectedColumn())) {
-					if (valideLink >= 0 && 
-						!"".equals(
-						           ((String)JTtabla.getValueAt(JTtabla.getSelectedRow(), keyLink)).trim())) {
-						TMFDtabla.addKeyLink((String) JTtabla.getValueAt(JTtabla.getSelectedRow(), keyLink));
+					if (valideLink >= 0
+							&& !"".equals(((String) JTtabla.getValueAt(JTtabla
+									.getSelectedRow(), keyLink)).trim())) {
+						TMFDtabla.addKeyLink((String) JTtabla.getValueAt(
+								JTtabla.getSelectedRow(), keyLink));
 					}
 
 					int indice = JTtabla.getSelectedRow();
@@ -480,7 +505,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 				TableColumn tc = JTtabla.getColumn(cname);
 				int lengthCol = ATFDargs[k].getLengthCol();
 				tc.setMinWidth(0);
-				if (lengthCol>=0) {
+				if (lengthCol >= 0) {
 					tc.setPreferredWidth(lengthCol);
 				}
 				if (ATFDargs[k].getType().equals("COMBOSQL")) {
@@ -493,56 +518,67 @@ public class TableFindData extends JPanel implements AnswerListener,
 							tc.setCellEditor(new DefaultCellEditor(
 									new ComboBoxFiller(GFforma, ATFDargs[k]
 											.getSqlCombo(), ATFDargs[k]
-											.getImportCombos(), exportValue,false)));
+											.getImportCombos(), exportValue,
+											false)));
 						} else {
 							tc.setCellEditor(new DefaultCellEditor(
-									new ComboBoxFiller(
-									                GFforma,
-									                ATFDargs[k].getSqlCombo(),
-									                ATFDargs[k].getImportCombos(),false)));
+									new ComboBoxFiller(GFforma, ATFDargs[k]
+											.getSqlCombo(), ATFDargs[k]
+											.getImportCombos(), false)));
 						}
 					} else {
 						if (ATFDargs[k].isExporValueCombo()) {
-							tc.setCellEditor(new DefaultCellEditor(
-									new ComboBoxFiller(GFforma, ATFDargs[k].getSqlCombo(), exportValue,false)));
+							tc
+									.setCellEditor(new DefaultCellEditor(
+											new ComboBoxFiller(GFforma,
+													ATFDargs[k].getSqlCombo(),
+													exportValue, false)));
 						} else {
 							tc.setCellEditor(new DefaultCellEditor(
-									new ComboBoxFiller(GFforma, ATFDargs[k].getSqlCombo(),false)));
+									new ComboBoxFiller(GFforma, ATFDargs[k]
+											.getSqlCombo(), false)));
 						}
 					}
 				}
-				
+
 				/*
 				 * Si el tipo de Editor es para consulta entonces ....
 				 */
 				else if (ATFDargs[k].getType().equals("DATASEARCH")) {
-					TableColumn dataColumn = JTtabla.getColumn(JTtabla.getColumnName(k));
-					EmakuDataSearchCellEditor cellEditor =  null; 
-					cellEditor = new EmakuDataSearchCellEditor(GFforma,k,ATFDargs,JTtabla);
-					if (null!=font) {
+					TableColumn dataColumn = JTtabla.getColumn(JTtabla
+							.getColumnName(k));
+					EmakuDataSearchCellEditor cellEditor = null;
+					cellEditor = new EmakuDataSearchCellEditor(GFforma, k,
+							ATFDargs, JTtabla);
+					if (null != font) {
 						cellEditor.setFont(font);
 					}
 					dataColumn.setCellEditor(cellEditor);
-				}
-				else if (ATFDargs[k].getType().equals("DETAILEDPRODUCT")) {
-					TableColumn dataColumn = JTtabla.getColumn(JTtabla.getColumnName(k));
-					EmakuDetailedProductCellEditor cellEditor =  null; 
-					cellEditor = new EmakuDetailedProductCellEditor(GFforma,k,ATFDargs,JTtabla);
+				} else if (ATFDargs[k].getType().equals("DETAILEDPRODUCT")) {
+					TableColumn dataColumn = JTtabla.getColumn(JTtabla
+							.getColumnName(k));
+					EmakuDetailedProductCellEditor cellEditor = null;
+					cellEditor = new EmakuDetailedProductCellEditor(GFforma, k,
+							ATFDargs, JTtabla);
 					dataColumn.setCellEditor(cellEditor);
-				}
-				else if (ATFDargs[k].getType().equals("TOUCHBUTTONS")) {
-					TableColumn dataColumn = JTtabla.getColumn(JTtabla.getColumnName(k));
-					EmakuTouchCellEditor cellEditor =  null; 
-					cellEditor = new EmakuTouchCellEditor(GFforma,ATFDargs[k].getElement());
+				} else if (ATFDargs[k].getType().equals("TOUCHBUTTONS")) {
+					TableColumn dataColumn = JTtabla.getColumn(JTtabla
+							.getColumnName(k));
+					EmakuTouchCellEditor cellEditor = null;
+					cellEditor = new EmakuTouchCellEditor(GFforma, ATFDargs[k]
+							.getElement());
 					dataColumn.setCellEditor(cellEditor);
 				}
 				/*
-				 * Si el editor es tipo String y se especifica maxima longitud de caracteres entonces
+				 * Si el editor es tipo String y se especifica maxima longitud
+				 * de caracteres entonces
 				 */
-				else if (ATFDargs[k].getType().equals("STRING") &&
-						 ATFDargs[k].size()>0) {
-					TableColumn dataColumn = JTtabla.getColumn(JTtabla.getColumnName(k));
-					EmakuCellEditor cellEditor =  new EmakuCellEditor(String.class,ATFDargs[k].size());
+				else if (ATFDargs[k].getType().equals("STRING")
+						&& ATFDargs[k].size() > 0) {
+					TableColumn dataColumn = JTtabla.getColumn(JTtabla
+							.getColumnName(k));
+					EmakuCellEditor cellEditor = new EmakuCellEditor(
+							String.class, ATFDargs[k].size());
 					dataColumn.setCellEditor(cellEditor);
 				}
 
@@ -551,19 +587,83 @@ public class TableFindData extends JPanel implements AnswerListener,
 			}
 		}
 
-		JTtabla.setDefaultRenderer(BigDecimal.class, new FortmaCell(Double.class));
-		JTtabla.setDefaultRenderer(Integer.class, new FortmaCell(Integer.class));
+		JTtabla.setDefaultRenderer(BigDecimal.class, new FortmaCell(
+				Double.class));
+		JTtabla
+				.setDefaultRenderer(Integer.class,
+						new FortmaCell(Integer.class));
 		JTtabla.setDefaultRenderer(Date.class, new FortmaCell(Date.class));
-		
-		JTtabla.setDefaultEditor(BigDecimal.class,	new EmakuCellEditor(BigDecimal.class));
-		
-		JTtabla.setDefaultEditor(BigDecimal.class,	new EmakuCellEditor(BigDecimal.class));
-		JTtabla.setDefaultEditor(Integer.class,		new EmakuCellEditor(Integer.class));
-		
-		JTtabla.setDefaultEditor(Date.class,new EmakuCellEditorDate(JTtabla));
+
+		JTtabla.setDefaultEditor(BigDecimal.class, new EmakuCellEditor(
+				BigDecimal.class));
+
+		JTtabla.setDefaultEditor(BigDecimal.class, new EmakuCellEditor(
+				BigDecimal.class));
+		JTtabla.setDefaultEditor(Integer.class, new EmakuCellEditor(
+				Integer.class));
+
+		JTtabla.setDefaultEditor(Date.class, new EmakuCellEditorDate(JTtabla));
 
 		GFforma.addChangeExternalValueListener(this);
 		TMFDtabla.addTableModelListener(new TModelListener(JTtabla));
+
+		JTtabla.getSelectionModel().addListSelectionListener(
+				new ListSelectionListener() {
+					public void valueChanged(ListSelectionEvent e) {
+
+						Runnable sselection = new Runnable() {
+							public void run() {
+									int sel = JTtabla.getSelectedRow();
+									if (sel == -1) {
+										return;
+									}
+									for (int i = 0; i < ATFDargs.length; i++) {
+										ColumnsArgsGenerator c = ATFDargs[i];
+										Object obj = TMFDtabla.getValueAt(sel,
+												i);
+										if (c.isExporValue() && obj != null
+												&& !"".equals(obj.toString())) {
+											GFforma.setExternalValues(
+													(Object) ATFDargs[i]
+															.getExportValue(),
+													obj.toString());
+										}
+									}
+
+									if (sendRecordOnSelectedRow) {
+										Element element = new Element("table");
+										// boolean fullRow =
+										// sendRecord(sel,element,singleSendRecord);
+										sendRecord(sel, element,
+												singleSendRecord);
+										// if (fullRow) {
+										RecordEvent event = new RecordEvent(
+												this, element);
+										notificando(event);
+										// }
+									}
+
+									if (protectSelected) {
+										if (sel > 0) {
+											if (TMFDtabla
+													.getValueAt(sel - 1, 0) == null
+													|| ""
+															.equals(TMFDtabla
+																	.getValueAt(
+																			sel - 1,
+																			0))) {
+												JTtabla.changeSelection(
+														sel - 1, 0, false,
+														false);
+											}
+										}
+								}
+							}
+						};
+						new Thread(sselection, "sendRecordSelection").start();
+
+					}
+				});
 	}
 
 	private void loadingQuery() {
@@ -580,9 +680,11 @@ public class TableFindData extends JPanel implements AnswerListener,
 			public void run() {
 				Document doc = null;
 				try {
-					doc = TransactionServerResultSet.getResultSetST(initSQL, initArgs);
-					TMFDtabla = new EmakuTableModel(GFforma, sqlCode, doc, formulas,
-							exportTotalCols, importTotalCol,totales, externalValues, ATFDargs);
+					doc = TransactionServerResultSet.getResultSetST(initSQL,
+							initArgs);
+					TMFDtabla = new EmakuTableModel(GFforma, sqlCode, doc,
+							formulas, exportTotalCols, importTotalCol, totales,
+							externalValues, ATFDargs);
 					JTtabla.setModel(TMFDtabla);
 					propertiesTable();
 
@@ -596,7 +698,16 @@ public class TableFindData extends JPanel implements AnswerListener,
 		 * Eliminado el hilo por problemas de retorno del objeto TMDtabla. new
 		 * loadingSQL(initSQL, initArgs).start();
 		 */
-		String[] args = initArgs!=null ? initArgs : initImps!=null ? initImps : null;
+		int numInitArgs = initArgs != null ? initArgs.length : 0;
+		int numInitImps = initImps != null ? initImps.length : 0;
+		String[] args = new String[numInitArgs + numInitImps];
+		int i = 0;
+		for (; i < numInitArgs; i++) {
+			args[i] = initArgs[i];
+		}
+		for (int j = 0; j < numInitImps; i++, j++) {
+			args[i] = initImps[j];
+		}
 		new loadingSQL(initSQL, args).start();
 	}
 
@@ -612,119 +723,119 @@ public class TableFindData extends JPanel implements AnswerListener,
 		return TMFDtabla.getMultiPackage();
 	}
 
-    public Element generateConcept(Element args) {
-    	
-    	Element pack = new Element("package");
-    	Element field = new Element("field");
-    	
-    	String concept = "";
-    	String conceptStart = "";
-    	String conceptEnd = "";
-    	boolean avoidFinalConnector = false;
-    	int validColumn = 0;
-    	
+	public Element generateConcept(Element args) {
+
+		Element pack = new Element("package");
+		Element field = new Element("field");
+
+		String concept = "";
+		String conceptStart = "";
+		String conceptEnd = "";
+		boolean avoidFinalConnector = false;
+		int validColumn = 0;
+
 		Iterator it = args.getChildren("arg").iterator();
-		while (it.hasNext()) { 
+		while (it.hasNext()) {
 			Element arg = (Element) it.next();
 			if ("conceptStart".equals(arg.getAttributeValue("attribute"))) {
 				conceptStart = arg.getValue();
-			}
-			else if ("conceptEnd".equals(arg.getAttributeValue("attribute"))) {
+			} else if ("conceptEnd".equals(arg.getAttributeValue("attribute"))) {
 				conceptEnd = arg.getValue();
-			}
-			else if ("avoidConnectorAtFinal".equals(arg.getAttributeValue("attribute"))) {
-					avoidFinalConnector = Boolean.parseBoolean(arg.getValue());
-			}
-			else if ("validColumn".equals(arg.getAttributeValue("attribute"))) {
-				try {	
+			} else if ("avoidConnectorAtFinal".equals(arg
+					.getAttributeValue("attribute"))) {
+				avoidFinalConnector = Boolean.parseBoolean(arg.getValue());
+			} else if ("validColumn".equals(arg.getAttributeValue("attribute"))) {
+				try {
 					validColumn = Integer.parseInt(arg.getValue());
+				} catch (NumberFormatException NFEe) {
 				}
-				catch (NumberFormatException NFEe) {}
 			}
 		}
-		
-		Element subargs = (Element)args.getChildren("subargs").iterator().next();
+
+		Element subargs = (Element) args.getChildren("subargs").iterator()
+				.next();
 		List dataCol = subargs.getChildren();
-		int lenghtFinalConnector=0;
-		for (int i=0;i<TMFDtabla.getRowCount();i++) {
-			if (((Number)TMFDtabla.getValueAt(i,validColumn)).intValue()>0) {
-				for (int j=0;j<dataCol.size();j++) {
-					String typeData = ((Element)dataCol.get(j)).getAttributeValue("attribute");
-					String value = ((Element)dataCol.get(j)).getValue();
+		int lenghtFinalConnector = 0;
+		for (int i = 0; i < TMFDtabla.getRowCount(); i++) {
+			if (((Number) TMFDtabla.getValueAt(i, validColumn)).intValue() > 0) {
+				for (int j = 0; j < dataCol.size(); j++) {
+					String typeData = ((Element) dataCol.get(j))
+							.getAttributeValue("attribute");
+					String value = ((Element) dataCol.get(j)).getValue();
 					if (typeData.equals("column")) {
 						try {
-							Object obj = TMFDtabla.getValueAt(i,Integer.parseInt(value));
+							Object obj = TMFDtabla.getValueAt(i, Integer
+									.parseInt(value));
 							if (ATFDargs[j].getType().equals("DECIMAL")) {
-								NumberFormat nf = NumberFormat.getNumberInstance();
+								NumberFormat nf = NumberFormat
+										.getNumberInstance();
 								DecimalFormat form = (DecimalFormat) nf;
 								form.applyPattern("###,####,###.00");
-								concept+=form.format(obj);
+								concept += form.format(obj);
+							} else {
+								concept += obj;
 							}
-							else {
-								concept+=obj;
-							}
-							 
+
+						} catch (NumberFormatException NFEe) {
+
 						}
-						catch(NumberFormatException NFEe) {
-							
-						}
-					} 
-					else if (typeData.equals("connector")) {
-						concept+=value;
-						lenghtFinalConnector=value.length();
+					} else if (typeData.equals("connector")) {
+						concept += value;
+						lenghtFinalConnector = value.length();
 					}
 				}
 			}
 		}
-		
+
 		if (avoidFinalConnector) {
-			concept = concept.substring(0,concept.length()-lenghtFinalConnector);
+			concept = concept.substring(0, concept.length()
+					- lenghtFinalConnector);
 		}
 		if (!concept.equals("")) {
-			concept=conceptStart+concept+conceptEnd;
+			concept = conceptStart + concept + conceptEnd;
 		}
 		field.setText(concept);
 		pack.addContent(field);
-		
-    	return pack;
-    	
-    }
-	
-    /**
-     * Metodo generico para retornar un <package/> 
-     * validando una condicion especial de una columna
-     */
-     
-    public Element getPackage(Element args) throws VoidPackageException {
+
+		return pack;
+
+	}
+
+	/**
+	 * Metodo generico para retornar un <package/> validando una condicion
+	 * especial de una columna
+	 */
+
+	public Element getPackage(Element args) throws VoidPackageException {
 		Iterator it = args.getChildren("arg").iterator();
-		boolean maxmin = true; // Si maxmin es true entonces la condicion es mayor si no es menor
+		boolean maxmin = true; // Si maxmin es true entonces la condicion es
+								// mayor si no es menor
 		double validValue = 0;
 		int column = 0;
 		String message = "Tabla Data";
-		while (it.hasNext()) { 
+		while (it.hasNext()) {
 			Element arg = (Element) it.next();
 			if ("validMaxValue".equals(arg.getAttributeValue("attribute"))) {
 				maxmin = true;
 				column = Integer.parseInt(arg.getValue());
-			}
-			else if ("validMinValue".equals(arg.getAttributeValue("attribute"))) {
+			} else if ("validMinValue".equals(arg
+					.getAttributeValue("attribute"))) {
 				maxmin = false;
 				column = Integer.parseInt(arg.getValue());
-			}
-			else if ("validValue".equals(arg.getAttributeValue("attribute"))) {
+			} else if ("validValue".equals(arg.getAttributeValue("attribute"))) {
 				validValue = Double.parseDouble(arg.getValue());
-			}
-			else if ("validMessage".equals(arg.getAttributeValue("attribute"))) {
+			} else if ("validMessage"
+					.equals(arg.getAttributeValue("attribute"))) {
 				message = arg.getValue();
 			}
 		}
-		Element pack = TMFDtabla.getPackage(maxmin,column,validValue);
+		Element pack = TMFDtabla.getPackage(maxmin, column, validValue);
 		if (pack.getChildren().size() == 0 && !returnNullValue) {
 			throw new VoidPackageException(message);
 		}
 		return pack;
-    } 
-    
+	}
+
 	/**
 	 * Metodo generico para retornar un <package/>
 	 * 
@@ -745,21 +856,24 @@ public class TableFindData extends JPanel implements AnswerListener,
 		}
 		return pack;
 	}
+
 	public Element getPrintPackage(Element args) {
 		return TMFDtabla.getPrintPackage(args);
 	}
-	
+
 	public Element getPrintPackageOrderBy(Element args) {
 		return TMFDtabla.getPrintPackageOrderBy(args);
 	}
-	
-	public Element getAgrupedPrintPackage(Element args) throws VoidPackageException {
+
+	public Element getAgrupedPrintPackage(Element args)
+			throws VoidPackageException {
 		Element element = TMFDtabla.getAgrupedPrintPackage(args);
 		if (element.getChildren().size() == 0 && !returnNullValue) {
 			throw new VoidPackageException("Tabla Data");
 		}
 		return element;
 	}
+
 	/**
 	 * Metodo utilizado solo para la forma de creacion de Grupos de Asientos
 	 * 
@@ -821,6 +935,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 	}
 
 	public void arriveAnswerEvent(AnswerEvent e) {
+		arriveAnswerEvent = true;
 		Document doc = e.getDocument();
 		int size = doc.getRootElement().getChildren("row").size();
 		if ("NEW".equals(mode)) {
@@ -842,7 +957,22 @@ public class TableFindData extends JPanel implements AnswerListener,
 				GFforma.setEnabledButton("DELETE", false);
 			}
 		}
+		JTtabla.getSelectionModel().clearSelection();
 		TMFDtabla.setQuery(doc);
+		if (sendRecord != null || singleSendRecord != null) {
+			lastValue = new HashMap<String, Integer>();
+			String record = sendRecord != null ? sendRecord : singleSendRecord;
+			int max = JTtabla.getModel().getRowCount();
+			Element element = new Element("table");
+			for (int i = 0; i < max && JTtabla.getValueAt(i, 0) != null
+					&& !JTtabla.getValueAt(i, 0).equals(""); i++) {
+				sendRecord(i, element, record);
+			}
+			RecordEvent event = new RecordEvent(this, element);
+			notificando(event);
+
+		}
+		arriveAnswerEvent = false;
 	}
 
 	/**
@@ -858,11 +988,17 @@ public class TableFindData extends JPanel implements AnswerListener,
 	}
 
 	public EmakuTableModel getTMFDtabla() {
-		while(TMFDtabla==null){
+		int i = 0;
+		while (TMFDtabla == null) {
 			try {
 				Thread.sleep(30);
+				i++;
+				if (i > 200) {
+					return null;
+				}
+			} catch (InterruptedException e) {
+
 			}
-			catch(InterruptedException e) {}
 		}
 		return TMFDtabla;
 	}
@@ -872,7 +1008,6 @@ public class TableFindData extends JPanel implements AnswerListener,
 	}
 
 	private void reloadData() {
-		System.out.println("Recargando ....");
 		for (int i = 0; !"".equals(TMFDtabla.getValueAt(i, 0))
 				&& i < TMFDtabla.getRowCount(); i++) {
 			TMFDtabla.setValueAt(TMFDtabla.getValueAt(i, 0), i, 0);
@@ -880,31 +1015,31 @@ public class TableFindData extends JPanel implements AnswerListener,
 	}
 
 	public void changeExternalValue(ExternalValueChangeEvent e) {
-		
-		if (TMFDtabla.impValuesSize() > 0 && e.getExternalValue()!= null) {
+
+		if (TMFDtabla.impValuesSize() > 0 && e.getExternalValue() != null) {
 			boolean valueChange = false;
-			
+
 			/*
-			 * Como el evento se ejecuta cuando una llave exportada cambia,
-			 * el siguiente codigo verifica si los valores que cambiaron
-			 * corresponden a alguna llave importada de este componente,
-			 * si asi fuera, entonces se procede a recargar la información
-			 * de la tabla.
+			 * Como el evento se ejecuta cuando una llave exportada cambia, el
+			 * siguiente codigo verifica si los valores que cambiaron
+			 * corresponden a alguna llave importada de este componente, si asi
+			 * fuera, entonces se procede a recargar la información de la tabla.
 			 * 
 			 * Codigo adicionado el 12-06-2007 por pipelx
 			 */
-			
-	    	for (int i=1 ; i < TMFDtabla.getSizeArgsQuery() ; i++) {
-	    		String valueImport = GFforma.getExteralValuesString(TMFDtabla.getImpValue(i-1));
-	    		String valueTable = TMFDtabla.getArgQuery(i); 
-	    		if (!valueImport.equals(valueTable)) {
-	    			valueChange = true;
-	    			break;
-	    		}
-	    	}
-	    	if (valueChange) {
-	    		reloadData();
-	    	}
+
+			for (int i = 1; i < TMFDtabla.getSizeArgsQuery(); i++) {
+				String valueImport = GFforma.getExteralValuesString(TMFDtabla
+						.getImpValue(i - 1));
+				String valueTable = TMFDtabla.getArgQuery(i);
+				if (!valueImport.equals(valueTable)) {
+					valueChange = true;
+					break;
+				}
+			}
+			if (valueChange) {
+				reloadData();
+			}
 		}
 
 	}
@@ -922,26 +1057,36 @@ public class TableFindData extends JPanel implements AnswerListener,
 	}
 
 	private void notificando(RecordEvent event) {
-		for (RecordListener l:recordListener) {
+		for (RecordListener l : recordListener) {
 			l.arriveRecordEvent(event);
 		}
 	}
 
-	public boolean sendRecord(int rowIndex,Element element,String record) {
-		int j=0;
-		int cont =0;
-		while ( j < ATFDargs.length && rowIndex>=0) {
-			Object cell = TMFDtabla.getValueAt(rowIndex, j);
-			if (cell!=null && !"".equals(cell)) {
-				cont++;
+	public boolean sendRecord(int rowIndex, Element element, String record) {
+		int j = 0;
+		int cont = 0;
+		/*
+		 * Este codigo verifica que el registro este lleno en su totalidad,
+		 * cuando se llena una tabla a partir de una consulta esta validación se
+		 * obviara, esto se sabe porque la variable arriveAnswerEvent esta en
+		 * true.
+		 */
+
+		if (!arriveAnswerEvent) {
+			while (j < ATFDargs.length && rowIndex >= 0) {
+				Object cell = TMFDtabla.getValueAt(rowIndex, j);
+				if (cell != null && !"".equals(cell)) {
+					cont++;
+				}
+				j++;
 			}
-			j++;
 		}
-		boolean fullRow = cont==ATFDargs.length ? true : false;
-		if (fullRow) {
-			
+
+		boolean fullRow = cont == ATFDargs.length ? true : false;
+		if (fullRow || arriveAnswerEvent) {
+
 			Element row = new Element("row");
-			StringTokenizer stk = new StringTokenizer(record,",");
+			StringTokenizer stk = new StringTokenizer(record, ",");
 			boolean next = true;
 			String currentVal = "";
 			while (next) {
@@ -950,10 +1095,12 @@ public class TableFindData extends JPanel implements AnswerListener,
 					String tok = stk.nextToken();
 					try {
 						int column = Integer.parseInt(tok);
-						String cellVal = TMFDtabla.getValueAt(rowIndex,column).toString();
+						String cellVal = TMFDtabla.getValueAt(rowIndex, column)
+								.toString();
 						if (ATFDargs[column].getType().equals("COMBOSQL")) {
 							String value = "";
-							StringTokenizer stkVal = new StringTokenizer(cellVal, " ");
+							StringTokenizer stkVal = new StringTokenizer(
+									cellVal, " ");
 							while (true) {
 								try {
 									value = stkVal.nextToken();
@@ -964,10 +1111,10 @@ public class TableFindData extends JPanel implements AnswerListener,
 							cellVal = value;
 						}
 						col.setText(cellVal);
-						currentVal+=cellVal;
+						currentVal += cellVal;
 						row.addContent(col);
 					} catch (NumberFormatException NFEe) {
-						col.setText(tok.substring(1,tok.length() - 1));
+						col.setText(tok.substring(1, tok.length() - 1));
 						row.addContent(col);
 					}
 				} catch (NoSuchElementException NSEe) {
@@ -975,20 +1122,29 @@ public class TableFindData extends JPanel implements AnswerListener,
 				}
 			}
 			element.addContent(row);
-			
-			boolean containValue = false;
-			for (int i=0;i<lastValue.size();i++) {
-				if (lastValue.containsKey(currentVal) && lastValue.get(currentVal)==rowIndex) {
-					containValue=true;
-					break;
+
+			/*
+			 * Este codigo verifica que el registro no exista anteriormente si
+			 * proviene de un arriveAnswer, la validación no se realiza
+			 */
+			if (!arriveAnswerEvent) {
+				boolean containValue = false;
+				for (int i = 0; i < lastValue.size(); i++) {
+					if (lastValue.containsKey(currentVal)
+							&& lastValue.get(currentVal) == rowIndex) {
+						containValue = true;
+						break;
+					}
 				}
-			}
-			if (!containValue) {
-				lastValue.put(currentVal,rowIndex);
+				if (!containValue) {
+					lastValue.put(currentVal, rowIndex);
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				lastValue.put(currentVal, rowIndex);
 				return true;
-			}
-			else {
-				return false;
 			}
 		}
 		return fullRow;
@@ -997,76 +1153,87 @@ public class TableFindData extends JPanel implements AnswerListener,
 	class TModelListener implements TableModelListener {
 
 		JTable table;
-		
 
 		TModelListener(JTable table) {
 			this.table = table;
 		}
 
 		public void tableChanged(final TableModelEvent e) {
-			Thread t = new Thread () {
+			Runnable t = new Runnable() {
 				public void run() {
 					if (sendRecord != null) {
 						int max = JTtabla.getModel().getRowCount();
 						Element element = new Element("table");
-						for (int i = 0; i < max ; i++) {
-							verificaSendRecord(i,element,sendRecord);
+						for (int i = 0; i < max
+								&& JTtabla.getValueAt(i, 0) != null
+								&& !JTtabla.getValueAt(i, 0).equals(""); i++) {
+							sendRecord(i, element, sendRecord);
 						}
-					}
-					else if (singleSendRecord!=null) {
-						verificaSendRecord(e.getFirstRow(),new Element("table"),singleSendRecord);
+						RecordEvent event = new RecordEvent(this, element);
+						notificando(event);
+					} else if (singleSendRecord != null) {
+						verificaSendRecord(e.getFirstRow(),
+								new Element("table"), singleSendRecord);
 					}
 				}
 			};
-			SwingUtilities.invokeLater(t);
+			if (!arriveAnswerEvent) {
+				SwingUtilities.invokeLater(t);
+			}
+			// new Thread(t,"SendRecord").start();
+
 		}
 	}
-	
-	private void verificaSendRecord(int row,Element e,String recordType) {
-		if (sendRecord(row,e,recordType)) {
-			RecordEvent event = new RecordEvent(this,e);
+
+	private void verificaSendRecord(int row, Element e, String recordType) {
+		if (sendRecord(row, e, recordType)) {
+			RecordEvent event = new RecordEvent(this, e);
 			notificando(event);
 		}
 	}
-	
+
 	public void arriveRecordEvent(RecordEvent e) {
 		/**
-		 * Esta clase se encarga de generar una consulta si diera 
-		 * lugar a ello y esperar hasta que la información se encuentre
-		 * disponible para cargar los datos por medio del metodo setQuery.
+		 * Esta clase se encarga de generar una consulta si diera lugar a ello y
+		 * esperar hasta que la información se encuentre disponible para cargar
+		 * los datos por medio del metodo setQuery.
+		 * 
 		 * @author ajo
-		 *
+		 * 
 		 */
-		class CargarDatos implements Runnable {
-			Element e;
-			public CargarDatos (Element e) {
-				this.e=e;
-			}
-			public void run() {
-				synchronized(TMFDtabla) {
-					Document doc = new Document();
-					doc.setRootElement(e);
-					TMFDtabla.setQuery(doc, true);
-					JTtabla.scrollRectToVisible(JTtabla.getCellRect(TMFDtabla.getCurrentIndex(),0,false));
-					JTtabla.updateUI();
-				}
-			}
-		}
+		/*
+		 * class CargarDatos implements Runnable { Element e; public CargarDatos
+		 * (Element e) { this.e=e; } public void run() { synchronized(TMFDtabla) {
+		 * Document doc = new Document(); doc.setRootElement(e);
+		 * TMFDtabla.setQuery(doc, true);
+		 * JTtabla.scrollRectToVisible(JTtabla.getCellRect(TMFDtabla.getCurrentIndex(),0,false));
+		 * JTtabla.updateUI(); } } }
+		 */
 		if (e.getElement().getChildren().size() > 0) {
-			SwingUtilities.invokeLater(new CargarDatos((Element)e.getElement().clone()));
+			// SwingUtilities.invokeLater(new
+			// CargarDatos((Element)e.getElement().clone()));
+			Document doc = new Document();
+			Element elm = (Element) ((Element) e.getElement()).clone();
+			doc.setRootElement(elm);
+			TMFDtabla.setQuery(doc, true);
+			JTtabla.scrollRectToVisible(JTtabla.getCellRect(TMFDtabla
+					.getCurrentIndex(), 0, false));
+			JTtabla.updateUI();
+
 		}
 	}
 
 	public synchronized void initiateFinishEvent(EndEventGenerator e) {
 
-		Class[] ac = new Class[]{AnswerListener.class};
-		Class[] rc = new Class[]{RecordListener.class};
-		Object[] o = new Object[]{this};
+		Class[] ac = new Class[] { AnswerListener.class };
+		Class[] rc = new Class[] { RecordListener.class };
+		Object[] o = new Object[] { this };
 		if (driverEvent != null && keySQL != null) {
-			
+
 			for (int n = 0; n < driverEvent.size(); n++) {
 				try {
-					GFforma.invokeMethod(driverEvent.get(n),"addAnswerListener",ac,o);
+					GFforma.invokeMethod(driverEvent.get(n),
+							"addAnswerListener", ac, o);
 				} catch (InvocationTargetException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -1077,10 +1244,10 @@ public class TableFindData extends JPanel implements AnswerListener,
 			}
 		}
 
-
 		for (int n = 0; n < recordEvent.size(); n++) {
 			try {
-				GFforma.invokeMethod(recordEvent.get(n),"addRecordListener",rc,o);
+				GFforma.invokeMethod(recordEvent.get(n), "addRecordListener",
+						rc, o);
 			} catch (InvocationTargetException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -1094,163 +1261,166 @@ public class TableFindData extends JPanel implements AnswerListener,
 	class EmakuCellEditor extends DefaultCellEditor {
 
 		private static final long serialVersionUID = -4269349473866585354L;
+
 		private Class _class;
+
 		private JTextField textField;
-		
+
 		public EmakuCellEditor(Class _class) {
-	    	super(new JTextField());
-	    	textField = (JTextField) this.getComponent();
-	    	if (null!=font) {
-	    		textField.setFont(font);
-	    	}
-	        this._class = _class;
-	    }
+			super(new JTextField());
+			textField = (JTextField) this.getComponent();
+			if (null != font) {
+				textField.setFont(font);
+			}
+			this._class = _class;
+		}
 
-	    public EmakuCellEditor(Class _class,int size) {
-	    	super(new JTextField());
-	    	textField = (JTextField) this.getComponent();
-	    	textField.setDocument(new TextDataValidator(size));
-	    	if (null!=font) {
-	    		textField.setFont(font);
-	    	}
-	        this._class = _class;
-	    }
-	    
-	    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-	    	textField.setText("");
-	        return super.getComponent();
-	    }
+		public EmakuCellEditor(Class _class, int size) {
+			super(new JTextField());
+			textField = (JTextField) this.getComponent();
+			textField.setDocument(new TextDataValidator(size));
+			if (null != font) {
+				textField.setFont(font);
+			}
+			this._class = _class;
+		}
 
-	    public Object getCellEditorValue() {
-	        Number value = null;
-	        if (_class.equals(BigDecimal.class)) {
-	            try {
-	                value = new Double(((JTextField)super.getComponent()).getText());
-	                BigDecimal bd = new BigDecimal(value.doubleValue());
-	            		value =  bd.setScale(2,BigDecimal.ROUND_HALF_UP);
-	            }
-	            catch (NumberFormatException NFEe) {
-	            		BigDecimal bd = new BigDecimal(0.00);
-	            		value = bd.setScale(2,BigDecimal.ROUND_HALF_UP);
-	            }
-	        }
-	        else if (_class.equals(Integer.class)){
-	            try {
-	                value = new Integer(((JTextField)super.getComponent()).getText());
-	            }
-	            catch (NumberFormatException NFEe) {
-	                value = new Integer(0);
-	            }
-	        }
-	        else if (_class.equals(String.class)) {
-	        	return ((JTextField)super.getComponent()).getText();
-	        }
-	        return value;
-	    }
+		public Component getTableCellEditorComponent(JTable table,
+				Object value, boolean isSelected, int row, int column) {
+			textField.setText("");
+			return super.getComponent();
+		}
+
+		public Object getCellEditorValue() {
+			Number value = null;
+			if (_class.equals(BigDecimal.class)) {
+				try {
+					value = new Double(((JTextField) super.getComponent())
+							.getText());
+					BigDecimal bd = new BigDecimal(value.doubleValue());
+					value = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+				} catch (NumberFormatException NFEe) {
+					BigDecimal bd = new BigDecimal(0.00);
+					value = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+				}
+			} else if (_class.equals(Integer.class)) {
+				try {
+					value = new Integer(((JTextField) super.getComponent())
+							.getText());
+				} catch (NumberFormatException NFEe) {
+					value = new Integer(0);
+				}
+			} else if (_class.equals(String.class)) {
+				return ((JTextField) super.getComponent()).getText();
+			}
+			return value;
+		}
 	}
-	
-	class EmakuCellEditorDate extends AbstractCellEditor implements TableCellEditor {
-	
+
+	class EmakuCellEditorDate extends AbstractCellEditor implements
+			TableCellEditor {
+
 		private static final long serialVersionUID = -4269349473866585354L;
+
 		private JDateChooser jtfd;
+
 		private JTable refJTable;
-		
+
 		public EmakuCellEditorDate(JTable table) {
 			this.refJTable = table;
 		}
-		
+
 		public void createChooser() {
 			jtfd = new JDateChooser();
 			jtfd.setDateFormatString("yyyy-MM-dd");
 			jtfd.setFocusCycleRoot(true);
 			jtfd.addFocusListener(new FocusAdapter() {
 				public void focusGained(FocusEvent e) {
-					jtfd.getDateEditor().getUiComponent().requestFocusInWindow();
+					jtfd.getDateEditor().getUiComponent()
+							.requestFocusInWindow();
 				}
 			});
-			jtfd.getDateEditor().getUiComponent().addKeyListener(new KeyAdapter() {
-				
-				public void keyPressed(final KeyEvent e) {
-					Thread t = new Thread() {
-						public void run() {
-							try {
-								Thread.sleep(100);
-							}
-							catch (InterruptedException e1) {
-								e1.printStackTrace();
-							}
-							int keyCode = e.getKeyCode();
-							switch (keyCode) {
-								case KeyEvent.VK_TAB:
-								case KeyEvent.VK_LEFT:
-								case KeyEvent.VK_RIGHT:
-								case KeyEvent.VK_UP:
-								case KeyEvent.VK_DOWN:
-									refJTable.requestFocus(false);
-									break;
-							}						
+			jtfd.getDateEditor().getUiComponent().addKeyListener(
+					new KeyAdapter() {
+
+						public void keyPressed(final KeyEvent e) {
+							Thread t = new Thread() {
+								public void run() {
+									try {
+										Thread.sleep(100);
+									} catch (InterruptedException e1) {
+										e1.printStackTrace();
+									}
+									int keyCode = e.getKeyCode();
+									switch (keyCode) {
+									case KeyEvent.VK_TAB:
+									case KeyEvent.VK_LEFT:
+									case KeyEvent.VK_RIGHT:
+									case KeyEvent.VK_UP:
+									case KeyEvent.VK_DOWN:
+										refJTable.requestFocus(false);
+										break;
+									}
+								}
+							};
+							t.start();
 						}
-					};
-					t.start();
-				}
-			});
+					});
 		}
-		
-		public Component getTableCellEditorComponent(JTable table, Object value,boolean isSelected, int row, int column) {
+
+		public Component getTableCellEditorComponent(JTable table,
+				Object value, boolean isSelected, int row, int column) {
 			createChooser();
 			boolean enabled = true;
 			if (row > 0) {
-				Object obj= table.getValueAt(row-1,column);
-				enabled = obj!=null && !"".equals(obj) ? true : false; 
+				Object obj = table.getValueAt(row - 1, column);
+				enabled = obj != null && !"".equals(obj) ? true : false;
 			}
 			if (value != null)
 				jtfd.setDate((Date) value);
 			jtfd.setEnabled(enabled);
 			return jtfd;
 		}
-	
+
 		public Object getCellEditorValue() {
 			return jtfd.getDate();
 		}
 	}
 
 	class FortmaCell extends DefaultTableCellRenderer {
-	
-	
+
 		private static final long serialVersionUID = -1516957430275114235L;
-	
+
 		String mascara;
+
 		Class _class;
-		
+
 		public FortmaCell(Class c) {
 			super();
 			this._class = c;
 			if (Double.class.equals(c)) {
 				this.setHorizontalAlignment(SwingConstants.RIGHT);
 				mascara = "###,###,##0.00";
-			}
-			else if (Integer.class.equals(c)){
+			} else if (Integer.class.equals(c)) {
 				this.setHorizontalAlignment(SwingConstants.RIGHT);
 				mascara = "###,###,##0";
-			}
-			else if (Date.class.equals(c)){
+			} else if (Date.class.equals(c)) {
 				mascara = "yyyy-MM-dd";
 			}
 		}
-		
+
 		public void setValue(Object value) {
 			if (Double.class.equals(_class) || Integer.class.equals(_class)) {
 				NumberFormat nf = NumberFormat.getNumberInstance();
 				DecimalFormat form = (DecimalFormat) nf;
 				form.applyPattern(mascara);
-				if (value instanceof String ) {
+				if (value instanceof String) {
 					value = Integer.parseInt(value.toString());
 				}
-				super.setValue(value!=null?form.format(value):null);
-			}
-			else if (Date.class.equals(_class)) {
+				super.setValue(value != null ? form.format(value) : null);
+			} else if (Date.class.equals(_class)) {
 				SimpleDateFormat sdf = new SimpleDateFormat(mascara);
-				super.setValue(value!=null?sdf.format(value):null);
+				super.setValue(value != null ? sdf.format(value) : null);
 			}
 		}
 	}

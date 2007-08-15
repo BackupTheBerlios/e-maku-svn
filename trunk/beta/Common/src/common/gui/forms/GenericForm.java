@@ -103,6 +103,8 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
      */
     private String password = null;
     private Vector <InstanceFinishingListener>initiateFinishListener = new Vector<InstanceFinishingListener>();
+    private boolean finish=false;
+    private ArrayList<Object> keysNotify = new ArrayList<Object>();
 
     /*
      * variables encargadas de solicitar un paquete sea de fecha o un 
@@ -136,10 +138,12 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
      */
     
     //private ChangeExternalValueEvent CEVevent;
-    private Vector <ExternalValueChangeListener>changeExternalValueListener = new Vector<ExternalValueChangeListener>();
+    private ArrayList <ExternalValueChangeListener>changeExternalValueListener = new ArrayList<ExternalValueChangeListener>();
     private Hashtable <Integer,String>exportFields;
 	private boolean visible = true;
-	private Interpreter shellScript; 
+	private Interpreter shellScript;
+	private ArrayList<GenericForm> forms = new ArrayList<GenericForm>();
+	private enum TypeExportValue{STRING,DOUBLE};
     /**
      * 
      * este construcor se instancia cuando se generara una forma hija
@@ -186,6 +190,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
         generar(doc);
         EndEventGenerator event = new EndEventGenerator(this);
         notificando(event);
+        
     }
 
     /**
@@ -383,6 +388,8 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 			public void run() {
     			GenericForm GFforma = new GenericForm(fforma,e);
     	        setComps(e.getChild("preferences").getChildText("id"),new Componentes(GenericForm.class,GFforma));
+    	        forms.add(GFforma);
+    	        
     		}
     	}
     	SwingUtilities.invokeLater(new MakeSubForm(this,e));
@@ -1141,13 +1148,18 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
         SocketChannel socket = SocketConnector.getSock();
         SocketWriter.writing(socket, doc);
         doc = null;
-        System.gc();
+        //System.gc();
     }
 
     public void close() {
+    	for (GenericForm f : forms) {
+    		f.dispose();
+    		f=null;
+    	}
+    	dispose();
         JDPpanel.remove(this);
-        GFforma =null;
-        JDPpanel.repaint();
+        GFforma=null;
+        JDPpanel.updateUI();
     }
 
     public String getIdTransaction() {
@@ -1185,34 +1197,55 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
         if (consecutive!=null) {
             sendTransaction(UpdateCodeSender.getPackage(consecutive));
         }
+        finish=true;
+        for (Object key:keysNotify) {
+	    	ExternalValueChangeEvent CEVevent = new ExternalValueChangeEvent(this);
+	    	CEVevent.setExternalValue(String.valueOf(key));
+	        notificandoExternalValue(CEVevent);
+        }
     }
 
-    public void addChangeExternalValueListener(ExternalValueChangeListener listener ) {
+    public synchronized void addChangeExternalValueListener(ExternalValueChangeListener listener ) {
     	if (child) {
     		GFforma.addChangeExternalValueListener(listener);
         }
         else {
-        	changeExternalValueListener.addElement(listener);
+        	changeExternalValueListener.add(listener);
         }
         
     }
 
-    public void removeChangeExternalValueListener(ExternalValueChangeListener listener ) {
+    public synchronized void removeChangeExternalValueListener(ExternalValueChangeListener listener ) {
     	if (child) {
     		GFforma.removeChangeExternalValueListener(listener);
         }
         else {
-        	changeExternalValueListener.removeElement(listener);
+        	changeExternalValueListener.remove(listener);
         }
     }
 
-    private void notificandoExternalValue(ExternalValueChangeEvent event) {
- 
-    	synchronized(changeExternalValueListener) {
-	        for (ExternalValueChangeListener l:changeExternalValueListener) {
-	            l.changeExternalValue(event);
-	        }
-    	}
+    /**
+     * Este codigo notifica el cambio de llaves externas
+     * @param event
+     */
+    private void notificandoExternalValue(final ExternalValueChangeEvent event) {
+    	/*
+    	 * Se estan presentando bloqueos y problemas de concurrencia en el momento
+    	 * de notificar un evento de cambio de variables exportadas, por tanto
+    	 * se metio la notificación en un hilo para solucionar este problema
+    	 * 
+    	 * pipelx						2007-07-22 popayan.
+    	 */
+    	Runnable r = new Runnable(){
+    		public void run() {
+		    	synchronized(changeExternalValueListener) {
+			        for (ExternalValueChangeListener l:changeExternalValueListener) {
+			            l.changeExternalValue(event);
+			        }
+		    	}
+    		}
+    	};
+    	new Thread(r,"notificandoExternalValues").start();
 
     }
 
@@ -1245,6 +1278,29 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
         	}
         	setExternalValues("userLogin", EmakuParametersStructure.getParameter("userLogin"));
     	}
+	}
+	
+	public TypeExportValue checkExportValue(Object key) {
+		if (child) {
+        	return GFforma.checkExportValue(key);
+        }
+		else {
+			try {
+				Object o = externalValues.get(key);
+				if (o==null) {
+					return null;
+				}
+				else if (o instanceof String) {
+        			return TypeExportValue.STRING;
+        		}
+        		else {
+        			return TypeExportValue.DOUBLE;
+        		}
+			}
+			catch (NullPointerException e) {
+				return null;
+			}
+		}
 	}
 	
 	public  double getExteralValues(Object key) {
@@ -1301,9 +1357,14 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 	        	}
 	        	externalValues.put(key,new Double(value));
         	}
-        	ExternalValueChangeEvent CEVevent = new ExternalValueChangeEvent(this);
-        	CEVevent.setExternalValue(String.valueOf(key));
-            notificandoExternalValue(CEVevent);
+        	if (finish) {
+	        	ExternalValueChangeEvent CEVevent = new ExternalValueChangeEvent(this);
+	        	CEVevent.setExternalValue(String.valueOf(key));
+	            notificandoExternalValue(CEVevent);
+        	}
+        	else {
+        		keysNotify.add(key);
+        	}
         }
 	}
 	
@@ -1318,9 +1379,11 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 	        	}
 	        	externalValues.put(key,value);
         	}
-        	ExternalValueChangeEvent CEVevent = new ExternalValueChangeEvent(this);
-        	CEVevent.setExternalValue(String.valueOf(key));
-        	notificandoExternalValue(CEVevent);
+        	if (finish) {
+	        	ExternalValueChangeEvent CEVevent = new ExternalValueChangeEvent(this);
+	        	CEVevent.setExternalValue(String.valueOf(key));
+	        	notificandoExternalValue(CEVevent);
+        	}
         }
     	if (key.equals(importTitle)) {
     		this.setTitle(value);
@@ -1395,15 +1458,26 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 			Element elm = (Element) it.next();
 			String value = elm.getValue();
 			if ("importValue".equals(elm.getAttributeValue("attribute"))) {
-				String text = getExteralValuesString(value);
+				String text = null;
+				TypeExportValue te = checkExportValue(value);
+				if (TypeExportValue.STRING.equals(te)) {
+					text = getExteralValuesString(value);
+				}
+				else if (TypeExportValue.DOUBLE.equals(te)) {
+					text = String.valueOf(getExteralValues(value));							
+				}
+				
 				String attributeName = null;
 				String attributeValue = null;
+				boolean key = false;
 				if (!"".equals(elm.getAttributeValue("setAttributeName")) &&
 					!"".equals(elm.getAttributeValue("setAttributeValue"))) {
 					attributeName = elm.getAttributeValue("setAttributeName");
 					attributeValue = elm.getAttributeValue("setAttributeValue");
 				}
-
+				if (!"".equals(elm.getAttributeValue("addkey"))) {
+						key = Boolean.parseBoolean(elm.getAttributeValue("addkey"));
+				}
 				if (!"".equals(text)) {
 					cont++;
 				}
@@ -1419,6 +1493,9 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 
 				if (attributeName!=null) {
 					e.setAttribute(attributeName,attributeValue);
+				}
+				if (key) {
+					e.setAttribute("attribute","key");
 				}
 				pack.addContent(e);
 			}
@@ -1493,6 +1570,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 		int j = 0;
 		boolean operador = true;
 		for (; j < max; j++) {
+			
 			if (formula.charAt(j) > 96 && formula.charAt(j) < 123) {
 				acumText += formula.substring(j, j + 1);
 				operador = false;
@@ -1500,7 +1578,18 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 				if (!operador) {
 					boolean isKey = child ? GFforma.externalValues.containsKey(acumText) : externalValues.containsKey(acumText);
 					if (isKey) {
-						formulaFinal += getExteralValues(acumText);
+						TypeExportValue te = checkExportValue(acumText);
+						if (TypeExportValue.STRING.equals(te)) {
+							formulaFinal += getExteralValuesString(acumText);
+						}
+						else if (TypeExportValue.DOUBLE.equals(te)) {
+							formulaFinal += getExteralValues(acumText);							
+						} else {
+							formulaFinal += "0";
+						}
+					}
+					else if (acumText.equals("equals")) {
+						formulaFinal += acumText;
 					}
 					else {
 						formulaFinal += formulaFinal.endsWith("\"") ? acumText : "0";
@@ -1592,6 +1681,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 			return GFforma.eval(script);
 		}
 		try {
+			//System.out.println("Formula a evaluar "+script);
 			return shellScript.eval(script);
 		}
 		catch(Exception e) {
@@ -1669,8 +1759,13 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 	}
 	
 	public void internalFrameClosing(InternalFrameEvent e) {
-		// TODO Auto-generated method stub
-		
+		for (GenericForm f : forms) {
+    		f.dispose();
+    		f=null;
+    	}
+        JDPpanel.remove(this);
+        GFforma=null;
+        JDPpanel.updateUI();
 	}
 
 	public void internalFrameDeactivated(InternalFrameEvent e) {

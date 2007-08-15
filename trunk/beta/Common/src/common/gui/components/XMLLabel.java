@@ -52,6 +52,7 @@ public class XMLLabel extends JLabel implements Couplable {
     private String mode;
 	private String namebutton = "SAVE";
     private String exportValue;
+	private boolean havePanel = true;
     
     public XMLLabel(GenericForm GFforma,Document doc) {
         Iterator parameters = doc.getRootElement().getChildren().iterator();
@@ -107,6 +108,9 @@ public class XMLLabel extends JLabel implements Couplable {
                 catch(NoSuchElementException NSEEe) {
                 }
             }
+            else if ("Panel".equals(e.getAttributeValue("attribute"))) {
+				havePanel = Boolean.getBoolean(e.getValue());
+			}
         }
         panel = new JPanel(layout);
         panel.add(this);
@@ -114,7 +118,10 @@ public class XMLLabel extends JLabel implements Couplable {
     }
 
     public Component getPanel() {
-        return panel;
+    	if (havePanel) {
+    		return panel;
+    	}
+        return this;
     }
 
 	public void clean() {

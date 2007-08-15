@@ -65,6 +65,7 @@ import common.transactions.TransactionServerResultSet;
  *
  * E-Maku es distribuido con la expectativa de ser util, pero
  * SIN NINGUNA GARANTIA; sin ninguna garantia aun por COMERCIALIZACION
+ * 
  * o por un PROPOSITO PARTICULAR. Consulte la Licencia Publica General
  * GNU GPL para mas detalles.
  * <br>
@@ -90,7 +91,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     private Hashtable<String,Double> totalCol;
     private Hashtable externalValues;
     private int valideLink = -1;
-    private Vector<TableTotalListener> tableTotalListener = new Vector<TableTotalListener>();
+    private ArrayList<TableTotalListener> tableTotalListener = new ArrayList<TableTotalListener>();
     private Vector<String> deleteLink;
     private int keyLink;
     private Vector impValues;
@@ -509,20 +510,9 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	        	new Searching(valArg,rowIndex).start();
         }
         else {
-	        calcular(rowIndex,colIndex);
-	       	totalizar();
+            calcular(rowIndex,colIndex);
+	       	totalizar();	
         }
-        /*if (ATFDargs[colIndex].getType().equals("DATE")) {
-	        	try {
-	        		java.sql.Date.valueOf((String)value);
-	        		/*Format formatter = new SimpleDateFormat("yyyy-mm-dd");
-	        		value = formatter.format(value);*/
-	        	/*}
-	        	catch (IllegalArgumentException IAEe) {
-	        		value = "";
-	        	}
-           	updateCells(value,rowIndex,colIndex);
-        }*/
     }
     
     private void calcular(int rowIndex,int colIndex) {
@@ -677,23 +667,15 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	        	updateCells(resultado,rowIndex,col);
 	        	valueOld.put(key,resultado);
         }
-        //totalizar(col);
     }
     
     private int getColIndex(String key) {
-    	 	int col=0;
-    	 	if ((key.charAt(0)>=65 && key.charAt(0)<=90) || (key.charAt(0)>=97 && key.charAt(0)<=122)) {
-			
-    	 		/* cuando la letra es mayuscula */
-             if (key.charAt(0)<=90) {
-                 col = key.charAt(0)-65;
-             }
-             /* cuando es minuscula */
-             else {
-                 col = key.charAt(0)-97;
-             }
-         }
-         return col;
+	 	int col=0;
+	 	key=key.toLowerCase();
+	 	if ((key.charAt(0)>=97 && key.charAt(0)<=122)) {
+             col = key.charAt(0)-97;
+        }
+        return col;
     }
     
     private String reemplazarFormula(String var, int rowIndex, Hashtable valueOld) {
@@ -956,18 +938,18 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         }
     }
     
-    public void addTotalEventListener(TableTotalListener listener ) {
+    public synchronized void addTotalEventListener(TableTotalListener listener ) {
         tableTotalListener.add(listener);
         if(isInitQuery) {
         	notificando();
         }
     }
 
-    public void removeTotalEventListener(TableTotalListener listener ) {
+    public synchronized void removeTotalEventListener(TableTotalListener listener ) {
         tableTotalListener.remove(listener);
     }
 
-    public void notificando() {
+    public synchronized void notificando() {
     	TableTotalEvent event = new TableTotalEvent(this);
         for (TableTotalListener l:tableTotalListener) {
             l.totalColEvent(event);
@@ -1084,8 +1066,10 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 										//if (argConstructor!=null) {
 											VdataRows.get(rowIndex).set(col,obj);
 											fireTableCellUpdated(rowIndex,col);
+											/*
 											calcular(rowIndex,colIndex);	
 						                    totalizar();
+						                    */
 											/* Comentado para añadir llamado a metodo calcular y totalizar por 
 											 * inconcistencia en generacion de formulas por valores obtenidos
 											 * desde una consulta.
@@ -1145,7 +1129,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
      * Metodo encargado de limpiar la tabla
      */
     
-    public void clean() {
+    public synchronized void clean() {
     	int i=0;
     	for (Vector<Object> vrow : VdataRows) {
     		for (int j=0;j<ATFDargs.length;j++) {
@@ -1177,8 +1161,8 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     
     private void message(String keyError) {
     	final String error = keyError;
-		//try {
-			SwingUtilities.invokeLater(new Runnable() {
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
 		          public void run() {
 		        	  JLabel label = new JLabel(Language.getWord(error));
 		              JOptionPane.showInternalMessageDialog(GFforma.getDesktopPane(),
@@ -1186,11 +1170,11 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		                      "Error", JOptionPane.ERROR_MESSAGE);	
 		          }
 			});
-		/*} catch (InterruptedException e) {
+		} catch (InterruptedException e) {
 			//e.printStackTrace();
 		} catch (InvocationTargetException e) {
 			//e.printStackTrace();
-		}*/
+		}
         
     }
 
@@ -1665,7 +1649,12 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
                        if (ATFDargs[k].getNameField()!=null) {
                     	   field.setAttribute("name",ATFDargs[k].getNameField());
                        }
-                   	   field.setText(tmp);
+                       if (ATFDargs[k].isReturnNullCol() && tmp.equals("")) {
+                    	   field.setText("NULL");
+	                   }
+	                   else {
+	                   	   field.setText(tmp);
+	                   }
 
                 }
                 else if (ATFDargs[k].getType().equals("DATE")) {
@@ -1775,6 +1764,14 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	            		if (ATFDargs[j].getType().equals("DATE")) {
 	            			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	            			valueAt = sdf.format(valueAt);
+	            		}
+	            		else if (ATFDargs[j].getType().equals("COMBOSQL")) {
+	            			StringTokenizer stk = new StringTokenizer(valueAt.toString()," ");
+	            			String val = "";
+	            			while (stk.hasMoreTokens()) {
+	            				val = stk.nextToken();
+	            			}
+	            			valueAt = val;
 	            		}
 	           			subpack.addContent(createXMLField(valueAt.toString()));	
 	            	}
@@ -1931,7 +1928,6 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
      * @param search
      */
     public void setQuery(Document doc,boolean search) {
-    	
     	/*
     	 * Anteriormente la carga de los datos se hacia en un hilo,
     	 * el hilo lo elimine porque no encontre razon para trabajarlo,
@@ -2054,6 +2050,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         totalizar();
         loadingQuery = false;
         doc = null;
+
     }
 
     private Object addCols(int j,List Lcol) {

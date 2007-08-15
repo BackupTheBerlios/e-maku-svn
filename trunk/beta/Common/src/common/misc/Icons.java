@@ -1,6 +1,7 @@
 package common.misc;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -42,7 +43,9 @@ public class Icons {
 	    try {
 	        
 	        SAXBuilder builder = new SAXBuilder(false);
-	        Document doc = builder.build(jarDirectory+"/icons.xml");
+	        String path = jarDirectory+"/icons.xml";
+	        URL url = new URL(path);
+	        Document doc = builder.build(url);
 	        Element raiz = doc.getRootElement();
 	        List icon = raiz.getChildren("icon");
 	        Iterator i = icon.iterator();

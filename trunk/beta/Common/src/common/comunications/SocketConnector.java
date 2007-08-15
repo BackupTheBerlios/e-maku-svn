@@ -46,6 +46,7 @@ public class SocketConnector extends Thread {
     
     public SocketConnector(String host,int port,PackageToXML packageXML) 
     throws UnresolvedAddressException, IOException{
+    	this.setName("SocketConnector");
     	this.packageXML=packageXML;
         socket = SocketChannel.open();
         socket.configureBlocking(false);

@@ -430,9 +430,10 @@ public class ComboBoxFiller extends JComboBox implements
 					e.printStackTrace();
 				} catch (IndexOutOfBoundsException IOBEe) {
 					setSelectedIndex(0);
-				}
+				} catch (IllegalArgumentException e) {} 
 			}
 		}
+		//TODO Pendiente
 		SwingUtilities.invokeLater(new buildCombo(noDataMessage,dataBeep));
 		//new buildCombo(noDataMessage,dataBeep).start();
 	}

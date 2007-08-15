@@ -30,10 +30,10 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 	private TextPrinterBuffer textPrinterBuffer = new TextPrinterBuffer();
 	private HashMap<Integer,String[]> concatData = new HashMap<Integer, String[]>(); 
 	private int currentRow = 1;
-	private String ndocument = "";
+	//private String ndocument = "";
 	private boolean success = false;
 	private String idTransaction="";
-
+	private HashMap<String,String> vars = new HashMap<String, String>();
 	/*private int width;
 	private int height;*/
 	private ByteArrayInputStream in;
@@ -52,7 +52,8 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 	public PlainPrintingManager(String ndocument) {
 		this();
 		impresionType = ImpresionType.PLAIN;
-		this.ndocument = ndocument;
+		vars.put("ndocument",ndocument);
+		//this.ndocument = ndocument;
 		textPrinterBuffer.clear();
 	}
 	
@@ -184,7 +185,7 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 
 		}
 		else if ("ndocument".equals(name)) {
-			String value = ndocument;
+			String value = vars.get(name);
 			textPrinterBuffer.insertString(value,row,col,null);
 			passed = true;
 		}
@@ -203,6 +204,12 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 			withHeader = true;
 			header = (Element) e.clone();
 			rowPageSeparator =  attribs.get("repeatEach").getIntValue();
+			passed = true;
+		}
+		else  if ("var".equals(name)) {
+			String varName = attribs.get("name").getValue();
+			String value = vars.get(varName);
+			textPrinterBuffer.insertString(value,row,col,null);
 			passed = true;
 		}
 		else  if ("pageNumeration".equals(name)) {
@@ -348,6 +355,10 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 			textPrinterBuffer.addString(value,row,col,null);*/
 			if (!"".equals(value.trim())) {
 				textPrinterBuffer.insertString(value,row,col,null);
+				if (attribs.containsKey("var")) {
+					String var = vars.get("var");
+					vars.put(var,value);
+				}
 			}
 			if (attribs.containsKey("separatorchar")){
 				Attribute att = attribs.get("separatorchar");
@@ -409,6 +420,10 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 			NumberFormat formatter = new DecimalFormat(mask);
 			value = !"NULL".equals(value) && !"".equals(value) ? formatter.format(Double.parseDouble(value)):"";
 			textPrinterBuffer.insertString(value,row,col,attribs.get("width").getIntValue());
+			if (attribs.containsKey("var")) {
+				String var = vars.get("var");
+				vars.put(var,value);
+			}
 			if (attribs.containsKey("separatorchar")){
 				Attribute att = attribs.get("separatorchar");
 				int colCharSeparator = attribs.get("separatorcol").getIntValue();
@@ -455,7 +470,7 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 		
 		if (numeration!=null && !"".equals(numeration) && idTransaction.equals(e.getIdPackage())) {
 			success = true;
-			ndocument = numeration;
+			vars.put("ndocument",numeration);
 		}
 	}
 
@@ -472,7 +487,7 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 	}
 
 	public String getNdocument() {
-		return ndocument;
+		return vars.get("ndocument");
 	}
 
 	public void setIdTransaction(String idTransaction) {

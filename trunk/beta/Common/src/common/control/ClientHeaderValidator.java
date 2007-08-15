@@ -198,7 +198,7 @@ public class ClientHeaderValidator {
             /*
              * si por el contrario fue una transaccion entonces ...
              */
-            else if ("T".equals(id.substring(0,1))){
+            else if (id!=null && "T".equals(id.substring(0,1))){
             	Element EerrorMessage = raiz.getChild("errorMessage");
             	Element Endocument = raiz.getChild("ndocument");
             	message = EerrorMessage!=null?EerrorMessage.getText():"";
@@ -239,7 +239,12 @@ public class ClientHeaderValidator {
     private static void notifyDate(DateEvent event) {
     	synchronized (dateListener) {
 	    	for (DateListener l : dateListener) {
-	            l.cathDateEvent(event);
+	    		if (l!=null) {
+	    			l.cathDateEvent(event);
+	    		}
+	    		else {
+	    			dateListener.remove(l);
+	    		}
 	        }
     	}
     }
@@ -282,12 +287,9 @@ public class ClientHeaderValidator {
         errorListener.removeElement(listener);
     }
 
-    private static void notifyError(ErrorEvent event) {
+    private static synchronized void notifyError(ErrorEvent event) {
         for (ErrorListener l : errorListener) {
             l.cathErrorEvent(event);
         }
     }
-    
-    
-
 }

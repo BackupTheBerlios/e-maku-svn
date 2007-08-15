@@ -192,7 +192,7 @@ public class LNDocuments {
 		                            getTransaction(LNGtransaccion,"SCI0017",infoDocumentPack);
 		                        }
 		    	                
-		    	                
+		    	                linkDocument=null;
 	                        }
 	                        
 	    	                LNGtransaccion.setKey("ndocumento",getDocumentKey(idDocument,consecutive));
@@ -755,6 +755,7 @@ public class LNDocuments {
     
     private static void getTransaction(LNGenericSQL LNGtransaccion,String sql,Element pack) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+    	//System.out.println("SQL: "+sql);
         LNGtransaccion.setArgs(pack,idTransaction);
         LNGtransaccion.generar(sql);
         CacheKeys.setKeys(LNGtransaccion.getKeys());

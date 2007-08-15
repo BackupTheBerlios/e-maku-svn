@@ -46,8 +46,8 @@
     -->
 
     <locale>
-        <langpack iso3="es_ES" />
-        <langpack iso3="en_EN" />
+        <langpack iso3="spa" />
+        <langpack iso3="eng" />
     </locale>
 
     <!-- 

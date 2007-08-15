@@ -19,7 +19,7 @@ public class ProgressBarDialog extends JFrame {
 		//super(parent, true);
 		super(Language.getWord("LOADING"));
 		this.getRootPane().setBorder(new LineBorder(Color.BLACK,2));
-		this.setAlwaysOnTop(true);
+		//this.setAlwaysOnTop(true);
 		this.setUndecorated(true);
 	
 		JPanel panel = new JPanel();
