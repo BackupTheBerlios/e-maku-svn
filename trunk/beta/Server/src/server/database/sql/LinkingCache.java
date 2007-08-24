@@ -278,7 +278,9 @@ public class LinkingCache {
     
     public static void removePerfilCta(String bd,String[] args) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+    	/*
     	System.out.println("Base de datos: "+bd);
+    	*/
     	Statement st = ConnectionsPool.getConnection(bd).createStatement();
         ResultSet rs= st.executeQuery(SQLFormatAgent.getSentencia(bd,"SCS0057",args));
         
@@ -413,7 +415,8 @@ public class LinkingCache {
           		  bd + 
           		  "-" +
           		  subkey.substring(0,subkey.length()-1)+" valor: "+
-                    rs.getObject(rsValue));*/
+                    rs.getObject(rsValue));
+                    */
             tabla.put("K-" + 
             		  bd + 
             		  "-" +
@@ -508,7 +511,7 @@ public class LinkingCache {
 																				 id_prod_serv,
 																				 bodega}));
 	        }
-	        System.out.println("Saldos Actualizados..");
+	        //System.out.println("Saldos Actualizados..");
 	        st.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -622,7 +625,7 @@ public class LinkingCache {
      */
 
     public static double getSaldoLibroAux(String bd, String centro, String cta, String id_tercero, String id_prod_serv) {
-        if (Hlibro_aux.containsKey("K-"+bd+"-"+centro+"-"+cta+"-"+id_tercero+"-"+id_prod_serv)) {
+    	if (Hlibro_aux.containsKey("K-"+bd+"-"+centro+"-"+cta+"-"+id_tercero+"-"+id_prod_serv)) {
             return ((Double)Hlibro_aux.get("K-"+bd+"-"+centro+"-"+cta+"-"+id_tercero+"-"+id_prod_serv)).doubleValue();
         }
         else {

@@ -1158,7 +1158,6 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
     	}
     	dispose();
         JDPpanel.remove(this);
-        GFforma=null;
         JDPpanel.updateUI();
     }
 
@@ -1764,7 +1763,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
     		f=null;
     	}
         JDPpanel.remove(this);
-        GFforma=null;
+        //GFforma=null;
         JDPpanel.updateUI();
 	}
 

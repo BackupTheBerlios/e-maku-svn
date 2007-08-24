@@ -55,29 +55,23 @@ public class PrintingManager {
 		else if (type.equals(ImpresionType.PDF)) {
 			docFlavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
 		}
-		
-		if (!silent) {
-			defaultService = ServiceUI.printDialog(null, 200, 200,jps, selectPrinservice(printer), docFlavor, pras);
+		PrintService ps = selectPrinservice(printer);
+		if (silent && ps!=null) {
+			print(ps,is,pras);
+		}
+		else {
+			defaultService = ServiceUI.printDialog(null, 200, 200,jps, ps, docFlavor, pras);
 			if (defaultService!=null) {
 				CommonConstants.printSelect = defaultService;
 				print(defaultService,is,pras);
 			}
 		}
-		else {
-			PrintService ps = selectPrinservice(printer);
-			if (ps!=null) {
-				print(ps,is,pras);
-				try {
-					is.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				is = null;
-			}
-			else {
-				System.out.println("Impresora ["+printer+"] no econtrada");
-			}
+		try {
+			is.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		is = null;
 	}
 	
 	public PrintingManager (
@@ -95,21 +89,15 @@ public class PrintingManager {
 		}
 		PrintService defaultService = null;
 		System.out.println("Printer name " + printer);
-		
-		if (!silent) {
-			defaultService = ServiceUI.printDialog(null, 200, 200,jps, selectPrinservice(printer),docFlavor,pras);
+		PrintService ps = selectPrinservice(printer);
+		if (silent && ps!=null) {
+			print(ps,postScriptManager,pras);
+		}
+		else {
+			defaultService = ServiceUI.printDialog(null, 200, 200,jps, ps,docFlavor,pras);
 			if (defaultService!=null) {
 				CommonConstants.printSelect = defaultService;
 				print(defaultService,postScriptManager,pras);
-			}
-		}
-		else {
-			PrintService ps = selectPrinservice(printer);
-			if (ps!=null) {
-				print(ps,postScriptManager,pras);
-			}
-			else {
-				System.out.println("Impresora ["+printer+"] no econtrada");
 			}
 		}
 	}

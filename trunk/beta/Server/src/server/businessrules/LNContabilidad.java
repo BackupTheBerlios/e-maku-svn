@@ -476,7 +476,9 @@ public class LNContabilidad {
 			else {
 				Element elm2 = (Element) i.next();
 				asiento[k] = elm2.getText().trim();
+				/*
 				System.out.println("indice "+k+" valor "+asiento[k]);
+				*/
 			}
 			if (debug) {
 				System.out.println("asiento[" + k + "] = " + asiento[k]);
@@ -488,12 +490,11 @@ public class LNContabilidad {
 			 * Se reemplaza el numero de la cuenta contable por su id
 			 */
 			asiento[4] = LinkingCache.getPCIdCta(bd, asiento[4]);
-	
 			double saldo = LinkingCache.getSaldoLibroAux(bd, 
-														asiento[3]=="NULL"?"":asiento[3],
+														asiento[3].equals("NULL")?"":asiento[3],
 														asiento[4],
-														asiento[5]=="NULL"?"":asiento[5], 
-														asiento[6]=="NULL"?"":asiento[6]);
+														asiento[5].equals("NULL")?"":asiento[5], 
+														asiento[6].equals("NULL")?"":asiento[6]);
 			double movimiento = 0;
 			if (Double.parseDouble(asiento[7]) != 0.0) {
 				movimiento = Double.parseDouble(asiento[7]);
@@ -501,17 +502,17 @@ public class LNContabilidad {
 				asiento[9] = String.valueOf(nsaldo);
 				partidaDoble += movimiento;
 				LNUndoSaldos.setSaldoAntLibroAux(bd, 														
-												asiento[3]=="NULL"?"":asiento[3],
+												asiento[3].equals("NULL")?"":asiento[3],
 												asiento[4],
-												asiento[5]=="NULL"?"":asiento[5], 
-												asiento[6]=="NULL"?"":asiento[6],
+												asiento[5].equals("NULL")?"":asiento[5], 
+												asiento[6].equals("NULL")?"":asiento[6],
 												new Double(saldo));
 				
 				LinkingCache.setSaldoLibroAux(bd,
-								asiento[3]=="NULL"?"":asiento[3],
+								asiento[3].equals("NULL")?"":asiento[3],
 								asiento[4],
-								asiento[5]=="NULL"?"":asiento[5], 
-								asiento[6]=="NULL"?"":asiento[6],
+								asiento[5].equals("NULL")?"":asiento[5], 
+								asiento[6].equals("NULL")?"":asiento[6],
 						        new Double(nsaldo));
 			} else {
 				movimiento = Double.parseDouble(asiento[8]);
@@ -529,17 +530,17 @@ public class LNContabilidad {
 							+ " Partida doble rowDataAccount: " + partidaDoble);
 				}
 				LNUndoSaldos.setSaldoAntLibroAux(bd,														
-											asiento[3]=="NULL"?"":asiento[3],
+											asiento[3].equals("NULL")?"":asiento[3],
 											asiento[4],
-											asiento[5]=="NULL"?"":asiento[5], 
-											asiento[6]=="NULL"?"":asiento[6],
+											asiento[5].equals("NULL")?"":asiento[5], 
+											asiento[6].equals("NULL")?"":asiento[6],
 											new Double(saldo));
 											
 				LinkingCache.setSaldoLibroAux(bd,														
-											asiento[3]=="NULL"?"":asiento[3],
+											asiento[3].equals("NULL")?"":asiento[3],
 											asiento[4],
-											asiento[5]=="NULL"?"":asiento[5], 
-											asiento[6]=="NULL"?"":asiento[6],
+											asiento[5].equals("NULL")?"":asiento[5], 
+											asiento[6].equals("NULL")?"":asiento[6],
 											new Double(nsaldo));
 			}
 		
@@ -1143,13 +1144,13 @@ public class LNContabilidad {
 			record[5] = concepto;
 			record[6] = idDocumento;
 
-			saldo = LinkingCache.getSaldoLibroAux(bd, record[1] == "NULL" ? ""
-					: record[1], record[0], record[2] == "NULL" ? ""
-					: record[2], record[3] == "NULL" ? "" : record[3]);
+			saldo = LinkingCache.getSaldoLibroAux(bd, record[1].equals("NULL") ? ""
+					: record[1], record[0], record[2].equals("NULL") ? ""
+					: record[2], record[3].equals("NULL") ? "" : record[3]);
 
-			LNUndoSaldos.setSaldoAntLibroAux(bd, record[1] == "NULL" ? ""
-					: record[1], record[0], record[2] == "NULL" ? ""
-					: record[2], record[3] == "NULL" ? "" : record[3], saldo);
+			LNUndoSaldos.setSaldoAntLibroAux(bd, record[1].equals("NULL") ? ""
+					: record[1], record[0], record[2].equals("NULL")? ""
+					: record[2], record[3].equals("NULL")? "" : record[3], saldo);
 			if (RSdatos.getDouble(5) > 0) {
 				saldo -= RSdatos.getDouble(5);
 				try {
@@ -1175,9 +1176,9 @@ public class LNContabilidad {
 			}
 			record[9] = String.valueOf(saldo);
 			RQanular.ejecutarSQL(record);
-			LinkingCache.setSaldoLibroAux(bd, record[1] == "NULL" ? ""
-					: record[1], record[0], record[2] == "NULL" ? ""
-					: record[2], record[3] == "NULL" ? "" : record[3], saldo);
+			LinkingCache.setSaldoLibroAux(bd, record[1].equals("NULL")? ""
+					: record[1], record[0], record[2].equals("NULL")? ""
+					: record[2], record[3].equals("NULL")? "" : record[3], saldo);
 
 		}
 		RSdatos.close();

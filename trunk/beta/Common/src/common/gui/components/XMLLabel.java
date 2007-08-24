@@ -1,6 +1,7 @@
 package common.gui.components;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.lang.reflect.InvocationTargetException;
@@ -12,6 +13,7 @@ import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -53,6 +55,7 @@ public class XMLLabel extends JLabel implements Couplable {
 	private String namebutton = "SAVE";
     private String exportValue;
 	private boolean havePanel = true;
+	private int preferredLength = 0;
     
     public XMLLabel(GenericForm GFforma,Document doc) {
         Iterator parameters = doc.getRootElement().getChildren().iterator();
@@ -111,6 +114,9 @@ public class XMLLabel extends JLabel implements Couplable {
             else if ("Panel".equals(e.getAttributeValue("attribute"))) {
 				havePanel = Boolean.getBoolean(e.getValue());
 			}
+            else if ("preferredLength".equals(e.getAttributeValue("attribute"))) {
+                preferredLength = Integer.parseInt(e.getValue());
+         	}
         }
         panel = new JPanel(layout);
         panel.add(this);
@@ -220,6 +226,14 @@ public class XMLLabel extends JLabel implements Couplable {
 						"addAnswerListener",
 						new Class[]{AnswerListener.class},new Object[]{this});
 			}
+			SwingUtilities.invokeLater(new Thread() {				
+				public void run() {
+					if (preferredLength>0) {
+						setPreferredSize(new Dimension(preferredLength,getHeight()));
+						updateUI();
+					}		
+				}
+			});
 		}
 		catch(NotFoundComponentException NFCEe) {
 			NFCEe.printStackTrace();

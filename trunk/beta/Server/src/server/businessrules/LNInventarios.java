@@ -3,6 +3,8 @@ package server.businessrules;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -49,6 +51,8 @@ public class LNInventarios {
 	private final String AJUSTE = "ajuste";
 
 	private final String NOTA = "nota";
+
+	private final String RECOVER = "recover";
 
 	private final String GASTOS = "gastosydescuentos";
 
@@ -134,6 +138,8 @@ public class LNInventarios {
 			anular();
 		} else if (NOTA.equals(tipoMovimiento)) {
 			nota(pack);
+		} else if (RECOVER.equals(tipoMovimiento)) {
+			recover(pack);
 		}
 	}
 
@@ -313,8 +319,8 @@ public class LNInventarios {
 	 */
 
 	private synchronized String[] movimientoInventario(Element pack) {// ,String
-																		// movimiento)
-																		// {
+		// movimiento)
+		// {
 
 		/*
 		 * REGISTROS DE UN MOVIMIENTO
@@ -500,9 +506,7 @@ public class LNInventarios {
 		 * Este ciclo se encarga de sacar la informacion necesaria para generar
 		 * una salida
 		 */
-		System.out.println("Recorriendo el paquete ..");
 		while (i.hasNext()) {
-			System.out.println("paquete");
 			Element field = (Element) i.next();
 			String nameField = field.getAttributeValue("name");
 			if (nameField != null) {
@@ -513,8 +517,6 @@ public class LNInventarios {
 				} else if ("idproducto".equals(nameField)) {
 					record[3] = field.getValue();
 				} else if ("cantidad".equals(nameField)) {
-					System.out.println("Asignando cantidad... "
-							+ field.getValue());
 					record[4] = field.getValue();
 				} else if ("pcosto".equals(nameField)) {
 					record[5] = field.getValue();
@@ -690,5 +692,129 @@ public class LNInventarios {
 				(String) record[3], saldo);
 		LinkingCache.setVSaldoInventario(bd, (String) record[2],
 				(String) record[3], vsaldo);
+	}
+
+	public void recover(Element pack) {
+		Iterator i = pack.getChildren().iterator();
+		String fecha = null;
+		String idBodega = null;
+		String idProducto = null;
+		double saldoAnt = 0;
+		double valorSaldoAnt =0;
+		/*
+		 * Recoleccion de argumentos
+		 */
+
+		while (i.hasNext()) {
+			Element field = (Element) i.next();
+			String nameField = field.getAttributeValue("name");
+			nameField = nameField.toLowerCase();
+			if ("fecha".equals(nameField)) {
+				fecha = field.getText();
+			} else if ("idbodega".equals(nameField)) {
+				idBodega = field.getText();
+			} else if ("idproducto".equals(nameField)) {
+				idProducto = field.getText();
+			}
+		}
+
+		QueryRunner RQdata = null;
+		/*
+		 * Consulta de saldo anterior a partir de la fecha inicial y los
+		 * registros a actualizar a partir de la fecha inicial.
+		 */
+		try {
+			if (fecha != null) {
+				QueryRunner RQsaldo = new QueryRunner(bd, "SCI00O4",
+						new String[] { fecha });
+				RQdata = new QueryRunner(bd, "SCI000", new String[] { fecha,
+						idBodega, idProducto });
+				ResultSet RSsaldo = RQsaldo.ejecutarSELECT();
+				RSsaldo.next();
+				saldoAnt = RSsaldo.getDouble(1);
+				valorSaldoAnt = RSsaldo.getDouble(2);
+				RQsaldo.closeStatement();
+				RSsaldo.close();
+			}
+			/*
+			 * Si no existe fecha inicial, entonces se consultan todos los
+			 * registros del producto y bodega que se van a a actualizar.
+			 */
+			else {
+				System.out.println("Argumentos: "+idBodega+","+idProducto);
+				RQdata = new QueryRunner(bd, "SCS0071", new String[] { idBodega,
+						idProducto });
+			}
+			ResultSet RSdata = RQdata.ejecutarSELECT();
+			QueryRunner RQupdate = new QueryRunner(bd,"SCU0002");
+			String orden       ="";
+			double pinventario =0;
+			double entrada     =0;
+			double valorEntrada=0;
+			double salida      =0;
+			double valorSalida =0;
+			/*
+			 * Se recorre el producto a actualizar
+			 */
+			while (RSdata.next()) {
+				
+				/*
+				 * Obteniendo informacion del producto para generar nuevos saldos y pinventario
+				 */
+				
+				orden = RSdata.getString(1);
+				entrada = RSdata.getDouble(2);
+				valorEntrada = RSdata.getDouble(3);
+				salida = RSdata.getDouble(4);
+				if (salida!=0) {
+					valorSalida = pinventario;
+				}
+				
+				/*
+				 * Recalculando informacion
+				 */
+				
+				saldoAnt = saldoAnt + entrada - salida;
+				valorSaldoAnt =roundValue(valorSaldoAnt + (entrada*valorEntrada) - (salida*valorSalida));
+				
+				if (entrada!=0) {
+					pinventario = roundValue(valorSaldoAnt/saldoAnt);
+				}
+				
+				System.out.println("Entrada: "+entrada+" valor Entrada: "+valorEntrada+" salida: "+salida+" valor salida "+valorSalida);
+				System.out.println("Actualizando pinventario: "+pinventario+" saldoAnt: "+saldoAnt+" valorSaldo: "+valorSaldoAnt);
+				
+				/* 
+				 * Actualizando en la base de datos
+				 */
+				RQupdate.ejecutarSQL(new String[] {
+										String.valueOf(pinventario),
+										String.valueOf(saldoAnt),
+										String.valueOf(valorSaldoAnt),
+										orden});
+			}
+			/*
+			 * Cerrando estamentos
+			 */
+			RQupdate.closeStatement();
+			RQdata.closeStatement();
+			RSdata.close();
+		} catch (SQLNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLBadArgumentsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	private double roundValue(Double value) {
+		BigDecimal bigDecimal = new BigDecimal(value);
+		bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+		return bigDecimal.doubleValue();
 	}
 }

@@ -373,7 +373,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 							if ("GRAPHIC".equals(typePrinter) ) {
 								postScriptManager.load(rootTemplate,printJob);
 								new PrintingManager(postScriptManager,silent, copies,printer);
-								postScriptManager = new PostScriptManager();
+								postScriptManager = new PostScriptManager(postScriptManager.getNdocument());
 							}
 							System.gc();
 						}

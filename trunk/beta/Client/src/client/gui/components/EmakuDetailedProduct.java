@@ -194,7 +194,7 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 		
 		JRCredit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				XMLTFValue.setEditable(!JRCredit.isSelected());
+				//XMLTFValue.setEditable(!JRCredit.isSelected());
 				comboBoxCatalogue.setEnabled(!JRCredit.isSelected());
 				if (JRCredit.isSelected()) {
 					XMLTFValue.setSqlLocal("SCS0066");
@@ -205,7 +205,7 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 		
 		JRDebit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				XMLTFValue.setEditable(JRDebit.isSelected());
+				//XMLTFValue.setEditable(JRDebit.isSelected());
 				comboBoxCatalogue.setEnabled(JRDebit.isSelected());
 				XMLTFValue.setSqlLocal("SCS0067");
 				comboBoxCatalogue.exportar();

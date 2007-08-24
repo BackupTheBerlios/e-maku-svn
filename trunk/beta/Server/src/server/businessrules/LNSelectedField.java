@@ -259,10 +259,10 @@ public class LNSelectedField {
 				newVar += var.substring(j, j + 1);
 			}
 		}
-		System.out.println("Condicion reemplazanda: "+
+/*		System.out.println("Condicion reemplazanda: "+
 							newVar+
 							" resultado condicional: "+
 							BeanShell.eval(newVar));
-		return newVar;
+*/		return newVar;
 	}
 }

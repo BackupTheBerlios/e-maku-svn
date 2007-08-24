@@ -61,6 +61,11 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 	public PostScriptManager() {
 		ClientHeaderValidator.addSuccessListener(this);
 	}
+	
+	public PostScriptManager(String ndocument) {
+		ClientHeaderValidator.addSuccessListener(this);
+		this.ndocument=ndocument;
+	}
 
 	/**
 	 * 
@@ -250,8 +255,20 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 		int col =  attribs.get("col").getIntValue();
 		
 		Attribute attribute = attribs.get("type");
+		Attribute fontSize = attribs.get("fontSize");
+		Attribute fontName = attribs.get("fontName");
+		
 		String type = attribute!=null ? attribute.getValue() : null ;
 		value = !"NULL".equals(value) && !"".equals(value) ?value:"";
+		Font currentFont =  g2d.getFont();
+		if (fontSize!=null && fontName!=null) {
+			Font newFont = new Font(fontName.getValue(),0,fontSize.getIntValue());
+			g2d.setFont(newFont);
+		} 
+		else if (fontSize!=null && fontName==null) {
+			Font newFont = new Font(currentFont.getFamily(),0,currentFont.getSize());
+			g2d.setFont(newFont);
+		}
 		
 		if ("TEXT".equals(type)) {
 			int width = attribs.get("width").getIntValue();
@@ -316,6 +333,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 			FontMetrics m = g2d.getFontMetrics();
 			g2d.drawString(value, col-m.stringWidth(value),row);
 		}
+		g2d.setFont(currentFont);
 	}
 
 	/**
