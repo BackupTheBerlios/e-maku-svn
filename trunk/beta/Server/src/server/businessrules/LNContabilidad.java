@@ -82,6 +82,9 @@ public class LNContabilidad {
 
 	private final boolean LIBRO_AUX_TER = true;
 
+	public LNContabilidad (String bd) {
+		this.bd=bd;
+	}
 	/**
 	 * Constructor utilizado cuando se recibe parametros desde una tabla
 	 */
@@ -236,6 +239,8 @@ public class LNContabilidad {
 	 */
 	public double fieldData(Element pack) throws DontHaveKeyException,
 			SQLNotFoundException, SQLBadArgumentsException, SQLException {
+		
+		
 
 		/*
 		 * Se define una variable para constatar partida doble
@@ -372,15 +377,6 @@ public class LNContabilidad {
 		return partidaDoble;
 	}
 
-	/**
-	 * Este metodo se encarga de anular un documento, este proceso consiste en
-	 * debitar los asientos acreditados y acreditar los asientos debitados.
-	 * 
-	 * @param pack
-	 */
-	public void annulDocument(Element pack) {
-
-	}
 
 	/**
 	 * Ete metodo se encarga de procesar la informaci�n recibida de una tabla,
@@ -1185,4 +1181,253 @@ public class LNContabilidad {
 		RQdocumento.closeStatement();
 	}
 
+	public void recoverDocument() throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
+		QueryRunner RQdocument = new QueryRunner(bd,"SCS0081",new String[]{CacheKeys.getKey("ndocumento")});
+		ResultSet RSdocument = RQdocument.ejecutarSELECT();
+		while (RSdocument.next()) {
+			String idTercero = RSdocument.getString(3)==null?"-1":RSdocument.getString(3);
+			String idProducto = RSdocument.getString(4)==null?"-1":RSdocument.getString(4);
+			recoverData(RSdocument.getString(1),
+						RSdocument.getString(2),
+						idTercero,
+						idProducto);	
+		}
+
+		QueryRunner RQdropDocument = new QueryRunner(bd,"SCS0086",new String[]{CacheKeys.getKey("ndocumento")});
+		ResultSet RSdropDocument = RQdropDocument.ejecutarSELECT();
+		/*System.out.println("Recalculando los elimiandos");*/
+
+		while (RSdropDocument.next()) {
+			String idTercero = RSdropDocument.getString(3)==null?"-1":RSdropDocument.getString(3);
+			String idProducto = RSdropDocument.getString(4)==null?"-1":RSdropDocument.getString(4);
+			/*System.out.println("Recuperando: "+RSdropDocument.getTimestamp(1)+"\n"+
+					RSdropDocument.getString(2)+"\n"+
+									idTercero+"\n"+
+									idProducto);*/
+			recoverData(RSdropDocument.getString(1),
+						RSdropDocument.getString(2),
+						idTercero,
+						idProducto);	
+		}
+		
+		RQdocument.closeStatement();
+		RSdocument.close();
+		RQdropDocument.closeStatement();
+		RSdropDocument.close();
+	}
+	
+	/**
+	 * Este metodo recalcula los saldos de las cuentas recibidas en el elemento, este elemento
+	 * debe traer los siguientes argumentos
+	 * fecha: 		Desde donde se empezara la recuperacion.
+	 * id_cta: 		Cuenta a recuperar
+	 * id_tercero: 	Si la cuenta es de tercero, entonces se tiene en cuenta este argumento.
+	 * id_prod_serv:Si la cuenta es de productos, entonces se tiene en cuenta este argumento.
+	 * @param pack Este elemento contiene los argumentos anteriores.
+	 */
+	
+	public void recover(Element pack) {
+
+		Iterator i = pack.getChildren().iterator();
+		String fecha = null;
+		String idCta = null;
+		String idTercero = null;
+		String idProducto = null;
+
+		/*
+		 * Recoleccion de argumentos
+		 */
+
+		while (i.hasNext()) {
+			Element field = (Element) i.next();
+			String nameField = field.getAttributeValue("name");
+			nameField = nameField.toLowerCase();
+			if ("fecha".equals(nameField)) {
+				fecha = field.getText();
+			} else if ("idcta".equals(nameField)) {
+				idCta = field.getText();
+			} else if ("idtercero".equals(nameField)) {
+				idTercero = field.getText();
+			} else if ("idproducto".equals(nameField)) {
+				idProducto = field.getText();
+			}
+		}
+		
+		recoverData(fecha,idCta,idTercero,idProducto);
+	}
+	
+	private void recoverData(String fecha,String idCta,String idTercero,String idProducto) {
+		/*
+		 * Si la fecha no es nula entonces se recuperara el auxiliar desde la fecha obtenida,
+		 * si no entonces la recuperacion se hara desde el inicio del auxiliar.
+		 */
+		
+		double saldoAnt = 0;
+		QueryRunner RQsaldo 	= null;
+		QueryRunner RQdata 		= null;
+		ResultSet RSsaldo 		= null;
+		ResultSet RSdata 		= null;
+		QueryRunner RQnaturaleza= null;
+		ResultSet RSnaturaleza  = null;
+		QueryRunner RQupdate 	= null;
+		try {
+			if (fecha != null) {
+				RQsaldo = new QueryRunner(bd, "SCS0074",new String[] { fecha,idCta,idTercero,idProducto });
+				RQdata = new QueryRunner(bd, "SCS0075", new String[] { fecha,idCta,idTercero,idProducto });
+				RSsaldo = RQsaldo.ejecutarSELECT();
+				if (RSsaldo.next()) {
+					saldoAnt = RSsaldo.getDouble(1);
+				}
+				
+			}
+			else if (LNDocuments.getActionDocument().equals(LNDocuments.EDIT_DOCUMENT) ||
+					LNDocuments.getActionDocument().equals(LNDocuments.DELETE_DOCUMENT)) {
+					fecha = CacheKeys.getMinDate();
+			}
+			/*
+			 * Si no existe fecha inicial, entonces se consultan todos los
+			 * registros del producto y bodega que se van a a actualizar.
+			 */
+			else {
+				RQdata = new QueryRunner(bd, "SCS0072", new String[] { idCta,idTercero,idProducto });
+			}
+			RQnaturaleza = new QueryRunner(bd,"SCS0073",new String[]{idCta});
+			RSnaturaleza = RQnaturaleza.ejecutarSELECT();
+			RSnaturaleza.next();
+			boolean naturaleza = RSnaturaleza.getBoolean(1);
+			
+			RSdata = RQdata.ejecutarSELECT();
+			RQupdate = new QueryRunner(bd,"SCU0003");
+			double saldo=0;
+			if (naturaleza) {
+				saldo=roundValue(recoverDebit(saldoAnt,RSdata,RQupdate));
+			}
+			else {
+				saldo=roundValue(recoverCredit(saldoAnt,RSdata,RQupdate));
+			}
+			LinkingCache.setSaldoLibroAux(bd,"",idCta,
+										idTercero.equals("-1")?"":idTercero,
+										idProducto.equals("-1")?"":idProducto,saldo);
+
+
+			
+		} catch (SQLNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLBadArgumentsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				RQsaldo.closeStatement();
+				RSsaldo.close();
+			}
+			catch(NullPointerException NPEe) {} 
+			catch (SQLException e) {}
+			try {
+				RQnaturaleza.closeStatement();
+				RSnaturaleza.close();
+				RQdata.closeStatement();
+				RSsaldo.close();
+				RSdata.close();
+				RQupdate.closeStatement();
+			}
+			catch(NullPointerException NPEe) {}
+			catch (SQLException e) {}
+		}
+
+	}
+	
+	/**
+	 * 
+	 *  Metodo encargado de recuperar una cuenta de un libro auxiliar con 
+	 *  naturaleza debito.
+	 * @param saldoAnt Contiene el saldo inicial desde donde se debe tener en cuenta
+	 * recuperacion.
+	 * @param RSdata Contiene la informacion de la cuenta a recuperar.
+	 * @param RQupdate Objeto encargado de hacer la actualizacion 
+	 * @throws SQLException 
+	 * @throws SQLNotFoundException
+	 * @throws SQLBadArgumentsException
+	 */
+	private double recoverDebit(double saldoAnt,ResultSet RSdata,QueryRunner RQupdate) 
+	throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+		String orden = null;
+		double debe  = 0;
+		double haber = 0;
+		double saldo = saldoAnt;
+		while (RSdata.next()) {
+			orden = RSdata.getString(1);
+			debe  = RSdata.getDouble(2);
+			haber = RSdata.getDouble(3);
+			saldo = roundValue(saldo + debe - haber);
+			RQupdate.ejecutarSQL(new String[] {
+					String.valueOf(saldo),
+					orden});
+		}
+		return saldo;
+	}
+	
+	/**
+	 * Metodo encargado de recuperar una cuenta de un libro auxiliar con 
+	 * naturaleza credito
+	 * @param saldoAnt Contiene el saldo inicial desde donde se debe tener en cuenta
+	 * recuperacion.
+	 * @param RSdata Contiene la informacion de la cuenta a recuperar.
+	 * @param RQupdate Objeto encargado de hacer la actualizacion 
+	 * @throws SQLException
+	 * @throws SQLNotFoundException
+	 * @throws SQLBadArgumentsException
+	 */
+	private double recoverCredit(double saldoAnt,ResultSet RSdata,QueryRunner RQupdate) 
+	throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+		String orden = null;
+		double debe  = 0;
+		double haber = 0;
+		double saldo = saldoAnt;
+		while (RSdata.next()) {
+			orden = RSdata.getString(1);
+			debe  = RSdata.getDouble(2);
+			haber = RSdata.getDouble(3);
+			saldo = roundValue(saldo + haber - debe);
+			RQupdate.ejecutarSQL(new String[] {
+					String.valueOf(saldo),
+					orden});
+		}
+		return saldo;
+	}
+	
+	/**
+	 * Este metodo retorna el valor redondeado de un double
+	 * @param value valor a retornar
+	 * @return valor redondeado
+	 */
+	private double roundValue(Double value) {
+		BigDecimal bigDecimal = new BigDecimal(value);
+		bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+		return bigDecimal.doubleValue();
+	}
+	
+	/**
+	 * Este metodo se encarga de eliminar todos los registros de un documento del libro auxiliar.
+	 * @throws SQLNotFoundException
+	 * @throws SQLBadArgumentsException
+	 * @throws SQLException
+	 */
+
+	public void deleteDocument() throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
+		QueryRunner RQdpDocument = new QueryRunner(bd,"SCD0004",new String[]{});
+		QueryRunner RQdropDocument = new QueryRunner(bd,"SCS0084",new String[] { CacheKeys.getKey("ndocumento") });
+		QueryRunner RQdeleteDocument = new QueryRunner(bd,"SCD0001",new String[] { CacheKeys.getKey("ndocumento") });
+		//System.out.println("Eliminando auxiliar documento: "+CacheKeys.getKey("ndocumento"));
+		RQdpDocument.ejecutarSQL();
+		RQdropDocument.ejecutarSQL();
+		RQdeleteDocument.ejecutarSQL();
+		RQdpDocument.closeStatement();
+		RQdropDocument.closeStatement();
+		RQdeleteDocument.closeStatement();
+	}
 }

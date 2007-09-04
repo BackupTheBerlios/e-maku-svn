@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.nio.channels.SocketChannel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
@@ -19,11 +20,9 @@ import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
-import com.sun.org.apache.xml.internal.serialize.OutputFormat;
-
 import server.comunications.EmakuServerSocket;
-import server.database.sql.LinkingCache;
 import server.database.sql.DontHaveKeyException;
+import server.database.sql.LinkingCache;
 import server.database.sql.QueryRunner;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
@@ -80,8 +79,8 @@ public class LNDocuments {
     private static String bd;
     private static final String CREATE_DOCUMENT = "createDocument";
     private static final String ANNUL_DOCUMENT = "annulDocument";
-    private static final String DELETE_DOCUMENT = "deleteDocument";
-    private static final String EDIT_DOCUMENT = "editDocument";
+    public static final String DELETE_DOCUMENT = "deleteDocument";
+    public static final String EDIT_DOCUMENT = "editDocument";
     
     /**
      * 
@@ -123,6 +122,7 @@ public class LNDocuments {
         Iterator j = pack.getChildren().iterator();
         LNGtransaccion = new LNGenericSQL(sock);
         LNGtransaccion.setAutoCommit(false);
+        CacheKeys.cleanKeys();
         
         try {
 	        for(int m=0;i.hasNext();m++) {
@@ -150,12 +150,27 @@ public class LNDocuments {
 	                if (actionDocument.equals(CREATE_DOCUMENT)) {
 
 	                    boolean parameters = true;
-	                    if (consecutive==null || !"".equals(CacheKeys.getDate())) {
+	                    if (consecutive==null) {
 	                        parameters = getParameters(subpackage);
 	                    }
 	                    
 	                    if (parameters) {
-	                        /*
+	                    	/*
+	                    	 * Si la fecha esta vacia entonces el primer argumento recibido sera
+	                    	 * la fecha.
+	                    	 */
+	                    	System.out.println("Sera que hay fecha?");
+	                    	if ("".equals(CacheKeys.getDate())) {
+	                    		System.out.println("No hay fecha, nueva fecha: "+subpackage.getValue());
+	                        	String dateDocument = subpackage.getValue();
+	                        	CacheKeys.setDate(dateDocument);
+	                        	CacheKeys.setMinDate(dateDocument);
+	                        	if (i.hasNext()) {
+	                        		subpackage = (Element)j.next();
+	                        	}
+	                        }
+
+	                    	/*
 	                         * Si el metodo retorna true, se procede a almacenar
 	                         * el documento
 	                         */
@@ -168,10 +183,12 @@ public class LNDocuments {
 	                         * se hace la siguiente consulta
 	                         */
 	                        
-	                        /*
+	                        String keyDocument = getDocumentKey(idDocument,consecutive);
+	                    	
+	                    
+	                    	/*
 	                         * Si existe un documento link entonces se procede a generarlo.
 	                         */
-	                    	String keyDocument = getDocumentKey(idDocument,consecutive);
 	                    	
 	                        if (linkDocument!=null) {
 	                        	// Se obtiene su consecutivo
@@ -352,6 +369,18 @@ public class LNDocuments {
                         }
                         else {
                         	break;
+                        }
+                        /*
+                         * Si no existe fecha definida en las caches, entonces el segundo argumento a recibir
+                         * debe ser la fecha
+                         */
+                        if ("".equals(CacheKeys.getDate())) {
+                        	String dateDocument = subpackage.getValue();
+                        	CacheKeys.setDate(dateDocument);
+                        	CacheKeys.setMinDate(dateDocument);
+                        	if (i.hasNext()) {
+                        		subpackage = (Element)j.next();
+                        	}
                         }
 	                }
 
@@ -562,6 +591,9 @@ public class LNDocuments {
 			// TODO Auto-generated catch block
 //			ADEe.printStackTrace();
         	undoTransaction(ADEe.getMessage());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			undoTransaction(e.getMessage());
 		}
         finally {
             CacheKeys.setKeys(new Hashtable());
@@ -690,8 +722,15 @@ public class LNDocuments {
             }
         }
         else if ("LNContabilidad".equals(driver)) {
-        	LNContabilidad LNCprocesar = new LNContabilidad(parameters,EmakuServerSocket.getBd(sock)); 
-            if ("columnData".equals(method)) {
+        	LNContabilidad LNCprocesar;
+        	if (parameters!=null) {
+        		LNCprocesar = new LNContabilidad(parameters,EmakuServerSocket.getBd(sock)); 
+        	}
+        	else {
+        		LNCprocesar = new LNContabilidad(EmakuServerSocket.getBd(sock));
+        	}
+        	
+        	if ("columnData".equals(method)) {
             	partidaDoble += LNCprocesar.columnData(pack);
             	
             } 
@@ -706,6 +745,15 @@ public class LNDocuments {
             }
             else if ("anular".equals(method)) {
             	LNCprocesar.anular();
+            }
+            else if ("recover".equals(method)) {
+            	LNCprocesar.recover(pack);
+            }
+            else if ("recoverDocument".equals(method)) {
+            	LNCprocesar.recoverDocument();
+            }
+            else if ("deleteDocument".equals(method)) {
+            	LNCprocesar.deleteDocument();
             }
             else {
                 throw new NoSuchMethodException(Language.getWord("NO_SUCH_METHOD")+method);
@@ -797,8 +845,12 @@ public class LNDocuments {
      * Este metodo es utilizado para obtener los parametros de configuracion que no fueron definidos 
      * el el paquete de configuracion del documento.
      * @param config almacena la configuracion
+     * @throws SQLBadArgumentsException 
+     * @throws SQLNotFoundException 
+     * @throws SQLException 
+     * @throws ParseException 
      */
-    private static boolean getParameters(Element config) {
+    private static boolean getParameters(Element config) throws SQLNotFoundException, SQLBadArgumentsException, SQLException, ParseException {
         Iterator k = config.getChildren().iterator();
         while (k.hasNext()) {
             Element subpackage = (Element) k.next();
@@ -812,27 +864,25 @@ public class LNDocuments {
                 LNDocuments.consecutive = value;
             }
             
-            // date
-            
-            else if ("date".equals(subpackage.getAttributeValue("attribute"))) {
-                CacheKeys.setDate(value);
-            }
         }
-        
-        if (!"".equals(CacheKeys.getDate()) && consecutive!=null) {
+        if (consecutive!=null) {
             return true;
         }
         else {
             return false;
         }
     }
-    
+
     /**
      * Metodo encargado de obtener la configuracion del documento parametrizado
      * @param config contiene la configuracion del documento en <xml/>
+     * @throws SQLBadArgumentsException 
+     * @throws SQLNotFoundException 
+     * @throws SQLException 
      */
     
-    private static void getDocumentConfig(Element config) {
+    private static void getDocumentConfig(Element config) 
+    throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
         Iterator k = config.getChildren().iterator();
         while (k.hasNext()) {
             Element subpackage = (Element) k.next();
@@ -866,6 +916,7 @@ public class LNDocuments {
                 GregorianCalendar fecha = new GregorianCalendar();
                 SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 CacheKeys.setDate(formato.format(fecha.getTime()));
+            	CacheKeys.setMinDate(formato.format(fecha.getTime()));
             }
             
             // createDocument
@@ -879,6 +930,7 @@ public class LNDocuments {
                 cash = true;
             }
         }
+        
     }
     
     /**
@@ -893,4 +945,12 @@ public class LNDocuments {
         System.out.println("consecutivo: "+consecutive+" transaccion "+idTransaction);
         RunTransaction.errorMessage(sock,idTransaction,message,ndocument);
     }
+
+	public static String getActionDocument() {
+		return actionDocument;
+	}
+
+	public static void setActionDocument(String actionDocument) {
+		LNDocuments.actionDocument = actionDocument;
+	}
 }

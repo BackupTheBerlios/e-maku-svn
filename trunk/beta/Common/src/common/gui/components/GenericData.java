@@ -11,14 +11,15 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
@@ -1147,7 +1148,16 @@ public class GenericData extends JPanel implements DateListener,
 						String val1 = GFforma.getExteralValuesString(stk.nextToken());
 						String val2 = GFforma.getExteralValuesString(stk.nextToken());
 						if (val1 != null && val2 != null) {
-							Date date = Date.valueOf(val1);
+							DateFormat df = null;
+							Date date = null;
+							try {
+								df =new SimpleDateFormat("yyyy/MM/dd");
+								date = df.parse(val1);
+							}
+							catch(ParseException PEe) {
+								df =new SimpleDateFormat("yyyy-MM-dd");
+								date = df.parse(val1);
+							}
 							Calendar cal = Calendar.getInstance();
 							cal.setTime(date);
 							cal.add(Calendar.DAY_OF_MONTH, Integer.parseInt(val2));
@@ -1161,7 +1171,13 @@ public class GenericData extends JPanel implements DateListener,
 
 					} catch (NumberFormatException NFEe) {
 
+					} catch (IllegalArgumentException IAEe) {
+						
+					} catch (ParseException PEe) {
+						// TODO Auto-generated catch block
+						PEe.printStackTrace();
 					}
+					
 				}
 				if (xmltf.getSqlLocal() != null && xmltf.getImportValues().length>0) {
 					new EmakuUIFieldFiller(GFforma, namebutton, enablebutton,

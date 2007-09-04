@@ -382,6 +382,17 @@ public class LinkingCache {
                                 		  		rs.getBoolean("depreciacion"),
                                 		  		rs.getDouble("base"),
                                 		  		rs.getDouble("porcentaje")));
+            /*System.out.println("K-" + bd + "-"
+			                    +rs.getString("char_cta").trim()
+			                    +rs.getString("id_cta")
+                  		  		+rs.getBoolean("naturaleza")
+                  		        +rs.getBoolean("terceros")
+                  		  		+rs.getBoolean("inventarios")
+                  		  		+rs.getBoolean("centro")
+                  		  		+rs.getBoolean("ajuste")
+                  		  		+rs.getBoolean("depreciacion")
+                  		  		+rs.getDouble("base")
+                  		  		+rs.getDouble("porcentaje"));*/
         }
         StatementsClosingHandler.close(st);
         StatementsClosingHandler.close(rs);
@@ -626,7 +637,7 @@ public class LinkingCache {
 
     public static double getSaldoLibroAux(String bd, String centro, String cta, String id_tercero, String id_prod_serv) {
     	if (Hlibro_aux.containsKey("K-"+bd+"-"+centro+"-"+cta+"-"+id_tercero+"-"+id_prod_serv)) {
-            return ((Double)Hlibro_aux.get("K-"+bd+"-"+centro+"-"+cta+"-"+id_tercero+"-"+id_prod_serv)).doubleValue();
+    		return ((Double)Hlibro_aux.get("K-"+bd+"-"+centro+"-"+cta+"-"+id_tercero+"-"+id_prod_serv)).doubleValue();
         }
         else {
         	return 0;

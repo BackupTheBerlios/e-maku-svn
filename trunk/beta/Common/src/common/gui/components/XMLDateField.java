@@ -7,6 +7,8 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.lang.reflect.InvocationTargetException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.Vector;
@@ -147,12 +149,14 @@ implements KeyListener, DocumentListener, AnswerListener, InstanceFinishingListe
     }
 
     public Element getPrintPackage() {
-    	try {
-			return getPackage();
-		} catch (VoidPackageException e) {
-			// TODO Auto-generated catch block
-			return new Element("Package").addContent(new Element("field"));
-		}
+    	Element pack = new Element("package");
+        if (!this.getDate().equals("")) {
+            Element field = new Element("field");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            field.setText(sdf.format(this.getDate()));
+            pack.addContent(field);
+        }
+        return pack;
     }
     
     public Element getPackage() throws VoidPackageException {
@@ -167,14 +171,21 @@ implements KeyListener, DocumentListener, AnswerListener, InstanceFinishingListe
     }
 
     public void arriveAnswerEvent(AnswerEvent AEe) {
-		try {
+    	System.out.println("llego una fecha");
+    	DateFormat  df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    	String date = "";
+    	try {
 			Document doc = AEe.getDocument();
-	        String date = doc.getRootElement().getChild("row").getChildText("col");
-	        this.setDateFormatString(date);
+	        date = doc.getRootElement().getChild("row").getChildText("col");
+	        this.setDate(df.parse(date));
 	        exportar();
         }
 		catch (NullPointerException NPEe) {
+			System.out.println("no pude ponerla :( "+date);
 			//this.removeAllItems();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

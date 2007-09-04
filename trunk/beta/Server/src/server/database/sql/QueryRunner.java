@@ -132,7 +132,7 @@ public class QueryRunner extends Element {
     public boolean ejecutarSQL() throws SQLException{
     	try{
 	        st = ConnectionsPool.getConnection(bd).createStatement();
-	   //     System.out.println("SENTENCIA SQL :: "+sql);
+	        //System.out.println("SENTENCIA SQL :: "+sql);
 	        boolean status = st.execute(sql);
 	        st.close();
 	        st=null;

@@ -30,7 +30,13 @@ public class CacheKeys {
 
     private static Map<Object,String> keys = new LinkedHashMap<Object,String>();
     private static String date = "";
+    private static String minDate="";
     
+    public static void cleanKeys(){
+    	date="";
+    	minDate="";
+    	keys.clear();
+    }
     /*
     public static Hashtable getKeys() {
         return keys;
@@ -73,4 +79,12 @@ public class CacheKeys {
     public static void setDate(String date) {
         CacheKeys.date = date;
     }
+
+	public static String getMinDate() {
+		return minDate;
+	}
+
+	public static void setMinDate(String minDate) {
+		CacheKeys.minDate = minDate;
+	}
 }

@@ -3,8 +3,7 @@ package server.businessrules;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -54,9 +53,13 @@ public class LNInventarios {
 
 	private final String RECOVER = "recover";
 
+	private final String RECOVERDOC = "recoverdocument";
+
 	private final String GASTOS = "gastosydescuentos";
 
 	private final String ANULAR = "anular";
+	
+	private final String DELETE = "deletedocument";
 
 	double saldo;
 
@@ -140,6 +143,10 @@ public class LNInventarios {
 			nota(pack);
 		} else if (RECOVER.equals(tipoMovimiento)) {
 			recover(pack);
+		} else if (RECOVERDOC.equals(tipoMovimiento)) {
+			recoverDocument();
+		} else if (DELETE.equals(tipoMovimiento)) {
+			deleteDocument();
 		}
 	}
 
@@ -694,13 +701,39 @@ public class LNInventarios {
 				(String) record[3], vsaldo);
 	}
 
+	public void recoverDocument() throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
+		QueryRunner RQdocument = new QueryRunner(bd,"SCS0082",new String[]{CacheKeys.getKey("ndocumento")});
+		ResultSet RSdocument = RQdocument.ejecutarSELECT();
+		while (RSdocument.next()) {
+			recoverData(RSdocument.getString(1),
+						RSdocument.getString(2),
+						RSdocument.getString(3));	
+		}
+		
+		QueryRunner RQdropDocument = new QueryRunner(bd,"SCS0085",new String[] {CacheKeys.getKey("ndocumento")});
+		ResultSet RSdropDocument = RQdropDocument.ejecutarSELECT();
+		System.out.println("Recalculando los elimiandos");
+		while (RSdropDocument.next()) {
+			System.out.println("--------------------------------------\nFecha: "+RSdropDocument.getString(1)+"\nidBodega: "+
+															RSdropDocument.getString(2)+"\nidProducto: "+
+															RSdropDocument.getString(3)+"\n.............................................");
+			recoverData(RSdropDocument.getString(1),
+						RSdropDocument.getString(2),
+						RSdropDocument.getString(3));	
+		}
+		RQdocument.closeStatement();
+		RSdocument.close();
+		RQdropDocument.closeStatement();
+		RSdropDocument.close();
+	}
+
 	public void recover(Element pack) {
 		Iterator i = pack.getChildren().iterator();
+		
 		String fecha = null;
 		String idBodega = null;
 		String idProducto = null;
-		double saldoAnt = 0;
-		double valorSaldoAnt =0;
+		
 		/*
 		 * Recoleccion de argumentos
 		 */
@@ -717,6 +750,25 @@ public class LNInventarios {
 				idProducto = field.getText();
 			}
 		}
+		
+		recoverData(fecha,idBodega,idProducto);
+	}
+	
+	private void recoverData(String fecha,String idBodega, String idProducto) {
+		double saldoAnt = 0;
+		double valorSaldoAnt =0;
+		String orden       ="";
+		String rfDocumento ="";
+		String tipoDocumento ="";
+		boolean estado = true;
+		double pinventario =0;
+		double hpinventario=0;
+		double entrada     =0;
+		double valorEntrada=0;
+		double salida      =0;
+		double valorSalida =0;
+		boolean ponderar = false;
+		Hashtable<String,DataInventory> historyInv = new Hashtable<String,DataInventory>();
 
 		QueryRunner RQdata = null;
 		/*
@@ -725,16 +777,25 @@ public class LNInventarios {
 		 */
 		try {
 			if (fecha != null) {
-				QueryRunner RQsaldo = new QueryRunner(bd, "SCI00O4",
-						new String[] { fecha });
-				RQdata = new QueryRunner(bd, "SCI000", new String[] { fecha,
-						idBodega, idProducto });
+				QueryRunner RQsaldo = new QueryRunner(bd, "SCS0076",new String[] { fecha,idBodega,idProducto });
+				RQdata = new QueryRunner(bd, "SCS0077", new String[] { fecha,idBodega, idProducto });
 				ResultSet RSsaldo = RQsaldo.ejecutarSELECT();
-				RSsaldo.next();
-				saldoAnt = RSsaldo.getDouble(1);
-				valorSaldoAnt = RSsaldo.getDouble(2);
+				if (RSsaldo.next()) {
+					pinventario = RSsaldo.getDouble(1);
+					saldoAnt = RSsaldo.getDouble(2);
+					valorSaldoAnt = RSsaldo.getDouble(3);
+				}
+				/*System.out.println("-----------------------------------------------------------");
+				System.out.println("Consultando saldos de: "+fecha+"-"+idBodega+"-"+idProducto);
+				System.out.println("pinventario: "+pinventario);
+				System.out.println("Saldo anterior: "+saldoAnt);
+				System.out.println("Valor Sdo Ant: "+valorSaldoAnt);*/
 				RQsaldo.closeStatement();
 				RSsaldo.close();
+			}
+			else if (LNDocuments.getActionDocument().equals(LNDocuments.EDIT_DOCUMENT) ||
+					LNDocuments.getActionDocument().equals(LNDocuments.DELETE_DOCUMENT)) {
+						fecha = CacheKeys.getMinDate();
 			}
 			/*
 			 * Si no existe fecha inicial, entonces se consultan todos los
@@ -747,27 +808,137 @@ public class LNInventarios {
 			}
 			ResultSet RSdata = RQdata.ejecutarSELECT();
 			QueryRunner RQupdate = new QueryRunner(bd,"SCU0002");
-			String orden       ="";
-			double pinventario =0;
-			double entrada     =0;
-			double valorEntrada=0;
-			double salida      =0;
-			double valorSalida =0;
 			/*
 			 * Se recorre el producto a actualizar
 			 */
 			while (RSdata.next()) {
-				
+				ponderar=true;
 				/*
 				 * Obteniendo informacion del producto para generar nuevos saldos y pinventario
 				 */
 				
 				orden = RSdata.getString(1);
-				entrada = RSdata.getDouble(2);
-				valorEntrada = RSdata.getDouble(3);
-				salida = RSdata.getDouble(4);
+				rfDocumento = RSdata.getString(2);
+				tipoDocumento = RSdata.getString(3);
+				hpinventario = RSdata.getDouble(4);
+				estado = RSdata.getBoolean(5);
+				entrada = RSdata.getDouble(6);
+				salida = RSdata.getDouble(8);
+
+				/*
+				 * Si es salida entonces ....
+				 */
 				if (salida!=0) {
-					valorSalida = pinventario;
+					//System.out.println("Sacando ..");
+					/*
+					 * Si esta anulada
+					 */
+					if (!estado) {
+						//System.out.println("Salida.. documento anulado");
+						/*
+						 * Debemos verificar a que precio entro y a ese precio se debe registrar la salida,
+						 * se verifica en el historico del inventario, en caso de que no este
+						 * debemos consultarlo en la base de datos. La razon de porque no podria estar es
+						 * porque se tomo un rango de fechas posterior a la elaboracion del documento que se
+						 * esta anulando.
+						 */
+						if (historyInv.containsKey(orden)) {
+							valorSalida = historyInv.get(orden).getValorEntrada();
+						}
+						else {
+							double valor = getDBValue( "SCS0078",orden,idProducto);
+							if (valor!=0) {
+								valorSalida = valor;
+							}
+							else {
+								valorSalida = RSdata.getDouble(9);
+							}
+						}
+					}
+					/*
+					 * Si no esta anulada y es una devolucion en compras entonces debe salir al valor al que se 
+					 * compro, esto lo sabemos por el rfdocumento.
+					 */
+					else if (tipoDocumento.equals("DC")) {
+						//System.out.println("Salida.. devolucion en compras");
+						/*
+						 * Verificamos si el valor de la compra esta registrado en el historial y tomamos como valor
+						 * de la salida el mismo valor del ingreso
+						 */
+						if (historyInv.containsKey(rfDocumento)) {
+							valorSalida = historyInv.get(rfDocumento).getValorEntrada();
+						}
+						/*
+						 * si no esta en el historial, toca consultar el valor de salida en la base de datos.
+						 */
+						else {
+							valorSalida = getDBValue( "SCS0078",rfDocumento,idProducto);
+						}
+					}
+					else if (roundValue(hpinventario)!=roundValue(valorSalida)){
+						//System.out.println("Salida.. a valor diferente del inventario");
+
+						valorSalida=RSdata.getDouble(9);
+					}
+					else {
+						//System.out.println("Salida simple");
+						valorSalida=pinventario;
+						ponderar=false;
+					}
+				}
+				/*
+				 *  Si es una entrada entonces ..
+				 */
+				else if (entrada!=0){
+					//System.out.println("Metiendo...");
+					/*
+					 * Si esta anulada ...
+					 */
+					if (!estado) {
+						//System.out.println("Entrada.. documento anulado");
+						/* 
+						 * Igual que si fuera una salida.
+						 */
+						if (historyInv.containsKey(orden)) {
+							valorEntrada = historyInv.get(orden).getValorSalida();
+						}
+						/*
+						 * Se busca el saldo en la base de datos
+						 */
+						else {
+							double valor = getDBValue( "SCS0079",orden,idProducto);
+							if (valor!=0) {
+								valorEntrada =  valor;
+							}
+							else {
+								RSdata.getDouble(7);
+							}
+						}
+					}
+					/*
+					 * Si no esta anulada y es una devolucion en compras entonces debe salir al valor al que se 
+					 * compro, esto lo sabemos por el rfdocumento.
+					 */
+					else if (tipoDocumento.equals("DV")) {
+						//System.out.println("Entrada.. devolucion en ventas");
+						/*
+						 * Verificamos si el valor de la venta esta registrado en el historial y tomamos como valor
+						 * de la entrada el mismo valor de la venta
+						 */
+						if (historyInv.containsKey(rfDocumento)) {
+							valorEntrada = historyInv.get(rfDocumento).getValorSalida();
+						}
+						/*
+						 * Si el documento referencia no se encuentra en el historico se debe buscar en la base de datos
+						 */
+						else {
+							valorEntrada = getDBValue( "SCS0079",orden,idProducto);
+						}
+					}
+					else {
+						//System.out.println("Entrada simple");
+						valorEntrada = RSdata.getDouble(7);
+					}
 				}
 				
 				/*
@@ -776,14 +947,39 @@ public class LNInventarios {
 				
 				saldoAnt = saldoAnt + entrada - salida;
 				valorSaldoAnt =roundValue(valorSaldoAnt + (entrada*valorEntrada) - (salida*valorSalida));
+
+				/*
+				 * Si ponderar es verdadero entonces se pondera el valor del inventario teniendo en cuenta
+				 * que las las cantidades del saldo sean diferentes de 0.
+				 */
 				
-				if (entrada!=0) {
-					pinventario = roundValue(valorSaldoAnt/saldoAnt);
+				if (ponderar) {
+					//System.out.println("Ponderando");
+
+					/*
+					 * Se verifica que el saldo o el valor del saldo no sean 0, si es asi entonces el 
+					 * valor del precio del inventario debe ser igual al valor del movimiento a generar
+					 * sea una entrada o una salida.
+					 */
+					
+					if (saldoAnt!=0) {
+						//System.out.println("saldo anterior diferente de 0, se pudo ponderar");
+						pinventario = roundValue(valorSaldoAnt/saldoAnt);
+					}
+					else {
+						//System.out.println("saldo anterior diferente de 0, no se pudo ponderar");
+						if (entrada!=0) {
+							pinventario=valorEntrada;
+						}
+						else {
+							pinventario=valorSalida;
+						}
+					}
 				}
 				
-				System.out.println("Entrada: "+entrada+" valor Entrada: "+valorEntrada+" salida: "+salida+" valor salida "+valorSalida);
+				/*System.out.println("Entrada: "+entrada+" valor Entrada: "+valorEntrada+" salida: "+salida+" valor salida "+valorSalida);
 				System.out.println("Actualizando pinventario: "+pinventario+" saldoAnt: "+saldoAnt+" valorSaldo: "+valorSaldoAnt);
-				
+				*/
 				/* 
 				 * Actualizando en la base de datos
 				 */
@@ -792,7 +988,20 @@ public class LNInventarios {
 										String.valueOf(saldoAnt),
 										String.valueOf(valorSaldoAnt),
 										orden});
+				
+				/*
+				 * Si el documento registrado no es un documento anulado entonces se ingresa en el historial.
+				 */
+				if (estado) {
+					historyInv.put(orden,new DataInventory(pinventario,entrada,valorEntrada,salida,valorSalida));
+				}
+
 			}
+			
+			LinkingCache.setPCosto(bd, idBodega, idProducto, pinventario);
+			LinkingCache.setSaldoInventario(bd, idBodega, idProducto, saldoAnt);
+			LinkingCache.setVSaldoInventario(bd, idBodega, idProducto, valorSaldoAnt);
+
 			/*
 			 * Cerrando estamentos
 			 */
@@ -811,10 +1020,85 @@ public class LNInventarios {
 		}
 
 	}
+
+	private double getDBValue(String sql,String orden,String idProducto) throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
+		QueryRunner RQventrada = new QueryRunner(bd,sql,new String[] { orden,idProducto });
+		ResultSet RSventrada = RQventrada.ejecutarSELECT();
+		RSventrada.next();
+		double valor = RSventrada.getDouble(1);
+		RQventrada.closeStatement();
+		RSventrada.close();
+		return valor;
+	}
 	
 	private double roundValue(Double value) {
 		BigDecimal bigDecimal = new BigDecimal(value);
 		bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
 		return bigDecimal.doubleValue();
+	}
+	
+	/**
+	 * Este metodo se encarga de eliminar todos los registros de un documento del libro auxiliar.
+	 * @throws SQLNotFoundException
+	 * @throws SQLBadArgumentsException
+	 * @throws SQLException
+	 */
+	private void deleteDocument() throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
+		QueryRunner RQdpDocument = new QueryRunner(bd,"SCD0003",new String[]{});
+		QueryRunner RQdropDocument = new QueryRunner(bd,"SCS0083",new String[] { CacheKeys.getKey("ndocumento") });
+		QueryRunner RQdeleteDocument = new QueryRunner(bd,"SCD0002",new String[] { CacheKeys.getKey("ndocumento") });
+		RQdpDocument.ejecutarSQL();
+		RQdropDocument.ejecutarSQL(); 
+		RQdeleteDocument.ejecutarSQL();
+		RQdpDocument.closeStatement();
+		RQdropDocument.closeStatement();
+		RQdeleteDocument.closeStatement();
+	}
+
+	class DataInventory {
+		double pinventario 	= 0;
+		double entrada 		= 0;
+		double valorEntrada = 0;
+		double salida 		= 0;
+		double valorSalida 	= 0;
+		
+		public DataInventory(double pinventario,double entrada,double valorEntrada,double salida,double valorSalida) {
+			this.pinventario=pinventario;
+			this.entrada=entrada;
+			this.valorEntrada=valorEntrada;
+			this.salida=salida;
+			this.valorSalida=valorSalida;
+		}
+		
+		public double getEntrada() {
+			return entrada;
+		}
+		public void setEntrada(double entrada) {
+			this.entrada = entrada;
+		}
+		public double getPinventario() {
+			return pinventario;
+		}
+		public void setPinventario(double pinventario) {
+			this.pinventario = pinventario;
+		}
+		public double getSalida() {
+			return salida;
+		}
+		public void setSalida(double salida) {
+			this.salida = salida;
+		}
+		public double getValorEntrada() {
+			return valorEntrada;
+		}
+		public void setValorEntrada(double valorEntrada) {
+			this.valorEntrada = valorEntrada;
+		}
+		public double getValorSalida() {
+			return valorSalida;
+		}
+		public void setValorSalida(double valorSalida) {
+			this.valorSalida = valorSalida;
+		}
 	}
 }
