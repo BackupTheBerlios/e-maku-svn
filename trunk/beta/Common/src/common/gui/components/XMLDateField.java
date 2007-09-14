@@ -188,6 +188,8 @@ implements KeyListener, DocumentListener, AnswerListener, InstanceFinishingListe
 			e.printStackTrace();
 		}
 	}
+    
+    
 
     private void exportar() {
 		if (exportValue!=null) {
@@ -220,11 +222,14 @@ implements KeyListener, DocumentListener, AnswerListener, InstanceFinishingListe
 		try {
 			Element elm = getPackage();
 			if (elm.getChildren().size() > 0) {
+				System.out.println("No contiene datos -"+elm.getChildren().get(0)+"-");
 				return true;
 			}
 		} catch (VoidPackageException e) {
+			System.out.println("No contiene datos");
 			return false;
 		}
+		System.out.println("No contiene datos");
 		return false;
 	}
 

@@ -280,7 +280,14 @@ public class LNContabilidad {
 			 * informacion para generar el registro
 			 */
 
-			if (valueAccount > 0) {
+			/*
+			 * Se modifica la validacion valueAccount>0 por valueAccount!=0
+			 * para despues verificar si el valor ingresado es negativo entonces
+			 * cambiar el tipo de movimiento
+			 * 
+			 * Popayan 2007-09-09                                    pipelx
+			 */
+			if (valueAccount != 0) {
 
 				/*
 				 * Se procede a verificar si se cumple con la base
@@ -311,6 +318,11 @@ public class LNContabilidad {
 						debito = false;
 					}
 
+					if (valueAccount<0) {
+						valueAccount = Math.abs(valueAccount);
+						debito=!debito;
+					}
+					
 					String idCta = LinkingCache.getPCIdCta(bd, account);
 
 					/*
@@ -480,7 +492,19 @@ public class LNContabilidad {
 				System.out.println("asiento[" + k + "] = " + asiento[k]);
 			}
 		}
+		
+		double debito 	= Double.parseDouble(asiento[7]);
+		double credito 	= Double.parseDouble(asiento[8]);	
 
+		if (debito<0) {
+			asiento[7]="0";
+			asiento[8]=String.valueOf(roundValue(Math.abs(debito)));
+		} 
+		else if (credito<0) {
+			asiento[7]=String.valueOf(roundValue(Math.abs(credito)));
+			asiento[8]="0";
+		} 
+		
 		if (!asiento[7].equals("0") && !asiento[8].equals("0")) {
 			/*
 			 * Se reemplaza el numero de la cuenta contable por su id
@@ -596,8 +620,26 @@ public class LNContabilidad {
 			 * if (valueAccount>0 && valueAccount>=baseAccount) {
 			 */
 
-			if (valueAccount > 0) {
+			/*
+			 * Se cambia valueAccount>0 por valueAccount!=0 para luego validar 
+			 * si el valor recibido es un negativo entonces se cambia el tipo
+			 * de movimiento del asiento.
+			 * 
+			 * Popayan 2007-09-08                          pipelx
+			 */
+			
+			if (valueAccount != 0) {
 
+				/*
+				 * Se verifica que el valor sea positivo, si no entonces se 
+				 * invierte el tipo de movimiento y se pone positivo el valor
+				 * del asiento.
+				 */
+				
+				if (valueAccount<0) {
+					valueAccount = Math.abs(valueAccount);
+					naturaleza = !naturaleza;
+				}
 				/*
 				 * Una vez verificado esto, se procede a generar el asiento
 				 * dependiendo de su tipo
@@ -794,10 +836,27 @@ public class LNContabilidad {
 			 * mayor a 0 entonces ...
 			 */
 			
-			if (valueAccount > 0 && !"IdProdServ".equals(account.trim()) && cuentaregistrada) {
+			/*
+			 * Se modifica la condicion valueAccount>0 por valueAccount!=0 y luego se
+			 * valida si el valor recibido es negativo, si es asi, entonces se cambia la naturaleza
+			 * de la cuenta y el valor se pasa a positivo
+			 * 
+			 * Popayan, 2007-09-08                                      pipelx
+			 */
+			
+			if (valueAccount != 0 && !"IdProdServ".equals(account.trim()) && cuentaregistrada) {
 				double baseAccount = LinkingCache
 						.getPCBase(bd, account.trim());
 
+				/*
+				 * Si el valor recibido es negativo, entonces lo pasamos a positivo y cambiamos la 
+				 * naturaleza de la cuenta
+				 */
+				
+				if (valueAccount<0) {
+					valueAccount=Math.abs(valueAccount);
+					debito = !debito;
+				}
 				/*
 				 * Se verifica que el valor de la columna sea mayor a 0 y cumpla
 				 * la base para generar el asiento
@@ -1184,9 +1243,12 @@ public class LNContabilidad {
 	public void recoverDocument() throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
 		QueryRunner RQdocument = new QueryRunner(bd,"SCS0081",new String[]{CacheKeys.getKey("ndocumento")});
 		ResultSet RSdocument = RQdocument.ejecutarSELECT();
+		System.out.println("Recalculando editados");
+		//int i=0;
 		while (RSdocument.next()) {
 			String idTercero = RSdocument.getString(3)==null?"-1":RSdocument.getString(3);
 			String idProducto = RSdocument.getString(4)==null?"-1":RSdocument.getString(4);
+			//System.out.println("registro "+(i++)+" fecha "+RSdocument.getString(1)+" cuenta: "+RSdocument.getString(2)+" tercero "+idTercero+" producto "+idProducto);
 			recoverData(RSdocument.getString(1),
 						RSdocument.getString(2),
 						idTercero,
@@ -1195,11 +1257,12 @@ public class LNContabilidad {
 
 		QueryRunner RQdropDocument = new QueryRunner(bd,"SCS0086",new String[]{CacheKeys.getKey("ndocumento")});
 		ResultSet RSdropDocument = RQdropDocument.ejecutarSELECT();
-		/*System.out.println("Recalculando los elimiandos");*/
-
+		System.out.println("Recalculando los elimiandos");
+		//i=0;
 		while (RSdropDocument.next()) {
 			String idTercero = RSdropDocument.getString(3)==null?"-1":RSdropDocument.getString(3);
 			String idProducto = RSdropDocument.getString(4)==null?"-1":RSdropDocument.getString(4);
+			//System.out.println("registro "+(i++)+" fecha "+RSdropDocument.getString(1)+" cuenta: "+RSdropDocument.getString(2)+" tercero "+idTercero+" producto "+idProducto);
 			/*System.out.println("Recuperando: "+RSdropDocument.getTimestamp(1)+"\n"+
 					RSdropDocument.getString(2)+"\n"+
 									idTercero+"\n"+
@@ -1210,10 +1273,14 @@ public class LNContabilidad {
 						idProducto);	
 		}
 		
+		QueryRunner RQdpDocument = new QueryRunner(bd,"SCD0004",new String[]{});
+		RQdpDocument.ejecutarSQL();
+
 		RQdocument.closeStatement();
 		RSdocument.close();
 		RQdropDocument.closeStatement();
 		RSdropDocument.close();
+		RQdpDocument.closeStatement();
 	}
 	
 	/**
@@ -1271,6 +1338,11 @@ public class LNContabilidad {
 		ResultSet RSnaturaleza  = null;
 		QueryRunner RQupdate 	= null;
 		try {
+			if (LNDocuments.getActionDocument().equals(LNDocuments.EDIT_DOCUMENT) ||
+					LNDocuments.getActionDocument().equals(LNDocuments.DELETE_DOCUMENT)) {
+					fecha = CacheKeys.getMinDate();
+			}
+			
 			if (fecha != null) {
 				RQsaldo = new QueryRunner(bd, "SCS0074",new String[] { fecha,idCta,idTercero,idProducto });
 				RQdata = new QueryRunner(bd, "SCS0075", new String[] { fecha,idCta,idTercero,idProducto });
@@ -1280,10 +1352,7 @@ public class LNContabilidad {
 				}
 				
 			}
-			else if (LNDocuments.getActionDocument().equals(LNDocuments.EDIT_DOCUMENT) ||
-					LNDocuments.getActionDocument().equals(LNDocuments.DELETE_DOCUMENT)) {
-					fecha = CacheKeys.getMinDate();
-			}
+			
 			/*
 			 * Si no existe fecha inicial, entonces se consultan todos los
 			 * registros del producto y bodega que se van a a actualizar.

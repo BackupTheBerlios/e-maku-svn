@@ -704,7 +704,10 @@ public class LNInventarios {
 	public void recoverDocument() throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
 		QueryRunner RQdocument = new QueryRunner(bd,"SCS0082",new String[]{CacheKeys.getKey("ndocumento")});
 		ResultSet RSdocument = RQdocument.ejecutarSELECT();
+		System.out.println("Recalculando editados");
+		//int i=0;
 		while (RSdocument.next()) {
+			//System.out.println("registro "+(i++));
 			recoverData(RSdocument.getString(1),
 						RSdocument.getString(2),
 						RSdocument.getString(3));	
@@ -713,18 +716,22 @@ public class LNInventarios {
 		QueryRunner RQdropDocument = new QueryRunner(bd,"SCS0085",new String[] {CacheKeys.getKey("ndocumento")});
 		ResultSet RSdropDocument = RQdropDocument.ejecutarSELECT();
 		System.out.println("Recalculando los elimiandos");
+		//i=0;
 		while (RSdropDocument.next()) {
-			System.out.println("--------------------------------------\nFecha: "+RSdropDocument.getString(1)+"\nidBodega: "+
-															RSdropDocument.getString(2)+"\nidProducto: "+
-															RSdropDocument.getString(3)+"\n.............................................");
+			//System.out.println("registro "+(i++));
 			recoverData(RSdropDocument.getString(1),
 						RSdropDocument.getString(2),
 						RSdropDocument.getString(3));	
 		}
+		QueryRunner RQdpDocument = new QueryRunner(bd,"SCD0003",new String[]{});
+		RQdpDocument.ejecutarSQL();
+
+
 		RQdocument.closeStatement();
 		RSdocument.close();
 		RQdropDocument.closeStatement();
 		RSdropDocument.close();
+		RQdpDocument.closeStatement();
 	}
 
 	public void recover(Element pack) {

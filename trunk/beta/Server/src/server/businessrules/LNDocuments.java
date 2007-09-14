@@ -159,9 +159,7 @@ public class LNDocuments {
 	                    	 * Si la fecha esta vacia entonces el primer argumento recibido sera
 	                    	 * la fecha.
 	                    	 */
-	                    	System.out.println("Sera que hay fecha?");
 	                    	if ("".equals(CacheKeys.getDate())) {
-	                    		System.out.println("No hay fecha, nueva fecha: "+subpackage.getValue());
 	                        	String dateDocument = subpackage.getValue();
 	                        	CacheKeys.setDate(dateDocument);
 	                        	CacheKeys.setMinDate(dateDocument);
@@ -382,6 +380,8 @@ public class LNDocuments {
                         		subpackage = (Element)j.next();
                         	}
                         }
+                        
+                        updateDateDocument(key,CacheKeys.getDate());
 	                }
 
 	                /*
@@ -602,6 +602,22 @@ public class LNDocuments {
 
     }
 
+    /**
+     * Este metodo actualiza la fecha de un documento
+     * @param key
+     * @param date
+     * @throws SQLException 
+     * @throws SQLBadArgumentsException 
+     * @throws SQLNotFoundException 
+     */
+    
+    private static void updateDateDocument(String key,String date) 
+    throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+		QueryRunner RQupdateDateDocument = new QueryRunner(bd,"SCU0004",new String[] { date,key });
+		RQupdateDateDocument.ejecutarSQL();
+		RQupdateDateDocument.closeStatement();
+    }
+    
     /**
      * Este metodo se encarga de verifica si un documento ha sido anulado anteriormente
      * @throws SQLBadArgumentsException 

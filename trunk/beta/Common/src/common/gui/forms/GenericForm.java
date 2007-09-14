@@ -14,7 +14,6 @@ import java.lang.reflect.Method;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -1239,14 +1238,9 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
     	Runnable r = new Runnable(){
     		public void run() {
 		    	synchronized(changeExternalValueListener) {
-		    		try {
-					        for (ExternalValueChangeListener l:changeExternalValueListener) {
-					            l.changeExternalValue(event);
-					        }
-		    		}
-		    		catch(ConcurrentModificationException e) {
-		    			System.out.print("-.");
-		    		}
+			        for (ExternalValueChangeListener l:changeExternalValueListener) {
+			            l.changeExternalValue(event);
+			        }
 		    	}
     		}
     	};
@@ -1764,13 +1758,6 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 	}
 	
 	public void internalFrameClosing(InternalFrameEvent e) {
-		for (GenericForm f : forms) {
-    		f.dispose();
-    		f=null;
-    	}
-        JDPpanel.remove(this);
-        //GFforma=null;
-        JDPpanel.updateUI();
 	}
 
 	public void internalFrameDeactivated(InternalFrameEvent e) {
