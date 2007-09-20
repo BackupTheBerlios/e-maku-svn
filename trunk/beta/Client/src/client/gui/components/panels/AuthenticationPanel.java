@@ -14,122 +14,112 @@ import javax.swing.JTextField;
 import common.misc.language.Language;
 
 /**
- * PAutentication.java Creado el 03-ago-2004
+ * AuthenticationPanel.java Creado el 03-ago-2004
  * 
- * Este archivo es parte de JMClient <A
- * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
+ * Este archivo es parte de eMaku <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
  * 
- * JMClient es Software Libre; usted puede redistribuirlo y/o realizar
+ * eMaku es Software Libre; usted puede redistribuirlo y/o realizar
  * modificaciones bajo los terminos de la Licencia Publica General GNU GPL como
  * esta publicada por la Fundacion del Software Libre (FSF); tanto en la version
  * 2 de la licencia, o cualquier version posterior.
  * 
- * E-Maku es distribuido con la expectativa de ser util, pero SIN NINGUNA
+ * eMaku es distribuido con la expectativa de ser util, pero SIN NINGUNA
  * GARANTIA; sin ninguna garantia aun por COMERCIALIZACION o por un PROPOSITO
  * PARTICULAR. Consulte la Licencia Publica General GNU GPL para mas detalles.
- * <br>
- * Informacion de la clase <br>
+ * <br>Informacion de la clase<br>
  * 
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez </A>
- * @author <A href='mailto:cristian@qhatu.net'>Cristian David
- *         Cepeda </A>
+ * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda </A>
  */
+
 public class AuthenticationPanel extends JPanel {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 8944845098293887709L;
-
-	private JTextField JTFBaseDatos;
-
-    private JTextField JTFusuario;
-
-    private JPasswordField JPFclave;
-
+	private JTextField dataBaseTextField;
+    private JTextField userTextField;
+    private JPasswordField passwordTextField;
     public static final int ALL = 0;
-
     public static final int PASSWORD = 1;
 
     /**
-     * Este constructor crea una nueva instancia del PAutenticacion segun sus
-     * parametro
+     * Este constructor crea una nueva instancia de la clase AuthenticacionPanel segun sus
+     * parametros
      * 
-     * @param Format
+     * @param format
      *            Parametro que define los Objetos que sean Desplegados.
      */
 
-    public AuthenticationPanel(int Format) {
+    public AuthenticationPanel(int format) {
 
         this.setLayout(new BorderLayout());
         
         int grid = 3;
 
-        if (Format == PASSWORD) {
+        if (format == PASSWORD) {
             grid = 1;
         }
 
-        JPanel JPetiquetas = new JPanel();
-        JPanel JPfields = new JPanel();
+        JPanel labelsPanel = new JPanel();
+        JPanel fieldsPanel = new JPanel();
         
-        JPetiquetas.setLayout(new GridLayout(grid, 1));
-        JPfields.setLayout(new GridLayout(grid, 1));
+        labelsPanel.setLayout(new GridLayout(grid, 1));
+        fieldsPanel.setLayout(new GridLayout(grid, 1));
 
-        if (Format == AuthenticationPanel.ALL) {
+        if (format == AuthenticationPanel.ALL) {
 
-            JLabel JLBaseDatos = new JLabel(Language.getWord("BD"));
-            JLabel JLusuario = new JLabel(Language.getWord("USER"));
-            JPetiquetas.add(JLBaseDatos);
-            JPetiquetas.add(JLusuario);
+            JLabel dataBaseLabel = new JLabel(Language.getWord("BD"));
+            JLabel userLabel = new JLabel(Language.getWord("USER"));
+            labelsPanel.add(dataBaseLabel);
+            labelsPanel.add(userLabel);
 
-            JPanel JPBaseDatos = new JPanel(new FlowLayout(FlowLayout.LEFT));
-            JTFBaseDatos = new JTextField(10);
+            JPanel dataBasePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            dataBaseTextField = new JTextField(10);
             
-            JTFBaseDatos.addActionListener(new ActionListener() {
+            dataBaseTextField.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    JTFBaseDatos.transferFocus();
+                    dataBaseTextField.transferFocus();
                 }
             });
-            JPBaseDatos.add(JTFBaseDatos);
+            dataBasePanel.add(dataBaseTextField);
 
-            JPanel JPusuario = new JPanel(new FlowLayout(FlowLayout.LEFT));
-            JTFusuario = new JTextField(10);
-            JTFusuario.addActionListener(new ActionListener() {
+            JPanel userPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            userTextField = new JTextField(10);
+            userTextField.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    JTFusuario.transferFocus();
+                    userTextField.transferFocus();
                 }
             });
-            JPusuario.add(JTFusuario);
+            userPanel.add(userTextField);
 
-            JPfields.add(JPBaseDatos);
-            JPfields.add(JPusuario);
+            fieldsPanel.add(dataBasePanel);
+            fieldsPanel.add(userPanel);
         }
 
         JLabel JLclave = new JLabel(Language.getWord("PASS"));
-        JPetiquetas.add(JLclave);
+        labelsPanel.add(JLclave);
 
-        JPanel JPclave = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JPFclave = new JPasswordField(10);
-        JPFclave.addActionListener(new ActionListener() {
+        JPanel passwordPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        passwordTextField = new JPasswordField(10);
+        passwordTextField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JPFclave.transferFocus();
+                passwordTextField.transferFocus();
             }
         });
-        JPclave.add(JPFclave);
+        passwordPanel.add(passwordTextField);
         
-        JPfields.add(JPclave);
+        fieldsPanel.add(passwordPanel);
         
-        JPanel center = new JPanel();
-        JPanel centerAux = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        center.setLayout(new BorderLayout());
+        JPanel internalPanel = new JPanel();
+        JPanel mainPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        internalPanel.setLayout(new BorderLayout());
         
-        center.add(JPetiquetas,BorderLayout.WEST);
-        center.add(JPfields,BorderLayout.CENTER);
-        centerAux.add(center);
+        internalPanel.add(labelsPanel,BorderLayout.WEST);
+        internalPanel.add(fieldsPanel,BorderLayout.CENTER);
+        mainPanel.add(internalPanel);
         
         this.add(new JPanel(), BorderLayout.EAST);
         this.add(new JPanel(), BorderLayout.WEST);
-        this.add(centerAux, BorderLayout.CENTER);
+        this.add(mainPanel, BorderLayout.CENTER);
     }
 
     /**
@@ -137,39 +127,39 @@ public class AuthenticationPanel extends JPanel {
      *         texto base de datos
      */
 
-    public String getBaseDatos() {
-        return JTFBaseDatos.getText();
+    public String getDataBase() {
+        return dataBaseTextField.getText();
     }
 
-    public void setBaseDatos(String value ) {
-    	JTFBaseDatos.setText(value);
+    public void setDataBase(String value ) {
+    	dataBaseTextField.setText(value);
     }
     /**
      * @return Este metodo retorna el nombre de usuario del campo de texto
      *         Usuario
      */
 
-    public String getUsuario() {
-        return JTFusuario.getText();
+    public String getUser() {
+        return userTextField.getText();
     }
     
-    public void setUsuario(String value) {
-    	JTFusuario.setText(value);
+    public void setUser(String value) {
+    	userTextField.setText(value);
     }
 
     /**
      * @return Este metodo retorna la contrase�a del campo de texto base de
      *         Clave
      */
-    public char[] getClave() {
-        return JPFclave.getPassword();
+    public char[] getPassword() {
+        return passwordTextField.getPassword();
     }
 
-    public JTextField getJTFBaseDatos() {
-        return JTFBaseDatos;
+    public JTextField getDataBaseTextField() {
+        return dataBaseTextField;
     }
 
-	public JPasswordField getJPFclave() {
-		return JPFclave;
+	public JPasswordField getPasswordTextField() {
+		return passwordTextField;
 	}
 }

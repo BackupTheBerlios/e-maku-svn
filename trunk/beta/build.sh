@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 ROOT=$PWD
 
 check_root() {
@@ -31,6 +31,7 @@ check_emaku_user() {
 }
 
 check_deps() {
+             echo "data: $JAVA_HOME"
 
              if [ "$JAVA_HOME" = "" ] ; then
                echo

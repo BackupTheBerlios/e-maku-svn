@@ -59,7 +59,7 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 		
 	private static final long serialVersionUID = 7423353291901251301L;
 	
-	private GenericForm GFforma;
+	private GenericForm genericForm;
 	private String idReport;
 	
 	private Vector <ByteArrayOutputStream>reportViews = new Vector<ByteArrayOutputStream>();
@@ -97,7 +97,7 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 		setMaximizable(true);
 		setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
 				
-		this.GFforma = GFforma;
+		this.genericForm = GFforma;
 		this.idReport = idReport;
 		ClientHeaderValidator.addReportListener(this);
 		this.zip = new ZipHandler();		
@@ -229,7 +229,7 @@ public class TextReportViewer extends JInternalFrame implements ActionListener,R
 
 		// Print text plain file
 		if (e.getActionCommand().equals("PRINT")) {
-			PlainReportPrinterDialog dialog = new PlainReportPrinterDialog(GFforma,pages,printerViews,charactersPerline);
+			PlainReportPrinterDialog dialog = new PlainReportPrinterDialog(genericForm,pages,printerViews,charactersPerline);
     		dialog.setLocationRelativeTo(this);
 			dialog.setVisible(true);
 			return;

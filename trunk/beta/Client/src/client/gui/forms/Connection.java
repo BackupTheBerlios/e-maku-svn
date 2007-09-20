@@ -143,8 +143,8 @@ public class Connection {
          try {
 			FIShistory = new FileInputStream(new File(ClientConstants.CONF+"history"));
 			Phistory.load(FIShistory);
-			JPAutenticacion.setBaseDatos(Phistory.getProperty("database"));
-			JPAutenticacion.setUsuario(Phistory.getProperty("user"));
+			JPAutenticacion.setDataBase(Phistory.getProperty("database"));
+			JPAutenticacion.setUser(Phistory.getProperty("user"));
 			history = true;
 			FIShistory.close();
 			FIShistory = null;
@@ -175,7 +175,7 @@ public class Connection {
                 (ClientConstants.MAX_WIN_SIZE_HEIGHT / 2) - JFConexion.getHeight() / 2);
         JFConexion.setVisible(true);
         if (history) 
-        	JPAutenticacion.getJPFclave().requestFocus();
+        	JPAutenticacion.getPasswordTextField().requestFocus();
     }
 
     private boolean conexion() {
@@ -193,16 +193,16 @@ public class Connection {
 	            connect.start();
 	            
 	            EmakuParametersStructure.removeParameter("dataBase");
-	            EmakuParametersStructure.addParameter("dataBase",JPAutenticacion.getBaseDatos());
+	            EmakuParametersStructure.addParameter("dataBase",JPAutenticacion.getDataBase());
 	            EmakuParametersStructure.removeParameter("userLogin");
-	            EmakuParametersStructure.addParameter("userLogin",JPAutenticacion.getUsuario());
+	            EmakuParametersStructure.addParameter("userLogin",JPAutenticacion.getUser());
 	            SocketChannel socket = SocketConnector.getSock();
-	            String password = new String(JPAutenticacion.getClave());
+	            String password = new String(JPAutenticacion.getPassword());
 	    		MD5 md5 = new MD5(password);
 	            SocketWriter.writing(socket,
 				                    CNXSender.getPackage(
-				                            JPAutenticacion.getBaseDatos(),
-				                            JPAutenticacion.getUsuario(),
+				                            JPAutenticacion.getDataBase(),
+				                            JPAutenticacion.getUser(),
 				                            md5.getDigest()));
 			} catch (ConnectException CEe){
 				JOptionPane.showMessageDialog(
@@ -237,8 +237,8 @@ public class Connection {
 			
 			try {
 				FileOutputStream FOShistory = new FileOutputStream(new File(ClientConstants.CONF+"history"));
-				String database="database="+JPAutenticacion.getBaseDatos()+"\n";
-				String user="user="+JPAutenticacion.getUsuario()+"\n";
+				String database="database="+JPAutenticacion.getDataBase()+"\n";
+				String user="user="+JPAutenticacion.getUser()+"\n";
 				FOShistory.write(database.getBytes());
 				FOShistory.write(user.getBytes());
 				FOShistory.close();
