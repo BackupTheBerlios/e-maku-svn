@@ -87,6 +87,7 @@ public class LogWriter {
 			logFile = new File(fileName);
 			randomFile = new RandomAccessFile(logFile, "rw");
 		} catch (FileNotFoundException FNFEe) {
+			System.out.println("ERROR: The system could not to create the log file.");
 			FNFEe.printStackTrace();
 		}
 	}
