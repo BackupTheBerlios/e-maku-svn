@@ -1,0 +1,502 @@
+----------
+1. ERROR in StringHelper.java (at line 843)
+	private static HashMap<String,Integer> htmlEntities = new HashMap<String,Integer>();
+	               ^^^^^^^
+The type HashMap is not generic; it cannot be parameterized with arguments <String, Integer>
+----------
+2. ERROR in StringHelper.java (at line 843)
+	private static HashMap<String,Integer> htmlEntities = new HashMap<String,Integer>();
+	                       ^^^^^^^^^^^^^^
+Syntax error, parameterized types are only available if source level is 5.0
+----------
+3. ERROR in StringHelper.java (at line 843)
+	private static HashMap<String,Integer> htmlEntities = new HashMap<String,Integer>();
+	                                                          ^^^^^^^
+The type HashMap is not generic; it cannot be parameterized with arguments <String, Integer>
+----------
+4. ERROR in StringHelper.java (at line 843)
+	private static HashMap<String,Integer> htmlEntities = new HashMap<String,Integer>();
+	                                                                  ^^^^^^^^^^^^^^
+Syntax error, parameterized types are only available if source level is 5.0
+----------
+5. ERROR in StringHelper.java (at line 845)
+	htmlEntities.put("nbsp", new Integer(160));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+6. ERROR in StringHelper.java (at line 846)
+	htmlEntities.put("iexcl", new Integer(161));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+7. ERROR in StringHelper.java (at line 847)
+	htmlEntities.put("cent", new Integer(162));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+8. ERROR in StringHelper.java (at line 848)
+	htmlEntities.put("pound", new Integer(163));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+9. ERROR in StringHelper.java (at line 849)
+	htmlEntities.put("curren", new Integer(164));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+10. ERROR in StringHelper.java (at line 850)
+	htmlEntities.put("yen", new Integer(165));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+11. ERROR in StringHelper.java (at line 851)
+	htmlEntities.put("brvbar", new Integer(166));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+12. ERROR in StringHelper.java (at line 852)
+	htmlEntities.put("sect", new Integer(167));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+13. ERROR in StringHelper.java (at line 853)
+	htmlEntities.put("uml", new Integer(168));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+14. ERROR in StringHelper.java (at line 854)
+	htmlEntities.put("copy", new Integer(169));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+15. ERROR in StringHelper.java (at line 855)
+	htmlEntities.put("ordf", new Integer(170));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+16. ERROR in StringHelper.java (at line 856)
+	htmlEntities.put("laquo", new Integer(171));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+17. ERROR in StringHelper.java (at line 857)
+	htmlEntities.put("not", new Integer(172));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+18. ERROR in StringHelper.java (at line 858)
+	htmlEntities.put("shy", new Integer(173));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+19. ERROR in StringHelper.java (at line 859)
+	htmlEntities.put("reg", new Integer(174));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+20. ERROR in StringHelper.java (at line 860)
+	htmlEntities.put("macr", new Integer(175));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+21. ERROR in StringHelper.java (at line 861)
+	htmlEntities.put("deg", new Integer(176));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+22. ERROR in StringHelper.java (at line 862)
+	htmlEntities.put("plusmn", new Integer(177));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+23. ERROR in StringHelper.java (at line 863)
+	htmlEntities.put("sup2", new Integer(178));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+24. ERROR in StringHelper.java (at line 864)
+	htmlEntities.put("sup3", new Integer(179));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+25. ERROR in StringHelper.java (at line 865)
+	htmlEntities.put("acute", new Integer(180));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+26. ERROR in StringHelper.java (at line 866)
+	htmlEntities.put("micro", new Integer(181));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+27. ERROR in StringHelper.java (at line 867)
+	htmlEntities.put("para", new Integer(182));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+28. ERROR in StringHelper.java (at line 868)
+	htmlEntities.put("middot", new Integer(183));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+29. ERROR in StringHelper.java (at line 869)
+	htmlEntities.put("cedil", new Integer(184));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+30. ERROR in StringHelper.java (at line 870)
+	htmlEntities.put("sup1", new Integer(185));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+31. ERROR in StringHelper.java (at line 871)
+	htmlEntities.put("ordm", new Integer(186));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+32. ERROR in StringHelper.java (at line 872)
+	htmlEntities.put("raquo", new Integer(187));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+33. ERROR in StringHelper.java (at line 873)
+	htmlEntities.put("frac14", new Integer(188));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+34. ERROR in StringHelper.java (at line 874)
+	htmlEntities.put("frac12", new Integer(189));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+35. ERROR in StringHelper.java (at line 875)
+	htmlEntities.put("frac34", new Integer(190));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+36. ERROR in StringHelper.java (at line 876)
+	htmlEntities.put("iquest", new Integer(191));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+37. ERROR in StringHelper.java (at line 877)
+	htmlEntities.put("Agrave", new Integer(192));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+38. ERROR in StringHelper.java (at line 878)
+	htmlEntities.put("Aacute", new Integer(193));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+39. ERROR in StringHelper.java (at line 879)
+	htmlEntities.put("Acirc", new Integer(194));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+40. ERROR in StringHelper.java (at line 880)
+	htmlEntities.put("Atilde", new Integer(195));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+41. ERROR in StringHelper.java (at line 881)
+	htmlEntities.put("Auml", new Integer(196));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+42. ERROR in StringHelper.java (at line 882)
+	htmlEntities.put("Aring", new Integer(197));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+43. ERROR in StringHelper.java (at line 883)
+	htmlEntities.put("AElig", new Integer(198));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+44. ERROR in StringHelper.java (at line 884)
+	htmlEntities.put("Ccedil", new Integer(199));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+45. ERROR in StringHelper.java (at line 885)
+	htmlEntities.put("Egrave", new Integer(200));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+46. ERROR in StringHelper.java (at line 886)
+	htmlEntities.put("Eacute", new Integer(201));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+47. ERROR in StringHelper.java (at line 887)
+	htmlEntities.put("Ecirc", new Integer(202));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+48. ERROR in StringHelper.java (at line 888)
+	htmlEntities.put("Euml", new Integer(203));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+49. ERROR in StringHelper.java (at line 889)
+	htmlEntities.put("Igrave", new Integer(204));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+50. ERROR in StringHelper.java (at line 890)
+	htmlEntities.put("Iacute", new Integer(205));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+51. ERROR in StringHelper.java (at line 891)
+	htmlEntities.put("Icirc", new Integer(206));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+52. ERROR in StringHelper.java (at line 892)
+	htmlEntities.put("Iuml", new Integer(207));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+53. ERROR in StringHelper.java (at line 893)
+	htmlEntities.put("ETH", new Integer(208));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+54. ERROR in StringHelper.java (at line 894)
+	htmlEntities.put("Ntilde", new Integer(209));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+55. ERROR in StringHelper.java (at line 895)
+	htmlEntities.put("Ograve", new Integer(210));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+56. ERROR in StringHelper.java (at line 896)
+	htmlEntities.put("Oacute", new Integer(211));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+57. ERROR in StringHelper.java (at line 897)
+	htmlEntities.put("Ocirc", new Integer(212));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+58. ERROR in StringHelper.java (at line 898)
+	htmlEntities.put("Otilde", new Integer(213));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+59. ERROR in StringHelper.java (at line 899)
+	htmlEntities.put("Ouml", new Integer(214));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+60. ERROR in StringHelper.java (at line 900)
+	htmlEntities.put("times", new Integer(215));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+61. ERROR in StringHelper.java (at line 901)
+	htmlEntities.put("Oslash", new Integer(216));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+62. ERROR in StringHelper.java (at line 902)
+	htmlEntities.put("Ugrave", new Integer(217));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+63. ERROR in StringHelper.java (at line 903)
+	htmlEntities.put("Uacute", new Integer(218));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+64. ERROR in StringHelper.java (at line 904)
+	htmlEntities.put("Ucirc", new Integer(219));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+65. ERROR in StringHelper.java (at line 905)
+	htmlEntities.put("Uuml", new Integer(220));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+66. ERROR in StringHelper.java (at line 906)
+	htmlEntities.put("Yacute", new Integer(221));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+67. ERROR in StringHelper.java (at line 907)
+	htmlEntities.put("THORN", new Integer(222));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+68. ERROR in StringHelper.java (at line 908)
+	htmlEntities.put("szlig", new Integer(223));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+69. ERROR in StringHelper.java (at line 909)
+	htmlEntities.put("agrave", new Integer(224));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+70. ERROR in StringHelper.java (at line 910)
+	htmlEntities.put("aacute", new Integer(225));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+71. ERROR in StringHelper.java (at line 911)
+	htmlEntities.put("acirc", new Integer(226));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+72. ERROR in StringHelper.java (at line 912)
+	htmlEntities.put("atilde", new Integer(227));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+73. ERROR in StringHelper.java (at line 913)
+	htmlEntities.put("auml", new Integer(228));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+74. ERROR in StringHelper.java (at line 914)
+	htmlEntities.put("aring", new Integer(229));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+75. ERROR in StringHelper.java (at line 915)
+	htmlEntities.put("aelig", new Integer(230));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+76. ERROR in StringHelper.java (at line 916)
+	htmlEntities.put("ccedil", new Integer(231));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+77. ERROR in StringHelper.java (at line 917)
+	htmlEntities.put("egrave", new Integer(232));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+78. ERROR in StringHelper.java (at line 918)
+	htmlEntities.put("eacute", new Integer(233));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+79. ERROR in StringHelper.java (at line 919)
+	htmlEntities.put("ecirc", new Integer(234));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+80. ERROR in StringHelper.java (at line 920)
+	htmlEntities.put("euml", new Integer(235));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+81. ERROR in StringHelper.java (at line 921)
+	htmlEntities.put("igrave", new Integer(236));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+82. ERROR in StringHelper.java (at line 922)
+	htmlEntities.put("iacute", new Integer(237));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+83. ERROR in StringHelper.java (at line 923)
+	htmlEntities.put("icirc", new Integer(238));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+84. ERROR in StringHelper.java (at line 924)
+	htmlEntities.put("iuml", new Integer(239));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+85. ERROR in StringHelper.java (at line 925)
+	htmlEntities.put("eth", new Integer(240));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+86. ERROR in StringHelper.java (at line 926)
+	htmlEntities.put("ntilde", new Integer(241));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+87. ERROR in StringHelper.java (at line 927)
+	htmlEntities.put("ograve", new Integer(242));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+88. ERROR in StringHelper.java (at line 928)
+	htmlEntities.put("oacute", new Integer(243));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+89. ERROR in StringHelper.java (at line 929)
+	htmlEntities.put("ocirc", new Integer(244));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+90. ERROR in StringHelper.java (at line 930)
+	htmlEntities.put("otilde", new Integer(245));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+91. ERROR in StringHelper.java (at line 931)
+	htmlEntities.put("ouml", new Integer(246));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+92. ERROR in StringHelper.java (at line 932)
+	htmlEntities.put("divide", new Integer(247));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+93. ERROR in StringHelper.java (at line 933)
+	htmlEntities.put("oslash", new Integer(248));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+94. ERROR in StringHelper.java (at line 934)
+	htmlEntities.put("ugrave", new Integer(249));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+95. ERROR in StringHelper.java (at line 935)
+	htmlEntities.put("uacute", new Integer(250));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+96. ERROR in StringHelper.java (at line 936)
+	htmlEntities.put("ucirc", new Integer(251));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+97. ERROR in StringHelper.java (at line 937)
+	htmlEntities.put("uuml", new Integer(252));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+98. ERROR in StringHelper.java (at line 938)
+	htmlEntities.put("yacute", new Integer(253));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+99. ERROR in StringHelper.java (at line 939)
+	htmlEntities.put("thorn", new Integer(254));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+100. ERROR in StringHelper.java (at line 940)
+	htmlEntities.put("yuml", new Integer(255));
+	^^^^^^^^^^^^
+htmlEntities cannot be resolved
+----------
+100 problems (100 errors)

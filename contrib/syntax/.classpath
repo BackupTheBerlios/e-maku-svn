@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="gnu/getopt/|com/Ostermiller/Syntax/doc/" kind="src" path=""/>
+	<classpathentry kind="src" path="com/Ostermiller/Syntax/doc"/>
+	<classpathentry kind="src" path="gnu/getopt"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/ant.jar"/>
+	<classpathentry kind="lib" path="lib/bte.jar"/>
+	<classpathentry kind="lib" path="lib/getopt.jar"/>
+	<classpathentry kind="output" path="gnu/getopt"/>
+</classpath>
