@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -46,42 +45,43 @@ public class ConfigFileHandler extends EmakuParametersStructure {
 
     private static SAXBuilder builder;
     private static Document doc;
-    private static Element raiz;
-    private static Language idioma = new Language();
+    private static Element root;
+    private static Language lang = new Language();
     private static int serverport;
     private static String host;
     private static String language;
     private static String logMode;
     private static String jarDirectory;
-    private static String classLookAndFeel;
-    private static String URLJarLookAndFeel;
+    //private static String classLookAndFeel;
+    //private static String URLJarLookAndFeel;
+    private static String lookAndFeel;
     private static String cash;
     private static ArrayList<Element> company;
     /**
      * Este metodo sirve para crear un nuevo archivo de configuracion
      * 
-     * @param Host
+     * @param host
      *            Direccion ip o nombre de la maquina servidor
-     * @param Port
+     * @param port
      *            puerto del servidor
-     * @param Language
+     * @param language
      *            idioma
      * @param log
      *            tipo de log a generar
      */
-    public static void New(String Host, String Port, String Language, String log,String cash) {
+    public static void buildNewFile(String host, String port, String language, String log,String cash) {
         
         
-        Element rootNode = new Element("Configuration");
+        Element rootNode = new Element("configuration");
         doc = new Document(rootNode);
         
-        rootNode.addContent(new Element("language").setText(Language));
-        rootNode.addContent(new Element("host").setText(Host));
-        rootNode.addContent(new Element("serverport").setText(Port));
+        rootNode.addContent(new Element("language").setText(language));
+        rootNode.addContent(new Element("host").setText(host));
+        rootNode.addContent(new Element("serverport").setText(port));
         rootNode.addContent(new Element("log").setText(log));
         rootNode.addContent(new Element("cash").setText(cash));
-        rootNode.addContent(new Element("classLookAndFeel").setText(classLookAndFeel));
-        rootNode.addContent(new Element("jarLookAndFeel").setText(URLJarLookAndFeel));
+        rootNode.addContent(new Element("classLookAndFeel").setText("default"));
+        //rootNode.addContent(new Element("jarLookAndFeel").setText(URLJarLookAndFeel));
 
         /*
         Element company = new Element("Company");
@@ -89,15 +89,14 @@ public class ConfigFileHandler extends EmakuParametersStructure {
         company.addContent(new Element("jarFile").setText("mi_empresa.jar"));
         company.addContent(new Element("directory").setText("mi_empresa"));
         */
-        for(Element elm:company) {
-        	rootNode.addContent(elm);
+        for(Element element:company) {
+        	rootNode.addContent(element);
         }
         
         XMLOutputter out = new XMLOutputter();
         out.setFormat(Format.getPrettyFormat());
         
-        File file = 
-            new File(ClientConstants.CONF);//,"client.conf");
+        File file = new File(ClientConstants.CONF);//,"client.conf");
 
         try {
         	if (!file.exists()) {
@@ -109,9 +108,9 @@ public class ConfigFileHandler extends EmakuParametersStructure {
         		FileOutputStream outFile = new FileOutputStream(file);
         		out.output(doc, outFile);
         		outFile.close();
-        		ConfigFileHandler.host = Host;
-        		ConfigFileHandler.serverport = Integer.parseInt(Port);
-        		idioma.loadLanguage(Language);
+        		ConfigFileHandler.host = host;
+        		ConfigFileHandler.serverport = Integer.parseInt(port);
+        		lang.loadLanguage(language);
         	}
         }
         catch (FileNotFoundException e) {
@@ -134,9 +133,9 @@ public class ConfigFileHandler extends EmakuParametersStructure {
             String path = ClientConstants.CONF+"client.conf";
             File file = new File(path);
             doc = builder.build(file);
-            raiz = doc.getRootElement();
-            List Lconfig = raiz.getChildren();
-            Iterator i = Lconfig.iterator();
+            root = doc.getRootElement();
+            List configList = root.getChildren();
+            Iterator i = configList.iterator();
 
             /**
              * Ciclo encargado de leer las primeras etiquetas del archivo XML,
@@ -145,34 +144,34 @@ public class ConfigFileHandler extends EmakuParametersStructure {
 
             while (i.hasNext()) {
 
-                Element datos = (Element) i.next();
-                String nombre = datos.getName(); 
-                if (nombre.equals("language")) {
-                	language = datos.getValue();
+                Element data = (Element) i.next();
+                String name = data.getName(); 
+                if (name.equals("language")) {
+                	language = data.getValue();
                 } 
-                else if (nombre.equals("host")) {
-                    host = datos.getValue();
-                } else if (nombre.equals("serverport")) {
-                    serverport = Integer.parseInt(datos.getValue());
-                } else if (nombre.equals("log")) {
-                	logMode = datos.getValue();
+                else if (name.equals("host")) {
+                    host = data.getValue();
+                } else if (name.equals("serverport")) {
+                    serverport = Integer.parseInt(data.getValue());
+                } else if (name.equals("log")) {
+                	logMode = data.getValue();
                 } 
-                else if (nombre.equals("classLookAndFeel")) {
-                    classLookAndFeel = datos.getValue();
+                else if (name.equals("lookAndFeel")) {
+                    lookAndFeel = data.getValue();
 	            }
-                else if (nombre.equals("jarLookAndFeel")) {
-                    URLJarLookAndFeel = datos.getValue();
-	            }
-                else if (nombre.equals("cash")) {
-                	cash = datos.getValue();
+                /* else if (name.equals("jarLookAndFeel")) {
+                    URLJarLookAndFeel = data.getValue();
+	            } */
+                else if (name.equals("cash")) {
+                	cash = data.getValue();
                 }
-                else if (nombre.equals("Company")) {
-                	company.add((Element)datos.clone());
+                else if (name.equals("company")) {
+                	company.add((Element)data.clone());
                 }
-                EmakuParametersStructure.addParameter(nombre,datos.getValue());
+                EmakuParametersStructure.addParameter(name,data.getValue());
             }
             
-            idioma.loadLanguage(language);
+            lang.loadLanguage(language);
         }
         catch (FileNotFoundException FNFEe) {
 
@@ -188,29 +187,27 @@ public class ConfigFileHandler extends EmakuParametersStructure {
     }
 
     public static void loadJarFile(String nameCompany) {
-    	Iterator i = raiz.getChildren("Company").iterator();
-        
-
+    	Iterator i = root.getChildren("company").iterator();
         boolean isCompany = false;
         String jarFile = null;
         String directory = "";
         
         while (i.hasNext() && !isCompany) {
-            Element datos = (Element) i.next();
-            Iterator j = datos.getChildren().iterator();
+            Element data = (Element) i.next();
+            Iterator j = data.getChildren().iterator();
             jarFile="";
             directory="";
             while (j.hasNext()) {
                 Element config = (Element) j.next();
-                String nombre = config.getName();
+                String name = config.getName();
                 String value = config.getValue();
-	            if (nombre.equals("name") && value.trim().equals(nameCompany.trim())) {
+	            if (name.equals("name") && value.trim().equals(nameCompany.trim())) {
 	            	isCompany = true;
 	            } 
-	            if (nombre.equals("jarFile")) {
+	            if (name.equals("jarFile")) {
 	            	jarFile = config.getValue();
 	            } 
-	            if (nombre.equals("directory")) {
+	            if (name.equals("directory")) {
 	            	directory = config.getValue();
 	            } 
             }
@@ -220,7 +217,7 @@ public class ConfigFileHandler extends EmakuParametersStructure {
 		jarDirectory = jar+directory;
         EmakuParametersStructure.setJarDirectoryTemplates(jarDirectory+"/printer-templates");
 
-		idioma.loadLanguage(jarDirectory+"/misc",language);
+		lang.loadLanguage(jarDirectory+"/misc",language);
         /*
          * Cargando iconos
          */
@@ -251,12 +248,13 @@ public class ConfigFileHandler extends EmakuParametersStructure {
     	return cash;
     }
     
+    /*
     public static String getClassLookAndFeel() {
     	return classLookAndFeel;
-    }
+    }*/
     
-    public static String getURLJarLookAndFeel() {
-    	return URLJarLookAndFeel;
+    public static String getLookAndFeel() {
+    	return lookAndFeel;
     }
     /**
      * 
@@ -271,7 +269,7 @@ public class ConfigFileHandler extends EmakuParametersStructure {
      * @param newhost
      */
     public static void setHost(String newhost) {
-        raiz.getChild("host").setText(newhost);
+        root.getChild("host").setText(newhost);
     }
     
     /**
@@ -279,18 +277,19 @@ public class ConfigFileHandler extends EmakuParametersStructure {
      * @param newport
      */
     public static void setPort(int newport) {
-        raiz.getChild("serverport").setText(Integer.toString(newport));
+        root.getChild("serverport").setText(Integer.toString(newport));
     }
 
 	public static String getJarDirectory() {
 		return jarDirectory;
 	}
 
+	/*
 	public static String getClassForLookAndFeel() {
 		return classLookAndFeel;
 	}
 	
 	public static String getURLJarForLookAndFeel() {
 		return URLJarLookAndFeel;
-	}
+	}*/
 }

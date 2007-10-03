@@ -67,88 +67,86 @@ import common.misc.parameters.EmakuParametersStructure;
 
 public class Connection {
 
-    private static JFrame JFConexion;
-    private AuthenticationPanel JPAutenticacion;
-    private static JButton JBconectar;
-    
+    private static JFrame connectionFrame;
+    private AuthenticationPanel authPanel;
+    private static JButton connectButton;
     
     public Connection() {
                 
-        JFConexion = new JFrame(Language.getWord("TITLE-CONEC"));
-        JFConexion.setResizable(false);
-        JFConexion.setLayout(new BorderLayout());
+        connectionFrame = new JFrame(Language.getWord("TITLE-CONEC"));
+        connectionFrame.setResizable(false);
+        connectionFrame.setLayout(new BorderLayout());
         
-        
-        JLabel imgLabel = new JLabel(new ImageIcon(JFConexion.getClass().getResource("/icons/e-maku_splash.png")),JLabel.CENTER);
+        JLabel imgLabel = new JLabel(new ImageIcon(connectionFrame.getClass().getResource("/icons/e-maku_splash.png")),JLabel.CENTER);
         
         JPanel imgPanel = new JPanel();
         imgPanel.add(imgLabel);
         
-        JPAutenticacion = new AuthenticationPanel(AuthenticationPanel.ALL);
+        authPanel = new AuthenticationPanel(AuthenticationPanel.ALL, this);
        
-        JPanel JPsur = new JPanel();
-        JBconectar = new JButton();
-        JBconectar.setIcon(new ImageIcon(this.getClass().getResource(
+        JPanel southPanel = new JPanel();
+        connectButton = new JButton();
+        connectButton.setIcon(new ImageIcon(this.getClass().getResource(
                 "/icons/ico_conectar.png")));
-        JBconectar.setToolTipText(Language.getWord("CONECTAR"));
+        connectButton.setToolTipText(Language.getWord("CONNECT"));
 
-        JButton JBsettings = new JButton();
-        JBsettings.setIcon(new ImageIcon(this.getClass().getResource(
+        JButton settingsButton = new JButton();
+        settingsButton.setIcon(new ImageIcon(this.getClass().getResource(
                 "/icons/ico_configuracion.png")));
-        JBsettings.setToolTipText(Language.getWord("SETTINGS"));
+        settingsButton.setToolTipText(Language.getWord("SETTINGS"));
         
-        JButton JBcancelar = new JButton();
-        JBcancelar.setIcon(new ImageIcon(this.getClass().getResource(
+        JButton cancelButton = new JButton();
+        cancelButton.setIcon(new ImageIcon(this.getClass().getResource(
                 "/icons/ico_cancelar.png")));
-        JBcancelar.setToolTipText(Language.getWord("CANCEL"));        
+        cancelButton.setToolTipText(Language.getWord("CANCEL"));        
 
-        JBconectar.addKeyListener(new KeyAdapter() {
+        connectButton.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 if(e.getKeyCode() == KeyEvent.VK_ENTER ||
                    e.getKeyCode() == KeyEvent.VK_SPACE ) { 
-                    conexion(); }
+                    connect(); }
             }
         });
 
-        JBconectar.addMouseListener(new MouseAdapter() {
+        connectButton.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if(e.getButton() == MouseEvent.BUTTON1) { conexion(); }
+                if(e.getButton() == MouseEvent.BUTTON1) { connect(); }
             }
         });
         
-        JBsettings.addActionListener(new ActionListener() {
+        settingsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent AEe) {
-            	SettingsDialog dialogo;
-            	dialogo = new SettingsDialog(JFConexion,SettingsDialog.EDIT);
-                dialogo.setLocationRelativeTo(dialogo.getParent());
-                dialogo.pack();
-                dialogo.setVisible(true);
+            	SettingsDialog dialog;
+            	dialog = new SettingsDialog(connectionFrame,SettingsDialog.EDIT);
+                dialog.setLocationRelativeTo(dialog.getParent());
+                dialog.pack();
+                dialog.setVisible(true);
             }
         });
         
-        JBcancelar.addActionListener(new ActionListener() {
+        cancelButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent AEe) { Run.exit(); }
         });
         
-        JPsur.add(JBconectar);
-        JPsur.add(JBsettings);
-        JPsur.add(JBcancelar);
+        southPanel.add(connectButton);
+        southPanel.add(settingsButton);
+        southPanel.add(cancelButton);
 
         /*
          * Mostrando un historial
          */
-        FileInputStream FIShistory = null;
-        Properties Phistory = new Properties();
+        FileInputStream historyFile = null;
+        Properties properties = new Properties();
         boolean history = false;
          try {
-			FIShistory = new FileInputStream(new File(ClientConstants.CONF+"history"));
-			Phistory.load(FIShistory);
-			JPAutenticacion.setDataBase(Phistory.getProperty("database"));
-			JPAutenticacion.setUser(Phistory.getProperty("user"));
+			historyFile = new FileInputStream(new File(ClientConstants.CONF+"history"));
+			properties.load(historyFile);
+			authPanel.setDataBase(properties.getProperty("database"));
+			authPanel.setUser(properties.getProperty("user"));
 			history = true;
-			FIShistory.close();
-			FIShistory = null;
-			Phistory = null;
+			historyFile.close();
+			historyFile = null;
+			properties = null;
 			
 		} catch (FileNotFoundException e1) {}
 		catch (IOException e1) {}
@@ -156,75 +154,76 @@ public class Connection {
 		//JPanel center = new JPanel(new BorderLayout());
 		//center.add(JPAutenticacion,BorderLayout.CENTER);
 		
-		JFConexion.add(imgPanel, BorderLayout.NORTH);
-        JFConexion.add(new JPanel(), BorderLayout.EAST);
-        JFConexion.add(JPAutenticacion, BorderLayout.CENTER);
-        JFConexion.add(new JPanel(), BorderLayout.WEST);        
-        JFConexion.add(JPsur, BorderLayout.SOUTH);
+		connectionFrame.add(imgPanel, BorderLayout.NORTH);
+        connectionFrame.add(new JPanel(), BorderLayout.EAST);
+        connectionFrame.add(authPanel, BorderLayout.CENTER);
+        connectionFrame.add(new JPanel(), BorderLayout.WEST);        
+        connectionFrame.add(southPanel, BorderLayout.SOUTH);
         
         //JPAutenticacion.setVisible(true);
         
-        JFConexion.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        JFConexion.addWindowListener(new WindowAdapter() {
+        connectionFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        connectionFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) { Run.exit(); }
         });
        
-        JFConexion.pack();
-        JFConexion.setLocation(
-                (ClientConstants.MAX_WIN_SIZE_WIDTH / 2) - JFConexion.getWidth() / 2,
-                (ClientConstants.MAX_WIN_SIZE_HEIGHT / 2) - JFConexion.getHeight() / 2);
-        JFConexion.setVisible(true);
-        if (history) 
-        	JPAutenticacion.getPasswordTextField().requestFocus();
+        connectionFrame.pack();
+        connectionFrame.setLocation(
+                (ClientConstants.MAX_WIN_SIZE_WIDTH / 2) - connectionFrame.getWidth() / 2,
+                (ClientConstants.MAX_WIN_SIZE_HEIGHT / 2) - connectionFrame.getHeight() / 2);
+        connectionFrame.setVisible(true);
+        if (history) {
+        	authPanel.getPasswordTextField().requestFocus();
+        }
     }
 
-    private boolean conexion() {
+    public boolean connect() {
    	
-            SocketConnector connect;
-            JBconectar.setEnabled(false);
-            JFConexion.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            SocketConnector socketConnector;
+            connectButton.setEnabled(false);
+            connectionFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			try {
 				PackageToXML packageXML = new PackageToXML();
-				HeadersValidator valid = new HeadersValidator();
-				packageXML.addArrivePackageistener(valid);
-				connect = new SocketConnector(ConfigFileHandler.getHost(),
+				HeadersValidator headers = new HeadersValidator();
+				packageXML.addArrivePackageListener(headers);
+				socketConnector = new SocketConnector(ConfigFileHandler.getHost(),
 						  ConfigFileHandler.getServerPort(),packageXML);
 				
-	            connect.start();
+	            socketConnector.start();
 	            
 	            EmakuParametersStructure.removeParameter("dataBase");
-	            EmakuParametersStructure.addParameter("dataBase",JPAutenticacion.getDataBase());
+	            EmakuParametersStructure.addParameter("dataBase",authPanel.getDataBase());
 	            EmakuParametersStructure.removeParameter("userLogin");
-	            EmakuParametersStructure.addParameter("userLogin",JPAutenticacion.getUser());
+	            EmakuParametersStructure.addParameter("userLogin",authPanel.getUser());
 	            SocketChannel socket = SocketConnector.getSock();
-	            String password = new String(JPAutenticacion.getPassword());
+	            String password = new String(authPanel.getPassword());
 	    		MD5 md5 = new MD5(password);
 	            SocketWriter.writing(socket,
 				                    CNXSender.getPackage(
-				                            JPAutenticacion.getDataBase(),
-				                            JPAutenticacion.getUser(),
+				                            authPanel.getDataBase(),
+				                            authPanel.getUser(),
 				                            md5.getDigest()));
 			} catch (ConnectException CEe){
 				JOptionPane.showMessageDialog(
-	                    JFConexion,Language.getWord("ERR_CONNECT")+"\n"+
-	                    Language.getWord("HOST")+" "+ConfigFileHandler.getHost()+"\n"+
-	                    Language.getWord("PORT")+" "+ConfigFileHandler.getServerPort(),
+	                    connectionFrame,Language.getWord("ERR_CONNECT")+"\n"+
+	                    Language.getWord("HOST")+": "+ConfigFileHandler.getHost()+"\n"+
+	                    Language.getWord("PORT")+": "+ConfigFileHandler.getServerPort(),
 	                    Language.getWord("ERR_TITLE_CONNECT"),
 	                    JOptionPane.ERROR_MESSAGE,
 	                    new ImageIcon(this.getClass().getResource("/icons/ico_database.png")));
-				JBconectar.setEnabled(true);
-				JFConexion.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				connectButton.setEnabled(true);
+				connectionFrame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			}catch (UnresolvedAddressException e) {
 				JOptionPane.showMessageDialog(
-	                    JFConexion,
+	                    connectionFrame,
 	                    Language.getWord("ERR_UNRESOLVED_ADDRESS")+"\n"+
-	                    Language.getWord("HOST")+" "+ConfigFileHandler.getHost()+ 
-	                    Language.getWord("PORT")+" "+ConfigFileHandler.getServerPort(),
+	                    Language.getWord("HOST")+": "+ConfigFileHandler.getHost()+ 
+	                    Language.getWord("PORT")+": "+ConfigFileHandler.getServerPort(),
 	                    Language.getWord("ERR_TITLE_CONNECT"),
 	                    JOptionPane.ERROR_MESSAGE,
 	                    new ImageIcon(this.getClass().getResource("/icons/ico_database.png")));
-				JBconectar.setEnabled(true);
-				JFConexion.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				connectButton.setEnabled(true);
+				connectionFrame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (NoSuchAlgorithmException e) {
@@ -236,13 +235,13 @@ public class Connection {
 			 */
 			
 			try {
-				FileOutputStream FOShistory = new FileOutputStream(new File(ClientConstants.CONF+"history"));
-				String database="database="+JPAutenticacion.getDataBase()+"\n";
-				String user="user="+JPAutenticacion.getUser()+"\n";
-				FOShistory.write(database.getBytes());
-				FOShistory.write(user.getBytes());
-				FOShistory.close();
-				FOShistory=null;
+				FileOutputStream historyFile = new FileOutputStream(new File(ClientConstants.CONF+"history"));
+				String database="database="+authPanel.getDataBase()+"\n";
+				String user="user="+authPanel.getUser()+"\n";
+				historyFile.write(database.getBytes());
+				historyFile.write(user.getBytes());
+				historyFile.close();
+				historyFile=null;
 			} catch (FileNotFoundException e) {}
 			catch (IOException e) {}
 			
@@ -250,14 +249,14 @@ public class Connection {
     }
     
     public static void dispose(){
-        JFConexion.dispose();
+        connectionFrame.dispose();
     }
     
     public static void setEnabled() {
-    	JBconectar.setEnabled(true);
+    	connectButton.setEnabled(true);
     }
     
     public static void setCursorState(int state) {
-    	JFConexion.setCursor(Cursor.getPredefinedCursor(state));
+    	connectionFrame.setCursor(Cursor.getPredefinedCursor(state));
     }
 }

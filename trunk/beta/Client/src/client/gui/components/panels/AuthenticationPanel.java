@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import client.gui.forms.Connection;
+
 import common.misc.language.Language;
 
 /**
@@ -49,7 +51,7 @@ public class AuthenticationPanel extends JPanel {
      *            Parametro que define los Objetos que sean Desplegados.
      */
 
-    public AuthenticationPanel(int format) {
+    public AuthenticationPanel(int format, final Connection connection) {
 
         this.setLayout(new BorderLayout());
         
@@ -66,7 +68,6 @@ public class AuthenticationPanel extends JPanel {
         fieldsPanel.setLayout(new GridLayout(grid, 1));
 
         if (format == AuthenticationPanel.ALL) {
-
             JLabel dataBaseLabel = new JLabel(Language.getWord("BD"));
             JLabel userLabel = new JLabel(Language.getWord("USER"));
             labelsPanel.add(dataBaseLabel);
@@ -102,7 +103,7 @@ public class AuthenticationPanel extends JPanel {
         passwordTextField = new JPasswordField(10);
         passwordTextField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                passwordTextField.transferFocus();
+                connection.connect();
             }
         });
         passwordPanel.add(passwordTextField);

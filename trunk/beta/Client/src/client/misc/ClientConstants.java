@@ -26,7 +26,7 @@ import java.awt.Toolkit;
 public interface ClientConstants {
 
 	public final String KeyClient = "client";
-
+	public final String EMAKU_HOME = System.getenv("EMAKU_HOME");
 	public final String HOME = System.getProperty("user.home");
     public final String SEPARATOR = System.getProperty("file.separator");
     public final String TMP = System.getProperty("java.io.tmpdir");

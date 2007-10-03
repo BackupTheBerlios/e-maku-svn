@@ -31,8 +31,6 @@ check_emaku_user() {
 }
 
 check_deps() {
-             echo "data: $JAVA_HOME"
-
              if [ "$JAVA_HOME" = "" ] ; then
                echo
                echo "ERROR: la variable de entorno JAVA_HOME no se encuentra definida."
@@ -222,6 +220,8 @@ install_server() {
 }
 
 install_client() {
+             mkdir -p $EMAKU_HOME/themes
+             cp -f $ROOT/themes/*.jar $EMAKU_HOME/themes/
              echo "#!/bin/sh" > $EMAKU_HOME/bin/emaku-client
              echo " " >> $EMAKU_HOME/bin/emaku-client
              echo "EMAKU_HOME=$EMAKU_HOME" >> $EMAKU_HOME/bin/emaku-client

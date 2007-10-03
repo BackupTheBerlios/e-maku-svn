@@ -87,16 +87,17 @@ public class HeadersValidator implements ArrivedPackageListener {
 			        ACPHandler.ACPBegin(doc);
 			        String company = raiz.getChildText("companyName");
 			        String companyID = raiz.getChildText("companyID");
-			        title = "Emaku - Qhatu Ltda";
+			        title = "[ eMaku ] - ";
 
 			        /*
 			         * Cargando configuración dependiendo de la empresa ...
 			         */
-			        String bd = EmakuParametersStructure.getParameter("dataBase");
-			        ConfigFileHandler.loadJarFile(bd);
+			        String dataBase = EmakuParametersStructure.getParameter("dataBase");
+			        ConfigFileHandler.loadJarFile(dataBase);
 
-			        if(company != null && companyID != null)
-			        	title = company + " - Nit: " + companyID;
+			        if(company != null && companyID != null) {
+			        	title += company + " / Nit: " + companyID;
+			        }
 			   		new MainWindow(ConfigFileHandler.getJarDirectory()+"/misc",title);
 			    }
 			    

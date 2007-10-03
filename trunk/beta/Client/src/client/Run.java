@@ -2,10 +2,12 @@ package client;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import bsh.Interpreter;
 import client.gui.components.MainWindow;
@@ -26,12 +28,12 @@ import common.misc.language.Language;
  * Este archivo es parte de JMClient <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
  * 
- * JMClient es Software Libre; usted puede redistribuirlo y/o realizar
+ * Client es Software Libre; usted puede redistribuirlo y/o realizar
  * modificaciones bajo los terminos de la Licencia Publica General GNU GPL como
  * esta publicada por la Fundacion del Software Libre (FSF); tanto en la version
  * 2 de la licencia, o cualquier version posterior.
  * 
- * E-Maku es distribuido con la expectativa de ser util, pero SIN NINGUNA
+ * eMaku es distribuido con la expectativa de ser util, pero SIN NINGUNA
  * GARANTIA; sin ninguna garantia aun por COMERCIALIZACION o por un PROPOSITO
  * PARTICULAR. Consulte la Licencia Publica General GNU GPL para mas detalles.
  * <br>
@@ -47,19 +49,49 @@ public class Run {
 	public static final Interpreter shellScript = new Interpreter();
 
 	public static void main(String[] args) {
+		
+		if (ClientConstants.EMAKU_HOME == null) {
+            System.out.println("ERROR: Variable EMAKU_HOME is undefined! Please set it up!");
+			return;
+		}
 
 		try {
 			ConfigFileHandler.loadSettings();
-			String lookAndFeel = ConfigFileHandler.getClassForLookAndFeel();
-			String jarPath = ConfigFileHandler.getURLJarForLookAndFeel();
+			setLookAndFeel();
+			Splash.create();
+			new Connection();
+		}
 
-			if (lookAndFeel!=null && jarPath!=null && !"".equals(lookAndFeel) && !"".equals(jarPath)) {
+		catch (ConfigFileNotLoadException e) {
+			SettingsDialog dialog = new SettingsDialog(null,SettingsDialog.CREATE);
+			dialog.pack();
+			dialog.setLocation(
+	                (ClientConstants.MAX_WIN_SIZE_WIDTH / 2) - dialog.getWidth() / 2,
+	                (ClientConstants.MAX_WIN_SIZE_HEIGHT / 2) - dialog.getHeight() / 2);
+			dialog.setVisible(true);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static void setLookAndFeel() {
+		try {
+			String theme = ConfigFileHandler.getLookAndFeel();
+			String jarPath = ClientConstants.EMAKU_HOME + ClientConstants.SEPARATOR + "themes" + ClientConstants.SEPARATOR 
+			+ theme + ".jar";
+			File file = new File(jarPath);
+			
+			if (!file.exists()) {
+				System.out.println("WARNING: The theme " + jarPath + " does not exist!");
+				System.out.println("WARNING: It could not be loaded!");
+			} else {
+				ClassPathUpdater.addFile(jarPath);
+				String lookAndFeel = ClassPathUpdater.getMainClass();
 				System.out.println("INFO: Loading LookAndFeel " + lookAndFeel);
 				System.out.println("INFO: From " + jarPath);
-				ClassPathUpdater.addFile(jarPath); 				
-				UIManager.setLookAndFeel(lookAndFeel);	
+				UIManager.setLookAndFeel(lookAndFeel);
 			}
-
 			Font f = new Font("Tahoma", Font.PLAIN, 12);
 			Font f2 = new Font("Tahoma",Font.BOLD,14);
 			UIManager.put("Menu.font",			f);
@@ -78,23 +110,19 @@ public class Run {
 			UIManager.put("InternalFrame.font",	f2);
 			UIManager.put("Table.font",			f);
 			UIManager.put("TabbedPane.font",	f);
-			UIManager.put("DesktopColor.color",	Color.GRAY);
-			Splash.create();
-			new Connection();
-
-		}
-
-		catch (ConfigFileNotLoadException e) {
-			SettingsDialog dialog = new SettingsDialog(null,SettingsDialog.CREATE);
-			dialog.pack();
-			dialog.setLocation(
-	                (ClientConstants.MAX_WIN_SIZE_WIDTH / 2) - dialog.getWidth() / 2,
-	                (ClientConstants.MAX_WIN_SIZE_HEIGHT / 2) - dialog.getHeight() / 2);
-			dialog.setVisible(true);
-		}
-		catch (Exception e) {
+			UIManager.put("DesktopColor.color",	Color.GRAY);		
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();		
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}	
 	}
 
 	public static void exit() {

@@ -109,7 +109,7 @@ public class PackageToXML {
         }
     }
 
-    public synchronized void addArrivePackageistener(ArrivedPackageListener listener ) {
+    public synchronized void addArrivePackageListener(ArrivedPackageListener listener ) {
         arrivePackageListener.addElement(listener);
     }
 

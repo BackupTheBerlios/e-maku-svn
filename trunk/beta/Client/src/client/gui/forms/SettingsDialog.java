@@ -309,7 +309,7 @@ public class SettingsDialog extends JDialog {
       
     
     private void callConfigFile(String serverAddress, String serverPort, String language, String logType, String pos) {
-        ConfigFileHandler.New(serverAddress,serverPort,language, logType,pos);
+        ConfigFileHandler.buildNewFile(serverAddress,serverPort,language, logType,pos);
     }
 
     private void callConnection()  {

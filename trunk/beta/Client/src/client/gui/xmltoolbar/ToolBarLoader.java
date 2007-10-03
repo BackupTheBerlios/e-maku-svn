@@ -35,6 +35,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import java.util.List;
 
 import common.misc.language.Language;
 
@@ -45,36 +46,30 @@ import org.jdom.input.SAXBuilder;
 
 public class ToolBarLoader extends JPanel {
 
-
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 6352754285306056099L;
 
-	private EmakuButtonGroup JBtmp;
-
-    private URL FileXML;
-
-    private Vector<EmakuButtonGroup> Items;
+	private EmakuButtonGroup button;
+    private URL xmlFile;
+    private Vector<EmakuButtonGroup> items;
 
     public ToolBarLoader() {
 
     }
 
-    public ToolBarLoader(URL FileXML) {
-        this.FileXML = FileXML;
+    public ToolBarLoader(URL xmlFile) {
+        this.xmlFile = xmlFile;
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         //this.setLayout(new FlowLayout(FlowLayout.LEFT));
     }
 
-    public Vector Loading() {
+    public Vector load() {
         try {
             SAXBuilder builder = new SAXBuilder(false);
-            Document doc = builder.build(FileXML);
-            Element raiz = doc.getRootElement();
-            java.util.List Ljtoolbar = raiz.getChildren("JToolBar");
-            Iterator i = Ljtoolbar.iterator();
-            Items = new Vector<EmakuButtonGroup>();
+            Document doc = builder.build(xmlFile);
+            Element root = doc.getRootElement();
+            List toolBarList = root.getChildren("JToolBar");
+            Iterator i = toolBarList.iterator();
+            items = new Vector<EmakuButtonGroup>();
 
             /**
              * Ciclo encargado de leer las primeras etiquetas del archivo XML,
@@ -82,15 +77,14 @@ public class ToolBarLoader extends JPanel {
              */
 
             while (i.hasNext()) {
-                Element datos = (Element) i.next();
-
-                java.util.List Lsubdatos = datos.getChildren();
-                Iterator j = Lsubdatos.iterator();
+                Element element = (Element) i.next();
+                List dataList = element.getChildren();
+                Iterator j = dataList.iterator();
                 /**
                  * Se adicionara todos los menus principales a la clase
                  * ToolbarLoader
                  */
-                this.add(CargarJToolbar(j));
+                this.add(loadJToolbar(j));
             }
         }
         catch (JDOMException JDOMEe) {
@@ -100,72 +94,72 @@ public class ToolBarLoader extends JPanel {
             System.out.println(IOEe.getMessage());
         }
 
-        return Items;
+        return items;
     }
 
     /**
      * Metodo encargado de cargar las Toolbar al JPanel
      */
 
-    private JToolBar CargarJToolbar(Iterator j) {
-        JToolBar JTBtmp = new JToolBar();
+    private JToolBar loadJToolbar(Iterator j) {
+        JToolBar toolBar = new JToolBar();
         while (j.hasNext()) {
-            Element subdatos = (Element) j.next();
-            java.util.List Ljmenuitem = subdatos.getChildren();
-            Iterator k = Ljmenuitem.iterator();
-            JTBtmp.add(CargarJButton(k));
+            Element element = (Element) j.next();
+            List menuItemList = element.getChildren();
+            Iterator k = menuItemList.iterator();
+            toolBar.add(loadJButton(k));
         }
-        return JTBtmp;
+        return toolBar;
     }
 
     /**
      * Metodo encargado de cargar los Botones al JToolBar
      */
 
-    private EmakuButtonGroup CargarJButton(Iterator j) {
-        JBtmp = new EmakuButtonGroup();
+    private EmakuButtonGroup loadJButton(Iterator j) {
+        button = new EmakuButtonGroup();
         while (j.hasNext()) {
-            Element subdatos = (Element) j.next();
-            if (subdatos.getName().equals("Activo")) {
-                JBtmp.setActivo(true);
+            Element element = (Element) j.next();
+            if (element.getName().equals("Activo")) {
+                button.setActivo(true);
             }
-            else if (subdatos.getName().equals("Acelerator")) {
+            /* else if (element.getName().equals("Acelerator")) {
+            } */
+            else if (element.getName().equals("ActionCommand")) {
+                button.setActionCommand(element.getValue());
             }
-            else if (subdatos.getName().equals("ActionCommand")) {
-                JBtmp.setActionCommand(subdatos.getValue());
-            }
-            else if (subdatos.getName().equals("Icon")) {
+            else if (element.getName().equals("Icon")) {
             	try {
-            		JBtmp.setIcon(new ImageIcon(this.getClass().getResource(subdatos.getValue())));
+            		button.setIcon(new ImageIcon(this.getClass().getResource(element.getValue())));
             	}
             	catch(NullPointerException NPEe) {
-            		System.out.println(subdatos.getValue());
+            		System.out.println(element.getValue());
             		NPEe.printStackTrace();
             	}
             }
-            else if (subdatos.getName().equals("ToolTipText")) {
-                JBtmp.setToolTipText(Language.getWord(subdatos.getValue()));
+            else if (element.getName().equals("ToolTipText")) {
+                button.setToolTipText(Language.getWord(element.getValue()));
             }
-            else if (subdatos.getName().equals("Transaction")) {
-                JBtmp.setTransaction(subdatos.getValue());
+            else if (element.getName().equals("Transaction")) {
+                button.setTransaction(element.getValue());
             }
-            else if (subdatos.getName().equals("Clase")) {
-                JBtmp.setClassName(subdatos.getValue());
+            else if (element.getName().equals("Clase")) {
+                button.setClassName(element.getValue());
             }
-            else if (subdatos.getName().equals("ArgConstructor")) {
-                java.util.List Largs = subdatos.getChildren();
-                JBtmp.setArgConstructor(ArgConstructor(Largs));
+            else if (element.getName().equals("ArgConstructor")) {
+                List argsList = element.getChildren();
+                button.setArgConstructor(getConstructorArgs(argsList));
             }
-            else if (subdatos.getName().equals("TypeArgConstructor")) {
-                java.util.List Largs = subdatos.getChildren();
-                JBtmp.setTypeArgConstructor(TypeArgConstructor(Largs));
+            else if (element.getName().equals("TypeArgConstructor")) {
+                List argsList = element.getChildren();
+                button.setTypeArgConstructor(getConstructorArgsType(argsList));
             }
-            else if (subdatos.getName().equals("Metodo")) {
-                JBtmp.setMethod(subdatos.getValue());
+            else if (element.getName().equals("Metodo")) {
+                button.setMethod(element.getValue());
             }
         }
-        Items.addElement(JBtmp);
-        return JBtmp;
+        items.addElement(button);
+        return button;
     }
 
     /**
@@ -173,14 +167,14 @@ public class ToolBarLoader extends JPanel {
      * clases en caso de que estas tengan argumentos
      */
 
-    private Object[] ArgConstructor(java.util.List Largs) {
-        if (Largs.size() > 0) {
-            Object[] args = new Object[Largs.size()];
-            Iterator j = Largs.iterator();
+    private Object[] getConstructorArgs(List argsList) {
+        if (argsList.size() > 0) {
+            Object[] args = new Object[argsList.size()];
+            Iterator j = argsList.iterator();
             int i = 0;
             while (j.hasNext()) {
-                Element Earg = (Element) j.next();
-                args[i] = Earg.getValue();
+                Element element = (Element) j.next();
+                args[i] = element.getValue();
                 i++;
             }
             return args;
@@ -197,20 +191,20 @@ public class ToolBarLoader extends JPanel {
      * cada argumento, suministrado por el arreglo Class[]
      */
 
-    private Class[] TypeArgConstructor(java.util.List Largs) {
-        if (Largs.size() > 0) {
-            Class[] typeargs = new Class[Largs.size()];
-            Iterator j = Largs.iterator();
+    private Class[] getConstructorArgsType(List argsList) {
+        if (argsList.size() > 0) {
+            Class[] argsTypes = new Class[argsList.size()];
+            Iterator j = argsList.iterator();
             int i = 0;
             while (j.hasNext()) {
-                Element Earg = (Element) j.next();
-                if (Earg.getName().equals("Int"))
-                    typeargs[i] = int.class;
-                if (Earg.getName().equals("String"))
-                    typeargs[i] = String.class;
+                Element element = (Element) j.next();
+                if (element.getName().equals("Int"))
+                    argsTypes[i] = int.class;
+                if (element.getName().equals("String"))
+                    argsTypes[i] = String.class;
                 i++;
             }
-            return typeargs;
+            return argsTypes;
         }
         return null;
     }

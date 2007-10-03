@@ -95,7 +95,7 @@ public class MainWindow extends JFrame {
         			}
         	        url = new URL(jarDirectory+"/toolbar.xml");
         	        toolbar1 = new ToolBarLoader(url);
-        	        Vtoolbar1 = toolbar1.Loading();
+        	        Vtoolbar1 = toolbar1.load();
         	        refWindow.getContentPane().add(toolbar1, BorderLayout.NORTH);
         	        setDisabledAll();
         		} catch (MalformedURLException e1) {
