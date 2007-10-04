@@ -694,6 +694,7 @@ public class LNDocuments {
                 parameters = e;
             }
         }
+        /*
         System.out.println("paquete a procesar:");
 		Document doc = new Document();
 		doc.setRootElement((Element) pack.clone());
@@ -705,7 +706,7 @@ public class LNDocuments {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		*/
         /*
          * Hagamos una trampa: resulta que en este paquete se parametriza tanto el driver o clase como
          * el metodo que se va a ejecutar, esto se instanciara en tiempo de ejecucion. La trampa es la

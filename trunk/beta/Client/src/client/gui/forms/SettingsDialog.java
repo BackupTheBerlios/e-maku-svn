@@ -10,6 +10,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Hashtable;
 import java.util.TreeMap;
 
 import javax.swing.GrayFilter;
@@ -53,10 +54,15 @@ import client.misc.settings.ConfigFileNotLoadException;
 public class SettingsDialog extends JDialog {
 	
 	private static final long serialVersionUID = 7799638277510459773L;
+
 	private JTextField JTFHost;
-    private JTextField JTCash;
+
     private JTextField JTFPort;
+    
+    private JTextField JTCash;
+    
     private JComboBox JCBLang;
+    
     private JComboBox JCBLogs;
     
     public static final int CREATE = 0;
@@ -111,10 +117,6 @@ public class SettingsDialog extends JDialog {
         JPanel JPLLang = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPLLang.add(JLLang);
         
-        JLabel JLBox = new JLabel("Terminal: ");
-        JPanel JPLBox = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JPLBox.add(JLBox);        
-        
         JLabel JLHost = new JLabel("Host: ");
         JPanel JPLHost = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPLHost.add(JLHost);
@@ -122,15 +124,19 @@ public class SettingsDialog extends JDialog {
         JLabel JLPort = new JLabel("Puerto: ");
         JPanel JPLPort = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPLPort.add(JLPort);
-                
+        
+        JLabel JLBox = new JLabel("Terminal: ");
+        JPanel JPLBox = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPLBox.add(JLBox);        
+        
         JLabel JLLog  = new JLabel("Tipo de Log:");
         JPanel JPLog = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPLog.add(JLLog);     
         
         JPlabels.add(JPLLang);
-        JPlabels.add(JPLBox);
         JPlabels.add(JPLHost);
         JPlabels.add(JPLPort);
+        JPlabels.add(JPLBox);
         JPlabels.add(JPLog);
 
         JTFHost = new JTextField(10);
@@ -171,9 +177,9 @@ public class SettingsDialog extends JDialog {
         JPLogs.add(JCBLogs);
         
         JPfields.add(JPLang);
-        JPfields.add(JPBox);
         JPfields.add(JPHost);
         JPfields.add(JPPort);
+        JPfields.add(JPBox);
         JPfields.add(JPLogs);
 
         JPanel JBase = new JPanel();

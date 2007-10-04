@@ -107,7 +107,7 @@ public class LNInventarios {
 		 * Si tiene un solo registro entonces
 		 */
 		QueryRunner RQmovimiento = null;
-		System.out.print("tipo Movimiento: " + tipoMovimiento);
+		//System.out.print("tipo Movimiento: " + tipoMovimiento);
 		if (ENTRADA.equals(tipoMovimiento)) {
 			RQmovimiento = new QueryRunner(bd, "SCI00O8");
 			String record[] = movimientoInventario(pack);
@@ -796,7 +796,8 @@ public class LNInventarios {
 				System.out.println("Consultando saldos de: "+fecha+"-"+idBodega+"-"+idProducto);
 				System.out.println("pinventario: "+pinventario);
 				System.out.println("Saldo anterior: "+saldoAnt);
-				System.out.println("Valor Sdo Ant: "+valorSaldoAnt);*/
+				System.out.println("Valor Sdo Ant: "+valorSaldoAnt);
+				*/
 				RQsaldo.closeStatement();
 				RSsaldo.close();
 			}
@@ -809,7 +810,7 @@ public class LNInventarios {
 			 * registros del producto y bodega que se van a a actualizar.
 			 */
 			else {
-				System.out.println("Argumentos: "+idBodega+","+idProducto);
+				//System.out.println("Argumentos: "+idBodega+","+idProducto);
 				RQdata = new QueryRunner(bd, "SCS0071", new String[] { idBodega,
 						idProducto });
 			}
@@ -831,6 +832,7 @@ public class LNInventarios {
 				estado = RSdata.getBoolean(5);
 				entrada = RSdata.getDouble(6);
 				salida = RSdata.getDouble(8);
+				valorSalida=RSdata.getDouble(9);
 
 				/*
 				 * Si es salida entonces ....
@@ -857,9 +859,6 @@ public class LNInventarios {
 							if (valor!=0) {
 								valorSalida = valor;
 							}
-							else {
-								valorSalida = RSdata.getDouble(9);
-							}
 						}
 					}
 					/*
@@ -882,13 +881,9 @@ public class LNInventarios {
 							valorSalida = getDBValue( "SCS0078",rfDocumento,idProducto);
 						}
 					}
-					else if (roundValue(hpinventario)!=roundValue(valorSalida)){
-						//System.out.println("Salida.. a valor diferente del inventario");
-
-						valorSalida=RSdata.getDouble(9);
-					}
-					else {
-						//System.out.println("Salida simple");
+					else if (tipoDocumento.equals("FA") || tipoDocumento.equals("FC") || tipoDocumento.equals("FM")){
+						//if (idProducto.equals("1474"))
+							//System.out.println("valor salida:"+valorSalida+"valor Inventario: "+pinventario);
 						valorSalida=pinventario;
 						ponderar=false;
 					}
@@ -984,6 +979,8 @@ public class LNInventarios {
 					}
 				}
 				
+				if (idProducto.equals("1474"))
+					System.out.println("Actualizando pinventario: "+pinventario+" saldoAnt: "+saldoAnt+" valorSaldo: "+valorSaldoAnt);
 				/*System.out.println("Entrada: "+entrada+" valor Entrada: "+valorEntrada+" salida: "+salida+" valor salida "+valorSalida);
 				System.out.println("Actualizando pinventario: "+pinventario+" saldoAnt: "+saldoAnt+" valorSaldo: "+valorSaldoAnt);
 				*/
@@ -992,6 +989,7 @@ public class LNInventarios {
 				 */
 				RQupdate.ejecutarSQL(new String[] {
 										String.valueOf(pinventario),
+										String.valueOf(valorSalida),
 										String.valueOf(saldoAnt),
 										String.valueOf(valorSaldoAnt),
 										orden});
@@ -1031,8 +1029,10 @@ public class LNInventarios {
 	private double getDBValue(String sql,String orden,String idProducto) throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
 		QueryRunner RQventrada = new QueryRunner(bd,sql,new String[] { orden,idProducto });
 		ResultSet RSventrada = RQventrada.ejecutarSELECT();
-		RSventrada.next();
-		double valor = RSventrada.getDouble(1);
+		double valor = 0;
+		if (RSventrada.next()) {
+			valor = RSventrada.getDouble(1);
+		}
 		RQventrada.closeStatement();
 		RSventrada.close();
 		return valor;

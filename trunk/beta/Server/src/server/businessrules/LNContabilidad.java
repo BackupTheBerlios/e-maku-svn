@@ -1436,6 +1436,7 @@ public class LNContabilidad {
 			RQupdate.ejecutarSQL(new String[] {
 					String.valueOf(saldo),
 					orden});
+			System.out.println("actualizando "+orden+": "+saldo);
 		}
 		return saldo;
 	}
@@ -1465,6 +1466,7 @@ public class LNContabilidad {
 			RQupdate.ejecutarSQL(new String[] {
 					String.valueOf(saldo),
 					orden});
+			System.out.println("actualizando "+orden+": "+saldo);
 		}
 		return saldo;
 	}
