@@ -130,8 +130,12 @@ public class MenuLoader extends JMenuBar {
 	                JMtmp.setText(Language.getWord(text));
 	            }
 	            else if (subdatos.getName().equals("Mnemonic")) {
-	            	char nemo = ' '==Language.getNemo(subdatos.getValue())?subdatos.getValue().charAt(0):Language.getNemo(subdatos.getValue());
-	                JMtmp.setMnemonic(nemo);
+	            	//TODO Por Problemas con los menemonic
+	            	if (!"".equals(value.trim())) {
+		            	char langNemo = Language.getNemo(value);
+		            	char nemo = ' '==langNemo?value.charAt(0):langNemo;
+		                JMtmp.setMnemonic(nemo);
+	            	}
 	            }
 	            else if (subdatos.getName().equals("Icon"))
 	            	try {
@@ -187,6 +191,7 @@ public class MenuLoader extends JMenuBar {
         JMItmp = new JMenuItemXML();
         while (j.hasNext()) {
             Element subdatos = (Element) j.next();
+            String value = subdatos.getValue();
             if (subdatos.getName().equals("Transaction")) {
             	JMItmp.setTransaction(subdatos.getValue());
             } else if (subdatos.getName().equals("Activo")) {
@@ -206,7 +211,13 @@ public class MenuLoader extends JMenuBar {
             else if (subdatos.getName().equals("Text"))
                 JMItmp.setText(Language.getWord(subdatos.getValue()));
             else if (subdatos.getName().equals("Mnemonic"))
-                JMItmp.setMnemonic(Language.getNemo(subdatos.getValue()));
+            	//TODO Por Problemas con los menemonic
+            	if (!"".equals(value.trim())) {
+	            	char langNemo = Language.getNemo(value);
+	            	char nemo = ' '==langNemo?value.charAt(0):langNemo;
+	            	JMItmp.setMnemonic(nemo);
+            	}
+                
             else if (subdatos.getName().equals("Clase")) {
                 JMItmp.setClassName(subdatos.getValue());
             } else if (subdatos.getName().equals("ArgConstructor")) {
