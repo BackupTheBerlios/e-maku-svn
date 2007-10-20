@@ -25,8 +25,7 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -721,7 +720,9 @@ public class GenericData extends JPanel implements DateListener,
 					notificando(event);
 				}
 			}
-			new SearchingSQL(sqlCode,j).start();
+			SwingUtilities.invokeLater(new SearchingSQL(sqlCode,j));
+			//TODO Por el problema del chekout
+			//new SearchingSQL(sqlCode,j).start();
 		}
 		
 		
@@ -1313,6 +1314,7 @@ public class GenericData extends JPanel implements DateListener,
 	private void notificando(AnswerEvent event) {
 		for(AnswerListener l:answerListener) {
 			if (l.containSqlCode(event.getSqlCode())) {
+				System.out.println("Notificando a =>"+l);
 				l.arriveAnswerEvent(event);
 			}
 		}

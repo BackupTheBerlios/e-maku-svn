@@ -389,11 +389,15 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 			public void run() {
     			GenericForm GFforma = new GenericForm(fforma,e);
     	        setComps(e.getChild("preferences").getChildText("id"),new Componentes(GenericForm.class,GFforma));
-    	        forms.add(GFforma);
-    	        
+	        	forms.add(GFforma);
     		}
     	}
-    	SwingUtilities.invokeLater(new MakeSubForm(this,e));
+    	if (this.child) {
+    		this.GFforma.makeSubForm(e);
+    	}
+    	else {
+    		SwingUtilities.invokeLater(new MakeSubForm(this,e));
+    	}
 	}
 
 	/**

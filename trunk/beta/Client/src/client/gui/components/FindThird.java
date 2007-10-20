@@ -955,6 +955,7 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
 
 	public void initiateFinishEvent(EndEventGenerator e) {
 		try {
+			System.out.println("initiateFinishEvent-FindThird");
 			if (driverEvent!=null)
 				GFforma.invokeMethod(driverEvent,"addAnswerListener",new Class[]{AnswerListener.class},new Object[]{this});
 		} catch (InvocationTargetException e1) {
