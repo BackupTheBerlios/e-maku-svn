@@ -55,7 +55,6 @@ public class PackageToXML {
             int numRead = 1;
 
             while (numRead > 0) {
-
                 buf.rewind();
                 
                 numRead = socket.read(buf);
@@ -79,7 +78,8 @@ public class PackageToXML {
 						} catch (JDOMException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
-							FileOutputStream fos = new FileOutputStream("/home/felipe/jdomexception.txt");
+							
+							FileOutputStream fos = new FileOutputStream("/tmp/jdomexception.txt");
 							fos.write(bufferOut.toByteArray());
 							fos.close();
 						}

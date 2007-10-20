@@ -831,6 +831,7 @@ public class LNInventarios {
 				hpinventario = RSdata.getDouble(4);
 				estado = RSdata.getBoolean(5);
 				entrada = RSdata.getDouble(6);
+				valorEntrada = RSdata.getDouble(7);
 				salida = RSdata.getDouble(8);
 				valorSalida=RSdata.getDouble(9);
 
@@ -843,23 +844,8 @@ public class LNInventarios {
 					 * Si esta anulada
 					 */
 					if (!estado) {
-						//System.out.println("Salida.. documento anulado");
-						/*
-						 * Debemos verificar a que precio entro y a ese precio se debe registrar la salida,
-						 * se verifica en el historico del inventario, en caso de que no este
-						 * debemos consultarlo en la base de datos. La razon de porque no podria estar es
-						 * porque se tomo un rango de fechas posterior a la elaboracion del documento que se
-						 * esta anulando.
-						 */
-						if (historyInv.containsKey(orden)) {
-							valorSalida = historyInv.get(orden).getValorEntrada();
-						}
-						else {
-							double valor = getDBValue( "SCS0078",orden,idProducto);
-							if (valor!=0) {
-								valorSalida = valor;
-							}
-						}
+						salida = 0;
+						valorSalida = 0;
 					}
 					/*
 					 * Si no esta anulada y es una devolucion en compras entonces debe salir al valor al que se 
@@ -881,7 +867,7 @@ public class LNInventarios {
 							valorSalida = getDBValue( "SCS0078",rfDocumento,idProducto);
 						}
 					}
-					else if (tipoDocumento.equals("FA") || tipoDocumento.equals("FC") || tipoDocumento.equals("FM")){
+					else if (tipoDocumento.equals("FA") || tipoDocumento.equals("FC") || tipoDocumento.equals("FM") || tipoDocumento.equals("IJ")){
 						//if (idProducto.equals("1474"))
 							//System.out.println("valor salida:"+valorSalida+"valor Inventario: "+pinventario);
 						valorSalida=pinventario;
@@ -898,30 +884,15 @@ public class LNInventarios {
 					 */
 					if (!estado) {
 						//System.out.println("Entrada.. documento anulado");
-						/* 
-						 * Igual que si fuera una salida.
-						 */
-						if (historyInv.containsKey(orden)) {
-							valorEntrada = historyInv.get(orden).getValorSalida();
-						}
-						/*
-						 * Se busca el saldo en la base de datos
-						 */
-						else {
-							double valor = getDBValue( "SCS0079",orden,idProducto);
-							if (valor!=0) {
-								valorEntrada =  valor;
-							}
-							else {
-								RSdata.getDouble(7);
-							}
-						}
+						entrada = 0;
+						valorEntrada = 0;
 					}
 					/*
 					 * Si no esta anulada y es una devolucion en compras entonces debe salir al valor al que se 
 					 * compro, esto lo sabemos por el rfdocumento.
 					 */
 					else if (tipoDocumento.equals("DV")) {
+
 						//System.out.println("Entrada.. devolucion en ventas");
 						/*
 						 * Verificamos si el valor de la venta esta registrado en el historial y tomamos como valor
@@ -937,16 +908,15 @@ public class LNInventarios {
 							valorEntrada = getDBValue( "SCS0079",orden,idProducto);
 						}
 					}
-					else {
-						//System.out.println("Entrada simple");
-						valorEntrada = RSdata.getDouble(7);
+					else if (tipoDocumento.equals("IJ")){
+						valorEntrada=pinventario;
+						ponderar=false;
 					}
 				}
 				
 				/*
 				 * Recalculando informacion
 				 */
-				
 				saldoAnt = saldoAnt + entrada - salida;
 				valorSaldoAnt =roundValue(valorSaldoAnt + (entrada*valorEntrada) - (salida*valorSalida));
 
@@ -956,7 +926,6 @@ public class LNInventarios {
 				 */
 				
 				if (ponderar) {
-					//System.out.println("Ponderando");
 
 					/*
 					 * Se verifica que el saldo o el valor del saldo no sean 0, si es asi entonces el 
@@ -965,11 +934,9 @@ public class LNInventarios {
 					 */
 					
 					if (saldoAnt!=0) {
-						//System.out.println("saldo anterior diferente de 0, se pudo ponderar");
 						pinventario = roundValue(valorSaldoAnt/saldoAnt);
 					}
 					else {
-						//System.out.println("saldo anterior diferente de 0, no se pudo ponderar");
 						if (entrada!=0) {
 							pinventario=valorEntrada;
 						}
@@ -979,16 +946,12 @@ public class LNInventarios {
 					}
 				}
 				
-				if (idProducto.equals("1474"))
-					System.out.println("Actualizando pinventario: "+pinventario+" saldoAnt: "+saldoAnt+" valorSaldo: "+valorSaldoAnt);
-				/*System.out.println("Entrada: "+entrada+" valor Entrada: "+valorEntrada+" salida: "+salida+" valor salida "+valorSalida);
-				System.out.println("Actualizando pinventario: "+pinventario+" saldoAnt: "+saldoAnt+" valorSaldo: "+valorSaldoAnt);
-				*/
 				/* 
 				 * Actualizando en la base de datos
 				 */
 				RQupdate.ejecutarSQL(new String[] {
 										String.valueOf(pinventario),
+										String.valueOf(valorEntrada),
 										String.valueOf(valorSalida),
 										String.valueOf(saldoAnt),
 										String.valueOf(valorSaldoAnt),

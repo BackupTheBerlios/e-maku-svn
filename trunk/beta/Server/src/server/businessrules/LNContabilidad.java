@@ -1284,6 +1284,24 @@ public class LNContabilidad {
 	}
 	
 	/**
+	 * Metodo encargado de recalcular las cuentas de costos
+	 * @throws SQLNotFoundException
+	 * @throws SQLBadArgumentsException
+	 * @throws SQLException
+	 */
+	
+	public void recoverCost(Element pack) throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
+		QueryRunner RQdocument = new QueryRunner(bd,"SCS0087");
+		ResultSet RSdocument = RQdocument.ejecutarSELECT();
+		System.out.println("Recalculando costeo");
+		while (RSdocument.next()) {
+			recoverData(null,RSdocument.getString(1),RSdocument.getString(2),RSdocument.getString(3));
+		}
+		RSdocument.close();
+		RQdocument.closeStatement();
+	}
+	
+	/**
 	 * Este metodo recalcula los saldos de las cuentas recibidas en el elemento, este elemento
 	 * debe traer los siguientes argumentos
 	 * fecha: 		Desde donde se empezara la recuperacion.
@@ -1297,9 +1315,9 @@ public class LNContabilidad {
 
 		Iterator i = pack.getChildren().iterator();
 		String fecha = null;
-		String idCta = null;
-		String idTercero = null;
-		String idProducto = null;
+		String idCta = CacheKeys.getKey("idCta");
+		String idTercero = CacheKeys.getKey("idTercero");;
+		String idProducto =CacheKeys.getKey("idProducto");;
 
 		/*
 		 * Recoleccion de argumentos
@@ -1436,7 +1454,7 @@ public class LNContabilidad {
 			RQupdate.ejecutarSQL(new String[] {
 					String.valueOf(saldo),
 					orden});
-			System.out.println("actualizando "+orden+": "+saldo);
+			//System.out.println("actualizando "+orden+": "+saldo);
 		}
 		return saldo;
 	}
@@ -1466,7 +1484,7 @@ public class LNContabilidad {
 			RQupdate.ejecutarSQL(new String[] {
 					String.valueOf(saldo),
 					orden});
-			System.out.println("actualizando "+orden+": "+saldo);
+			//System.out.println("actualizando "+orden+": "+saldo);
 		}
 		return saldo;
 	}

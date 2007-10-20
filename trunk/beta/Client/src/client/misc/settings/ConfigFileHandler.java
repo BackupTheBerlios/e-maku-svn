@@ -187,7 +187,8 @@ public class ConfigFileHandler extends EmakuParametersStructure {
     }
 
     public static void loadJarFile(String nameCompany) {
-    	Iterator i = root.getChildren("company").iterator();
+    	Iterator i = root.getChildren("C" +
+    			"ompany").iterator();
         boolean isCompany = false;
         String jarFile = null;
         String directory = "";
@@ -214,6 +215,7 @@ public class ConfigFileHandler extends EmakuParametersStructure {
         }
 
 		String jar = "jar:file:"+System.getenv("EMAKU_HOME")+"/lib/emaku/"+jarFile+"!/";
+
 		jarDirectory = jar+directory;
         EmakuParametersStructure.setJarDirectoryTemplates(jarDirectory+"/printer-templates");
 

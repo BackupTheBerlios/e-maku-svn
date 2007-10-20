@@ -448,7 +448,10 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 	                        Icons.getIcon(e.getValue()))));
                 }
                 catch(NullPointerException NPEe) {
-                    NPEe.printStackTrace();
+                    try {
+    	                this.setFrameIcon(new ImageIcon(this.getClass().getResource(e.getValue())));
+                    }
+                    catch(NullPointerException NPE2e){}
                 }
             }
 

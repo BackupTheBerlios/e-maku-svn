@@ -769,6 +769,9 @@ public class LNDocuments {
             else if ("recoverDocument".equals(method)) {
             	LNCprocesar.recoverDocument();
             }
+            else if ("recoverCost".equals(method)) {
+            	LNCprocesar.recoverDocument();
+            }
             else if ("deleteDocument".equals(method)) {
             	LNCprocesar.deleteDocument();
             }
