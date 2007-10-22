@@ -378,28 +378,37 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
     }
     
     private void makeSubForm(Element e) {
+    	makeSubForm(e,null);
+	}
+
+    private void makeSubForm(Element e, String id_transaction) {
     	class MakeSubForm extends Thread {
     		GenericForm fforma;
     		Element e;
-    		public MakeSubForm(GenericForm fforma,Element e) {
+			String id_transaction;
+    		public MakeSubForm(GenericForm fforma,Element e, String id_transaction) {
 				this.fforma = fforma;
+				this.id_transaction=id_transaction;
 				this.e= e;
 			}
 
 			public void run() {
     			GenericForm GFforma = new GenericForm(fforma,e);
+    			if (id_transaction!=null) {
+    				GFforma.setIdTransaction(idTransaction);
+    			}
     	        setComps(e.getChild("preferences").getChildText("id"),new Componentes(GenericForm.class,GFforma));
 	        	forms.add(GFforma);
     		}
     	}
     	if (this.child) {
-    		this.GFforma.makeSubForm(e);
+    		this.GFforma.makeSubForm(e,getIdTransaction());
     	}
     	else {
-    		SwingUtilities.invokeLater(new MakeSubForm(this,e));
+    		SwingUtilities.invokeLater(new MakeSubForm(this,e,null));
     	}
 	}
-
+    
 	/**
      * Metodo encargado de validar las preferncias de la forma
      * 
