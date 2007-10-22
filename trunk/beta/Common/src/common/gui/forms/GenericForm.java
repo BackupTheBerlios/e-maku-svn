@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.beans.PropertyVetoException;
+import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -38,6 +39,7 @@ import javax.swing.event.InternalFrameListener;
 import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.output.*;
 
 import bsh.EvalError;
 import bsh.Interpreter;
@@ -377,36 +379,30 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
     	}
     }
     
-    private void makeSubForm(Element e) {
-    	makeSubForm(e,null);
-	}
-
-    private void makeSubForm(Element e, String id_transaction) {
+    public void makeSubForm(Element e) {
     	class MakeSubForm extends Thread {
     		GenericForm fforma;
     		Element e;
-			String id_transaction;
-    		public MakeSubForm(GenericForm fforma,Element e, String id_transaction) {
+			
+    		public MakeSubForm(GenericForm fforma,Element e) {
 				this.fforma = fforma;
-				this.id_transaction=id_transaction;
 				this.e= e;
 			}
 
 			public void run() {
-    			GenericForm GFforma = new GenericForm(fforma,e);
-    			if (id_transaction!=null) {
-    				GFforma.setIdTransaction(idTransaction);
-    			}
-    	        setComps(e.getChild("preferences").getChildText("id"),new Componentes(GenericForm.class,GFforma));
-	        	forms.add(GFforma);
+    			GenericForm form = new GenericForm(fforma,e);
+    			Componentes c = new Componentes(GenericForm.class,form);
+    			String s = e.getChild("preferences").getChildText("id");
+    	        setComps(s,c);
+	        	forms.add(form);
     		}
     	}
-    	if (this.child) {
-    		this.GFforma.makeSubForm(e,getIdTransaction());
+    	/*if (this.child) {
+    		this.GFforma.makeSubForm(e);
     	}
-    	else {
-    		SwingUtilities.invokeLater(new MakeSubForm(this,e,null));
-    	}
+    	else {*/
+    		SwingUtilities.invokeLater(new MakeSubForm(this,e));
+    	//}
 	}
     
 	/**
@@ -1805,6 +1801,9 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 	public void setIdTransaction(String mnuTransaction) {
 		// TODO Auto-generated method stub
 		this.idTransaction = mnuTransaction;
+		for (GenericForm f : forms) {
+			f.setIdTransaction(mnuTransaction);
+		}
 	}
 }
 
