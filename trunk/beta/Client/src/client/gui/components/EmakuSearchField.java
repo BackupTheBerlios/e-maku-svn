@@ -1,27 +1,19 @@
 package client.gui.components;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.IllegalComponentStateException;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
 
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
+import javax.swing.*;
+import javax.swing.event.*;
 
-import common.gui.components.XMLTextField;
-import common.gui.forms.GenericForm;
+import org.jdom.*;
+
+import common.gui.components.*;
+import common.gui.forms.*;
 
 /**
- * TableFindData.java Creado el 31-oct-2006
+ * TableFindData.java Creado el 26-oct-2007
  * 
  * Este archivo es parte de E-Maku <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
@@ -40,52 +32,92 @@ import common.gui.forms.GenericForm;
  * de su parametrizacion
  *  <br>
  * 
- * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez </A>
+ * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda Piscal</A>
  */
 
-public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenuListener,FocusListener {
+public class EmakuSearchField extends JPanel implements Couplable, KeyListener,PopupMenuListener,FocusListener {
 
 	private static final long serialVersionUID = 246103248621691834L;
 
 	private JPanel JPNorth;
+	private XMLTextField XMLTField;
 	private XMLTextField XMLTFkey;
 	private ComboBoxFiller SQLCBselection;
 	private JPopupMenu JPMpopup;
 	private GenericForm GFforma;
 	private boolean dataSelected;
 	private String keyValue;
-	
-	public EmakuDataSearch(GenericForm GFforma,
-						   String sql,
-						   String[] externalValues,
-						   String keyValue,
-						   boolean blankArgs,
-						   boolean dataBeep,
-						   String dataMessage,
-						   int selected,
-						   int repeatData) {
-		this.addKeyListener(this);
-		this.setLayout(new BorderLayout());
+	private ArrayList<String> externalValues = new ArrayList<String>();
+	private int repeatKey = 1;
+	private String sqlCombo = null;
+	private boolean dataBeep;
+	private boolean blankArgs;
+	private int selectedIndex;
+	private String dataMessage;
+	private String labelName="";
+	private int size;
+	private int maxlength;
+	private boolean withPanel = true;
+	private String exportValue;
+
+	public EmakuSearchField(GenericForm GFforma,Document doc) {
 		this.GFforma=GFforma;
-		this.keyValue=keyValue;
-		XMLTFkey = new XMLTextField("KEY", 16, 70);
+		this.setLayout(new FlowLayout(FlowLayout.LEFT));
+		Iterator iterator = doc.getRootElement().getChildren().iterator();
+		while (iterator.hasNext()) {
+			Element elm = (Element) iterator.next();
+			String value = elm.getValue();
+			String name = elm.getAttributeValue("attribute");
+			
+			if ("sqlCombo".equals(name)) {
+				sqlCombo = value;
+			} else if ("noDataBeep".equals(name)) {
+				dataBeep = Boolean.parseBoolean(value);
+			} else if ("blankArgs".equals(name)) {
+				blankArgs = Boolean.parseBoolean(value);
+			} else if ("Panel".equals(name)) {
+				withPanel = Boolean.parseBoolean(value);
+			} else if ("selectedIndex".equals(name)) {
+				selectedIndex = Integer.parseInt(value);
+			} else if ("noDataMessage".equals(name)) {
+				dataMessage = value;
+			} else if ("label".equals(name)) {
+				labelName = value;
+			} else if ("size".equals(name)) {
+				size = Integer.parseInt(value);
+			} else if ("maxlength".equals(name)) {
+				maxlength =  Integer.parseInt(value);
+			} else if ("repeatData".equals(name)) {
+				this.repeatKey=Integer.parseInt(value);
+			} else if ("keyDataSearch".equals(name)) {
+				this.keyValue=value;
+			} else if ("exportValue".equals(name)) {
+				this.exportValue=value;
+			}
+		}
+		
+		XMLTField = new XMLTextField(labelName,size,maxlength);
+		XMLTField.addKeyListener(this);
+		XMLTField.addFocusListener(this);
+		
+		XMLTFkey = new XMLTextField("KEY",size,maxlength);
 		XMLTFkey.addFocusListener(this);
 		XMLTFkey.addKeyListener(this);
 		
-		String[] args = new String[repeatData+externalValues.length];
+		String[] args = new String[repeatKey+externalValues.size()];
 		
-		for (int i=0;i<externalValues.length;i++) {
-			args[i]=externalValues[i];
+		for (int i=0;i<externalValues.size();i++) {
+			args[i]=externalValues.get(i);
 		}
-		for (int i=externalValues.length;i<args.length;i++) {
+		for (int i=externalValues.size();i<args.length;i++) {
 			args[i]=keyValue;
 		}
 		
-		SQLCBselection = new ComboBoxFiller(GFforma,sql,args,blankArgs,dataBeep,selected,dataMessage);
+		SQLCBselection = new ComboBoxFiller(GFforma,sqlCombo,args,blankArgs,dataBeep,selectedIndex,dataMessage);
 		SQLCBselection.addPopupMenuListener(this);
 		SQLCBselection.addKeyListener(this);
 		SQLCBselection.addFocusListener(this);
-		SQLCBselection.setPreferredSize(new Dimension(400,20)); 
+		SQLCBselection.setPreferredSize(new Dimension(400,20));
 		JPMpopup = new JPopupMenu() {
 			private static final long serialVersionUID = -6078272560337577761L;
 			public void setVisible(boolean b) {
@@ -97,16 +129,10 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 				}
 			}
 		};
-		this.setComponentPopupMenu(JPMpopup);
+		XMLTField.setComponentPopupMenu(JPMpopup);
 		JPMpopup.setLightWeightPopupEnabled(true);
 		JPMpopup.add(dataSearch());
-		this.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				if (!isEditable() && e.getClickCount() == 2) {
-					showDataSearch();
-				}
-			}
-		});
+		this.add(XMLTField);
 	}
 
 	private JPanel dataSearch() {
@@ -123,8 +149,8 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 	 * Este metodo limpia los elementos del panel de busqueda
 	 */
 
-	protected void clean() {
-		this.setText("");
+	public void clean() {
+		XMLTField.setText("");
 		XMLTFkey.setText("");
 		SQLCBselection.clear();
 	}
@@ -134,7 +160,7 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 	 * @return retorna el codigo consultado
 	 */
 	protected String getValue() {
-		return this.getText().trim();
+		return XMLTField.getText().trim();
 	}
 
 	/**
@@ -147,7 +173,7 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 			int x = 0;
 			int y = this.getHeight();
 			try {
-				JPMpopup.show(this,x,y);
+				JPMpopup.show(XMLTField,x,y);
 				Thread t = new Thread() {
 					public void run() {
 						XMLTFkey.requestFocus();	
@@ -184,19 +210,23 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 	/**
 	 * Este metodo se genera cuando el field de consulta por palabra clave pierde
 	 * el foco, se encarga de exportar su valor con la llave correspondiente para
+	
 	 * que luego el combo genere la respectiva consulta
 	 */
-	public void focusLost(FocusEvent e) {
+	public void focusLost(FocusEvent e) { 
 		GFforma.setExternalValues(keyValue,XMLTFkey.getText());
 		Object s = e.getSource();
 		if(s.equals(SQLCBselection) && JPMpopup.isVisible()) {
 			storeData();
 		}
+		if(s.equals(XMLTField))  {
+			GFforma.setExternalValues(exportValue,XMLTField.getText());
+		}
 	}
 	
 	public void storeData() {
 		dataSelected = true;
-		this.setText(SQLCBselection.getStringCombo().trim());
+		XMLTField.setText(SQLCBselection.getStringCombo().trim());
 		XMLTFkey.setText("");
 		JPMpopup.setVisible(false);
 	}
@@ -219,7 +249,7 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 				showDataSearch();
 				break;
 			default :
-				if (!this.isEditable() &&
+				if (!XMLTField.isEditable() &&
 					((keyCode >=60 &&  keyCode<=71) ||  keyCode >=65 &&  keyCode<=126)) {
 					showDataSearch();
 				}
@@ -236,5 +266,61 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 
 	public void setDataSelected(boolean b) {
 			dataSelected = b;
+	}
+
+	@Override
+	public boolean containData() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Element getPackage(Element args) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Element getPackage() throws VoidPackageException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Component getPanel() {
+		if (!withPanel) {
+			return XMLTField;
+		}
+		return this;
+	}
+
+	@Override
+	public Element getPrintPackage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void validPackage(Element args) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void arriveAnswerEvent(AnswerEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean containSqlCode(String sqlCode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void initiateFinishEvent(EndEventGenerator e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
