@@ -132,6 +132,9 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 		XMLTField.setComponentPopupMenu(JPMpopup);
 		JPMpopup.setLightWeightPopupEnabled(true);
 		JPMpopup.add(dataSearch());
+		if (labelName!=null && !"".equals(labelName)) {
+			this.add(XMLTField.getLabel());
+		}
 		this.add(XMLTField);
 	}
 
