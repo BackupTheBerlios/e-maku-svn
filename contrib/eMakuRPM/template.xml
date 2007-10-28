@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD Report Design//EN" "/usr/local/emaku/reports/dtd/jasperreport.dtd" [<!ENTITY reportStyles SYSTEM "style.rep">]>
+
+<jasperReport name="EmakuReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30">
+	&reportStyles;
+	<parameter name="Empresa" class="java.lang.String" />
+	<parameter name="Nit" class="java.lang.String" />
+	<parameter name="Fecha" class="java.lang.String" />
+    <group name="SummaryDummyGroup">
+     <groupFooter>
+     </groupFooter>
+    </group>	
+	<title>
+		<band></band>
+	</title>
+	<pageHeader>
+		<band height="90">
+			<textField>
+				<reportElement x="50" y="0" width="555" height="25" style="eMaku-Font4"></reportElement>
+				<textElement />
+				<textFieldExpression class="java.lang.String">
+					<![CDATA[$P{Empresa}]]>
+				</textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="18" width="555" height="25" style="eMaku-Font1"></reportElement>
+				<textElement />
+				<textFieldExpression class="java.lang.String">
+					<![CDATA["Nit: " + $P{Nit}]]>
+				</textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="36" width="555" height="25" style="eMaku-Font1"></reportElement>
+				<textElement />
+				<textFieldExpression class="java.lang.String">
+					<![CDATA["Fecha: " + $P{Fecha}]]>
+				</textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="520" height="15" style="eMaku-Font2" />
+				<textElement textAlignment="Right" />
+				<textFieldExpression class="java.lang.String">
+					<![CDATA["Pagina " + String.valueOf($V{PAGE_NUMBER})]]>
+				</textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="60" width="555" height="25" style="eMaku-Font1" />
+				<textElement textAlignment="Center" isStyledText="true">
+					<font size="18" />
+				</textElement>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="35"></band>
+	</columnHeader>
+	<detail>
+		<band height="15"></band>
+	</detail>
+	<columnFooter>
+		<band></band>
+	</columnFooter>
+	<pageFooter>
+		<band height="15">
+                        <textField>
+				<reportElement x="0" y="0" width="520" height="15" style="eMaku-Font2" />
+				<textElement textAlignment="Right" />
+				<textFieldExpression class="java.lang.String">
+					<![CDATA["Página " + String.valueOf($V{PAGE_NUMBER}) + " de "]]>
+				</textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="SummaryDummyGroup">
+				<reportElement x="20" y="0" width="520" height="15" style="eMaku-Font2" />
+				<textElement textAlignment="Right" />
+				<textFieldExpression class="java.lang.String">
+					<![CDATA[" " + String.valueOf($V{PAGE_NUMBER})]]>
+				</textFieldExpression>
+			</textField>
+                </band>
+	</pageFooter>
+</jasperReport>

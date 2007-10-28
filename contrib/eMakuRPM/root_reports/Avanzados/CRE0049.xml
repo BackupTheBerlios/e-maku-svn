@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD Report Design//EN" "/usr/local/emaku/reports/dtd/jasperreport.dtd">
+<jasperReport name="EmakuReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" language="java" columnCount="1" printOrder="Vertical" orientation="Portrait" whenNoDataType="NoPages" columnSpacing="0" isTitleNewPage="false" isSummaryNewPage="false" isFloatColumnFooter="false" whenResourceMissingType="Null" isIgnorePagination="false" scriptletClass="net.emaku.tools.gui.chart.BarChartScriptlet">
+<style name="eMaku-Font1" isDefault="false" fontName="Arial" fontSize="12" isBold="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false" />
+<style name="eMaku-Font2" isDefault="false" fontName="Arial" fontSize="8" isBold="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false" />
+<style name="eMaku-Font3" isDefault="false" fontName="Arial" fontSize="18" isBold="true" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false" />
+<style name="eMaku-Font4" isDefault="false" fontName="Arial" fontSize="13" isBold="true" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false" />
+<style name="eMaku-Font5" isDefault="false" fontName="Arial" fontSize="8" isBold="true" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false" />
+<style name="eMaku-Font6" isDefault="true" fontName="Arial" fontSize="8" isBold="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false" />
+<parameter name="Empresa" class="java.lang.String" isForPrompting="true" />
+<parameter name="Nit" class="java.lang.String" isForPrompting="true" />
+<parameter name="Fecha" class="java.lang.String" isForPrompting="true" />
+<parameter name="Qhatu" class="java.lang.String" isForPrompting="true" />
+<parameter name="Url" class="java.lang.String" isForPrompting="true" />
+<code>CRE0049</code>
+<sqlCode>CRP049</sqlCode>
+<name>Reporte de Utilidad por Línea</name>
+<field name="descripcion" class="java.lang.String" />
+<field name="porcentaje_linea" class="java.lang.Double" />
+<variable name="Chart" class="net.sf.jasperreports.engine.JRRenderable" calculation="System" resetType="Report" incrementType="None" />
+<title>
+  <band height="0" isSplitAllowed="true" />
+</title>
+<pageHeader>
+  <band height="380" isSplitAllowed="true">
+    <textField isStretchWithOverflow="false" evaluationTime="Now" hyperlinkType="None" hyperlinkTarget="Self" bookmarkLevel="0">
+      <reportElement x="50" y="0" width="555" height="25" style="eMaku-Font5" positionType="FixRelativeToTop" stretchType="NoStretch" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+      <textElement />
+      <textFieldExpression class="java.lang.String"><![CDATA[$P{Empresa}]]></textFieldExpression>
+    </textField>
+    <textField isStretchWithOverflow="false" evaluationTime="Now" hyperlinkType="None" hyperlinkTarget="Self" bookmarkLevel="0">
+      <reportElement x="50" y="18" width="555" height="25" style="eMaku-Font5" positionType="FixRelativeToTop" stretchType="NoStretch" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+      <textElement />
+      <textFieldExpression class="java.lang.String"><![CDATA["Nit: " + $P{Nit}]]></textFieldExpression>
+    </textField>
+    <textField isStretchWithOverflow="false" evaluationTime="Now" hyperlinkType="None" hyperlinkTarget="Self" bookmarkLevel="0">
+      <reportElement x="50" y="36" width="555" height="25" style="eMaku-Font5" positionType="FixRelativeToTop" stretchType="NoStretch" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+      <textElement />
+      <textFieldExpression class="java.lang.String"><![CDATA["Fecha: " + $P{Fecha}]]></textFieldExpression>
+    </textField>
+    <textField isStretchWithOverflow="false" evaluationTime="Now" hyperlinkType="None" hyperlinkTarget="Self" bookmarkLevel="0">
+      <reportElement x="0" y="0" width="520" height="15" style="eMaku-Font2" positionType="FixRelativeToTop" stretchType="NoStretch" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+      <textElement textAlignment="Right" />
+      <textFieldExpression class="java.lang.String"><![CDATA["Página " + String.valueOf($V{PAGE_NUMBER})]]></textFieldExpression>
+    </textField>
+    <line direction="TopDown">
+      <reportElement x="20" y="55" width="515" height="1" positionType="FixRelativeToTop" stretchType="NoStretch" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+      <graphicElement />
+    </line>
+    <image scaleImage="Clip" hAlign="Center" hyperlinkType="Reference" isLazy="false" onErrorType="Error" evaluationTime="Now" hyperlinkTarget="Self" bookmarkLevel="0">
+      <reportElement x="27" y="66" width="500" height="300" positionType="FixRelativeToTop" stretchType="NoStretch" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+      <graphicElement />
+      <imageExpression class="net.sf.jasperreports.engine.JRRenderable"><![CDATA[$V{Chart}]]></imageExpression>
+      <hyperlinkReferenceExpression><![CDATA["http://www.qhatu.net"]]></hyperlinkReferenceExpression>
+    </image>
+    <line direction="TopDown">
+      <reportElement x="20" y="376" width="515" height="1" positionType="FixRelativeToTop" stretchType="NoStretch" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+      <graphicElement />
+    </line>
+  </band>
+</pageHeader>
+<columnHeader>
+  <band height="30" isSplitAllowed="true">
+    <rectangle>
+      <reportElement x="80" y="5" width="400" height="20" forecolor="#000000" backcolor="#efefef" positionType="FixRelativeToTop" stretchType="NoStretch" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+      <graphicElement />
+    </rectangle>
+    <staticText>
+      <reportElement x="200" y="10" width="555" height="15" style="eMaku-Font5" positionType="FixRelativeToTop" stretchType="NoStretch" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+      <textElement>
+        <font />
+      </textElement>
+      <text><![CDATA[LINEA]]></text>
+    </staticText>
+    <staticText>
+      <reportElement x="310" y="10" width="555" height="15" style="eMaku-Font5" positionType="FixRelativeToTop" stretchType="NoStretch" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+      <textElement>
+        <font />
+      </textElement>
+      <text><![CDATA[PORCENTAJE]]></text>
+    </staticText>
+  </band>
+</columnHeader><detail>
+  <band height="20" isSplitAllowed="true">
+    <textField isStretchWithOverflow="false" evaluationTime="Now" hyperlinkType="None" hyperlinkTarget="Self" bookmarkLevel="0">
+      <reportElement x="180" y="0" width="200" height="10" positionType="FixRelativeToTop" stretchType="NoStretch" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+      <textElement />
+      <textFieldExpression class="java.lang.String"><![CDATA[$F{descripcion}]]></textFieldExpression>
+    </textField>
+    <textField isStretchWithOverflow="false" evaluationTime="Now" hyperlinkType="None" hyperlinkTarget="Self" bookmarkLevel="0">
+      <reportElement x="300" y="0" width="50" height="10" positionType="FixRelativeToTop" stretchType="NoStretch" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+      <textElement textAlignment="Right" />
+      <textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("#,###,##0.00").format($F{porcentaje_linea}) + "%"]]></textFieldExpression>
+    </textField>
+  </band>
+</detail><columnFooter>
+  <band height="10" isSplitAllowed="true" />
+</columnFooter>
+<pageFooter>
+  <band height="15" isSplitAllowed="true">
+    <textField hyperlinkType="Reference" hyperlinkTarget="Blank" isStretchWithOverflow="false" evaluationTime="Now" bookmarkLevel="0">
+      <reportElement x="30" y="0" width="520" height="15" style="eMaku-Font2" positionType="FixRelativeToTop" stretchType="NoStretch" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" forecolor="blue" />
+      <textElement />
+      <textFieldExpression class="java.lang.String"><![CDATA[$P{Qhatu}]]></textFieldExpression>
+      <hyperlinkReferenceExpression><![CDATA[$P{Url}]]></hyperlinkReferenceExpression>
+    </textField>
+    <textField isStretchWithOverflow="false" evaluationTime="Now" hyperlinkType="None" hyperlinkTarget="Self" bookmarkLevel="0">
+      <reportElement x="0" y="0" width="520" height="15" style="eMaku-Font2" positionType="FixRelativeToTop" stretchType="NoStretch" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+      <textElement textAlignment="Right" />
+      <textFieldExpression class="java.lang.String"><![CDATA["Página " + String.valueOf($V{PAGE_NUMBER}) + " de "]]></textFieldExpression>
+    </textField>
+    <textField evaluationTime="Report" isStretchWithOverflow="false" hyperlinkType="None" hyperlinkTarget="Self" bookmarkLevel="0">
+      <reportElement x="518" y="0" width="520" height="15" style="eMaku-Font2" positionType="FixRelativeToTop" stretchType="NoStretch" isPrintRepeatedValues="true" isRemoveLineWhenBlank="false" isPrintInFirstWholeBand="false" isPrintWhenDetailOverflows="false" />
+      <textElement textAlignment="Left" />
+      <textFieldExpression class="java.lang.String"><![CDATA[" " + String.valueOf($V{PAGE_NUMBER})]]></textFieldExpression>
+    </textField>
+  </band>
+</pageFooter>
+</jasperReport>

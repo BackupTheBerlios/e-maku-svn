@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<jmenu name="Edit">
+                <item name="Select All" action="selectAll" />
+                <item name="Copy" action="copy" />
+                <item name="Paste" action="paste" />
+	</jmenu>
+</root>

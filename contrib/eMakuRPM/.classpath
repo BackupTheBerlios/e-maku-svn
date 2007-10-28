@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/jdom.jar"/>
+	<classpathentry kind="lib" path="lib/jdbc-pgsql.jar"/>
+	<classpathentry kind="lib" path="lib/commons.jar"/>
+	<classpathentry kind="lib" path="lib/commons-beanutils-bean-collections.jar"/>
+	<classpathentry kind="lib" path="lib/commons-beanutils.jar"/>
+	<classpathentry kind="lib" path="lib/commons-beanutils-core.jar"/>
+	<classpathentry kind="lib" path="lib/jasper.jar"/>
+	<classpathentry kind="lib" path="lib/digester.jar"/>
+	<classpathentry kind="lib" path="lib/logging.jar"/>
+	<classpathentry kind="lib" path="lib/jdt-compiler.jar"/>
+	<classpathentry kind="lib" path="lib/syntax.jar"/>
+	<classpathentry kind="lib" path="lib/theme.jar"/>
+	<classpathentry kind="lib" path="lib/jcommon-1.0.10.jar"/>
+	<classpathentry kind="lib" path="lib/jfreechart-1.0.6.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

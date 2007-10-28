@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<jmenu name="File">
+		<item name="Open Root" action="root" />
+		<item name="Settings" action="conf" />
+		<separator />
+		<item name="Exit" action="exit" />
+	</jmenu>
+<jmenu name="Templates">
+                <item name="Clean Jar" action="clean_jar" />
+		<item name="Update Jar" action="update" />
+		<item name="Export All" action="export" />
+</jmenu>
+	<jmenu name="Help">
+		<item name="About" action="about" />
+	</jmenu>
+</root>

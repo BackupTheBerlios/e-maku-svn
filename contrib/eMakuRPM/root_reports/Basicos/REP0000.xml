@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD Report Design//EN" "/usr/local/emaku/reports/dtd/jasperreport.dtd">
+<jasperReport name="EmakuReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" language="java" columnCount="1" printOrder="Vertical" orientation="Portrait" whenNoDataType="NoPages" columnSpacing="0" isTitleNewPage="false" isSummaryNewPage="false" isFloatColumnFooter="false" whenResourceMissingType="Null" isIgnorePagination="false">
+<code>REP0000</code>
+<sqlCode>SRP000</sqlCode>
+<name>Reporte 0</name>
+<field name="var" class="java.lang.String" />
+<title>
+  <band height="10" isSplitAllowed="true" />
+</title>
+<pageHeader>
+  <band height="120" isSplitAllowed="true" />
+</pageHeader>
+<columnHeader>
+  <band height="10" isSplitAllowed="true" />
+</columnHeader><detail>
+  <band height="20" isSplitAllowed="true" />
+</detail><columnFooter>
+  <band height="10" isSplitAllowed="true" />
+</columnFooter>
+<pageFooter>
+  <band height="15" isSplitAllowed="true" />
+</pageFooter>
+</jasperReport>
