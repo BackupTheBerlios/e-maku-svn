@@ -1314,7 +1314,7 @@ public class GenericData extends JPanel implements DateListener,
 	private void notificando(AnswerEvent event) {
 		for(AnswerListener l:answerListener) {
 			if (l.containSqlCode(event.getSqlCode())) {
-				System.out.println("Notificando a =>"+l);
+				//System.out.println("Notificando a =>"+l);
 				l.arriveAnswerEvent(event);
 			}
 		}

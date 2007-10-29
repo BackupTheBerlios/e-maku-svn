@@ -1215,6 +1215,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 			Document doc = new Document();
 			Element elm = (Element) ((Element) e.getElement()).clone();
 			doc.setRootElement(elm);
+			System.out.println("Cargando datos recordEvent");
 			TMFDtabla.setQuery(doc, true);
 			JTtabla.scrollRectToVisible(JTtabla.getCellRect(TMFDtabla
 					.getCurrentIndex(), 0, false));

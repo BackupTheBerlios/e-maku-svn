@@ -148,7 +148,8 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         
         /* Cargando informacion */
         int o=0;
-        for (int i=0;Irows.hasNext();i++) {
+        int i=0;
+        for (i=0;Irows.hasNext();i++) {
 			o++;
 			Element Erow = (Element) Irows.next();
 			List Lcol = Erow.getChildren();
@@ -1928,6 +1929,8 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
      * @param search
      */
     public void setQuery(Document doc,boolean search) {
+        System.out.println("Cargando datos setQuery ...");
+
     	/*
     	 * Anteriormente la carga de los datos se hacia en un hilo,
     	 * el hilo lo elimine porque no encontre razon para trabajarlo,
