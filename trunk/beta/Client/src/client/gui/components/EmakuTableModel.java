@@ -1918,7 +1918,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		return pack;
     }
     
-    public synchronized void setQuery(Document doc) {
+    public void setQuery(Document doc) {
     	setQuery(doc,false);
     }
     

@@ -1183,58 +1183,16 @@ public class LNContabilidad {
 		 * id_tercero id_prod_serv debe haber
 		 */
 
-		QueryRunner RQanular = new QueryRunner(bd, "SCI0015");
-		double saldo = 0;
-
+		QueryRunner RQanular = new QueryRunner(bd, "SCU0005",new String[]{idDocumento});
+		RQanular.ejecutarSQL();
+		
 		while (RSdatos.next()) {
-			String[] record = new String[10];
-			record[0] = RSdatos.getString(1);
-			record[1] = RSdatos.getString(2) == null ? "NULL" : RSdatos
-					.getString(2);
-			record[2] = RSdatos.getString(3) == null ? "NULL" : RSdatos
-					.getString(3);
-			record[3] = RSdatos.getString(4) == null ? "NULL" : RSdatos
-					.getString(4);
-			record[4] = CacheKeys.getDate();
-			record[5] = concepto;
-			record[6] = idDocumento;
-
-			saldo = LinkingCache.getSaldoLibroAux(bd, record[1].equals("NULL") ? ""
-					: record[1], record[0], record[2].equals("NULL") ? ""
-					: record[2], record[3].equals("NULL") ? "" : record[3]);
-
-			LNUndoSaldos.setSaldoAntLibroAux(bd, record[1].equals("NULL") ? ""
-					: record[1], record[0], record[2].equals("NULL")? ""
-					: record[2], record[3].equals("NULL")? "" : record[3], saldo);
-			if (RSdatos.getDouble(5) > 0) {
-				saldo -= RSdatos.getDouble(5);
-				try {
-					BigDecimal bigDecimal = new BigDecimal(saldo);
-					bigDecimal = bigDecimal.setScale(2,
-							BigDecimal.ROUND_HALF_UP);
-					saldo = bigDecimal.doubleValue();
-				} catch (NumberFormatException NFEe) {
-				}
-				record[7] = "0";
-				record[8] = RSdatos.getString(5);
-			} else {
-				saldo += RSdatos.getDouble(6);
-				try {
-					BigDecimal bigDecimal = new BigDecimal(saldo);
-					bigDecimal = bigDecimal.setScale(2,
-							BigDecimal.ROUND_HALF_UP);
-					saldo = bigDecimal.doubleValue();
-				} catch (NumberFormatException NFEe) {
-				}
-				record[7] = RSdatos.getString(6);
-				record[8] = "0";
-			}
-			record[9] = String.valueOf(saldo);
-			RQanular.ejecutarSQL(record);
-			LinkingCache.setSaldoLibroAux(bd, record[1].equals("NULL")? ""
-					: record[1], record[0], record[2].equals("NULL")? ""
-					: record[2], record[3].equals("NULL")? "" : record[3], saldo);
-
+			String idTercero = RSdatos.getString(3)==null?"-1":RSdatos.getString(3);
+			String idProducto = RSdatos.getString(4)==null?"-1":RSdatos.getString(4);
+			recoverData(RSdatos.getString(1),
+					RSdatos.getString(2),
+					idTercero,
+					idProducto);
 		}
 		RSdatos.close();
 		RQdocumento.closeStatement();

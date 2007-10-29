@@ -563,99 +563,13 @@ public class LNInventarios {
 		QueryRunner RQdocumento = new QueryRunner(bd, "SCS0051",
 				new String[] { idDocumento });
 		ResultSet RSdatos = RQdocumento.ejecutarSELECT();
-		/*
-		 * La anterior consulta nos retorna las siguientes columnas 1.
-		 * id_prod_serv 2. id_bodega 3. pinventario 4. entrada 5. valor_ent 6.
-		 * salida 7. valor_sal
-		 * 
-		 * del anterior registro se analiza los campos entrada y salida; con
-		 * ellos se sabe el tipo de movimiento a anular.
-		 */
+		QueryRunner RQanular = new QueryRunner(bd, "SCU0006",new String[]{idDocumento});
+		RQanular.ejecutarSQL();
 
 		while (RSdatos.next()) {
-			Vector<String> record = new Vector<String>();
-			String[] ponderado = null;
-			QueryRunner RQanular = null;
-
-			record.addElement(CacheKeys.getDate());
-			record.addElement(idDocumento);
-			record.addElement(RSdatos.getString(2));
-			record.addElement(RSdatos.getString(1));
-			/*
-			 * Se captura los saldos antes del movimiento
-			 */
-			saldo = LinkingCache.getSaldoInventario(bd, RSdatos.getString(2),
-					RSdatos.getString(1));
-			vsaldo = LinkingCache.getVSaldoInventario(bd, RSdatos.getString(2),
-					RSdatos.getString(1));
-
-			/*
-			 * Se almacena primer saldo de la transaccion
-			 */
-
-			LNUndoSaldos.setSaldoAntInv(bd, RSdatos.getString(2), RSdatos
-					.getString(1), saldo);
-
-			/*
-			 * REGISTROS DE UNA ENTRADA
-			 * 
-			 * record[0] = fecha record[1] = ndocumento record[2] = id_bodega
-			 * record[3] = id_prod_serv record[4] = entrada record[5] =
-			 * valor_ent record[6] = pinventario record[7] = saldo record[8] =
-			 * valor_saldo
-			 * 
-			 * REGISTRO DE UNA SALIDA
-			 * 
-			 * record[0] = fecha record[1] = ndocumento record[2] = id_bodega
-			 * record[3] = id_prod_serv record[4] = salida record[5] = valor_sal
-			 * record[6] = pinventario record[7] = saldo record[8] = valor_saldo
-			 */
-
-			/*
-			 * Si la columna 4 retorna un valor diferente de 0 entonces el
-			 * movimiento a anular es una entrada
-			 */
-			if (RSdatos.getDouble(4) != 0) {
-				RQanular = new QueryRunner(bd, "SCI00O4");
-
-				record.addElement(RSdatos.getString(4));
-				record.addElement(RSdatos.getString(5));
-
-				/*
-				 * Se multiplica el 3 registro por -1 para indicar que el
-				 * movimiento generado sea una salida.
-				 */
-
-				ponderado = ponderar(RSdatos.getString(2),
-						RSdatos.getString(1), RSdatos.getDouble(4) * -1,
-						RSdatos.getDouble(5));
-			}
-			/*
-			 * si no, si la columna 6 retorna un valor diferente de 0 entonces
-			 * el movimiento a anular es una salida
-			 */
-			else if (RSdatos.getDouble(6) != 0) {
-				RQanular = new QueryRunner(bd, "SCI00O8");
-				record.addElement(RSdatos.getString(6));
-				record.addElement(RSdatos.getString(7));
-				ponderado = ponderar(RSdatos.getString(2),
-						RSdatos.getString(1), RSdatos.getDouble(6), RSdatos
-								.getDouble(7));
-			}
-			/*
-			 * si no, es por que el movimiento a anular es gasto o un descuento
-			 */
-			else {
-				record.addElement(RSdatos.getString(4));
-			}
-
-			if (ponderado != null) {
-				record.addElement(ponderado[0]);
-				record.addElement(ponderado[1]);
-				record.addElement(ponderado[2]);
-				RQanular.ejecutarSQL(record.toArray(new String[record.size()]));
-				RQanular.closeStatement();
-			}
+			recoverData(RSdatos.getString(1),
+					RSdatos.getString(2),
+					RSdatos.getString(3));
 		}
 		RSdatos.close();
 		RQdocumento.closeStatement();
