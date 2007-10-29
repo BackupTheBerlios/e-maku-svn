@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -130,7 +131,7 @@ public class ConfigFileHandler extends EmakuParametersStructure {
         try {
             company = new ArrayList<Element>();
             builder = new SAXBuilder(false);
-            String path = ClientConstants.CONF+"client.conf";
+            String path = ClientConstants.CONF + "client.conf";
             File file = new File(path);
             doc = builder.build(file);
             root = doc.getRootElement();
@@ -142,35 +143,56 @@ public class ConfigFileHandler extends EmakuParametersStructure {
              * en este caso Configuración
              */
 
+            int counter = 0;
+            Vector<String> parameters = new Vector<String>();
             while (i.hasNext()) {
-
                 Element data = (Element) i.next();
                 String name = data.getName(); 
                 if (name.equals("language")) {
                 	language = data.getValue();
+                	parameters.add("language");
+                	counter++;
                 } 
                 else if (name.equals("host")) {
                     host = data.getValue();
+                	parameters.add("host");
+                	counter++;
                 } else if (name.equals("serverport")) {
                     serverport = Integer.parseInt(data.getValue());
+                	parameters.add("serverport");
+                	counter++;
                 } else if (name.equals("log")) {
                 	logMode = data.getValue();
+                	parameters.add("log");
+                	counter++;
                 } 
                 else if (name.equals("lookAndFeel")) {
                     lookAndFeel = data.getValue();
+                    parameters.add("lookAndFeel");
+                	counter++;
 	            }
                 /* else if (name.equals("jarLookAndFeel")) {
                     URLJarLookAndFeel = data.getValue();
 	            } */
                 else if (name.equals("cash")) {
                 	cash = data.getValue();
+                	parameters.add("cash");
+                	counter++;
                 }
                 else if (name.equals("company")) {
                 	company.add((Element)data.clone());
+                	parameters.add("company");
+                	counter++;
                 }
                 EmakuParametersStructure.addParameter(name,data.getValue());
             }
             
+            if(counter < 7) {
+            	System.out.println("ERROR: The config file (client.conf) is incorrect or incomplete.");
+            	System.out.println("       Please, check and fix the tags missing.");
+            	System.exit(0);
+            }
+           
             lang.loadLanguage(language);
         }
         catch (FileNotFoundException FNFEe) {

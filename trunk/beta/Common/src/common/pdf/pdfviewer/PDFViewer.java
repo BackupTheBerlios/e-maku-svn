@@ -99,7 +99,7 @@ public class PDFViewer implements ReportListener {
 	 * @param bytes
 	 */
 	private void openReport(String reportTitle, byte[] bytes) {
-
+        /*
 		// get any user set dpi
 		String hiresFlag = System.getProperty("hires");
 		if (hiresFlag != null)
@@ -109,7 +109,9 @@ public class PDFViewer implements ReportListener {
 		String memFlag = System.getProperty("memory");
 		if (memFlag != null)
 			commonValues.setUseHiresImage(false);
-
+		*/
+		
+		commonValues.setUseHiresImage(false);
 		commonValues.maxViewY = 0;// ensure reset for any viewport
 
 		/**
