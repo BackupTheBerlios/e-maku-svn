@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/CoMeet-Lib/bin"/>
+	<classpathentry kind="lib" path="dist/libs/jdom.jar"/>
+	<classpathentry kind="lib" path="dist/libs/jcalendar.jar"/>
+	<classpathentry kind="lib" path="dist/libs/synthetica.jar"/>
+	<classpathentry kind="lib" path="dist/libs/syntheticaBlueIce.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/CoMeet-Lib"/>
+	<classpathentry kind="lib" path="dist/libs/poi.jar"/>
+	<classpathentry kind="lib" path="dist/libs/mail.jar"/>
+	<classpathentry kind="lib" path="dist/libs/activation.jar"/>
+	<classpathentry kind="lib" path="dist/libs/samskivert.jar"/>
+	<classpathentry kind="lib" path="dist/libs/icons.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

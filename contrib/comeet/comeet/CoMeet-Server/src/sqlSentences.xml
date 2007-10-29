@@ -1,0 +1,598 @@
+<root>
+	<sentence>
+		<!--Descripcion: ... -->
+		<code>SRV0001</code>
+		<sql>
+			SELECT codigo,driver,args 
+			FROM transacciones
+			ORDER BY codigo
+		</sql>
+	</sentence>
+	<!--========================== Selects =================================-->
+	<sentence>
+		<!--Descripcion: ... -->
+		<code>SEL0001</code>
+		<sql>
+			SELECT gid,nombre_grupo 
+			FROM grupos 
+			WHERE mostrable=true
+			ORDER BY nombre_grupo 
+		</sql>
+	</sentence>
+        <sentence>
+                <!--Descripcion: Esta consulta muestra las direcciones ip que deben ser validadas dado un login -->
+                <code>SEL0002</code>
+                <sql>
+                        SELECT DISTINCT pv.nombre,pv.ip,up.valid_ip
+                        FROM usuarios_pventa up, puntosv pv
+                        WHERE up.uid = (SELECT uid FROM usuarios WHERE login='?')
+                        AND up.codigo_pventa=pv.codigo;
+                </sql>
+        </sentence>
+        <sentence>
+                <!--Descripcion: Esta consulta muestra las direcciones ip que deben ser validadas dado un login -->
+                <code>SEL0003</code>
+                <sql>
+			SELECT nombre 
+			FROM puntosv 
+			WHERE ip='?'
+                </sql>
+        </sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>SEL0004</code>
+		<sql>
+			SELECT * 
+			FROM grupos 
+			ORDER BY nombre_grupo,zona desc
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>SEL0005</code>
+		<sql>
+			SELECT pv.*,g.nombre_grupo 
+			FROM puntosv pv, grupos g 
+			WHERE g.gid=pv.gid 
+			ORDER BY nombre
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: Consulta la lista de usuarios administrativos-->
+		<code>SEL0006</code>
+		<sql>
+			SELECT 
+			u.uid,u.login,u.clave,u.nombres,u.correo,u.admin,u.audit,u.gid,g.nombre_grupo 
+			FROM 
+			usuarios u, grupos g 
+			WHERE g.gid=u.gid AND g.zona=false AND 
+			u.habilitado=true AND g.nombre_grupo&lt;&gt;'COLOCADORES' 
+			ORDER BY u.login 
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: Consulta la lista de usuarios colocadores -->
+		<code>SEL0007</code>
+		<sql>
+			SELECT DISTINCT
+			u.uid,u.login,u.clave,u.nombres,u.correo,u.admin,u.audit,u.gid,pv.nombre,upv.valid_ip,g.nombre_grupo
+			FROM 
+			usuarios u, grupos g, puntosv pv, usuarios_pventa upv
+			WHERE 
+			g.zona=true AND 
+			upv.codigo_pventa=pv.codigo AND 
+			g.zona=true AND 
+			u.uid=upv.uid AND pv.gid=g.gid
+			ORDER BY u.login
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>SEL0008</code>
+		<sql>
+			SELECT u.uid,g.nombre_grupo 
+			FROM usuarios u, grupos g 
+			WHERE login='?' AND g.gid=u.gid
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>SEL0009</code>
+		<sql>
+			SELECT 
+			pv.codigo,Upv.valid_ip 
+			FROM 
+			usuarios u, puntosv pv, usuarios_pventa upv 
+			WHERE 
+			u.uid=upv.uid AND pv.codigo=upv.codigo_pventa AND u.login='?' 
+			ORDER BY pv.codigo
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>SEL0010</code>
+		<sql>
+			SELECT mostrable,zona 
+			FROM grupos WHERE nombre_grupo='?'
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: Consulta la lista de mensajes de un usuario a partir de su login -->
+	<code>SEL0011</code>
+	<sql>
+			SELECT m.fecha,m.hora,u.login,m.asunto,m.confirmado,m.texto 
+			FROM mensajes m,usuarios u 
+			WHERE 
+  			uid_destino=(SELECT uid FROM usuarios WHERE login='?') 
+  			AND u.login=(SELECT login FROM usuarios WHERE uid=m.uid_origen)
+			ORDER BY m.fecha
+        </sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>SEL0012</code>
+		<sql>
+			SELECT
+			m.fecha,m.hora,g.nombre_grupo,m.asunto,m.texto,m.confirmado
+			FROM 
+			mensajes m,
+			usuarios u, 
+			(SELECT m.mid,u.uid as id FROM mensajes m, usuarios u WHERE u.uid=m.uid_destino AND u.login='?') AS foo,
+			grupos g
+			WHERE 
+			m.mid=foo.mid AND 
+			u.uid=m.uid_origen AND
+			u.gid=g.gid AND 
+			foo.id=m.uid_destino AND
+			current_date&lt;(fecha+tiempo_vida) AND u.uid&lt;&gt;(SELECT uid FROM usuarios WHERE login='?')
+			ORDER BY fecha desc ,hora desc
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>SEL0013</code>
+		<sql>
+			SELECT count(*) AS count
+			FROM 
+			usuarios u 
+			WHERE 
+			u.gid=(SELECT gid FROM grupos g WHERE g.nombre_grupo='?')
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>SEL0014</code>
+		<sql>
+			SELECT count(*) AS count
+			FROM puntosv  
+			WHERE gid=(SELECT gid FROM grupos g WHERE g.nombre_grupo='?')
+		</sql>
+	</sentence>
+	<sentence>
+        <!--Descripcion: Lista los mensajes de control enviados en un rango de fechas -->
+                <code>SEL0015</code>
+                <sql>
+			SELECT DISTINCT m.fecha,m.hora,m.asunto,u.login,u.nombres,m.texto 
+			FROM mensajes m, usuarios u 
+			WHERE control=true 
+			AND m.uid_origen=u.uid 
+			AND (CAST(m.fecha AS timestamp)+m.hora)&gt;='?' 
+			AND (CAST(m.fecha AS timestamp)+m.hora)&lt;='?' 
+			ORDER BY fecha ASC
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>SEL0016</code>
+		<sql>
+			SELECT
+			m.mid,m.fecha,m.hora,u.login AS de,bar.name AS para,m.asunto,m.texto,CASE WHEN confirmado='t' THEN 'true' ELSE 'false' END
+			FROM
+			mensajes m,
+			(SELECT uid AS id,login AS name FROM usuarios) AS bar,
+			usuarios u
+			WHERE 
+			m.uid_destino=bar.id AND 
+			uid_origen=u.uid AND 
+			u.login ILIKE '%?%' AND 
+			bar.name ILIKE '%?%'AND 
+			fecha='?' AND 
+			asunto ILIKE '%?%'
+			ORDER BY m.mid
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>SEL0017</code>
+		<sql>
+			SELECT DISTINCT 
+			date_part('year',fecha),
+			date_part('month', fecha),
+			date_part('day', fecha) 
+			FROM mensajes
+			ORDER BY date_part('month', fecha) 
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>SEL0018</code>
+		<sql>
+			SELECT
+			m.mid,m.fecha,m.hora,u.login AS de ,bar.name AS para,m.asunto,m.texto,CASE WHEN confirmado='t' THEN 'true' ELSE 'false' END
+			FROM
+			mensajes m,
+			(SELECT uid AS id,login AS name FROM usuarios) AS bar,
+			usuarios u
+			WHERE 
+			m.uid_destino=bar.id AND 
+			uid_origen=u.uid AND 
+			fecha&gt;='?' AND fecha&lt;='?' ORDER BY m.fecha
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>SEL0019</code>
+		<sql>
+			SELECT
+			m.mid,m.fecha,m.hora,u.login AS de ,bar.name AS para,m.asunto,m.texto,CASE WHEN confirmado='t' THEN 'true' ELSE 'false' END
+			FROM
+			mensajes m,
+			(SELECT uid AS id,login AS name FROM usuarios) AS bar,
+			usuarios u
+			WHERE 
+			m.uid_destino=bar.id AND 
+			uid_origen=u.uid AND 
+			fecha&gt;=to_date('?', 'YYYY-MM-DD') AND fecha&lt;=(to_date('?', 'YYYY-MM-DD')-1) 
+			ORDER BY m.fecha
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>SEL0020</code>
+		<sql>
+			SELECT
+			m.mid,m.fecha,m.hora,u.login AS de ,bar.name AS para,m.asunto,m.texto,CASE WHEN confirmado='t' THEN 'true' ELSE 'false' END
+			FROM
+			mensajes m,
+			(SELECT uid AS id,login AS name FROM usuarios) AS bar,
+			usuarios u
+			WHERE 
+			m.uid_destino=bar.id AND 
+			uid_origen=u.uid AND 
+			fecha='?' ORDER BY m.fecha
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>SEL0021</code>
+		<sql>
+			SELECT
+			m.mid,m.fecha,m.hora,u.login AS de ,bar.name AS para,m.asunto,m.texto,CASE WHEN confirmado='t' THEN 'true' ELSE 'false' END
+			FROM
+			mensajes m,
+			(SELECT uid AS id,login AS name FROM usuarios) AS bar,
+			usuarios u
+			WHERE 
+			m.uid_destino=bar.id AND 
+			uid_origen=u.uid AND
+			u.login ILIKE '%?%' AND 
+			bar.name ILIKE '%?%'AND
+			asunto ILIKE '%?%'
+			ORDER BY m.mid
+		</sql>
+	</sentence>
+        <sentence>
+        <!--Descripcion: ... -->
+                <code>SEL0022</code>
+                <sql>SELECT COUNT(*) FROM usuarios WHERE login='?'</sql>
+        </sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>SEL0023</code>
+		<sql>SELECT COUNT(*) FROM usuarios WHERE login='?' AND clave='?'</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>SEL0024</code>
+		<sql>
+			SELECT uid FROM usuarios u WHERE login='?' UNION 
+			SELECT gid FROM grupos WHERE nombre_grupo='?'
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>SEL0025</code>
+		<sql>
+                        SELECT DISTINCT * FROM (
+			SELECT
+				u.uid,login,nombres,correo,
+				admin,audit,u.gid,
+				g.nombre_grupo 
+			FROM 
+				usuarios u ,puntosv pv,usuarios_pventa upv,grupos g 
+			WHERE 
+				u.login='?' AND pv.codigo=upv.codigo_pventa AND u.uid=upv.uid AND g.gid=u.gid 
+			UNION SELECT
+				u.uid,login,nombres,correo,
+				admin,audit,u.gid,g.nombre_grupo 
+			FROM 
+				usuarios u,grupos g 
+			WHERE 
+				login='?' AND (admin=true OR audit=true) AND g.gid=u.gid
+			ORDER BY login ) AS foo
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>SEL0026</code>
+		<sql>
+			SELECT 
+				u.uid,login,nombres,correo,
+				admin,audit,u.gid,false,'Sin punto asignado',g.gid,null,g.nombre_grupo 
+			FROM 
+				usuarios u,grupos g 
+			WHERE 
+				login='?' AND g.gid=u.gid
+			ORDER BY login
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>SEL0027</code>
+		<sql>
+			SELECT 
+				u.uid,login,nombres,correo,
+				admin,audit,u.gid,false,'Sin punto asignado',g.gid,null,g.nombre_grupo 
+			FROM 
+				usuarios u,grupos g 
+			WHERE 
+				g.gid=u.gid
+			ORDER BY login
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>SEL0028</code>
+		<sql>
+			SELECT DISTINCT g.gid,g.nombre_grupo 
+			FROM grupos g, usuarios u 
+			WHERE u.gid=g.gid AND u.login ILIKE 'CV%'
+			ORDER BY g.nombre_grupo
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>SEL0029</code>
+		<sql>
+			SELECT clave FROM usuarios u WHERE u.login='?'
+		</sql>
+	</sentence>
+        <sentence>
+        <!--Descripcion: Listado de usuarios que respondieron tarde el mensaje de control -->
+                <code>SEL0030</code>
+                <sql>
+                        SELECT u.login,u.nombres,pv.nombre AS punto_colocacion,foo.diferencia AS diferencia
+                        FROM (
+                              SELECT u.login,u.nombres, (CAST(m.fecha AS timestamp)+m.hora) AS fecha_mensaje,
+                                m.fecha_confirmacion, m.minutos AS minutos_de_vida,
+                                date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) AS diferencia,
+                                'NO' AS valido
+                              FROM
+                                mensajes m, usuarios u
+                              WHERE
+                                date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) &gt; m.minutos
+                                AND u.uid=m.uid_destino AND control=true
+			)
+                        AS foo, usuarios u, puntosv pv, usuarios_pventa upv
+                        WHERE
+                              u.login=foo.login AND upv.uid=(SELECT uid FROM usuarios WHERE login=foo.login)
+                              AND pv.codigo=upv.codigo_pventa AND foo.fecha_mensaje=(CAST('?' AS timestamp)+'?')
+                        ORDER BY diferencia ASC
+                </sql>
+        </sentence>
+        <sentence>
+        <!--Descripcion: Lista de usuarios que estaban conectados y nunca respondieron al mensaje de control-->
+                <code>SEL0031</code>
+                <sql>
+                        SELECT u.login,u.nombres,pv.nombre AS punto_colocacion
+                        FROM (
+                              SELECT
+                                u.login, u.nombres,
+                                (CAST(m.fecha AS timestamp)+m.hora) AS fecha_mensaje,
+                                null AS fecha_confirmacion,
+                                m.minutos AS minutos_de_vida
+                              FROM
+                                mensajes m, usuarios u
+                              WHERE
+                                u.uid=m.uid_destino AND control=true AND confirmado=false
+			)
+                        AS foo, usuarios u, puntosv pv, usuarios_pventa upv
+                        WHERE
+                              u.login=foo.login AND upv.uid=(SELECT uid FROM usuarios WHERE login=foo.login)
+                              AND pv.codigo=upv.codigo_pventa AND foo.fecha_mensaje=(CAST('?' AS timestamp)+'?')
+                        ORDER BY foo.login ASC
+                </sql>
+        </sentence>
+        <sentence>
+        <!--Descripcion: Lista de usuarios que estaban conectados y respondieron a tiempo el mensaje de control -->
+                <code>SEL0032</code>
+                <sql>
+ 			SELECT u.login,u.nombres,pv.nombre AS punto_colocacion,diferencia
+                        FROM (
+			      SELECT
+                                u.login, u.nombres,
+                                (CAST(m.fecha AS timestamp)+m.hora) AS fecha_mensaje,
+                                m.fecha_confirmacion,
+                                m.minutos AS minutos_de_vida,
+                                date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) AS diferencia
+                              FROM
+                                mensajes m, usuarios u
+                              WHERE
+                                date_part('minute',(m.fecha_confirmacion - (CAST(m.fecha AS timestamp)+m.hora))) &lt;= m.minutos
+                                AND u.uid=m.uid_destino AND control=true
+                             )
+                        AS foo, usuarios u, puntosv pv, usuarios_pventa upv
+                        WHERE
+                              u.login=foo.login AND upv.uid=(SELECT uid FROM usuarios WHERE login=foo.login)
+                              AND pv.codigo=upv.codigo_pventa AND foo.fecha_mensaje=(CAST('?' AS timestamp)+'?')
+                        ORDER BY diferencia ASC
+                </sql>
+        </sentence>
+        <sentence>
+        <!--Descripcion: Lista de usuarios que no estaban conectados al momento del mensaje de control y que no son administrativos -->
+                <code>SEL0033</code>
+                <sql>
+                        SELECT u.login AS login, u.nombres, pv.nombre AS punto_colocacion 
+			FROM usuarios u, puntosv pv, usuarios_pventa upv
+                        WHERE login LIKE 'CV%' AND upv.uid=u.uid AND pv.codigo=upv.codigo_pventa 
+			      AND NOT EXISTS 
+                        	(
+                                 SELECT usuario.login FROM mensajes m, usuarios usuario
+                                 WHERE m.control=true AND usuario.uid=m.uid_destino
+                                 AND (CAST(m.fecha AS timestamp)+m.hora)=(CAST('?' AS timestamp)+'?')
+				 AND u.login=usuario.login
+                        	)
+			ORDER BY login
+                </sql>
+        </sentence>
+        <sentence>
+        <!--Descripcion: Lista de usuarios que no estaban conectados al momento del mensaje de control y que no son administrativos -->
+                <code>SEL0034</code>
+                <sql>
+			SELECT CAST(codigo AS integer)+1 
+			FROM puntosv 
+			ORDER BY codigo DESC LIMIT 1
+                </sql>
+        </sentence>
+	<!--============================= Inserts ===============================-->
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>INS0001</code>
+		<sql>
+			INSERT INTO 
+			usuarios (login,clave,nombres,correo,admin,habilitado,gid,audit) 
+			VALUES ('?','?','?','?','?','?','?','?');
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>INS0002</code>
+		<sql>
+			INSERT INTO 
+			usuarios_pventa (uid,codigo_pventa,valid_ip) 
+			VALUES 
+			((SELECT uid FROM usuarios WHERE login='?'),'?','?');
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>INS0003</code>
+		<sql>
+			INSERT INTO 
+			mensajes (uid_destino,uid_origen,fecha,hora,asunto,texto,valido,tiempo_vida,control,minutos) 
+			VALUES ('?','?','?','?','?','?','?','?','?','?');
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>INS0006</code>
+		<sql>
+			INSERT INTO 
+			grupos (nombre_grupo,mostrable,zona) 
+			VALUES ('?','?','?')
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>INS0007</code>
+		<sql>
+			INSERT INTO 
+			puntosv (codigo,nombre,ip,gid) 
+			VALUES ('?','?','?','?')
+		</sql>
+	</sentence>
+	<!--====================== Delete======================================= -->
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>DEL0001</code>
+		<sql>
+			DELETE FROM 
+			usuarios_pventa 
+			WHERE 
+			usuarios_pventa.uid='?'
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>DEL0002</code>
+		<sql>
+			DELETE FROM usuarios WHERE uid='?'
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>DEL0003</code>
+		<sql>
+			DELETE FROM grupos WHERE nombre_grupo='?'
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>DEL0004</code>
+		<sql>
+			DELETE FROM puntosv WHERE codigo='?'
+		</sql>
+	</sentence>
+	<!-- ======================== Upate =====================================-->
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>UPD0001</code>
+		<sql>
+			UPDATE 
+			grupos SET nombre_grupo='?',mostrable='?',zona='?'  
+			WHERE nombre_grupo='?'
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>UPD0002</code>
+		<sql>
+			UPDATE usuarios SET clave='?' WHERE "login"='?'
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>UPD0003</code>
+		<sql>
+			UPDATE mensajes SET confirmado='?', fecha_confirmacion='?'
+			WHERE fecha='?' AND hora='?' AND confirmado=false AND
+			uid_destino=(SELECT uid FROM usuarios WHERE login='?')
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>UPD0004</code>
+		<sql>
+			UPDATE usuarios SET 
+			login='?',clave='?',nombres='?',correo='?',admin='?',gid='?', audit='?' 
+			WHERE uid='?'
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>UPD0005</code>
+		<sql>
+			UPDATE puntosv SET ip='?',gid='?' WHERE nombre='?'
+		</sql>
+	</sentence>
+	<sentence>
+	<!--Descripcion: ... -->
+		<code>UPD0006</code>
+		<sql>
+			UPDATE usuarios SET gid=foo.gid
+			FROM
+			(SELECT pv.gid,up.uid FROM puntosv pv,usuarios_pventa up WHERE pv.codigo=up.codigo_pventa) AS foo 
+			WHERE foo.uid=usuarios.uid
+		</sql>
+	</sentence>
+</root>

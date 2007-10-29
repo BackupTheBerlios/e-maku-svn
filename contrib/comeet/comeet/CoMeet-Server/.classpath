@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/CoMeet-Lib/bin"/>
+	<classpathentry kind="lib" path="comeet/libs/activation.jar"/>
+	<classpathentry kind="lib" path="comeet/libs/jdbc-pgsql.jar"/>
+	<classpathentry kind="lib" path="comeet/libs/jdom.jar"/>
+	<classpathentry kind="lib" path="comeet/libs/mail.jar"/>
+	<classpathentry kind="lib" path="comeet/libs/mailapi.jar"/>
+	<classpathentry kind="lib" path="comeet/libs/pop3.jar"/>
+	<classpathentry kind="lib" path="comeet/libs/smtp.jar"/>
+	<classpathentry kind="lib" path="comeet/libs/wrapper.jar"/>
+	<classpathentry kind="lib" path="comeet/libs/ojdbc14.jar"/>
+	<classpathentry kind="lib" path="comeet/libs/poi.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/CoMeet-Lib"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

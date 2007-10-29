@@ -1,0 +1,207 @@
+2007-10-29 14:36:29 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-29 14:36:29 INFO: Cargando archivo de configuracion...
+2007-10-29 14:36:29 INFO: Cargando base de datos... comeet
+2007-10-29 14:36:30 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-29 14:36:30 INFO: Cargando cache de enlace [comeet]
+2007-10-29 14:36:30 INFO: Iniciando demonio pop3
+2007-10-29 14:36:30 INFO: Servidor de correo {localhost}
+2007-10-29 14:36:30 INFO: Iniciando demonio de sincronizacion
+2007-10-29 14:36:30 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-29 14:37:03 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=34529,localport=9119]
+2007-10-29 14:37:03 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 14:37:03 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 14:37:03 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 14:39:03 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=58881,localport=9119]
+2007-10-29 14:39:03 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 14:39:03 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 14:39:03 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 14:40:34 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=58889,localport=9119]
+2007-10-29 14:40:34 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 14:40:34 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 14:40:34 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 14:41:35 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=58890,localport=9119]
+2007-10-29 14:41:35 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 14:41:35 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 14:41:35 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 14:44:28 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=33166,localport=9119]
+2007-10-29 14:44:28 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 14:44:28 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 14:44:28 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 14:47:33 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=49954,localport=9119]
+2007-10-29 14:47:34 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 14:47:34 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 14:47:34 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 14:48:27 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=49955,localport=9119]
+2007-10-29 14:48:27 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 14:48:27 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 14:48:27 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 14:49:19 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=49956,localport=9119]
+2007-10-29 14:49:19 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 14:49:19 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 14:49:19 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 14:51:38 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=49966,localport=9119]
+2007-10-29 14:51:38 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 14:51:38 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 14:51:38 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 14:59:05 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=45570,localport=9119]
+2007-10-29 14:59:05 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 14:59:05 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 14:59:05 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 15:04:52 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=51906,localport=9119]
+2007-10-29 15:04:52 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 15:04:52 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 15:04:52 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 15:09:43 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=54839,localport=9119]
+2007-10-29 15:09:43 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 15:09:43 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 15:09:43 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 15:11:27 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=54841,localport=9119]
+2007-10-29 15:11:27 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 15:11:27 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 15:11:27 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 15:12:52 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=34453,localport=9119]
+2007-10-29 15:12:52 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 15:12:52 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 15:12:52 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 15:17:06 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=34486,localport=9119]
+2007-10-29 15:17:06 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 15:17:06 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 15:17:06 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 15:26:21 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=39159,localport=9119]
+2007-10-29 15:26:21 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 15:26:21 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 15:26:21 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 15:29:49 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=35978,localport=9119]
+2007-10-29 15:29:49 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 15:29:49 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 15:29:49 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 15:30:41 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=35979,localport=9119]
+2007-10-29 15:30:41 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 15:30:41 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 15:30:41 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 15:32:02 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=35980,localport=9119]
+2007-10-29 15:32:02 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 15:32:02 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 15:32:02 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 15:41:47 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=53139,localport=9119]
+2007-10-29 15:41:48 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 15:41:48 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 15:41:48 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 15:46:49 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=38569,localport=9119]
+2007-10-29 15:46:49 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 15:46:49 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 15:46:49 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 15:48:35 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=50592,localport=9119]
+2007-10-29 15:48:35 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 15:48:35 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 15:48:35 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 15:50:02 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=50593,localport=9119]
+2007-10-29 15:50:02 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 15:50:02 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 15:50:02 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 15:51:14 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=50594,localport=9119]
+2007-10-29 15:51:15 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 15:51:15 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 15:51:15 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 15:52:25 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=36999,localport=9119]
+2007-10-29 15:52:25 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 15:52:25 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 15:52:25 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 15:53:20 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=37000,localport=9119]
+2007-10-29 15:53:20 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 15:53:20 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 15:53:20 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 15:55:05 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=37002,localport=9119]
+2007-10-29 15:55:05 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 15:55:05 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 15:55:05 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 16:01:14 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=49420,localport=9119]
+2007-10-29 16:01:14 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 16:01:14 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 16:01:14 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 16:07:39 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=37711,localport=9119]
+2007-10-29 16:07:39 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 16:07:39 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 16:07:39 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 16:17:59 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=49362,localport=9119]
+2007-10-29 16:17:59 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 16:17:59 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 16:17:59 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 16:19:25 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=49364,localport=9119]
+2007-10-29 16:19:25 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 16:19:25 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 16:19:25 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 16:19:47 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=49365,localport=9119]
+2007-10-29 16:19:47 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 16:19:47 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 16:19:47 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 16:20:07 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=49366,localport=9119]
+2007-10-29 16:20:07 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 16:20:07 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 16:20:07 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 16:20:44 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=49367,localport=9119]
+2007-10-29 16:20:44 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 16:20:44 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 16:20:44 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 16:23:50 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=37780,localport=9119]
+2007-10-29 16:23:51 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 16:23:51 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 16:23:51 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 16:25:23 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=37781,localport=9119]
+2007-10-29 16:25:23 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 16:25:23 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 16:25:23 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 16:26:42 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=37782,localport=9119]
+2007-10-29 16:26:42 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 16:26:42 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 16:26:42 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 16:32:27 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=51551,localport=9119]
+2007-10-29 16:32:27 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 16:32:27 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 16:32:27 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 16:34:10 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=51556,localport=9119]
+2007-10-29 16:34:10 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 16:34:10 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 16:34:10 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 16:37:25 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=53858,localport=9119]
+2007-10-29 16:37:25 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 16:37:25 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 16:37:25 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 17:01:20 INFO: Editando usuario del sistema...
+2007-10-29 17:01:20 INFO: Operacion realizada exitosamente [Transaccion sobre Usuarios]
+2007-10-29 17:06:20 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=39309,localport=9119]
+2007-10-29 17:06:21 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 17:06:21 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 17:06:21 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 17:06:33 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=39310,localport=9119]
+2007-10-29 17:06:33 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 17:06:33 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 17:06:33 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 17:11:44 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=57093,localport=9119]
+2007-10-29 17:11:44 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 17:11:44 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 17:11:44 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 17:13:53 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=53346,localport=9119]
+2007-10-29 17:13:54 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 17:13:54 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 17:13:54 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 17:18:51 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=51701,localport=9119]
+2007-10-29 17:18:51 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 17:18:51 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 17:18:51 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 17:20:48 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=51703,localport=9119]
+2007-10-29 17:20:48 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 17:20:48 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 17:20:48 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 17:22:12 INFO: Eliminando usuario del sistema...
+2007-10-29 17:22:12 INFO: Operacion realizada exitosamente [Transaccion sobre Usuarios]
+2007-10-29 17:26:12 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=54348,localport=9119]
+2007-10-29 17:26:12 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 17:26:12 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 17:26:12 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 17:26:25 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=54349,localport=9119]
+2007-10-29 17:26:25 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-29 17:26:25 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-29 17:26:25 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
+2007-10-29 17:27:15 INFO: Adicionando usuario al sistema...
+2007-10-29 17:27:16 INFO: Operacion realizada exitosamente [Transaccion sobre Usuarios]

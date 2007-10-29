@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Menu>
+	<JMenu>
+		<Text>Archivo</Text>
+		<Mnemonic>A</Mnemonic>
+		<JMenuItem>
+			<Mnemonic>S</Mnemonic>
+			<Text>Sincronizar</Text>
+			<Class>com.kazak.comeet.admin.control.SyncManager</Class>
+			<Method>startSync</Method>
+			<UserLevel>1</UserLevel>
+		</JMenuItem>
+		<JSeparator/>
+		<JMenuItem>
+			<Mnemonic>a</Mnemonic>
+			<Text>Salir</Text>
+			<Class>com.kazak.comeet.admin.Run</Class>
+			<Method>exit</Method>
+		</JMenuItem>
+	</JMenu>
+	<JMenu>
+		<Text>Usuarios</Text>
+		<Mnemonic>U</Mnemonic>
+		<JMenuItem>
+			<Mnemonic>B</Mnemonic>
+			<Text>Buscar</Text>
+			<Class>com.kazak.comeet.admin.gui.managers.UserManager</Class>
+			<Method>searchUser</Method>
+			<UserLevel>1</UserLevel>
+		</JMenuItem>
+		<JMenuItem>
+			<Mnemonic>A</Mnemonic>
+			<Text>Adicionar</Text>
+			<Class>com.kazak.comeet.admin.gui.managers.UserManager</Class>
+			<Method>addUser</Method>
+			<UserLevel>1</UserLevel>
+		</JMenuItem>
+		<JMenuItem>
+			<Mnemonic>E</Mnemonic>
+			<Text>Editar</Text>
+			<Class>com.kazak.comeet.admin.gui.managers.UserManager</Class>
+			<Method>editUser</Method>
+			<UserLevel>1</UserLevel>
+		</JMenuItem>
+		<JMenuItem>
+			<Mnemonic>l</Mnemonic>
+			<Text>Eliminar</Text>
+			<Class>com.kazak.comeet.admin.gui.managers.UserManager</Class>
+			<Method>deleteUser</Method>
+			<UserLevel>1</UserLevel>
+		</JMenuItem>
+		<JMenuItem>
+			<Mnemonic>U</Mnemonic>
+			<Text>Listar Usuarios</Text>
+			<Class>com.kazak.comeet.admin.gui.misc.UsersOnlineFrame</Class>
+			<UserLevel>1</UserLevel>
+		</JMenuItem>
+	</JMenu>
+	<JMenu>
+		<Text>Grupos</Text>
+		<Mnemonic>G</Mnemonic>
+		<JMenuItem>
+			<Mnemonic>B</Mnemonic>
+			<Text>Buscar</Text>
+			<Class>com.kazak.comeet.admin.gui.managers.GroupManager</Class>
+			<Method>searchGroup</Method>
+			<UserLevel>1</UserLevel>
+		</JMenuItem>
+		<JMenuItem>
+			<Mnemonic>A</Mnemonic>
+			<Text>Adicionar</Text>
+			<Class>com.kazak.comeet.admin.gui.managers.GroupManager</Class>
+			<Method>addGroup</Method>
+			<UserLevel>1</UserLevel>
+		</JMenuItem>
+		<JMenuItem>
+			<Mnemonic>E</Mnemonic>
+			<Text>Editar</Text>
+			<Class>com.kazak.comeet.admin.gui.managers.GroupManager</Class>
+			<Method>editGroup</Method>
+			<UserLevel>1</UserLevel>
+		</JMenuItem>
+		<JMenuItem>
+			<Mnemonic>l</Mnemonic>
+			<Text>Eliminar</Text>
+			<Class>com.kazak.comeet.admin.gui.managers.GroupManager</Class>
+			<Method>deleteGroup</Method>
+			<UserLevel>1</UserLevel>
+		</JMenuItem>
+	</JMenu>
+	<JMenu>
+		<Text>Puntos de Colocación</Text>
+		<Mnemonic>P</Mnemonic>
+		<JMenuItem>
+			<Mnemonic>B</Mnemonic>
+			<Text>Buscar</Text>
+			<Class>com.kazak.comeet.admin.gui.managers.PosManager</Class>
+			<Method>searchPos</Method>
+			<UserLevel>1</UserLevel>
+		</JMenuItem>
+		<JMenuItem>
+			<Mnemonic>A</Mnemonic>
+			<Text>Adicionar</Text>
+			<Class>com.kazak.comeet.admin.gui.managers.PosManager</Class>
+			<Method>addPos</Method>
+			<UserLevel>1</UserLevel>
+		</JMenuItem>
+		<JMenuItem>
+			<Mnemonic>E</Mnemonic>
+			<Text>Editar</Text>
+			<Class>com.kazak.comeet.admin.gui.managers.PosManager</Class>
+			<Method>editPos</Method>
+			<UserLevel>1</UserLevel>
+		</JMenuItem>
+		<JMenuItem>
+			<Mnemonic>l</Mnemonic>
+			<Text>Eliminar</Text>
+			<Class>com.kazak.comeet.admin.gui.managers.PosManager</Class>
+			<Method>deletePos</Method>
+			<UserLevel>1</UserLevel>
+		</JMenuItem>
+	</JMenu>
+	<JMenu>
+		<Text>Registros</Text>
+		<Mnemonic>R</Mnemonic>
+		<JMenuItem>
+			<Mnemonic>V</Mnemonic>
+			<Text>Ver Mensajes</Text>
+			<Class>com.kazak.comeet.admin.gui.misc.LogMessage</Class>
+			<Method>display</Method>
+			<UserLevel>2</UserLevel>
+		</JMenuItem>
+		<JSeparator />
+		<JMenuItem>
+			<Activo />
+			<Acelerator></Acelerator>
+			<Mnemonic>B</Mnemonic>
+			<Text>Buscar Mensaje</Text>
+			<Class>com.kazak.comeet.admin.gui.misc.MessageSearcher</Class>
+			<Method>search</Method>
+			<UserLevel>2</UserLevel>
+		</JMenuItem>
+		<JSeparator />
+		<JMenuItem>
+			<Mnemonic>S</Mnemonic>
+			<Text>Ver Mensajes de Control</Text>
+			<Class>com.kazak.comeet.admin.gui.misc.ControlMessageReporter</Class>
+			<Method>init</Method>
+			<UserLevel>2</UserLevel>
+		</JMenuItem>
+		<JSeparator />
+		<JMenuItem>
+			<Mnemonic>S</Mnemonic>
+			<Text>Ver Registro del Servidor</Text>
+			<Class>com.kazak.comeet.admin.control.LogServerViewer</Class>
+			<Method>start</Method>
+			<UserLevel>2</UserLevel>
+		</JMenuItem>
+                <JSeparator />
+                <JMenuItem>
+                        <Mnemonic>U</Mnemonic>
+                        <Text>Listar Usuarios</Text>
+                        <Class>com.kazak.comeet.admin.gui.misc.UsersOnlineFrame</Class>
+                        <UserLevel>2</UserLevel>
+                </JMenuItem>
+	</JMenu>
+</Menu>
