@@ -64,7 +64,6 @@ public class MainWindow implements TreeSelectionListener {
 		Cache.setFrame(frame);
 
 		if (userLevel.equals("1")) {
-			System.out.println("userLevel 1");
 			splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 			splitPane.setDividerLocation(250);
 			
@@ -80,14 +79,12 @@ public class MainWindow implements TreeSelectionListener {
 			frame.add(splitPane,BorderLayout.CENTER);	
 		}
 		if (userLevel.equals("2")) {
-			System.out.println("userLevel 2");
 			Cache.loadInfoTree(0);
 			LogServerViewer.loadGUI();
 			frame.add(LogServerViewer.getPanel(),BorderLayout.CENTER);
 		}
 		
 		UIManager.put("ComboBox.disabledForeground",Color.BLACK);
-		
 		frame.setVisible(true);
 	}
 	

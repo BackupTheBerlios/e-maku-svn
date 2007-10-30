@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.Vector;
 
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -15,7 +14,7 @@ import com.kazak.comeet.admin.gui.managers.tools.ToolsConstants;
 import com.kazak.comeet.admin.gui.managers.tools.Transactions.UserDocument;
 import com.kazak.comeet.admin.gui.managers.tools.user.InternalPanel;
 
-public class UserDialog extends JDialog {
+public class UserDialog extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	private int action;

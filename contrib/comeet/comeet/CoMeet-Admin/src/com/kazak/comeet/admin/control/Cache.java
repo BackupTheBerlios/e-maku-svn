@@ -28,7 +28,7 @@ public class Cache {
 	
 	// This method updates the groups,pos and users jtree
 	
-	public synchronized static void loadInfoTree(final int mode) {
+	public static synchronized void loadInfoTree(final int mode) {
 		groupsList = new Hashtable<String, Group>();
 		Thread t = new  Thread() {
 		

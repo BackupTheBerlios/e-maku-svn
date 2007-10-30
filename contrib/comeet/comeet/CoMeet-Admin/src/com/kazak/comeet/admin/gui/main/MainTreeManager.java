@@ -74,7 +74,6 @@ public class MainTreeManager {
                 	case 2: // Puntos de Venta
                 		lastPath.clear();
                 		node = (SortableTreeNode) currentTreePath.getPathComponent(1);
-                		System.out.println("Node: " + node.toString());
                 		if(node.toString().equals("COMEET")) {
                 			specialGroupsMenu.show(e.getComponent(), e.getX(), e.getY());
 

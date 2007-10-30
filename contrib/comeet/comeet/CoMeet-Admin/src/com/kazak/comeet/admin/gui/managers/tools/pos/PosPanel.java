@@ -34,7 +34,6 @@ public class PosPanel extends JPanel implements ActionListener, KeyListener {
 	
 	private static final long serialVersionUID = 1L;
 	private MainForm mainFrame;
-	//private ButtonBar buttonBar;
 	private int action;
 	private String target;
 	private ArrayList<Component> componentsList = new ArrayList<Component>();
@@ -62,7 +61,7 @@ public class PosPanel extends JPanel implements ActionListener, KeyListener {
 		searchButton = gui.createButton("search.png");
 		searchButton.setActionCommand("search");
 		searchButton.addActionListener(this);
-		componentsList.add(nameField = new AutoCompleteComboBox(Cache.getWorkStationsList(),true,50,searchButton));
+		componentsList.add(nameField = new AutoCompleteComboBox(Cache.getWorkStationsList(),false,50,searchButton));
 		componentsList.add(codeField = new JTextField());
 		codeField.setEditable(false);
 		componentsList.add(ipField   = new JTextField());
@@ -83,6 +82,7 @@ public class PosPanel extends JPanel implements ActionListener, KeyListener {
 			mainFrame.setTitle("Nuevo Punto de Colocación");
 			newCode = target;
 			codeField.setText(newCode);
+			ipField.setEditable(true);
 			ButtonBar.setEnabledAcceptButton(false);
 			break;
 			// To Edit
@@ -138,7 +138,7 @@ public class PosPanel extends JPanel implements ActionListener, KeyListener {
 			WorkStation ws = Cache.getWorkStation(target);
 			switch(action) {
 			case ToolsConstants.ADD:
-				ipField.setEditable(false);
+				//ipField.setEditable(true);
 				break;
 			case ToolsConstants.EDIT:
 			case ToolsConstants.EDIT_PREFILLED:
@@ -193,12 +193,10 @@ public class PosPanel extends JPanel implements ActionListener, KeyListener {
 	}
 		
 	public void executeOperation() {
-		
 		PosData pos = new PosData(mainFrame,getFormData(),ipField,action);
 		if (!pos.verifyData()) {
 			return;
 		}
-		
 		PosDocument doc = new PosDocument(getFormData());
 		switch(action) {
 			// To Add
@@ -224,12 +222,10 @@ public class PosPanel extends JPanel implements ActionListener, KeyListener {
 			mainFrame.dispose();
 			break;
 		case ToolsConstants.LINK:
-			//Operation.execute(doc.getDocumentToLink());
 			table.insertData(doc.getDocumentToLink());
 			mainFrame.dispose();
 			break;
 		}	   
-		
 	}
 	
 	private void packPanels() {
@@ -256,8 +252,12 @@ public class PosPanel extends JPanel implements ActionListener, KeyListener {
 		
 	public void clean() {
 		switch(action) {
-			// To Add, to Edit, to Delete (unfilled,filled)
+			// To Add
 		case ToolsConstants.ADD:
+			ipField.setText("");
+			ipField.setEditable(true);
+			break;
+			// To Edit, to Delete (unfilled,filled)
 		case ToolsConstants.LINK:
 		case ToolsConstants.EDIT:
 		case ToolsConstants.EDIT_PREFILLED:
@@ -305,10 +305,6 @@ public class PosPanel extends JPanel implements ActionListener, KeyListener {
 			fillForm();		
 		} else {
 			resetPanel();
-			/*
-			if(ButtonBar.isAcceptButtonActive()) {
-				ButtonBar.setEnabledAcceptButton(false);
-			}*/
 		}
 	}
 	

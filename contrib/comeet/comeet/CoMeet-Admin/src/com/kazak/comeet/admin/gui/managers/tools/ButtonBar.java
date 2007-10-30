@@ -118,7 +118,6 @@ public class ButtonBar extends JPanel implements ActionListener, KeyListener {
 		case ToolsConstants.DELETE:
 		case ToolsConstants.DELETE_PREFILLED:
 		case ToolsConstants.LINK:
-			System.out.println("Añadiendo botones...");
 			this.add(acceptButton);
 			this.add(cleanButton);		
 			this.add(cancelButton);

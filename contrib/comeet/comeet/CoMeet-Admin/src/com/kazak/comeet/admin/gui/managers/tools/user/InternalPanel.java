@@ -9,7 +9,7 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -36,13 +36,13 @@ public class InternalPanel extends JPanel {
 	private JCheckBox ipControlCheck;
 	private JComboBox groupsCombo;
 	private UserPosTable table;
-	private JDialog dialog;
+	private JFrame dialog;
 	private int action;
 	private boolean isAdmin;
 	private User user;
 	private String username;
 
-	public InternalPanel(JDialog dialog, String username, boolean isAdmin, int action) {
+	public InternalPanel(JFrame dialog, String username, boolean isAdmin, int action) {
 		super();
 		this.username = username;
 		user = Cache.getUser(username);

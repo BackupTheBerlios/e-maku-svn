@@ -2,7 +2,6 @@ package com.kazak.comeet.admin.gui.managers.tools.Transactions;
 
 import org.jdom.Document;
 import org.jdom.Element;
-
 import com.kazak.comeet.admin.control.Cache;
 import com.kazak.comeet.admin.transactions.QuerySender;
 
@@ -48,6 +47,11 @@ public class PosDocument {
 	public Document getDocumentToEdit() {
 		Element transaction = new Element("Transaction");
 		Document doc = new Document(transaction);
+		
+		Element id = new Element("id");
+        id.setText(QuerySender.getId());
+        transaction.addContent(id);
+        
 		Element driver = new Element("driver");
         driver.setText("TR008");
         transaction.addContent(driver);
@@ -58,13 +62,7 @@ public class PosDocument {
 		pack.addContent(createField(ip));
 		pack.addContent(createField(groupObject.getId()));
 		pack.addContent(createField(name));
-					
 		transaction.addContent(pack);
-		
-		/*
-		pack = new Element("package");
-		transaction.addContent(pack);
-		*/
 		
 		return doc;
 	}
@@ -93,7 +91,7 @@ public class PosDocument {
 		Document doc = new Document(transaction);
 
 		Element driver = new Element("driver");
-        driver.setText("TR000-TO-CHECK");
+        driver.setText("TR-OFF");
         transaction.addContent(driver);
         
 		Element pack = new Element("package");

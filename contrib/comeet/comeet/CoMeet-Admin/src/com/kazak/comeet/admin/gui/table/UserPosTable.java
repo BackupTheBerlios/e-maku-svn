@@ -12,7 +12,7 @@ import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -36,7 +36,7 @@ public class UserPosTable extends JTable implements ActionListener {
 	private String username;
 	private int action;
 	
-	public UserPosTable(JDialog frame, String username, boolean withButtons, int action) {
+	public UserPosTable(JFrame frame, String username, boolean withButtons, int action) {
 		this.username = username;
 		this.action = action;
 		panel =  new JPanel(new BorderLayout());

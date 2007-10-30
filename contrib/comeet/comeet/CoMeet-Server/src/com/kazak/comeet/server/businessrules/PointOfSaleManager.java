@@ -9,6 +9,8 @@ import java.util.List;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
 import com.kazak.comeet.server.comunications.SocketWriter;
 import com.kazak.comeet.server.database.sql.QueryRunner;
@@ -30,6 +32,8 @@ public class PointOfSaleManager {
 		try {
 			if ("add".equals(type) || "edit".equals(type) || "remove".equals(type) ) {
 				result = processPointOfSale(packet);
+			} else {
+				message="EL paquete xml esta incompleto.";
 			}
 		} catch (SQLNotFoundException e) {
 			result = false;
@@ -75,7 +79,7 @@ public class PointOfSaleManager {
 	}
 	
 	private boolean processPointOfSale(Element transaction) throws 
-	SQLNotFoundException, SQLBadArgumentsException, SQLException {
+	SQLNotFoundException, SQLBadArgumentsException, SQLException {		
 		Iterator iterator = transaction.getChildren("package").iterator();
 		while(iterator.hasNext()) {
 			Element element = (Element)iterator.next();

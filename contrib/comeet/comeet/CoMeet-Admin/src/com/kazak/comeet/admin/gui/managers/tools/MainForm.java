@@ -53,7 +53,6 @@ public class MainForm extends JFrame {
 		switch(component) {
 			// Group
 		case ToolsConstants.GROUP:
-			System.out.println("Creando panel de grupo...");
 			groupPanel = new GroupPanel(this,action,target);
 			this.add(groupPanel,BorderLayout.CENTER);
 			break;
