@@ -31,7 +31,7 @@ public class InternalPanel extends JPanel {
 	private JPasswordField passwdField;
 	private JTextField nameField;
 	private JTextField mailField;
-	private JCheckBox adminCheck;
+	private JCheckBox sysAdminCheck;
 	private JCheckBox auditCheck;
 	private JCheckBox ipControlCheck;
 	private JComboBox groupsCombo;
@@ -67,7 +67,7 @@ public class InternalPanel extends JPanel {
 	
 	private void initAdminComponents() {
 		componentsList.add(mailField   = new JTextField());
-		componentsList.add(adminCheck  = new JCheckBox());
+		componentsList.add(sysAdminCheck  = new JCheckBox());
 		componentsList.add(auditCheck  = new JCheckBox());
 		componentsList.add(groupsCombo = new JComboBox(Cache.getGroupsList()));
 		setAdminContext();		
@@ -123,7 +123,7 @@ public class InternalPanel extends JPanel {
 	}
 
 	private void activeAdminPanel(boolean flag) {
-		adminCheck.setEnabled(flag);
+		sysAdminCheck.setEnabled(flag);
 		auditCheck.setEnabled(flag);
 		nameField.setEditable(flag);
 		groupsCombo.setEnabled(flag);
@@ -132,7 +132,7 @@ public class InternalPanel extends JPanel {
 	}
 	
 	private void setAdminDataPanel() {
-		adminCheck.setSelected(user.getAdmin());
+		sysAdminCheck.setSelected(user.getAdmin());
 		auditCheck.setSelected(user.getAudit());
 		groupsCombo.setSelectedItem(user.getGroupName());
 		mailField.setText(user.getEmail());
@@ -242,7 +242,7 @@ public class InternalPanel extends JPanel {
 	
 	public String isAdmin() {
 		if(isAdmin) {
-			return "t";
+			return String.valueOf(sysAdminCheck.isSelected());
 		}
 		else {
 			return "f";

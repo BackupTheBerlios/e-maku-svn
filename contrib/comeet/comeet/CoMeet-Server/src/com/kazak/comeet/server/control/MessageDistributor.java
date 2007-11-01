@@ -30,7 +30,7 @@ import com.kazak.comeet.server.misc.ServerConstants;
 // This class delivers all the messages received by the comeet account
 
 public class MessageDistributor {
-	
+	private static final boolean LOTTERY_MODE = false;
 	private static SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
 	private static SimpleDateFormat formatHour = new SimpleDateFormat("hh:mm aaa");
 	private Date   date;
@@ -58,6 +58,9 @@ public class MessageDistributor {
 		Element mailLifeTime = element.getChild("timeAlife");
 		lifeTime = mailLifeTime != null ? Integer.parseInt(mailLifeTime.getValue()) : 0;
 
+		System.out.println("Procesando mensaje desde: " + from);
+		
+		
 		// This is a message control
 		if (lifeTime > 0) {
 			control = true;
@@ -111,11 +114,13 @@ public class MessageDistributor {
 				QueryClosingHandler.close(resultSet);
 				qRunner.closeStatement();
 			}
-
-			if (i==0) {
-				sender = insertPopUser(from);
-				if (sender == null) {
-					return;
+			
+			if (LOTTERY_MODE) {
+				if (i==0) {
+					sender = insertPopUser(from);
+					if (sender == null) {
+						return;
+					}
 				}
 			}
 		}
@@ -133,7 +138,7 @@ public class MessageDistributor {
 		groupSize = usersVector.size();
 		
 		String many = "";
-		if (groupSize > 1) {
+		if (groupSize > 1 || groupSize==0) {
 		    many = "s";
 		}
 			
@@ -224,7 +229,7 @@ public class MessageDistributor {
 	
 	// This method sends an alarm message to the CoMeet group when the system fails
 	public static void sendAlarm(String subject, String body) {
-		Vector<SocketInfo> usersVector = SocketServer.getAllClients("CoMeet");
+		Vector<SocketInfo> usersVector = SocketServer.getAllClients("COMEET");
 		int groupSize = usersVector.size();
 		Date date = Calendar.getInstance().getTime();
 		String dateString = formatDate.format(date);

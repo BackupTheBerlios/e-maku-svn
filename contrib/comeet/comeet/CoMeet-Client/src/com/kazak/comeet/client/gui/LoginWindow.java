@@ -46,9 +46,12 @@ import com.kazak.comeet.lib.network.PackageToXMLConverter;
 public class LoginWindow implements ActionListener {
 	
 	private static final long serialVersionUID = 4515846092744596420L;
+	private static final boolean UPPERCASE = false;
+	private static final boolean LOTTERY_MODE = false;
 	private static JTextField userTextField;
-	private JPasswordField passwordField;
+	private static JPasswordField passwordField;
 	private static JButton acceptButton;
+	private static JButton cancelButton;
 	private static JFrame frame;
 	private static boolean logged = false;
 	private static boolean isDisplayed = false;
@@ -66,41 +69,73 @@ public class LoginWindow implements ActionListener {
 		initComponents();
 		LoginWindow.logged = false;
 		frame.setVisible(true);
-		new Displayer();
+		if(LOTTERY_MODE) {
+		 new Displayer();
+		}
 	}
 	
 	public void initComponents() {
 		frame = new JFrame();
 		frame.setLayout(new BorderLayout());
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		frame.setSize(400,320);
+		
+		if(LOTTERY_MODE) {
+			frame.setSize(400,320);
+			frame.setUndecorated(true);
+			frame.getRootPane().setBorder(new LineBorder(Color.BLACK,4));
+		} else {
+			frame.setSize(320,220);
+		}
+		
 		frame.setLocationByPlatform(true);
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
-		frame.setUndecorated(true);
 
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowIconified(WindowEvent e) {
-				frame.setState(JFrame.NORMAL);
+				if(LOTTERY_MODE) {
+					frame.setState(JFrame.NORMAL);
+				}
 			}
 			public void windowClosing(WindowEvent e) {
-				frame.setVisible(true);
+				if(LOTTERY_MODE) {
+					frame.setVisible(true);
+				} else {
+					System.exit(0);
+				}
 			}
 		});
 		
-		frame.getRootPane().setBorder(new LineBorder(Color.BLACK,4));
 		Font font = new Font("Dialog",Font.BOLD,13);
 		LoginWindow.userTextField  = new JTextField(12);
 		LoginWindow.userTextField.setFont(font);
-		LoginWindow.userTextField.addKeyListener(new KeyAdapter() {
-			public void keyReleased(KeyEvent arg0) {
-				userTextField.setText(userTextField.getText().toUpperCase());
-			}
-		});
+		
+			LoginWindow.userTextField.addKeyListener(new KeyAdapter() {
+				public void keyReleased(KeyEvent e) {
+					int keyCode = e.getKeyCode();
+					if (keyCode==KeyEvent.VK_ENTER){
+						passwordField.requestFocus();
+					}
+					if(UPPERCASE) {
+						userTextField.setText(userTextField.getText().toUpperCase());
+					}
+
+				}
+			});
+		
 		passwordField = new JPasswordField(12);
 		LoginWindow.userTextField.setDocument(new FixedSizePlainDocument(10));
 		passwordField.setDocument(new FixedSizePlainDocument(10));
 		passwordField.setFont(font);
+		
+		LoginWindow.passwordField.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+				int keyCode = e.getKeyCode();
+				if (keyCode==KeyEvent.VK_ENTER){
+					connect();
+				}
+			}
+		});
 		
 		acceptButton = new JButton("Aceptar");
 		acceptButton.setMnemonic('A');
@@ -119,14 +154,21 @@ public class LoginWindow implements ActionListener {
 		userLabel.setFont(font);
 		JLabel passwdLabel = new JLabel("Clave:");
 		passwdLabel.setFont(font);
-		
 		labelsPanel.add(userLabel);
 		labelsPanel.add(passwdLabel);
-		
 		textFieldsPanel.add(addWithPanel(LoginWindow.userTextField));
 		textFieldsPanel.add(addWithPanel(passwordField));
 		
 		southPanel.add(acceptButton);
+		
+		if(!LOTTERY_MODE) {
+			cancelButton = new JButton("Cancelar");
+			cancelButton.setMnemonic('C');
+			cancelButton.addActionListener(this);
+			cancelButton.setActionCommand("cancel");
+			cancelButton.setFont(font);
+			southPanel.add(cancelButton);
+		}
 		
 		JPanel centerAux = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		centerAux.add(centerPanel);
@@ -143,18 +185,20 @@ public class LoginWindow implements ActionListener {
 		header.add(logo,BorderLayout.CENTER);
 		header.add(appLabel,BorderLayout.SOUTH);
 		
-		
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(header,BorderLayout.NORTH);
 		panel.add(centerAux,BorderLayout.CENTER);
 		panel.add(southPanel,BorderLayout.SOUTH);
 		panel.setBackground(background);
-		Component box1 = Box.createVerticalStrut(60);
-		Component box2 = Box.createVerticalStrut(60);
-			
-		frame.add(box1,BorderLayout.NORTH);
+		
+		if(LOTTERY_MODE) {
+			Component box1 = Box.createVerticalStrut(60);
+			Component box2 = Box.createVerticalStrut(60);	
+			frame.add(box1,BorderLayout.NORTH);
+			frame.add(box2,BorderLayout.SOUTH);
+		} 
+		
 		frame.add(panel,BorderLayout.CENTER);
-		frame.add(box2,BorderLayout.SOUTH);
 	}
 	
 	private JPanel addWithPanel(Component component) {
@@ -168,123 +212,131 @@ public class LoginWindow implements ActionListener {
 	}
 	
 	private String getPassword() {
-		return new String(this.passwordField.getPassword());
+		return new String(LoginWindow.passwordField.getPassword());
 	}
 	
 	public static String getLoginUser() {
 		return LoginWindow.userTextField.getText();
 	}
 	
+	private void connect() {
+		acceptButton.setEnabled(false);
+		int typeCursor = Cursor.WAIT_CURSOR;
+		Cursor cursor = Cursor.getPredefinedCursor(typeCursor);
+		if (!"".equals(getUser()) && !"".equals(getPassword())) {
+			SocketHandler connect;
+            frame.setCursor(cursor);
+			try {
+				PackageToXMLConverter packageXML = new PackageToXMLConverter();
+				HeadersValidator valid = new HeadersValidator();
+				packageXML.addPackageComingListener(valid);
+				String host = ClientConfigFile.getHost();
+				int port =  ClientConfigFile.getServerPort(); 
+				connect = new SocketHandler(host,port,packageXML);
+	            connect.start();
+	            SocketChannel socket = SocketHandler.getSock();
+	            MD5Tool md5 = new MD5Tool(getPassword());
+	            String passwd = md5.getDigest();
+	            Run.user = getUser();
+	    		new CNXSender(socket,Run.user,passwd);
+			} catch (NoRouteToHostException NRHEe) {
+				NRHEe.printStackTrace();
+				JOptionPane.showMessageDialog(
+	                    frame,
+	                    "No se pudo establecer comunicación con el sistema.\n" +
+	                    "Host: " + ClientConfigFile.getHost() + "\n" +
+	                    "Puerto: " + ClientConfigFile.getServerPort() + "\n" +
+	                    "Por favor, comuniquese con soporte técnico.",
+	                    "Error de Conexión (No hay ruta al servidor)",
+	                    JOptionPane.ERROR_MESSAGE);
+				
+				acceptButton.setEnabled(true);
+				typeCursor = Cursor.DEFAULT_CURSOR;
+				cursor = Cursor.getPredefinedCursor(typeCursor);
+				frame.setCursor(cursor);
+				LoginWindow.onTop = false;
+				LoginWindow.sleepTime = 10000;
+				frame.toBack();
+			} catch (ConnectException CEe){
+				CEe.printStackTrace();
+				JOptionPane.showMessageDialog(
+	                    frame,
+	                    "No se pudo establecer comunicación con el sistema.\n"+
+	                    "Host: " + ClientConfigFile.getHost() + "\n" +
+	                    "Puerto: "+ClientConfigFile.getServerPort() + "\n" + 
+	                    "Por favor, comuniquese con soporte técnico.",
+	                    "Error de Conexión (Excepción de Conexión)",
+	                    JOptionPane.ERROR_MESSAGE);
+				
+				acceptButton.setEnabled(true);
+				typeCursor = Cursor.DEFAULT_CURSOR;
+				cursor = Cursor.getPredefinedCursor(typeCursor);
+				frame.setCursor(cursor);
+				LoginWindow.onTop = false;
+				LoginWindow.sleepTime = 10000;
+				frame.toBack();
+			}catch (UnresolvedAddressException UAEe) {
+				UAEe.printStackTrace();
+				JOptionPane.showMessageDialog(
+	                    frame,
+	                    "No se pudo resolver la dirección\n" +
+	                    "del servidor de mensajería.\n"+
+	                    "Host: "+ClientConfigFile.getHost()+ 
+	                    "Puerto:"+ClientConfigFile.getServerPort(),
+	                    "Error de Conexión",
+	                    JOptionPane.ERROR_MESSAGE);
+				acceptButton.setEnabled(true);
+				typeCursor = Cursor.DEFAULT_CURSOR;
+				cursor = Cursor.getPredefinedCursor(typeCursor);
+				LoginWindow.onTop = false;
+				LoginWindow.sleepTime = 10000;
+				frame.toBack();
+			} catch (SocketException SE) {
+				SE.printStackTrace();
+				JOptionPane.showMessageDialog(
+	                    frame,
+	                    "Este equipo no posee acceso a la red.\n" 
+	                    + "Por favor, verifique la configuración del sistema.",
+	                    "Error de Conexión",
+	                    JOptionPane.ERROR_MESSAGE);					
+			} catch (IOException IOEe) {
+				IOEe.printStackTrace();
+				LoginWindow.onTop = false;
+				LoginWindow.sleepTime = 10000;
+				frame.toBack();
+			}
+		}
+		if ("".equals(getUser()) && "".equals(getPassword())) {
+			JOptionPane.showMessageDialog(
+					frame,
+					"Información incompleta:\n" +
+					"Por favor, digite su nombre de usuario y clave.");
+		}
+		else if (!"".equals(getUser()) && "".equals(getPassword())) {
+			JOptionPane.showMessageDialog(
+					frame,
+					"Información incompleta:\n" +
+					"Por favor, digite su clave.\n");
+		}
+		else if ("".equals(getUser()) && !"".equals(getPassword())) {
+			JOptionPane.showMessageDialog(
+					frame,
+					"Información incompleta:\n" +
+					"Por favor, digite su nombre de usuario.\n");
+		}
+		acceptButton.setEnabled(true);
+		LoginWindow.userTextField.requestFocus();
+	}
+	
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if ("accept".equals(action)) {
-			acceptButton.setEnabled(false);
-			int typeCursor = Cursor.WAIT_CURSOR;
-			Cursor cursor = Cursor.getPredefinedCursor(typeCursor);
-			if (!"".equals(getUser()) && !"".equals(getPassword())) {
-				SocketHandler connect;
-	            frame.setCursor(cursor);
-				try {
-					PackageToXMLConverter packageXML = new PackageToXMLConverter();
-					HeadersValidator valid = new HeadersValidator();
-					packageXML.addPackageComingListener(valid);
-					String host = ClientConfigFile.getHost();
-					int port =  ClientConfigFile.getServerPort(); 
-					connect = new SocketHandler(host,port,packageXML);
-		            connect.start();
-		            SocketChannel socket = SocketHandler.getSock();
-		            MD5Tool md5 = new MD5Tool(getPassword());
-		            String passwd = md5.getDigest();
-		            Run.user = getUser();
-		    		new CNXSender(socket,Run.user,passwd);
-				} catch (NoRouteToHostException NRHEe) {
-					NRHEe.printStackTrace();
-					JOptionPane.showMessageDialog(
-		                    frame,
-		                    "No se pudo establecer comunicación con el sistema.\n" +
-		                    "Host: " + ClientConfigFile.getHost() + "\n" +
-		                    "Puerto: " + ClientConfigFile.getServerPort() + "\n" +
-		                    "Por favor, comuniquese con soporte técnico.",
-		                    "Error de Conexión (No hay ruta al servidor)",
-		                    JOptionPane.ERROR_MESSAGE);
-					
-					acceptButton.setEnabled(true);
-					typeCursor = Cursor.DEFAULT_CURSOR;
-					cursor = Cursor.getPredefinedCursor(typeCursor);
-					frame.setCursor(cursor);
-					LoginWindow.onTop = false;
-					LoginWindow.sleepTime = 10000;
-					frame.toBack();
-				} catch (ConnectException CEe){
-					CEe.printStackTrace();
-					JOptionPane.showMessageDialog(
-		                    frame,
-		                    "No se pudo establecer comunicación con el sistema.\n"+
-		                    "Host: " + ClientConfigFile.getHost() + "\n" +
-		                    "Puerto: "+ClientConfigFile.getServerPort() + "\n" + 
-		                    "Por favor, comuniquese con soporte técnico.",
-		                    "Error de Conexión (Excepción de Conexión)",
-		                    JOptionPane.ERROR_MESSAGE);
-					
-					acceptButton.setEnabled(true);
-					typeCursor = Cursor.DEFAULT_CURSOR;
-					cursor = Cursor.getPredefinedCursor(typeCursor);
-					frame.setCursor(cursor);
-					LoginWindow.onTop = false;
-					LoginWindow.sleepTime = 10000;
-					frame.toBack();
-				}catch (UnresolvedAddressException UAEe) {
-					UAEe.printStackTrace();
-					JOptionPane.showMessageDialog(
-		                    frame,
-		                    "No se pudo resolver la dirección\n" +
-		                    "del servidor de mensajería.\n"+
-		                    "Host: "+ClientConfigFile.getHost()+ 
-		                    "Puerto:"+ClientConfigFile.getServerPort(),
-		                    "Error de Conexión",
-		                    JOptionPane.ERROR_MESSAGE);
-					acceptButton.setEnabled(true);
-					typeCursor = Cursor.DEFAULT_CURSOR;
-					cursor = Cursor.getPredefinedCursor(typeCursor);
-					LoginWindow.onTop = false;
-					LoginWindow.sleepTime = 10000;
-					frame.toBack();
-				} catch (SocketException SE) {
-					SE.printStackTrace();
-					JOptionPane.showMessageDialog(
-		                    frame,
-		                    "Este equipo no posee acceso a la red.\n" 
-		                    + "Por favor, verifique la configuración del sistema.",
-		                    "Error de Conexión",
-		                    JOptionPane.ERROR_MESSAGE);					
-				} catch (IOException IOEe) {
-					IOEe.printStackTrace();
-					LoginWindow.onTop = false;
-					LoginWindow.sleepTime = 10000;
-					frame.toBack();
-				}
-			}
-			if ("".equals(getUser()) && "".equals(getPassword())) {
-				JOptionPane.showMessageDialog(
-						frame,
-						"Información incompleta\n" +
-						"debe digitar su nombre de usuario y clave.");
-			}
-			else if (!"".equals(getUser()) && "".equals(getPassword())) {
-				JOptionPane.showMessageDialog(
-						frame,
-						"Por favor, digite su clave.\n");
-			}
-			else if ("".equals(getUser()) && !"".equals(getPassword())) {
-				JOptionPane.showMessageDialog(
-						frame,
-						"Por favor, digite su nombre de usuario.\n");
-			}
-			acceptButton.setEnabled(true);
-			LoginWindow.userTextField.requestFocus();
+			connect();
+		}
+		if ("cancel".equals(action)) {
+			System.exit(0);
 		}
 	}
-
 	
 	public static void setEnabled() {
     	acceptButton.setEnabled(true);

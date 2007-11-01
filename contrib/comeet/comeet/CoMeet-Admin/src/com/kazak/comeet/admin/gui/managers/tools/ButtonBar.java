@@ -79,6 +79,9 @@ public class ButtonBar extends JPanel implements ActionListener, KeyListener {
 		switch(action) {
 			// To Add
 		case ToolsConstants.ADD:
+			acceptButton.setToolTipText("Adicionar");
+			acceptButton.setEnabled(false);
+			break;			
 		case ToolsConstants.LINK:
 			acceptButton.setToolTipText("Adicionar");
 			break;

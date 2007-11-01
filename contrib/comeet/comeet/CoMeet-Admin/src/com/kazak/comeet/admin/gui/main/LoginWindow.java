@@ -28,10 +28,10 @@ import javax.swing.JTextField;
 
 import com.kazak.comeet.admin.Run;
 import com.kazak.comeet.admin.control.HeadersValidator;
-//import com.kazak.comeet.admin.misc.NumericDataValidator;
+import com.kazak.comeet.admin.misc.NumericDataValidator;
 import com.kazak.comeet.admin.network.CNXSender;
 import com.kazak.comeet.admin.network.SocketHandler;
-//import com.kazak.comeet.lib.misc.FixedSizePlainDocument;
+import com.kazak.comeet.lib.misc.FixedSizePlainDocument;
 import com.kazak.comeet.lib.misc.MD5Tool;
 import com.kazak.comeet.lib.network.PackageToXMLConverter;
 
@@ -77,7 +77,7 @@ public class LoginWindow implements ActionListener, KeyListener {
 		userTextField = new JTextField("admin",12);
 		userTextField.setName("user");
 		userTextField.addKeyListener(this);
-		passwdField = new JPasswordField("12345",12);
+		passwdField = new JPasswordField("admin",12);
 		passwdField.setName("passwd");
 		passwdField.addKeyListener(this);
 		

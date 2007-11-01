@@ -285,7 +285,7 @@ public class ConfigFileHandler {
 		return mainDataBase;
 	}
 
-	public static String getUserMail() {
+	public static String getMailUser() {
 		return mailUser;
 	}
 
@@ -297,7 +297,7 @@ public class ConfigFileHandler {
 		return appOwner;
 	}
 
-	public static String getPassWordMail() {
+	public static String getMailPasswd() {
 		return mailPassword;
 	}
 

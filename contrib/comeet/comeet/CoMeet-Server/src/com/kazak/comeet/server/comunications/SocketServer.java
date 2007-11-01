@@ -188,7 +188,7 @@ public class SocketServer {
     				String login = socketsInfoHash.get(connection).getLogin();
     				login = login.toLowerCase();
     				pattern = pattern.toLowerCase();
-    				if (login.contains(pattern)) {
+    				if (login.contains(pattern) || pattern.equals("*")) {
     					root.addContent(addElement(connection));
     				}
     				break;
@@ -197,7 +197,7 @@ public class SocketServer {
     				String name = socketsInfoHash.get(connection).getNames();
     				name = name.toLowerCase();
     				pattern = pattern.toLowerCase();
-    				if (name.contains(pattern)) {
+    				if (name.contains(pattern) || pattern.equals("*")) {
     					root.addContent(addElement(connection));
     				}
     				break;
@@ -206,7 +206,7 @@ public class SocketServer {
     				String posName = socketsInfoHash.get(connection).getWsName();
     				posName = posName.toLowerCase();
     				pattern = pattern.toLowerCase();
-    	    		if (posName.contains(pattern)) {
+    	    		if (posName.contains(pattern) || pattern.equals("*")) {
     					root.addContent(addElement(connection));
     	    		}
     	    		break;    	    		
@@ -214,14 +214,14 @@ public class SocketServer {
     			// Search by ip
     			case 3:
     				String ip = socketsInfoHash.get(connection).getCurrentIp();
-    				if (ip.contains(pattern)) {
+    				if (ip.contains(pattern) || pattern.equals("*")) {
     					root.addContent(addElement(connection));
     				}
     				break;
     			// Search by group id
     			case 4:
     				String group = Integer.toString(socketsInfoHash.get(connection).getGroupID());
-    	    		if (group.equals(pattern)) {
+    	    		if (group.equals(pattern) || pattern.equals("*")) {
     					root.addContent(addElement(connection));
     	    		}
     	    		break;

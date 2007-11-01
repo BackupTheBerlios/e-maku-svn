@@ -26,10 +26,11 @@ public class UserDialog extends JFrame {
 	String[] data = new String[9];
 	boolean isAdmin = true;
 	
-	public UserDialog(int action, String target) {
+	public UserDialog(int action, String target, boolean isAdmin) {
 		super();
 		this.action = action;
 		this.target = target;
+		this.isAdmin = isAdmin;
 		this.setLayout(new BorderLayout());		
 		setPanels();		
 		this.pack();
@@ -38,8 +39,7 @@ public class UserDialog extends JFrame {
 		if(action == ToolsConstants.EDIT_PREFILLED || action == ToolsConstants.SEARCH_PREFILLED 
 				|| action == ToolsConstants.DELETE_PREFILLED) {
 			Dimension dimension = new Dimension(330,230);
-			if(target.startsWith("CV")) {
-				isAdmin = false;
+			if(!isAdmin) {
 				dimension = new Dimension(330,280);
 			}
 			userPanel.enablePanel(false);
@@ -55,7 +55,7 @@ public class UserDialog extends JFrame {
 	
 	private void setPanels() {
 	    buttonBar = new ButtonBar(this, action);	
-		userPanel = new UserPanel(this,action,target);
+		userPanel = new UserPanel(this,action,target,isAdmin);
 		add(userPanel,BorderLayout.NORTH);
 		add(buttonBar,BorderLayout.SOUTH);
 	}   
@@ -64,6 +64,10 @@ public class UserDialog extends JFrame {
 		if (dynamicPanelIsVisible) {
 			userPanel.clean();
 			buttonBar.setEnabledClearButton(false);
+			ButtonBar.setEnabledAcceptButton(false);
+		}
+		else {
+			userPanel.clean();
 		}
 	}
 
@@ -170,6 +174,9 @@ public class UserDialog extends JFrame {
 	}
 	
 	public void expandInternalPanel(String login)  {
+		if(!ButtonBar.isAcceptButtonActive()) {
+			ButtonBar.setEnabledAcceptButton(true);
+		}
 		buttonBar.setEnabledClearButton(true);
 		dynamicPanel = new InternalPanel(this,login,isAdmin,action);
 
@@ -203,6 +210,10 @@ public class UserDialog extends JFrame {
 	private void centerDialog()  {
 		JFrame owner = MainWindow.getFrame();
 		setLocationRelativeTo(owner);
+	}
+	
+	public boolean isPanelVisible() {
+		return dynamicPanelIsVisible;
 	}
 	
 	public void setAdminFlag(boolean flag) {

@@ -36,6 +36,7 @@ public class MainTreeManager {
 	private JPopupMenu specialGroupsMenu = new JPopupMenu();
 	private JPopupMenu wsMenu = new JPopupMenu();
 	private JPopupMenu usersMenu = new JPopupMenu();
+	private JPopupMenu refresh = new JPopupMenu();
 	private Actions actions;
 	private ArrayList<String> lastPath = new ArrayList<String>();
 	public static TreePath currentTreePath;
@@ -70,7 +71,12 @@ public class MainTreeManager {
                 	tree.setSelectionPath(currentTreePath);
                 	int count = currentTreePath.getPathCount();
                 	SortableTreeNode node;
+                	System.out.println("Nodo: " + count);
+                	
                 	switch (count) {
+                	case 1: // Nodo Raiz
+                		refresh.show(e.getComponent(), e.getX(), e.getY());
+                	    break;
                 	case 2: // Puntos de Venta
                 		lastPath.clear();
                 		node = (SortableTreeNode) currentTreePath.getPathComponent(1);
@@ -103,6 +109,13 @@ public class MainTreeManager {
 		tree.getSelectionModel().setSelectionMode(mode);
 		jscroll = new JScrollPane(tree);
 		Cache.loadInfoTree(1);
+	}
+	
+	private void loadRefreshPopUp() {
+		JMenuItem item = new JMenuItem("Recargar");
+        item.setActionCommand("reload");
+        item.addActionListener(actions);
+        refresh.add(item);
 	}
 	
 	private void loadGroupPopUp() {
@@ -201,7 +214,8 @@ public class MainTreeManager {
 		loadGroupPopUp();
 		loadSpecialGroupPopUp();
 		loadPosPopUp();
-		loadUserPopUp();        
+		loadUserPopUp();  
+		loadRefreshPopUp();
 	}
 		
 	public void addMouseListener(MouseListener l) {
@@ -386,44 +400,22 @@ public class MainTreeManager {
 			int count = MainTreeManager.currentTreePath.getPathCount();
 			name = MainTreeManager.currentTreePath.getPathComponent(count -1).toString();
 
+			if ("reload".equals(command)) {
+				Cache.loadInfoTree(1);
+			}
 			if ("new_user".equals(command)) {
-				/*UsersManager userManager = new UsersManager();
-				userManager.clean();
-				userManager.add();
-				userManager.clean();*/
 				UserManager userManager = new UserManager();
 				userManager.addUser();
 			}
 			else if ("edit_user".equals(command)) {
-				/*
-				UsersManager userManager = new UsersManager();
-				userManager.setFieldLogin(name);
-				userManager.getSearchButton().doClick();
-				userManager.edit();
-				userManager.getFieldPassword().setEditable(true);
-				userManager.getFieldMail().setEditable(true);
-				userManager.getFieldNames().setEditable(true);
-				userManager.getTable().enableButtons();
-				userManager.setEnabled(true);
-				*/
 				UserManager userManager = new UserManager();
 				userManager.editUser(name);
 			}
 			else if ("delete_user".equals(command)) {
-				/*
-				UsersManager userManager = new UsersManager();
-				userManager.setFieldLogin(name);
-				userManager.getSearchButton().doClick();
-				userManager.delete();*/
 				UserManager userManager = new UserManager();
 				userManager.deleteUser(name);
 			}
 			else if ("search_user".equals(command)) {
-				/*
-				UsersManager userManager = new UsersManager();
-				userManager.setFieldLogin(name);
-				userManager.getSearchButton().doClick();
-				userManager.search();*/
 				UserManager userManager = new UserManager();
 				userManager.searchUser(name);
 			}
@@ -520,6 +512,9 @@ public class MainTreeManager {
 				public void run() {
 
 					int pcount = currentTreePath.getPathCount();
+					if(pcount<2) {
+					   return;	
+					}
 					SortableTreeNode globalNode = (SortableTreeNode) currentTreePath.getPathComponent(pcount-2);
 					SortableTreeNode globalLastNode = (SortableTreeNode) currentTreePath.getPathComponent(pcount-1);
 					int ccount = getChildCount(globalNode.toString());

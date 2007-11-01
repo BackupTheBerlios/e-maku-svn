@@ -21,6 +21,43 @@
 	<JMenu>
 		<Text>Usuarios</Text>
 		<Mnemonic>U</Mnemonic>
+               <JMenu>
+                <Text>Administrativos</Text>
+                <Mnemonic>A</Mnemonic>
+                <UserLevel>1</UserLevel>
+                <JMenuItem>
+                        <Mnemonic>B</Mnemonic>
+                        <Text>Buscar</Text>
+                        <Class>com.kazak.comeet.admin.gui.managers.UserManager</Class>
+                        <Method>searchAdmin</Method>
+                        <UserLevel>1</UserLevel>
+                </JMenuItem>
+                <JMenuItem>
+                        <Mnemonic>A</Mnemonic>
+                        <Text>Adicionar</Text>
+                        <Class>com.kazak.comeet.admin.gui.managers.UserManager</Class>
+                        <Method>addAdmin</Method>
+                        <UserLevel>1</UserLevel>
+                </JMenuItem>
+                <JMenuItem>
+                        <Mnemonic>E</Mnemonic>
+                        <Text>Editar</Text>
+                        <Class>com.kazak.comeet.admin.gui.managers.UserManager</Class>
+                        <Method>editAdmin</Method>
+                        <UserLevel>1</UserLevel>
+                </JMenuItem>
+                <JMenuItem>
+                        <Mnemonic>l</Mnemonic>
+                        <Text>Eliminar</Text>
+                        <Class>com.kazak.comeet.admin.gui.managers.UserManager</Class>
+                        <Method>deleteAdmin</Method>
+                        <UserLevel>1</UserLevel>
+                </JMenuItem>
+               </JMenu>
+               <JMenu>
+                <Text>Operativos</Text>
+                <Mnemonic>A</Mnemonic>
+		<UserLevel>1</UserLevel>
 		<JMenuItem>
 			<Mnemonic>B</Mnemonic>
 			<Text>Buscar</Text>
@@ -49,12 +86,13 @@
 			<Method>deleteUser</Method>
 			<UserLevel>1</UserLevel>
 		</JMenuItem>
-		<JMenuItem>
-			<Mnemonic>U</Mnemonic>
-			<Text>Listar Usuarios</Text>
-			<Class>com.kazak.comeet.admin.gui.misc.UsersOnlineFrame</Class>
-			<UserLevel>1</UserLevel>
-		</JMenuItem>
+             </JMenu>
+             <JMenuItem>
+                     <Mnemonic>U</Mnemonic>
+                     <Text>Listar Usuarios</Text>
+                     <Class>com.kazak.comeet.admin.gui.misc.UsersOnlineFrame</Class>
+                     <UserLevel>1</UserLevel>
+              </JMenuItem>
 	</JMenu>
 	<JMenu>
 		<Text>Grupos</Text>
@@ -89,7 +127,7 @@
 		</JMenuItem>
 	</JMenu>
 	<JMenu>
-		<Text>Puntos de Colocación</Text>
+		<Text>Puntos de Trabajo</Text>
 		<Mnemonic>P</Mnemonic>
 		<JMenuItem>
 			<Mnemonic>B</Mnemonic>

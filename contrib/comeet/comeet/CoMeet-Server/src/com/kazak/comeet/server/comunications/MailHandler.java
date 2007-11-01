@@ -20,35 +20,38 @@ public class MailHandler {
     
     private static Properties properties = new Properties();
     
-    public static void sendMessage (
-    		String from,
-    		String to,
-    		Date date,
-    		String subject,
-    		String message
-    		) {
+    public static void sendMessage (String from, String to,	Date date, String subject,
+    		String message) {
+    	String host = ConfigFileHandler.getMailServer();
     	properties.put("mail.transport.protocol", "smtp");
-    	properties.put("mail.smtp.host", ConfigFileHandler.getMailServer());
+    	properties.put("mail.smtp.host", host);
     	properties.put("mail.smtp.port", "25");
-        Session session = Session.getDefaultInstance(properties);
-        Address destinationAddress;
+        Session session = Session.getInstance(properties, null);
+        Address destinationAddress;    
+        
 		try {
-			destinationAddress       = new InternetAddress(to);
-	        Address senderAddress    = new InternetAddress(from);
+			destinationAddress      = new InternetAddress(to);
+	        Address senderAddress   = new InternetAddress(from);
+	        
 	        MimeMessage mimeMessage = new MimeMessage(session);
-	
 	        mimeMessage.setFrom(senderAddress);
 	        mimeMessage.addRecipients(Message.RecipientType.TO,new Address[]{destinationAddress});
 	        mimeMessage.setSubject(subject);
 	        mimeMessage.setSentDate(date);
 	        mimeMessage.setText(message);
 	        Transport.send(mimeMessage);
+	        
 		} catch (SendFailedException e) {
-			LogWriter.write("ERROR: Falla en el envio del mensaje a " + to);
+			LogWriter.write("ERROR[SendFailedException]: Falla en el envio del mensaje desde " + from + " para " + to);
 			LogWriter.write("ERROR: " + e.getMessage());
+			e.printStackTrace();
 		} catch (AddressException e) {
+			LogWriter.write("ERROR[AddressException]: Falla en el envio del mensaje desde " + from + " para " + to);
+			LogWriter.write("ERROR: " + e.getMessage());
 			e.printStackTrace();
 		} catch (MessagingException e) {
+			LogWriter.write("ERROR[MessagingException]: Falla en el envio del mensaje desde " + from + " para " + to);
+			LogWriter.write("ERROR: " + e.getMessage());
 			e.printStackTrace();
 		}
     }        

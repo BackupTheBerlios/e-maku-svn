@@ -36,13 +36,13 @@ public class Pop3Handler extends Thread {
 		LogWriter.write("INFO: Iniciando demonio pop3");
 		LogWriter.write("INFO: Servidor de correo {" + ConfigFileHandler.getMailServer() + "}");
 		Pop3Handler.host = ConfigFileHandler.getMailServer();
-		Pop3Handler.user = ConfigFileHandler.getUserMail();
-		Pop3Handler.password = ConfigFileHandler.getPassWordMail();
+		Pop3Handler.user = ConfigFileHandler.getMailUser();
+		Pop3Handler.password = ConfigFileHandler.getMailPasswd();
 		start();
 	}
 	
 	public void run() {
-		Session session = Session.getDefaultInstance(new Properties(), null);
+		Session session = Session.getInstance(new Properties());
 		Store store = null;
 		try {
 			store = session.getStore("pop3");
@@ -60,6 +60,11 @@ public class Pop3Handler extends Thread {
 					InternetAddress address = (InternetAddress) message.getFrom()[0];
 					String fullSubject =  message.getSubject();
 					fullSubject = fullSubject!=null ? fullSubject.trim() : null;
+
+					if(fullSubject.startsWith("Re:") || fullSubject.startsWith("RE:")) {
+						fullSubject = fullSubject.substring(3,fullSubject.length()).trim();
+					}
+								
 					int index1  = address.getAddress().indexOf('@');
 					String from = address.getAddress().substring(0,index1);
 					int index2  = fullSubject!=null ? fullSubject.indexOf(',') : -1;
@@ -94,6 +99,7 @@ public class Pop3Handler extends Thread {
 						}
 					}
 					else {
+						System.out.println("ERROR: Entre Aqui!!!");
 						String[] strings = fullSubject.split(":");
 						String lifeTime = "-1";
 						if (strings.length > 0 ) {
@@ -110,13 +116,12 @@ public class Pop3Handler extends Thread {
 						}
 						
 						if (index2 == -1) {
-							to = "CoMeet";
+							to = "COMEET";
 						} else {
 							to = fullSubject.substring(0,index2).trim();
-							to = to.toUpperCase();
 						}
 						
-						subject = fullSubject.substring(index2+1,fullSubject.length());
+						subject = fullSubject.substring(index2+1,fullSubject.length()).trim();
 						
 						QueryRunner qRunner = null;
 					    ResultSet resultSet = null;

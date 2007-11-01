@@ -1,225 +1,1195 @@
-2007-10-29 19:00:43 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
-2007-10-29 19:00:44 INFO: Cargando archivo de configuracion...
-2007-10-29 19:00:44 INFO: Cargando base de datos... comeet
-2007-10-29 19:00:44 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
-2007-10-29 19:00:44 INFO: Cargando cache de enlace [comeet]
-2007-10-29 19:00:46 INFO: Iniciando demonio pop3
-2007-10-29 19:00:46 INFO: Servidor de correo {localhost}
-2007-10-29 19:00:46 INFO: Iniciando demonio de sincronizacion
-2007-10-29 19:00:46 INFO: Servidor CoMeet escuchando por el puerto 9119
-2007-10-29 19:01:41 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=34684,localport=9119]
-2007-10-29 19:01:41 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 19:01:42 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 19:01:42 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
-2007-10-29 19:03:13 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=59445,localport=9119]
-2007-10-29 19:03:13 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 19:03:13 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 19:03:13 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
-2007-10-29 19:04:08 INFO: Adicionando usuario al sistema...
-2007-10-29 19:04:09 INFO: Operacion realizada exitosamente [Transaccion sobre Usuarios]
-2007-10-29 19:12:47 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=58490,localport=9119]
-2007-10-29 19:12:47 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 19:12:48 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 19:12:48 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
-2007-10-29 19:19:29 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=58663,localport=9119]
-2007-10-29 19:19:29 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 19:19:29 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 19:19:29 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
-2007-10-29 19:26:25 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=50923,localport=9119]
-2007-10-29 19:26:25 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 19:26:25 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 19:26:25 INFO: Usuario Administrador autenticado {admin} desde Ubicación No Registrada (127.0.0.1) [127.0.0.1]
-2007-10-29 19:27:54 INFO: Operacion realizada exitosamente [Transaccion sobre POS]
-2007-10-29 19:31:40 INFO: Operacion realizada exitosamente [Transaccion sobre POS]
-2007-10-29 19:32:00 INFO: Operacion realizada exitosamente [Transaccion sobre POS]
-2007-10-29 19:33:25 INFO: Operacion realizada exitosamente [Transaccion sobre POS]
-2007-10-29 19:34:36 INFO: Adicionando usuario al sistema...
-2007-10-29 19:34:36 INFO: Operacion realizada exitosamente [Transaccion sobre Usuarios]
-2007-10-29 19:41:12 ERROR: Numero de tokens: 0 / Numero de args: 3
-2007-10-29 19:41:12 ERROR: Argumento[0]: 0.0.0.1
-2007-10-29 19:41:12 ERROR: Argumento[1]: 6
-2007-10-29 19:41:12 ERROR: Argumento[2]: Alcala
-2007-10-29 19:41:12 ERROR: Ocurrio una falla mientras se procesaba operacion de Punto de Venta [Tipo:edit]
-2007-10-29 19:41:12 Causa: ERROR: Argumentos invalidos para la sentencia: UPD0006
-2007-10-29 19:42:11 INFO: Operacion realizada exitosamente [Transaccion sobre POS]
-2007-10-29 19:42:28 ERROR: Numero de tokens: 0 / Numero de args: 3
-2007-10-29 19:42:28 ERROR: Argumento[0]: 0.0.0.1
-2007-10-29 19:42:28 ERROR: Argumento[1]: 7
-2007-10-29 19:42:28 ERROR: Argumento[2]: El Campin
-2007-10-29 19:42:28 ERROR: Ocurrio una falla mientras se procesaba operacion de Punto de Venta [Tipo:edit]
-2007-10-29 19:42:28 Causa: ERROR: Argumentos invalidos para la sentencia: UPD0006
-2007-10-29 20:05:27 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
-2007-10-29 20:05:29 INFO: Cargando archivo de configuracion...
-2007-10-29 20:05:29 INFO: Cargando base de datos... comeet
-2007-10-29 20:05:29 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
-2007-10-29 20:05:29 INFO: Cargando cache de enlace [comeet]
-2007-10-29 20:05:30 INFO: Iniciando demonio pop3
-2007-10-29 20:05:30 INFO: Servidor de correo {localhost}
-2007-10-29 20:05:30 INFO: Iniciando demonio de sincronizacion
-2007-10-29 20:05:30 INFO: Servidor CoMeet escuchando por el puerto 9119
-2007-10-29 20:07:08 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=52245,localport=9119]
-2007-10-29 20:07:08 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 20:07:08 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 20:07:08 INFO: Usuario Administrador autenticado {admin} desde porvenir [127.0.0.1]
-2007-10-29 20:16:55 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=57153,localport=9119]
-2007-10-29 20:16:55 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 20:16:55 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 20:16:55 INFO: Usuario Administrador autenticado {admin} desde porvenir [127.0.0.1]
-2007-10-29 20:17:30 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=41396,localport=9119]
-2007-10-29 20:17:31 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 20:17:31 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 20:17:31 INFO: Usuario Administrador autenticado {admin} desde porvenir [127.0.0.1]
-2007-10-29 20:26:57 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=51119,localport=9119]
-2007-10-29 20:26:57 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 20:26:57 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 20:26:57 INFO: Usuario Administrador autenticado {admin} desde porvenir [127.0.0.1]
-2007-10-29 20:27:08 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=51120,localport=9119]
-2007-10-29 20:27:08 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 20:27:08 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 20:27:08 INFO: Usuario Administrador autenticado {admin} desde porvenir [127.0.0.1]
-2007-10-29 20:31:06 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
-2007-10-29 20:31:07 INFO: Cargando archivo de configuracion...
-2007-10-29 20:31:07 INFO: Cargando base de datos... comeet
-2007-10-29 20:31:07 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
-2007-10-29 20:31:07 INFO: Cargando cache de enlace [comeet]
-2007-10-29 20:31:08 INFO: Iniciando demonio pop3
-2007-10-29 20:31:08 INFO: Servidor de correo {localhost}
-2007-10-29 20:31:08 INFO: Iniciando demonio de sincronizacion
-2007-10-29 20:31:08 INFO: Servidor CoMeet escuchando por el puerto 9119
-2007-10-29 20:31:20 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=58439,localport=9119]
-2007-10-29 20:31:20 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 20:31:20 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 20:31:20 INFO: Usuario Administrador autenticado {admin} desde porvenir [127.0.0.1]
-2007-10-29 20:35:27 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
-2007-10-29 20:35:27 INFO: Cargando archivo de configuracion...
-2007-10-29 20:35:27 INFO: Cargando base de datos... comeet
-2007-10-29 20:35:27 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
-2007-10-29 20:35:27 INFO: Cargando cache de enlace [comeet]
-2007-10-29 20:35:28 INFO: Iniciando demonio pop3
-2007-10-29 20:35:28 INFO: Servidor de correo {localhost}
-2007-10-29 20:35:28 INFO: Iniciando demonio de sincronizacion
-2007-10-29 20:35:28 INFO: Servidor CoMeet escuchando por el puerto 9119
-2007-10-29 20:35:42 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=43762,localport=9119]
-2007-10-29 20:35:42 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 20:35:42 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 20:35:42 INFO: Usuario Administrador autenticado {admin} desde porvenir [127.0.0.1]
-2007-10-29 20:36:00 ADVERTENCIA: Tarea de sincronizacion con Oracle aplazada
-2007-10-29 20:36:00 ADVERTENCIA: Motivo -> Base de datos deshabilitada desde configuracion [oracle]
-2007-10-29 20:37:00 ADVERTENCIA: Tarea de sincronizacion con Oracle aplazada
-2007-10-29 20:37:00 ADVERTENCIA: Motivo -> Base de datos deshabilitada desde configuracion [oracle]
-2007-10-29 20:43:47 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
-2007-10-29 20:43:48 INFO: Cargando archivo de configuracion...
-2007-10-29 20:43:48 INFO: Cargando base de datos... comeet
-2007-10-29 20:43:48 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
-2007-10-29 20:43:48 INFO: Cargando cache de enlace [comeet]
-2007-10-29 20:43:49 INFO: Iniciando demonio pop3
-2007-10-29 20:43:49 INFO: Servidor de correo {localhost}
-2007-10-29 20:43:49 INFO: Iniciando demonio de sincronizacion
-2007-10-29 20:43:49 INFO: Servidor CoMeet escuchando por el puerto 9119
-2007-10-29 20:44:16 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=44073,localport=9119]
-2007-10-29 20:44:16 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 20:44:16 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 20:44:16 INFO: Usuario Administrador autenticado {admin} desde porvenir [127.0.0.1]
-2007-10-29 20:44:33 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=44074,localport=9119]
-2007-10-29 20:44:33 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 20:44:33 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 20:44:33 INFO: Usuario Administrador autenticado {admin} desde porvenir [127.0.0.1]
-2007-10-29 20:49:08 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
-2007-10-29 20:49:08 INFO: Cargando archivo de configuracion...
-2007-10-29 20:49:08 INFO: Cargando base de datos... comeet
-2007-10-29 20:49:08 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
-2007-10-29 20:49:08 INFO: Cargando cache de enlace [comeet]
-2007-10-29 20:49:09 INFO: Iniciando demonio pop3
-2007-10-29 20:49:09 INFO: Servidor de correo {localhost}
-2007-10-29 20:49:09 INFO: Iniciando demonio de sincronizacion
-2007-10-29 20:49:09 INFO: Servidor CoMeet escuchando por el puerto 9119
-2007-10-29 20:51:36 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=35781,localport=9119]
-2007-10-29 20:51:36 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 20:51:36 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 20:51:36 INFO: Usuario Administrador autenticado {admin} desde porvenir [127.0.0.1]
-2007-10-29 20:51:46 INFO: Operacion realizada exitosamente [Transaccion sobre POS]
-2007-10-29 21:06:02 INFO: Operacion realizada exitosamente [Transaccion sobre POS]
-2007-10-29 21:06:13 INFO: Operacion realizada exitosamente [Transaccion sobre POS]
-2007-10-29 21:06:51 INFO: Operacion realizada exitosamente [Transaccion sobre POS]
-2007-10-29 21:07:02 INFO: Operacion realizada exitosamente [Transaccion sobre POS]
-2007-10-29 21:08:13 INFO: Operacion realizada exitosamente [Transaccion sobre POS]
-2007-10-29 21:08:18 INFO: Operacion realizada exitosamente [Transaccion sobre POS]
-2007-10-29 21:08:23 INFO: Operacion realizada exitosamente [Transaccion sobre Grupos]
-2007-10-29 21:12:12 INFO: Operacion realizada exitosamente [Transaccion sobre POS]
-2007-10-29 21:12:31 INFO: Operacion realizada exitosamente [Transaccion sobre POS]
-2007-10-29 21:16:01 INFO: Operacion realizada exitosamente [Transaccion sobre POS]
-2007-10-29 21:16:13 INFO: Operacion realizada exitosamente [Transaccion sobre POS]
-2007-10-29 21:21:38 INFO: Operacion realizada exitosamente [Transaccion sobre POS]
-2007-10-29 21:25:23 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
-2007-10-29 21:25:24 INFO: Cargando archivo de configuracion...
-2007-10-29 21:25:24 INFO: Cargando base de datos... comeet
-2007-10-29 21:25:24 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
-2007-10-29 21:25:24 INFO: Cargando cache de enlace [comeet]
-2007-10-29 21:25:24 INFO: Iniciando demonio pop3
-2007-10-29 21:25:24 INFO: Servidor de correo {localhost}
-2007-10-29 21:25:25 INFO: Iniciando demonio de sincronizacion
-2007-10-29 21:25:25 INFO: Servidor CoMeet escuchando por el puerto 9119
-2007-10-29 21:25:38 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=36592,localport=9119]
-2007-10-29 21:25:38 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 21:25:38 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 21:25:38 INFO: Usuario Administrador autenticado {admin} desde porvenir [127.0.0.1]
-2007-10-29 21:28:49 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=59519,localport=9119]
-2007-10-29 21:28:49 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 21:28:49 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 21:28:49 INFO: Usuario Administrador autenticado {admin} desde porvenir [127.0.0.1]
-2007-10-29 21:30:07 INFO: Operacion realizada exitosamente [Transaccion sobre POS]
-2007-10-29 21:33:57 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
-2007-10-29 21:33:58 INFO: Cargando archivo de configuracion...
-2007-10-29 21:33:58 INFO: Cargando base de datos... comeet
-2007-10-29 21:33:58 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
-2007-10-29 21:33:58 INFO: Cargando cache de enlace [comeet]
-2007-10-29 21:33:58 INFO: Iniciando demonio pop3
-2007-10-29 21:33:58 INFO: Servidor de correo {localhost}
-2007-10-29 21:33:58 INFO: Iniciando demonio de sincronizacion
-2007-10-29 21:33:58 INFO: Servidor CoMeet escuchando por el puerto 9119
-2007-10-29 21:34:07 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=51815,localport=9119]
-2007-10-29 21:34:07 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 21:34:07 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 21:34:07 INFO: Usuario Administrador autenticado {admin} desde porvenir [127.0.0.1]
-2007-10-29 21:35:24 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=51816,localport=9119]
-2007-10-29 21:35:24 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 21:35:24 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 21:35:24 INFO: Usuario Administrador autenticado {admin} desde porvenir [127.0.0.1]
-2007-10-29 21:42:15 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
-2007-10-29 21:42:15 INFO: Cargando archivo de configuracion...
-2007-10-29 21:42:15 INFO: Cargando base de datos... comeet
-2007-10-29 21:42:15 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
-2007-10-29 21:42:15 INFO: Cargando cache de enlace [comeet]
-2007-10-29 21:42:16 INFO: Iniciando demonio pop3
-2007-10-29 21:42:16 INFO: Servidor de correo {localhost}
-2007-10-29 21:42:16 INFO: Iniciando demonio de sincronizacion
-2007-10-29 21:42:16 INFO: Servidor CoMeet escuchando por el puerto 9119
-2007-10-29 21:42:35 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=54657,localport=9119]
-2007-10-29 21:42:35 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 21:42:35 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 21:42:35 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
-2007-10-29 21:42:53 INFO: Operacion realizada exitosamente [Transaccion sobre POS]
-2007-10-29 21:48:43 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=55354,localport=9119]
-2007-10-29 21:48:43 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 21:48:43 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 21:48:43 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
-2007-10-29 22:01:34 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
-2007-10-29 22:01:35 INFO: Cargando archivo de configuracion...
-2007-10-29 22:01:35 INFO: Cargando base de datos... comeet
-2007-10-29 22:01:35 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
-2007-10-29 22:01:35 INFO: Cargando cache de enlace [comeet]
-2007-10-29 22:01:35 INFO: Iniciando demonio pop3
-2007-10-29 22:01:35 INFO: Servidor de correo {localhost}
-2007-10-29 22:01:35 INFO: Iniciando demonio de sincronizacion
-2007-10-29 22:01:36 INFO: Servidor CoMeet escuchando por el puerto 9119
-2007-10-29 22:01:46 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=53645,localport=9119]
-2007-10-29 22:01:47 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
-2007-10-29 22:01:47 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 22:01:47 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
-2007-10-29 22:02:13 INFO: Editando usuario del sistema...
-2007-10-29 22:02:14 INFO: Operacion realizada exitosamente [Transaccion sobre Usuarios]
-2007-10-29 22:02:28 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=53714,localport=9119]
-2007-10-29 22:02:28 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
-2007-10-29 22:02:28 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
-2007-10-29 22:02:28 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
-2007-10-29 22:03:22 INFO: Operacion realizada exitosamente [Transaccion sobre POS]
+2007-10-31 10:31:27 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 10:31:28 INFO: Cargando archivo de configuracion...
+2007-10-31 10:31:28 INFO: Cargando base de datos... comeet
+2007-10-31 10:31:29 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 10:31:29 INFO: Cargando cache de enlace [comeet]
+2007-10-31 10:31:30 INFO: Iniciando demonio pop3
+2007-10-31 10:31:30 INFO: Servidor de correo {192.168.0.103}
+2007-10-31 10:31:30 INFO: Iniciando demonio de sincronizacion
+2007-10-31 10:31:31 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 10:40:45 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=53818,localport=9119]
+2007-10-31 10:40:45 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 10:40:46 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=53819,localport=9119]
+2007-10-31 10:40:46 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 10:40:46 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 10:40:46 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 10:40:46 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 10:40:46 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 10:41:24 INFO: Editando usuario del sistema...
+2007-10-31 10:41:25 INFO: Operacion realizada exitosamente [Transaccion sobre Usuarios]
+2007-10-31 10:46:18 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 10:46:18 INFO: Cargando archivo de configuracion...
+2007-10-31 10:46:18 INFO: Cargando base de datos... comeet
+2007-10-31 10:46:19 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 10:46:19 INFO: Cargando cache de enlace [comeet]
+2007-10-31 10:46:20 INFO: Iniciando demonio pop3
+2007-10-31 10:46:20 INFO: Servidor de correo {192.168.0.103}
+2007-10-31 10:46:20 INFO: Iniciando demonio de sincronizacion
+2007-10-31 10:46:20 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 10:46:45 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=42526,localport=9119]
+2007-10-31 10:46:46 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 10:46:46 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 10:46:46 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 10:47:01 INFO: Editando usuario del sistema...
+2007-10-31 10:47:01 INFO: Operacion realizada exitosamente [Transaccion sobre Usuarios]
+2007-10-31 10:47:16 INFO: Editando usuario del sistema...
+2007-10-31 10:47:16 INFO: Operacion realizada exitosamente [Transaccion sobre Usuarios]
+2007-10-31 10:47:25 INFO: Editando usuario del sistema...
+2007-10-31 10:47:25 INFO: Operacion realizada exitosamente [Transaccion sobre Usuarios]
+2007-10-31 11:01:37 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=41579,localport=9119]
+2007-10-31 11:01:37 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 11:01:37 INFO: Acceso denegado a {CV0001} desde la ip 127.0.0.1 ingresando como Colocador [Clave incorrecta]
+2007-10-31 11:02:31 INFO: Editando usuario del sistema...
+2007-10-31 11:02:31 INFO: Operacion realizada exitosamente [Transaccion sobre Usuarios]
+2007-10-31 11:02:39 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=41581,localport=9119]
+2007-10-31 11:02:39 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 11:02:39 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 11:02:39 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 11:02:53 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 11:02:53 INFO: Enviando mensaje a 1 usuario
+2007-10-31 11:02:53 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: Prueba de Concepto
+2007-10-31 11:02:53 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 11:02:54 ERROR: Falla en el envio del mensaje a gustavo@192.168.0.103
+2007-10-31 11:02:54 ERROR: 501 5.1.7 Bad sender address syntax
+
+2007-10-31 11:06:25 INFO: Editando usuario del sistema...
+2007-10-31 11:06:25 INFO: Operacion realizada exitosamente [Transaccion sobre Usuarios]
+2007-10-31 11:07:07 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 11:07:07 INFO: Enviando mensaje a 1 usuario
+2007-10-31 11:07:07 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: Prueba de Concepto II
+2007-10-31 11:07:07 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 11:07:07 ERROR: Falla en el envio del mensaje a gustavo@salud.org
+2007-10-31 11:07:07 ERROR: 501 5.1.7 Bad sender address syntax
+
+2007-10-31 11:10:24 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 11:10:24 INFO: Cargando archivo de configuracion...
+2007-10-31 11:10:24 INFO: Cargando base de datos... comeet
+2007-10-31 11:10:24 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 11:10:24 INFO: Cargando cache de enlace [comeet]
+2007-10-31 11:10:24 INFO: Iniciando demonio pop3
+2007-10-31 11:10:24 INFO: Servidor de correo {192.168.0.103}
+2007-10-31 11:10:24 INFO: Iniciando demonio de sincronizacion
+2007-10-31 11:10:25 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 11:10:37 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=53135,localport=9119]
+2007-10-31 11:10:37 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 11:10:37 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 11:10:37 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 11:10:57 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 11:10:57 INFO: Enviando mensaje a 1 usuario
+2007-10-31 11:10:57 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: Prueba de Concepto
+2007-10-31 11:10:57 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 11:10:57 ERROR[SendFailedException]: Falla en el envio del mensaje a gustavo@salud.org
+2007-10-31 11:10:57 ERROR: 501 5.1.7 Bad sender address syntax
+
+2007-10-31 11:13:59 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 11:14:00 INFO: Cargando archivo de configuracion...
+2007-10-31 11:14:00 INFO: Cargando base de datos... comeet
+2007-10-31 11:14:00 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 11:14:00 INFO: Cargando cache de enlace [comeet]
+2007-10-31 11:14:00 INFO: Iniciando demonio pop3
+2007-10-31 11:14:00 INFO: Servidor de correo {192.168.0.103}
+2007-10-31 11:14:00 INFO: Iniciando demonio de sincronizacion
+2007-10-31 11:14:00 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 11:14:14 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=53148,localport=9119]
+2007-10-31 11:14:14 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 11:14:14 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 11:14:14 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 11:14:28 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 11:14:28 INFO: Enviando mensaje a 1 usuario
+2007-10-31 11:14:28 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: Prueba de Concepto
+2007-10-31 11:14:28 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 11:14:28 ERROR[SendFailedException]: Falla en el envio del mensaje desde comeet@192.168.0.103 para gustavo@salud.org
+2007-10-31 11:14:28 ERROR: 501 5.1.7 Bad sender address syntax
+
+2007-10-31 11:23:24 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 11:23:25 INFO: Cargando archivo de configuracion...
+2007-10-31 11:23:25 INFO: Cargando base de datos... comeet
+2007-10-31 11:23:25 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 11:23:25 INFO: Cargando cache de enlace [comeet]
+2007-10-31 11:23:25 INFO: Iniciando demonio pop3
+2007-10-31 11:23:25 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 11:23:25 INFO: Iniciando demonio de sincronizacion
+2007-10-31 11:23:25 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 11:24:56 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 11:24:57 INFO: Cargando archivo de configuracion...
+2007-10-31 11:24:57 INFO: Cargando base de datos... comeet
+2007-10-31 11:24:57 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 11:24:57 INFO: Cargando cache de enlace [comeet]
+2007-10-31 11:24:57 INFO: Iniciando demonio pop3
+2007-10-31 11:24:57 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 11:24:57 INFO: Iniciando demonio de sincronizacion
+2007-10-31 11:24:57 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 11:38:27 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=39770,localport=9119]
+2007-10-31 11:38:28 INFO: Inicio de autenticacion para el usuario {admin} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 11:38:28 INFO: Acceso denegado a {admin} desde la ip 127.0.0.1 ingresando como Administrador/Auditor [Clave incorrecta]
+2007-10-31 11:38:32 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=39771,localport=9119]
+2007-10-31 11:38:32 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 11:38:32 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 11:38:32 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 11:40:06 INFO: Editando usuario del sistema...
+2007-10-31 11:40:06 INFO: Operacion realizada exitosamente [Transaccion sobre Usuarios]
+2007-10-31 11:40:34 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=35597,localport=9119]
+2007-10-31 11:40:34 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 11:40:34 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 11:40:34 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 11:40:55 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 11:40:56 INFO: Enviando mensaje a 1 usuario
+2007-10-31 11:40:56 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: Mensaje de Prueba
+2007-10-31 11:40:56 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 11:52:56 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 11:52:57 INFO: Cargando archivo de configuracion...
+2007-10-31 11:52:57 INFO: Cargando base de datos... comeet
+2007-10-31 11:52:57 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 11:52:57 INFO: Cargando cache de enlace [comeet]
+2007-10-31 11:52:57 INFO: Iniciando demonio pop3
+2007-10-31 11:52:57 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 11:52:57 INFO: Iniciando demonio de sincronizacion
+2007-10-31 11:52:57 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 11:53:26 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=45930,localport=9119]
+2007-10-31 11:53:26 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 11:53:26 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 11:53:26 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 11:53:35 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 11:53:35 INFO: Enviando mensaje a 1 usuario
+2007-10-31 11:53:35 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: Prueba
+2007-10-31 11:53:35 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 12:01:32 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 12:01:33 INFO: Cargando archivo de configuracion...
+2007-10-31 12:01:33 INFO: Cargando base de datos... comeet
+2007-10-31 12:01:34 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 12:01:34 INFO: Cargando cache de enlace [comeet]
+2007-10-31 12:01:35 INFO: Iniciando demonio pop3
+2007-10-31 12:01:35 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 12:01:35 INFO: Iniciando demonio de sincronizacion
+2007-10-31 12:01:35 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 12:02:06 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=57215,localport=9119]
+2007-10-31 12:02:07 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 12:02:07 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 12:02:07 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 12:03:43 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=57220,localport=9119]
+2007-10-31 12:03:44 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 12:03:44 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 12:03:44 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 12:04:09 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 12:04:09 INFO: Enviando mensaje a 1 usuario
+2007-10-31 12:04:09 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: Prueba!
+2007-10-31 12:04:09 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 12:04:09 ERROR[MessagingException]: Falla en el envio del mensaje desde comeet@saludtotal.com para gustavo@saludtotal.com
+2007-10-31 12:04:09 ERROR: Could not connect to SMTP host: localhost, port: 25;
+  nested exception is:
+	java.net.ConnectException: Connection refused
+2007-10-31 12:08:39 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 12:08:40 INFO: Cargando archivo de configuracion...
+2007-10-31 12:08:40 INFO: Cargando base de datos... comeet
+2007-10-31 12:08:40 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 12:08:40 INFO: Cargando cache de enlace [comeet]
+2007-10-31 12:08:40 INFO: Iniciando demonio pop3
+2007-10-31 12:08:40 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 12:08:40 INFO: Iniciando demonio de sincronizacion
+2007-10-31 12:08:40 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 12:08:59 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=35781,localport=9119]
+2007-10-31 12:08:59 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 12:08:59 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 12:08:59 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 12:09:10 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 12:09:10 INFO: Enviando mensaje a 1 usuario
+2007-10-31 12:09:10 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: Prueba X
+2007-10-31 12:09:10 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 12:09:10 ERROR[MessagingException]: Falla en el envio del mensaje desde comeet@saludtotal.com para gustavo@saludtotal.com
+2007-10-31 12:09:10 ERROR: Could not connect to SMTP host: localhost, port: 25;
+  nested exception is:
+	java.net.ConnectException: Connection refused
+2007-10-31 12:10:19 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 12:10:19 INFO: Cargando archivo de configuracion...
+2007-10-31 12:10:19 INFO: Cargando base de datos... comeet
+2007-10-31 12:10:19 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 12:10:19 INFO: Cargando cache de enlace [comeet]
+2007-10-31 12:10:19 INFO: Iniciando demonio pop3
+2007-10-31 12:10:19 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 12:10:19 INFO: Iniciando demonio de sincronizacion
+2007-10-31 12:10:20 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 12:10:36 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=40146,localport=9119]
+2007-10-31 12:10:36 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 12:10:36 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 12:10:36 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 12:10:58 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 12:10:58 INFO: Enviando mensaje a 1 usuario
+2007-10-31 12:10:58 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: Prueba
+2007-10-31 12:10:58 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 12:10:58 ERROR[MessagingException]: Falla en el envio del mensaje desde comeet@saludtotal.com para gustavo@saludtotal.com
+2007-10-31 12:10:58 ERROR: Could not connect to SMTP host: localhost, port: 25;
+  nested exception is:
+	java.net.ConnectException: Connection refused
+2007-10-31 12:15:41 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 12:15:41 INFO: Cargando archivo de configuracion...
+2007-10-31 12:15:41 INFO: Cargando base de datos... comeet
+2007-10-31 12:15:42 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 12:15:42 INFO: Cargando cache de enlace [comeet]
+2007-10-31 12:15:42 INFO: Iniciando demonio pop3
+2007-10-31 12:15:42 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 12:15:42 INFO: Iniciando demonio de sincronizacion
+2007-10-31 12:15:42 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 12:15:54 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=51287,localport=9119]
+2007-10-31 12:15:54 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 12:15:54 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 12:15:54 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 12:16:22 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 12:16:22 INFO: Enviando mensaje a 1 usuario
+2007-10-31 12:16:22 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: Prueba
+2007-10-31 12:16:22 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 12:16:22 ERROR[MessagingException]: Falla en el envio del mensaje desde comeet@saludtotal.com para gustavo@saludtotal.com
+2007-10-31 12:16:22 ERROR: Could not connect to SMTP host: localhost, port: 25;
+  nested exception is:
+	java.net.ConnectException: Connection refused
+2007-10-31 12:17:39 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 12:17:40 INFO: Cargando archivo de configuracion...
+2007-10-31 12:17:40 INFO: Cargando base de datos... comeet
+2007-10-31 12:17:40 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 12:17:40 INFO: Cargando cache de enlace [comeet]
+2007-10-31 12:17:40 INFO: Iniciando demonio pop3
+2007-10-31 12:17:40 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 12:17:40 INFO: Iniciando demonio de sincronizacion
+2007-10-31 12:17:40 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 12:17:52 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=51288,localport=9119]
+2007-10-31 12:17:53 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 12:17:53 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 12:17:53 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 12:18:03 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 12:18:03 INFO: Enviando mensaje a 1 usuario
+2007-10-31 12:18:03 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: Prueba X
+2007-10-31 12:18:03 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 12:19:06 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 12:19:06 INFO: Cargando archivo de configuracion...
+2007-10-31 12:19:06 INFO: Cargando base de datos... comeet
+2007-10-31 12:19:06 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 12:19:06 INFO: Cargando cache de enlace [comeet]
+2007-10-31 12:19:07 INFO: Iniciando demonio pop3
+2007-10-31 12:19:07 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 12:19:07 INFO: Iniciando demonio de sincronizacion
+2007-10-31 12:19:07 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 12:19:23 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=51291,localport=9119]
+2007-10-31 12:19:23 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 12:19:23 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 12:19:23 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 12:20:34 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 12:20:34 INFO: Enviando mensaje a 1 usuario
+2007-10-31 12:20:34 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: Mensaje de Prueba
+2007-10-31 12:20:34 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 12:22:18 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 12:22:18 INFO: Enviando mensaje a 1 usuario
+2007-10-31 12:22:18 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: Sigamos intentando!
+2007-10-31 12:22:18 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 12:29:45 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 12:29:45 INFO: Cargando archivo de configuracion...
+2007-10-31 12:29:45 INFO: Cargando base de datos... comeet
+2007-10-31 12:29:45 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 12:29:45 INFO: Cargando cache de enlace [comeet]
+2007-10-31 12:29:45 INFO: Iniciando demonio pop3
+2007-10-31 12:29:45 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 12:29:46 INFO: Iniciando demonio de sincronizacion
+2007-10-31 12:29:46 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 12:30:07 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=56167,localport=9119]
+2007-10-31 12:30:07 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 12:30:07 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 12:30:07 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 12:34:46 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 12:34:46 INFO: Cargando archivo de configuracion...
+2007-10-31 12:34:46 INFO: Cargando base de datos... comeet
+2007-10-31 12:34:46 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 12:34:46 INFO: Cargando cache de enlace [comeet]
+2007-10-31 12:34:47 INFO: Iniciando demonio pop3
+2007-10-31 12:34:47 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 12:34:47 INFO: Iniciando demonio de sincronizacion
+2007-10-31 12:34:47 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 12:35:00 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=56176,localport=9119]
+2007-10-31 12:35:00 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 12:35:00 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 12:35:00 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 12:35:18 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 12:35:18 INFO: Enviando mensaje a 1 usuario
+2007-10-31 12:35:18 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: Otra prueba
+2007-10-31 12:35:18 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 12:36:48 INFO: Leyendo correo del buzon de mensajes
+2007-10-31 12:36:48 INFO: Nuevo mensaje desde {gustavo@saludtotal.com} con asunto [ CV0001,Otra prueba ]
+2007-10-31 12:36:48 INFO: Enviando mensaje a 1 usuario
+2007-10-31 12:36:48 INFO: [Envio a Punto de Venta] Remitente {gustavo} - Destino: CV0001 - Asunto: Otra prueba
+2007-10-31 12:36:48 INFO: Almacenando registro de mensaje en la base de datos [CV0001]
+2007-10-31 12:36:56 INFO: Confirmada lectura del mensaje con destino {CV0001} / Asunto: [Otra prueba] / Remitido por: {FALLAS EQUIPOS}
+2007-10-31 12:48:47 INFO: Leyendo correo del buzon de mensajes
+2007-10-31 12:48:47 INFO: Nuevo mensaje desde {gustavo@saludtotal.com} con asunto [ CV0001, Solicitud! ]
+2007-10-31 12:48:47 INFO: Enviando mensaje a 1 usuario
+2007-10-31 12:48:47 INFO: [Envio a Punto de Venta] Remitente {gustavo} - Destino: CV0001 - Asunto:  Solicitud!
+2007-10-31 12:48:47 INFO: Almacenando registro de mensaje en la base de datos [CV0001]
+2007-10-31 12:48:50 INFO: Confirmada lectura del mensaje con destino {CV0001} / Asunto: [ Solicitud!] / Remitido por: {FALLAS EQUIPOS}
+2007-10-31 12:53:10 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 12:53:11 INFO: Cargando archivo de configuracion...
+2007-10-31 12:53:11 INFO: Cargando base de datos... comeet
+2007-10-31 12:53:11 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 12:53:11 INFO: Cargando cache de enlace [comeet]
+2007-10-31 12:53:11 INFO: Iniciando demonio pop3
+2007-10-31 12:53:11 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 12:53:11 INFO: Iniciando demonio de sincronizacion
+2007-10-31 12:53:11 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 12:53:32 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=49073,localport=9119]
+2007-10-31 12:53:32 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 12:53:32 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 12:53:32 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 12:55:14 INFO: Leyendo correo del buzon de mensajes
+2007-10-31 12:55:14 INFO: Nuevo mensaje desde {gustavo@saludtotal.com} con asunto [ Este es un ensayo! ]
+2007-10-31 12:55:14 ERROR: Inconsistencia en el asunto del mensaje escrito por {gustavo@saludtotal.com}
+2007-10-31 12:55:14 ERROR: Asunto escrito [Este es un ensayo!]
+2007-10-31 12:55:14 Contenido del mensaje:
+2007-10-31 12:55:14 O no???
+
+
+2007-10-31 12:57:13 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 12:57:13 INFO: Cargando archivo de configuracion...
+2007-10-31 12:57:13 INFO: Cargando base de datos... comeet
+2007-10-31 12:57:13 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 12:57:13 INFO: Cargando cache de enlace [comeet]
+2007-10-31 12:57:13 INFO: Iniciando demonio pop3
+2007-10-31 12:57:13 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 12:57:13 INFO: Iniciando demonio de sincronizacion
+2007-10-31 12:57:13 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 12:57:25 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=46701,localport=9119]
+2007-10-31 12:57:26 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 12:57:26 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 12:57:26 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 12:57:54 INFO: Leyendo correo del buzon de mensajes
+2007-10-31 12:57:54 INFO: Nuevo mensaje desde {gustavo@saludtotal.com} con asunto [ CV0001, prueba ]
+2007-10-31 12:57:54 INFO: Enviando mensaje a 1 usuario
+2007-10-31 12:57:54 INFO: [Envio a Punto de Venta] Remitente {gustavo} - Destino: CV0001 - Asunto:  prueba
+2007-10-31 12:57:54 INFO: Almacenando registro de mensaje en la base de datos [CV0001]
+2007-10-31 12:57:58 INFO: Confirmada lectura del mensaje con destino {CV0001} / Asunto: [ prueba] / Remitido por: {FALLAS EQUIPOS}
+2007-10-31 12:58:15 INFO: Leyendo correo del buzon de mensajes
+2007-10-31 12:58:15 INFO: Nuevo mensaje desde {gustavo@saludtotal.com} con asunto [  CV0001,Sigamos intentando! ]
+2007-10-31 12:58:15 INFO: Enviando mensaje a 1 usuario
+2007-10-31 12:58:15 INFO: [Envio a Punto de Venta] Remitente {gustavo} - Destino: CV0001 - Asunto: Sigamos intentando!
+2007-10-31 12:58:15 INFO: Almacenando registro de mensaje en la base de datos [CV0001]
+2007-10-31 12:58:19 INFO: Confirmada lectura del mensaje con destino {CV0001} / Asunto: [Sigamos intentando!] / Remitido por: {FALLAS EQUIPOS}
+2007-10-31 13:00:10 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 13:00:11 INFO: Cargando archivo de configuracion...
+2007-10-31 13:00:11 INFO: Cargando base de datos... comeet
+2007-10-31 13:00:11 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 13:00:11 INFO: Cargando cache de enlace [comeet]
+2007-10-31 13:00:11 INFO: Iniciando demonio pop3
+2007-10-31 13:00:11 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 13:00:11 INFO: Iniciando demonio de sincronizacion
+2007-10-31 13:00:11 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 13:00:49 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=49831,localport=9119]
+2007-10-31 13:00:49 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 13:00:49 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 13:00:49 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 13:05:07 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 13:05:07 INFO: Enviando mensaje a 1 usuario
+2007-10-31 13:05:07 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: Prueba!!!
+2007-10-31 13:05:07 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 13:07:27 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 13:07:28 INFO: Cargando archivo de configuracion...
+2007-10-31 13:07:28 INFO: Cargando base de datos... comeet
+2007-10-31 13:07:28 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 13:07:28 INFO: Cargando cache de enlace [comeet]
+2007-10-31 13:07:28 INFO: Iniciando demonio pop3
+2007-10-31 13:07:28 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 13:07:28 INFO: Iniciando demonio de sincronizacion
+2007-10-31 13:07:28 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 13:07:40 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=35091,localport=9119]
+2007-10-31 13:07:40 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 13:07:40 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 13:07:40 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 13:07:50 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 13:07:50 INFO: Enviando mensaje a 1 usuario
+2007-10-31 13:07:51 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: Probando
+2007-10-31 13:07:51 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 13:10:10 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 13:10:10 INFO: Cargando archivo de configuracion...
+2007-10-31 13:10:10 INFO: Cargando base de datos... comeet
+2007-10-31 13:10:10 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 13:10:10 INFO: Cargando cache de enlace [comeet]
+2007-10-31 13:10:11 INFO: Iniciando demonio pop3
+2007-10-31 13:10:11 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 13:10:11 INFO: Iniciando demonio de sincronizacion
+2007-10-31 13:10:11 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 13:10:26 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=47939,localport=9119]
+2007-10-31 13:10:27 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 13:10:27 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 13:10:27 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 13:12:59 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 13:12:59 INFO: Enviando mensaje a 1 usuario
+2007-10-31 13:12:59 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: Hola
+2007-10-31 13:12:59 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 13:15:02 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 13:15:02 INFO: Cargando archivo de configuracion...
+2007-10-31 13:15:02 INFO: Cargando base de datos... comeet
+2007-10-31 13:15:02 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 13:15:02 INFO: Cargando cache de enlace [comeet]
+2007-10-31 13:15:03 INFO: Iniciando demonio pop3
+2007-10-31 13:15:03 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 13:15:03 INFO: Iniciando demonio de sincronizacion
+2007-10-31 13:15:03 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 13:15:16 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=48564,localport=9119]
+2007-10-31 13:15:16 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 13:15:16 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 13:15:16 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 13:29:47 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 13:29:47 INFO: Cargando archivo de configuracion...
+2007-10-31 13:29:48 INFO: Cargando base de datos... comeet
+2007-10-31 13:29:48 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 13:29:48 INFO: Cargando cache de enlace [comeet]
+2007-10-31 13:29:48 INFO: Iniciando demonio pop3
+2007-10-31 13:29:48 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 13:29:48 INFO: Iniciando demonio de sincronizacion
+2007-10-31 13:29:48 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 13:36:43 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 13:36:43 INFO: Cargando archivo de configuracion...
+2007-10-31 13:36:43 INFO: Cargando base de datos... comeet
+2007-10-31 13:36:43 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 13:36:43 INFO: Cargando cache de enlace [comeet]
+2007-10-31 13:36:43 INFO: Iniciando demonio pop3
+2007-10-31 13:36:43 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 13:36:43 INFO: Iniciando demonio de sincronizacion
+2007-10-31 13:36:43 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 13:36:58 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=56708,localport=9119]
+2007-10-31 13:36:58 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 13:36:59 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 13:36:59 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 13:37:44 INFO: Leyendo correo del buzon de mensajes
+2007-10-31 13:37:44 INFO: Nuevo mensaje desde {gustavo@saludtotal.com} con asunto [ CV0001, mensaje de prueba ]
+2007-10-31 13:37:44 INFO: Enviando mensaje a 1 usuario
+2007-10-31 13:37:44 INFO: [Envio a Punto de Venta] Remitente {gustavo} - Destino: CV0001 - Asunto:  mensaje de prueba
+2007-10-31 13:37:44 INFO: Almacenando registro de mensaje en la base de datos [CV0001]
+2007-10-31 13:37:49 INFO: Confirmada lectura del mensaje con destino {CV0001} / Asunto: [ mensaje de prueba] / Remitido por: {FALLAS EQUIPOS}
+2007-10-31 13:37:57 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 13:37:58 INFO: Enviando mensaje a 1 usuario
+2007-10-31 13:37:58 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: Tratemos
+2007-10-31 13:37:58 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 13:38:44 INFO: Leyendo correo del buzon de mensajes
+2007-10-31 13:38:44 INFO: Nuevo mensaje desde {gustavo@saludtotal.com} con asunto [ TODOS, probando! ]
+2007-10-31 13:38:44 INFO: Enviando mensaje a 3 usuarios
+2007-10-31 13:38:44 INFO: Almacenando registro de mensaje en la base de datos [CV0003]
+2007-10-31 13:38:44 INFO: Almacenando registro de mensaje en la base de datos [CV0005]
+2007-10-31 13:38:44 INFO: Almacenando registro de mensaje en la base de datos [CV0006]
+2007-10-31 13:38:44 INFO: Enviando mensaje a 2 usuarios
+2007-10-31 13:38:44 INFO: Almacenando registro de mensaje en la base de datos [CV0002]
+2007-10-31 13:38:44 INFO: Almacenando registro de mensaje en la base de datos [CV0004]
+2007-10-31 13:38:44 INFO: Enviando mensaje a 3 usuarios
+2007-10-31 13:38:44 INFO: Almacenando registro de mensaje en la base de datos [CV0010]
+2007-10-31 13:38:45 INFO: Almacenando registro de mensaje en la base de datos [CV0011]
+2007-10-31 13:38:45 INFO: Almacenando registro de mensaje en la base de datos [CV0012]
+2007-10-31 13:38:45 INFO: Enviando mensaje a 5 usuarios
+2007-10-31 13:38:45 INFO: [Envio a Punto de Venta] Remitente {gustavo} - Destino: CV0001 - Asunto:  probando!
+2007-10-31 13:38:45 INFO: Almacenando registro de mensaje en la base de datos [CV0001]
+2007-10-31 13:38:45 INFO: Almacenando registro de mensaje en la base de datos [CV0070]
+2007-10-31 13:38:45 INFO: Almacenando registro de mensaje en la base de datos [CV0090]
+2007-10-31 13:38:45 INFO: Almacenando registro de mensaje en la base de datos [CV0092]
+2007-10-31 13:38:45 INFO: Almacenando registro de mensaje en la base de datos [CV0098]
+2007-10-31 13:38:45 INFO: Enviando mensaje a 3 usuarios
+2007-10-31 13:38:45 INFO: Almacenando registro de mensaje en la base de datos [CV0007]
+2007-10-31 13:38:45 INFO: Almacenando registro de mensaje en la base de datos [CV0008]
+2007-10-31 13:38:45 INFO: Almacenando registro de mensaje en la base de datos [CV0009]
+2007-10-31 13:38:46 INFO: Confirmada lectura del mensaje con destino {CV0001} / Asunto: [ probando!] / Remitido por: {FALLAS EQUIPOS}
+2007-10-31 13:41:15 INFO: Leyendo correo del buzon de mensajes
+2007-10-31 13:41:15 INFO: Nuevo mensaje desde {gustavo@saludtotal.com} con asunto [ TODOS, a que no adivinan??? ]
+2007-10-31 13:41:15 INFO: Enviando mensaje a 3 usuarios
+2007-10-31 13:41:15 INFO: Almacenando registro de mensaje en la base de datos [CV0003]
+2007-10-31 13:41:15 INFO: Almacenando registro de mensaje en la base de datos [CV0005]
+2007-10-31 13:41:15 INFO: Almacenando registro de mensaje en la base de datos [CV0006]
+2007-10-31 13:41:15 INFO: Enviando mensaje a 2 usuarios
+2007-10-31 13:41:16 INFO: Almacenando registro de mensaje en la base de datos [CV0002]
+2007-10-31 13:41:16 INFO: Almacenando registro de mensaje en la base de datos [CV0004]
+2007-10-31 13:41:16 INFO: Enviando mensaje a 3 usuarios
+2007-10-31 13:41:16 INFO: Almacenando registro de mensaje en la base de datos [CV0010]
+2007-10-31 13:41:16 INFO: Almacenando registro de mensaje en la base de datos [CV0011]
+2007-10-31 13:41:16 INFO: Almacenando registro de mensaje en la base de datos [CV0012]
+2007-10-31 13:41:16 INFO: Enviando mensaje a 5 usuarios
+2007-10-31 13:41:16 INFO: [Envio a Punto de Venta] Remitente {gustavo} - Destino: CV0001 - Asunto:  a que no adivinan???
+2007-10-31 13:41:16 INFO: Almacenando registro de mensaje en la base de datos [CV0001]
+2007-10-31 13:41:16 INFO: Almacenando registro de mensaje en la base de datos [CV0070]
+2007-10-31 13:41:16 INFO: Almacenando registro de mensaje en la base de datos [CV0090]
+2007-10-31 13:41:16 INFO: Almacenando registro de mensaje en la base de datos [CV0092]
+2007-10-31 13:41:16 INFO: Almacenando registro de mensaje en la base de datos [CV0098]
+2007-10-31 13:41:16 INFO: Enviando mensaje a 3 usuarios
+2007-10-31 13:41:16 INFO: Almacenando registro de mensaje en la base de datos [CV0007]
+2007-10-31 13:41:16 INFO: Almacenando registro de mensaje en la base de datos [CV0008]
+2007-10-31 13:41:16 INFO: Almacenando registro de mensaje en la base de datos [CV0009]
+2007-10-31 13:41:18 INFO: Confirmada lectura del mensaje con destino {CV0001} / Asunto: [ a que no adivinan???] / Remitido por: {FALLAS EQUIPOS}
+2007-10-31 13:41:46 INFO: Leyendo correo del buzon de mensajes
+2007-10-31 13:41:46 INFO: Nuevo mensaje desde {gustavo@saludtotal.com} con asunto [ CV0001, mensaje privado ]
+2007-10-31 13:41:46 INFO: Enviando mensaje a 1 usuario
+2007-10-31 13:41:46 INFO: [Envio a Punto de Venta] Remitente {gustavo} - Destino: CV0001 - Asunto:  mensaje privado
+2007-10-31 13:41:46 INFO: Almacenando registro de mensaje en la base de datos [CV0001]
+2007-10-31 13:41:50 INFO: Confirmada lectura del mensaje con destino {CV0001} / Asunto: [ mensaje privado] / Remitido por: {FALLAS EQUIPOS}
+2007-10-31 13:44:47 INFO: Leyendo correo del buzon de mensajes
+2007-10-31 13:44:47 INFO: Nuevo mensaje desde {gustavo@saludtotal.com} con asunto [ CV0001, probando otra vez ]
+2007-10-31 13:44:47 INFO: Enviando mensaje a 1 usuario
+2007-10-31 13:44:47 INFO: [Envio a Punto de Venta] Remitente {gustavo} - Destino: CV0001 - Asunto:  probando otra vez
+2007-10-31 13:44:47 INFO: Almacenando registro de mensaje en la base de datos [CV0001]
+2007-10-31 13:44:49 INFO: Confirmada lectura del mensaje con destino {CV0001} / Asunto: [ probando otra vez] / Remitido por: {FALLAS EQUIPOS}
+2007-10-31 13:47:33 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 13:47:34 INFO: Cargando archivo de configuracion...
+2007-10-31 13:47:34 INFO: Cargando base de datos... comeet
+2007-10-31 13:47:34 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 13:47:34 INFO: Cargando cache de enlace [comeet]
+2007-10-31 13:47:34 INFO: Iniciando demonio pop3
+2007-10-31 13:47:34 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 13:47:34 INFO: Iniciando demonio de sincronizacion
+2007-10-31 13:47:34 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 13:49:02 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=49742,localport=9119]
+2007-10-31 13:49:03 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 13:49:03 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 13:49:03 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 13:49:15 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 13:49:15 INFO: Enviando mensaje a 1 usuario
+2007-10-31 13:49:15 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: Miremo si llega
+2007-10-31 13:49:15 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 13:50:05 INFO: Leyendo correo del buzon de mensajes
+2007-10-31 13:50:05 INFO: Nuevo mensaje desde {gustavo@saludtotal.com} con asunto [ TODOS, evacuacion! ]
+2007-10-31 13:50:05 INFO: Enviando mensaje a 3 usuarios
+2007-10-31 13:50:05 INFO: Almacenando registro de mensaje en la base de datos [CV0003]
+2007-10-31 13:50:05 INFO: Almacenando registro de mensaje en la base de datos [CV0005]
+2007-10-31 13:50:05 INFO: Almacenando registro de mensaje en la base de datos [CV0006]
+2007-10-31 13:50:05 INFO: Enviando mensaje a 2 usuarios
+2007-10-31 13:50:05 INFO: Almacenando registro de mensaje en la base de datos [CV0002]
+2007-10-31 13:50:05 INFO: Almacenando registro de mensaje en la base de datos [CV0004]
+2007-10-31 13:50:05 INFO: Enviando mensaje a 3 usuarios
+2007-10-31 13:50:05 INFO: Almacenando registro de mensaje en la base de datos [CV0010]
+2007-10-31 13:50:05 INFO: Almacenando registro de mensaje en la base de datos [CV0011]
+2007-10-31 13:50:05 INFO: Almacenando registro de mensaje en la base de datos [CV0012]
+2007-10-31 13:50:05 INFO: Enviando mensaje a 5 usuarios
+2007-10-31 13:50:05 INFO: [Envio a Punto de Venta] Remitente {gustavo} - Destino: CV0001 - Asunto: evacuacion!
+2007-10-31 13:50:05 INFO: Almacenando registro de mensaje en la base de datos [CV0001]
+2007-10-31 13:50:05 INFO: Almacenando registro de mensaje en la base de datos [CV0070]
+2007-10-31 13:50:05 INFO: Almacenando registro de mensaje en la base de datos [CV0090]
+2007-10-31 13:50:05 INFO: Almacenando registro de mensaje en la base de datos [CV0092]
+2007-10-31 13:50:05 INFO: Almacenando registro de mensaje en la base de datos [CV0098]
+2007-10-31 13:50:05 INFO: Enviando mensaje a 3 usuarios
+2007-10-31 13:50:05 INFO: Almacenando registro de mensaje en la base de datos [CV0007]
+2007-10-31 13:50:05 INFO: Almacenando registro de mensaje en la base de datos [CV0008]
+2007-10-31 13:50:05 INFO: Almacenando registro de mensaje en la base de datos [CV0009]
+2007-10-31 13:50:07 INFO: Confirmada lectura del mensaje con destino {CV0001} / Asunto: [evacuacion!] / Remitido por: {FALLAS EQUIPOS}
+2007-10-31 13:52:36 INFO: Leyendo correo del buzon de mensajes
+2007-10-31 13:52:36 INFO: Nuevo mensaje desde {gustavo@saludtotal.com} con asunto [ CV0001, probando para ver ]
+2007-10-31 13:52:36 INFO: Enviando mensaje a 1 usuario
+2007-10-31 13:52:36 INFO: [Envio a Punto de Venta] Remitente {gustavo} - Destino: CV0001 - Asunto: probando para ver
+2007-10-31 13:52:36 INFO: Almacenando registro de mensaje en la base de datos [CV0001]
+2007-10-31 13:52:38 INFO: Confirmada lectura del mensaje con destino {CV0001} / Asunto: [probando para ver] / Remitido por: {FALLAS EQUIPOS}
+2007-10-31 13:53:13 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 13:53:13 INFO: Cargando archivo de configuracion...
+2007-10-31 13:53:13 INFO: Cargando base de datos... comeet
+2007-10-31 13:53:13 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 13:53:13 INFO: Cargando cache de enlace [comeet]
+2007-10-31 13:53:14 INFO: Iniciando demonio pop3
+2007-10-31 13:53:14 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 13:53:14 INFO: Iniciando demonio de sincronizacion
+2007-10-31 13:53:14 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 13:53:27 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=54012,localport=9119]
+2007-10-31 13:53:27 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 13:53:27 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 13:53:28 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 13:53:43 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 13:53:43 INFO: Enviando mensaje a 1 usuario
+2007-10-31 13:53:44 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: Probando desde
+2007-10-31 13:53:44 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 13:54:35 INFO: Leyendo correo del buzon de mensajes
+2007-10-31 13:54:35 INFO: Nuevo mensaje desde {gustavo@saludtotal.com} con asunto [ TODOS, aviso urgente ]
+2007-10-31 13:54:35 INFO: Enviando mensaje a 3 usuarios
+2007-10-31 13:54:35 INFO: Almacenando registro de mensaje en la base de datos [CV0003]
+2007-10-31 13:54:35 INFO: Almacenando registro de mensaje en la base de datos [CV0005]
+2007-10-31 13:54:35 INFO: Almacenando registro de mensaje en la base de datos [CV0006]
+2007-10-31 13:54:35 INFO: Enviando mensaje a 2 usuarios
+2007-10-31 13:54:35 INFO: Almacenando registro de mensaje en la base de datos [CV0002]
+2007-10-31 13:54:35 INFO: Almacenando registro de mensaje en la base de datos [CV0004]
+2007-10-31 13:54:35 INFO: Enviando mensaje a 3 usuarios
+2007-10-31 13:54:35 INFO: Almacenando registro de mensaje en la base de datos [CV0010]
+2007-10-31 13:54:35 INFO: Almacenando registro de mensaje en la base de datos [CV0011]
+2007-10-31 13:54:35 INFO: Almacenando registro de mensaje en la base de datos [CV0012]
+2007-10-31 13:54:35 INFO: Enviando mensaje a 5 usuarios
+2007-10-31 13:54:35 INFO: [Envio a Punto de Venta] Remitente {gustavo} - Destino: CV0001 - Asunto: aviso urgente
+2007-10-31 13:54:35 INFO: Almacenando registro de mensaje en la base de datos [CV0001]
+2007-10-31 13:54:35 INFO: Almacenando registro de mensaje en la base de datos [CV0070]
+2007-10-31 13:54:35 INFO: Almacenando registro de mensaje en la base de datos [CV0090]
+2007-10-31 13:54:35 INFO: Almacenando registro de mensaje en la base de datos [CV0092]
+2007-10-31 13:54:35 INFO: Almacenando registro de mensaje en la base de datos [CV0098]
+2007-10-31 13:54:35 INFO: Enviando mensaje a 3 usuarios
+2007-10-31 13:54:35 INFO: Almacenando registro de mensaje en la base de datos [CV0007]
+2007-10-31 13:54:35 INFO: Almacenando registro de mensaje en la base de datos [CV0008]
+2007-10-31 13:54:35 INFO: Almacenando registro de mensaje en la base de datos [CV0009]
+2007-10-31 13:54:39 INFO: Confirmada lectura del mensaje con destino {CV0001} / Asunto: [aviso urgente] / Remitido por: {FALLAS EQUIPOS}
+2007-10-31 13:54:51 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 13:54:51 INFO: Enviando mensaje a 1 usuario
+2007-10-31 13:54:51 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: [RE:aviso urgente]
+2007-10-31 13:54:51 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 13:55:26 INFO: Leyendo correo del buzon de mensajes
+2007-10-31 13:55:26 INFO: Nuevo mensaje desde {gustavo@saludtotal.com} con asunto [ CV0001, probando!!! ]
+2007-10-31 13:55:26 INFO: Enviando mensaje a 1 usuario
+2007-10-31 13:55:26 INFO: [Envio a Punto de Venta] Remitente {gustavo} - Destino: CV0001 - Asunto: probando!!!
+2007-10-31 13:55:26 INFO: Almacenando registro de mensaje en la base de datos [CV0001]
+2007-10-31 13:55:28 INFO: Confirmada lectura del mensaje con destino {CV0001} / Asunto: [probando!!!] / Remitido por: {FALLAS EQUIPOS}
+2007-10-31 13:57:31 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 13:57:31 INFO: Enviando mensaje a 1 usuario
+2007-10-31 13:57:31 INFO: [Envio a Cuenta de Correo] Remitente {CV0001} - Destino: gustavo - Asunto: Sigamos probando
+2007-10-31 13:57:31 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 14:02:12 INFO: Leyendo correo del buzon de mensajes
+2007-10-31 14:02:12 INFO: Nuevo mensaje desde {gustavo@saludtotal.com} con asunto [ CV0001,Sigamos probando ]
+2007-10-31 14:02:12 INFO: Enviando mensaje a 1 usuario
+2007-10-31 14:02:12 INFO: [Envio a Punto de Venta] Remitente {gustavo} - Destino: CV0001 - Asunto: Sigamos probando
+2007-10-31 14:02:12 INFO: Almacenando registro de mensaje en la base de datos [CV0001]
+2007-10-31 14:02:14 INFO: Confirmada lectura del mensaje con destino {CV0001} / Asunto: [Sigamos probando] / Remitido por: {FALLAS EQUIPOS}
+2007-10-31 14:15:42 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 14:15:42 INFO: Cargando archivo de configuracion...
+2007-10-31 14:15:42 INFO: Cargando base de datos... comeet
+2007-10-31 14:15:43 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 14:15:43 INFO: Cargando cache de enlace [comeet]
+2007-10-31 14:15:43 INFO: Iniciando demonio pop3
+2007-10-31 14:15:43 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 14:15:43 INFO: Iniciando demonio de sincronizacion
+2007-10-31 14:15:43 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 14:16:03 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=33363,localport=9119]
+2007-10-31 14:16:03 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 14:16:03 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 14:16:03 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 14:19:01 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 14:19:02 INFO: Cargando archivo de configuracion...
+2007-10-31 14:19:02 INFO: Cargando base de datos... comeet
+2007-10-31 14:19:02 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 14:19:02 INFO: Cargando cache de enlace [comeet]
+2007-10-31 14:19:02 INFO: Iniciando demonio pop3
+2007-10-31 14:19:02 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 14:19:02 INFO: Iniciando demonio de sincronizacion
+2007-10-31 14:19:03 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 14:19:13 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=33366,localport=9119]
+2007-10-31 14:19:13 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 14:19:13 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 14:19:13 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 14:20:52 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 14:20:52 INFO: Cargando archivo de configuracion...
+2007-10-31 14:20:52 INFO: Cargando base de datos... comeet
+2007-10-31 14:20:52 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 14:20:52 INFO: Cargando cache de enlace [comeet]
+2007-10-31 14:20:52 INFO: Iniciando demonio pop3
+2007-10-31 14:20:52 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 14:20:52 INFO: Iniciando demonio de sincronizacion
+2007-10-31 14:20:52 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 14:21:11 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=41238,localport=9119]
+2007-10-31 14:21:11 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {7cec85c75537840dad40251576e5b757}
+2007-10-31 14:21:11 INFO: Acceso denegado a {CV0001} desde la ip 127.0.0.1 ingresando como Colocador [Clave incorrecta]
+2007-10-31 14:21:21 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=41239,localport=9119]
+2007-10-31 14:21:21 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 14:21:21 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 14:21:21 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 14:23:13 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 14:23:13 INFO: Cargando archivo de configuracion...
+2007-10-31 14:23:13 INFO: Cargando base de datos... comeet
+2007-10-31 14:23:13 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 14:23:13 INFO: Cargando cache de enlace [comeet]
+2007-10-31 14:23:13 INFO: Iniciando demonio pop3
+2007-10-31 14:23:13 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 14:23:13 INFO: Iniciando demonio de sincronizacion
+2007-10-31 14:23:13 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 14:30:11 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=44966,localport=9119]
+2007-10-31 14:30:11 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 14:30:11 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 14:30:11 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 14:30:40 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 14:30:40 INFO: Cargando archivo de configuracion...
+2007-10-31 14:30:40 INFO: Cargando base de datos... comeet
+2007-10-31 14:30:41 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 14:30:41 INFO: Cargando cache de enlace [comeet]
+2007-10-31 14:30:41 INFO: Iniciando demonio pop3
+2007-10-31 14:30:41 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 14:30:41 INFO: Iniciando demonio de sincronizacion
+2007-10-31 14:30:41 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 14:46:15 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=50112,localport=9119]
+2007-10-31 14:46:15 INFO: Inicio de autenticacion para el usuario {DiegoR} con la clave {f176fc999050e08c2c1a33b6da553adf}
+2007-10-31 14:46:15 ADVERTENCIA: El usuario {DiegoR} no aparece registrado en el servidor CoMeet
+2007-10-31 14:46:15              Es posible que el login haya sido mal digitado o que no exista en la base de datos
+2007-10-31 14:48:56 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 14:48:56 INFO: Cargando archivo de configuracion...
+2007-10-31 14:48:56 INFO: Cargando base de datos... comeet
+2007-10-31 14:48:56 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 14:48:57 INFO: Cargando cache de enlace [comeet]
+2007-10-31 14:48:57 INFO: Iniciando demonio pop3
+2007-10-31 14:48:57 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 14:48:57 INFO: Iniciando demonio de sincronizacion
+2007-10-31 14:48:57 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 14:49:07 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=50114,localport=9119]
+2007-10-31 14:49:07 INFO: Inicio de autenticacion para el usuario {CV0001} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 14:49:07 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 14:49:07 INFO: Colocador Autenticado {CV0001} desde PORVENIR [127.0.0.1]
+2007-10-31 14:49:55 INFO: Operacion realizada exitosamente [Cambio de clave]
+2007-10-31 14:53:15 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=40566,localport=9119]
+2007-10-31 14:53:15 INFO: Inicio de autenticacion para el usuario {DiegoR} con la clave {6022b0e29ba3493b5041f9c92e62174c}
+2007-10-31 14:53:15 ADVERTENCIA: El usuario {DiegoR} no aparece registrado en el servidor CoMeet
+2007-10-31 14:53:15              Es posible que el login haya sido mal digitado o que no exista en la base de datos
+2007-10-31 15:12:24 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=48561,localport=9119]
+2007-10-31 15:12:24 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 15:12:24 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 15:12:24 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 15:22:04 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=56171,localport=9119]
+2007-10-31 15:22:04 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 15:22:04 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 15:22:04 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 15:26:45 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=57068,localport=9119]
+2007-10-31 15:26:45 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 15:26:45 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 15:26:45 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 15:27:49 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=57069,localport=9119]
+2007-10-31 15:27:49 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 15:27:49 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 15:27:49 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 15:32:06 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=47856,localport=9119]
+2007-10-31 15:32:06 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 15:32:06 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 15:32:06 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 15:36:42 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=42106,localport=9119]
+2007-10-31 15:36:42 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 15:36:42 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 15:36:42 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 16:24:28 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=46247,localport=9119]
+2007-10-31 16:24:28 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 16:24:28 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 16:24:28 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 16:24:43 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=46248,localport=9119]
+2007-10-31 16:24:43 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 16:24:43 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 16:24:43 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 16:27:56 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=60809,localport=9119]
+2007-10-31 16:27:57 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 16:27:57 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 16:27:57 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 16:29:15 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=60810,localport=9119]
+2007-10-31 16:29:15 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 16:29:15 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 16:29:15 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 16:29:47 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=60812,localport=9119]
+2007-10-31 16:29:47 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 16:29:47 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 16:29:47 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 16:39:38 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=38403,localport=9119]
+2007-10-31 16:39:38 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 16:39:38 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 16:39:38 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 16:46:51 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=56387,localport=9119]
+2007-10-31 16:46:51 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 16:46:51 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 16:46:51 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 16:52:30 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=55121,localport=9119]
+2007-10-31 16:52:30 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 16:52:30 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 16:52:30 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 17:38:02 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=56098,localport=9119]
+2007-10-31 17:38:02 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 17:38:02 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 17:38:02 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 18:06:08 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=50587,localport=9119]
+2007-10-31 18:06:08 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 18:06:08 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 18:06:08 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 18:32:54 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=38733,localport=9119]
+2007-10-31 18:32:55 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 18:32:55 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 18:32:55 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 18:34:55 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=38735,localport=9119]
+2007-10-31 18:34:55 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 18:34:55 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 18:34:55 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 18:35:47 INFO: Adicionando usuario al sistema...
+2007-10-31 18:35:47 INFO: Operacion realizada exitosamente [Transaccion sobre Usuarios]
+2007-10-31 18:37:17 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=47823,localport=9119]
+2007-10-31 18:37:17 INFO: Inicio de autenticacion para el usuario {DiegoR} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 18:37:17 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 18:37:17 INFO: Colocador Autenticado {DiegoR} desde PORVENIR [127.0.0.1]
+2007-10-31 18:40:28 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=50250,localport=9119]
+2007-10-31 18:40:28 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 18:40:28 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 18:40:28 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 18:40:58 INFO: Adicionando usuario al sistema...
+2007-10-31 18:40:58 INFO: Operacion realizada exitosamente [Transaccion sobre Usuarios]
+2007-10-31 20:16:44 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=60486,localport=9119]
+2007-10-31 20:16:44 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 20:16:44 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 20:16:44 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 20:31:31 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=60661,localport=9119]
+2007-10-31 20:31:31 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 20:31:31 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 20:31:31 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 20:31:59 INFO: Editando usuario del sistema...
+2007-10-31 20:31:59 INFO: Operacion realizada exitosamente [Transaccion sobre Usuarios]
+2007-10-31 20:36:00 ADVERTENCIA: Tarea de sincronizacion con Oracle aplazada
+2007-10-31 20:36:00 ADVERTENCIA: Motivo -> Base de datos deshabilitada desde configuracion [oracle]
+2007-10-31 20:36:59 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=36425,localport=9119]
+2007-10-31 20:36:59 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 20:36:59 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 20:36:59 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 20:37:00 ADVERTENCIA: Tarea de sincronizacion con Oracle aplazada
+2007-10-31 20:37:00 ADVERTENCIA: Motivo -> Base de datos deshabilitada desde configuracion [oracle]
+2007-10-31 20:45:27 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=41003,localport=9119]
+2007-10-31 20:45:28 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 20:45:28 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 20:45:28 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 20:46:21 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=41004,localport=9119]
+2007-10-31 20:46:21 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 20:46:21 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 20:46:21 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 20:46:32 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=41005,localport=9119]
+2007-10-31 20:46:32 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 20:46:32 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 20:46:32 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 20:46:40 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=41006,localport=9119]
+2007-10-31 20:46:40 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 20:46:40 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 20:46:40 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 20:53:39 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=45279,localport=9119]
+2007-10-31 20:53:39 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 20:53:39 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 20:53:39 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 21:10:54 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=38579,localport=9119]
+2007-10-31 21:10:55 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 21:10:55 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 21:10:55 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 21:11:44 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=38580,localport=9119]
+2007-10-31 21:11:44 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 21:11:44 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 21:11:44 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 21:13:04 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=38582,localport=9119]
+2007-10-31 21:13:04 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 21:13:04 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 21:13:04 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 21:16:48 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=39446,localport=9119]
+2007-10-31 21:16:48 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 21:16:48 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 21:16:48 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 21:17:17 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=39447,localport=9119]
+2007-10-31 21:17:17 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 21:17:17 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 21:17:17 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 21:20:48 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=59438,localport=9119]
+2007-10-31 21:20:48 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 21:20:48 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 21:20:48 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 21:21:14 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 21:21:14 INFO: Cargando archivo de configuracion...
+2007-10-31 21:21:14 INFO: Cargando base de datos... comeet
+2007-10-31 21:21:15 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 21:21:15 INFO: Cargando cache de enlace [comeet]
+2007-10-31 21:21:15 INFO: Iniciando demonio pop3
+2007-10-31 21:21:15 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 21:21:15 INFO: Iniciando demonio de sincronizacion
+2007-10-31 21:21:16 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 21:21:23 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=59439,localport=9119]
+2007-10-31 21:21:23 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 21:21:23 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 21:21:23 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 21:24:51 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=59441,localport=9119]
+2007-10-31 21:24:51 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 21:24:51 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 21:24:51 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 21:25:35 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 21:25:35 INFO: Cargando archivo de configuracion...
+2007-10-31 21:25:35 INFO: Cargando base de datos... comeet
+2007-10-31 21:25:35 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 21:25:35 INFO: Cargando cache de enlace [comeet]
+2007-10-31 21:25:36 INFO: Iniciando demonio pop3
+2007-10-31 21:25:36 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 21:25:36 INFO: Iniciando demonio de sincronizacion
+2007-10-31 21:25:36 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 21:25:41 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=43734,localport=9119]
+2007-10-31 21:25:41 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 21:25:41 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 21:25:41 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 21:28:10 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 21:28:10 INFO: Cargando archivo de configuracion...
+2007-10-31 21:28:10 INFO: Cargando base de datos... comeet
+2007-10-31 21:28:11 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 21:28:11 INFO: Cargando cache de enlace [comeet]
+2007-10-31 21:28:11 INFO: Iniciando demonio pop3
+2007-10-31 21:28:11 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 21:28:11 INFO: Iniciando demonio de sincronizacion
+2007-10-31 21:28:11 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 21:28:18 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=43736,localport=9119]
+2007-10-31 21:28:18 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 21:28:18 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 21:28:18 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 21:29:03 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=43737,localport=9119]
+2007-10-31 21:29:03 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 21:29:03 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 21:29:03 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 21:30:51 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 21:30:51 INFO: Cargando archivo de configuracion...
+2007-10-31 21:30:51 INFO: Cargando base de datos... comeet
+2007-10-31 21:30:51 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 21:30:51 INFO: Cargando cache de enlace [comeet]
+2007-10-31 21:30:51 INFO: Iniciando demonio pop3
+2007-10-31 21:30:51 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 21:30:51 INFO: Iniciando demonio de sincronizacion
+2007-10-31 21:30:51 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 21:30:59 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=53009,localport=9119]
+2007-10-31 21:30:59 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 21:30:59 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 21:30:59 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 21:31:49 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 21:31:49 INFO: Cargando archivo de configuracion...
+2007-10-31 21:31:49 INFO: Cargando base de datos... comeet
+2007-10-31 21:31:49 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 21:31:49 INFO: Cargando cache de enlace [comeet]
+2007-10-31 21:31:50 INFO: Iniciando demonio pop3
+2007-10-31 21:31:50 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 21:31:50 INFO: Iniciando demonio de sincronizacion
+2007-10-31 21:31:50 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 21:32:25 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=53010,localport=9119]
+2007-10-31 21:32:25 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 21:32:25 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 21:32:25 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 21:47:03 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 21:47:03 INFO: Cargando archivo de configuracion...
+2007-10-31 21:47:03 INFO: Cargando base de datos... comeet
+2007-10-31 21:47:03 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 21:47:03 INFO: Cargando cache de enlace [comeet]
+2007-10-31 21:47:03 INFO: Iniciando demonio pop3
+2007-10-31 21:47:03 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 21:47:03 INFO: Iniciando demonio de sincronizacion
+2007-10-31 21:47:03 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 21:47:15 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=40373,localport=9119]
+2007-10-31 21:47:15 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 21:47:15 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 21:47:15 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 21:48:23 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=40375,localport=9119]
+2007-10-31 21:48:23 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 21:48:23 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 21:48:23 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 21:48:32 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=40376,localport=9119]
+2007-10-31 21:48:32 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 21:48:32 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 21:48:32 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 21:48:43 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=40378,localport=9119]
+2007-10-31 21:48:43 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 21:48:43 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 21:48:43 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 21:48:53 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=40379,localport=9119]
+2007-10-31 21:48:54 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 21:48:54 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 21:48:54 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 21:49:57 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=40380,localport=9119]
+2007-10-31 21:49:57 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 21:49:57 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 21:49:57 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 21:50:07 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=42680,localport=9119]
+2007-10-31 21:50:07 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 21:50:07 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 21:50:07 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 21:58:34 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 21:58:35 INFO: Cargando archivo de configuracion...
+2007-10-31 21:58:35 INFO: Cargando base de datos... comeet
+2007-10-31 21:58:35 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 21:58:35 INFO: Cargando cache de enlace [comeet]
+2007-10-31 21:58:35 INFO: Iniciando demonio pop3
+2007-10-31 21:58:35 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 21:58:35 INFO: Iniciando demonio de sincronizacion
+2007-10-31 21:58:35 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 21:58:49 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=48483,localport=9119]
+2007-10-31 21:58:49 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 21:58:50 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 21:58:50 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 22:01:10 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=49665,localport=9119]
+2007-10-31 22:01:10 INFO: Inicio de autenticacion para el usuario {auditor} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 22:01:10 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 22:01:10 INFO: Auditor Autenticado {auditor} desde PORVENIR [127.0.0.1]
+2007-10-31 22:02:47 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 22:02:47 INFO: Cargando archivo de configuracion...
+2007-10-31 22:02:47 INFO: Cargando base de datos... comeet
+2007-10-31 22:02:48 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 22:02:48 INFO: Cargando cache de enlace [comeet]
+2007-10-31 22:02:48 INFO: Iniciando demonio pop3
+2007-10-31 22:02:48 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 22:02:48 INFO: Iniciando demonio de sincronizacion
+2007-10-31 22:02:48 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 22:02:59 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=49666,localport=9119]
+2007-10-31 22:03:00 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 22:03:00 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 22:03:00 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 22:03:21 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=49667,localport=9119]
+2007-10-31 22:03:21 INFO: Inicio de autenticacion para el usuario {auditor} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 22:03:21 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 22:03:21 INFO: Auditor Autenticado {auditor} desde PORVENIR [127.0.0.1]
+2007-10-31 22:04:41 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=49672,localport=9119]
+2007-10-31 22:04:41 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 22:04:41 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 22:04:41 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 22:08:16 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=59652,localport=9119]
+2007-10-31 22:08:17 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 22:08:17 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 22:08:17 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 22:16:03 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=55335,localport=9119]
+2007-10-31 22:16:03 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 22:16:03 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 22:16:03 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 22:25:31 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=42266,localport=9119]
+2007-10-31 22:25:31 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 22:25:31 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 22:25:31 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 22:27:27 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=42268,localport=9119]
+2007-10-31 22:27:27 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 22:27:27 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 22:27:27 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 22:33:07 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=33852,localport=9119]
+2007-10-31 22:33:07 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 22:33:07 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 22:33:07 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 22:34:06 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=33854,localport=9119]
+2007-10-31 22:34:06 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 22:34:06 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 22:34:06 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 22:35:24 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=41003,localport=9119]
+2007-10-31 22:35:24 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 22:35:24 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 22:35:24 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 22:37:21 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=41004,localport=9119]
+2007-10-31 22:37:21 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 22:37:21 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 22:37:21 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 22:41:05 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=39874,localport=9119]
+2007-10-31 22:41:05 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 22:41:05 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 22:41:05 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 22:43:33 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=39877,localport=9119]
+2007-10-31 22:43:33 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 22:43:33 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 22:43:34 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 22:45:54 INFO: Editando usuario del sistema...
+2007-10-31 22:45:54 INFO: Operacion realizada exitosamente [Transaccion sobre Usuarios]
+2007-10-31 22:52:59 INFO: Adicionando usuario al sistema...
+2007-10-31 22:52:59 INFO: Operacion realizada exitosamente [Transaccion sobre Usuarios]
+2007-10-31 22:57:04 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 22:57:04 INFO: Cargando archivo de configuracion...
+2007-10-31 22:57:04 INFO: Cargando base de datos... comeet
+2007-10-31 22:57:05 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 22:57:05 INFO: Cargando cache de enlace [comeet]
+2007-10-31 22:57:05 INFO: Iniciando demonio pop3
+2007-10-31 22:57:05 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 22:57:05 INFO: Iniciando demonio de sincronizacion
+2007-10-31 22:57:05 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 22:57:31 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 22:57:31 INFO: Cargando archivo de configuracion...
+2007-10-31 22:57:31 INFO: Cargando base de datos... comeet
+2007-10-31 22:57:31 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 22:57:31 INFO: Cargando cache de enlace [comeet]
+2007-10-31 22:57:32 INFO: Iniciando demonio pop3
+2007-10-31 22:57:32 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 22:57:32 INFO: Iniciando demonio de sincronizacion
+2007-10-31 22:57:32 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 22:57:37 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=50836,localport=9119]
+2007-10-31 22:57:37 INFO: Inicio de autenticacion para el usuario {admin} con la clave {21232f297a57a5a743894a0e4a801fc3}
+2007-10-31 22:57:37 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 22:57:37 INFO: Usuario Administrador autenticado {admin} desde PORVENIR [127.0.0.1]
+2007-10-31 22:59:49 INFO: Adicionando usuario al sistema...
+2007-10-31 22:59:49 INFO: Operacion realizada exitosamente [Transaccion sobre Usuarios]
+2007-10-31 23:00:29 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=43137,localport=9119]
+2007-10-31 23:00:29 INFO: Inicio de autenticacion para el usuario {DurangoP} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 23:00:29 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 23:00:29 INFO: Colocador Autenticado {DurangoP} desde PORVENIR [127.0.0.1]
+2007-10-31 23:00:58 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 23:00:58 INFO: Enviando mensaje a 1 usuario
+2007-10-31 23:00:58 INFO: [Envio a Cuenta de Correo] Remitente {DurangoP} - Destino: gustavo - Asunto: Hola amigo
+2007-10-31 23:00:58 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 23:02:05 INFO: Leyendo correo del buzon de mensajes
+2007-10-31 23:02:05 INFO: Nuevo mensaje desde {gustavo@saludtotal.com} con asunto [ DurangoP,Hola amigo ]
+2007-10-31 23:04:07 INFO: Leyendo correo del buzon de mensajes
+2007-10-31 23:04:07 INFO: Nuevo mensaje desde {gustavo@saludtotal.com} con asunto [ DurangoP, a que no estas? ]
+2007-10-31 23:10:32 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 23:10:32 INFO: Cargando archivo de configuracion...
+2007-10-31 23:10:32 INFO: Cargando base de datos... comeet
+2007-10-31 23:10:33 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 23:10:33 INFO: Cargando cache de enlace [comeet]
+2007-10-31 23:10:33 INFO: Iniciando demonio pop3
+2007-10-31 23:10:33 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 23:10:33 INFO: Iniciando demonio de sincronizacion
+2007-10-31 23:10:33 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 23:11:15 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=33155,localport=9119]
+2007-10-31 23:11:15 INFO: Inicio de autenticacion para el usuario {DiangoP} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 23:11:15 ADVERTENCIA: El usuario {DiangoP} no aparece registrado en el servidor CoMeet
+2007-10-31 23:11:15              Es posible que el login haya sido mal digitado o que no exista en la base de datos
+2007-10-31 23:11:25 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=33156,localport=9119]
+2007-10-31 23:11:25 INFO: Inicio de autenticacion para el usuario {DurangoP} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 23:11:25 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 23:11:25 INFO: Colocador Autenticado {DurangoP} desde PORVENIR [127.0.0.1]
+2007-10-31 23:13:59 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 23:13:59 INFO: Cargando archivo de configuracion...
+2007-10-31 23:13:59 INFO: Cargando base de datos... comeet
+2007-10-31 23:13:59 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 23:13:59 INFO: Cargando cache de enlace [comeet]
+2007-10-31 23:13:59 INFO: Iniciando demonio pop3
+2007-10-31 23:13:59 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 23:13:59 INFO: Iniciando demonio de sincronizacion
+2007-10-31 23:13:59 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 23:14:18 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=33158,localport=9119]
+2007-10-31 23:14:18 INFO: Inicio de autenticacion para el usuario {DurangoP} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 23:14:18 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 23:14:18 INFO: Colocador Autenticado {DurangoP} desde PORVENIR [127.0.0.1]
+2007-10-31 23:14:37 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 23:14:37 INFO: Cargando archivo de configuracion...
+2007-10-31 23:14:37 INFO: Cargando base de datos... comeet
+2007-10-31 23:14:37 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 23:14:37 INFO: Cargando cache de enlace [comeet]
+2007-10-31 23:14:38 INFO: Iniciando demonio pop3
+2007-10-31 23:14:38 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 23:14:38 INFO: Iniciando demonio de sincronizacion
+2007-10-31 23:14:38 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 23:14:48 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=33159,localport=9119]
+2007-10-31 23:14:48 INFO: Inicio de autenticacion para el usuario {DurangoP} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 23:14:48 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 23:14:48 INFO: Colocador Autenticado {DurangoP} desde PORVENIR [127.0.0.1]
+2007-10-31 23:15:07 INFO: Nuevo mensaje enviado por Colocador desde 127.0.0.1
+2007-10-31 23:15:07 INFO: Enviando mensaje a 1 usuario
+2007-10-31 23:15:07 INFO: [Envio a Cuenta de Correo] Remitente {DurangoP} - Destino: gustavo - Asunto: Probando
+2007-10-31 23:15:07 INFO: Almacenando registro de mensaje en la base de datos [gustavo]
+2007-10-31 23:15:29 INFO: Leyendo correo del buzon de mensajes
+2007-10-31 23:15:29 INFO: Nuevo mensaje desde {gustavo@saludtotal.com} con asunto [ DurangoP,Probando ]
+2007-10-31 23:19:21 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 23:19:22 INFO: Cargando archivo de configuracion...
+2007-10-31 23:19:22 INFO: Cargando base de datos... comeet
+2007-10-31 23:19:22 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 23:19:22 INFO: Cargando cache de enlace [comeet]
+2007-10-31 23:19:22 INFO: Iniciando demonio pop3
+2007-10-31 23:19:22 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 23:19:22 INFO: Iniciando demonio de sincronizacion
+2007-10-31 23:19:22 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 23:19:37 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=35790,localport=9119]
+2007-10-31 23:19:37 INFO: Inicio de autenticacion para el usuario {DurangoP} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 23:19:37 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 23:19:37 INFO: Colocador Autenticado {DurangoP} desde PORVENIR [127.0.0.1]
+2007-10-31 23:20:04 INFO: Leyendo correo del buzon de mensajes
+2007-10-31 23:20:04 INFO: Nuevo mensaje desde {gustavo@saludtotal.com} con asunto [ DurangoP,Probando ]
+2007-10-31 23:23:20 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 23:23:20 INFO: Cargando archivo de configuracion...
+2007-10-31 23:23:20 INFO: Cargando base de datos... comeet
+2007-10-31 23:23:20 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 23:23:20 INFO: Cargando cache de enlace [comeet]
+2007-10-31 23:23:21 INFO: Iniciando demonio pop3
+2007-10-31 23:23:21 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 23:23:21 INFO: Iniciando demonio de sincronizacion
+2007-10-31 23:23:21 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 23:24:39 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=54660,localport=9119]
+2007-10-31 23:24:39 INFO: Inicio de autenticacion para el usuario {DurangoP} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 23:24:39 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 23:24:39 INFO: Colocador Autenticado {DurangoP} desde PORVENIR [127.0.0.1]
+2007-10-31 23:25:02 INFO: Leyendo correo del buzon de mensajes
+2007-10-31 23:25:02 INFO: Nuevo mensaje desde {gustavo@saludtotal.com} con asunto [ DurangoP,Probando ]
+2007-10-31 23:28:15 INFO: ConfigFile -> /home/emaku/comeet/comeet/CoMeet-Server/comeet/conf/server.conf
+2007-10-31 23:28:15 INFO: Cargando archivo de configuracion...
+2007-10-31 23:28:15 INFO: Cargando base de datos... comeet
+2007-10-31 23:28:15 ADVERTENCIA: Base de datos deshabilitada desde configuracion -> oracle
+2007-10-31 23:28:15 INFO: Cargando cache de enlace [comeet]
+2007-10-31 23:28:15 INFO: Iniciando demonio pop3
+2007-10-31 23:28:15 INFO: Servidor de correo {saludtotal.com}
+2007-10-31 23:28:15 INFO: Iniciando demonio de sincronizacion
+2007-10-31 23:28:15 INFO: Servidor CoMeet escuchando por el puerto 9119
+2007-10-31 23:28:32 INFO: Se ha establecido una nueva conexion TCP/IP Socket[addr=/127.0.0.1,port=58725,localport=9119]
+2007-10-31 23:28:32 INFO: Inicio de autenticacion para el usuario {DurangoP} con la clave {827ccb0eea8a706c4c34a16891f84e7b}
+2007-10-31 23:28:32 INFO: Control de acceso sobre direcciones ip no habilitado para este usuario
+2007-10-31 23:28:32 INFO: Colocador Autenticado {DurangoP} desde PORVENIR [127.0.0.1]
+2007-10-31 23:28:46 INFO: Leyendo correo del buzon de mensajes
+2007-10-31 23:28:46 INFO: Nuevo mensaje desde {gustavo@saludtotal.com} con asunto [ DurangoP,Probando ]
+2007-10-31 23:28:46 INFO: Enviando mensaje a 1 usuario
+2007-10-31 23:28:46 INFO: [Envio a Punto de Venta] Remitente {gustavo} - Destino: DurangoP - Asunto: Probando
+2007-10-31 23:28:46 INFO: Almacenando registro de mensaje en la base de datos [DurangoP]
+2007-10-31 23:28:49 INFO: Confirmada lectura del mensaje con destino {DurangoP} / Asunto: [Probando] / Remitido por: {FALLAS EQUIPOS}

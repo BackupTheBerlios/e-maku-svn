@@ -39,7 +39,7 @@
                 </sql>
         </sentence>
 	<sentence>
-	<!--Descripcion: ... -->
+	<!--Descripcion: Esta consulta retorna la informacion de todos los grupos del sistema -->
 		<code>SEL0004</code>
 		<sql>
 			SELECT * 

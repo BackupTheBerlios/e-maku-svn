@@ -71,6 +71,7 @@ public class PackageToXMLConverter {
                         try {
 							doc = saxBuilder.build(bufferInputStream);
 						} catch (JDOMException e) {
+							System.out.println("ERROR: Paquete recibido no posee una estructura xml correcta");
 							e.printStackTrace();
 						}
         	            ArrivedPackageEvent event = new ArrivedPackageEvent(this,doc);

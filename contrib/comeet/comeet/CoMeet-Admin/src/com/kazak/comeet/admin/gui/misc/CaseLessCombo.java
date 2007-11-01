@@ -17,31 +17,29 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
-public class AutoCompleteComboBox extends JComboBox implements KeySelectionManager, KeyListener, PopupMenuListener {
+public class CaseLessCombo extends JComboBox implements KeySelectionManager, KeyListener, PopupMenuListener {
 	
 	private static final long serialVersionUID = 1L;
 	private String searchFor;
 	private long milliSeconds;
-	private boolean lowerCase = true;
 	private int length;
 	private String[] collection;
 	private JButton searchButton;
 	private boolean fromCombo = false;
 	
-	public AutoCompleteComboBox(String[] collection,boolean wordCase, int length) {
+	public CaseLessCombo(String[] collection,int length) {
 		this.addPopupMenuListener(this);
 		addItem("");
 		for (String value : collection) {
 			 addItem(value);
 		}
 		this.collection = collection; 
-		this.lowerCase = wordCase;
 		this.length = length;
 		this.setEditable(true);
 		initAuto();
 	}	
 	
-	public AutoCompleteComboBox(String[] collection,boolean wordCase, int length, JButton ws) {
+	public CaseLessCombo(String[] collection,int length, JButton ws) {
 		this.addPopupMenuListener(this);
 		addItem("");
 		for (String value : collection) {
@@ -50,7 +48,6 @@ public class AutoCompleteComboBox extends JComboBox implements KeySelectionManag
 			}
 		}
 		this.collection = collection; 
-		this.lowerCase = wordCase;
 		this.length = length;
 		this.searchButton = ws;
 		this.setEditable(true);
@@ -69,7 +66,7 @@ public class AutoCompleteComboBox extends JComboBox implements KeySelectionManag
 			if (string == null)
 				return;
 			if ((getLength() + string.length()) <= maxSize) {
-				super.insertString(offset, lowerCase ? string : string.toUpperCase(), attribute);
+				super.insertString(offset, string, attribute);
 			}
 			if (!isPopupVisible() && string.length() != 0) {
 				fireActionEvent();	
@@ -111,23 +108,12 @@ public class AutoCompleteComboBox extends JComboBox implements KeySelectionManag
 						} 
 						for (int i = 0; i < comboModel.getSize(); i++) {
 							current = comboModel.getElementAt(i).toString();
-							if (!lowerCase){
-								if (current.toUpperCase().startsWith(text.toUpperCase())) {
-									jTextField.setText(current);
-									jTextField.setSelectionStart(text.length());
-									jTextField.setSelectionEnd(current.length());									
-									break;
-								}
-							}
-							else {
-								if (current.toLowerCase().startsWith(text.toLowerCase())) {
-									jTextField.setText(current);
-									jTextField.setSelectionStart(text.length());
-									jTextField.setSelectionEnd(current.length());
-									break;
-								}
-							} 
-									
+							if (current.startsWith(text.toUpperCase())) {
+								jTextField.setText(current);
+								jTextField.setSelectionStart(text.length());
+								jTextField.setSelectionEnd(current.length());									
+								break;
+							}									
 						}
 					}
 				});
@@ -159,16 +145,10 @@ public class AutoCompleteComboBox extends JComboBox implements KeySelectionManag
 		milliSeconds = now;
 		String current;
 		for (int i = 0; i < comboModel.getSize(); i++) {
-			if (!lowerCase) {
-				current = comboModel.getElementAt(i).toString().toUpperCase();
-				if (current.toUpperCase().startsWith(searchFor.toUpperCase()))
+				current = comboModel.getElementAt(i).toString();
+				if (current.startsWith(searchFor)) {
 					return i;
-			}
-			else {
-				current = comboModel.getElementAt(i).toString().toLowerCase();
-				if (current.toLowerCase().startsWith(searchFor.toLowerCase()))
-					return i;
-			}
+				}
 		}
 		return -1;
 	}
@@ -190,9 +170,6 @@ public class AutoCompleteComboBox extends JComboBox implements KeySelectionManag
         	if (searchButton != null) {
         		JTextField textField = (JTextField) getEditor().getEditorComponent();
         		String text = textField.getText();
-        		if (!lowerCase){
-        			textField.setText(text.toUpperCase());
-        		}
         		if(text.length()>0) {
          		   fromCombo = false;
         		   searchButton.doClick();

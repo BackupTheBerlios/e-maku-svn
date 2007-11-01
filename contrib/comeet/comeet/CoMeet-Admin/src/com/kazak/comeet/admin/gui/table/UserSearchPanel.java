@@ -58,7 +58,7 @@ public class UserSearchPanel extends JPanel implements ActionListener, KeyListen
 		searchButton = gui.createButton("search.png");
 		searchButton.setActionCommand("search");
 		searchButton.addActionListener(this);
-		String[] options = {"Códigos","Nombres","Puntos de Venta","Direcciones IP"};
+		String[] options = {"Códigos","Nombres","Puestos de Trabajo","Direcciones IP"};
 		fieldCombo = new JComboBox(options);
 		resultsLabel = new JLabel("");
 		

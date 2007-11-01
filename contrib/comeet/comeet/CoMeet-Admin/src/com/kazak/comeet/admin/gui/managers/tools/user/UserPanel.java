@@ -18,7 +18,7 @@ import javax.swing.border.Border;
 import com.kazak.comeet.admin.control.Cache;
 import com.kazak.comeet.admin.gui.managers.tools.ToolsConstants;
 import com.kazak.comeet.admin.gui.managers.tools.ButtonBar;
-import com.kazak.comeet.admin.gui.misc.AutoCompleteComboBox;
+import com.kazak.comeet.admin.gui.misc.CaseLessCombo;
 import com.kazak.comeet.admin.gui.misc.GUIFactory;
 
 public class UserPanel extends JPanel implements ActionListener, KeyListener {
@@ -27,14 +27,20 @@ public class UserPanel extends JPanel implements ActionListener, KeyListener {
 	private UserDialog userDialog;
 	private int action;
 	private String target;
-	private AutoCompleteComboBox nameField;
+	private CaseLessCombo nameField;
 	private JButton searchButton;
+	private boolean isAdmin;
+	private String secondName = "Operativo";
 	
-	public UserPanel(UserDialog userDialog, int action, String target) {
+	public UserPanel(UserDialog userDialog, int action, String target, boolean isAdmin) {
 		this.setLayout(new BorderLayout());
 		this.userDialog = userDialog;
 		this.action = action;
 		this.target = target;
+		this.isAdmin = isAdmin;
+		if(isAdmin) {
+			secondName = "Administrativo";
+		}
 		initInterface();
 		packPanels();		
 	}
@@ -44,7 +50,11 @@ public class UserPanel extends JPanel implements ActionListener, KeyListener {
 		searchButton = gui.createButton("search.png");
 		searchButton.setActionCommand("search");
 		searchButton.addActionListener(this);
-		nameField = new AutoCompleteComboBox(Cache.getUsersList(),true,50,searchButton);
+		if(isAdmin) {
+			nameField = new CaseLessCombo(Cache.getAdminUsersList(),50,searchButton);
+		} else {
+			nameField = new CaseLessCombo(Cache.getOperativeUsersList(),50,searchButton);
+		}
 		setInitMode();
 		this.setVisible(true);
 	}
@@ -53,35 +63,35 @@ public class UserPanel extends JPanel implements ActionListener, KeyListener {
 		switch(action) {
 		// To Add
 		case ToolsConstants.ADD:
-			userDialog.setTitle("Nuevo Usuario");
+			userDialog.setTitle("Nuevo Usuario " + secondName);
 			break;
 			// To Edit
 		case ToolsConstants.EDIT:
-			userDialog.setTitle("Editar Usuario");
+			userDialog.setTitle("Editar Usuario " + secondName);
 			break;
 			// Edit pre-filled
 		case ToolsConstants.EDIT_PREFILLED:
-			userDialog.setTitle("Editar Usuario");
+			userDialog.setTitle("Editar Usuario " + secondName);
 			nameField.setSelectedItem(target);
 			break;
 			// To Delete
 		case ToolsConstants.DELETE:
-			userDialog.setTitle("Borrar Usuario");
+			userDialog.setTitle("Borrar Usuario " + secondName);
 			ButtonBar.setEnabledAcceptButton(false);
 			break;
 			// Delete pre-filled
 		case ToolsConstants.DELETE_PREFILLED:
 			nameField.setSelectedItem(target);
-			userDialog.setTitle("Borrar Usuario");
+			userDialog.setTitle("Borrar Usuario " + secondName);
 			break;
 			// To Search
 		case ToolsConstants.SEARCH:
-			userDialog.setTitle("Buscar Usuario");
+			userDialog.setTitle("Buscar Usuario " + secondName);
 			
 			break;
 			// Search pre-filled
 		case ToolsConstants.SEARCH_PREFILLED:
-			userDialog.setTitle("Buscar Usuario");
+			userDialog.setTitle("Buscar Usuario " + secondName);
 			nameField.setSelectedItem(target);
 			break;
 		}			
@@ -110,13 +120,15 @@ public class UserPanel extends JPanel implements ActionListener, KeyListener {
 			nameField.blankTextField();
 			nameField.requestFocus();
 			searchButton.setEnabled(true);
-			userDialog.collapseInternalPanel();
+			if(userDialog.isPanelVisible()) {
+				userDialog.collapseInternalPanel();
+			}
 	}
 		
 	private void doSearch() {
 		target = nameField.getText();
 		if (isValidUser()) {
-			if(target.startsWith("CV")) {
+			if(!isAdmin) {
 				userDialog.setAdminFlag(false);
 			}
 			else { 
@@ -132,20 +144,48 @@ public class UserPanel extends JPanel implements ActionListener, KeyListener {
 		if(target.length() == 0) {
 			return false;
 		}
-		if (Cache.containsUser(target)) {			
-			switch(action) {
-			case ToolsConstants.ADD:
-				if(!nameField.eventFromCombo()) {
-					JOptionPane.showMessageDialog(userDialog,"El usuario " + target + " ya existe. ");
-				}
+		
+		if(isAdmin) {
+			if (Cache.isOperatorUser(target)) {
+				JOptionPane.showMessageDialog(userDialog,"El usuario " + target + " es operativo. ");
 				return false;
 			}
+			if (Cache.isAdminUser(target)) {
+				switch(action) {
+				case ToolsConstants.ADD:
+					if(!nameField.eventFromCombo()) {
+						JOptionPane.showMessageDialog(userDialog,"El usuario " + target + " ya existe. ");
+					}
+					return false;
+				}	
+			} else {
+				if (action != ToolsConstants.ADD) {
+					JOptionPane.showMessageDialog(userDialog,"El usuario " + target + " no existe. ");
+					return false;
+				} 
+			}
+			
 		} else {
-			if (action != ToolsConstants.ADD) {
-				JOptionPane.showMessageDialog(userDialog,"El usuario " + target + " no existe. ");
+			if (Cache.isAdminUser(target)) {
+				JOptionPane.showMessageDialog(userDialog,"El usuario " + target + " es administrativo. ");
 				return false;
-			} 
+			}
+			if (Cache.isOperatorUser(target)) {
+				switch(action) {
+				case ToolsConstants.ADD:
+					if(!nameField.eventFromCombo()) {
+						JOptionPane.showMessageDialog(userDialog,"El usuario " + target + " ya existe. ");
+					}
+					return false;
+				}	
+			} else {
+				if (action != ToolsConstants.ADD) {
+					JOptionPane.showMessageDialog(userDialog,"El usuario " + target + " no existe. ");
+					return false;
+				} 
+			}			
 		}
+	
 		return true;
 	}
 	

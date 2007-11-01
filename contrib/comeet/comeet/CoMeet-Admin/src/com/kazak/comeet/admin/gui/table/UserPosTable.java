@@ -64,7 +64,6 @@ public class UserPosTable extends JTable implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if (command.equals("ADD")) {
-			System.out.println("Abrir la opcion de adicionar punto");
 			PosManager pos = new PosManager();
 			pos.linkPos(this);
 		}

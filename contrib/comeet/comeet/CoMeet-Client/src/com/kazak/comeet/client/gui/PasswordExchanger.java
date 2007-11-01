@@ -120,7 +120,7 @@ public class PasswordExchanger implements ActionListener {
 				int option = JOptionPane.showConfirmDialog(
 						frame,
 						"Realmente desea cambiar la clave\n" +
-						"para el sistema de correo?",
+						"para el Sistema de Mensajeria?",
 						"Cambio de Clave - CoMeet",
 						JOptionPane.YES_NO_OPTION);
 				if (option == JOptionPane.YES_OPTION) {

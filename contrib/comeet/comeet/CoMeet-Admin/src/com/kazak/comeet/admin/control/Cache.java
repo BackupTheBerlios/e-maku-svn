@@ -3,16 +3,13 @@ package com.kazak.comeet.admin.control;
 import java.awt.Cursor;
 import java.util.ArrayList;
 import java.util.Collection;
-//import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
 import java.util.Arrays;
-
 import javax.swing.JFrame;
-
 import org.jdom.Document;
 import org.jdom.Element;
 
@@ -25,92 +22,91 @@ public class Cache {
 	private static Hashtable<String, Group> groupsList;
 	private static JFrame frame;
 	private static int VISUAL = 1;
+	private static Vector<String> adminUsers = new Vector<String>();
+	private static Vector<String> operativeUsers = new Vector<String>();
+	private static Iterator rows1,rows2,rows3,rows4;
 	
-	// This method updates the groups,pos and users jtree
+	// This method updates the main jtree 
 	
-	public static synchronized void loadInfoTree(final int mode) {
+	public static void loadInfoTree(final int mode) {
 		groupsList = new Hashtable<String, Group>();
 		Thread t = new  Thread() {
-		
+
 			public void run() {
-				try {
-					int typeCursor;
-	
+				int typeCursor;
+				if(mode == VISUAL) {
+					typeCursor = Cursor.WAIT_CURSOR;
+					Cursor cursor = Cursor.getPredefinedCursor(typeCursor);
+					frame.setCursor(cursor);
+					MainTreeManager.clearAll();
+				}
+				getDataBaseData();
+
+				//Loading jtree with groups
+				while (rows1.hasNext()) {
+					String group = addGroupItem(rows1);
 					if(mode == VISUAL) {
-						typeCursor = Cursor.WAIT_CURSOR;
-						Cursor cursor = Cursor.getPredefinedCursor(typeCursor);
-						frame.setCursor(cursor);
-						MainTreeManager.clearAll();
+						MainTreeManager.addGroup(group);
 					}
-
-					//Groups
-					Document doc = QuerySender.getResultSetFromST("SEL0004",null);
-					Element root = doc.getRootElement();
-					Iterator rows = root.getChildren("row").iterator();
-					
-					//Loading jtree with groups
-					while (rows.hasNext()) {
-						String group = addGroupItem(rows);
-						if(mode == VISUAL) {
-							MainTreeManager.addGroup(group);
-						}
-					}
-					
-					doc = QuerySender.getResultSetFromST("SEL0005",null);
-					
-					//POS
-					root = doc.getRootElement();
-					rows = root.getChildren("row").iterator();
-					
-					//Loading jtree with workstations
-					while (rows.hasNext()) {
-						String[] data = addWsItem(rows); // Group name and ws name
-						if(mode == VISUAL) {
-							MainTreeManager.addChild(data[0],data[1]);
-						}
-					}
-
-					//Users - Admin 
-					doc = QuerySender.getResultSetFromST("SEL0006",null);
-					root = doc.getRootElement();
-					rows = root.getChildren("row").iterator();
-					
-					//Loading jtree with users (admin)
-					while (rows.hasNext()) {						
-						String[] data = addAdminUserItem(rows); // Group name and user name
-						if(mode == VISUAL) {
-							MainTreeManager.addChild(data[0],data[1]);
-						}
-					}
-
-					//Users - POS
-					doc = QuerySender.getResultSetFromST("SEL0007",null);
-					root = doc.getRootElement();
-					rows = root.getChildren("row").iterator();
-					
-					//Loading jtree with users (pos)
-					while (rows.hasNext()) {
-						Object[] data = addPOSUserItem(rows); // Workstation name and User object 		
-						if(mode == VISUAL) {
-							Group group = getGroupByWorkStation(data[0].toString());
-							group.getWs(data[0].toString()).add((User)data[1]);
-							MainTreeManager.addChild(group.name,data[0].toString(),((User)data[1]).login);
-						}
-					}
-
+				}
+				//Loading jtree with workstations
+				while (rows2.hasNext()) {
+					String[] data = addWsItem(rows2); // Group name and ws name
 					if(mode == VISUAL) {
-						MainTreeManager.updateUI();
-						System.gc();
-						MainTreeManager.expand();
-						frame.setCursor(Cursor.getDefaultCursor());
+						MainTreeManager.addChild(data[0],data[1]);
 					}
-					
-				} catch (QuerySenderException e) {
-					e.printStackTrace();
+				}
+				//Loading jtree with users (admin)
+				while (rows3.hasNext()) {						
+					String[] data = addAdminUserItem(rows3); // Group name and user name
+					if(mode == VISUAL) {
+						MainTreeManager.addChild(data[0],data[1]);
+					}
+				}
+				//Loading jtree with users (pos)
+				while (rows4.hasNext()) {
+					Object[] data = addPOSUserItem(rows4); // Workstation name and User object 		
+					if(mode == VISUAL) {
+						Group group = getGroupByWorkStation(data[0].toString());
+						group.getWs(data[0].toString()).add((User)data[1]);
+						MainTreeManager.addChild(group.name,data[0].toString(),((User)data[1]).login);
+					}
+				}
+				if(mode == VISUAL) {
+					MainTreeManager.updateUI();
+					System.gc();
+					MainTreeManager.expand();
+					frame.setCursor(Cursor.getDefaultCursor());
 				}
 			}
 		};
 		t.start();
+	}
+	
+	public static void getDataBaseData() {
+		try {
+			Document doc = QuerySender.getResultSetFromST("SEL0004",null);
+			Element root = doc.getRootElement();
+			rows1 = root.getChildren("row").iterator();
+
+			doc = QuerySender.getResultSetFromST("SEL0005",null);
+			//POS
+			root = doc.getRootElement();
+			rows2 = root.getChildren("row").iterator();
+			
+			//Users - Admin 
+			doc = QuerySender.getResultSetFromST("SEL0006",null);
+			root = doc.getRootElement();
+			rows3 = root.getChildren("row").iterator();
+			
+			//Users - POS
+			doc = QuerySender.getResultSetFromST("SEL0007",null);
+			root = doc.getRootElement();
+			rows4 = root.getChildren("row").iterator();
+			
+		} catch (QuerySenderException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static String addGroupItem(Iterator groupIterator) {
@@ -163,7 +159,9 @@ public class Cache {
 		Iterator columns = row.getChildren().iterator();
 		User user = new User();
 		user.setId(((Element)columns.next()).getValue());
-		user.setLogin(((Element)columns.next()).getValue());
+		String login = ((Element)columns.next()).getValue();
+		adminUsers.add(login);
+		user.setLogin(login);
 		user.setPasswd(((Element)columns.next()).getValue());
 		user.setName(((Element)columns.next()).getValue());
 		user.setEmail(((Element)columns.next()).getValue());
@@ -189,7 +187,9 @@ public class Cache {
 		User user = new User();
 		
 		user.setId(((Element)columns.next()).getValue());
-		user.setLogin(((Element)columns.next()).getValue());
+		String login = ((Element)columns.next()).getValue();
+		user.setLogin(login);
+		operativeUsers.add(login);
 		user.setPasswd(((Element)columns.next()).getValue());
 		user.setName(((Element)columns.next()).getValue());
 		user.setEmail(((Element)columns.next()).getValue());
@@ -348,9 +348,16 @@ public class Cache {
 		User user = getUser(login);
 		return user!=null && user.login.equals(login) ? true :false;
 	}
+	
+	public static boolean isOperatorUser(String login) {
+		return operativeUsers.contains(login);
+	}
 
+	public static boolean isAdminUser(String login) {
+		return adminUsers.contains(login);
+	}
+	
 	public static void removeWs(String wsName) {
-		
 		Collection<Group> list = groupsList.values();
 		for (Group group: list) {
 			for (WorkStation ws : group.getWorkStations()) {
@@ -389,6 +396,28 @@ public class Cache {
 		return usersArray;
 	}
 	
+	public static String[] getAdminUsersList() {
+		String[] usersArray = {};
+		usersArray = new String[adminUsers.size()];
+		for(int i=0;i<adminUsers.size();i++)  {
+			usersArray[i] = adminUsers.get(i);
+		}		
+		Arrays.sort(usersArray);
+		
+		return usersArray;
+	}
+	
+	public static String[] getOperativeUsersList() {
+		String[] usersArray = {};
+		usersArray = new String[operativeUsers.size()];
+		for(int i=0;i<operativeUsers.size();i++)  {
+			usersArray[i] = operativeUsers.get(i);
+		}		
+		Arrays.sort(usersArray);
+		
+		return usersArray;
+	}
+		
 	public static class POS {
 		
 		private String posCode;
