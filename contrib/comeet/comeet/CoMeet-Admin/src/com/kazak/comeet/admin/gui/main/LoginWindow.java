@@ -68,22 +68,22 @@ public class LoginWindow implements ActionListener, KeyListener {
 		frame.setResizable(false);
 		
 		// Edit this section for debugging tasks
-		hostTextField = new JTextField("localhost",12);
+		hostTextField = new JTextField("",12);
 		hostTextField.setName("host");
 		hostTextField.addKeyListener(this);
-		portTextField = new JTextField("9119",12);
+		portTextField = new JTextField("",12);
 		portTextField.setName("port");
 		portTextField.addKeyListener(this);		
-		userTextField = new JTextField("admin",12);
+		userTextField = new JTextField("",12);
 		userTextField.setName("user");
 		userTextField.addKeyListener(this);
-		passwdField = new JPasswordField("admin",12);
+		passwdField = new JPasswordField("",12);
 		passwdField.setName("passwd");
 		passwdField.addKeyListener(this);
 		
 		// Edit this section for debugging tasks
-		//userTextField.setDocument(new FixedSizePlainDocument(30));
-		//portTextField.setDocument(new NumericDataValidator(4));
+		userTextField.setDocument(new FixedSizePlainDocument(30));
+		portTextField.setDocument(new NumericDataValidator(4));
 		
 		acceptButton = new JButton("Aceptar");
 		cancelButton = new JButton("Cancelar");

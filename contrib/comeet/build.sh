@@ -139,11 +139,11 @@ packaging_server(){
 
 packaging_admin(){
    echo "* Creando jars para CoMeet-Admin..."
-   cp -v comeet/CoMeet-Lib/dist/comeetlib.jar comeet/CoMeet-Admin/dist/
+   cp -v comeet/CoMeet-Lib/dist/comeetlib.jar comeet/CoMeet-Admin/dist/libs
    cd comeet/CoMeet-Admin/bin
    cp ../src/menu.xml .
    jar -cf comeetadmin.jar *
-   mv comeetadmin.jar ../dist
+   mv comeetadmin.jar ../dist/libs
    cd ..
    jar -cf icons.jar icons
    mv icons.jar dist/libs

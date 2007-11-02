@@ -46,12 +46,12 @@ public class Pop3Handler extends Thread {
 		Store store = null;
 		try {
 			store = session.getStore("pop3");
-			store.connect(host,user,password);
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		} 
 		while(true) {
 			try {	
+				store.connect(host,user,password);
 				Folder folder = store.getFolder("INBOX");
 				folder.open(Folder.READ_WRITE);
 				Message messages[] = folder.getMessages();
@@ -166,6 +166,7 @@ public class Pop3Handler extends Thread {
 					message.setFlag(Flags.Flag.DELETED, true);
 				}
 				folder.close(true);
+				store.close();
 			} catch (AuthenticationFailedException e) {
 				LogWriter.write("ERROR: Falla en la autenticacion del demonio pop3. No se podran obtener los correos.");
 				LogWriter.write("ERROR: Por favor, revise el archivo de configuracion y vuelva a iniciar el CoMeet.");
