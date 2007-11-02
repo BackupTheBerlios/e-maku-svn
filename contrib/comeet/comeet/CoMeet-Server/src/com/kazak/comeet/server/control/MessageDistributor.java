@@ -58,9 +58,6 @@ public class MessageDistributor {
 		Element mailLifeTime = element.getChild("timeAlife");
 		lifeTime = mailLifeTime != null ? Integer.parseInt(mailLifeTime.getValue()) : 0;
 
-		System.out.println("Procesando mensaje desde: " + from);
-		
-		
 		// This is a message control
 		if (lifeTime > 0) {
 			control = true;
