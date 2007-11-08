@@ -50,7 +50,7 @@ public class UserPosTable extends JTable implements ActionListener {
 		panel.add(jscroll,BorderLayout.CENTER);
 		if (withButtons) {
 			panel.add(getButtonsPanel(),BorderLayout.WEST);
-		}
+		} 
 		panel.setPreferredSize(new Dimension(120,100));
 	}
 	

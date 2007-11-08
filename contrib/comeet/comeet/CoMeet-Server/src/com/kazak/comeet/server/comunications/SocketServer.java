@@ -599,11 +599,12 @@ public class SocketServer {
 	    for (SocketInfo socketInfo : socketsInfoHash.values()) {    
             if (socketInfo.getGroupID()==groupID) {
                 usersVector.add(socketInfo);
+				System.out.println("1. Adicionando usuario: " + socketInfo.getLogin() + ":" + socketInfo.getGroupName());
             }
         }
 	    
 		try {
-			qRunner = new QueryRunner("SEL0027");
+			qRunner = new QueryRunner("SEL0035",new String[]{String.valueOf(groupID)});
 			resultSet = qRunner.select();
 			while(resultSet.next()) {
 				SocketInfo user = SocketServer.getInstaceOfSocketInfo();
@@ -618,11 +619,8 @@ public class SocketServer {
 				user.setGroupName(resultSet.getString(12));
 				
 				if (!containsSocketInfo(usersVector, user)) {
-					boolean cont = user.getGroupID()==groupID ? true : false;
 					if (user.getGroupID()==groupID) {
-						usersVector.add(user);
-					}
-					else if (cont) {
+						System.out.println("11. Adicionando usuario: " + user.getLogin() + ":" + user.getGroupName());
 						usersVector.add(user);
 					}
 				}
@@ -649,24 +647,47 @@ public class SocketServer {
 		return false;
 	}
 	
+	private static Vector<String> getUserGroups(String uid) {
+		Vector<String> groups = new Vector<String>(); 
+		QueryRunner qRunner = null;
+		ResultSet resultSet = null;
+		try {
+			qRunner = new QueryRunner("SEL0037",new String[]{uid});
+			resultSet = qRunner.select();
+			while(resultSet.next()) {
+				String group = resultSet.getString(1);
+				if(group != null) {
+					groups.add(group);
+				}
+			}
+		} catch (SQLNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLBadArgumentsException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			QueryClosingHandler.close(resultSet);
+			qRunner.closeStatement();
+		}
+		
+		return groups;
+	}
+	
 	public static Vector<SocketInfo> getAllClients(String groupName) {
 		Vector<SocketInfo> groupVector = new Vector<SocketInfo>();
 		QueryRunner qRunner = null;
 	    ResultSet resultSet = null;
 	    
-        for (SocketInfo socketInfo : socketsInfoHash.values()) {    
-            boolean groupContainsUser = groupName.equals(socketInfo.getGroupName());
-            // TODO: Preguntar que hace este if ?
-            if (groupName.equals(socketInfo.getLogin())) { // TODO: Preguntar si el metodo correcto es socketInfo.getGroupName()
-                groupVector.add(socketInfo);
-            }
-            else if (groupContainsUser) {
+        for (SocketInfo socketInfo : socketsInfoHash.values()) { 
+        	Vector groups = getUserGroups(String.valueOf(socketInfo.getUid()));
+            if (groups.contains(groupName)) {
                 groupVector.add(socketInfo);
             }
         }
         
 		try {
-			qRunner = new QueryRunner("SEL0027");
+			qRunner = new QueryRunner("SEL0027",new String[]{groupName,groupName});
 			resultSet = qRunner.select();
 			
 			while(resultSet.next()) {
@@ -678,18 +699,11 @@ public class SocketServer {
 				user.setAdmin(resultSet.getBoolean(5));
 				user.setAudit(resultSet.getBoolean(6));
 				user.setGroupID(resultSet.getInt(7));
-				user.setWsName(resultSet.getString(9));
-				user.setGroupName(resultSet.getString(12));
+				user.setWsName(resultSet.getString(8));
+				user.setGroupName(resultSet.getString(9));		
 				
 				if (!containsSocketInfo(groupVector, user)) {
-					boolean groupContainsUser = user.getGroupName().equals(groupName);
-					// TODO: Preguntar Que hace este if?
-					if (user.getLogin().equals(groupName)) {
 						groupVector.add(user);
-					}
-					else if (groupContainsUser) {
-						groupVector.add(user);
-					}
 				}
 			}
 		} catch (SQLNotFoundException e) {

@@ -31,6 +31,7 @@ import com.kazak.comeet.server.misc.ServerConstants;
 
 public class MessageDistributor {
 	private static final boolean LOTTERY_MODE = false;
+	private static final boolean CONTROL_MODE = false;
 	private static SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
 	private static SimpleDateFormat formatHour = new SimpleDateFormat("hh:mm aaa");
 	private Date   date;
@@ -45,94 +46,16 @@ public class MessageDistributor {
 	private int lifeTime = -1;
 	private boolean control = false;
 	
-	public MessageDistributor(Element element, boolean senderIsMailUser) {
+public MessageDistributor(Element element, boolean senderIsMailUser) {
 		
-		groupIDString  = element.getChildText("idgroup");
-		groupID        = Integer.parseInt(groupIDString);
-		date           = Calendar.getInstance().getTime();
-		from           = (element.getChildText("from")).trim();
-		dateString     = formatDate.format(date);
-		hourString     = formatHour.format(date);
-		subject        = element.getChildText("subject");
-		body           = element.getChildText("message");
-		Element mailLifeTime = element.getChild("timeAlife");
-		lifeTime = mailLifeTime != null ? Integer.parseInt(mailLifeTime.getValue()) : 0;
-
-		// This is a message control
-		if (lifeTime > 0) {
-			control = true;
-			body += "\n====================================\n" +
-				  "Este mensaje es de control\n";
-		}
-		
-		int groupSize = 0;
-		SocketInfo sender = null;
-		
-		if (!senderIsMailUser) {	
-			// Querying the info of the sender (a pos user)
-			sender = SocketServer.getSocketInfo(from);
-			// If sender doesn't exist, this operation is aborted
-			if (sender==null) {
-				String msg = "ERROR: El Colocador {" + from + "} no esta registrado en el sistema.";
-				LogWriter.write(msg);
-				sendAlarm("Error procesando mensaje de colocador",msg);
-				return;
-			}
-		}
-		else {
-			// Querying users from the pop server (admin user)
-			QueryRunner qRunner = null;
-		    ResultSet resultSet = null;
-		    int i=0;
-			try {
-				qRunner = new QueryRunner("SEL0026",new String[]{from});
-				resultSet = qRunner.select();
-				if (resultSet.next()) {
-					i++;
-					sender = SocketServer.getInstaceOfSocketInfo();
-					sender.setUid(resultSet.getInt(1));
-					sender.setLogin(resultSet.getString(2));
-					sender.setNames(resultSet.getString(3));
-					sender.setEmail(resultSet.getString(4));
-					sender.setAdmin(resultSet.getBoolean(5));
-					sender.setAudit(resultSet.getBoolean(6));
-					sender.setGroupID(resultSet.getInt(7));
-					sender.setWsName(resultSet.getString(9));
-					sender.setGroupName(resultSet.getString(12));	
-				}
-			} catch (SQLNotFoundException e) {
-				e.printStackTrace();
-			} catch (SQLBadArgumentsException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
-				LogWriter.write("ERROR: Falla mientras se consultaba la informacion del usuario: " + from);
-				e.printStackTrace();
-			} finally {
-				QueryClosingHandler.close(resultSet);
-				qRunner.closeStatement();
-			}
-			
-			if (LOTTERY_MODE) {
-				if (i==0) {
-					sender = insertPopUser(from);
-					if (sender == null) {
-						return;
-					}
-				}
-			}
-		}
+		// Captures the info from the message
+		getMessageParams(element);
+		// Gets the sender info
+		SocketInfo sender = getSenderInfo(senderIsMailUser);
 		
 		// Getting the destination list for this message 
-		Vector<SocketInfo> usersVector;
-		if (!senderIsMailUser) {
-			usersVector = SocketServer.getAllClients(groupID);
-		}
-		else {
-			String groupName = element.getChildText("toName");
-			usersVector = SocketServer.getAllClients(groupName);
-		}
-				
-		groupSize = usersVector.size();
+		Vector<SocketInfo> usersVector = getDestinationList(element,senderIsMailUser);
+		int groupSize = usersVector.size();
 		
 		String many = "";
 		if (groupSize > 1 || groupSize==0) {
@@ -142,7 +65,6 @@ public class MessageDistributor {
 		LogWriter.write("INFO: Enviando mensaje a "+ groupSize + " usuario" + many);
 
 		// In this cycle, the message is sent to every user in the destination list 
-
 		for (SocketInfo destination : usersVector) {
 			SocketChannel sock = destination.getSock()!=null ? destination.getSock().getChannel() : null;
 			
@@ -190,6 +112,7 @@ public class MessageDistributor {
 				        + " - Asunto: " + subject);
 			}
 			
+			// if destination user is offline
 			if (!control || (control && (sock!=null))) {
 				String isValid = groupSize > 0 ? "true" : "false";
 				String[] argsArray = {String.valueOf(destination.getUid()),String.valueOf(sender.getUid()),
@@ -222,6 +145,139 @@ public class MessageDistributor {
 				}
 			}
 		}	
+	}
+	
+	private void getMessageParams(Element element) {
+		groupIDString  = element.getChildText("idgroup");
+		groupID        = Integer.parseInt(groupIDString);
+		date           = Calendar.getInstance().getTime();
+		from           = (element.getChildText("from")).trim();
+		dateString     = formatDate.format(date);
+		hourString     = formatHour.format(date);
+		subject        = element.getChildText("subject");
+		body           = element.getChildText("message");
+		Element mailLifeTime = element.getChild("timeAlife");
+		lifeTime = mailLifeTime != null ? Integer.parseInt(mailLifeTime.getValue()) : 0;
+		
+		if (CONTROL_MODE) {
+			// This is a message control
+			if (lifeTime > 0) {
+				control = true;
+				body += "\n====================================\n"
+						+ "Este mensaje es de control\n";
+			}
+		} 
+	}
+	
+	// This method returns the sender data structure
+	private SocketInfo getSenderInfo(boolean senderIsMailUser) {
+		SocketInfo sender=null;
+		// Sender is a POS user
+		if (!senderIsMailUser) {	
+			// Querying the info of the sender (a pos user)
+			sender = SocketServer.getSocketInfo(from);
+			// If sender doesn't exist, this operation is aborted
+			if (sender==null) {
+				String msg = "ERROR: El Colocador {" + from + "} no esta registrado en el sistema.";
+				LogWriter.write(msg);
+				sendAlarm("Error procesando mensaje de colocador",msg);
+				return null;
+			}
+		}
+		// Sender is a POP user
+		else {
+			// Querying users from the pop server (admin user)
+			sender = getUserData(from,senderIsMailUser);			
+			
+			if (LOTTERY_MODE) {
+				if (sender == null) {
+					sender = insertPopUser(from);
+					if (sender == null) {
+						return null;
+					}
+				}
+			}
+		}
+		
+		return sender;
+	}
+	
+	private SocketInfo getUserData(String login, boolean senderIsMailUser) {
+		SocketInfo user = null;
+		QueryRunner qRunner = null;
+	    ResultSet resultSet = null;
+	    
+	    if(!senderIsMailUser) {
+	    	// Check is POS user is online
+	    	user = SocketServer.getSocketInfo(login);
+	    	if(user!= null) {
+	    	   return user;
+	    	}
+	    }	    
+	    
+	    // If user is POP or if is a POS user offline
+	    int i=0;
+		try {
+			if(senderIsMailUser) {
+				qRunner = new QueryRunner("SEL0036",new String[]{login});
+			} else {
+				qRunner = new QueryRunner("SEL0026",new String[]{login});
+			}
+			resultSet = qRunner.select();
+			if (resultSet.next()) {
+				i++;
+				user = SocketServer.getInstaceOfSocketInfo();
+				user.setUid(resultSet.getInt(1));
+				user.setLogin(resultSet.getString(2));
+				user.setNames(resultSet.getString(3));
+				user.setEmail(resultSet.getString(4));
+				user.setAdmin(resultSet.getBoolean(5));
+				user.setAudit(resultSet.getBoolean(6));
+				user.setGroupID(resultSet.getInt(7));
+				user.setWsName(resultSet.getString(9));
+				user.setGroupName(resultSet.getString(12));	
+			}
+		} catch (SQLNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLBadArgumentsException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			LogWriter.write("ERROR: Falla mientras se consultaba la informacion del usuario: " + login);
+			e.printStackTrace();
+		} finally {
+			QueryClosingHandler.close(resultSet);
+			qRunner.closeStatement();
+		}
+		
+		return user;
+	}
+	
+	
+	// This method returns the destination list for a message
+	private Vector<SocketInfo> getDestinationList(Element element, boolean senderIsMailUser) {
+		Vector<SocketInfo> usersVector = new Vector<SocketInfo>();	
+
+		String target = element.getChildText("toName");
+
+		// If sender is a POS user
+		if (!senderIsMailUser) {
+			usersVector = SocketServer.getAllClients(groupID);
+		}
+		// If sender is a POP user
+		else {
+			// If destination is one user
+			if(target != null) {
+				SocketInfo destination = getUserData(target,false);
+				if(destination!=null) {
+					usersVector.add(destination);
+					return usersVector;
+				}
+			}
+			// If destination is a group
+			usersVector = SocketServer.getAllClients(target);
+		}
+
+		return usersVector;
 	}
 	
 	// This method sends an alarm message to the CoMeet group when the system fails

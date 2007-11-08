@@ -323,7 +323,7 @@
 		</sql>
 	</sentence>
 	<sentence>
-	<!--Descripcion: ... -->
+	<!--Descripcion: Retorna los datos de un usuario a partir de su login -->
 		<code>SEL0026</code>
 		<sql>
 			SELECT 
@@ -337,17 +337,22 @@
 		</sql>
 	</sentence>
 	<sentence>
-	<!--Descripcion: ... -->
+	<!--Descripcion: Dado el nombre de un grupo, retorna los datos de los usuarios que pertenecen -->
 		<code>SEL0027</code>
 		<sql>
 			SELECT 
-				u.uid,login,nombres,correo,
-				admin,audit,u.gid,false,'Sin punto asignado',g.gid,null,g.nombre_grupo 
+				a.uid,a.login,a.nombres,a.correo,
+				a.admin,a.audit,a.gid,'Sin punto asignado','?'
 			FROM 
-				usuarios u,grupos g 
-			WHERE 
-				g.gid=u.gid
-			ORDER BY login
+				usuarios a,
+		        (SELECT 
+					u.uid AS codigo
+			 	 FROM 
+					usuarios_pventa u, 
+					(SELECT codigo FROM puntosv WHERE gid=(SELECT gid FROM grupos WHERE nombre_grupo='?')) as c
+				 WHERE u.codigo_pventa=c.codigo) AS p
+			WHERE   a.uid = p.codigo
+			ORDER BY login			
 		</sql>
 	</sentence>
 	<sentence>
@@ -464,6 +469,46 @@
 			ORDER BY codigo DESC LIMIT 1
                 </sql>
         </sentence>
+        <sentence>
+        <!--Descripcion:  Dado el id de un grupo, retorna todos los usuarios que pertenecen a dicho grupo-->
+                <code>SEL0035</code>
+                <sql>
+			SELECT 
+				u.uid,login,nombres,correo,
+				admin,audit,u.gid,false,'Sin punto asignado',g.gid,null,g.nombre_grupo 
+			FROM 
+				usuarios u,grupos g 
+			WHERE 
+				g.gid=u.gid AND g.gid='?'
+			ORDER BY login
+                </sql>
+        </sentence>     
+       	<sentence>
+	    <!--Descripcion: Retorna los datos de un usuario a partir de su email -->
+		<code>SEL0036</code>
+		 <sql>
+			SELECT 
+				u.uid,login,nombres,correo,
+				admin,audit,u.gid,false,'Sin punto asignado',g.gid,null,g.nombre_grupo 
+			FROM 
+				usuarios u,grupos g 
+			WHERE 
+				correo LIKE '%?@%' AND g.gid=u.gid 
+			LIMIT 1
+		 </sql>
+  	    </sentence>
+       	<sentence>
+	    <!--Descripcion: Dado un id de usuario, retorna todos los grupos a los que pertenece -->
+		<code>SEL0037</code>
+		 <sql>
+   	 	   SELECT 
+		 		g.nombre_grupo 
+			FROM puntosv p,grupos g,
+				(SELECT codigo_pventa AS codigo FROM usuarios_pventa WHERE uid=?) AS r
+		   WHERE
+				p.codigo=r.codigo AND p.gid=g.gid
+		 </sql>
+  	    </sentence>
 	<!--============================= Inserts ===============================-->
 	<sentence>
 	<!--Descripcion: ... -->

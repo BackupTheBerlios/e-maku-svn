@@ -173,7 +173,7 @@ public class InternalPanel extends JPanel {
 		ipControlCheck.setSelected(user.getValidIp());
 		nameField.setText(user.getName());
 		activeUserPanel(flag);
-		table = new UserPosTable(dialog,username,false,action);
+		table = new UserPosTable(dialog,username,true,action);
 	}
 	
 	public void setUserContext() {	
