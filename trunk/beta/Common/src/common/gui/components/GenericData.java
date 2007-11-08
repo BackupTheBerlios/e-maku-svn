@@ -1,51 +1,27 @@
 package common.gui.components;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.Format;
-import java.text.NumberFormat;
+import java.awt.*;
+import java.awt.event.*;
+import java.lang.reflect.*;
+import java.math.*;
+import java.sql.*;
+import java.text.*;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.*;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
-import java.util.Vector;
 
 import javax.swing.*;
 
-import org.jdom.Document;
-import org.jdom.Element;
+import org.jdom.*;
 
-import bsh.EvalError;
+import bsh.*;
 
-import common.comunications.DateSender;
-import common.control.ClientHeaderValidator;
-import common.control.DateEvent;
-import common.control.DateListener;
-import common.gui.forms.EndEventGenerator;
-import common.gui.forms.ExternalValueChangeEvent;
-import common.gui.forms.ExternalValueChangeListener;
-import common.gui.forms.GenericForm;
-import common.gui.forms.InstanceFinishingListener;
-import common.gui.forms.NotFoundComponentException;
-import common.misc.formulas.FormulaCalculator;
-import common.misc.language.Language;
-import common.transactions.TransactionServerException;
-import common.transactions.TransactionServerResultSet;
+import common.comunications.*;
+import common.control.*;
+import common.gui.forms.*;
+import common.misc.formulas.*;
+import common.misc.language.*;
+import common.transactions.*;
 
 /**
  * GenericData.java Creado el 15-oct-2004
@@ -678,10 +654,15 @@ public class GenericData extends JPanel implements DateListener,
 		return form.format(bd);
 	}
 
+	
+	public void searchOthersSqls(XMLTextField xmltf) {
+		searchOthersSqls(xmltf,null);
+	}
+	
 	/**
 	 * Metodo encargado de generar sentencias sql de otros componentes
 	 */
-	public void searchOthersSqls(XMLTextField xmltf) {
+	public void searchOthersSqls(XMLTextField xmltf, Vector<String> querys) {
 		/*-----------------------------------------------------------*/
 		final String[] argumentos = new String[xmltf.getImportValues().length
 				+ xmltf.getConstantSize() + 1];
@@ -696,7 +677,10 @@ public class GenericData extends JPanel implements DateListener,
 			argumentos[i] = GFforma.getExteralValuesString(XMLimpValues[i]);
 		}
 		argumentos[i] = xmltf.getText();
-		Vector<String> sqlCode = xmltf.getSqlCode();
+		Vector<String> sqlCode = querys;
+		if (querys==null) {
+			sqlCode = xmltf.getSqlCode();
+		}
 		
 		for (int j = 0; j < sqlCode.size(); j++) {
 			class SearchingSQL extends Thread {
@@ -724,9 +708,6 @@ public class GenericData extends JPanel implements DateListener,
 			//TODO Por el problema del chekout
 			//new SearchingSQL(sqlCode,j).start();
 		}
-		
-		
-
 	}
 
 	public JPanel getPanel() {
@@ -770,6 +751,29 @@ public class GenericData extends JPanel implements DateListener,
 		}
 	}
 
+	public void invokeQuery(Element args) {
+		Iterator it = args.getChildren().iterator();
+		Vector<String> arrQuerys= new Vector<String>();
+		while (it.hasNext()) {
+			Element e  = (Element) it.next();
+			String attname = e.getAttributeValue("attribute");
+			String attvalue = e.getValue();
+			if ("sqlCode".equals(attname)) {
+				arrQuerys.add(attvalue);
+			}
+		}
+		if (arrQuerys.size()>0) {
+			for (String q : arrQuerys) {
+				System.out.println("Solicitiando consulta => " + q);
+			}
+			XMLTextField field = VFields.get(0);
+			searchOthersSqls(field,arrQuerys);
+		}
+		else {
+			System.out.println("No exiten consultas a invocar");
+		}
+	}
+	
 	public void validPackage(Element args) throws Exception {
 		getPackage(args);
 	}
