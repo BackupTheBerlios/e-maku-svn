@@ -4,11 +4,13 @@ import java.awt.Cursor;
 import java.io.IOException;
 
 import javax.swing.JOptionPane;
+import javax.swing.tree.TreePath;
 
 import org.jdom.Document;
 import org.jdom.Element;
 
 import com.kazak.comeet.admin.gui.main.LoginWindow;
+import com.kazak.comeet.admin.gui.main.MainTreeManager;
 import com.kazak.comeet.admin.gui.main.MainWindow;
 import com.kazak.comeet.admin.network.SocketHandler;
 import com.kazak.comeet.admin.transactions.QuerySender;
@@ -69,6 +71,7 @@ public class HeadersValidator implements PackageComingListener {
         }
         else if(name.equals("RELOADTREE")) {
         	Cache.loadInfoTree(1);
+        	MainWindow.updateGrid(MainTreeManager.getSelectedPath());
         }
         else if(name.equals("SUCCESS")) {
             String id = root.getChildText("id");

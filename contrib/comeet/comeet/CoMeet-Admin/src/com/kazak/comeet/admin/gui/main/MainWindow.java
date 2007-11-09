@@ -37,7 +37,7 @@ public class MainWindow implements TreeSelectionListener {
 	
 	private static JFrame frame;
 	private JSplitPane splitPane;
-	private DataGrid dataGrid;
+	private static DataGrid dataGrid;
 	private JPanel rightPanel;
 	private MainTreeManager mainTree;
 	private static String appOwner;
@@ -92,118 +92,122 @@ public class MainWindow implements TreeSelectionListener {
 		return frame;
 	}
 	
-	public void valueChanged(TreeSelectionEvent e) {
-		TreePath treePath = e.getPath();		
-		MainTreeManager.currentTreePath = e.getPath();
+	public void valueChanged(TreeSelectionEvent e) {		
+		updateGrid(e.getPath());
+	}
+	
+	public static void updateGrid(TreePath treePath) {		
+		MainTreeManager.currentTreePath = treePath;		
 		DefaultMutableTreeNode node;
 		TableSorter tableSorter;
 		boolean affect = false;
 
 		switch (treePath.getPathCount()) {
-			case 2:
-				// Seleccionando grupo
-				node = (SortableTreeNode) treePath.getPathComponent(1);
-				Group group = Cache.getGroup(node.toString());			
-				if(group != null) {				
-					Collection<WorkStation> wsCollection = group.getWorkStations();
-					Vector<WorkStation> wsVector = new Vector<WorkStation>(wsCollection);
-					if (wsVector.size() > 0 ) {
-						tableSorter = new TableSorter(new PosModel(wsVector));
-						tableSorter.setSortingStatus(1,TableSorter.ASCENDING);
-						dataGrid.setModel(tableSorter);
-						tableSorter.setTableHeader(dataGrid.getTableHeader());
-						TableColumnModel columnModel = dataGrid.getColumnModel();
-						int n = tableSorter.getColumnCount(); 
-						int columnWidth[] = {50,300,100};
-						for (int i=0;i<n;i++) {
-							columnModel.getColumn(i).setPreferredWidth(columnWidth[i]);
-						}
-						affect = true;
+		case 2:
+			// Seleccionando grupo
+			node = (SortableTreeNode) treePath.getPathComponent(1);
+			Group group = Cache.getGroup(node.toString());			
+			if(group != null) {				
+				Collection<WorkStation> wsCollection = group.getWorkStations();
+				Vector<WorkStation> wsVector = new Vector<WorkStation>(wsCollection);
+				if (wsVector.size() > 0 ) {
+					tableSorter = new TableSorter(new PosModel(wsVector));
+					tableSorter.setSortingStatus(1,TableSorter.ASCENDING);
+					dataGrid.setModel(tableSorter);
+					tableSorter.setTableHeader(dataGrid.getTableHeader());
+					TableColumnModel columnModel = dataGrid.getColumnModel();
+					int n = tableSorter.getColumnCount(); 
+					int columnWidth[] = {50,300,100};
+					for (int i=0;i<n;i++) {
+						columnModel.getColumn(i).setPreferredWidth(columnWidth[i]);
 					}
-					Collection<User> collectionus = group.getUsers();
-					Vector<User> users = new Vector<User>(collectionus);
-					if (users.size() > 0 ) {
-						tableSorter = new TableSorter(new UsersModel(users));
-						tableSorter.setSortingStatus(1,TableSorter.ASCENDING);
-						dataGrid.setModel(tableSorter);
-						tableSorter.setTableHeader(dataGrid.getTableHeader());
-						TableColumnModel columnModel = dataGrid.getColumnModel();
-						int n = tableSorter.getColumnCount(); 
-						int columnWidth[] = {80,80,200,200,120};
-						for (int i=0;i<n;i++) {
-							columnModel.getColumn(i).setPreferredWidth(columnWidth[i]);
-						}
-						affect = true;
-					}
+					affect = true;
 				}
-				break;
-			case 3:
-				// Seleccionando punto de venta
-				node = (SortableTreeNode) treePath.getPathComponent(2);
-				String name = node.toString();
-				if (Cache.containsWs(name)){
-					WorkStation ws = Cache.getWorkStation(name);
-					Collection<User> collection = ws.getUsers();
-					Vector<User> usersVector = new Vector<User>(collection);
-					if (usersVector.size() > 0 ) {
-						tableSorter = new TableSorter(new UsersModel(usersVector));
-		                tableSorter.setSortingStatus(1,TableSorter.ASCENDING);
-						dataGrid.setModel(tableSorter);
-						tableSorter.setTableHeader(dataGrid.getTableHeader());
-					    TableColumnModel columnModel = dataGrid.getColumnModel();
-					    int n = tableSorter.getColumnCount(); 
-						int columnWidth[] = {80,80,200,200,120};
-					    for (int i=0;i<n;i++) {
-					      columnModel.getColumn(i).setPreferredWidth(columnWidth[i]);
-					    }
-						affect = true;
+				Collection<User> collectionus = group.getUsers();
+				Vector<User> users = new Vector<User>(collectionus);
+				if (users.size() > 0 ) {
+					tableSorter = new TableSorter(new UsersModel(users));
+					tableSorter.setSortingStatus(1,TableSorter.ASCENDING);
+					dataGrid.setModel(tableSorter);
+					tableSorter.setTableHeader(dataGrid.getTableHeader());
+					TableColumnModel columnModel = dataGrid.getColumnModel();
+					int n = tableSorter.getColumnCount(); 
+					int columnWidth[] = {80,80,200,200,120};
+					for (int i=0;i<n;i++) {
+						columnModel.getColumn(i).setPreferredWidth(columnWidth[i]);
 					}
+					affect = true;
 				}
-				
-				if (Cache.containsUser(name)){
-					User user = Cache.getUser(name);
-					if (user != null) {
-						Vector<User> usersVector = new Vector<User>();
-						usersVector.add(user);
-						tableSorter = new TableSorter(new UsersModel(usersVector));
-		                tableSorter.setSortingStatus(1,TableSorter.ASCENDING);
-						dataGrid.setModel(tableSorter);
-						tableSorter.setTableHeader(dataGrid.getTableHeader());
-					    TableColumnModel columnModel = dataGrid.getColumnModel();
-					    int n = tableSorter.getColumnCount(); 
-						int columnWidth[] = {80,80,200,200,120};
-					    for (int i=0;i<n;i++) {
-					      columnModel.getColumn(i).setPreferredWidth(columnWidth[i]);
-					    }
-						affect = true;
+			}
+			break;
+		case 3:
+			// Seleccionando punto de venta
+			node = (SortableTreeNode) treePath.getPathComponent(2);
+			String name = node.toString();
+			if (Cache.containsWs(name)){
+				WorkStation ws = Cache.getWorkStation(name);
+				Collection<User> collection = ws.getUsers();
+				Vector<User> usersVector = new Vector<User>(collection);
+				if (usersVector.size() > 0 ) {
+					tableSorter = new TableSorter(new UsersModel(usersVector));
+					tableSorter.setSortingStatus(1,TableSorter.ASCENDING);
+					dataGrid.setModel(tableSorter);
+					tableSorter.setTableHeader(dataGrid.getTableHeader());
+					TableColumnModel columnModel = dataGrid.getColumnModel();
+					int n = tableSorter.getColumnCount(); 
+					int columnWidth[] = {80,80,200,200,120};
+					for (int i=0;i<n;i++) {
+						columnModel.getColumn(i).setPreferredWidth(columnWidth[i]);
 					}
+					affect = true;
 				}
-				break;
-			case 4:
-				// Seleccionando usuario
-				node = (SortableTreeNode) treePath.getPathComponent(3);
-				String login = node.toString();
-				User user = Cache.getUser(login);
-				if (user!=null) {
+			}
+
+			if (Cache.containsUser(name)){
+				User user = Cache.getUser(name);
+				if (user != null) {
 					Vector<User> usersVector = new Vector<User>();
 					usersVector.add(user);
 					tableSorter = new TableSorter(new UsersModel(usersVector));
-	                tableSorter.setSortingStatus(1,TableSorter.ASCENDING);
+					tableSorter.setSortingStatus(1,TableSorter.ASCENDING);
 					dataGrid.setModel(tableSorter);
 					tableSorter.setTableHeader(dataGrid.getTableHeader());
-				    TableColumnModel columnModel = dataGrid.getColumnModel();
-				    int n = tableSorter.getColumnCount(); 
+					TableColumnModel columnModel = dataGrid.getColumnModel();
+					int n = tableSorter.getColumnCount(); 
 					int columnWidth[] = {80,80,200,200,120};
-				    for (int i=0;i<n;i++) {
-				      columnModel.getColumn(i).setPreferredWidth(columnWidth[i]);
-				    }
+					for (int i=0;i<n;i++) {
+						columnModel.getColumn(i).setPreferredWidth(columnWidth[i]);
+					}
 					affect = true;
 				}
-				break;
-		}
-			if (!affect) {
-				dataGrid.setModel(new DefaultTableModel());
 			}
+			break;
+		case 4:
+			// Seleccionando usuario
+			node = (SortableTreeNode) treePath.getPathComponent(3);
+			String login = node.toString();
+			User user = Cache.getUser(login);
+			if (user!=null) {
+				Vector<User> usersVector = new Vector<User>();
+				usersVector.add(user);
+				tableSorter = new TableSorter(new UsersModel(usersVector));
+				tableSorter.setSortingStatus(1,TableSorter.ASCENDING);
+				dataGrid.setModel(tableSorter);
+				tableSorter.setTableHeader(dataGrid.getTableHeader());
+				TableColumnModel columnModel = dataGrid.getColumnModel();
+				int n = tableSorter.getColumnCount(); 
+				int columnWidth[] = {80,80,200,200,120};
+				for (int i=0;i<n;i++) {
+					columnModel.getColumn(i).setPreferredWidth(columnWidth[i]);
+				}
+				affect = true;
+			}
+			break;
+		}
+		if (!affect) {
+			dataGrid.setModel(new DefaultTableModel());
+		}
+		
 	}
 
 	public static String getAppOwner() {

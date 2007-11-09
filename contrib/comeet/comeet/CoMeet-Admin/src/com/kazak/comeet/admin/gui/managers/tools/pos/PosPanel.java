@@ -48,7 +48,6 @@ public class PosPanel extends JPanel implements ActionListener, KeyListener {
 
 	public PosPanel(MainForm mainFrame, int action, String target, UserPosTable table) {
 		this.mainFrame = mainFrame;
-		//this.buttonBar = buttonBar;
 		this.action = action;
 		this.target = target;
 		this.table = table;
@@ -138,7 +137,6 @@ public class PosPanel extends JPanel implements ActionListener, KeyListener {
 			WorkStation ws = Cache.getWorkStation(target);
 			switch(action) {
 			case ToolsConstants.ADD:
-				//ipField.setEditable(true);
 				break;
 			case ToolsConstants.EDIT:
 			case ToolsConstants.EDIT_PREFILLED:

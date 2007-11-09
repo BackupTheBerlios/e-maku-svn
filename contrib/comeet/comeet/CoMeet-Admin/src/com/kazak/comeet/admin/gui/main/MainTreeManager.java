@@ -9,11 +9,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionListener;
@@ -26,28 +22,27 @@ import com.kazak.comeet.admin.control.Cache;
 import com.kazak.comeet.admin.gui.managers.GroupManager;
 import com.kazak.comeet.admin.gui.managers.PosManager;
 import com.kazak.comeet.admin.gui.managers.UserManager;
+import com.kazak.comeet.admin.gui.misc.PopUpCombo;
 
 public class MainTreeManager {
 	
 	private static SortableTreeNode rootNode;
 	private JScrollPane jscroll;
 	private static JTree tree;
-	private JPopupMenu groupsMenu = new JPopupMenu();
-	private JPopupMenu specialGroupsMenu = new JPopupMenu();
-	private JPopupMenu wsMenu = new JPopupMenu();
-	private JPopupMenu usersMenu = new JPopupMenu();
-	private JPopupMenu refresh = new JPopupMenu();
 	private Actions actions;
 	private ArrayList<String> lastPath = new ArrayList<String>();
 	public static TreePath currentTreePath;
 	public JFrame frame;
+	private PopUpCombo menuCombo;
 		
 	public MainTreeManager(JFrame frame) {
 		this.frame = frame;
 		rootNode = new SortableTreeNode(MainWindow.getAppOwner());
 		rootNode.setAllowsChildren(true);
 		tree = new JTree(rootNode);
-		loadPopups();
+		actions = new Actions();
+		menuCombo = new PopUpCombo(actions);
+		
 		DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
 		renderer.setLeafIcon(null);
 		renderer.setClosedIcon(null);
@@ -71,34 +66,32 @@ public class MainTreeManager {
                 	tree.setSelectionPath(currentTreePath);
                 	int count = currentTreePath.getPathCount();
                 	SortableTreeNode node;
-                	System.out.println("Nodo: " + count);
                 	
                 	switch (count) {
                 	case 1: // Nodo Raiz
-                		refresh.show(e.getComponent(), e.getX(), e.getY());
+                		menuCombo.showMenu(4,e.getComponent(), e.getX(), e.getY());
                 	    break;
                 	case 2: // Puntos de Venta
                 		lastPath.clear();
                 		node = (SortableTreeNode) currentTreePath.getPathComponent(1);
                 		if(node.toString().equals("COMEET")) {
-                			specialGroupsMenu.show(e.getComponent(), e.getX(), e.getY());
-
+                			menuCombo.showMenu(1,e.getComponent(), e.getX(), e.getY());
                 		} else {
-        	                groupsMenu.show(e.getComponent(), e.getX(), e.getY());
+                			menuCombo.showMenu(0,e.getComponent(),e.getX(),e.getY());
                 		}
             			break;
             		case 3: // Usuarios 
             			node = (SortableTreeNode) currentTreePath.getPathComponent(2);
             			String name = node.toString();
             			if (Cache.containsWs(name)){
-            				wsMenu.show(e.getComponent(), e.getX(), e.getY());
+            				menuCombo.showMenu(3,e.getComponent(), e.getX(), e.getY());
             			}
             			if (Cache.containsUser(name)){
-            				usersMenu.show(e.getComponent(), e.getX(), e.getY());
+            				menuCombo.showMenu(2,e.getComponent(), e.getX(), e.getY());
             			}
             			break;
             		case 4:
-            			usersMenu.show(e.getComponent(), e.getX(), e.getY());
+        				menuCombo.showMenu(2,e.getComponent(), e.getX(), e.getY());
             			break;
                 	}
                 }
@@ -109,113 +102,6 @@ public class MainTreeManager {
 		tree.getSelectionModel().setSelectionMode(mode);
 		jscroll = new JScrollPane(tree);
 		Cache.loadInfoTree(1);
-	}
-	
-	private void loadRefreshPopUp() {
-		JMenuItem item = new JMenuItem("Recargar");
-        item.setActionCommand("reload");
-        item.addActionListener(actions);
-        refresh.add(item);
-	}
-	
-	private void loadGroupPopUp() {
-		//--- Popup Grupos
-		groupsMenu.add(new JLabel("Grupos"));
-		groupsMenu.add(new JSeparator());
-		JMenuItem item = new JMenuItem("Nuevo");
-        item.setActionCommand("new_group");
-        item.addActionListener(actions);
-        groupsMenu.add(item);
-        
-        item = new JMenuItem("Editar");
-        item.setActionCommand("edit_group");
-        item.addActionListener(actions);
-        groupsMenu.add(item);
-        
-      	item = new JMenuItem("Eliminar");
-      	item.setActionCommand("delete_group");
-      	item.addActionListener(actions);
-       	groupsMenu.add(item);
-        
-        item = new JMenuItem("Buscar");
-        item.setActionCommand("search_group");
-        item.addActionListener(actions);
-        groupsMenu.add(item);		
-	}
-	
-	private void loadSpecialGroupPopUp() {
-		//--- Popup Grupos
-		specialGroupsMenu.add(new JLabel("Grupos"));
-		specialGroupsMenu.add(new JSeparator());
-		JMenuItem item = new JMenuItem("Nuevo");
-        item.setActionCommand("new_group");
-        item.addActionListener(actions);
-        specialGroupsMenu.add(item);  
-       
-        item = new JMenuItem("Buscar");
-        item.setActionCommand("search_group");
-        item.addActionListener(actions);
-        specialGroupsMenu.add(item);		
-	}
-	
-	private void loadPosPopUp() {
-		//--- Popup Puntos Venta
-		wsMenu.add(new JLabel("Puntos"));
-		wsMenu.add(new JSeparator());
-		JMenuItem item = new JMenuItem("Nuevo");
-		item.setActionCommand("new_point");
-		item.addActionListener(actions);
-		wsMenu.add(item);
-
-		item = new JMenuItem("Editar");
-		item.setActionCommand("edit_point");
-		item.addActionListener(actions);
-		wsMenu.add(item);
-
-		item = new JMenuItem("Eliminar");
-		item.setActionCommand("delete_point");
-		item.addActionListener(actions);
-		wsMenu.add(item);
-
-		item = new JMenuItem("Buscar");
-		item.setActionCommand("search_point");
-		item.addActionListener(actions);
-		wsMenu.add(item);
-	}
-	
-	private void loadUserPopUp() {
-
-    //--- Popup Usuarios
-    usersMenu.add(new JLabel("Usuarios"));
-	usersMenu.add(new JSeparator());
-    JMenuItem item = new JMenuItem("Nuevo");
-    item.setActionCommand("new_user");
-    item.addActionListener(actions);
-    usersMenu.add(item);
-    
-    item = new JMenuItem("Editar");
-    item.setActionCommand("edit_user");
-    item.addActionListener(actions);
-    usersMenu.add(item);
-    
-    item = new JMenuItem("Eliminar");
-    item.setActionCommand("delete_user");
-    item.addActionListener(actions);
-    usersMenu.add(item);
-    
-    item = new JMenuItem("Buscar");
-    item.setActionCommand("search_user");
-    item.addActionListener(actions);
-    usersMenu.add(item);
-	}
-	
-	public void loadPopups() {
-		actions = new Actions();
-		loadGroupPopUp();
-		loadSpecialGroupPopUp();
-		loadPosPopUp();
-		loadUserPopUp();  
-		loadRefreshPopUp();
 	}
 		
 	public void addMouseListener(MouseListener l) {
@@ -340,7 +226,6 @@ public class MainTreeManager {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static class SortableTreeNode extends DefaultMutableTreeNode {
 
 		private static final long serialVersionUID = 1L;
@@ -367,8 +252,7 @@ public class MainTreeManager {
 		}
 		
 		public void remove() {
-			@SuppressWarnings("unused")
-			SortableTreeNode parent = (SortableTreeNode)getParent();
+			//SortableTreeNode parent = (SortableTreeNode)getParent();
 			super.removeFromParent();
 		}
 		
@@ -403,22 +287,54 @@ public class MainTreeManager {
 			if ("reload".equals(command)) {
 				Cache.loadInfoTree(1);
 			}
-			if ("new_user".equals(command)) {
+			if ("new_op_user".equals(command)) {
 				UserManager userManager = new UserManager();
 				userManager.addUser();
 			}
+			if ("new_admin_user".equals(command)) {
+				UserManager userManager = new UserManager();
+				userManager.addAdmin();
+			}			
 			else if ("edit_user".equals(command)) {
 				UserManager userManager = new UserManager();
-				userManager.editUser(name);
+				if(Cache.isAdminUser(name)) {
+					userManager.editAdmin(name);
+				} else {
+					userManager.editUser(name);
+				}
 			}
+			else if ("edit_op_user".equals(command)) {
+				UserManager userManager = new UserManager();
+				userManager.editUser();
+			}			
+			else if ("edit_admin_user".equals(command)) {
+				UserManager userManager = new UserManager();
+				userManager.editAdmin();
+			}			
 			else if ("delete_user".equals(command)) {
 				UserManager userManager = new UserManager();
 				userManager.deleteUser(name);
+			}
+			else if ("delete_op_user".equals(command)) {
+				UserManager userManager = new UserManager();
+				userManager.deleteUser();
+			}
+			else if ("delete_admin_user".equals(command)) {
+				UserManager userManager = new UserManager();
+				userManager.deleteAdmin();
 			}
 			else if ("search_user".equals(command)) {
 				UserManager userManager = new UserManager();
 				userManager.searchUser(name);
 			}
+			else if ("search_op_user".equals(command)) {
+				UserManager userManager = new UserManager();
+				userManager.searchUser();
+			}			
+			else if ("search_admin_user".equals(command)) {
+				UserManager userManager = new UserManager();
+				userManager.searchAdmin();
+			}						
 			else if ("new_point".equals(command)) {				
 				PosManager posManager = new PosManager();
 				posManager.addPos();
@@ -427,15 +343,26 @@ public class MainTreeManager {
 				PosManager posManager = new PosManager();
 				posManager.editPos(name);
 			}
-				
+			else if ("edit_unknown_point".equals(command)) {
+				PosManager posManager = new PosManager();
+				posManager.editPos();
+			}				
 			else if ("delete_point".equals(command)) {
 				PosManager posManager = new PosManager();
 				posManager.deletePos(name);
 			}
+			else if ("delete_unknown_point".equals(command)) {
+				PosManager posManager = new PosManager();
+				posManager.deletePos();
+			}			
 			else if ("search_point".equals(command)) {				
 				PosManager posManager = new PosManager();
 				posManager.searchPos(name);
 			}
+			else if ("search_unknown_point".equals(command)) {				
+				PosManager posManager = new PosManager();
+				posManager.searchPos();
+			}			
 			else if ("new_group".equals(command)) {
 				GroupManager group = new GroupManager();
 				group.addGroup();
@@ -444,13 +371,25 @@ public class MainTreeManager {
 				GroupManager group = new GroupManager();
 				group.editGroup(name);
 			}
+			else if ("edit_unknown_group".equals(command)) {
+				GroupManager group = new GroupManager();
+				group.editGroup();
+			}
 			else if ("delete_group".equals(command)) {
 				GroupManager group = new GroupManager();
 				group.deleteGroup(name);				
 			}
+			else if ("delete_unknown_group".equals(command)) {
+				GroupManager group = new GroupManager();
+				group.deleteGroup();				
+			}
 			else if ("search_group".equals(command)) {
 				GroupManager group = new GroupManager();
 				group.searchGroup(name);
+			}
+			else if ("search_unknown_group".equals(command)) {
+				GroupManager group = new GroupManager();
+				group.searchGroup();
 			}
 		}
 		
