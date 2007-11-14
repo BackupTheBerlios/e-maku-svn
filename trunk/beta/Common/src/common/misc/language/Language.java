@@ -75,9 +75,10 @@ public class Language  {
             System.out.println(JDOMEe.getMessage());
         }
         catch (FileNotFoundException FNFEe) {
-        	
+        	FNFEe.printStackTrace();
         }
         catch (IOException IOEe) {
+        	IOEe.printStackTrace();
             System.out.println(IOEe.getMessage());
         }
     }

@@ -209,8 +209,7 @@ public class ConfigFileHandler extends EmakuParametersStructure {
     }
 
     public static void loadJarFile(String nameCompany) {
-    	Iterator i = root.getChildren("C" +
-    			"ompany").iterator();
+    	Iterator i = root.getChildren("company").iterator();
         boolean isCompany = false;
         String jarFile = null;
         String directory = "";
