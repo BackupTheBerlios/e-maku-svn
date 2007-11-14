@@ -150,7 +150,7 @@ public interface GUIFactory {
 	public void showConfirmDialog(Object label, String message, int option,
 			int plain_message);
 
-	public String initPDFOutlines(Node rootNode, String bookmark);
+	//public String initPDFOutlines(Node rootNode, String bookmark);
 
 	/**show if user has set auto-scrolling on or off - if on moves at edge of panel to show more*/
 	public boolean allowScrolling();

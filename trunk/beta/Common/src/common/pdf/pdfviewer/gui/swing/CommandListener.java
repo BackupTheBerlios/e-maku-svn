@@ -36,11 +36,12 @@
  */
 package common.pdf.pdfviewer.gui.swing;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
-import common.pdf.pdfviewer.Commands;
-import common.pdf.pdfviewer.gui.generic.GUIButton;
+import common.pdf.pdfviewer.*;
+import common.pdf.pdfviewer.gui.generic.*;
+
+
 
 /**single listener to execute all GUI commands and call Commands to execute*/
 public class CommandListener implements ActionListener {
@@ -54,7 +55,7 @@ public class CommandListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		
 		Object source=e.getSource();
-		int ID=0;
+		int ID;
 		if(source instanceof GUIButton)
 			ID=((GUIButton)source).getID();
 		else if(source instanceof SwingMenuItem)

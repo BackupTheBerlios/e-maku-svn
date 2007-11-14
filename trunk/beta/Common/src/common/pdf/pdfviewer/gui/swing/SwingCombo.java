@@ -36,13 +36,13 @@
  */
 package common.pdf.pdfviewer.gui.swing;
 
-import javax.swing.JComboBox;
+import javax.swing.*;
 
-import common.pdf.pdfviewer.gui.generic.GUICombo;
+import common.pdf.pdfviewer.gui.generic.*;
+
 
 public class SwingCombo extends JComboBox implements GUICombo{
 	
-	private static final long serialVersionUID = 7423353291901251301L;
 	private int ID;
 	
 	public SwingCombo(String[] qualityValues) {

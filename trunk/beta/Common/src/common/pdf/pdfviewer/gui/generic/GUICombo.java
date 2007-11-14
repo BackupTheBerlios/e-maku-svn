@@ -38,8 +38,7 @@
  */
 package common.pdf.pdfviewer.gui.generic;
 
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
 
 /**abstract version of ComboBox*/
 public interface GUICombo {

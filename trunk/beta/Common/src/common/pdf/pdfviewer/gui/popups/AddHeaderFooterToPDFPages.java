@@ -27,7 +27,7 @@
 
 *
 * ---------------
-* saveBitmap.java
+* AddHeaderFooterToPDFPages.java
 * ---------------
 * (C) Copyright 2005, by IDRsolutions and Contributors.
 *
@@ -43,7 +43,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+//<start-13>
 import javax.print.attribute.standard.PageRanges;
+//<end-13>
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
@@ -58,10 +60,12 @@ import javax.swing.JToggleButton;
 import javax.swing.SpinnerNumberModel;
 
 import org.jpedal.utils.LogWriter;
+import org.jpedal.utils.Messages;
 
 public class AddHeaderFooterToPDFPages extends Save
 {
-	private static final long serialVersionUID = 7423353291901251301L;
+
+	private static final long serialVersionUID = -8681143216306570454L;
 	
 	JLabel OutputLabel = new JLabel();
 	ButtonGroup buttonGroup1 = new ButtonGroup();
@@ -97,6 +101,10 @@ public class AddHeaderFooterToPDFPages extends Save
 	
 	JSpinner leftRightBox = new JSpinner(new SpinnerNumberModel(36.00, 1.00, 1000.00, 1));
 	JSpinner topBottomBox = new JSpinner(new SpinnerNumberModel(36.00, 1.00, 1000.00, 1));
+	
+	JTextArea tagsList = new JTextArea();
+	
+	
 	
 	public AddHeaderFooterToPDFPages( String root_dir, int end_page, int currentPage ) 
 	{
@@ -146,16 +154,18 @@ public class AddHeaderFooterToPDFPages extends Save
 				i = -1;
 				while ((i = pages.next(i)) != -1){
 					if(i > end_page){
-						JOptionPane.showMessageDialog(this,"Page "+i+" is out of bounds, " +
-								"pagecount = "+end_page);
+						JOptionPane.showMessageDialog(this,Messages.getMessage("PdfViewerText.Page")+
+                                ' ' +i+ ' ' +Messages.getMessage("PdfViewerError.OutOfBounds")+ ' ' +
+								Messages.getMessage("PdfViewerText.PageCount")+ ' ' +end_page);
 						return null;
 					}
 					pagesToExport[count]=i;
 					count++;
 				}
 			}catch (IllegalArgumentException  e) {
-				LogWriter.writeLog( "Exception " + e + " in exporting pdfs" );
-				JOptionPane.showMessageDialog(this,"Invalid syntax");
+				LogWriter.writeLog(Messages.getMessage("PdfViewerError.Exception")
+						+ ' ' + e + ' ' +Messages.getMessage("PdfViewerError.ExportPdfError"));
+				JOptionPane.showMessageDialog(this,Messages.getMessage("PdfViewerError.InvalidSyntax"));
 			}
 			//<end-13>
 		}
@@ -212,86 +222,100 @@ public class AddHeaderFooterToPDFPages extends Save
 	private void jbInit() throws Exception
 	{
 		
-		JLabel textAndFont = new JLabel("Text and Font");
+		JLabel textAndFont = new JLabel(Messages.getMessage("PdfViewerLabel.TextAndFont"));
 		textAndFont.setFont( new java.awt.Font( "Dialog", 1, 14 ) );
 		textAndFont.setDisplayedMnemonic( '0' );
 		textAndFont.setBounds( new Rectangle( 13, 13, 220, 26 ) );
 		
-		JLabel left = new JLabel("Left:");
-		left.setBounds( new Rectangle( 125, 40, 50, 23 ) );
+		JLabel left = new JLabel(Messages.getMessage("PdfViewerLabel.Left"));
+		left.setBounds( new Rectangle( 130, 40, 50, 23 ) );
 		
-		JLabel center = new JLabel("Center:");
-		center.setBounds( new Rectangle( 255, 40, 50, 23 ) );
+		JLabel center = new JLabel(Messages.getMessage("PdfViewerLabel.Center"));
+		center.setBounds( new Rectangle( 300, 40, 50, 23 ) );
 		
-		JLabel right = new JLabel("Right:");
-		right.setBounds( new Rectangle( 400, 40, 50, 23 ) );
+		JLabel right = new JLabel(Messages.getMessage("PdfViewerLabel.Right"));
+		right.setBounds( new Rectangle( 475, 40, 50, 23 ) );
 		
-		JLabel header = new JLabel("Header");
-		header.setBounds( new Rectangle( 20, 60, 50, 23 ) );
+		JLabel header = new JLabel(Messages.getMessage("PdfViewerLabel.Header"));
+		header.setBounds( new Rectangle( 20, 60, 90, 23 ) );
 		
-		JLabel footer = new JLabel("Footer");
+		JLabel footer = new JLabel(Messages.getMessage("PdfViewerLabel.Footer"));
 		footer.setBounds( new Rectangle( 20, 90, 50, 23 ) );
 		
-		leftHeaderBox.setBounds( new Rectangle(70, 60, 133, 23 ) );
-		centerHeaderBox.setBounds( new Rectangle(208, 60, 133, 23 ) );
-		rightHeaderBox.setBounds( new Rectangle(346, 60, 133, 23 ) );
+		leftHeaderBox.setBounds( new Rectangle(85, 60, 133, 23 ) );
+		centerHeaderBox.setBounds( new Rectangle(250, 60, 133, 23 ) );
+		rightHeaderBox.setBounds( new Rectangle(425, 60, 133, 23 ) );
 		
-		leftFooterBox.setBounds( new Rectangle(70, 90, 133, 23 ) );
-		centerFooterBox.setBounds( new Rectangle(208, 90, 133, 23 ) );
-		rightFooterBox.setBounds( new Rectangle(346, 90, 133, 23 ) );
+		leftFooterBox.setBounds( new Rectangle(85, 90, 133, 23 ) );
+		centerFooterBox.setBounds( new Rectangle(250, 90, 133, 23 ) );
+		rightFooterBox.setBounds( new Rectangle(425, 90, 133, 23 ) );
 
-		JLabel font = new JLabel("Font:");
-		font.setBounds( new Rectangle( 20, 120, 50, 23 ) );
+		JLabel font = new JLabel(Messages.getMessage("PdfViewerLabel.Font"));
+		font.setBounds( new Rectangle( 20, 120, 75, 23 ) );
 		
-		fontsList.setBounds( new Rectangle( 50, 120, 150, 23 ) );
+		fontsList.setBounds( new Rectangle( 85, 120, 150, 23 ) );
 		fontsList.setSelectedItem("Helvetica");
 		
-		JLabel size = new JLabel("Size:");
-		size.setBounds( new Rectangle( 215, 120, 50, 23 ) );
+		JLabel size = new JLabel(Messages.getMessage("PdfViewerLabel.Size"));
+		size.setBounds( new Rectangle( 250, 120, 50, 23 ) );
 		
-		fontSize.setBounds( new Rectangle( 245, 120, 50, 23 ) );
+		fontSize.setBounds( new Rectangle( 290, 120, 50, 23 ) );
 		
-		JLabel color = new JLabel("Color:");
-		color.setBounds( new Rectangle( 315, 120, 50, 23 ) );
+		JLabel color = new JLabel(Messages.getMessage("PdfViewerLabel.Color"));
+		color.setBounds( new Rectangle( 360, 120, 50, 23 ) );
 		
 		colorBox.setBackground(Color.black);
 		colorBox.setOpaque(true);
-		colorBox.setBounds( new Rectangle( 350, 120, 23, 23 ) );
+		colorBox.setBounds( new Rectangle( 410, 120, 23, 23 ) );
 		
-		JButton chooseColor = new JButton("Choose Color");
-		chooseColor.setBounds( new Rectangle( 380, 120, 100, 23 ) );
+		JButton chooseColor = new JButton(Messages.getMessage("PdfViewerButton.ChooseColor"));
+		chooseColor.setBounds( new Rectangle( 450, 120, 160, 23 ) );
 		chooseColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				colorBox.setBackground(JColorChooser.showDialog(null, "Color",colorBox.getBackground()));
 			}
 		});
 		
-		JLabel margins = new JLabel("Margins");
+        tagsList.setText("You may use the following\n" +
+        		"tags as part of the text.\n\n" +
+        		"<d> - Date in short format\n" +
+        		"<D> - Date in long format\n" +
+        		"<t> - Time in 12-hour format\n" +
+        		"<T> - Time in 24-hour format\n" +
+        		"<f> - Filename\n" +
+        		"<F> - Full path filename\n" +
+        		"<p> - Current page number\n" +
+        		"<P> - Total number of pages");
+        tagsList.setOpaque(false);
+        tagsList.setBounds(350, 160, 200, 210);
+
+		JLabel margins = new JLabel(Messages.getMessage("PdfViewerLabel.Margins"));
+
 		margins.setFont( new java.awt.Font( "Dialog", 1, 14 ) );
 		margins.setDisplayedMnemonic( '0' );
 		margins.setBounds( new Rectangle( 13, 150, 220, 26 ) );
 		
-		JLabel leftRight = new JLabel("Left & Right");
+		JLabel leftRight = new JLabel(Messages.getMessage("PdfViewerLabel.LeftAndRight"));
 		leftRight.setBounds( new Rectangle( 20, 185, 90, 23 ) );
 		
-		leftRightBox.setBounds( new Rectangle(85, 185, 70, 23 ) );
+		leftRightBox.setBounds( new Rectangle(100, 185, 70, 23 ) );
 		
-		JLabel topBottom = new JLabel("Top & Bottom");
-		topBottom.setBounds( new Rectangle( 180, 185, 90, 23 ) );
+		JLabel topBottom = new JLabel(Messages.getMessage("PdfViewerLabel.TopAndBottom"));
+		topBottom.setBounds( new Rectangle( 180, 185, 120, 23 ) );
 		
-		topBottomBox.setBounds( new Rectangle(255, 185, 70, 23 ) );
+		topBottomBox.setBounds( new Rectangle(300, 185, 70, 23 ) );
 		
-		pageRangeLabel.setText( "Page range" );
-		pageRangeLabel.setBounds( new Rectangle( 13, 220, 199, 26 ) );
+		pageRangeLabel.setText(Messages.getMessage("PdfViewerPageRange.text"));
+		pageRangeLabel.setBounds( new Rectangle( 13, 220, 400, 26 ) );
 		
-		printAll.setText("All");
+		printAll.setText(Messages.getMessage("PdfViewerRadioButton.All"));
 		printAll.setBounds( new Rectangle( 23, 250, 75, 22 ) );
 		
-		printCurrent.setText("Current Page");
+		printCurrent.setText(Messages.getMessage("PdfViewerRadioButton.CurrentPage"));
 		printCurrent.setBounds( new Rectangle( 23, 270, 100, 22 ) );
 		printCurrent.setSelected(true);
 		
-		printPages.setText("Pages:");
+		printPages.setText(Messages.getMessage("PdfViewerRadioButton.Pages"));
 		printPages.setBounds( new Rectangle( 23, 292, 70, 22 ) );
 		
 		pagesBox.setBounds( new Rectangle( 95, 292, 230, 22 ) );
@@ -299,7 +323,7 @@ public class AddHeaderFooterToPDFPages extends Save
 			public void keyPressed(KeyEvent arg0) {}
 
 			public void keyReleased(KeyEvent arg0) {
-				if(pagesBox.getText().equals(""))
+				if(pagesBox.getText().length() == 0)
 					printCurrent.setSelected(true);
 				else
 					printPages.setSelected(true);
@@ -309,9 +333,8 @@ public class AddHeaderFooterToPDFPages extends Save
 			public void keyTyped(KeyEvent arg0) {}
 		});
 
-		JTextArea pagesInfo=new JTextArea("Enter page number and/or page ranges\n" +
-				"seperated by commas.  For example, 1,3,5-12");
-		pagesInfo.setBounds(new Rectangle(23,315,300,40));
+		JTextArea pagesInfo=new JTextArea(Messages.getMessage("PdfViewerMessage.PageNumberOrRangeLong"));
+		pagesInfo.setBounds(new Rectangle(23,320,620,40));
 		pagesInfo.setOpaque(false);
 				
 		
@@ -352,6 +375,8 @@ public class AddHeaderFooterToPDFPages extends Save
 		this.add( changeButton, null );
 		this.add( pageRangeLabel, null );
 		
+		//this.add(tagsList, null);
+		
 		this.add( jToggleButton2, null );
 		this.add( jToggleButton3, null );
 		
@@ -362,7 +387,7 @@ public class AddHeaderFooterToPDFPages extends Save
 	
 	final public Dimension getPreferredSize()
 	{
-		return new Dimension( 490, 450 );
+		return new Dimension( 620, 350 );
 	}
 	
 }

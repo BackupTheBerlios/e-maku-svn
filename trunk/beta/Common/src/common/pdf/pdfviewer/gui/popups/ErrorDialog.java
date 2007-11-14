@@ -36,21 +36,13 @@
  */
 package common.pdf.pdfviewer.gui.popups;
 
-import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.*;
+
+import org.jpedal.utils.*;
 
 /**popup an error message to show user what message JPedal generated*/
 public class ErrorDialog {
@@ -86,7 +78,7 @@ public class ErrorDialog {
 		
 		c.gridy = 1;
 		c.ipady = 10;
-		final JLabel info=new JLabel("You copy the stacktrace to clipboard by selecting the text and pressing Ctrl+V");
+		final JLabel info=new JLabel(Messages.getMessage("PdfViewerError.CopyStacktrace"));
 		info.setVisible(false);
 		panel.add(info,c);
 		
@@ -94,18 +86,18 @@ public class ErrorDialog {
 		c.gridy = 2;
 		panel.add(scrollPane,c);
 		
-		JButton okButton=new JButton("Show Details");
+		JButton okButton=new JButton(Messages.getMessage("PdfViewerButton.ShowDetails"));
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JButton button = (JButton) arg0.getSource();
 				if(scrollPane.isVisible()){
 					scrollPane.setVisible(false);
 					info.setVisible(false);
-					button.setText("Show Details");
+					button.setText(Messages.getMessage("PdfViewerButton.ShowDetails"));
 				}else{
 					scrollPane.setVisible(true);
 					info.setVisible(true);
-					button.setText("Hide Details");
+					button.setText(Messages.getMessage("PdfViewerButton.HideDetails"));
 				}
 				
 				JDialog parentDialog = (JDialog) button.getTopLevelAncestor();
@@ -114,7 +106,7 @@ public class ErrorDialog {
 			}
 		});
 		
-		Object[] buttonRowObjects = new Object[] { okButton, "Exit" };
+		Object[] buttonRowObjects = new Object[] { okButton, Messages.getMessage("PdfViewerButton.Exit") };
 		
 		JOptionPane optionPane = new JOptionPane();
 		optionPane.setMessage(panel);
@@ -122,7 +114,7 @@ public class ErrorDialog {
 		optionPane.setOptionType(JOptionPane.DEFAULT_OPTION);
 		optionPane.setOptions(buttonRowObjects);
 		
-		JDialog dialog = optionPane.createDialog(parent, "An Exception Has Occured");
+		JDialog dialog = optionPane.createDialog(parent, Messages.getMessage("PdfViewerError.ExceptionHasOccured"));
 		dialog.pack();
 		dialog.setVisible(true); 
 	}

@@ -36,9 +36,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import javax.swing.BorderFactory;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 import org.jpedal.PdfDecoder;
 import org.jpedal.objects.PdfFileInformation;
@@ -267,7 +265,7 @@ public class Commands {
 				/** try and reopen with new password */
 				if (password != null) {
 					decode_pdf.setEncryptionPassword(password);
-					decode_pdf.verifyAccess();
+					//decode_pdf.verifyAccess();
 					
 					if (decode_pdf.isFileViewable())
 						fileCanBeOpened = true;
@@ -332,9 +330,9 @@ public class Commands {
 			else{
 				currentGUI.setViewerTitle("");
 				decode_pdf.clearScreen();
-				this.currentGUI.zoom();
 				commonValues.setPageCount(1);
 				commonValues.setCurrentPage(1);
+				currentGUI.zoom();
 			}
 		}catch(Exception e){
 			System.err.println("Exception " + e + " decoding file");

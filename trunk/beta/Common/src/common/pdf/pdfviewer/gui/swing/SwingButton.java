@@ -36,20 +36,17 @@
  */
 package common.pdf.pdfviewer.gui.swing;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.net.URL;
+import java.awt.*;
+import java.awt.image.*;
+import java.net.*;
 
-import javax.swing.AbstractButton;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.*;
 
-import common.pdf.pdfviewer.gui.generic.GUIButton;
+import common.pdf.pdfviewer.gui.generic.*;
+
 
 /**Swing specific implementation of GUIButton interface*/
 public class SwingButton extends JButton implements GUIButton{
-	
-	private static final long serialVersionUID = 7423353291901251301L;
 	
 	private int ID;
 	
@@ -68,7 +65,7 @@ public class SwingButton extends JButton implements GUIButton{
 		/**bookmarks icon*/
 		setToolTipText(toolTip);
 		
-		setBorderPainted(true);
+		setBorderPainted(false);
 		
 		URL url=getClass().getResource(path);
 		if(url!=null){
@@ -100,6 +97,10 @@ public class SwingButton extends JButton implements GUIButton{
 	public int getID() {
 		
 		return ID;
+	}
+	
+	public void setName(String s){
+		super.setName(s);
 	}
 	
 }

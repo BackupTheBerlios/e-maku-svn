@@ -30,7 +30,7 @@
 
 package common.pdf.pdfviewer;
 
-import org.jpedal.objects.PdfAnnots;
+import org.jpedal.objects.*;
 
 /**provides access to values used by multiple classes*/
 public class Values {

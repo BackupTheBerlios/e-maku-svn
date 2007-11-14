@@ -36,30 +36,17 @@
  */
 package common.pdf.pdfviewer.gui.popups;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 
-import common.pdf.pdfviewer.utils.FileFilterer;
-
-import org.jpedal.utils.LogWriter;
+import org.jpedal.examples.simpleviewer.utils.*;
+import org.jpedal.utils.*;
 
 /**allow user to select page range and values to save*/
 public class Save extends JComponent{
-	
-	private static final long serialVersionUID = 7423353291901251301L;
 	
 	protected JTextField startPage = new JTextField();
 	protected JTextField endPage = new JTextField();
@@ -90,15 +77,15 @@ public class Save extends JComponent{
 		this.end_page = end_page;
 		
 		scalingLabel.setFont( new java.awt.Font( "Dialog", 1, 14 ) );
-		scalingLabel.setText( "Scaling % to use (100 is full size)" );
+		scalingLabel.setText( Messages.getMessage("PdfViewerOption.Scaling")+ '\n');
 		scaling.setSelectedItem("100");
 		
 		rootFilesLabel.setFont( new java.awt.Font( "Dialog", 1, 14 ) );
 		rootFilesLabel.setDisplayedMnemonic( '0' );
-		rootFilesLabel.setText( "Root directory for output files" );
+		rootFilesLabel.setText( Messages.getMessage("PdfViewerOption.RootDir"));
 		rootDir.setText( root_dir );
 		
-		changeButton.setText( "Browse" );
+		changeButton.setText( Messages.getMessage("PdfViewerOption.Browse"));
 		changeButton.addActionListener( new ActionListener() {
 			public void actionPerformed( ActionEvent e ){
 				JFileChooser chooser = new JFileChooser(root_dir);
@@ -116,19 +103,19 @@ public class Save extends JComponent{
 			}
 		} );
 		
-		optionsForFilesLabel.setText( "Output options for files" );
+		optionsForFilesLabel.setText( Messages.getMessage("PdfViewerOption.Output" ));
 		optionsForFilesLabel.setFont( new java.awt.Font( "Dialog", 1, 14 ) );
 		optionsForFilesLabel.setDisplayedMnemonic( '0' );
 		
-		pageRangeLabel.setText( "Page range to extract" );
+		pageRangeLabel.setText( Messages.getMessage("PdfViewerOption.PageRange" ));
 		pageRangeLabel.setFont( new java.awt.Font( "Dialog", 1, 14 ) );
 		pageRangeLabel.setDisplayedMnemonic( '0' );
 		
-		startLabel.setText( "Start page" );
-		endLabel.setText( "End page" );
+		startLabel.setText( Messages.getMessage("PdfViewerOption.StartPage" ));
+		endLabel.setText( Messages.getMessage("PdfViewerOption.EndPage" ) );
 		
 		startPage.setText( "1" );
-		endPage.setText( "" + end_page );
+		endPage.setText(String.valueOf(end_page));
 		
 	}
 		
@@ -147,9 +134,9 @@ public class Save extends JComponent{
 		popupPanel.setLayout(new BorderLayout());
 		popupPanel.add(this, BorderLayout.CENTER);
 		popupPanel.setSize(400, 200);
-		Object[] options = { "OK", "Cancel" };
-		int n =
-			JOptionPane.showOptionDialog(
+		Object[] options = { Messages.getMessage("PdfMessage.Ok"), Messages.getMessage("PdfMessage.Cancel") };
+
+        return JOptionPane.showOptionDialog(
 					c,
 					popupPanel,title,
 					
@@ -158,8 +145,7 @@ public class Save extends JComponent{
 					null,
 					options,
 					options[0]);
-		
-		return n;
+
 	}
 	
 	/**
@@ -173,15 +159,16 @@ public class Save extends JComponent{
 			page = Integer.parseInt( startPage.getText() );
 		}catch( Exception e ){
 			LogWriter.writeLog( "Exception " + e + " in exporting" );
-			JOptionPane.showMessageDialog(this,"Invalid syntax");
+			JOptionPane.showMessageDialog(this,Messages.getMessage("PdfViewerError.InvalidSyntax"));
 		}
 		
 		if(page < 1)
-			JOptionPane.showMessageDialog(this,"Page cannot be less than 1");
+			JOptionPane.showMessageDialog(this,Messages.getMessage("PdfViewerError.NegativePageValue"));
 		
 		if(page > end_page){
-			JOptionPane.showMessageDialog(this,"Page "+page+" is out of bounds, " +
-					"pagecount = "+end_page);
+			JOptionPane.showMessageDialog(this,Messages.getMessage("PdfViewerText.Page")+ ' '
+                    +page+ ' ' +Messages.getMessage("PdfViewerError.OutOfBounds")+ ' ' +
+					Messages.getMessage("PdfViewerText.PageCount")+ ' ' +end_page);
 			
 			page = -1;
 		}
@@ -206,15 +193,16 @@ public class Save extends JComponent{
 			page = Integer.parseInt( endPage.getText() );
 		}catch( Exception e ){
 			LogWriter.writeLog( "Exception " + e + " in exporting" );
-			JOptionPane.showMessageDialog(this,"Invalid syntax");
+			JOptionPane.showMessageDialog(this,Messages.getMessage("PdfViewerError.InvalidSyntax"));
 		}
 		
 		if(page < 1)
-			JOptionPane.showMessageDialog(this,"Page cannot be less than 1");
+			JOptionPane.showMessageDialog(this,Messages.getMessage("PdfViewerError.NegativePageValue"));
 		
 		if(page > end_page){
-			JOptionPane.showMessageDialog(this,"Page "+page+" is out of bounds, " +
-					"pagecount = "+end_page);
+			JOptionPane.showMessageDialog(this,Messages.getMessage("PdfViewerText.Page")+ ' '
+                    +page+ ' ' +Messages.getMessage("PdfViewerError.OutOfBounds")+ ' ' +
+					Messages.getMessage("PdfViewerText.PageCount")+ ' ' +end_page);
 			
 			page = -1;
 		}

@@ -36,12 +36,10 @@
  */
 package common.pdf.pdfviewer.utils;
 
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
+import java.awt.*;
+import java.awt.image.*;
 
-import javax.swing.Icon;
+import javax.swing.*;
 
 /**
  *Used in GUI example code Scope:<b>(All)</b>

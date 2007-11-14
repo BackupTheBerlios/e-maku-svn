@@ -35,18 +35,15 @@
 * --------------------------
 */
 package common.pdf.pdfviewer.gui.popups;
-import java.awt.Rectangle;
+import java.awt.*;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JLabel;
-import javax.swing.JRadioButton;
-import javax.swing.JToggleButton;
+import javax.swing.*;
+
+import org.jpedal.utils.*;
 
 /**specific code for Bitmap save function*/ 
 public class SaveBitmap extends Save{
-	
-	private static final long serialVersionUID = 7423353291901251301L;
-	
+
 	JLabel OutputLabel = new JLabel();
 	ButtonGroup buttonGroup1 = new ButtonGroup();
 	JToggleButton jToggleButton3 = new JToggleButton();
@@ -86,40 +83,45 @@ public class SaveBitmap extends Save{
 		return prefix;
 	}
 	
+	final public Dimension getPreferredSize()
+	{
+		return new Dimension( 490, 280 );
+	}
+	
 	private void jbInit() throws Exception
 	{
 		
-		scalingLabel.setBounds( new Rectangle( 13, 12, 250, 19 ) );
+		scalingLabel.setBounds( new Rectangle( 13, 12, 400, 19 ) );
 		
-		scaling.setBounds( new Rectangle( 272, 12, 69, 23) );
+		scaling.setBounds( new Rectangle( 400, 12, 69, 23) );
 
-		rootFilesLabel.setBounds( new Rectangle( 13, 55, 220, 26 ) );
+		rootFilesLabel.setBounds( new Rectangle( 13, 55, 400, 26 ) );
 		
 		rootDir.setBounds( new Rectangle( 23, 82, 232, 23 ) );
 		
 		changeButton.setBounds( new Rectangle( 272, 82, 101, 23 ) );		
 		
-		OutputLabel.setText( "Output file type" );
-		OutputLabel.setBounds( new Rectangle( 23, 216, 164, 24 ) );
+		OutputLabel.setText(Messages.getMessage("PdfViewerMessage.OutputType"));
+		OutputLabel.setBounds( new Rectangle( 23, 216, 300, 24 ) );
 		isTiff.setText( "Tiff" );
-		isTiff.setBounds( new Rectangle( 143, 218, 69, 19 ) );
-		isJPEG.setBounds( new Rectangle( 222, 217, 67, 19 ) );
+		isTiff.setBounds( new Rectangle( 180, 218, 50, 19 ) );
+		isJPEG.setBounds( new Rectangle( 240, 217, 67, 19 ) );
 		isJPEG.setSelected( true );
 		isJPEG.setText( "JPEG" );
 		isPNG.setBounds( new Rectangle( 305, 217, 62, 19 ) );
 		isPNG.setText( "PNG" );
 		
-		optionsForFilesLabel.setBounds( new Rectangle( 13, 176, 199, 26 ) );
+		optionsForFilesLabel.setBounds( new Rectangle( 13, 176, 600, 26 ) );
 		
-		startPage.setBounds( new Rectangle( 103, 142, 75, 22 ) );
+		startPage.setBounds( new Rectangle( 125, 142, 75, 22 ) );
 		
-		pageRangeLabel.setBounds( new Rectangle( 13, 113, 199, 26 ) );
+		pageRangeLabel.setBounds( new Rectangle( 13, 113, 400, 26 ) );
 		
-		startLabel.setBounds( new Rectangle( 23, 142, 75, 22 ) );
+		startLabel.setBounds( new Rectangle( 23, 142, 100, 22 ) );
 
-		endLabel.setBounds( new Rectangle( 191, 142, 75, 22 ) );
+		endLabel.setBounds( new Rectangle( 220, 142, 75, 22 ) );
 
-		endPage.setBounds( new Rectangle( 275, 142, 75, 22 ) );
+		endPage.setBounds( new Rectangle( 285, 142, 75, 22 ) );
 
 		//common
 		this.add( startPage, null );

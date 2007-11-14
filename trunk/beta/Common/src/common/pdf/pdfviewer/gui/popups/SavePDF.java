@@ -32,24 +32,15 @@
  *
  */
 package common.pdf.pdfviewer.gui.popups;
-import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.*;
+import java.awt.event.*;
 
-import javax.print.attribute.standard.PageRanges;
-import javax.swing.ButtonGroup;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JRadioButton;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.JToggleButton;
+import javax.print.attribute.standard.*;
+import javax.swing.*;
 
-import org.jpedal.utils.LogWriter;
+import org.jpedal.utils.*;
 
 public class SavePDF extends Save{
-	
-	private static final long serialVersionUID = 7423353291901251301L;
 	
 	JLabel OutputLabel = new JLabel();
 	ButtonGroup buttonGroup1 = new ButtonGroup();
@@ -111,8 +102,9 @@ public class SavePDF extends Save{
 				i = -1;
 				while ((i = pages.next(i)) != -1){
 					if(i > end_page){
-						JOptionPane.showMessageDialog(this,"Page "+i+" is out of bounds, " +
-								"pagecount = "+end_page);
+						JOptionPane.showMessageDialog(this,Messages.getMessage("PdfViewerText.Page")+ ' '
+                                +i+ ' ' +Messages.getMessage("PdfViewerError.OutOfBounds")+ ' ' +
+								Messages.getMessage("PdfViewerText.PageCount")+ ' ' +end_page);
 						return null;
 					}
 					pagesToExport[count]=i;
@@ -120,7 +112,7 @@ public class SavePDF extends Save{
 				}
 			}catch (IllegalArgumentException  e) {
 				LogWriter.writeLog( "Exception " + e + " in exporting pdfs" );
-				JOptionPane.showMessageDialog(this,"Invalid syntax");
+				JOptionPane.showMessageDialog(this,Messages.getMessage("PdfViewerError.InvalidSyntax"));
 			}
 			//<end-13>
 		}
@@ -135,7 +127,7 @@ public class SavePDF extends Save{
 	
 	private void jbInit() throws Exception{
 		
-		rootFilesLabel.setBounds( new Rectangle( 13, 13, 220, 26 ) );
+		rootFilesLabel.setBounds( new Rectangle( 13, 13, 400, 26 ) );
 		
 		rootDir.setBounds( new Rectangle( 23, 40, 232, 23 ) );
 		
@@ -144,16 +136,16 @@ public class SavePDF extends Save{
 //		rootDir.setBounds( new Rectangle( 23, 39, 232, 23 ) );
 //		changeButton.setBounds( new Rectangle( 272, 39, 101, 23 ) );
 		
-		pageRangeLabel.setBounds( new Rectangle( 13, 71, 199, 26 ) );
+		pageRangeLabel.setBounds( new Rectangle( 13, 71, 300, 26 ) );
 		
-		printAll.setText("All");
+		printAll.setText(Messages.getMessage("PdfViewerRadioButton.All"));
 		printAll.setBounds( new Rectangle( 23, 100, 75, 22 ) );
 		
-		printCurrent.setText("Current Page");
+		printCurrent.setText(Messages.getMessage("PdfViewerRadioButton.CurrentPage"));
 		printCurrent.setBounds( new Rectangle( 23, 120, 120, 22 ) );
 		printCurrent.setSelected(true);
 		
-		printPages.setText("Pages:");
+		printPages.setText(Messages.getMessage("PdfViewerRadioButton.Pages"));
 		printPages.setBounds( new Rectangle( 23, 142, 70, 22 ) );
 		
 		pagesBox.setBounds( new Rectangle( 95, 142, 200, 22 ) );
@@ -161,7 +153,7 @@ public class SavePDF extends Save{
 			public void keyPressed(KeyEvent arg0) {}
 			
 			public void keyReleased(KeyEvent arg0) {
-				if(pagesBox.getText().equals(""))
+				if(pagesBox.getText().length() == 0)
 					printCurrent.setSelected(true);
 				else
 					printPages.setSelected(true);
@@ -171,19 +163,19 @@ public class SavePDF extends Save{
 			public void keyTyped(KeyEvent arg0) {}
 		});
 		
-		JTextArea pagesInfo=new JTextArea("Enter page number and/or page ranges\n" +
-		"seperated by commas.  For example, 1,3,5-12");
-		pagesInfo.setBounds(new Rectangle(23,165,300,40));
+		JTextArea pagesInfo=new JTextArea(Messages.getMessage("PdfViewerMessage.PageNumberOrRange")+ '\n' +
+				Messages.getMessage("PdfViewerMessage.PageRangeExample"));
+		pagesInfo.setBounds(new Rectangle(23,165,400,40));
 		pagesInfo.setOpaque(false);
 		
-		optionsForFilesLabel.setBounds( new Rectangle( 13, 220, 199, 26 ) );
+		optionsForFilesLabel.setBounds( new Rectangle( 13, 220, 400, 26 ) );
 		
-		exportMultiple.setText("Export pages into multiple PDF files");
-		exportMultiple.setBounds( new Rectangle( 23, 250, 260, 22 ) );
+		exportMultiple.setText(Messages.getMessage("PdfViewerTitle.ExportMultiplePDFPages"));
+		exportMultiple.setBounds( new Rectangle( 23, 250, 350, 22 ) );
 		exportMultiple.setSelected(true);
 		
-		exportSingle.setText("Export pages into a single PDF file");
-		exportSingle.setBounds( new Rectangle( 23, 270, 250, 22 ) );
+		exportSingle.setText(Messages.getMessage("PdfViewerTitle.ExportSinglePDFPages"));
+		exportSingle.setBounds( new Rectangle( 23, 270, 300, 22 ) );
 		
 		this.add( printAll, null );
 		this.add( printCurrent, null );

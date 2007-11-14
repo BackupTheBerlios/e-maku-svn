@@ -27,7 +27,7 @@
 
 *
 * ---------------
-* saveBitmap.java
+* InsertBlankPDFPage.java
 * ---------------
 * (C) Copyright 2005, by IDRsolutions and Contributors.
 *
@@ -35,23 +35,15 @@
 * --------------------------
 */
 package common.pdf.pdfviewer.gui.popups;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.*;
+import java.awt.event.*;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JRadioButton;
-import javax.swing.JToggleButton;
+import javax.swing.*;
 
-import org.jpedal.utils.LogWriter;
+import org.jpedal.utils.*;
 
 public class InsertBlankPDFPage extends Save
 {
-	private static final long serialVersionUID = 7423353291901251301L;
-	
 	JLabel OutputLabel = new JLabel();
 	ButtonGroup buttonGroup1 = new ButtonGroup();
 	//ButtonGroup buttonGroup2 = new ButtonGroup();
@@ -92,16 +84,18 @@ public class InsertBlankPDFPage extends Save
 			try{
 				page = Integer.parseInt( startPage.getText() );
 			}catch( Exception e ){
-				LogWriter.writeLog( "Exception " + e + " in exporting" );
-				JOptionPane.showMessageDialog(this,"Invalid syntax");
+				LogWriter.writeLog(Messages.getMessage("PdfViewerError.Exception")+ ' ' + e
+				+ ' ' +Messages.getMessage("PdfViewerError.ExportError"));
+				JOptionPane.showMessageDialog(this,Messages.getMessage("PdfViewerError.InvalidSyntax"));
 			}
 			
 			if(page < 1)
-				JOptionPane.showMessageDialog(this,"Page cannot be less than 1");
+				JOptionPane.showMessageDialog(this,Messages.getMessage("PdfViewerError.NegativePageValue"));
 			
 			if(page > end_page){
-				JOptionPane.showMessageDialog(this,"Page "+page+" is out of bounds, " +
-						"pagecount = "+end_page);
+				JOptionPane.showMessageDialog(this,Messages.getMessage("PdfViewerText.Page")+ ' ' +
+						page+ ' ' +Messages.getMessage("PdfViewerError.OutOfBounds")+ ' ' +
+						Messages.getMessage("PdfViewerText.PageCount")+ ' ' +end_page);
 				
 				page = -1;
 			}
@@ -115,23 +109,23 @@ public class InsertBlankPDFPage extends Save
 	private void jbInit() throws Exception
 	{
 		
-		pageRangeLabel.setText( "Location" );
+		pageRangeLabel.setText(Messages.getMessage("PdfViewerTitle.Location"));
 		pageRangeLabel.setBounds( new Rectangle( 13, 13, 199, 26 ) );
 		
-		addToEnd.setText("Add a blank page to the end of the document");
-		addToEnd.setBounds( new Rectangle( 23, 42, 300, 22 ) );
+		addToEnd.setText(Messages.getMessage("PdfViewerTitle.AddPageToEnd"));
+		addToEnd.setBounds( new Rectangle( 23, 42, 400, 22 ) );
 		addToEnd.setSelected(true);
 		
-		addBeforePage.setText("Insert before page");
-		addBeforePage.setBounds( new Rectangle( 23, 70, 130, 22 ) );
+		addBeforePage.setText(Messages.getMessage("PdfViewerTitle.InsertBeforePage"));
+		addBeforePage.setBounds( new Rectangle( 23, 70, 150, 22 ) );
 		
-		startPage.setBounds( new Rectangle( 165, 70, 75, 22 ) );
+		startPage.setBounds( new Rectangle( 175, 70, 75, 22 ) );
 		startPage.setText("");
 		startPage.addKeyListener(new KeyListener(){
 			public void keyPressed(KeyEvent arg0) {}
 
 			public void keyReleased(KeyEvent arg0) {
-				if(startPage.getText().equals(""))
+				if(startPage.getText().length() == 0)
 					addToEnd.setSelected(true);
 				else
 					addBeforePage.setSelected(true);

@@ -36,7 +36,33 @@
  */
 package common.pdf.pdfviewer.gui.generic;
 
-/**abstract level of search window*/
+import java.awt.Component;
+import java.util.Map;
+
+import org.jpedal.examples.simpleviewer.gui.swing.SearchList;
+
+/** abstract level of search window */
 public interface GUISearchWindow {
+
+	// Varible added to allow multiple search style to be implemented
+	int style = 0;
+
+	void find();
+
+	void grabFocusInInput();
+
+	boolean isSearchVisible();
+
+	void removeSearchWindow(boolean justHide);
+
+	SearchList getResults();
+
+	Map getTextRectangles();
+
+	Component getContentPanel();
+
+	int getStyle();
+
+	void setStyle(int i);
 
 }

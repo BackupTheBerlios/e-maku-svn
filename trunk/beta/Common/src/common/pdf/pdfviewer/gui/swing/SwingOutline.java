@@ -36,37 +36,26 @@
  */
 package common.pdf.pdfviewer.gui.swing;
 
-import java.awt.Point;
-import java.util.HashMap;
-import java.util.Map;
-//import java.util.StringTokenizer;
+import java.awt.*;
+import java.util.*;
 
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeSelectionModel;
+import javax.swing.*;
+import javax.swing.tree.*;
 
-import common.pdf.pdfviewer.gui.generic.GUIOutline;
-
-//import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-//import org.w3c.dom.NodeList;
+import org.jpedal.examples.simpleviewer.gui.generic.*;
+import org.w3c.dom.*;
 
 /**holds tree outline displayed in nav bar*/
 public class SwingOutline extends JScrollPane implements GUIOutline{
 	
-	private static final long serialVersionUID = 7423353291901251301L;
 	/**flag to stop page setting causing a spurious refresh*/
 	private boolean ignoreAlteredBookmark=false;
 	
 	/**used by tree to convert page title into page number*/
-	//private HashMap pageLookupTable=new HashMap();	
-	private Map<String, String> pageLookupTable = new HashMap<String, String>();
-
+	private HashMap pageLookupTable=new HashMap();
 	
 	/**used by tree to find point to scroll to*/
-	//private Map pointLookupTable=new HashMap();
-	private Map<String,Point> pointLookupTable = new HashMap<String, Point>();
+	private Map pointLookupTable=new HashMap();
 	
 	private DefaultMutableTreeNode top =new DefaultMutableTreeNode("Root"); //$NON-NLS-1$
 	
@@ -76,21 +65,30 @@ public class SwingOutline extends JScrollPane implements GUIOutline{
 	//private String[] defaultRefsForPage;
 	
 	//private TreeNode[] defaultPageLookup;
-	
-	
-	public SwingOutline(Node rootNode) {
-		
-		/**
+
+    public SwingOutline() {
+        this.getViewport().add(new JLabel("No outline"));
+    }
+
+    public void reset(Node rootNode) {
+
+        top.removeAllChildren();
+        if(tree!=null)
+        getViewport().remove(tree);
+
+        /**
 		 * default settings for bookmarks for each page
 		 */
 		//defaultRefsForPage=decode_pdf.getOutlineDefaultReferences();
 		//this.defaultPageLookup=new TreeNode[this.pageCount];
-		
-		//readChildNodes(rootNode,top);
+
+        if(rootNode!=null)
+        readChildNodes(rootNode,top);
 		
 		tree=new JTree(top);
-		
-		expandAll();
+
+        if(rootNode!=null)
+        expandAll();
 		
 		tree.setRootVisible(false);
 		
@@ -98,19 +96,18 @@ public class SwingOutline extends JScrollPane implements GUIOutline{
 		
 		//create display for bookmarks
 		getViewport().add(tree);
-		
+
 		setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		
-		
-	}
+
+    }
 	
 	/**
 	 * Walk through any given node of a JTree.
 	 *
 	 * @param model TreeModel
 	 * @param o Object
-	 *
+	 */
 	private void walk(TreeModel model, Object o,int currentPage){
 		
 		int cc;
@@ -154,13 +151,13 @@ public class SwingOutline extends JScrollPane implements GUIOutline{
 			}
 		}
 	}
-	*/
+	
 	/**
 	 * Method to traverse all nodes of the Bookmarks JTree.  This is used when
 	 * invoking the 'open to page' functionality, because we need to
 	 * highlight the bookmark that we are opening to, if there is one.
 	 *
-	 *
+	 */
 	private void traverse(int currentPage) {
 		
 		//if(tree instanceof JTree) {
@@ -171,11 +168,11 @@ public class SwingOutline extends JScrollPane implements GUIOutline{
 			walk(model, model.getRoot(),currentPage);
 		
 		//}
-	} */
+	}
 	
 	/**
 	 * Walk through any given node of a JTree.
-	 *
+	 */
 	private void createLookupTable(TreeModel model, Object o,int currentPage){
 		
 		int cc;
@@ -213,7 +210,7 @@ public class SwingOutline extends JScrollPane implements GUIOutline{
 			}
 		}
 	}
-	*/
+	
 	/**
 	 * Expand all nodes found from the XML outlines for the PDF.
 	 */
@@ -231,7 +228,7 @@ public class SwingOutline extends JScrollPane implements GUIOutline{
 	 *
 	 * @param rootNode Node
 	 * @param topNode DefaultMutableTreeNode
-	 *
+	 */
 	public void readChildNodes(Node rootNode,DefaultMutableTreeNode topNode) {
 		
 		if(topNode==null)
@@ -251,10 +248,10 @@ public class SwingOutline extends JScrollPane implements GUIOutline{
 			String rawDest=currentElement.getAttribute("Dest"); 
 			//String ref=currentElement.getAttribute("objectRef");
 			
-			/**create the lookup table
-			//pageLookupTable.put(title,page);
+			/**create the lookup table*/
+			pageLookupTable.put(title,page);
 			
-			/**create the point lookup table
+			/**create the point lookup table*/
 			if((rawDest!=null)&&(rawDest.indexOf("/XYZ")!=-1)){
 				
 				rawDest=rawDest.substring(rawDest.indexOf("/XYZ")+4); 
@@ -270,19 +267,19 @@ public class SwingOutline extends JScrollPane implements GUIOutline{
 				if(y.equals("null")) 
 					y="0"; 
 				
-				//pointLookupTable.put(title,new Point((int) Float.parseFloat(x),(int) Float.parseFloat(y)));
+				pointLookupTable.put(title,new Point((int) Float.parseFloat(x),(int) Float.parseFloat(y)));
 			}
 			
 			DefaultMutableTreeNode childNode =new DefaultMutableTreeNode(title);
 			
-		/**add the nodes or initialise to top level	
+			/**add the nodes or initialise to top level*/	
 			topNode.add(childNode);
 			
 			if(child.hasChildNodes())
 				readChildNodes(child,childNode);
 			
 		}
-	} */
+	}
 	
 	/**
 	 * @return the ignoreAlteredBookmark

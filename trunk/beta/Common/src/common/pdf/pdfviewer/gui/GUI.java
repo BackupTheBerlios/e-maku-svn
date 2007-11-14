@@ -39,41 +39,81 @@
  */
 package common.pdf.pdfviewer.gui;
 
+import java.awt.*;
+import java.awt.image.*;
+import java.util.*;
 
-import java.awt.Rectangle;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import org.jpedal.*;
+import org.jpedal.objects.*;
 
-import common.pdf.pdfviewer.Values;
-import common.pdf.pdfviewer.gui.generic.GUIButton;
-import common.pdf.pdfviewer.gui.generic.GUICombo;
-import common.pdf.pdfviewer.gui.generic.GUIOutline;
-
-import org.jpedal.PdfDecoder;
+import common.pdf.pdfviewer.*;
+import common.pdf.pdfviewer.gui.generic.*;
+import common.pdf.pdfviewer.gui.swing.*;
 
 /**any shared GUI code - generic and AWT*/
 public class GUI {
 	
 	/**nav buttons - global so accessible to ContentExtractor*/
-	public GUIButton first,fback,back,forward,fforward,end;
+	public common.pdf.pdfviewer.gui.generic.GUIButton first,fback,back,forward,fforward,end;
+	
+	public GUIButton singleButton,continuousButton,continuousFacingButton,facingButton;
+	
+	/**list for types - assumes present in org/jpedal/examples/simpleviewer/annots*
+	 * "OTHER" MUST BE FIRST ITEM
+	 * Try adding Link to the list to see links
+	 */
+	private final String[] annotTypes={"Other","Text","FileAttachment"};
+
+	private final Color[] annotColors={Color.RED,Color.BLUE,Color.BLUE};
+	
+	public void setPreferences(int dpi, int search, int border, boolean scroll, int pageMode){
+		
+		//Set border config value and repaint
+		PdfDecoder.CURRENT_BORDER_STYLE = border;
+		//properties.setValue("borderType", String.valueOf(border));
+		
+		//Set autoScroll default and add to properties file
+		allowScrolling = scroll;
+		//properties.setValue("autoScroll", String.valueOf(scroll));
+		
+		//Dpi is taken into effect when zoom is called
+		this.dpi = dpi;
+		//properties.setValue("DPI", String.valueOf(dpi));
+		
+		//Default Page Layout
+		pageLayout = pageMode;
+		//properties.setValue("pageMode", String.valueOf(pageMode));
+		
+		decode_pdf.repaint();
+		
+		//Set the search window
+		/*if(!properties.getValue("searchWindowType").equals(String.valueOf(search)))
+			JOptionPane.showMessageDialog(null, Messages.getMessage("PageLayoutViewMenu.ResetSearch"));
+		
+		properties.setValue("searchWindowType", String.valueOf(search));*/
+		
+	}
+	
+	private int dpi = 96;
+
+	public float convertToCorrectedScaling(float rawScaling) {
+
+		//Allow for dpi value in scaling
+		return rawScaling * (dpi/72);
+	}
 	
 	/**handle for internal use*/
 	protected PdfDecoder decode_pdf;
 	
 	/** location for divider with thumbnails turned on */
-	protected final int thumbLocation=200;
+	protected static final int thumbLocation=200;
 	
 	/** minimum screen width to ensure menu buttons are visible */
-	protected final int minimumScreenWidth=700;
+	protected static final int minimumScreenWidth=700;
 	
-	//<start-forms>
 	/**track pages decoded once already*/
-	//protected HashMap pagesDecoded=new HashMap();
-	protected Map<Integer, String> pagesDecoded = Collections.synchronizedMap(new HashMap<Integer, String>());
+	protected HashMap pagesDecoded=new HashMap();
 
-	//<end-forms>
-	
 	/**allows user to toggle on/off text/image snapshot*/
 	protected  GUIButton snapshotButton;
 	
@@ -100,10 +140,13 @@ public class GUI {
 	protected boolean hasOutlinesDrawn=false;
 	
 	/**XML structure of bookmarks*/
-	protected GUIOutline tree=null;
+	//protected GUIOutline tree=new SwingOutline();
 	
 	/**stops autoscrolling at screen edge*/
 	private boolean allowScrolling=true;
+	
+	/**Set default page Layout*/
+	private int pageLayout = Commands.FORWARDPAGE;
 	
 	/** location for the divider when bookmarks are displayed */
 	protected int divLocation=170;
@@ -118,7 +161,7 @@ public class GUI {
 	protected float scaling = 1;
 	
 	/** padding so that the pdf is not right at the edge */
-	protected final int inset=25;
+	protected static final int inset=25;
 	
 	/**store page rotation*/
 	protected int rotation=0;
@@ -128,62 +171,181 @@ public class GUI {
 	
 	/**scaling factors on the page*/
 	protected GUICombo rotationBox;
-	
-	/**list of image quality values so user can choose */
-	protected final String[] qualityValues={"Memory","Quality"};
-	
-	/**allows user to set quality of images*/
-	protected GUICombo qualityBox;
+
 	
 	/**scaling factors on the page*/
-	protected GUICombo scalingBox;
+	protected common.pdf.pdfviewer.gui.generic.GUICombo scalingBox;
 	
 	/**default scaling on the combobox scalingValues*/
-	protected final int defaultSelection=0;
-	
-	/**allows user to toggle on/off bookmarks*/
-	protected GUIButton bookmarksButton;
-	
+	protected static final int defaultSelection=0;
+
 	/**title message on top if you want to over-ride JPedal default*/
 	protected String titleMessage=null;
 	
 	protected Values commonValues;
 	
+	//protected GUIThumbnailPanel thumbnails;
+	
+	//protected PropertiesFile properties;
+	
+	/* (non-Javadoc)
+	 * @see org.jpedal.examples.simpleviewer.gui.swing.GUIFactory#allowScrolling()
+	 */
 	public boolean allowScrolling() {
 		return allowScrolling;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.jpedal.examples.simpleviewer.gui.swing.GUIFactory#getAnnotTypes()
+	 */
+	public String[] getAnnotTypes() {
+		
+		return this.annotTypes;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.jpedal.examples.simpleviewer.gui.swing.GUIFactory#setNoPagesDecoded()
+	 */
 	public void setNoPagesDecoded() {
 		pagesDecoded.clear();
+		
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.jpedal.examples.simpleviewer.gui.swing.GUIFactory#setScalingToDefault()
+	 */
 	public void setScalingToDefault(){
-		scaling = (float) 1.0;
-		scalingBox.setSelectedIndex(2); 
+		if(PdfDecoder.isRunningOnWindows){
+			/** Adobe have different scaling factors for Adobe Reader 7/8 in windows but not in OS X */
+			//scaling ==1.0f; //Actual Scaling of File
+			//scaling = 1.335f; //Scaling factor in Adobe Reader 7
+			scaling = 1.53f; //Scaling factor in Adobe Reader 8
+		}else
+			scaling = 1.0f;
+		scalingBox.setSelectedIndex(defaultSelection); 
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.jpedal.examples.simpleviewer.gui.swing.GUIFactory#setRectangle(java.awt.Rectangle)
+	 */
 	public void setRectangle(Rectangle newRect) {
 		currentRectangle=newRect;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.jpedal.examples.simpleviewer.gui.swing.GUIFactory#getRectangle()
+	 */
 	public Rectangle getRectangle() {
 		return currentRectangle;
 	}
 	
-	public void toogleAutoScrolling() {
+	/* (non-Javadoc)
+	 * @see org.jpedal.examples.simpleviewer.gui.swing.GUIFactory#setAutoScrolling(boolean allowScrolling)
+	 */
+	public void setAutoScrolling(boolean allowScrolling) {
+		this.allowScrolling=allowScrolling;
+		
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.jpedal.examples.simpleviewer.gui.swing.GUIFactory#toogleAutoScrolling()
+	 */
+	public void  toogleAutoScrolling(){
 		allowScrolling=!allowScrolling;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.jpedal.examples.simpleviewer.gui.swing.GUIFactory#getRotation()
+	 */
 	public int getRotation() {
 		return rotation;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.jpedal.examples.simpleviewer.gui.swing.GUIFactory#getScaling()
+	 */
 	public float getScaling() {
 		return scaling;
 	}
 	
+	public void setScaling(float s){
+		scaling = s;
+		scalingBox.setSelectedIndex((int)scaling);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.jpedal.examples.simpleviewer.gui.swing.GUIFactory#getPDFDisplayInset()
+	 */
 	public int getPDFDisplayInset() {
 		return inset;
 	}
 
+	/**
+	 * example code which sets up an individual icon for each annotation to display - only use
+	 * if you require each annotation to have its own icon<p>
+	 * To use this you ideally need to parse the annotations first -there is a method allowing you to
+	 * extract just the annotations from the data.
+	 */
+	public void createUniqueAnnotationIcons() {
+
+		int p=commonValues.getCurrentPage();
+
+		PdfAnnots annotsData=decode_pdf.getPdfAnnotsData(null);
+
+		final int size=16; //pixel size
+
+		if(annotsData!=null){
+
+			//actual size
+			int max=annotsData.getAnnotCount();
+
+			for(int j=0;j<annotTypes.length;j++){ //build a set of icons for each fileType you wish to supportby including in AnnotTypes
+
+				//if(!annotsData.getAnnotSubType(j).equals("add type here")) //just 1 type please
+				//next;
+
+				//number icons needed
+				int iconsForPage=0;
+
+				//code to count number for selected type - just use max for all icons
+				for (int i = 0; i < max; i++) {
+
+					if(annotsData.getAnnotSubType(i).equals(annotTypes[j])) //count number of icons
+						iconsForPage++;
+
+				}
+
+				//initialise to required size
+				Image[] annotIcons = new Image[iconsForPage];
+
+
+				//and create icons
+				for (int i = 0; i < iconsForPage; i++) {
+
+					//create a unique graphic
+					annotIcons[i] = new BufferedImage(size, size,BufferedImage.TYPE_INT_ARGB);
+					Graphics2D g2 = (Graphics2D) annotIcons[i].getGraphics();
+					g2.setColor(annotColors[j]);
+					g2.fill(new Rectangle(0, 0, size, size));
+					g2.setColor(Color.BLACK);
+					g2.draw(new Rectangle(0, 0, size-1, size-1));
+					g2.setColor(Color.white);
+					g2.drawString(((i+1) + " "),2, 12);
+
+				}
+
+				//add set of icons to display
+				if(iconsForPage>0)
+				decode_pdf.addUserIconsForAnnotations(p,annotTypes[j],annotIcons);
+			}
+		}
+	}
+
+	public int getDpi() {
+		return dpi;
+	}
+
+	public void setDpi(int dpi) {
+		this.dpi = dpi;
+	}
 }

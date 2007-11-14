@@ -30,64 +30,23 @@
  
 package common.pdf.pdfviewer.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.HierarchyBoundsAdapter;
-import java.awt.event.HierarchyEvent;
+import java.awt.*;
+import java.awt.event.*;
 
-import javax.swing.AbstractButton;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
-import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 
-import org.jpedal.PdfDecoder;
-import org.jpedal.exception.PdfException;
-//import org.jpedal.io.StatusBar;
-import org.jpedal.objects.PdfPageData;
-import org.w3c.dom.Node;
+import org.jpedal.*;
+import org.jpedal.exception.*;
+import org.jpedal.objects.*;
+import org.jpedal.objects.acroforms.rendering.*;
 
-import common.misc.language.Language;
-import common.pdf.pdfviewer.Commands;
-import common.pdf.pdfviewer.Values;
-import common.pdf.pdfviewer.gui.generic.GUIButton;
-import common.pdf.pdfviewer.gui.generic.GUICombo;
-import common.pdf.pdfviewer.gui.swing.CommandListener;
-import common.pdf.pdfviewer.gui.swing.FrameCloser;
-import common.pdf.pdfviewer.gui.swing.SwingButton;
-import common.pdf.pdfviewer.gui.swing.SwingCombo;
-import common.pdf.pdfviewer.gui.swing.SwingMenuItem;
-import common.pdf.pdfviewer.gui.swing.SwingOutline;
-import common.pdf.pdfviewer.utils.Printer;
+import common.misc.language.*;
+import common.pdf.pdfviewer.*;
+import common.pdf.pdfviewer.gui.generic.*;
+import common.pdf.pdfviewer.gui.popups.*;
+import common.pdf.pdfviewer.gui.swing.*;
+import common.pdf.pdfviewer.utils.*;
 import common.pdf.pdfviewer.utils.SwingWorker;
-import common.pdf.pdfviewer.gui.popups.ProgressBarDialog;
 
 /**
  * Scope:<b>(All)</b>
@@ -266,11 +225,10 @@ public class SwingGUI extends GUI implements GUIFactory {
 				public void ancestorResized(HierarchyEvent e) {
 					zoom();
 				}
-			
 			});
+			
 			frame.setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
 			frame.addInternalFrameListener(new FrameCloser(currentCommands, this,decode_pdf,currentPrinter,commonValues));
-			
 		}
 	}
 	
@@ -429,7 +387,7 @@ public class SwingGUI extends GUI implements GUIFactory {
 	
 	public void zoom() {
 		
-		if(decode_pdf!=null){
+		if(decode_pdf!=null) {
 			
 			/** update value and GUI */
 			int index=getSelectedComboIndex(Commands.SCALING);
@@ -529,18 +487,11 @@ public class SwingGUI extends GUI implements GUIFactory {
 				scaling=1;
 				setSelectedComboItem(Commands.SCALING,"100");
 			}
-					
-			
-			if(decode_pdf!=null) //allow for clicking on it before page opened
-				decode_pdf.setPageParameters(scaling, commonValues.getCurrentPage(),rotation);
-			
+			decode_pdf.setPageParameters(scaling, commonValues.getCurrentPage());
 			decode_pdf.invalidate();
 			//decode_pdf.repaint();
 			repaintScreen();
-			
 		}
-		
-		
 	}
 
 	public void decodePage(final boolean resizePanel){		
@@ -638,10 +589,9 @@ public class SwingGUI extends GUI implements GUIFactory {
 						
 					}
 					//tell user about embedded fonts in Open Source version 
-					if((decode_pdf.hasEmbeddedFonts())&&(!decode_pdf.supportsEmbeddedFonts())){
-						showMessageDialog("Page contains embedded fonts which may not display correctly using Font substitution."); 
-						
-					}
+					//if((decode_pdf.hasEmbeddedFonts())&&(!decode_pdf.supportsEmbeddedFonts())) {
+						//showMessageDialog("Page contains embedded fonts which may not display correctly using Font substitution."); 
+					//}
 					
 					//make sure fully drawn
 					decode_pdf.repaint();
@@ -687,7 +637,7 @@ public class SwingGUI extends GUI implements GUIFactory {
 		
 		//get the form renderer which also contains the processed form data.
 		//if you want simple form data, also look at the ExtractFormData.java example
-		org.jpedal.objects.acroforms.AcroRenderer formRenderer=decode_pdf.getCurrentFormRenderer();
+		AcroRenderer formRenderer=decode_pdf.getCurrentFormRenderer();
 		
 		if(formRenderer==null)
 			return;
@@ -754,8 +704,8 @@ public class SwingGUI extends GUI implements GUIFactory {
 			
 			//get actual component - do not display it separately -
 			//at the moment this will not work on group objects (ie radio buttons and checkboxes)
-			Component[] comp=formRenderer.getComponentsByName(formName);
-			
+			//Component[] comp=formRenderer.getComponentsByName(formName);
+			Component[] comp=null;
 			/**
 			 * add listeners on first decode - not needed if we revisit page
 			 * 
@@ -1005,10 +955,6 @@ public class SwingGUI extends GUI implements GUIFactory {
 		JOptionPane.showConfirmDialog(frame,label,message,option,plain_message);
 	}
 	
-	public String initPDFOutlines(Node rootNode, String bookmark) {
-		tree=new SwingOutline(rootNode);
-		return tree.getPage(bookmark);
-	}
 	
 	public void updateStatusMessage(String message) {
 	}

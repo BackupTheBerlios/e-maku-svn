@@ -27,7 +27,7 @@
 
 *
 * ---------------
-* saveBitmap.java
+* CropPDFPages.java
 * ---------------
 * (C) Copyright 2005, by IDRsolutions and Contributors.
 *
@@ -35,6 +35,7 @@
 * --------------------------
 */
 package common.pdf.pdfviewer.gui.popups;
+
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -42,10 +43,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+//<start-13>
 import javax.print.attribute.standard.PageRanges;
+//<end-13>
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
@@ -56,11 +60,11 @@ import javax.swing.JToggleButton;
 import javax.swing.SpinnerNumberModel;
 
 import org.jpedal.utils.LogWriter;
+import org.jpedal.utils.Messages;
 
 public class CropPDFPages extends Save
 {
-	private static final long serialVersionUID = 7423353291901251301L;
-	
+
 	JLabel OutputLabel = new JLabel();
 	ButtonGroup buttonGroup1 = new ButtonGroup();
 	ButtonGroup buttonGroup2 = new ButtonGroup();
@@ -130,8 +134,9 @@ public class CropPDFPages extends Save
 				i = -1;
 				while ((i = pages.next(i)) != -1){
 					if(i > end_page){
-						JOptionPane.showMessageDialog(this,"Page "+i+" is out of bounds, " +
-								"pagecount = "+end_page);
+						JOptionPane.showMessageDialog(this,Messages.getMessage("PdfViewerText.Page")+
+                                ' ' +i+ ' ' +Messages.getMessage("PdfViewerError.OutOfBounds")+ ' ' +
+								Messages.getMessage("PdfViewerText.PageCount")+ ' ' +end_page);
 						return null;
 					}
 					pagesToExport[count]=i;
@@ -139,7 +144,7 @@ public class CropPDFPages extends Save
 				}
 			}catch (IllegalArgumentException  e) {
 				LogWriter.writeLog( "Exception " + e + " in exporting pdfs" );
-				JOptionPane.showMessageDialog(this,"Invalid syntax");
+				JOptionPane.showMessageDialog(this,Messages.getMessage("PdfViewerError.InvalidSyntax"));
 			}
 			//<end-13>
 		}
@@ -164,37 +169,37 @@ public class CropPDFPages extends Save
 	private void jbInit() throws Exception
 	{
 		
-		JLabel textAndFont = new JLabel("Crop Margins");
+		JLabel textAndFont = new JLabel(Messages.getMessage("PdfViewerLabel.CropMargins"));
 		textAndFont.setFont( new java.awt.Font( "Dialog", 1, 14 ) );
 		textAndFont.setDisplayedMnemonic( '0' );
 		textAndFont.setBounds( new Rectangle( 13, 13, 220, 26 ) );
 		
-        JLabel jLabel1 = new JLabel("Top:");
-        jLabel1.setBounds(125, 50, 34, 15);
+        JLabel jLabel1 = new JLabel(Messages.getMessage("PdfViewerLabel.Top"));
+        jLabel1.setBounds(140, 50, 70, 15);
 
-        topMargin.setBounds(155, 45, 60, 23);
+        topMargin.setBounds(200, 45, 60, 23);
 
-        JLabel jLabel5 = new javax.swing.JLabel("Left:");
-        jLabel5.setBounds(25, 100, 34, 15);
+        JLabel jLabel5 = new javax.swing.JLabel(Messages.getMessage("PdfViewerLabel.Left"));
+        jLabel5.setBounds(25, 100, 50, 15);
 
-        leftMargin.setBounds(55, 95, 60, 23);
+        leftMargin.setBounds(70, 95, 60, 23);
         
-        JLabel jLabel6 = new javax.swing.JLabel("Right:");
-        jLabel6.setBounds(215, 100, 34, 15);
+        JLabel jLabel6 = new javax.swing.JLabel(Messages.getMessage("PdfViewerLabel.Right"));
+        jLabel6.setBounds(295, 100, 70, 15);
 
-        rightMargin.setBounds(250, 95, 60, 23);
+        rightMargin.setBounds(340, 95, 60, 23);
 
-        JLabel jLabel7 = new javax.swing.JLabel("Bottom:");
-        jLabel7.setBounds(105, 150, 40, 15);
+        JLabel jLabel7 = new javax.swing.JLabel(Messages.getMessage("PdfViewerLabel.Bottom"));
+        jLabel7.setBounds(140, 150, 110, 15);
         
-        bottomMargin.setBounds(155, 145, 60, 23);
+        bottomMargin.setBounds(200, 145, 60, 23);
 
         applyToCurrent.setSelected(true);
-        applyToCurrent.setText("Apply to the prior cropping rectangle");
-        applyToCurrent.setBounds(25, 190, 210, 15);
+        applyToCurrent.setText(Messages.getMessage("PdfViewerCheckBox.ApplyToPriorCroppingRectangle"));
+        applyToCurrent.setBounds(5, 190, 305, 15);
 
-        JButton jButton1 = new javax.swing.JButton("Set to zero");
-        jButton1.setBounds(255, 190, 90, 23);
+        JButton jButton1 = new javax.swing.JButton(Messages.getMessage("PdfViewerButton.Set2Zero"));
+        jButton1.setBounds(310, 185, 130, 23);
 		jButton1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				leftMargin.setValue(new Integer(0));
@@ -204,17 +209,17 @@ public class CropPDFPages extends Save
 			}
 		});
 		
-		pageRangeLabel.setText( "Page range" );
+		pageRangeLabel.setText(Messages.getMessage("PdfViewerPageRange.text"));
 		pageRangeLabel.setBounds( new Rectangle( 13, 220, 199, 26 ) );
 		
-		printAll.setText("All");
+		printAll.setText(Messages.getMessage("PdfViewerRadioButton.All"));
 		printAll.setBounds( new Rectangle( 23, 250, 75, 22 ) );
 		
-		printCurrent.setText("Current Page");
+		printCurrent.setText(Messages.getMessage("PdfViewerRadioButton.CurrentPage"));
 		printCurrent.setBounds( new Rectangle( 23, 270, 100, 22 ) );
 		printCurrent.setSelected(true);
 		
-		printPages.setText("Pages:");
+		printPages.setText(Messages.getMessage("PdfViewerRadioButton.Pages"));
 		printPages.setBounds( new Rectangle( 23, 292, 70, 22 ) );
 		
 		pagesBox.setBounds( new Rectangle( 95, 292, 230, 22 ) );
@@ -222,7 +227,7 @@ public class CropPDFPages extends Save
 			public void keyPressed(KeyEvent arg0) {}
 
 			public void keyReleased(KeyEvent arg0) {
-				if(pagesBox.getText().equals(""))
+				if(pagesBox.getText().length() == 0)
 					printCurrent.setSelected(true);
 				else
 					printPages.setSelected(true);
@@ -232,9 +237,9 @@ public class CropPDFPages extends Save
 			public void keyTyped(KeyEvent arg0) {}
 		});
 
-		JTextArea pagesInfo=new JTextArea("Enter page number and/or page ranges\n" +
-				"seperated by commas.  For example, 1,3,5-12");
-		pagesInfo.setBounds(new Rectangle(23,315,300,40));
+		JTextArea pagesInfo=new JTextArea(Messages.getMessage("PdfViewerMessage.PageNumberOrRange")+ '\n' +
+				Messages.getMessage("PdfViewerMessage.PageRangeExample"));
+		pagesInfo.setBounds(new Rectangle(23,325,400,40));
 		pagesInfo.setOpaque(false);
 				
 		this.add(jLabel1);
@@ -272,7 +277,7 @@ public class CropPDFPages extends Save
 	
 	final public Dimension getPreferredSize()
 	{
-		return new Dimension( 375, 400 );
+		return new Dimension( 440, 400 );
 	}
 	
 }

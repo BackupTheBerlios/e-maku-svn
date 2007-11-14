@@ -1,23 +1,14 @@
 package common.printer;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.util.*;
 
-import javax.print.Doc;
-import javax.print.DocFlavor;
-import javax.print.DocPrintJob;
-import javax.print.PrintException;
-import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
-import javax.print.ServiceUI;
-import javax.print.SimpleDoc;
-import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.Copies;
-import javax.swing.JOptionPane;
+import javax.print.*;
+import javax.print.attribute.*;
+import javax.print.attribute.standard.*;
+import javax.swing.*;
 
-import common.misc.CommonConstants;
+import common.misc.*;
 
 public class PrintingManager {
 	
@@ -36,6 +27,8 @@ public class PrintingManager {
 		this.type = type;
 		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
 		pras.add(new Copies(copies));
+		Date date = new Date();
+		pras.add(new JobName("emaku-job-"+date.toString(),Locale.getDefault()));
 		jps = CommonConstants.printServices;
 		if ((jps==null ) || (jps.length == 0)) {
 			showErroDialog();
@@ -82,6 +75,8 @@ public class PrintingManager {
 		this.docFlavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
 		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
 		pras.add(new Copies(copies));
+		Date date = new Date();
+		pras.add(new JobName("emaku-job-"+date.toString(),Locale.getDefault()));
 		jps = CommonConstants.printServices;
 		if ((jps==null ) || jps.length == 0) {
 			showErroDialog();

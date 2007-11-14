@@ -36,12 +36,11 @@
  */
 package common.pdf.pdfviewer.gui.swing;
 
-import javax.swing.JMenuItem;
+import javax.swing.*;
 
 /**extended Menu with id stored internally so listener can identify commands*/
 public class SwingMenuItem extends JMenuItem{
 	
-	private static final long serialVersionUID = 7423353291901251301L;
 	private int ID;
 	
 	public SwingMenuItem(String text) {

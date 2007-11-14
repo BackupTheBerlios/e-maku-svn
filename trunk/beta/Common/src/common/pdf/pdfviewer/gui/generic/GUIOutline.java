@@ -36,12 +36,11 @@
  */
 package common.pdf.pdfviewer.gui.generic;
 
-import java.awt.Dimension;
-import java.awt.Point;
+import java.awt.*;
 
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.*;
 
-//import org.w3c.dom.Node;
+import org.w3c.dom.*;
 
 /**abstract level for outlines panel*/
 public interface GUIOutline {
@@ -60,6 +59,7 @@ public interface GUIOutline {
 
 	void selectBookmark();
 
-	//void readChildNodes(Node rootNode,DefaultMutableTreeNode topNode);
+	void readChildNodes(Node rootNode,DefaultMutableTreeNode topNode);
 
+    void reset(Node rootNode);
 }

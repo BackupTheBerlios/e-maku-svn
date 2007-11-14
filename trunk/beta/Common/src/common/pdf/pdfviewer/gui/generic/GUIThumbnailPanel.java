@@ -36,12 +36,11 @@
  */
 package common.pdf.pdfviewer.gui.generic;
 
-import java.awt.Component;
-import java.awt.Font;
+import java.awt.*;
 
-import org.jpedal.PdfDecoder;
-import org.jpedal.objects.PdfPageData;
-import org.jpedal.utils.repositories.Vector_Object;
+import org.jpedal.objects.*;
+import org.jpedal.render.*;
+import org.jpedal.utils.repositories.*;
 
 /**generic version to show thumbnails in panel on side*/
 public interface GUIThumbnailPanel {
@@ -56,27 +55,27 @@ public interface GUIThumbnailPanel {
 
 	void addComponentListener();
 
-	void addNewThumbnails(int currentPage, PdfDecoder decode_pdf);
+	void addDisplayedPageAsThumbnail(int currentPage,DynamicVectorRenderer currentDisplay);
 
-	void setupThumbnailsOnDecode(int currentPage, PdfDecoder decode_pdf);
+	void generateOtherVisibleThumbnails(int currentPage);
 
-	Component setupThumbnails(int pages, Font textFont, String message, PdfPageData pdfPageData);
+	void setupThumbnails(int pages, Font textFont, String message, PdfPageData pdfPageData);
 
 	void removeAll();
 
-	Component setupThumbnails(int i, int[] js, int pageCount);
+	void setupThumbnails(int i, int[] js, int pageCount);
 
-	void createThumbnailsFromImages(String[] strings, Vector_Object thumbnailsStored);
+	void generateOtherThumbnails(String[] strings, Vector_Object thumbnailsStored);
 
 	void resetHighlightedThumbnail(int id);
 
 	void resetToDefault();
 
-	void removeComponentListener();
-
-	void stopProcessing();
+	void removeAllListeners();
 
 	void setThumbnailsEnabled();
+	
+	void setThumbnailsEnabled(boolean value);
 
 	void refreshDisplay();
 

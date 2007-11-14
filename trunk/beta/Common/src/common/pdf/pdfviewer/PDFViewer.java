@@ -30,25 +30,20 @@
 
 package common.pdf.pdfviewer;
 
-import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
-import java.io.IOException;
-import java.util.ResourceBundle;
+import java.awt.*;
+import java.io.*;
+import java.util.*;
 
-import org.jdom.Element;
-import org.jpedal.PdfDecoder;
-import org.jpedal.exception.PdfFontException;
+import org.jdom.*;
+import org.jpedal.*;
+import org.jpedal.exception.*;
 
-import common.control.ClientHeaderValidator;
-import common.control.ReportEvent;
-import common.control.ReportListener;
-import common.gui.forms.GenericForm;
-import common.misc.ZipHandler;
-import common.misc.language.Language;
-import common.pdf.pdfviewer.gui.GUIFactory;
-import common.pdf.pdfviewer.gui.SwingGUI;
-import common.pdf.pdfviewer.utils.Printer;
+import common.control.*;
+import common.gui.forms.*;
+import common.misc.*;
+import common.misc.language.*;
+import common.pdf.pdfviewer.gui.*;
+import common.pdf.pdfviewer.utils.*;
 
 public class PDFViewer implements ReportListener {
 

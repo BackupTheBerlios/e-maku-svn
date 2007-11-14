@@ -27,7 +27,7 @@
 
 *
 * ---------------
-* saveBitmap.java
+* RotatePDFPages.java
 * ---------------
 * (C) Copyright 2005, by IDRsolutions and Contributors.
 *
@@ -35,27 +35,17 @@
 * --------------------------
 */
 package common.pdf.pdfviewer.gui.popups;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.*;
+import java.awt.event.*;
 
-import javax.print.attribute.standard.PageRanges;
-import javax.swing.ButtonGroup;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JRadioButton;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.JToggleButton;
+import javax.print.attribute.standard.*;
+import javax.swing.*;
 
-import org.jpedal.utils.LogWriter;
+import org.jpedal.utils.*;
 
 public class RotatePDFPages extends Save
 {
-	private static final long serialVersionUID = 7423353291901251301L;
-	
+
 	JLabel OutputLabel = new JLabel();
 	ButtonGroup buttonGroup1 = new ButtonGroup();
 	ButtonGroup buttonGroup2 = new ButtonGroup();
@@ -70,10 +60,10 @@ public class RotatePDFPages extends Save
 	
 	JTextField pagesBox=new JTextField();
 
-	final String[] rotationItems = {"Clockwise 90 degrees","Counter-clockwise 90 degrees"
-			,"180 degrees"};
+	final String[] rotationItems = {Messages.getMessage("PdfViewerComboBox.Clockwise90"),Messages.getMessage("PdfViewerComboBox.CounterClockwise90")
+,Messages.getMessage("PdfViewerComboBox.180Degrees")};
 	
-	JLabel direction = new JLabel("Direction");
+	JLabel direction = new JLabel(Messages.getMessage("PdfViewerMessage.Direction"));
 	JComboBox directionBox = new JComboBox(rotationItems);
 	public RotatePDFPages( String root_dir, int end_page, int currentPage ) 
 	{
@@ -123,8 +113,10 @@ public class RotatePDFPages extends Save
 				i = -1;
 				while ((i = pages.next(i)) != -1){
 					if(i > end_page){
-						JOptionPane.showMessageDialog(this,"Page "+i+" is out of bounds, " +
-								"pagecount = "+end_page);
+						JOptionPane.showMessageDialog(this,Messages.getMessage("PdfViewerText.Page")+
+                                ' ' +i+ ' ' +Messages.getMessage("PdfViewerError.OutOfBounds")+ ' ' +
+								Messages.getMessage("PdfViewerText.PageCount")+ ' ' +end_page);
+							
 						return null;
 					}
 					pagesToExport[count]=i;
@@ -132,7 +124,7 @@ public class RotatePDFPages extends Save
 				}
 			}catch (IllegalArgumentException  e) {
 				LogWriter.writeLog( "Exception " + e + " in exporting pdfs" );
-				JOptionPane.showMessageDialog(this,"Invalid syntax");
+				JOptionPane.showMessageDialog(this,Messages.getMessage("PdfViewerError.InvalidSyntax"));
 			}
 			//<end-13>
 		}
@@ -152,19 +144,19 @@ public class RotatePDFPages extends Save
 		direction.setDisplayedMnemonic( '0' );
 		direction.setBounds( new Rectangle( 13, 13, 220, 26 ) );
 		
-		directionBox.setBounds( new Rectangle( 23, 40, 232, 23 ) );
+		directionBox.setBounds( new Rectangle( 23, 40, 300, 23 ) );
 		
-		pageRangeLabel.setText( "Page range" );
+		pageRangeLabel.setText(Messages.getMessage("PdfViewerPageRange.text"));
 		pageRangeLabel.setBounds( new Rectangle( 13, 71, 199, 26 ) );
 		
-		printAll.setText("All");
+		printAll.setText(Messages.getMessage("PdfViewerRadioButton.All"));
 		printAll.setBounds( new Rectangle( 23, 100, 75, 22 ) );
 		
-		printCurrent.setText("Current Page");
+		printCurrent.setText(Messages.getMessage("PdfViewerRadioButton.CurrentPage"));
 		printCurrent.setBounds( new Rectangle( 23, 120, 100, 22 ) );
 		printCurrent.setSelected(true);
 		
-		printPages.setText("Pages:");
+		printPages.setText(Messages.getMessage("PdfViewerRadioButton.Pages"));
 		printPages.setBounds( new Rectangle( 23, 142, 70, 22 ) );
 		
 		pagesBox.setBounds( new Rectangle( 95, 142, 200, 22 ) );
@@ -172,7 +164,7 @@ public class RotatePDFPages extends Save
 			public void keyPressed(KeyEvent arg0) {}
 
 			public void keyReleased(KeyEvent arg0) {
-				if(pagesBox.getText().equals(""))
+				if(pagesBox.getText().length() == 0)
 					printCurrent.setSelected(true);
 				else
 					printPages.setSelected(true);
@@ -182,9 +174,9 @@ public class RotatePDFPages extends Save
 			public void keyTyped(KeyEvent arg0) {}
 		});
 
-		JTextArea pagesInfo=new JTextArea("Enter page number and/or page ranges\n" +
-				"seperated by commas.  For example, 1,3,5-12");
-		pagesInfo.setBounds(new Rectangle(23,165,270,40));
+		JTextArea pagesInfo=new JTextArea(Messages.getMessage("PdfViewerMessage.PageNumberOrRange")+ '\n' +
+				Messages.getMessage("PdfViewerMessage.PageRangeExample"));
+		pagesInfo.setBounds(new Rectangle(23,185,400,40));
 		pagesInfo.setOpaque(false);
 				
 		optionsForFilesLabel.setBounds( new Rectangle( 13, 220, 199, 26 ) );
@@ -213,7 +205,7 @@ public class RotatePDFPages extends Save
 	
 	final public Dimension getPreferredSize()
 	{
-		return new Dimension( 350, 230 );
+		return new Dimension( 400, 250 );
 	}
 	
 }

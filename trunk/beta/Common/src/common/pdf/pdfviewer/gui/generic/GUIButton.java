@@ -36,9 +36,9 @@
  */
 package common.pdf.pdfviewer.gui.generic;
 
-import java.awt.Font;
+import java.awt.*;
 
-import javax.swing.ImageIcon;
+import javax.swing.*;
 
 /**abstract button object into interface*/
 public interface GUIButton {
@@ -54,5 +54,7 @@ public interface GUIButton {
 	void setFont(Font font);
 	
 	int getID();
+
+	void setName(String string);
 	
 }

@@ -4,7 +4,7 @@
  * ===========================================
  *
  * Project Info:  http://www.jpedal.org
- * Project Lead:  Mark Stephens (mark@idrsolutions.com)
+ * Project Lead:  Mark Stephens
  *
  * (C) Copyright 2005, IDRsolutions and Contributors.
  *
@@ -36,271 +36,292 @@
  */
 package common.pdf.pdfviewer.gui.swing;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.image.BufferedImage;
-import java.lang.reflect.InvocationTargetException;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.*;
+import java.io.*;
+import java.lang.reflect.*;
 
-import javax.media.jai.JAI;
-import javax.swing.AbstractButton;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
+import javax.imageio.*;
+import javax.swing.*;
 
-import org.jpedal.PdfDecoder;
-import org.jpedal.objects.PdfPageData;
-import org.jpedal.utils.LogWriter;
-import org.jpedal.utils.repositories.Vector_Object;
-
-import common.pdf.pdfviewer.Values;
-import common.pdf.pdfviewer.gui.generic.GUIThumbnailPanel;
-import common.pdf.pdfviewer.utils.SwingWorker;
+import org.jpedal.*;
+import org.jpedal.examples.simpleviewer.*;
+import org.jpedal.examples.simpleviewer.gui.generic.*;
+import org.jpedal.objects.*;
+import org.jpedal.render.*;
+import org.jpedal.utils.*;
+import org.jpedal.utils.SwingWorker;
+import org.jpedal.utils.repositories.*;
 
 /**
  * Used in GUI example code Scope:<b>(All)</b>
- * <br>adds thumbnail capabilities to viewer, 
- * <br>shows pages as thumbnails within this panel, 
+ * <br>adds thumbnail capabilities to viewer,
+ * <br>shows pages as thumbnails within this panel,
  * <br>So this panel can be added to the viewer
- * 
+ *
  */
-public class SwingThumbnailPanel extends JPanel implements GUIThumbnailPanel {
-	
-	private static final long serialVersionUID = 7423353291901251301L;
-	
-	/**Swing thread to decode in background - we have one thread we use for various tasks*/
+public class SwingThumbnailPanel extends JScrollPane implements GUIThumbnailPanel {
+
+    static final boolean debugThumbnails=false;
+
+    /**Swing thread to decode in background - we have one thread we use for various tasks*/
 	SwingWorker worker=null;
-	
-	//<start-13>
+
+    JPanel panel=new JPanel();
+
+    //<start-13>
 	/**handles drawing of thumbnails if needed*/
 	private ThumbPainter painter=new ThumbPainter();
 	//<end-13>
-	
-	/**can switch on or off thumbnails - DOES NOT WORK ON JAVA 1.3*/
+
+    //<start-13>
+	/**
+	//<end-13>
 	private boolean showThumbnailsdefault=false;
-	
-	private boolean showThumbnails=showThumbnailsdefault;
-	
+
+    /**/
+    //<start-13>
+    /**can switch on or off thumbnails - DOES NOT WORK ON JAVA 1.3*/
+	private boolean showThumbnailsdefault=true;
+    //<end-13>
+
+    private boolean showThumbnails=showThumbnailsdefault;
+
 	/**flag to allow interruption in orderly manner*/
 	public boolean interrupt=false;
-	
+
 	/**flag to show drawig taking place*/
 	public boolean drawing;
-	
-	/**
+
+    /**custom decoder to create Thumbnails*/
+    public ThumbnailDecoder thumbDecoder;
+
+    /**
 	 * thumbnails settings below
 	 */
 	/**buttons to display thumbnails*/
 	private JButton[] pageButton;
-	
+
 	private boolean[] buttonDrawn;
-	
+
 	private boolean[] isLandscape;
-	
+
 	private int[] pageHeight;
-	
+
 	/**weight and height for thumbnails*/
-	final private int thumbH=100,thumbW=70;
-	
-	/**Holds all the thumbnails images*/
-	private JScrollPane thumbnailScrollPane=new JScrollPane();
-	
+	static final private int thumbH=100,thumbW=70;
+
 	Values commonValues;
-	PdfDecoder decode_pdf;
-	
-	public SwingThumbnailPanel(Values commonValues,PdfDecoder decode_pdf){
-		
-		thumbnailScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		thumbnailScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		
+	final PdfDecoder decode_pdf;
+
+    boolean isExtractor=false;
+	private int lastPage=-1; //flag to ensure only changes result in processing
+
+
+	public SwingThumbnailPanel(Values commonValues, final PdfDecoder decode_pdf){
+
+		if(debugThumbnails)
+				System.out.println("SwingThumbnailPanel");
+
+		setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
 		this.commonValues=commonValues;
 		this.decode_pdf=decode_pdf;
+
+		thumbDecoder=new ThumbnailDecoder(decode_pdf);
+
+		this.addComponentListener(new ComponentListener(){
+			public void componentResized(ComponentEvent componentEvent) {
+
+				if(!isExtractor){
+					/** draw thumbnails in background, having checked not already drawing */
+					if(drawing)
+					terminateDrawing();
+
+					drawThumbnails();
+				}
+			}
+
+			public void componentMoved(ComponentEvent componentEvent) {
+				//To change body of implemented methods use File | Settings | File Templates.
+			}
+
+			public void componentShown(ComponentEvent componentEvent) {
+				//To change body of implemented methods use File | Settings | File Templates.
+			}
+
+			public void componentHidden(ComponentEvent componentEvent) {
+				//To change body of implemented methods use File | Settings | File Templates.
+			}
+		});
 	}
-	
+
 //	<start-13>
 	/** class to paint thumbnails */
 	private class ThumbPainter extends ComponentAdapter {
-		
-		/** used to track user stopping movement */
+
+        boolean requestMade=false;
+        /** used to track user stopping movement */
 		Timer trapMultipleMoves = new Timer(250,
 				new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent event) {
-				
-				if (worker != null){
-					///tell our code to exit cleanly asap
-					if(drawing){
-						interrupt=true;
-						while(drawing){
-							
-							try {
-								Thread.sleep(20);
-							} catch (InterruptedException e) {
-								// should never be called
-								e.printStackTrace();
-							}
-						}
-						interrupt=false; //ensure synched
-					}
-				}
-				
-				/** if running wait to finish */
-				while (commonValues.isProcessing()) {
-					try {
-						Thread.sleep(20);
-					} catch (InterruptedException e) {
-						// should never be called
-						e.printStackTrace();
-					}
-				}
-				
-				/**create any new thumbnails revaled by scroll*/
-				drawVisibleThumbnailsOnScroll(decode_pdf);
-				
-			}
+
+                if(!requestMade){
+
+                    requestMade=true;
+
+                    if(debugThumbnails)
+                            System.out.println("actionPerformed");
+
+                    if(commonValues.isProcessing()){
+                    	if(debugThumbnails)
+                        System.out.println("Still processing page");
+                    }else{
+
+                        if(debugThumbnails)
+                        System.out.println("actionPerformed2");
+
+                        /**create any new thumbnails revaled by scroll*/
+                        /** draw thumbnails in background, having checked not already drawing */
+                        if(drawing)
+                        terminateDrawing();
+
+                        if(debugThumbnails)
+                        System.out.println("actionPerformed3");
+
+                        requestMade=false;
+
+                        drawThumbnails();
+                    }
+                }
+            }
 		});
-		
+
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent)
 		 */
 		public void componentMoved(ComponentEvent e) {
-			
-			//allow us to disable on scroll
+
+            //allow us to disable on scroll
 			if (trapMultipleMoves.isRunning())
 				trapMultipleMoves.stop();
-			
+
 			trapMultipleMoves.setRepeats(false);
 			trapMultipleMoves.start();
-			
+
 		}
 	}
 	//<end-13>
-	
-	/**
-	 * create thumbnails of pages
-	 * @throws InterruptedException
-	 */
-	@SuppressWarnings("deprecation")
-	public void createThumbnailsOnDecode(int currentPage,PdfDecoder decode_pdf){
-		
-		drawing=true;
-		
-		/** draw thumbnails in background */
-		int pages = decode_pdf.getPageCount();
-		
-		for (int j = -5; j < 5; j++) {
-			
-			int i = j + currentPage;
-			
-			if(interrupt){
-				j=5;
-			}
-			if (i >= pages) {
-				j = 5;
-			} else if ((i > 0) && (!buttonDrawn[i])
-					&& (pageButton[i] != null)) {
-				
-				int h = thumbH;
-				if (isLandscape[i])
-					h = thumbW;
-				
-				BufferedImage page = decode_pdf.getPageAsThumbnail(i + 1, h);
-				
-				if (interrupt)
-					j=5;
-				else
-					createThumbnail(page, i + 1, false);
-			}
-		}
-		
-		//reset to show not running
-		interrupt=false;
-		
-		drawing=false;
-	}
-	
-	/**
-	 * create thumbnails of general images
-	 * @param thumbnailsStored
-	 * @throws InterruptedException
-	 */
-	public void createThumbnailsFromImages(String[] imageFiles, Vector_Object thumbnailsStored) {
-		
-		drawing=true;
-		
-		/** draw thumbnails in background */
-		int pages = imageFiles.length;
-		
-		for (int i = 0; i < pages; i++) {
-			
-			//load the image to process
-			BufferedImage page = null;
-			try {
-				// Load the source image from a file or cache
-				if(imageFiles[i]!=null){
-					
-					Object cachedThumbnail=thumbnailsStored.elementAt(i);
-					
-					if(cachedThumbnail==null){
-						page = JAI.create("fileload", imageFiles[i]).getAsBufferedImage();
-						thumbnailsStored.addElement(page);
-					}else{
-						page=(BufferedImage)cachedThumbnail;
-					}
-					
-					if(page!=null){
-						
-						int w=page.getWidth();
-						int h=page.getHeight();
-						
-						/**add a border*/
-						Graphics2D g2=(Graphics2D) page.getGraphics();
-						g2.setColor(Color.black);
-						g2.draw(new Rectangle(0,0,w-1,h-1));
-						
-						/**scale and refresh button*/
-						ImageIcon pageIcon;
-						if(h>w)
-							pageIcon=new ImageIcon(page.getScaledInstance(-1,100,BufferedImage.SCALE_SMOOTH));
-						else
-							pageIcon=new ImageIcon(page.getScaledInstance(100,-1,BufferedImage.SCALE_SMOOTH));
-						
-						pageButton[i].setIcon(pageIcon);
-						pageButton[i].setVisible(true);
-						buttonDrawn[i] = true;
-						
-						this.add(pageButton[i]);
-						
-					}
-				}
-			} catch (Exception e) {
-				LogWriter.writeLog("Exception " + e + " loading " + imageFiles[i]);
-			}	
-		}
-		
-		drawing=false;
-	}
+
+    /**
+     * create thumbnails of general images
+     * @param thumbnailsStored
+     */
+    public void generateOtherThumbnails(String[] imageFiles, Vector_Object thumbnailsStored) {
+
+
+        if(debugThumbnails)
+        System.out.println("generateOtherThumbnails>>>>>>>>>>>>");
+
+        drawing=true;
+
+        getViewport().removeAll();
+        panel.removeAll();
+
+        /** draw thumbnails in background */
+        int pages = imageFiles.length;
+
+        //create display for thumbnails
+        getViewport().add(panel);
+        panel.setLayout(new GridLayout(pages,1,0,10));
+
+
+        for (int i = 0; i < pages; i++) {
+
+            //load the image to process
+            BufferedImage page = null;
+            try {
+                // Load the source image from a file or cache
+                if(imageFiles[i]!=null){
+
+                    Object cachedThumbnail=thumbnailsStored.elementAt(i);
+                    
+                    //wait if still drawing
+                	decode_pdf.waitForRenderingToFinish();
+                	
+                    if(cachedThumbnail==null){
+                        //page = javax.media.JAI.create("fileload", imageFiles[i]).getAsBufferedImage();
+                        page = ImageIO.read(new File(imageFiles[i]));
+
+                        thumbnailsStored.addElement(page);
+                    }else{
+                        page=(BufferedImage)cachedThumbnail;
+                    }
+
+                    if(page!=null){
+
+                        int w=page.getWidth();
+                        int h=page.getHeight();
+
+                        /**add a border*/
+                        Graphics2D g2=(Graphics2D) page.getGraphics();
+                        g2.setColor(Color.black);
+                        g2.draw(new Rectangle(0,0,w-1,h-1));
+
+                        /**scale and refresh button*/
+                        ImageIcon pageIcon;
+                        if(h>w)
+                            pageIcon=new ImageIcon(page.getScaledInstance(-1,100,BufferedImage.SCALE_FAST));
+                        else
+                            pageIcon=new ImageIcon(page.getScaledInstance(100,-1,BufferedImage.SCALE_FAST));
+
+                        pageButton[i].setIcon(pageIcon);
+                        pageButton[i].setVisible(true);
+                        buttonDrawn[i] = true;
+
+                        panel.add(pageButton[i]);
+
+
+                        if(debugThumbnails)
+                        System.out.println("Added button");
+
+                    }
+                }
+            } catch (Exception e) {
+                LogWriter.writeLog("Exception " + e + " loading " + imageFiles[i]);
+            }
+        }
+
+        drawing=false;
+        if(debugThumbnails)
+                System.out.println("generateOtherThumbnails<<<<<<<<<<<<");
+
+
+        panel.setVisible(true);
+
+
+    }
 	
 	/**
 	 * setup thumbnails if needed
 	 */
-	public void setupThumbnailsOnDecode(final int currentPage,PdfDecoder decode_pdf){
-		
-		int count = decode_pdf.getPageCount();
+	public void generateOtherVisibleThumbnails(final int currentPage){
+
+		//stop multiple calls
+		if(currentPage==-1 || currentPage==lastPage)
+		return;
+
+		lastPage=currentPage;
+
+		if(debugThumbnails)
+                System.out.println("generateOtherVisibleThumbnails------->"+currentPage);
+
+        int count = decode_pdf.getPageCount();
 		
 		for (int i1 = 0; i1 < count; i1++) {
 			if ((i1 != currentPage - 1))
@@ -312,16 +333,29 @@ public class SwingThumbnailPanel extends JPanel implements GUIThumbnailPanel {
 			pageButton[currentPage - 1].setBorder(BorderFactory.createLineBorder(Color.red));
 		
 		//update thumbnail pane if needed
-		Rectangle rect = getVisibleRect();
-		if (!rect.contains(pageButton[currentPage - 1].getBounds())) {
+		Rectangle rect = panel.getVisibleRect();
+
+        if (!rect.contains(pageButton[currentPage - 1].getLocation())) {
 			
 			try {
-				SwingUtilities.invokeAndWait(new Runnable() {
-					
-					public void run() {
-						scrollRectToVisible(pageButton[currentPage - 1].getBounds());
-					}
-				});
+				if (SwingUtilities.isEventDispatchThread()){
+					Rectangle vis=new Rectangle(pageButton[currentPage - 1].getLocation().x,
+							pageButton[currentPage - 1].getLocation().y,
+							pageButton[currentPage-1].getBounds().width,
+							pageButton[currentPage-1].getBounds().height);
+					panel.scrollRectToVisible(vis);
+				}else{
+					SwingUtilities.invokeAndWait(new Runnable() {
+
+						public void run() {
+							Rectangle vis=new Rectangle(pageButton[currentPage - 1].getLocation().x,
+									pageButton[currentPage - 1].getLocation().y,
+									pageButton[currentPage-1].getBounds().width,
+									pageButton[currentPage-1].getBounds().height);
+							panel.scrollRectToVisible(vis);
+						}
+					});
+				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
@@ -329,65 +363,80 @@ public class SwingThumbnailPanel extends JPanel implements GUIThumbnailPanel {
 			}
 		}
 		
-		commonValues.setProcessing(false);
+		//commonValues.setProcessing(false);
 		
-		/** draw thumbnails in background */
-		createThumbnailsOnDecode(currentPage,decode_pdf);
-		
-	}
+		/** draw thumbnails in background, having checked not already drawing */
+        if(drawing)
+        terminateDrawing();
+
+        /** draw thumbnails in background */
+        drawThumbnails();
+    }
 	
 	/**
 	 * redraw thumbnails if scrolled
 	 */
-	public void drawVisibleThumbnailsOnScroll(final PdfDecoder decode_pdf){
-		
-		//create the thread to just do the thumbnails
-		SwingWorker worker = new SwingWorker() {
-			
-			
-			@SuppressWarnings("deprecation")
+	public void drawThumbnails(){
+
+        if(debugThumbnails)
+        System.out.println("start drawThumbnails------->");
+
+        //allow for re-entry
+        if(drawing)
+        	this.terminateDrawing();
+        
+        //create the thread to just do the thumbnails
+		worker = new SwingWorker() {
+
 			public Object construct() {
 				
 				drawing=true;
 				
 				try {
-					Rectangle rect = getVisibleRect();
+					Rectangle rect = panel.getVisibleRect();
 					int pages = decode_pdf.getPageCount();
 					
 					for (int i = 0; i < pages; i++) {
-						
-						if (interrupt)
+
+						//wait if still drawing
+                    	decode_pdf.waitForRenderingToFinish();
+                    	
+                        if (interrupt)
 							i=pages;
-						
-						else if ((i>0)&&(!buttonDrawn[i])
-								&& (pageButton[i] != null)
+                        else if ((buttonDrawn!=null)&&(rect!=null)&&(!buttonDrawn[i])&& (pageButton[i] != null)
 								&& (rect.intersects(pageButton[i].getBounds()))) {
-							
-							
-							int h = thumbH;
-							if (isLandscape[i]){
-								
+
+                        	decode_pdf.setThumbnailsDrawing(true);
+                        	
+                            int h = thumbH;
+							if (isLandscape[i])
 								h = thumbW;
-							}
-							//float scaleFactor = (float) h
-							/// (float) pageHeight[i];
-							
-							BufferedImage page = decode_pdf.getPageAsThumbnail(i + 1, h);
-							
-							createThumbnail(page, i + 1, false);
-						}
+
+							BufferedImage page = thumbDecoder.getPageAsThumbnail(i + 1, h);
+                            if (!interrupt)
+                            createThumbnail(page, i + 1, false);
+
+                            decode_pdf.setThumbnailsDrawing(false);
+                        }
 					}
 					
 				} catch (Exception e) {
 					//stopped thumbnails
+					e.printStackTrace();
 				}
+				
+				//always make sure turned off
+				decode_pdf.setThumbnailsDrawing(false);
 				
 				//always reset flag so we can interupt
 				interrupt=false;
 				
 				drawing=false;
-				
-				return null;
+
+                if(debugThumbnails)
+                System.out.println("end drawThumbnails-------<");
+
+                return null;
 			}
 		};
 		
@@ -395,18 +444,25 @@ public class SwingThumbnailPanel extends JPanel implements GUIThumbnailPanel {
 	}
 	
 	/**add any new thumbnails needed to display*/
-	public void addNewThumbnails(int currentPage,PdfDecoder decode_pdf){
+	public void addDisplayedPageAsThumbnail(int currentPage,DynamicVectorRenderer currentDisplay){
+
+        if(debugThumbnails)
+                System.out.println("addDisplayedPageAsThumbnail "+currentPage);
+
+		Rectangle rect = panel.getVisibleRect();
+
 		//if not drawn get page and flag
-		if ((buttonDrawn[currentPage - 1] == false)) {
-			
+		if (!buttonDrawn[currentPage - 1] && rect.intersects(pageButton[currentPage - 1].getBounds())) {
+
 			int h = thumbH;
 			if (isLandscape[currentPage - 1])
 				h = thumbW;
-			
-			BufferedImage page = decode_pdf.getPageAsThumbnail(h);
-			
+
+			BufferedImage page = decode_pdf.getPageAsThumbnail(h,currentDisplay);
+
 			createThumbnail(page, currentPage, true);
 		}
+		
 	}
 	
 	/**
@@ -437,10 +493,9 @@ public class SwingThumbnailPanel extends JPanel implements GUIThumbnailPanel {
 			Graphics2D g2=(Graphics2D) page.getGraphics();
 			g2.setColor(Color.black);
 			g2.draw(new Rectangle(0,0,page.getWidth()-1,page.getHeight()-1));
-			
-			/**scale and refresh button*/
-			ImageIcon pageIcon=new ImageIcon(page.getScaledInstance(-1,page.getHeight(),BufferedImage.SCALE_FAST));
-			
+
+            /**scale and refresh button*/
+			ImageIcon pageIcon=new ImageIcon(page);
 			pageButton[i].setIcon(pageIcon);
 			
 			buttonDrawn[i] = true;
@@ -450,22 +505,24 @@ public class SwingThumbnailPanel extends JPanel implements GUIThumbnailPanel {
 	
 	/**
 	 * setup thumbnails at start - use for general images
-	 * @return number of pages, the number of Pages used
-	 * and the pageCount
 	 */
-	public Component setupThumbnails(int pages,int[] pageUsed,int pageCount) {
-		
+	public void setupThumbnails(int pages,int[] pageUsed,int pageCount) {
+
+        isExtractor=true;
+
+        if(debugThumbnails)
+                System.out.println("setupThumbnails2");
+
+
+		lastPage=-1;
+
 		Font textFont=new Font("Serif",Font.PLAIN,12);
 		
 		//remove any added last time
-		this.removeAll();
+		//panel.removeAll();
 		
-		//create dispaly for thumbnails
-		thumbnailScrollPane.getViewport().add(this);
-		setLayout(new GridLayout(pages,1,0,10));
-		scrollRectToVisible(new Rectangle(0,0,1,1));
-		
-		thumbnailScrollPane.getVerticalScrollBar().setUnitIncrement(80);
+
+		getVerticalScrollBar().setUnitIncrement(80);
 		
 		//create empty thumbnails and add to display
 		BufferedImage blankPortrait = createBlankThumbnail(thumbW, thumbH);
@@ -482,9 +539,9 @@ public class SwingThumbnailPanel extends JPanel implements GUIThumbnailPanel {
 			int page=i+1;
 			
 			if(pageCount<2)
-				pageButton[i]=new JButton(""+page,portrait); //$NON-NLS-2$
+				pageButton[i]=new JButton(String.valueOf(page),portrait); //$NON-NLS-2$
 			else
-				pageButton[i]=new JButton(""+page+" ( Page "+pageUsed[i]+" )",portrait); //$NON-NLS-2$
+				pageButton[i]=new JButton(String.valueOf(page) +" ( Page "+pageUsed[i]+" )",portrait); //$NON-NLS-2$
 			isLandscape[i]=false;
 			pageHeight[i]=100;
 			
@@ -496,17 +553,19 @@ public class SwingThumbnailPanel extends JPanel implements GUIThumbnailPanel {
 				pageButton[i].setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 			
 			pageButton[i].setFont(textFont);
-			add(pageButton[i],BorderLayout.CENTER);
-			
-		}
-		
-		return thumbnailScrollPane;
-	}
+			//panel.add(pageButton[i],BorderLayout.CENTER);
+
+        }
+
+    }
 	
 	/**reset the highlights*/
 	public void resetHighlightedThumbnail(int item){
-		
-		if(pageButton!=null){
+
+        if(debugThumbnails)
+                System.out.println("resetHighlightedThumbnail");
+
+        if(pageButton!=null){
 			int pages=pageButton.length;
 			
 			for(int i=0;i<pages;i++){
@@ -522,15 +581,23 @@ public class SwingThumbnailPanel extends JPanel implements GUIThumbnailPanel {
 	/**
 	 * setup thumbnails at start - use when adding pages
 	 */
-	public Component setupThumbnails(int pages,Font textFont,String message,PdfPageData pageData) {
-		
-		//create dispaly for thumbnails
-		thumbnailScrollPane.getViewport().add(this);
-		setLayout(new GridLayout(pages,1,0,10));
-		scrollRectToVisible(new Rectangle(0,0,1,1));
-		
-		thumbnailScrollPane.getVerticalScrollBar().setUnitIncrement(80);
-		
+	public void setupThumbnails(int pages,Font textFont,String message,PdfPageData pageData) {
+
+
+        if(debugThumbnails)
+                System.out.println("setupThumbnails");
+
+		lastPage=-1;
+
+		getViewport().removeAll();
+        panel.removeAll();
+        //create dispaly for thumbnails
+		getViewport().add(panel);
+		panel.setLayout(new GridLayout(pages,1,0,10));
+		panel.scrollRectToVisible(new Rectangle(0,0,1,1));
+
+		getVerticalScrollBar().setUnitIncrement(80);
+
 		//create empty thumbnails and add to display
 		
 		//empty thumbnails for unloaded pages
@@ -551,7 +618,7 @@ public class SwingThumbnailPanel extends JPanel implements GUIThumbnailPanel {
 			int page=i+1;
 			
 			//create blank image with correct orientation
-			final int ph;
+			final int pw,ph;
 			int cropWidth=pageData.getCropBoxWidth(page);
 			int cropHeight=pageData.getCropBoxHeight(page);
 			int rotation=pageData.getRotation(page);
@@ -559,22 +626,22 @@ public class SwingThumbnailPanel extends JPanel implements GUIThumbnailPanel {
 			
 			if((rotation==0)|(rotation==180)){
 				ph=(pageData.getMediaBoxHeight(page));
-				//pw=(pageData.getMediaBoxWidth(page));//%%
+				pw=(pageData.getMediaBoxWidth(page));//%%
 				usedLandscape = landscape;
 				usedPortrait = portrait;
 			}else{
 				ph=(pageData.getMediaBoxWidth(page));
-				//pw=(pageData.getMediaBoxHeight(page));//%%
+				pw=(pageData.getMediaBoxHeight(page));//%%
 				usedLandscape = portrait;
 				usedPortrait = landscape;
 			}
 			
 			if(cropWidth>cropHeight){
-				pageButton[i]=new JButton(message+" "+page,usedLandscape); //$NON-NLS-2$
+				pageButton[i]=new JButton(message+ ' ' +page,usedLandscape); //$NON-NLS-2$
 				isLandscape[i]=true;
 				pageHeight[i]=ph;//w;%%
 			}else{
-				pageButton[i]=new JButton(message+" "+page,usedPortrait); //$NON-NLS-2$
+				pageButton[i]=new JButton(message+ ' ' +page,usedPortrait); //$NON-NLS-2$
 				isLandscape[i]=false;
 				pageHeight[i]=ph;
 			}
@@ -587,12 +654,11 @@ public class SwingThumbnailPanel extends JPanel implements GUIThumbnailPanel {
 				pageButton[i].setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 			
 			pageButton[i].setFont(textFont);
-			add(pageButton[i],BorderLayout.CENTER);
-			
-		}
-		
-		return thumbnailScrollPane;
-	}
+			panel.add(pageButton[i],BorderLayout.CENTER);
+	
+        }
+
+    }
 	
 	/**
 	 *return a button holding the image,so we can add listener
@@ -601,14 +667,24 @@ public class SwingThumbnailPanel extends JPanel implements GUIThumbnailPanel {
 		return pageButton;
 	}
 	
+	/**
+	 * old method
+	 * @deprecated
+	 */
 	public void setThumbnailsEnabled() {
 		showThumbnailsdefault=true;
 		showThumbnails=true;
 		
 	}
 	
-	public boolean isShownOnscreen() {
+	public void setThumbnailsEnabled(boolean newValue) {
+		showThumbnailsdefault=newValue;
+		showThumbnails=newValue;
 		
+	}
+	
+	public boolean isShownOnscreen() {
+
 		return showThumbnails;
 	}
 	
@@ -623,59 +699,58 @@ public class SwingThumbnailPanel extends JPanel implements GUIThumbnailPanel {
 		
 	}
 	
-	public void stopProcessing() {
-		if(isShownOnscreen()){
-			//tell our code to exit cleanly asap
-			if(drawing){
-				interrupt=true;
-				while(drawing){
-					
-					try {
-						Thread.sleep(20);
-					} catch (InterruptedException e) {
-						// should never be called
-						e.printStackTrace();
-					}
-				}
-				interrupt=false; //ensure synched
-			}
-		}
-		
-	}
-	
+
 	public void addComponentListener() {
 		//<start-13>
-		addComponentListener(painter);
+		panel.addComponentListener(painter);
 		//<end-13>
 		
 	}
 	
-	public void removeComponentListener() {
+	public void removeAllListeners() {
 		//<start-13>
-		removeComponentListener(painter);
-		//<end-13>
-		
-	}
-	
-	/**stop any drawing*/
+		panel.removeComponentListener(painter);
+
+        //remove all listeners
+        Object[] buttons=getButtons();
+        if(buttons!=null){
+            for(int i=0;i<buttons.length;i++){
+                ActionListener[] l= ((JButton)buttons[i]).getActionListeners();
+                for(int j=0;j<l.length;j++)
+                ((JButton)buttons[i]).removeActionListener(l[j]);
+            }
+        }
+
+        //<end-13>
+
+
+    }
+
+    /**stop any drawing*/
 	public void terminateDrawing() {
-		
-		//tell our code to exit cleanly asap
+
+        //tell our code to exit cleanly asap
 		if(drawing){
-			interrupt=true;
+
+            if(thumbDecoder!=null)
+                    thumbDecoder.terminateDecoding();
+
+            interrupt=true;
 			while(drawing){
 				
 				try {
 					Thread.sleep(20);
-				} catch (InterruptedException e) {
+                } catch (InterruptedException e) {
 					// should never be called
 					e.printStackTrace();
 				}
+                
 			}
+			
 			interrupt=false; //ensure synched
 		}
-		
-	}
+
+    }
 	
 	public void refreshDisplay() {
 		validate();

@@ -35,7 +35,7 @@
  *
  */
 package common.pdf.pdfviewer.utils;
-import java.io.File;
+import java.io.*;
 
 /**
  * Used in GUI example code <br>Scope:<b>(All)</b>

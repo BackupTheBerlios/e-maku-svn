@@ -36,20 +36,23 @@
  */
 package common.pdf.pdfviewer.gui.swing;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
-//import org.jpedal.PdfDecoder;
+import org.jpedal.*;
+
 
 /**used from 2.8 onwards in views with multiple pages to setup new view settings from menu when option choosen*/
 public class PageViewChanger implements ActionListener{
 	
 	
-	int id;
-//	private PdfDecoder decode_pdf;
-	public PageViewChanger(int i){
+	int id,alignment;
+	private PdfDecoder decode_pdf;
+	
+	public PageViewChanger(int alignment,int i,PdfDecoder decode_pdf){
 		id=i;
-		//this.decode_pdf=decode_pdf;
+        this.alignment=alignment;
+        this.decode_pdf=decode_pdf;
+        
 	}
 	
 	public void actionPerformed(ActionEvent e) {	

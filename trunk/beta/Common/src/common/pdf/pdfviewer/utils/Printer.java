@@ -1,21 +1,15 @@
 package common.pdf.pdfviewer.utils;
 
-import java.awt.print.PageFormat;
-import java.awt.print.Paper;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
+import java.awt.print.*;
 import java.util.Timer;
 
-import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.SetOfIntegerSyntax;
-import javax.print.attribute.standard.PageRanges;
-import javax.swing.JComboBox;
+import javax.print.attribute.*;
+import javax.print.attribute.standard.*;
+import javax.swing.*;
 
-import org.jpedal.PdfDecoder;
-import org.jpedal.examples.simpleviewer.utils.Messages;
-import org.jpedal.objects.PrinterOptions;
-import org.jpedal.utils.LogWriter;
+import org.jpedal.*;
+import org.jpedal.objects.*;
+import org.jpedal.utils.*;
 
 
 public class Printer {

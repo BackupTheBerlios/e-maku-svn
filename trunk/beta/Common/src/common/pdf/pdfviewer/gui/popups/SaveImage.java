@@ -27,22 +27,17 @@
 
  *
  * ---------------
- * saveBitmap.java
+ * SaveImage.java
  *
  */
 package common.pdf.pdfviewer.gui.popups;
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import java.awt.*;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JLabel;
-import javax.swing.JRadioButton;
-import javax.swing.JToggleButton;
+import javax.swing.*;
 
-import org.jpedal.PdfDecoder;
+import org.jpedal.*;
+import org.jpedal.utils.*;
 public class SaveImage extends Save{
-	
-	private static final long serialVersionUID = 7423353291901251301L;
 	
 	private ButtonGroup buttonGroup1 = new ButtonGroup();
 	
@@ -97,44 +92,45 @@ public class SaveImage extends Save{
 		return prefix;
 	}
 	
+
 	private void jbInit() throws Exception{
 		
-		rootFilesLabel.setBounds( new Rectangle( 13, 12, 220, 26 ) );
+		rootFilesLabel.setBounds( new Rectangle( 13, 12, 400, 26 ) );
 		
 		rootDir.setBounds( new Rectangle( 23, 39, 232, 23 ) );
 		
 		changeButton.setBounds( new Rectangle( 272, 39, 101, 23 ) );
 		
-		startPage.setBounds( new Rectangle( 103, 99, 75, 22 ) );
+		startPage.setBounds( new Rectangle( 125, 99, 75, 22 ) );
 		
-		pageRangeLabel.setBounds( new Rectangle( 13, 70, 199, 26 ) );
+		pageRangeLabel.setBounds( new Rectangle( 13, 70, 400, 26 ) );
 		
-		startLabel.setBounds( new Rectangle( 23, 99, 75, 22 ) );
+		startLabel.setBounds( new Rectangle( 23, 100, 100, 22 ) );
 		
-		endLabel.setBounds( new Rectangle( 191, 99, 75, 22 ) );
+		endLabel.setBounds( new Rectangle( 220, 99, 75, 22 ) );
 		
-		endPage.setBounds( new Rectangle( 275, 99, 75, 22 ) );
+		endPage.setBounds( new Rectangle( 285, 99, 75, 22 ) );
 		
 		
-		optionsForFilesLabel.setBounds( new Rectangle( 13, 133, 199, 26 ) );
+		optionsForFilesLabel.setBounds( new Rectangle( 13, 133, 600, 26 ) );
 		
-		OutputLabel.setText( "Output file type" );
-		OutputLabel.setBounds( new Rectangle( 23, 173, 164, 24 ) );
+		OutputLabel.setText(Messages.getMessage("PdfViewerMessage.OutputType"));
+		OutputLabel.setBounds( new Rectangle( 23, 173, 900, 24 ) );
 		isTiff.setText( "Tiff" );
-		isTiff.setBounds( new Rectangle( 143, 175, 69, 19 ) );
-		isJPEG.setBounds( new Rectangle( 222, 174, 67, 19 ) );
+		isTiff.setBounds( new Rectangle( 180, 175, 50, 19 ) );
+		isJPEG.setBounds( new Rectangle( 290, 174, 67, 19 ) );
 		isJPEG.setSelected( true );
 		isJPEG.setText( "JPEG" );
-		isPNG.setBounds( new Rectangle( 305, 174, 62, 19 ) );
+		isPNG.setBounds( new Rectangle( 360, 174, 62, 19 ) );
 		isPNG.setText( "PNG" );
 		
-		isHires.setText( "Hires" );
-		isHires.setBounds( new Rectangle( 143, 200, 69, 19 ) );
+		isHires.setText(Messages.getMessage("PdfViewerOption.Hires"));
+		isHires.setBounds( new Rectangle( 180, 200, 112, 19 ) );
 		isHires.setSelected( true );
-		isNormal.setBounds( new Rectangle( 222, 200, 67, 19 ) );
-		isNormal.setText( "Normal" );
-		isDownsampled.setBounds( new Rectangle( 305, 200, 120, 19 ) );
-		isDownsampled.setText( "Downsampled" );
+		isNormal.setBounds( new Rectangle( 290, 200, 73, 19 ) );
+		isNormal.setText(Messages.getMessage("PdfViewerOption.Normal"));
+		isDownsampled.setBounds( new Rectangle( 360, 200, 200, 19 ) );
+		isDownsampled.setText(Messages.getMessage("PdfViewerOption.Downsampled"));
 		
 		//common
 		this.add( startPage, null );
@@ -169,7 +165,7 @@ public class SaveImage extends Save{
 	}
 	
 	final public Dimension getPreferredSize(){
-		return new Dimension( 450, 330 );
+		return new Dimension( 500, 250 );
 	}
 	
 }

@@ -36,23 +36,28 @@
 */
 package common.pdf.pdfviewer.gui.swing;
 
-import java.awt.event.MouseEvent;
-import java.util.Map;
+import java.awt.event.*;
+import java.util.*;
 
-import javax.swing.DefaultListModel;
+import javax.swing.*;
+
+import org.jpedal.utils.*;
 
 
 /**used by search function ro provide page number as tooltip*/
 public class SearchList extends javax.swing.JList {
-	
-	private static final long serialVersionUID = 7423353291901251301L;
-	
+
 	private Map textPages;
+	private String pageStr="Page";
+	private int Length = 0;
 	
 	public SearchList(DefaultListModel listModel,Map textPages) {
 		super(listModel);
-
+		
+		Length = listModel.capacity();
+		
 		this.textPages=textPages;
+		pageStr=Messages.getMessage("PdfViewerSearch.Page")+ ' ';
 	}
 
 	public String getToolTipText(MouseEvent event){
@@ -62,8 +67,20 @@ public class SearchList extends javax.swing.JList {
 		Object page=textPages.get(new Integer(index));
 		
 		if(page!=null)
-			return "Page "+page;
+			return pageStr+page;
 		else
 			return null;
+	}
+
+	public Map getTextPages() {
+		return textPages;
+	}
+
+	public int getLength() {
+		return Length;
+	}
+
+	public void setLength(int length) {
+		Length = length;
 	}
 }
