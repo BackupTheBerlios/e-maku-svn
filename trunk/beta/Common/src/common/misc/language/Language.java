@@ -2,9 +2,9 @@ package common.misc.language;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+
+import javax.swing.*;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -69,7 +69,9 @@ public class Language  {
         try {
             SAXBuilder builder = new SAXBuilder(false);
             loadWorks(builder.build(this.getClass().getResource("/language.xml")),lang);
-            loadWorks(builder.build(directory+"/language.xml"),lang);
+            if (directory!=null) {
+            	loadWorks(builder.build(directory+"/language.xml"),lang);
+            }
         }
         catch (JDOMException JDOMEe) {
             System.out.println(JDOMEe.getMessage());

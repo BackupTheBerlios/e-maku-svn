@@ -155,7 +155,7 @@ public class GUI {
 	protected boolean showOutlines=true;
 	
 	/**scaling values as floats to save conversion*/
-	protected float[] scalingFloatValues={1.0f,1.0f,1.0f,.25f,.5f,.75f,1.0f,1.25f,1.5f,2.0f,2.5f,5.0f,7.5f,10.0f};
+	protected float[] scalingFloatValues={1.0f,1.0f,.25f,.5f,.75f,1.0f,1.25f,1.5f,2.0f,2.5f,5.0f,7.5f,10.0f};
 	
 	/**page scaling to use 1=100%*/
 	protected float scaling = 1;

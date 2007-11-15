@@ -34,6 +34,8 @@ import java.awt.*;
 import java.io.*;
 import java.util.*;
 
+import javax.swing.*;
+
 import org.jdom.*;
 import org.jpedal.*;
 import org.jpedal.exception.*;
@@ -94,8 +96,8 @@ public class PDFViewer implements ReportListener {
 	 * @param bytes
 	 */
 	private void openReport(String reportTitle, byte[] bytes) {
-        /*
-		// get any user set dpi
+       
+		//get any user set dpi
 		String hiresFlag = System.getProperty("hires");
 		if (hiresFlag != null)
 			commonValues.setUseHiresImage(true);
@@ -104,7 +106,6 @@ public class PDFViewer implements ReportListener {
 		String memFlag = System.getProperty("memory");
 		if (memFlag != null)
 			commonValues.setUseHiresImage(false);
-		*/
 		
 		commonValues.setUseHiresImage(false);
 		commonValues.maxViewY = 0;// ensure reset for any viewport
@@ -152,7 +153,6 @@ public class PDFViewer implements ReportListener {
 
 		try {
 			this.scalingValues = new String[]{
-										Language.getWord("ESCANCHO"),
 										Language.getWord("LARGO"),
 										Language.getWord("ANCHO"),
 										"25","50", "75", "100", "125", "150", "200", "250", "500", "750","1000" }; 

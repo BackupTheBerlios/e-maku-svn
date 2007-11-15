@@ -239,7 +239,7 @@ public class Commands {
 		boolean fileCanBeOpened = true;
 		
 		/** reset default values */
-		currentGUI.setScalingToDefault(); 
+		//currentGUI.setScalingToDefault(); 
 		
 		decode_pdf.closePdfFile();
 		
@@ -325,14 +325,16 @@ public class Commands {
 		commonValues.setCurrentPage(1);
 		
 		try{
-			if(fileCanBeOpened)
-				processPage();	
-			else{
+			if(fileCanBeOpened) {
+				processPage();
+			}
+			else {
 				currentGUI.setViewerTitle("");
 				decode_pdf.clearScreen();
+				currentGUI.zoom();
 				commonValues.setPageCount(1);
 				commonValues.setCurrentPage(1);
-				currentGUI.zoom();
+				
 			}
 		}catch(Exception e){
 			System.err.println("Exception " + e + " decoding file");

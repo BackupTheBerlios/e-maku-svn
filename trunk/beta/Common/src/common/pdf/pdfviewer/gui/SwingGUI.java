@@ -230,6 +230,7 @@ public class SwingGUI extends GUI implements GUIFactory {
 			frame.setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
 			frame.addInternalFrameListener(new FrameCloser(currentCommands, this,decode_pdf,currentPrinter,commonValues));
 		}
+		setScaling(2);
 	}
 	
 	/**setup keyboard shortcuts*/
