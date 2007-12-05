@@ -163,6 +163,10 @@ public class XMLComboBox extends ComboBoxFiller {
     	return pack;
     }
     
+    public void validPackage() throws VoidPackageException {
+    	getElementCombo();
+    }
+    
     public Element getPrintPackage() throws VoidPackageException {
         Element pack = new Element("package");
         Element field = new Element("field");

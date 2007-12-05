@@ -70,7 +70,7 @@ public class TransactionServerResultSet {
             	//System.out.print(".");
                 Thread.sleep(10);
                 i++;
-                if (i>3000) {
+                if (i>9000) {
                     throw new TransactionServerException();
                 }
             }

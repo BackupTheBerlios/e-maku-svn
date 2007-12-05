@@ -64,6 +64,7 @@ public class AdminProdServ extends JPanel implements FocusListener {
     private XMLTextField XMLTFiva;
     private XMLTextField XMLTFpcosto;
     private XMLCheckBox XMLCBestado;
+    private XMLTextField idProdServ;
 
     private String valueArgs="NEW";
     private String namebutton = "SAVE";
@@ -111,6 +112,7 @@ public class AdminProdServ extends JPanel implements FocusListener {
         JPanel JPetiquetas = new JPanel(new GridLayout(8,1));
         JPanel JPfields = new JPanel(new GridLayout(8,1));
 
+        idProdServ = new XMLTextField("IDPRODSERV", 10, 13);
         XMLTFcodigo = new XMLTextField("CODE", 10, 13);
         XMLTFbarras = new XMLTextField("BARRAS", 10, 13,XMLTextField.TEXT);
 
@@ -184,7 +186,8 @@ public class AdminProdServ extends JPanel implements FocusListener {
                 						   sqlCode.get(0),
                 						   null, 
                 						   XMLTFcodigo.getText(),
-						                   new XMLTextField[] { XMLTFbarras, 
+						                   new XMLTextField[] { idProdServ,
+                							   					XMLTFbarras, 
             													XMLTFdescripcion,
             													XMLTFmarca,
             													XMLTFpeso,
@@ -264,6 +267,7 @@ public class AdminProdServ extends JPanel implements FocusListener {
      * Metodo encargado de limpiar todos los objetos graficos
      */
     public void clean() {
+        idProdServ.setText("");
         XMLTFcodigo.setText("");
         XMLTFbarras.setText("");
         XMLTFdescripcion.setText("");
@@ -272,6 +276,7 @@ public class AdminProdServ extends JPanel implements FocusListener {
         XMLTFiva.setText("");
         XMLTFpcosto.setText("");
         XMLCBestado.setSelected(false);
+        XMLCBgrupoImp.setSelectedIndex(0);
     }
 
     /**
@@ -291,7 +296,7 @@ public class AdminProdServ extends JPanel implements FocusListener {
 	                            if (!XMLTFpcosto.getText().equals("")) {
 	                                
 	                            	if (valueArgs.equals("NEW")) {
-	                                    pack.addContent(XMLTFcodigo.getElementText("key"));
+	                                    pack.addContent(XMLTFcodigo.getElementText());
 	                                }
 	                                
 	                                if (valueArgs.equals("NEW") || valueArgs.equals("EDIT")) {
@@ -312,11 +317,11 @@ public class AdminProdServ extends JPanel implements FocusListener {
 	                                }
 	                                
 	                                if (valueArgs.equals("EDIT")) {
-	                                    pack.addContent(XMLTFcodigo.getElementText("key"));
+	                                    pack.addContent(idProdServ.getElementText("key"));
 	                                }
 	                                
 	                                if (valueArgs.equals("DELETE")) {
-	                                    pack.addContent(XMLTFcodigo.getElementText());
+	                                    pack.addContent(idProdServ.getElementText("key"));
 	                                }
 	                            }
 	                            else {

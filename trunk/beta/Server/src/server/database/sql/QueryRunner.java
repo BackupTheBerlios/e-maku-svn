@@ -119,7 +119,7 @@ public class QueryRunner extends Element {
 	        return status;
     	}
     	catch(SQLException SQLEe) {
-    		throw new SQLException(cod_sql+" "+SQLEe.getMessage());
+    		throw new SQLException("SQL "+sql+" code "+cod_sql +" "+SQLEe.getMessage());
     	}
 	        
     }

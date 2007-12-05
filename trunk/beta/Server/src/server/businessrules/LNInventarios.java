@@ -189,8 +189,7 @@ public class LNInventarios {
 				nameField = nameField.toLowerCase();
 				if ("cuenta".equals(nameField)) {
 					cuenta = field.getValue();
-					if (!(cuenta.startsWith("14") && !cuenta.substring(4, 6)
-							.equals("99"))) {
+					if (!(cuenta.startsWith("14") && Integer.parseInt(cuenta.substring(4, 6))<90)) {
 						return;
 					} else {
 					}
