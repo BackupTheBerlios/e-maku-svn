@@ -838,6 +838,10 @@ public class GenericData extends JPanel implements DateListener,
 		return pack;
 	}
 
+	public void validPackage() throws VoidPackageException {
+		getPackage();
+	}
+
 	public Element getPackage() throws VoidPackageException {
 
 		Element pack = new Element("package");
