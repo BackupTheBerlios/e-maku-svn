@@ -20,22 +20,17 @@
  */
 package common.pdf.printing;
 
-import java.awt.print.PageFormat;
-import java.awt.print.Paper;
-import java.awt.print.PrinterJob;
-import java.io.File;
-import java.lang.reflect.Array;
-import java.util.HashMap;
-import java.util.Map;
+import java.awt.print.*;
+import java.io.*;
+import java.lang.reflect.*;
+import java.util.*;
 
-import javax.print.PrintService;
-import javax.print.attribute.Attribute;
-import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.Media;
+import javax.print.*;
+import javax.print.attribute.*;
+import javax.print.attribute.standard.*;
 
-import org.jpedal.PdfDecoder;
-import org.jpedal.utils.LogWriter;
+import org.jpedal.*;
+import org.jpedal.utils.*;
 
 /**
  * <P>

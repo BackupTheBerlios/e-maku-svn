@@ -1,53 +1,29 @@
 package common.gui.components;
 
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Vector;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.lang.reflect.*;
+import java.net.*;
+import java.util.*;
 
-import javax.print.PrintException;
-import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JInternalFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
+import javax.print.*;
+import javax.swing.*;
 
-import org.jdom.Attribute;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+import org.jdom.*;
+import org.jdom.input.*;
 
-import common.comunications.DateSender;
-import common.control.ClientHeaderValidator;
-import common.control.ErrorEvent;
-import common.control.ErrorListener;
-import common.control.SuccessEvent;
-import common.control.SuccessListener;
-import common.gui.forms.GenericForm;
-import common.gui.forms.NotFoundComponentException;
-import common.misc.Icons;
-import common.misc.language.Language;
-import common.misc.parameters.EmakuParametersStructure;
-import common.pdf.pdfviewer.PDFViewer;
-import common.printer.PlainPrintingManager;
-import common.printer.PostScriptManager;
-import common.printer.PrintingManager;
-import common.printer.PrintingManager.ImpresionType;
-import common.printer.plainViewer.TextReportViewer;
-import common.transactions.TransactionServerResultSet;
+import common.comunications.*;
+import common.control.*;
+import common.gui.forms.*;
+import common.misc.*;
+import common.misc.language.*;
+import common.misc.parameters.*;
+import common.pdf.pdfviewer.*;
+import common.printer.*;
+import common.printer.PrintingManager.*;
+import common.printer.plainViewer.*;
+import common.transactions.*;
 
 /**
  * ButtonsPanel.java Creado el 22-sep-2004
@@ -349,6 +325,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 							Attribute ATSilent  = rootTemplate.getAttribute("silent");
 							Attribute ATCopies  = rootTemplate.getAttribute("copies");
 							Attribute ATprinter  = rootTemplate.getAttribute("printer");
+							Attribute ATorientation  = rootTemplate.getAttribute("orientation");
 							
 							boolean silent = ATSilent!=null ? ATSilent.getBooleanValue() : false;
 							int copies     = ATCopies!=null ? ATCopies.getIntValue() : 1;
@@ -357,8 +334,9 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 											 !ATprinter.getValue().trim().equals("") ?  
 											 ATprinter.getValue() : 
 											 null ;
-											 
+							String orientation = ATorientation!=null ? ATorientation.getValue() : null;
 							if ("PLAIN".equals(typePrinter) ) {
+								plainManager.setNdocument(lastNumber);
 								plainManager.process(rootTemplate,printJob);
 								if (plainManager.isSuccessful()) {
 									System.out.println("================================");
@@ -366,16 +344,22 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 									System.out.println("================================");
 									ImpresionType        IType     = plainManager.getImpresionType();
 									ByteArrayInputStream IStream   = plainManager.getStream();
-									new PrintingManager(IType,IStream, silent, copies,printer);
-									plainManager = new PlainPrintingManager(plainManager.getNdocument());
+									new PrintingManager(IType,IStream, silent, copies,printer,orientation);
 								}
+								plainManager = new PlainPrintingManager(lastNumber);
 							}
 							if ("GRAPHIC".equals(typePrinter) ) {
-								postScriptManager.load(rootTemplate,printJob);
-								new PrintingManager(postScriptManager,silent, copies,printer);
-								postScriptManager = new PostScriptManager(postScriptManager.getNdocument());
+								postScriptManager.setNdocument(lastNumber);
+								postScriptManager.process(rootTemplate,printJob);
+								ByteArrayInputStream IStream   = postScriptManager.getStream();
+								ImpresionType        IType     = postScriptManager.getImpresionType();
+								new PrintingManager(IType,IStream, silent, copies,printer,orientation);
+								postScriptManager = new PostScriptManager(lastNumber);		
 							}
-							System.gc();
+							
+							//TODO Comentado por cristian,
+							//Esta llamada la garbage collector es verificación
+							//System.gc();
 						}
 						else {
 							System.out.println("Plantilla "+pathTemplate+" no encontrada");
@@ -709,11 +693,9 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 	public void cathErrorEvent(ErrorEvent e) {
 		// TODO Auto-generated method stub
 		String numeration = e.getNdocument();
-		System.out.println("evento de error, transaccion: "+numeration+" transaccion: "+idTransaction+" transaccion obtenida "+e.getIdPackage());
 		if (idTransaction!=null && idTransaction.equals(e.getIdPackage())) {
 			lastNumber = numeration;
 			badActionFinish=true;
-			System.out.println("Estado cambiado ...");
 		}
 	}
 }

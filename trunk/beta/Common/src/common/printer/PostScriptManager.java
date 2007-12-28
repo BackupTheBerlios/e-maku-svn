@@ -1,41 +1,29 @@
 package common.printer;
 
+import java.awt.*;
 import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.RoundRectangle2D;
-import java.awt.print.PageFormat;
-import java.awt.print.Paper;
-import java.awt.print.Printable;
-import java.awt.print.PrinterException;
-import java.io.ByteArrayInputStream;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.StringTokenizer;
+import java.awt.geom.*;
+import java.io.*;
+import java.text.*;
+import java.util.*;
 
-import org.jdom.Attribute;
-import org.jdom.DataConversionException;
+import org.jdom.*;
 import org.jdom.Element;
 
-import common.control.ClientHeaderValidator;
-import common.control.SuccessEvent;
-import common.control.SuccessListener;
-import common.printer.PrintingManager.ImpresionType;
+import com.lowagie.text.*;
+import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.*;
+import common.control.*;
+import common.misc.text.*;
+import common.printer.PrintingManager.*;
 
 
-public class PostScriptManager implements AbstractManager, SuccessListener, Printable {
+public class PostScriptManager implements AbstractManager, SuccessListener {
 	
 	private static final long serialVersionUID = 3641816256967941893L;
 	private Graphics2D g2d;
-	
 	private boolean successful;
-	private ImpresionType impresionType = ImpresionType.POSTSCRIPT;;
+	private ImpresionType impresionType = ImpresionType.PDF;
 	private String ndocument = "";
 	private boolean success = false;
 	private Element rootTemplate;
@@ -43,34 +31,23 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 	private int height;
 	private Element rootTransact;
 	private String idTransaction="";
+	private int rowNextPage = 0;
+	private com.lowagie.text.Document document;
+	private ByteArrayOutputStream outPut = new ByteArrayOutputStream();
+	private PdfContentByte cb;
+	private PdfWriter pdfWriter;
+	private ArrayList<Graphics2D> objects = new ArrayList<Graphics2D>();
+	private int pageCount = 1;
 	
-	/**
-	 * 
-	 * @param rootTemplate
-	 * @param rootTransact
-	 */
-	public void load(Element rootTemplate,Element rootTransact) {
-		this.rootTemplate = rootTemplate;
-		this.rootTransact = rootTransact;
-	}
-	 
-	/**
-	 * 
-	 *
-	 */
 	public PostScriptManager() {
 		ClientHeaderValidator.addSuccessListener(this);
 	}
 	
-	public PostScriptManager(String ndocument) {
+	public PostScriptManager(String iddoc) {
 		ClientHeaderValidator.addSuccessListener(this);
-		this.ndocument=ndocument;
+		this.ndocument=iddoc;
 	}
 
-	/**
-	 * 
-	 *
-	 */
 	public void process() {
 		try {
 			Attribute ATTRequesNumeration = rootTemplate.getAttribute("requestNumeration");
@@ -94,11 +71,27 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 			Calendar calendar = Calendar.getInstance();
 			long init = calendar.getTimeInMillis();
 			
-			processMetadata(rootTemplate.getChild("metadata"));
 			Element settings = rootTemplate.getChild("settings");
-			
 			width  = settings.getAttribute("width").getIntValue();
 			height = settings.getAttribute("height").getIntValue();
+			
+			Rectangle pageSize = new Rectangle(width,height);
+
+			document = new com.lowagie.text.Document(pageSize);
+			try {
+				pdfWriter = PdfWriter.getInstance(document,outPut);
+				document.open();
+				
+			} catch (DocumentException e) {
+				e.printStackTrace();
+			}
+			cb = pdfWriter.getDirectContent();
+			g2d = cb.createGraphicsShapes(width,height);
+			
+			objects.add(g2d);
+			
+			processMetadata(rootTemplate.getChild("metadata"));
+
 			Iterator itTemplate = rootTemplate.getChildren("package").iterator();
 			Iterator itTransact = rootTransact.getChildren("package").iterator();
 			int countPacks = 0;
@@ -117,16 +110,26 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 					processElement(elmTemplate,elmTransact);
 				}
 			}
+			
 			if ( countPacks > 0 ) {
 				this.successful = true;
 				calendar = Calendar.getInstance();
 				long end = calendar.getTimeInMillis();
 				System.out.println("Generador en " + (end-init) + " milisegundos ");
 			}
+			
 		}
 		catch (DataConversionException e) {
 			e.printStackTrace();
+		}		
+		g2d.dispose();
+		try {
+			outPut.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		document.close();
 	}
 	
 	/**
@@ -176,6 +179,10 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 				String value = ndocument;
 				g2d.drawString(value,col,row);
 			}
+			else if ("pagenumber".equals(name)) {
+				String value = String.valueOf(pageCount);
+				g2d.drawString(value,col,row);
+			}
 			else if ("font".equals(name)) {
 				g2d.setFont(new Font(attribs.get("name").getValue(),Font.PLAIN,attribs.get("size").getIntValue()));
 			}
@@ -199,9 +206,19 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 			if (el_template.getName().equals("subpackage")) {
 
 				int rowInit = el_template.getAttribute("rowInit").getIntValue();
+				int rowInitOrig = rowInit; 
 				int rowAcum = el_template.getAttribute("rowAcum").getIntValue();
+				Attribute attMaxAcum = el_template.getAttribute("maxRowsAcum");
+				int maxAcum = attMaxAcum!=null ? attMaxAcum.getIntValue() : -1;
+				Attribute attrowInitNewPage = el_template.getAttribute("rowInitNewPage");
+				int rowInitNewPage = attrowInitNewPage!=null ? attrowInitNewPage.getIntValue() : -1;
+				
+				Attribute attmaxRowsAcumNewPage = el_template.getAttribute("maxRowsAcumNewPage");
+				int maxRowsAcumNewPage = attmaxRowsAcumNewPage!=null ? attmaxRowsAcumNewPage.getIntValue() : -1;
+				
 				
 				Iterator it = el_template.getChildren("field").iterator();
+				
 				ArrayList<HashMap<String,Attribute>> AttCols = new ArrayList<HashMap<String,Attribute>>(); 
 				while (it.hasNext()) {
 					HashMap<String,Attribute> attribs = new HashMap<String,Attribute>();
@@ -214,18 +231,49 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 					AttCols.add(attribs);
 				}
 				
-				while (it_transaction.hasNext()) {
+				while ((it_transaction.hasNext() && maxAcum==-1)||
+					   (rowInit<maxAcum)) {
+					//FIXME HAY QUE OPTIMIZAR ESTO
 					Element element = (Element) it_transaction.next();
 					Iterator iterator = element.getChildren().iterator();
 					int i=0;
 					while(iterator.hasNext()) {
-						Element elmt = (Element) iterator.next();
-						Attribute att = new Attribute("row",String.valueOf(rowInit));
-						AttCols.get(i).put("row",att);
-						addValue(elmt.getValue(),AttCols.get(i));
-						i++;
+							Element elmt = (Element) iterator.next();
+							Attribute att = new Attribute("row",String.valueOf(rowInit));
+							AttCols.get(i).put("row",att);
+							addValue(elmt.getValue(),AttCols.get(i));
+							i++;
 					}
 					rowInit+=rowAcum;
+				}
+				if (it_transaction.hasNext()) {
+					System.out.println("Hojas Separadas por maximo numero de filas: "+ maxAcum);
+					int index = 0;
+					while (it_transaction.hasNext()) {
+						index++;
+						//FIXME HAY QUE OPTIMIZAR ESTO
+						Element element = (Element) it_transaction.next();
+						Iterator iterator = element.getChildren().iterator();
+						int i=0;
+						while(iterator.hasNext()) {
+							Element elmt = (Element) iterator.next();
+							Attribute att = new Attribute("row",String.valueOf(rowInit));
+							AttCols.get(i).put("row",att);
+							addValue(elmt.getValue(),AttCols.get(i));
+							i++;
+						}
+						rowInit+=rowAcum;
+						if (index==maxAcum) {
+							//FIXME PUNTO DE PARTIDA PARA LA GENERACION DE OTRA HOJA
+							document.newPage();							
+							rowInit=rowInitNewPage;
+							maxAcum=maxRowsAcumNewPage;
+							g2d = cb.createGraphicsShapes(width,height);
+							processMetadata(rootTemplate.getChild("newpage"));
+							++pageCount;
+							index=0;
+						}
+					}
 				}
 			}
 			else {
@@ -251,7 +299,11 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 	 */
 	private void addValue(String value,HashMap<String,Attribute> attribs) throws DataConversionException {
 		
-		int row =  attribs.get("row").getIntValue();
+		if (attribs.size()==0) {
+			return;
+		}
+		
+		int row =  attribs.get("row").getIntValue() + rowNextPage;
 		int col =  attribs.get("col").getIntValue();
 		
 		Attribute attribute = attribs.get("type");
@@ -333,6 +385,54 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 			FontMetrics m = g2d.getFontMetrics();
 			g2d.drawString(value, col-m.stringWidth(value),row);
 		}
+		else if ("NUMTOLETTERS".equals(type)) {
+            try {
+            	int width = attribs.get("width").getIntValue();
+    			int height = attribs.get("height").getIntValue();
+    			
+                Double d = Double.parseDouble(value);
+                String letters = String.valueOf(d.intValue());
+                letters = NumberToLetterConversor.letters(letters, null);
+    			int rowAcum = attribs.get("rowAcum").getIntValue();
+    			
+    			value = value.replaceAll("\n", " ");
+    			StringBuffer buf = new StringBuffer(letters);
+    			int lastspace = -1;
+    			int linestart = 0;
+    			int i = 0;
+    			while ( i < buf.length()) {
+    				if (buf.charAt(i) == ' ') {
+    					lastspace = i;
+    				}
+    				if (buf.charAt(i) == '\n') {
+    					lastspace = -1;
+    					linestart = i + 1;
+    				}
+    				if (i > linestart + width) {
+    					if (lastspace != -1) {
+    						buf.delete(lastspace,lastspace+1);
+    						buf.insert(lastspace,"\n");
+    						linestart = lastspace;
+    						lastspace = -1;
+    						
+    					} else {
+    						buf.insert(i, '\n');
+    						linestart = i + 1;
+    					}
+    				}
+    				i++;
+    			}
+    			StringTokenizer st = new StringTokenizer(buf.toString(),"\n");
+    			for (int j=0; j < height && st.hasMoreElements(); j++) {
+    				String tok = st.nextToken();
+    				g2d.drawString(tok,col,row);
+    				row+=rowAcum;
+    			}
+            } catch (NumberFormatException NFE) {
+                // Pendiente por traducir
+                System.out.printf("No se puede convertir %s  a letras\n%s",value,NFE.getMessage());
+            }
+        }
 		g2d.setFont(currentFont);
 	}
 
@@ -348,44 +448,26 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 		}
 	}
 	
-	/**
-	 * 
-	 */
+
 	public ImpresionType getImpresionType() {
 		return this.impresionType;
 	}
 
-	/**
-	 * 
-	 */
-	public ByteArrayInputStream getStream() { return null; }
+	public ByteArrayInputStream getStream() {
+		ByteArrayInputStream in = new ByteArrayInputStream(outPut.toByteArray());
+		return in;
+	}
 
-	/**
-	 * 
-	 */
 	public boolean isSuccessful() {
 		return this.successful;
 	}
 	
-	/**
-	 * 
-	 */
-	public int print(Graphics graphics, PageFormat pf, int pageIndex) throws PrinterException {
-		Paper p = pf.getPaper();
-		p.setImageableArea( 0, 0, width,height);
-		pf.setPaper(p);
-		g2d= (Graphics2D)graphics;
-		g2d.setClip(0, 0,width,height);
-		switch (pageIndex) {
-			case 0:
-				process();
-				return PAGE_EXISTS;
-			default:
-				return NO_SUCH_PAGE;
-		}
-	}
 	
-	public void process(Element template, Element packages) {}
+	public void process(Element template, Element packages) {
+		this.rootTemplate = template;
+		this.rootTransact = packages;
+		process();
+	}
 	
 	public void setIdTransaction(String idTransaction) {
 		this.idTransaction = idTransaction;
@@ -393,5 +475,10 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 	
 	public String getNdocument() {
 		return ndocument;
+	}
+
+	public void setNdocument(String lastNumber) {
+		// TODO Auto-generated method stub
+		ndocument=lastNumber;
 	}
 }

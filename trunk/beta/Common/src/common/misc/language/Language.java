@@ -1,15 +1,10 @@
 package common.misc.language;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
-import javax.swing.*;
-
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+import org.jdom.*;
+import org.jdom.input.*;
 
 /**
  * Language.java Creado el 17-jun-2005
@@ -39,6 +34,8 @@ public class Language  {
     private static Hashtable <String,messageStructure>glossary;
     
     public void loadLanguage(String lang) {
+    	String languageCode = lang.substring(0,lang.indexOf('_'));
+    	Locale.setDefault(new Locale(languageCode));
     	loadLanguage(null,lang);
     }
     

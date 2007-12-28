@@ -325,7 +325,7 @@ public class PlainReportPrinterDialog extends JFrame implements ActionListener {
     	
     	ByteArrayInputStream currentPage = new ByteArrayInputStream(text.getBytes());
 		try {
-			 new PrintingManager(ImpresionType.PLAIN,currentPage,true,1,printer);
+			 new PrintingManager(ImpresionType.PLAIN,currentPage,true,1,printer,null);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (PrintException e) {

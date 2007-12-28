@@ -1,6 +1,7 @@
 package common.printer;
 
 import java.io.*;
+import java.text.*;
 import java.util.*;
 
 import javax.print.*;
@@ -16,19 +17,30 @@ public class PrintingManager {
 	private ImpresionType type;
 	private DocFlavor docFlavor;
 	private PrintService[] jps;
-
+	private static int count=0;
+	private String jobName;
+	private DocAttributeSet daset = new HashDocAttributeSet();
 	public PrintingManager (
 			ImpresionType type,
 			ByteArrayInputStream is,
 			boolean silent,
 			int copies,
-			String printer) throws FileNotFoundException, PrintException {
+			String printer, String orientation) throws FileNotFoundException, PrintException {
 		
 		this.type = type;
 		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
-		pras.add(new Copies(copies));
+		
 		Date date = new Date();
-		pras.add(new JobName("emaku-job-"+date.toString(),Locale.getDefault()));
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		jobName = "empj"+sdf.format(date)+(++count);
+		pras.add(new JobName(jobName,Locale.getDefault()));
+		if (orientation!=null) {
+			if ("LANDSCAPE".equals(orientation)) {
+				pras.add(OrientationRequested.LANDSCAPE);
+				daset.add(OrientationRequested.LANDSCAPE);
+			}
+		}
+		
 		jps = CommonConstants.printServices;
 		if ((jps==null ) || (jps.length == 0)) {
 			showErroDialog();
@@ -46,17 +58,22 @@ public class PrintingManager {
 			}
 		}
 		else if (type.equals(ImpresionType.PDF)) {
-			docFlavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
+			docFlavor = DocFlavor.INPUT_STREAM.PDF;
 		}
 		PrintService ps = selectPrinservice(printer);
 		if (silent && ps!=null) {
+			pras.add(new Copies(copies));
 			print(ps,is,pras);
 		}
 		else {
-			defaultService = ServiceUI.printDialog(null, 200, 200,jps, ps, docFlavor, pras);
-			if (defaultService!=null) {
-				CommonConstants.printSelect = defaultService;
-				print(defaultService,is,pras);
+			try {
+				defaultService = ServiceUI.printDialog(null, 200, 200,jps, ps, docFlavor, pras);
+				if (defaultService!=null) {
+					CommonConstants.printSelect = defaultService;
+					print(defaultService,is,pras);
+				}
+			} catch (NullPointerException NPEe) {
+				//NPEe.printStackTrace();
 			}
 		}
 		try {
@@ -67,41 +84,17 @@ public class PrintingManager {
 		is = null;
 	}
 	
-	public PrintingManager (
-			PostScriptManager postScriptManager,
-			boolean silent,
-			int copies,
-			String printer) throws PrintException {
-		this.docFlavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
-		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
-		pras.add(new Copies(copies));
-		Date date = new Date();
-		pras.add(new JobName("emaku-job-"+date.toString(),Locale.getDefault()));
-		jps = CommonConstants.printServices;
-		if ((jps==null ) || jps.length == 0) {
-			showErroDialog();
-			return;
-		}
-		PrintService defaultService = null;
-		System.out.println("Printer name " + printer);
-		PrintService ps = selectPrinservice(printer);
-		if (silent && ps!=null) {
-			print(ps,postScriptManager,pras);
-		}
-		else {
-			defaultService = ServiceUI.printDialog(null, 200, 200,jps, ps,docFlavor,pras);
-			if (defaultService!=null) {
-				CommonConstants.printSelect = defaultService;
-				print(defaultService,postScriptManager,pras);
-			}
-		}
-	}
-	
 	private void print(PrintService ps, Object printData, PrintRequestAttributeSet pras) throws PrintException {
 		DocPrintJob job = ps.createPrintJob();
-		Doc doc = new SimpleDoc(printData, docFlavor, null);
-		System.out.println(docFlavor);
+		Doc doc = new SimpleDoc(printData, docFlavor, daset);
 		job.print(doc, pras);
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("::::::");
 	}
 	
 	private PrintService selectPrinservice(String printer) {

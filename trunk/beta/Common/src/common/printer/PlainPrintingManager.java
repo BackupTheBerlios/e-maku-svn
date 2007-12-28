@@ -493,4 +493,9 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 	public void setIdTransaction(String idTransaction) {
 		this.idTransaction = idTransaction;
 	}
+
+	public void setNdocument(String lastNumber) {
+		// TODO Auto-generated method stub
+		vars.put("ndocument",lastNumber);
+	}
 }

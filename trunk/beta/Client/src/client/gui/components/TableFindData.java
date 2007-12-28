@@ -1008,8 +1008,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 	}
 
 	private void reloadData() {
-		for (int i = 0; !"".equals(TMFDtabla.getValueAt(i, 0))
-				&& i < TMFDtabla.getRowCount(); i++) {
+		for (int i = 0;  i < TMFDtabla.getRowCount() && 
+		                !"".equals(TMFDtabla.getValueAt(i, 0)) ; i++) {
 			TMFDtabla.setValueAt(TMFDtabla.getValueAt(i, 0), i, 0);
 		}
 	}
