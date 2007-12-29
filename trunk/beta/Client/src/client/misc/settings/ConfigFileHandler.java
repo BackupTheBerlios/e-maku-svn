@@ -70,7 +70,7 @@ public class ConfigFileHandler extends EmakuParametersStructure {
      * @param log
      *            tipo de log a generar
      */
-    public static void buildNewFile(String host, String port, String language, String log,String cash) {
+    public static void buildNewFile(String host, String port, String language, String log, String cash, String theme, Vector companies) {
         
         
         Element rootNode = new Element("configuration");
@@ -81,7 +81,14 @@ public class ConfigFileHandler extends EmakuParametersStructure {
         rootNode.addContent(new Element("serverport").setText(port));
         rootNode.addContent(new Element("log").setText(log));
         rootNode.addContent(new Element("cash").setText(cash));
-        rootNode.addContent(new Element("classLookAndFeel").setText("default"));
+        rootNode.addContent(new Element("lookAndFeel").setText(theme));
+	
+	int size = companies.size();
+	for(int i=0;i<size;i++) {
+	    Element e = (Element) companies.elementAt(i);
+	    rootNode.addContent(e);	
+	}
+
         //rootNode.addContent(new Element("jarLookAndFeel").setText(URLJarLookAndFeel));
 
         /*
@@ -171,9 +178,6 @@ public class ConfigFileHandler extends EmakuParametersStructure {
                     parameters.add("lookAndFeel");
                 	counter++;
 	            }
-                /* else if (name.equals("jarLookAndFeel")) {
-                    URLJarLookAndFeel = data.getValue();
-	            } */
                 else if (name.equals("cash")) {
                 	cash = data.getValue();
                 	parameters.add("cash");
@@ -235,12 +239,12 @@ public class ConfigFileHandler extends EmakuParametersStructure {
             }
         }
 
-		String jar = "jar:file:"+System.getenv("EMAKU_HOME")+"/lib/emaku/"+jarFile+"!/";
+	String jar = "jar:file:"+System.getenv("EMAKU_HOME")+"/lib/emaku/"+jarFile+"!/";
 
-		jarDirectory = jar+directory;
+	jarDirectory = jar+directory;
         EmakuParametersStructure.setJarDirectoryTemplates(jarDirectory+"/printer-templates");
 
-		lang.loadLanguage(jarDirectory+"/misc",language);
+	lang.loadLanguage(jarDirectory+"/misc",language);
         /*
          * Cargando iconos
          */

@@ -12,6 +12,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Hashtable;
 import java.util.TreeMap;
+import java.util.Vector;
+import java.io.File;
+
+import org.jdom.Element;
 
 import javax.swing.GrayFilter;
 import javax.swing.ImageIcon;
@@ -21,21 +25,27 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.ListSelectionModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
+import javax.swing.JTabbedPane;
+import javax.swing.JScrollPane;
 
 import client.misc.settings.ConfigFileHandler;
 import client.misc.settings.ConfigFileNotLoadException;
+import client.gui.forms.CompanyDialog;
+import client.misc.ClientConstants;
 
 /**
- * FirstDialog.java Creado el 04-ago-2004
+ * SettingsDialog.java Creado el 04-ago-2004
  * 
- * Este archivo es parte de JMClient <A
+ * Este archivo es parte de eMaku <A
  * href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net) </A>
  * 
- * JMClient es Software Libre; usted puede redistribuirlo y/o realizar
+ * eMaku es Software Libre; usted puede redistribuirlo y/o realizar
  * modificaciones bajo los terminos de la Licencia Publica General GNU GPL como
  * esta publicada por la Fundacion del Software Libre (FSF); tanto en la version
  * 2 de la licencia, o cualquier version posterior.
@@ -51,25 +61,35 @@ import client.misc.settings.ConfigFileNotLoadException;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David
  *         Cepeda </A>
  */
+
 public class SettingsDialog extends JDialog {
 	
 	private static final long serialVersionUID = 7799638277510459773L;
 
 	private JTextField JTFHost;
 
-    private JTextField JTFPort;
+	private JTextField JTFPort;
     
-    private JTextField JTCash;
+    	private JTextField JTCash;
     
-    private JComboBox JCBLang;
+    	private JComboBox JCBLang;
     
-    private JComboBox JCBLogs;
+    	private JComboBox JCBLogs;
+
+	private JComboBox JCBThemes;
+
+	private static Vector<Element> companies = new Vector<Element>();
+
+	private static JButton addButton, editButton, delButton;
     
-    public static final int CREATE = 0;
+    	public static final int CREATE = 0;
     
-    public static final int EDIT = 1;
+    	public static final int EDIT = 1;
     
-    public boolean noFile = true;
+    	public boolean noFile = true;
+
+	private static JList names;
+	private static DefaultListModel listModel;
     
     /**
      * Este constructor ensambla toda el cuadro de dialogo de configuracion
@@ -91,27 +111,14 @@ public class SettingsDialog extends JDialog {
         String cash = "CA001";
         String currentLanguage = "es_CO";
         String currentLogMode = "Default";
-        
-        if (flag == EDIT) {
-        	try {
-        		noFile = false;
-        		ConfigFileHandler.loadSettings();        		
-        		host = ConfigFileHandler.getHost();
-        		port = String.valueOf(ConfigFileHandler.getServerPort());
-        		cash = ConfigFileHandler.getCash();
-        		currentLanguage = ConfigFileHandler.getLanguage();
-        		currentLogMode = ConfigFileHandler.getLogMode();
-        	} catch (ConfigFileNotLoadException e1) {
-        		e1.printStackTrace();
-        	}
-        }
-        
+	String currentTheme = "Default";
+               
         Object[] items = { "es_CO", "es_ES", "en_US"};
         
         JPanel JPlabels = new JPanel();
         JPanel JPfields = new JPanel();
-        JPlabels.setLayout(new GridLayout(5, 1));
-        JPfields.setLayout(new GridLayout(5, 1));
+        JPlabels.setLayout(new GridLayout(6, 1));
+        JPfields.setLayout(new GridLayout(6, 1));
 
         JLabel JLLang = new JLabel("Idioma: ");
         JPanel JPLLang = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -132,12 +139,33 @@ public class SettingsDialog extends JDialog {
         JLabel JLLog  = new JLabel("Tipo de Log:");
         JPanel JPLog = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPLog.add(JLLog);     
+
+        JLabel JLTheme  = new JLabel("Tema:");
+        JPanel JPLTheme = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPLTheme.add(JLTheme);     
+
         
         JPlabels.add(JPLLang);
         JPlabels.add(JPLHost);
         JPlabels.add(JPLPort);
         JPlabels.add(JPLBox);
         JPlabels.add(JPLog);
+        JPlabels.add(JPLTheme);
+
+        if (flag == EDIT) {
+        	try {
+        		noFile = false;
+        		ConfigFileHandler.loadSettings();        		
+        		host = ConfigFileHandler.getHost();
+        		port = String.valueOf(ConfigFileHandler.getServerPort());
+        		cash = ConfigFileHandler.getCash();
+        		currentLanguage = ConfigFileHandler.getLanguage();
+        		currentLogMode = ConfigFileHandler.getLogMode();
+			currentTheme = ConfigFileHandler.getLookAndFeel();
+        	} catch (ConfigFileNotLoadException e1) {
+        		e1.printStackTrace();
+        	}
+        }
 
         JTFHost = new JTextField(10);
         JTFHost.setText(host);
@@ -160,6 +188,9 @@ public class SettingsDialog extends JDialog {
         Object[] logItems = { "Default", "Verbose", "VerboseFile", "None" };
         JCBLogs = new JComboBox(logItems);
         JCBLogs.setSelectedItem(currentLogMode);
+
+        JCBThemes = new JComboBox(getThemeList());
+        JCBThemes.setSelectedItem(currentTheme);
         
         JPanel JPLang = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPLang.add(JCBLang);
@@ -175,12 +206,16 @@ public class SettingsDialog extends JDialog {
         
         JPanel JPLogs = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPLogs.add(JCBLogs);
+
+        JPanel JPThemes = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPThemes.add(JCBThemes);
         
         JPfields.add(JPLang);
         JPfields.add(JPHost);
         JPfields.add(JPPort);
         JPfields.add(JPBox);
         JPfields.add(JPLogs);
+        JPfields.add(JPThemes);
 
         JPanel JBase = new JPanel();
         JBase.setLayout(new BorderLayout());
@@ -221,14 +256,80 @@ public class SettingsDialog extends JDialog {
         });
         JPsouth.add(JBCancel);
 
+	JPanel companies = new JPanel(new BorderLayout());
+
+        JPanel JPbuttons = new JPanel();
+        JPbuttons.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+	addButton = new JButton("Adicionar");
+        addButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+		CompanyDialog dialog = new CompanyDialog(SettingsDialog.this,"Adicionando Empresa...","Adicionar","","","");
+		dialog.pack();
+		dialog.setLocationRelativeTo(SettingsDialog.this);
+		dialog.setVisible(true);
+            }
+        });
+
+	editButton = new JButton("Editar");
+        editButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+		String name = names.getSelectedValue().toString();
+                Element xml = findCompany(name);
+                String jar  = xml.getChild("jarFile").getValue();
+		String dir  = xml.getChild("directory").getValue();
+
+		CompanyDialog dialog = new CompanyDialog(SettingsDialog.this,"Editando Empresa...","Editar",name,jar,dir);
+		dialog.pack();
+		dialog.setLocationRelativeTo(SettingsDialog.this);
+		dialog.setVisible(true);
+            }
+        });
+
+	delButton = new JButton("Eliminar");
+        delButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+
+            }
+        });
+
+        JPbuttons.add(addButton);
+        JPbuttons.add(editButton);
+        JPbuttons.add(delButton);
+	companies.add(JPbuttons,BorderLayout.NORTH);
+
+        listModel = new DefaultListModel();
+	names = new JList(listModel);
+	names.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+
+	if (names.getModel().getSize() > 0) {
+		names.setSelectedIndex(0);
+	} else {
+		editButton.setEnabled(false);
+		delButton.setEnabled(false);
+	}
+
+        JScrollPane scrollPane = new JScrollPane(names);
+	companies.add(scrollPane,BorderLayout.CENTER);
+
+	JTabbedPane tabPane = new JTabbedPane();
+        tabPane.add(JBase,"General");
+	tabPane.add(companies,"Empresas");
+
         this.getContentPane().add(JPsouth, BorderLayout.SOUTH);
-        this.getContentPane().add(JBase, BorderLayout.CENTER);
+        this.getContentPane().add(tabPane, BorderLayout.CENTER);
         this.getContentPane().add(new JPanel(), BorderLayout.WEST);
         this.getContentPane().add(new JPanel(), BorderLayout.EAST);
     }
     
     public String getLog() {
         return JCBLogs.getSelectedItem().toString();
+    }
+
+    public String getTheme() {
+        return JCBThemes.getSelectedItem().toString();
     }
     
     public String getLanguage() {
@@ -282,10 +383,11 @@ public class SettingsDialog extends JDialog {
     private boolean packingData() {
     
     	String serverAddress = getHost();
-    	String serverPort    = getPort();  
+    	String serverPort    = getPort();
     	String language      = getLanguage();
     	String logType       = getLog();
-    	String pos           = getBox();    
+    	String pos           = getBox();
+	String theme         = getTheme();
    
     	if (serverAddress.length() < 1) {
     		JOptionPane.showMessageDialog(this,"El campo servidor se encuentra vacio!\nPor favor, ingrese un valor.");
@@ -303,7 +405,7 @@ public class SettingsDialog extends JDialog {
     		serverPort = "9117";
     	}     
 
-    	callConfigFile(serverAddress,serverPort,language,logType,pos);
+    	callConfigFile(serverAddress,serverPort,language,logType,pos,theme,companies);
 
     	if(noFile) {
     		callConnection();
@@ -314,8 +416,8 @@ public class SettingsDialog extends JDialog {
     }
       
     
-    private void callConfigFile(String serverAddress, String serverPort, String language, String logType, String pos) {
-        ConfigFileHandler.buildNewFile(serverAddress,serverPort,language, logType,pos);
+    private void callConfigFile(String serverAddress, String serverPort, String language, String logType, String pos, String theme, Vector companies) {
+        ConfigFileHandler.buildNewFile(serverAddress,serverPort,language,logType,pos,theme,companies);
     }
 
     private void callConnection()  {
@@ -325,12 +427,77 @@ public class SettingsDialog extends JDialog {
     public boolean isNumber(String s) {
         for(int i = 0; i < s.length(); i++) {
           char c = s.charAt(i);
-          if(!Character.isDigit(c))
+          if(!Character.isDigit(c)) {
               return false;
+	   }
          }
         return true;
-      }
+    }
 
+    public Object[] getThemeList() {
+	Object[] list = null;
+        String path = ClientConstants.EMAKU_HOME + ClientConstants.SEPARATOR + "themes";
+	File dir = new File(path);
+	if(dir.exists() && dir.canRead() && dir.isDirectory()) {
+           String[] themes = dir.list();
+	   list = new Object[themes.length];
+	   int j = 0;
+	   for (int i=0; i<themes.length; i++) {
+                if(themes[i].endsWith(".jar") || themes[i].endsWith(".JAR")) {
+		   list[j] = themes[i].substring(0,themes[i].indexOf("."));
+		   j++;
+                 }       
+            }
+	}
+
+	return list;
+    }
+
+    public static void addCompany(Element company, String name) {
+	companies.add(company);
+	listModel.addElement(name);
+
+        if (!editButton.isEnabled()) {
+		editButton.setEnabled(true);
+	}
+        if (!delButton.isEnabled()) {
+		delButton.setEnabled(true);
+	}
+
+	names.setSelectedValue(name,true);
+    }
+
+    public static void editCompany(Element values, String name) {
+	int size = companies.size();
+	for(int i=0;i<size;i++) {
+	 Element e = (Element) companies.elementAt(i);
+	 String company = e.getChild("name").getValue();
+	 if(company.equals(name)) {
+	    String newName = values.getChild("name").getText();
+	    e.getChild("name").setText(newName);
+	    e.getChild("jarFile").setText(values.getChild("jarFile").getText());
+	    e.getChild("directory").setText(values.getChild("directory").getText());
+	    companies.setElementAt(e,i);
+	    if(!name.equals(newName)) {
+		int index = names.getSelectedIndex();
+		listModel.setElementAt(newName,index);
+	    } 			
+	    return;	
+         }
+	}
+    }
+
+    private Element findCompany(String name) {
+	int size = companies.size();
+	for(int i=0;i<size;i++) {
+	 Element e = (Element) companies.elementAt(i);
+	 String company = e.getChild("name").getValue();
+	 if(company.equals(name)) {
+	    return e;
+         }
+	}
+	return null;
+    }	
 }
    
     /**
