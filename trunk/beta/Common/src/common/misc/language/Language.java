@@ -26,7 +26,7 @@ import org.jdom.input.*;
  * <br>
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
- * @author <A href='mailto:cristian@qhatu.net'>Gustavo Gonzalez</A>
+ * @author <A href='mailto:xtingray@qhatu.net'>Gustavo Gonzalez</A>
  */
 
 public class Language  {

@@ -125,6 +125,7 @@ public CompanyDialog(JDialog parent,String title,final String label,String name,
         JPsouth.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         JButton JBAccept = new JButton(label);
+	JBAccept.setMnemonic('A');
         
         JBAccept.addMouseListener(new MouseAdapter() {
             public void mouseReleased(MouseEvent e) {
@@ -141,6 +142,7 @@ public CompanyDialog(JDialog parent,String title,final String label,String name,
         });
 
         JButton JBCancel = new JButton("Cancelar");
+	JBCancel.setMnemonic('C');
         JBCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	setVisible(false);
@@ -157,15 +159,15 @@ public CompanyDialog(JDialog parent,String title,final String label,String name,
     }
 
     public String getName() {
-        return JTFName.getText();
+        return JTFName.getText().trim();
     }
 
     public String getJarFile() {
-        return JTFJar.getText();
+        return JTFJar.getText().trim();
     }
 
     public String getDirectory() {
-        return JTFDir.getText();
+        return JTFDir.getText().trim();
     }
 
     private void packingData(String label) {
@@ -176,21 +178,31 @@ public CompanyDialog(JDialog parent,String title,final String label,String name,
   
     	if (name.length() < 1) {
     		JOptionPane.showMessageDialog(this,"El campo Nombre se encuentra vacio!\nPor favor, ingrese un valor.");
+		JTFName.requestFocus();
     		return;
     	}
 
+	if(SettingsDialog.alreadyExists(name)) {
+		JOptionPane.showMessageDialog(this,"El Nombre de la empresa ya existe!\nPor favor, ingrese un valor diferente.");
+		JTFName.requestFocus();
+    		return;
+	}
+
     	if (jarFile.length() < 1) {
     		JOptionPane.showMessageDialog(this,"El campo Archivo Jar se encuentra vacio!\nPor favor, ingrese un valor.");
+		JTFJar.requestFocus();
     		return;
     	}
 
     	if (!(jarFile.toLowerCase().endsWith(".jar"))) {
     		JOptionPane.showMessageDialog(this,"El campo Archivo Jar debe incluir la extension .jar!\nPor favor, adicionela.");
+		JTFJar.requestFocus();
     		return;
     	}
 
     	if (directory.length() < 1) {
     		JOptionPane.showMessageDialog(this,"El campo Directorio se encuentra vacio!\nPor favor, ingrese un valor.");
+		JTFDir.requestFocus();
     		return;
     	}
 
@@ -198,7 +210,6 @@ public CompanyDialog(JDialog parent,String title,final String label,String name,
 	root.addContent(new Element("name").setText(name));
 	root.addContent(new Element("jarFile").setText(jarFile));
 	root.addContent(new Element("directory").setText(directory));
-
 
 	if(label.equals("Adicionar")) {
 	  SettingsDialog.addCompany(root,name);

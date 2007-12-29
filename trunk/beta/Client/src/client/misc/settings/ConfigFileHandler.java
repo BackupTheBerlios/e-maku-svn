@@ -57,7 +57,7 @@ public class ConfigFileHandler extends EmakuParametersStructure {
     //private static String URLJarLookAndFeel;
     private static String lookAndFeel;
     private static String cash;
-    private static ArrayList<Element> company;
+    private static ArrayList<Element> companies;
     /**
      * Este metodo sirve para crear un nuevo archivo de configuracion
      * 
@@ -70,7 +70,7 @@ public class ConfigFileHandler extends EmakuParametersStructure {
      * @param log
      *            tipo de log a generar
      */
-    public static void buildNewFile(String host, String port, String language, String log, String cash, String theme, Vector companies) {
+    public static void buildNewFile(String host, String port, String language, String log, String cash, String theme, Vector<Element> companiesVector) {
         
         
         Element rootNode = new Element("configuration");
@@ -83,23 +83,9 @@ public class ConfigFileHandler extends EmakuParametersStructure {
         rootNode.addContent(new Element("cash").setText(cash));
         rootNode.addContent(new Element("lookAndFeel").setText(theme));
 	
-	int size = companies.size();
-	for(int i=0;i<size;i++) {
-	    Element e = (Element) companies.elementAt(i);
-	    rootNode.addContent(e);	
-	}
-
-        //rootNode.addContent(new Element("jarLookAndFeel").setText(URLJarLookAndFeel));
-
-        /*
-        Element company = new Element("Company");
-        company.addContent(new Element("name").setText("mi_empresa"));
-        company.addContent(new Element("jarFile").setText("mi_empresa.jar"));
-        company.addContent(new Element("directory").setText("mi_empresa"));
-        */
-        for(Element element:company) {
+        for(Element element:companiesVector) {
         	rootNode.addContent(element);
-        }
+        } 
         
         XMLOutputter out = new XMLOutputter();
         out.setFormat(Format.getPrettyFormat());
@@ -136,7 +122,7 @@ public class ConfigFileHandler extends EmakuParametersStructure {
      */
     public static void loadSettings() throws ConfigFileNotLoadException {
         try {
-            company = new ArrayList<Element>();
+            companies = new ArrayList<Element>();
             builder = new SAXBuilder(false);
             String path = ClientConstants.CONF + "client.conf";
             File file = new File(path);
@@ -184,7 +170,7 @@ public class ConfigFileHandler extends EmakuParametersStructure {
                 	counter++;
                 }
                 else if (name.equals("company")) {
-                	company.add((Element)data.clone());
+                	companies.add((Element)data.clone());
                 	parameters.add("company");
                 	counter++;
                 }
@@ -267,18 +253,13 @@ public class ConfigFileHandler extends EmakuParametersStructure {
         return logMode;
     }
    
-    public static ArrayList getCompany() {
-    	return company;
+    public static ArrayList<Element> getCompanies() {
+    	return companies;
     }
     
     public static String getCash() {
     	return cash;
     }
-    
-    /*
-    public static String getClassLookAndFeel() {
-    	return classLookAndFeel;
-    }*/
     
     public static String getLookAndFeel() {
     	return lookAndFeel;

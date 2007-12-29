@@ -9,6 +9,8 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import java.util.Locale;
+
 import bsh.Interpreter;
 import client.gui.components.MainWindow;
 import client.gui.forms.Connection;
@@ -49,12 +51,41 @@ public class Run {
 	public static final Interpreter shellScript = new Interpreter();
 
 	public static void main(String[] args) {
-		
+
+		Locale locale = Locale.getDefault();
+
+		System.out.println("LANG: " + locale.getDisplayLanguage());
+
 		if (ClientConstants.EMAKU_HOME == null) {
-            System.out.println("ERROR: Variable EMAKU_HOME is undefined! Please set it up!");
+            		System.out.println("ERROR: Variable EMAKU_HOME is undefined! Please set it up!");
 			return;
 		}
 
+		for(int i=0;i<args.length;i++) {
+			if(args[i].equals("-r") || args[i].equals("--reconfigure")) {
+
+				String path = ClientConstants.CONF + "client.conf";
+            			File file = new File(path);
+				if(file.exists()) {
+					SettingsDialog dialog = new SettingsDialog(null,SettingsDialog.EDIT);
+					dialog.pack();
+					dialog.setLocation(
+	                			(ClientConstants.MAX_WIN_SIZE_WIDTH / 2) - dialog.getWidth() / 2,
+	                			(ClientConstants.MAX_WIN_SIZE_HEIGHT / 2) - dialog.getHeight() / 2);
+					dialog.setVisible(true);
+				} 
+			} else {
+				if(args[i].equals("-h") || args[i].equals("--help")) {
+					System.out.println(" Cliente eMaku 1.0");
+					System.out.println(" Opciones:");
+					System.out.println(" -r o --reconfigure : Configura parametros de conexion");
+					System.out.println(" -h o --help        : Muestra este mensaje");
+					System.out.println();
+					System.exit(0);
+				}
+			}
+		}
+		
 		try {
 			ConfigFileHandler.loadSettings();
 			setLookAndFeel();

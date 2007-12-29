@@ -3,7 +3,7 @@ package common.misc.parameters;
 import java.util.Hashtable;
 
 /**
- * GenericParameters.java Creado el 15-jul-2005
+ * EmakuParametersStructure.java Creado el 15-jul-2005
  * 
  * Este archivo es parte de E-Maku
  * <A href="http://comunidad.qhatu.net">(http://comunidad.qhatu.net)</A>

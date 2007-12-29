@@ -1,7 +1,6 @@
 package client.gui.forms;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -11,14 +10,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Hashtable;
-import java.util.TreeMap;
 import java.util.Vector;
+import java.util.ArrayList;
 import java.io.File;
 
 import org.jdom.Element;
 
-import javax.swing.GrayFilter;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -30,7 +27,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
 import javax.swing.JTabbedPane;
 import javax.swing.JScrollPane;
 
@@ -88,6 +84,8 @@ public class SettingsDialog extends JDialog {
     
     	public boolean noFile = true;
 
+	private JTabbedPane tabPane;
+
 	private static JList names;
 	private static DefaultListModel listModel;
     
@@ -144,13 +142,14 @@ public class SettingsDialog extends JDialog {
         JPanel JPLTheme = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPLTheme.add(JLTheme);     
 
-        
         JPlabels.add(JPLLang);
         JPlabels.add(JPLHost);
         JPlabels.add(JPLPort);
         JPlabels.add(JPLBox);
         JPlabels.add(JPLog);
         JPlabels.add(JPLTheme);
+
+	listModel = new DefaultListModel();
 
         if (flag == EDIT) {
         	try {
@@ -162,6 +161,7 @@ public class SettingsDialog extends JDialog {
         		currentLanguage = ConfigFileHandler.getLanguage();
         		currentLogMode = ConfigFileHandler.getLogMode();
 			currentTheme = ConfigFileHandler.getLookAndFeel();
+			proccessCompanies(ConfigFileHandler.getCompanies());
         	} catch (ConfigFileNotLoadException e1) {
         		e1.printStackTrace();
         	}
@@ -228,6 +228,7 @@ public class SettingsDialog extends JDialog {
         JPsouth.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         JButton JBAccept = new JButton("Aceptar");
+	JBAccept.setMnemonic('A');
         
         JBAccept.addMouseListener(new MouseAdapter() {
             public void mouseReleased(MouseEvent e) {
@@ -245,6 +246,7 @@ public class SettingsDialog extends JDialog {
         JPsouth.add(JBAccept);
 
         JButton JBCancel = new JButton("Cancelar");
+	JBCancel.setMnemonic('C');
         JBCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 //System.exit(0);
@@ -256,12 +258,13 @@ public class SettingsDialog extends JDialog {
         });
         JPsouth.add(JBCancel);
 
-	JPanel companies = new JPanel(new BorderLayout());
+	JPanel companiesPanel = new JPanel(new BorderLayout());
 
         JPanel JPbuttons = new JPanel();
         JPbuttons.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 	addButton = new JButton("Adicionar");
+	addButton.setMnemonic('d');
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 		CompanyDialog dialog = new CompanyDialog(SettingsDialog.this,"Adicionando Empresa...","Adicionar","","","");
@@ -272,6 +275,7 @@ public class SettingsDialog extends JDialog {
         });
 
 	editButton = new JButton("Editar");
+	editButton.setMnemonic('E');
         editButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -288,19 +292,26 @@ public class SettingsDialog extends JDialog {
         });
 
 	delButton = new JButton("Eliminar");
+	delButton.setMnemonic('l');
         delButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
-
+		 String item = names.getSelectedValue().toString();
+		 int k = listModel.lastIndexOf(item); 
+                 listModel.remove(k);
+		 removeCompany(item);
+		 names.setSelectedIndex(0);
+		 if (listModel.size() == 0) {
+			editButton.setEnabled(false);
+			delButton.setEnabled(false);
+		 }
             }
         });
 
         JPbuttons.add(addButton);
         JPbuttons.add(editButton);
         JPbuttons.add(delButton);
-	companies.add(JPbuttons,BorderLayout.NORTH);
+	companiesPanel.add(JPbuttons,BorderLayout.NORTH);
 
-        listModel = new DefaultListModel();
 	names = new JList(listModel);
 	names.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
@@ -312,16 +323,29 @@ public class SettingsDialog extends JDialog {
 	}
 
         JScrollPane scrollPane = new JScrollPane(names);
-	companies.add(scrollPane,BorderLayout.CENTER);
+	companiesPanel.add(scrollPane,BorderLayout.CENTER);
 
-	JTabbedPane tabPane = new JTabbedPane();
+	tabPane = new JTabbedPane();
         tabPane.add(JBase,"General");
-	tabPane.add(companies,"Empresas");
+	tabPane.add(companiesPanel,"Empresas");
 
         this.getContentPane().add(JPsouth, BorderLayout.SOUTH);
         this.getContentPane().add(tabPane, BorderLayout.CENTER);
         this.getContentPane().add(new JPanel(), BorderLayout.WEST);
         this.getContentPane().add(new JPanel(), BorderLayout.EAST);
+    }
+
+    private void proccessCompanies(ArrayList<Element> companiesList) {
+       for(int i=0;i<companiesList.size();i++) {
+		Element e = (Element) companiesList.get(i);
+		companies.add(e);
+		String name = e.getChild("name").getText();
+		listModel.addElement(name);
+	}
+    }
+
+    public static boolean alreadyExists(String name) {
+		return listModel.contains(name);
     }
     
     public String getLog() {
@@ -380,7 +404,7 @@ public class SettingsDialog extends JDialog {
     }  
 
     
-    private boolean packingData() {
+    private void packingData() {
     
     	String serverAddress = getHost();
     	String serverPort    = getPort();
@@ -392,14 +416,20 @@ public class SettingsDialog extends JDialog {
     	if (serverAddress.length() < 1) {
     		JOptionPane.showMessageDialog(this,"El campo servidor se encuentra vacio!\nPor favor, ingrese un valor.");
     		cleanServer();
-    		return false;
+    		return;
     	}
 
     	if (!isNumber(serverPort)) {
     		JOptionPane.showMessageDialog(this,"El campo puerto debe contener un valor numerico!\nPor favor, corrija el valor ingresado.");
     		cleanPort();
-    		return false;     	
+    		return;
     	}
+
+	if (companies.size() == 0) {
+    		JOptionPane.showMessageDialog(this,"Ninguna empresa fue configurada!\nPor favor, ingrese al menos una.");
+		tabPane.setSelectedIndex(1);
+    		return;			
+	}
 
     	if (serverPort.length() < 1) {
     		serverPort = "9117";
@@ -412,7 +442,6 @@ public class SettingsDialog extends JDialog {
     	}
     	dispose();
 
-    	return true;
     }
       
     
@@ -498,78 +527,16 @@ public class SettingsDialog extends JDialog {
 	}
 	return null;
     }	
-}
-   
-    /**
-     * Esta clase se encarga de adicionar las banderas en el combo de idiomas
-     * 
-     *       
-     * @author Julien Ponge
-     */
-    final class FlagRenderer extends JLabel implements ListCellRenderer
-    {
-        private static final long serialVersionUID = 3832899961942782769L;
 
-        /** Cache de Iconos. */    
-        private TreeMap<String, ImageIcon> icons = new TreeMap<String, ImageIcon>();
-   
-        /** Cache de iconos grises. */
-        private TreeMap<String, ImageIcon> grayIcons = new TreeMap<String, ImageIcon>();
-
-        public FlagRenderer()
-        {
-            setOpaque(true);
-        }
-
-        /**
-         * Retorna una celda personalizada
-         * 
-         * @param list La lista
-         * @param value El objeto
-         * @param index El indice
-         * @param isSelected verdadero si esta seleccionada
-         * @param cellHasFocus Descripcion del parametro
-         * @return La celda
-         */
-        public Component getListCellRendererComponent(JList list, Object value, int index,
-                boolean isSelected, boolean cellHasFocus)
-        {	
-            // We put the label
-            String langCode = (String) value;
-            
-            if (langCode.equals("es_CO"))
-                setText("Español (CO)");
-            else {
-                  if (langCode.equals("es_ES"))
-                      setText("Español (ES)");
-                  else
-                	  if (langCode.equals("en_US"))
-                          setText("English (US)");
-            }
-            
-            if (isSelected) {
-                setForeground(list.getSelectionForeground());
-                setBackground(list.getSelectionBackground());
-            }
-            else {
-                setForeground(list.getForeground());
-                setBackground(list.getBackground());
-            }
-            // Colocamos el icono de la bandera
-
-            if (!icons.containsKey(langCode))
-            {
-                ImageIcon icon;
-                icon = new ImageIcon(this.getClass().getResource("/icons/ico_" + langCode + ".png"));
-                icons.put(langCode, icon);
-                icon = new ImageIcon(GrayFilter.createDisabledImage(icon.getImage()));
-                grayIcons.put(langCode, icon);
-            }
-            if (isSelected || index == -1)
-                setIcon((ImageIcon) icons.get(langCode));
-            else
-                setIcon((ImageIcon) grayIcons.get(langCode));
-
-            return this;
-        }
+    private void removeCompany(String name) {
+	int size = companies.size();
+	for(int i=0;i<size;i++) {
+	 Element e = (Element) companies.elementAt(i);
+	 String company = e.getChild("name").getValue();
+	 if(company.equals(name)) {
+		companies.removeElementAt(i);
+		return;
+         }
+	}
+    }	
 }

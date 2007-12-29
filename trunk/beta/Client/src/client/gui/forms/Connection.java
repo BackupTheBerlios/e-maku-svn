@@ -89,11 +89,6 @@ public class Connection {
         connectButton.setIcon(new ImageIcon(this.getClass().getResource(
                 "/icons/ico_conectar.png")));
         connectButton.setToolTipText(Language.getWord("CONNECT"));
-
-        JButton settingsButton = new JButton();
-        settingsButton.setIcon(new ImageIcon(this.getClass().getResource(
-                "/icons/ico_configuracion.png")));
-        settingsButton.setToolTipText(Language.getWord("SETTINGS"));
         
         JButton cancelButton = new JButton();
         cancelButton.setIcon(new ImageIcon(this.getClass().getResource(
@@ -114,22 +109,12 @@ public class Connection {
             }
         });
         
-        settingsButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent AEe) {
-            	SettingsDialog dialog;
-            	dialog = new SettingsDialog(connectionFrame,SettingsDialog.EDIT);
-                dialog.setLocationRelativeTo(dialog.getParent());
-                dialog.pack();
-                dialog.setVisible(true);
-            }
-        });
         
         cancelButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent AEe) { Run.exit(); }
         });
         
         southPanel.add(connectButton);
-        southPanel.add(settingsButton);
         southPanel.add(cancelButton);
 
         /*
