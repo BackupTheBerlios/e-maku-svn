@@ -2,6 +2,7 @@
 package server.misc.settings;
 
 import java.awt.Toolkit;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -64,8 +65,8 @@ public class ConfigFileHandler {
             builder = new SAXBuilder(false);
             
             System.out.println("INFO: Config -> "+emakuConfigFile);
-            
-            doc = builder.build(emakuConfigFile);
+            File file = new File(emakuConfigFile);
+            doc = builder.build(file);
             
             root = doc.getRootElement();
             java.util.List Lconfig = root.getChildren();
