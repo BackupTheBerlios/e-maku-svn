@@ -13,8 +13,6 @@ import javax.swing.*;
 import org.jpedal.*;
 import org.jpedal.exception.*;
 
-import sun.security.mscapi.*;
-
 import common.misc.*;
 
 public class PrintingManager {
