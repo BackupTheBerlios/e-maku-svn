@@ -325,7 +325,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 							Attribute ATSilent  = rootTemplate.getAttribute("silent");
 							Attribute ATCopies  = rootTemplate.getAttribute("copies");
 							Attribute ATprinter  = rootTemplate.getAttribute("printer");
-							Attribute ATorientation  = rootTemplate.getAttribute("orientation");
+							
 							
 							boolean silent = ATSilent!=null ? ATSilent.getBooleanValue() : false;
 							int copies     = ATCopies!=null ? ATCopies.getIntValue() : 1;
@@ -334,7 +334,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 											 !ATprinter.getValue().trim().equals("") ?  
 											 ATprinter.getValue() : 
 											 null ;
-							String orientation = ATorientation!=null ? ATorientation.getValue() : null;
+							
 							if ("PLAIN".equals(typePrinter) ) {
 								plainManager.setNdocument(lastNumber);
 								plainManager.process(rootTemplate,printJob);
@@ -344,7 +344,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 									System.out.println("================================");
 									ImpresionType        IType     = plainManager.getImpresionType();
 									ByteArrayInputStream IStream   = plainManager.getStream();
-									new PrintingManager(IType,IStream, silent, copies,printer,orientation);
+									new PrintingManager(IType,IStream, silent, copies,printer,0,0);
 								}
 								plainManager = new PlainPrintingManager(lastNumber);
 							}
@@ -353,7 +353,9 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 								postScriptManager.process(rootTemplate,printJob);
 								ByteArrayInputStream IStream   = postScriptManager.getStream();
 								ImpresionType        IType     = postScriptManager.getImpresionType();
-								new PrintingManager(IType,IStream, silent, copies,printer,orientation);
+								int width = postScriptManager.getWidth();
+								int height = postScriptManager.getHeight();
+								new PrintingManager(IType,IStream, silent, copies,printer,width,height);
 								postScriptManager = new PostScriptManager(lastNumber);		
 							}
 							

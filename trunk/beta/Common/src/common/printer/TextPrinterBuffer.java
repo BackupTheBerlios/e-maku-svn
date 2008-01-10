@@ -82,7 +82,7 @@ public class TextPrinterBuffer {
 	 * @param width
 	 */
 	public void insertString(String str, int row, int col,Integer width) {
-		if (row==0 || col ==0 || "".equals(str)) { return; }
+		if (row==0 || col ==0 || str==null || "".equals(str)) { return; }
 		if (row > buffer.size() ) {
 			while (row > buffer.size()) {
 				buffer.add(new StringBuilder());

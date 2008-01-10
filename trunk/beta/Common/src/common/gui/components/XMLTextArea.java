@@ -226,6 +226,10 @@ public class XMLTextArea extends JTextArea implements Couplable, FocusListener, 
                 acumText="";
     		}
     	}
+    	Element field = new Element("field");
+        field.setText(acumText);
+        pack.addContent(field);
+        
         return pack;
     }
 

@@ -74,12 +74,15 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 			Element settings = rootTemplate.getChild("settings");
 			width  = settings.getAttribute("width").getIntValue();
 			height = settings.getAttribute("height").getIntValue();
+			Attribute ATorientation  = rootTemplate.getAttribute("orientation");
+			String orientation = ATorientation!=null ? ATorientation.getValue() : null;
 			
 			Rectangle pageSize = new Rectangle(width,height);
 
 			document = new com.lowagie.text.Document(pageSize);
 			try {
 				pdfWriter = PdfWriter.getInstance(document,outPut);
+				document.addTitle("outout.pdf");
 				document.open();
 				
 			} catch (DocumentException e) {
@@ -87,6 +90,10 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 			}
 			cb = pdfWriter.getDirectContent();
 			g2d = cb.createGraphicsShapes(width,height);
+			if (orientation!=null && "LANDSCAPE".equals(orientation)) {
+				g2d.translate(width-10,0);
+				g2d.rotate(90*Math.PI/180);
+			}
 			
 			objects.add(g2d);
 			
@@ -176,7 +183,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 				g2d.drawString(value,col,row);
 			}
 			else if ("ndocument".equals(name)) {
-				String value = ndocument;
+				String value = ndocument==null ? "" : ndocument;
 				g2d.drawString(value,col,row);
 			}
 			else if ("pagenumber".equals(name)) {
@@ -362,7 +369,16 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 			}
 		}
 		else if ("STRING".equals(type)) {
+			Attribute atl = attribs.get("lengthFill");
+			Attribute atf = attribs.get("charFill");
+			if (atl!=null && atf!=null) {
+				int lengthFill = atl.getIntValue();
+				while (value.length()<lengthFill) {
+					value+=atf.getValue();
+				}
+			}
 			g2d.drawString(value,col,row);
+			
 		}
 		else if ("DATE".equals(type)) {
 			String mask = attribs.get("mask").getValue();
@@ -480,5 +496,21 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 	public void setNdocument(String lastNumber) {
 		// TODO Auto-generated method stub
 		ndocument=lastNumber;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
 	}
 }

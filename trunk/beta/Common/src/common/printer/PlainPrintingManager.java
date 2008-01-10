@@ -495,7 +495,6 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 	}
 
 	public void setNdocument(String lastNumber) {
-		// TODO Auto-generated method stub
 		vars.put("ndocument",lastNumber);
 	}
 }
