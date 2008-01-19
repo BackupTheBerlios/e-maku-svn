@@ -763,14 +763,8 @@ public class GenericData extends JPanel implements DateListener,
 			}
 		}
 		if (arrQuerys.size()>0) {
-			for (String q : arrQuerys) {
-				System.out.println("Solicitiando consulta => " + q);
-			}
 			XMLTextField field = VFields.get(0);
 			searchOthersSqls(field,arrQuerys);
-		}
-		else {
-			System.out.println("No exiten consultas a invocar");
 		}
 	}
 	

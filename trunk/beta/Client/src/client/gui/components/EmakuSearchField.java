@@ -11,6 +11,8 @@ import org.jdom.*;
 
 import common.gui.components.*;
 import common.gui.forms.*;
+import common.transactions.TransactionServerException;
+import common.transactions.TransactionServerResultSet;
 
 /**
  * TableFindData.java Creado el 26-oct-2007
@@ -48,6 +50,7 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 	private boolean dataSelected;
 	private String keyValue;
 	private ArrayList<String> externalValues = new ArrayList<String>();
+	private Vector<AnswerListener> answerListener = new Vector<AnswerListener>();
 	private int repeatKey = 1;
 	private String sqlCombo = null;
 	private boolean dataBeep;
@@ -59,6 +62,8 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 	private int maxlength;
 	private boolean withPanel = true;
 	private String exportValue;
+	private Vector<String> sqlCode = new Vector<String>();
+	private boolean searchQuery = false;
 
 	public EmakuSearchField(GenericForm GFforma,Document doc) {
 		this.GFforma=GFforma;
@@ -94,6 +99,10 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 			} else if ("exportValue".equals(name)) {
 				this.exportValue=value;
 			}
+			else if ("sqlCode".equals(elm.getAttributeValue("attribute"))) {
+				sqlCode.add(elm.getValue());
+				searchQuery = true;
+			} 		
 		}
 		
 		XMLTField = new XMLTextField(labelName,size,maxlength);
@@ -225,8 +234,50 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 		if(s.equals(XMLTField))  {
 			GFforma.setExternalValues(exportValue,XMLTField.getText());
 		}
+		if (searchQuery) {
+			for (int j = 0; j < sqlCode.size(); j++) {
+				class SearchingSQL extends Thread {
+
+					private int j;
+					private Vector<String> sqlCode;
+					public SearchingSQL(Vector<String> sqlCode,int j) {
+						this.j=j;
+						this.sqlCode=sqlCode;
+					}
+
+					public void run() {
+						Document doc = null;
+						String sql = sqlCode.get(j);
+						try {
+							doc = TransactionServerResultSet.getResultSetST(sql, new String[]{XMLTField.getText()});
+						} catch (TransactionServerException e) {
+							e.printStackTrace();
+						}
+						AnswerEvent event = new AnswerEvent(this, sql, doc);
+						notificando(event);
+					}
+				}
+				SwingUtilities.invokeLater(new SearchingSQL(sqlCode,j));
+				//TODO Por el problema del chekout
+				//new SearchingSQL(sqlCode,j).start();
+			}
+		}
 	}
 	
+	/**
+	 * Metodo encargado de notificar la llegada de un paquete <answer/> 
+	 * @param event
+	 */
+	
+	private void notificando(AnswerEvent event) {
+		for(AnswerListener l:answerListener) {
+			if (l.containSqlCode(event.getSqlCode())) {
+				//System.out.println("Notificando a =>"+l);
+				l.arriveAnswerEvent(event);
+			}
+		}
+	}
+
 	public void storeData() {
 		dataSelected = true;
 		XMLTField.setText(SQLCBselection.getStringCombo().trim());
@@ -326,4 +377,13 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void addAnswerListener(AnswerListener listener ) {
+		 answerListener.addElement(listener);
+	}
+
+	public void removeAnswerListener(AnswerListener listener ) {
+		 answerListener.removeElement(listener);
+	}
+
 }

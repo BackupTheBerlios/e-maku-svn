@@ -1929,7 +1929,6 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
      * @param search
      */
     public void setQuery(Document doc,boolean search) {
-        System.out.println("Cargando datos setQuery ...");
 
     	/*
     	 * Anteriormente la carga de los datos se hacia en un hilo,
