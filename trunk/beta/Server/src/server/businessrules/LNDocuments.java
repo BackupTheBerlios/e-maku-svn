@@ -1,6 +1,5 @@
 package server.businessrules;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -167,7 +166,12 @@ public class LNDocuments {
 	                        		subpackage = (Element)j.next();
 	                        	}
 	                        }
-
+	                    	
+	                    	SimpleDateFormat sdf= new SimpleDateFormat();
+	                    	if (LinkingCache.getBlockDate(bd)!=null && 
+	                    	    (LinkingCache.getBlockDate(bd).getTime() > sdf.parse(CacheKeys.getDate()).getTime())) {
+	                    		throw new InvalidDateException();
+	                    	}
 	                    	/*
 	                         * Si el metodo retorna true, se procede a almacenar
 	                         * el documento
@@ -594,6 +598,10 @@ public class LNDocuments {
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			undoTransaction(e.getMessage());
+		}
+		catch (InvalidDateException IDEe) {
+			// TODO Auto-generated catch block
+			undoTransaction(IDEe.getMessage());
 		}
         finally {
             CacheKeys.setKeys(new Hashtable());

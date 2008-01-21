@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -60,7 +61,7 @@ public class LinkingCache {
     private static Hashtable <String,InfoInventario>Hinventarios = new Hashtable<String,InfoInventario>();
     private static Hashtable <String,String>Hconsecutive = new Hashtable<String,String>();
     private static Hashtable <String,PerfilCta>Hperfil_cta = new Hashtable<String,PerfilCta>();
-    
+    private static Hashtable <String,Date>blockDate = new Hashtable<String,Date>();
     /**
      * Metodo encargado de llenar el cache de los saldos en las tablas de
      * dispersion.
@@ -191,6 +192,15 @@ public class LinkingCache {
                     HcompanyData.put("K-" + ConfigFileHandler.getDBName(i) + "-companyID",
                     		         String.valueOf(rs.getString("id_char")));
                 }
+                
+                /*
+                 * Esta  consulta captura la fecha de bloqueo para los documentos
+                 */
+                
+                rs = st.executeQuery(SQLFormatAgent.getSentencia(ConfigFileHandler.getDBName(i),"SCS0088"));
+
+                while (rs.next())                 	
+                    blockDate.put("K-" + ConfigFileHandler.getDBName(i),rs.getDate("fecha"));
                 
                 /*
                  * Esta sentencia consulta la numeracion actual de todos los documentos
@@ -555,6 +565,16 @@ public class LinkingCache {
         }
     }
 
+    /**
+     * Este metodo retorna la fecha de bloqueo
+     * @param bd Nombre de la base de datos
+     * @return retorna la fecha de bloqueo
+     */
+
+    public static Date getBlockDate(String bd) {
+            return blockDate.get(bd);
+    }
+    
     /**
      * Este metodo actualiza el valor del saldo de la tabla inventarios
      * @param bd Nombre de la base de datos

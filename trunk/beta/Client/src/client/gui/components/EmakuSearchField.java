@@ -336,8 +336,9 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 
 	@Override
 	public Element getPackage() throws VoidPackageException {
-		// TODO Auto-generated method stub
-		return null;
+        Element pack = new Element("package");
+        pack.addContent(XMLTField.getText());
+    	return pack;
 	}
 
 	@Override
