@@ -322,12 +322,18 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 			dataSelected = b;
 	}
 
-	@Override
 	public boolean containData() {
-		// TODO Auto-generated method stub
+		try {
+			Element elm = getPackage();
+			if (elm.getChildren().size() > 0) {
+				return true;
+			}
+		} catch (VoidPackageException e) {
+			return false;
+		}
 		return false;
 	}
-
+	
 	@Override
 	public Element getPackage(Element args) throws Exception {
 		// TODO Auto-generated method stub
