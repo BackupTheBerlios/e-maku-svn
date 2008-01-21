@@ -343,7 +343,7 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 	@Override
 	public Element getPackage() throws VoidPackageException {
         Element pack = new Element("package");
-        pack.addContent(XMLTField.getText());
+        pack.addContent(new Element("field").setText(XMLTField.getText()));
     	return pack;
 	}
 
