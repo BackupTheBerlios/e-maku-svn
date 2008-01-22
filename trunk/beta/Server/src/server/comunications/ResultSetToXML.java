@@ -85,7 +85,7 @@ public class ResultSetToXML extends Document implements Runnable {
      */
     public void run() {
 
-        synchronized(sock) {
+        
         	QueryRunner rselect = null;
         	try {
 	            bufferSocket = new ByteArrayOutputStream();
@@ -103,50 +103,52 @@ public class ResultSetToXML extends Document implements Runnable {
 	
                 ResultSetMetaData RSMDinfo = RSdatos.getMetaData();
                 int columnas = RSMDinfo.getColumnCount();
-                writeBufferSocket(sock,
-                        ServerConstants.CONTEN_TYPE+
-                        ServerConstants.TAGS_ANSWER[0]+
-                        ServerConstants.TAGS_ID[0]+id+ServerConstants.TAGS_ID[1]+
-                        ServerConstants.TAGS_HEAD[0]);
-                
-                for (int i = 1; i <= columnas; i++) {
-                    writeBufferSocket(sock,
-                            ServerConstants.TAGS_COL_HEAD[0]+
-                            XMLformat.escapeAttributeEntities(RSMDinfo.getColumnTypeName(i))+
-                            ServerConstants.TAGS_COL_HEAD[1]+
-                            escapeCharacters(RSMDinfo.getColumnName(i))+
-                            ServerConstants.TAGS_COL[1]);
+                synchronized(sock) {
+	                writeBufferSocket(sock,
+	                        ServerConstants.CONTEN_TYPE+
+	                        ServerConstants.TAGS_ANSWER[0]+
+	                        ServerConstants.TAGS_ID[0]+id+ServerConstants.TAGS_ID[1]+
+	                        ServerConstants.TAGS_HEAD[0]);
+	                
+	                for (int i = 1; i <= columnas; i++) {
+	                    writeBufferSocket(sock,
+	                            ServerConstants.TAGS_COL_HEAD[0]+
+	                            XMLformat.escapeAttributeEntities(RSMDinfo.getColumnTypeName(i))+
+	                            ServerConstants.TAGS_COL_HEAD[1]+
+	                            escapeCharacters(RSMDinfo.getColumnName(i))+
+	                            ServerConstants.TAGS_COL[1]);
+	                }
+	                writeBufferSocket(sock,ServerConstants.TAGS_HEAD[1]);
+	                
+	                /**
+	                 * Se recorre el resulset para a�adir los datos que contenga, y
+	                 * se escriben directamente en el socket en formato XML
+	                 */
+	                byte [] res;
+	                while (RSdatos.next()) {
+	                    writeBufferSocket(sock,ServerConstants.TAGS_ROW[0]);
+	                    for (int j = 1; j <= columnas; j++) {
+	                        
+	                        res = RSdatos.getBytes(j);
+	                        
+	                        if (res==null)
+	                            res= new String("").getBytes();
+	                        
+	                        writeBufferSocket(sock,ServerConstants.TAGS_COL[0] + 
+	                                escapeCharacters(new String(res,"UTF-8"))+
+	                                ServerConstants.TAGS_COL[1]
+	                                );
+	                    }
+	                    writeBufferSocket(sock,ServerConstants.TAGS_ROW[1]);
+	                }
+	                writeBufferSocket(sock,ServerConstants.TAGS_ANSWER[1]);
+	                bufferSocket.write(new String ("\n\r\f").getBytes());
+	                SocketWriter.writing(sock,bufferSocket);
+	                bufferSocket.close();
+	                StatementsClosingHandler.close(RSdatos);
+	//	                LogAdmin.setMessage(Language.getWord("OK_CREATING_XML"),
+	//	                        ServerConst.MESSAGE);
                 }
-                writeBufferSocket(sock,ServerConstants.TAGS_HEAD[1]);
-                
-                /**
-                 * Se recorre el resulset para a�adir los datos que contenga, y
-                 * se escriben directamente en el socket en formato XML
-                 */
-                byte [] res;
-                while (RSdatos.next()) {
-                    writeBufferSocket(sock,ServerConstants.TAGS_ROW[0]);
-                    for (int j = 1; j <= columnas; j++) {
-                        
-                        res = RSdatos.getBytes(j);
-                        
-                        if (res==null)
-                            res= new String("").getBytes();
-                        
-                        writeBufferSocket(sock,ServerConstants.TAGS_COL[0] + 
-                                escapeCharacters(new String(res,"UTF-8"))+
-                                ServerConstants.TAGS_COL[1]
-                                );
-                    }
-                    writeBufferSocket(sock,ServerConstants.TAGS_ROW[1]);
-                }
-                writeBufferSocket(sock,ServerConstants.TAGS_ANSWER[1]);
-                bufferSocket.write(new String ("\n\r\f").getBytes());
-                SocketWriter.writing(sock,bufferSocket);
-                bufferSocket.close();
-                StatementsClosingHandler.close(RSdatos);
-//	                LogAdmin.setMessage(Language.getWord("OK_CREATING_XML"),
-//	                        ServerConst.MESSAGE);
 
 	        }
 	        catch (SQLNotFoundException QNFEe) {
@@ -179,7 +181,7 @@ public class ResultSetToXML extends Document implements Runnable {
 	        finally {
 	            rselect.closeStatement();
 	        }
-        }
+        
     }
     
     private String escapeCharacters(String word) {

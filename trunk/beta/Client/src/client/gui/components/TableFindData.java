@@ -959,19 +959,25 @@ public class TableFindData extends JPanel implements AnswerListener,
 		}
 		JTtabla.getSelectionModel().clearSelection();
 		TMFDtabla.setQuery(doc);
-		if (sendRecord != null || singleSendRecord != null) {
-			lastValue = new HashMap<String, Integer>();
-			String record = sendRecord != null ? sendRecord : singleSendRecord;
-			int max = JTtabla.getModel().getRowCount();
-			Element element = new Element("table");
-			for (int i = 0; i < max && JTtabla.getValueAt(i, 0) != null
-					&& !JTtabla.getValueAt(i, 0).equals(""); i++) {
-				sendRecord(i, element, record);
-			}
-			RecordEvent event = new RecordEvent(this, element);
-			notificando(event);
+		Thread t = new Thread() {
+			public void run() {
+				if (sendRecord != null || singleSendRecord != null) {
+					lastValue = new HashMap<String, Integer>();
+					String record = sendRecord != null ? sendRecord : singleSendRecord;
+					int max = JTtabla.getModel().getRowCount();
+					Element element = new Element("table");
+					for (int i = 0; i < max && JTtabla.getValueAt(i, 0) != null
+							&& !JTtabla.getValueAt(i, 0).equals(""); i++) {
+						sendRecord(i, element, record);
+					}
+					RecordEvent event = new RecordEvent(this, element);
+					notificando(event);
 
-		}
+				}
+			}
+		
+		};
+		t.start();
 		arriveAnswerEvent = false;
 	}
 
