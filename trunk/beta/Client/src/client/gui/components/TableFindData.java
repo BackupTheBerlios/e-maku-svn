@@ -977,7 +977,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 			}
 		
 		};
-		t.start();
+		SwingUtilities.invokeLater(t);
 		arriveAnswerEvent = false;
 	}
 
