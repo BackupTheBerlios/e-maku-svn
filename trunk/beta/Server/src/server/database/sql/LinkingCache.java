@@ -199,9 +199,10 @@ public class LinkingCache {
                 
                 rs = st.executeQuery(SQLFormatAgent.getSentencia(ConfigFileHandler.getDBName(i),"SCS0088"));
 
-                while (rs.next())                 	
-                    blockDate.put("K-" + ConfigFileHandler.getDBName(i),rs.getDate("fecha"));
-                
+                while (rs.next()) {
+                	System.out.println("Cargando fecha de bloqueo "+rs.getTimestamp("fecha"));
+                    blockDate.put("K-" + ConfigFileHandler.getDBName(i),rs.getTimestamp("fecha"));
+                }
                 /*
                  * Esta sentencia consulta la numeracion actual de todos los documentos
                  * si el documento consultado no tiene numero, entonces se almacenara
@@ -572,7 +573,7 @@ public class LinkingCache {
      */
 
     public static Date getBlockDate(String bd) {
-            return blockDate.get(bd);
+            return blockDate.get("K-" + bd);
     }
     
     /**

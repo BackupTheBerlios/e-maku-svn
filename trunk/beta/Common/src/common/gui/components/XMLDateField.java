@@ -51,7 +51,7 @@ import common.transactions.TransactionServerResultSet;
  */
 
 public class XMLDateField extends JDateChooser 
-implements KeyListener, DocumentListener, AnswerListener, InstanceFinishingListener,FocusListener {
+implements Couplable,KeyListener, DocumentListener, AnswerListener, InstanceFinishingListener,FocusListener {
 
 	/**
 	 * 
@@ -161,7 +161,7 @@ implements KeyListener, DocumentListener, AnswerListener, InstanceFinishingListe
     
     public Element getPackage() throws VoidPackageException {
         Element pack = new Element("package");
-        if (!this.getDate().equals("")) {
+        if (this.getDate()!=null && !this.getDate().equals("")) {
             Element field = new Element("field");
             SimpleDateFormat sdf = new SimpleDateFormat(this.getDateFormatString());
             field.setText(sdf.format(this.getDate()));
@@ -171,7 +171,6 @@ implements KeyListener, DocumentListener, AnswerListener, InstanceFinishingListe
     }
 
     public void arriveAnswerEvent(AnswerEvent AEe) {
-    	System.out.println("llego una fecha");
     	DateFormat  df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     	String date = "";
     	try {
@@ -181,7 +180,6 @@ implements KeyListener, DocumentListener, AnswerListener, InstanceFinishingListe
 	        exportar();
         }
 		catch (NullPointerException NPEe) {
-			System.out.println("no pude ponerla :( "+date);
 			//this.removeAllItems();
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -222,14 +220,11 @@ implements KeyListener, DocumentListener, AnswerListener, InstanceFinishingListe
 		try {
 			Element elm = getPackage();
 			if (elm.getChildren().size() > 0) {
-				System.out.println("No contiene datos -"+elm.getChildren().get(0)+"-");
 				return true;
 			}
 		} catch (VoidPackageException e) {
-			System.out.println("No contiene datos");
 			return false;
 		}
-		System.out.println("No contiene datos");
 		return false;
 	}
 
@@ -344,6 +339,18 @@ implements KeyListener, DocumentListener, AnswerListener, InstanceFinishingListe
 			return true;
 		else
 			return false;
+	}
+
+	@Override
+	public Element getPackage(Element args) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void validPackage(Element args) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

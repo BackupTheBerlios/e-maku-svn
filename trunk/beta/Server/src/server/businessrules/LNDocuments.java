@@ -167,7 +167,8 @@ public class LNDocuments {
 	                        	}
 	                        }
 	                    	
-	                    	SimpleDateFormat sdf= new SimpleDateFormat();
+	                    	SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
+	                    	System.out.println("Fecha de bloqueo: "+LinkingCache.getBlockDate(bd)+" fecha documento: "+sdf.parse(CacheKeys.getDate()).getTime());
 	                    	if (LinkingCache.getBlockDate(bd)!=null && 
 	                    	    (LinkingCache.getBlockDate(bd).getTime() > sdf.parse(CacheKeys.getDate()).getTime())) {
 	                    		throw new InvalidDateException();

@@ -330,4 +330,11 @@
         <es_CO>El siguiente método no fue encontrado: </es_CO>
         <en_US>Can not found the method called </en_US>
     </sentence>
+    <sentence>
+        <key errorCode="134">ERR_INVALID_DATE</key>
+        <es_CO>Error, no se puede ingresar o modificar documentos con la fecha asignada al documento</es_CO>
+        <es_EC></es_EC>
+        <es_ES></es_ES>
+        <en_US>Error, you can not input or modify any documents with date of the document</en_US>
+    </sentence>       
 </language>
