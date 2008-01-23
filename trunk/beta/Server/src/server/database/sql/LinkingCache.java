@@ -578,7 +578,7 @@ public class LinkingCache {
     }
     
     public static void setLockDate(String bd,String date) {
-    	SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
+    	SimpleDateFormat sdf= new SimpleDateFormat("yyyy/MM/dd HH:mm:SS");
     	lockDate.remove("K-"+bd);
         try {
 			lockDate.put("K-" + bd,sdf.parse(date));

@@ -181,7 +181,6 @@ public class LNDocuments {
 	                    	else if (lockDocument) {
 	                    		lockDocument  = false;
 	                        	String dateDocument = subpackage.getValue();
-	                        	System.out.println("Nueva fecha de bloqueo: "+subpackage.getValue());
 	                        	LinkingCache.setLockDate(bd,dateDocument);
 	                    	}
 	                    	/*
