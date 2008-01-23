@@ -60,7 +60,7 @@ public class LNDocuments {
     private static LNGenericSQL LNGtransaccion;
     private static double partidaDoble = 0;
     /*
-     * Estos cuatro objetos son necesarios para poder generar un 
+     * Estos seis atributos son necesarios para poder generar un 
      * documento, ellos pueden venir con la transaccion, o 
      * tambien pueden ser obtenidos por el servidor de transacciones
      * deacuerdo a la parametrizacion que se de.
@@ -71,6 +71,7 @@ public class LNDocuments {
     private static String rfDocument;
     private static String consecutive;
     private static boolean cash;
+    private static boolean lockDocument;
     
     // Este ultimo objeto define si se insertara un nuevo registro en la tabla documentos
     
@@ -168,10 +169,20 @@ public class LNDocuments {
 	                        }
 	                    	
 	                    	SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
-	                    	System.out.println("Fecha de bloqueo: "+LinkingCache.getBlockDate(bd)+" fecha documento: "+sdf.parse(CacheKeys.getDate()).getTime());
-	                    	if (LinkingCache.getBlockDate(bd)!=null && 
-	                    	    (LinkingCache.getBlockDate(bd).getTime() > sdf.parse(CacheKeys.getDate()).getTime())) {
+	                    	if (!lockDocument &&
+	                    		LinkingCache.getLockDate(bd)!=null && 
+	                    	    (LinkingCache.getLockDate(bd).getTime() > sdf.parse(CacheKeys.getDate()).getTime())) {
 	                    		throw new InvalidDateException();
+	                    	}
+	                    	/*
+	                    	 *  Si el atributo lockDocument esta parametrizado en el documento entonces el primer argumento a 
+	                    	 *  recibir sera la fecha, se obtiene la fecha  y se actualiza la fecha de bloqueo de documento.
+	                    	 */
+	                    	else if (lockDocument) {
+	                    		lockDocument  = false;
+	                        	String dateDocument = subpackage.getValue();
+	                        	System.out.println("Nueva fecha de bloqueo: "+subpackage.getValue());
+	                        	LinkingCache.setLockDate(bd,dateDocument);
 	                    	}
 	                    	/*
 	                         * Si el metodo retorna true, se procede a almacenar
@@ -957,6 +968,9 @@ public class LNDocuments {
             
             else if (subpackage.getAttributeValue("attribute").equals("cash")) {
                 cash = true;
+            }
+            else if (subpackage.getAttributeValue("attribute").equals("lockDocument")) {
+                lockDocument = true;
             }
         }
         

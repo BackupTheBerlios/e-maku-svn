@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -61,7 +63,7 @@ public class LinkingCache {
     private static Hashtable <String,InfoInventario>Hinventarios = new Hashtable<String,InfoInventario>();
     private static Hashtable <String,String>Hconsecutive = new Hashtable<String,String>();
     private static Hashtable <String,PerfilCta>Hperfil_cta = new Hashtable<String,PerfilCta>();
-    private static Hashtable <String,Date>blockDate = new Hashtable<String,Date>();
+    private static Hashtable <String,Date>lockDate = new Hashtable<String,Date>();
     /**
      * Metodo encargado de llenar el cache de los saldos en las tablas de
      * dispersion.
@@ -200,8 +202,7 @@ public class LinkingCache {
                 rs = st.executeQuery(SQLFormatAgent.getSentencia(ConfigFileHandler.getDBName(i),"SCS0088"));
 
                 while (rs.next()) {
-                	System.out.println("Cargando fecha de bloqueo "+rs.getTimestamp("fecha"));
-                    blockDate.put("K-" + ConfigFileHandler.getDBName(i),rs.getTimestamp("fecha"));
+                    lockDate.put("K-" + ConfigFileHandler.getDBName(i),rs.getTimestamp("fecha"));
                 }
                 /*
                  * Esta sentencia consulta la numeracion actual de todos los documentos
@@ -572,10 +573,20 @@ public class LinkingCache {
      * @return retorna la fecha de bloqueo
      */
 
-    public static Date getBlockDate(String bd) {
-            return blockDate.get("K-" + bd);
+    public static Date getLockDate(String bd) {
+            return lockDate.get("K-" + bd);
     }
     
+    public static void setLockDate(String bd,String date) {
+    	SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
+    	lockDate.remove("K-"+bd);
+        try {
+			lockDate.put("K-" + bd,sdf.parse(date));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+    }
+
     /**
      * Este metodo actualiza el valor del saldo de la tabla inventarios
      * @param bd Nombre de la base de datos
