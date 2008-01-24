@@ -168,7 +168,7 @@ public class LNDocuments {
 	                        	}
 	                        }
 	                    	
-	                    	SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
+	                    	SimpleDateFormat sdf= new SimpleDateFormat("yyyy/MM/dd HH:mm:SS");
 	                    	if (!lockDocument &&
 	                    		LinkingCache.getLockDate(bd)!=null && 
 	                    	    (LinkingCache.getLockDate(bd).getTime() > sdf.parse(CacheKeys.getDate()).getTime())) {
@@ -953,7 +953,7 @@ public class LNDocuments {
             
             else if (subpackage.getAttributeValue("attribute").equals("date")) {
                 GregorianCalendar fecha = new GregorianCalendar();
-                SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                 CacheKeys.setDate(formato.format(fecha.getTime()));
             	CacheKeys.setMinDate(formato.format(fecha.getTime()));
             }
