@@ -32,7 +32,8 @@ import common.misc.log.*;
  */
 public class ConnectionsPool {
 
-	private static Hashtable<String, PooledConnections> Hpoolbds;
+	//private static Hashtable<String, PooledConnections> Hpoolbds;
+	private static Hashtable<String, Connection> Hpoolbds;
 
 	/**
 	 * Este metodo carga todas las bases de datos existentes en el fichero de
@@ -41,7 +42,8 @@ public class ConnectionsPool {
 
 	public static void CargarBD() throws ConnectionsPoolException {
 
-		Hpoolbds = new Hashtable<String, PooledConnections>();
+		//Hpoolbds = new Hashtable<String, PooledConnections>();
+		Hpoolbds = new Hashtable<String, Connection>();
 		int max = ConfigFileHandler.getDBSize();
 		for (int i = 0; i < max; i++)
 			try {
@@ -52,7 +54,8 @@ public class ConnectionsPool {
 				String user = ConfigFileHandler.getUser(i);
 				String password = ConfigFileHandler.getPassword(i);
 				Class.forName(driver);
-				PooledConnections c = new PooledConnections(driver, url,user, password, 10);
+				//PooledConnections c = new PooledConnections(driver, url,user, password, 10);
+				Connection c = DriverManager.getConnection(url, user, password);
 				Hpoolbds.put(ConfigFileHandler.getDBName(i), c);
 			} catch (ClassNotFoundException CNFEe) {
 				LogAdmin.setMessage("ERR_CLASS", Language.getWord("ERR_CLASS"),CNFEe.getMessage(), ServerConstants.ERROR);
@@ -75,7 +78,8 @@ public class ConnectionsPool {
 	 */
 
 	public static Connection getConnection(String nombreBD) {
-		return Hpoolbds.get(nombreBD).getConnection();
+		//return Hpoolbds.get(nombreBD).getConnection();
+		return Hpoolbds.get(nombreBD);
 	}
 
 	public static boolean chekDataBase(String DataBase) {
