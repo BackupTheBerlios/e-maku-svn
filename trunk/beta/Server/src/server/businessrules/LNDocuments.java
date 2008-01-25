@@ -411,7 +411,6 @@ public class LNDocuments {
 	            }
 	            
 	            try {
-	                
 	                /*
 	                 * Empezamos validando si lo que se esta recibiendo es un argumento que contiene una sentencia,
 	                 * <arg>INS0000</arg>, o un paquete que contiene la parametrizacion de una clase encargada de 
@@ -419,6 +418,7 @@ public class LNDocuments {
 	                 */
 	                
 	                if (sql.getName().equals("arg")) {
+		                System.out.println("SQL: "+sql.getValue());
 		                /*
 		                 * Es necesario validar si el paquete no tiene subpaquetes, en caso de tenerlos
 		                 * cada subpaquete debe ser procesado por separado, en caso de que ocurra
@@ -466,6 +466,7 @@ public class LNDocuments {
 			            	else {
 			            		LNGtransaccion.setGenerable(true);
 			            	}
+        	                System.out.println("SQL: "+subargs.getValue());
 	    
 	                        if (subargs.getName().equals("arg")) {
 	    			            if (((Element)subpackage.getChildren().iterator().next()).getName().equals("field")) {
@@ -494,6 +495,7 @@ public class LNDocuments {
 	                    }
 	                }
 	                else if (sql.getName().equals("LNData")) {
+		                System.out.println("SQL: "+sql.getValue());
                         if (((Element)subpackage.getChildren().iterator().next()).getName().equals("field")) {
     	                    validLNData(sql,subpackage);
                         }
