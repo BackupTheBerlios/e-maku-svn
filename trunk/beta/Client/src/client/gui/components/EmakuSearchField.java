@@ -232,7 +232,8 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 			storeData();
 		}
 		if(s.equals(XMLTField))  {
-			GFforma.setExternalValues(exportValue,XMLTField.getText());
+			String str = XMLTField.getText();
+			GFforma.setExternalValues(exportValue,str.equals("") ? null :str);
 		}
 		if (searchQuery) {
 			for (int j = 0; j < sqlCode.size(); j++) {
