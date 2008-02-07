@@ -16,7 +16,7 @@ import server.database.connection.ConnectionsPool;
 import server.database.sql.LinkingCache;
 import server.database.sql.AccountsTotalCalculator;
 import server.misc.ServerConstants;
-import server.reports.ReportMaker;
+import server.reports.*;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -186,6 +186,10 @@ public class HeadersValidator {
             else if (nom_raiz.equals("REPORTREQUEST")) {
                 System.out.println("Nueva solicitud de un reporte");
                 new ReportMaker(raiz, sock, false);
+            }
+            /* Solicitud de reporte en formato xls */
+            else if ("XLSREPORTREQUEST".equals(nom_raiz)) {
+            	new XLSReportMaker(raiz,sock);
             }
             else {
                 ErrorXML error = new ErrorXML();

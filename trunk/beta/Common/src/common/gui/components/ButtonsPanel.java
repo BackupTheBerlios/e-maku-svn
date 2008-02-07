@@ -530,7 +530,11 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
     throws MalformedProfileException, IOException {
         Document transaction = new Document();
         transaction.setRootElement(new Element(packageName));
-
+        Element id = new Element("id");
+        idTransaction = "T"+TransactionServerResultSet.getId();
+        System.out.println("Id Transaccion :" + idTransaction);
+        id.setText(idTransaction);
+        
         Element driver = new Element("driver");
         if ("TRANSACTION".equals(packageName)) {
         	if (idManualTransaction==null) {
@@ -550,6 +554,29 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 				try {
 					jiframe.setVisible(true);
 					jiframe.setSelected(true);
+				} catch (java.beans.PropertyVetoException PVEe) {
+					PVEe.printStackTrace();
+				}
+        	}
+        	else {
+        		throw new MalformedProfileException(Language.getWord("MALFORMED_PROFILE")+GFforma.getIdTransaction());
+        	}
+        }
+        else if ("XLSREPORTREQUEST".equals(packageName)) {
+
+        	if (idReport!=null) { 
+        		Element jarFile = new Element("jarFile");
+        		Element jarDirectory = new Element("jarDirectory");
+        		jarFile.setText(EmakuParametersStructure.getParameter("jarFile"));
+        		jarDirectory.setText(EmakuParametersStructure.getParameter("jarDirectory"));
+        		transaction.getRootElement().addContent(jarFile);
+        		transaction.getRootElement().addContent(jarDirectory);
+        		driver.setText(idReport);
+        		XLSReceiver xlsReceiver = new XLSReceiver(GFforma,idTransaction);
+				GFforma.getJDPpanel().add(xlsReceiver);
+				try {
+					xlsReceiver.setVisible(true);
+					xlsReceiver.setSelected(true);
 				} catch (java.beans.PropertyVetoException PVEe) {
 					PVEe.printStackTrace();
 				}
@@ -582,10 +609,6 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
         	throw new MalformedProfileException(Language.getWord("MALFORMED_PROFILE")+GFforma.getIdTransaction());
         }
         
-        Element id = new Element("id");
-        idTransaction = "T"+TransactionServerResultSet.getId();
-        System.out.println("Id Transaccion :" + idTransaction);
-        id.setText(idTransaction);
         plainManager.setIdTransaction(idTransaction);
         postScriptManager.setIdTransaction(idTransaction);
         transaction.getRootElement().addContent(driver);

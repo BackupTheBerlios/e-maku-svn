@@ -226,10 +226,10 @@ public class ConfigFileHandler extends EmakuParametersStructure {
         }
 
 	String jar = "jar:file:"+System.getenv("EMAKU_HOME")+"/lib/emaku/"+jarFile+"!/";
-
 	jarDirectory = jar+directory;
-        EmakuParametersStructure.setJarDirectoryTemplates(jarDirectory+"/printer-templates");
-
+    EmakuParametersStructure.setJarDirectoryTemplates(jarDirectory+"/printer-templates");
+    EmakuParametersStructure.addParameter("jarFile",jarFile);
+	EmakuParametersStructure.addParameter("jarDirectory",jarDirectory);
 	lang.loadLanguage(jarDirectory+"/misc",language);
         /*
          * Cargando iconos

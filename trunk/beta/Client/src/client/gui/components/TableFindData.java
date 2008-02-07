@@ -959,7 +959,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 		}
 		JTtabla.getSelectionModel().clearSelection();
 		TMFDtabla.setQuery(doc);
-		Thread t = new Thread() {
+		/*Thread t = new Thread() {
 			public void run() {
 				if (sendRecord != null || singleSendRecord != null) {
 					lastValue = new HashMap<String, Integer>();
@@ -977,7 +977,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 			}
 		
 		};
-		SwingUtilities.invokeLater(t);
+		SwingUtilities.invokeLater(t);*/
 		arriveAnswerEvent = false;
 	}
 
