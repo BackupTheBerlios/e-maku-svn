@@ -46,6 +46,7 @@ public class QueryValidator {
     public boolean isValid() {
         try {
             query = data.getChild("sql").getValue();
+            id = data.getChild("id").getValue();
             String password;
             try {
                 password = data.getChild("password").getValue();
@@ -66,7 +67,7 @@ public class QueryValidator {
         try {
             
             Element ref = data.getChild("params");
-            id = data.getChild("id").getValue();
+            
             
             int countParams = ref.getContentSize();
             args = new String[countParams];
