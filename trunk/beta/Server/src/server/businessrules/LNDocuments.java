@@ -316,7 +316,6 @@ public class LNDocuments {
                         		undoTransaction(Language.getWord("ERR_ANNUL_RF_DOCUMENT_NOT_FOUND"));
                         		break;
             	            }
-            	            
             	            String tmpKey = LNGtransaccion.getKey(0);
             	            LNGtransaccion.removeKey("ndocumento");
         	                Element documentPack = new Element("package");
@@ -326,6 +325,15 @@ public class LNDocuments {
             	            
 
         	            }
+        	            
+        	            /*
+        	             * Si se esta anulando un documento de bloqueo, entonces se debe verificar cual
+        	             * es el actual documento de bloqueo para ser actualizado en el sistema.
+        	             */
+        	            if (lockDocument) {
+                    		LinkingCache.reloadLockDate(bd);
+                    	}
+        	            
                         /*
                          * Se genera un paquete para hacer una transaccion, en este caso se modificara
                          * el estado del documento campo estado igual a false, significa documento

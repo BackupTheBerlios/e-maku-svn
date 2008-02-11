@@ -586,6 +586,30 @@ public class LinkingCache {
 			e.printStackTrace();
 		}
     }
+    
+    public static void reloadLockDate(String bd) {
+    	lockDate.remove("k-"+bd);
+    	Statement st;
+		try {
+			st = ConnectionsPool.getConnection(bd).createStatement();
+	        ResultSet rs = st.executeQuery(SQLFormatAgent.getSentencia(bd,"SCS0088"));
+	        while (rs.next()) {
+	            lockDate.put("K-" + bd,rs.getTimestamp("fecha"));
+	        }
+	        StatementsClosingHandler.close(st);
+	        StatementsClosingHandler.close(rs);
+	        st=null;
+	        rs=null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+    }
 
     /**
      * Este metodo actualiza el valor del saldo de la tabla inventarios
