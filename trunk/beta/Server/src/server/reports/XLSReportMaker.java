@@ -10,6 +10,7 @@ import net.sf.jxls.exception.*;
 import net.sf.jxls.transformer.*;
 
 import org.apache.commons.beanutils.*;
+import org.apache.poi.hssf.usermodel.*;
 import org.jdom.*;
 
 import server.comunications.*;
@@ -60,6 +61,7 @@ public class XLSReportMaker extends Thread {
 			this.transactionId = rootNode.getChildText("id");
 			String templateCode = rootNode.getChildText("driver");
 			String jarDirectory = rootNode.getChildText("jarDirectory");
+			String jarFile = rootNode.getChildText("jarFile");
 			String [] args = new String[]{ templateCode };
 			QueryRunner qr = new QueryRunner(dataBase,"SCS0089",args); 
 			ResultSet rs = qr.ejecutarSELECT();
@@ -85,37 +87,33 @@ public class XLSReportMaker extends Thread {
 				} else {
 					rs = new QueryRunner(EmakuServerSocket.getBd(socket), sql).ejecutarSELECT();
 				}
-				
+				int rows = rs.getFetchSize();
 				if (rs!=null) {		
 					RowSetDynaClass rsdc = new RowSetDynaClass(rs, false);
 		            Map<String, List<?>> beans = new HashMap<String, List<?>>();
 		            beans.put("foo", rsdc.getRows());
 		            XLSTransformer transformer = new XLSTransformer();
-		            String tmpFile = CommonConstants.TMP+File.separator+"report.xls";
-		            String tmpTemplate = CommonConstants.TMP+File.separator+"template.xls";
-		            String path = jarDirectory+template;
+		            String path = "jar:file:"+System.getenv("EMAKU_HOME")+"/lib"+File.separator+
+		                          "emaku/"+jarFile+"!/"+jarDirectory+template;
 		            try {
-		            	URL jarfile = new URL(path);
-		            	System.out.println("Read template =>" + jarfile);
-		            	byte [] buffer = new byte[255];
-						int len = 0;
-		            	InputStream in = jarfile.openStream();
-		            	FileOutputStream fos = new FileOutputStream(tmpTemplate);
-		            	
-						while ((len=in.read(buffer))>0) {
-							fos.write(buffer,0,len);
+		            	URL url = new URL(path);
+		            	System.out.println("Read template =>" + url);
+		            	InputStream in = url.openStream();
+		        		InputStream is = new BufferedInputStream(in);
+						HSSFWorkbook workbook = transformer.transformXLS(is, beans);
+						if (rows==0) {
+							HSSFRow row     = workbook.getSheetAt(0).createRow((short)3); 
+							HSSFCell cell   = row.createCell((short)1);
+							
+							String str = "El reporte no contiene registros, cambie " +
+									     "los parámetros y vuelva a intentarlo";
+							HSSFRichTextString text = new HSSFRichTextString(str);
+							cell.setCellValue(text);
 						}
-						fos.close();
-						in.close();
-						transformer.transformXLS(tmpTemplate, beans,tmpFile);
-						FileInputStream fin = new FileInputStream(tmpFile);
 						ByteArrayOutputStream bos = new ByteArrayOutputStream();
-						len=0;
-						while ((len=fin.read(buffer))>0) {
-							bos.write(buffer,0,len);
-						}
+						workbook.write(bos);
+						in.close();
 						bos.close();
-						fin.close();
 						ZipHandler ziph = new ZipHandler(bos,template);
 						Element xlsData = ziph.getElementDataEncode("data");
 						Element rootXLS = new Element("REPORT");
@@ -131,6 +129,7 @@ public class XLSReportMaker extends Thread {
 							long end = calendar.getTimeInMillis();
 							System.out.println("paquete escrito en "+((end-init)/1000)+" segundos");
 						}
+						
 					} catch (ParsePropertyException e) {
 						e.printStackTrace();
 					} catch (IOException e) {

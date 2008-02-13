@@ -5,6 +5,7 @@ import java.io.*;
 
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.filechooser.FileFilter;
 
 import org.jdom.*;
 
@@ -88,9 +89,29 @@ public class XLSReceiver extends JInternalFrame implements ReportListener {
 	}
 	
 	private boolean save() {
-		File home = new File(System.getProperty("user.home"));
+		File home = new File(System.getProperty("user.home")+File.separator+"reporte.xls");
 		JFileChooser fch = new JFileChooser(home);
 		fch.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		fch.setFileFilter(new FileFilter() {
+		
+			public String getDescription() {
+				return "Formato XLS / Excel";
+			}
+		
+			public boolean accept(File f) {
+				String ext = null;
+		        String s = f.getName();
+		        int i = s.lastIndexOf('.');
+
+		        if (i > 0 &&  i < s.length() - 1) {
+		            ext = s.substring(i+1).toLowerCase();
+		        }
+		        if ("xls".equals(ext) || f.isDirectory())
+		        	return true;
+		        return false;
+			}
+		
+		});
 		int op = fch.showSaveDialog(this);
 		boolean ret = false;
 		if (op==JFileChooser.APPROVE_OPTION) {
