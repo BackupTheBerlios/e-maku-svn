@@ -628,7 +628,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         String newVar=reemplazarFormula(var,rowIndex,valueOld);
         Object result = null;
         int col= getColIndex(key);
-
+        
         if (tipoFormula) {
         	result = FormulaCalculator.operar(newVar);	
         }
@@ -2030,7 +2030,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	        			rows++;
 	        			fireTableDataChanged();
 	    			}
-	                
+
 	        		for (int j=0;j<ATFDargs.length;j++) {
 	        			if (search && j==0){
 	        				setValueAt(addCols(j,Lcol), currentRow,0);
@@ -2039,11 +2039,15 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	        				updateCells(addCols(j,Lcol),currentRow,j);
 	        			}
 		            }
-	        		currentRow++;
+	        		
 		            if (formulas!=null) {
-	                    calcular(i,0,false);
+	                    calcular(currentRow,0,false);
+	                    System.out.println("calculando col "+currentRow);
 	                }
+
+	        		currentRow++;
 	        	}
+
         	}
         }
         else if (max==0) {
