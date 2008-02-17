@@ -72,10 +72,10 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 			long init = calendar.getTimeInMillis();
 			
 			Element settings = rootTemplate.getChild("settings");
-			String w = settings.getAttributeValue("width");
-			String h = settings.getAttributeValue("height");
-			width  = w!=null ? Integer.parseInt(w): 0;
-			height = h!=null ? Integer.parseInt(h): 0;
+			Attribute atw = settings.getAttribute("width");
+			Attribute ath = settings.getAttribute("height");
+			width  = atw!=null ? atw.getIntValue(): 0;
+			height = ath!=null ? ath.getIntValue(): 0;
 			
 			Iterator itTemplate = rootTemplate.getChildren().iterator();
 			Iterator itTransact = rootTransact.getChildren("package").iterator();
