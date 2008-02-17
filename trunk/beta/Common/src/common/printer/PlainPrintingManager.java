@@ -72,8 +72,8 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 			long init = calendar.getTimeInMillis();
 			
 			Element settings = rootTemplate.getChild("settings");
-			Attribute atw = settings.getAttribute("width");
-			Attribute ath = settings.getAttribute("height");
+			Attribute atw = settings!=null ? settings.getAttribute("width") : null;
+			Attribute ath = settings!=null ? settings.getAttribute("height") : null;
 			width  = atw!=null ? atw.getIntValue(): 0;
 			height = ath!=null ? ath.getIntValue(): 0;
 			
