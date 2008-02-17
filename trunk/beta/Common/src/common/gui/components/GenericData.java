@@ -454,15 +454,17 @@ public class GenericData extends JPanel implements DateListener,
 								NumberFormat nf = NumberFormat.getNumberInstance();
 			        			DecimalFormat form = (DecimalFormat) nf;
 			        			form.applyPattern("###,###,##0.00");
+			        			//System.out.println("texto: "+text);
 			        			field.setText(nf.format(Double.parseDouble(text)));
-			        			field.setNumberValue(nf.parse(text).doubleValue());
+			        			//field.setNumberValue(nf.parse(text).doubleValue());
+			        			field.setNumberValue(Double.parseDouble(text));
 							} catch (NumberFormatException NFEe) {
-								//NFEe.printStackTrace();
+								NFEe.printStackTrace();
 							}
-							catch (ParseException Pe) {
-								//Pe.printStackTrace();
+/*							catch (ParseException Pe) {
+								Pe.printStackTrace();
 							}
-						}
+*/						}
 						if (!"".equals(text) &&
 							(field.isExportvalue() || field.getKeyExternalValue() != null)) {
 							exportar(field);

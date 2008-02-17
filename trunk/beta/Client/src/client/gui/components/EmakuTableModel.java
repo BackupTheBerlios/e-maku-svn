@@ -2042,7 +2042,6 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	        		
 		            if (formulas!=null) {
 	                    calcular(currentRow,0,false);
-	                    System.out.println("calculando col "+currentRow);
 	                }
 
 	        		currentRow++;
