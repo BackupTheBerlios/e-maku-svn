@@ -69,11 +69,9 @@ public class LinkingCache {
      * dispersion.
      * @throws SQLBadArgumentsException 
      */
-    public static void cargar() throws SQLBadArgumentsException {
+    public static void cargar() {
 
     	
-        Statement st = null;
-        ResultSet rs = null;
         /** Obtengo el numero de conexiones que maneja el ST */
         int max = ConfigFileHandler.getDBSize();
 
@@ -87,205 +85,230 @@ public class LinkingCache {
 
        
         for (int i = 0; i < max; i++) {
-            try {
-
-                LogAdmin.setMessage(Language.getWord("LOADING_CACHE") + " "
-                        + ConfigFileHandler.getDBName(i), ServerConstants.MESSAGE);
-
-                /**
-                 * Establezco la conexion con la base de datos
-                 */
-
-                st = ConnectionsPool.getConnection(ConfigFileHandler.getDBName(i)).createStatement();
-
-                LogAdmin.setMessage(Language.getWord("INIT_BDS"), ServerConstants.MESSAGE);
-                LogAdmin.setMessage(Language.getWord("LOADING_ST") + " " + ConfigFileHandler.getDBName( i ) , ServerConstants.MESSAGE);
-
-                /*
-                 * Esta es la unica maldita sentencia que encontraras en el codigo de emaku
-                 */
-                
-                         	  
-                rs = st.executeQuery("SELECT trim(codigo) as codigo,sentencia FROM "+
-                "sentencia_sql ORDER BY codigo desc");
-                /*
-                 * Se almacena la información en la hashtable Hinstrucciones 
-                 */
-                
-                while(rs.next()){
-                    Hinstrucciones.put("K-"+ConfigFileHandler.getDBName(i)+"-"+
-			                           rs.getString("codigo"),
-				                       rs.getString("sentencia"));
-                }                
-                
-                /*
-                 * Esta sentencia carga las transacciones a las que tienen permisos
-                 * los usuarios
-                 */
-                
-                Htransacciones.putAll(loadCache(ConfigFileHandler.getDBName(i),"SCS0001", new String[]{"login","codigo","password"},"ok"));
-
-                /*
-                 * Esta consulta carga las sentencias a las que tienen permisos
-                 * los usuarios 
-                 */
-
-                Hpermisos.putAll(loadCache(ConfigFileHandler.getDBName(i),"SCS0002", new String[]{"login","codigo","password"},"ok"));
-                
-                /*
-                 * Se realiza la consulta para obtener los drivers de la tabla
-                 * transacciones
-                 */
-
-                rs = st.executeQuery(SQLFormatAgent.getSentencia(ConfigFileHandler.getDBName(i),
-                					 "SCS0015"));
-
-                /*
-                 * Se almacena la información en la tabla hashtable Hlogica_drivers
-                 */
-
-                SAXBuilder builder = new SAXBuilder(false);
-
-                while (rs.next()) {
-                    try {
-	                ByteArrayInputStream bufferInDrv;
-	                ByteArrayInputStream bufferInMth;
-	                Document docDrv = null;
-	                Document docMth = null;
-	                try {
-	                    bufferInDrv = new ByteArrayInputStream(rs.getString("args_driver").getBytes());
-	                    docDrv = builder.build(bufferInDrv);	                
-	                }
-	                catch(NullPointerException NPEe) {}
-	                
-	                try {
-		                bufferInMth = new ByteArrayInputStream(rs.getString("args_metodo").getBytes());
-		                docMth = builder.build(bufferInMth);
-	                }
-	                catch(NullPointerException NPEe) {}
-	                Hlogica_drivers.put("K-" + ConfigFileHandler.getDBName(i) + "-"
-                            + rs.getString("codigo").trim(), 
-                            new BusinessRulesStructure(rs.getString("driver"),
-                                    			  docDrv,
-                                    			  rs.getString("metodo"),
-                                    			  docMth));
-                    }
-                    catch(IOException IOEe) {
-                        LogAdmin.setMessage(Language.getWord("ERR_LOADING_LG") + " "
-                                + ConfigFileHandler.getDBName(i) + " "+rs.getString("codigo")+" "+IOEe.getMessage(),
-                                ServerConstants.ERROR);
-                    }
-                    catch(JDOMException JDOMEe) {
-                        LogAdmin.setMessage(Language.getWord("ERR_LOADING_LG") + " "
-                                + ConfigFileHandler.getDBName(i) + " "+rs.getString("codigo")+" " + JDOMEe.getMessage(),
-                                ServerConstants.ERROR);
-                    }
-                }
-                
-                /*
-                 * Esta consulta captura el nombre de la empresa y su Nit
-                 */
-                
-                rs = st.executeQuery(SQLFormatAgent.getSentencia(ConfigFileHandler.getDBName(i),"SCS0054"));
-
-                while (rs.next()) {                	
-                    HcompanyData.put("K-" + ConfigFileHandler.getDBName(i) + "-company",
-                    		         String.valueOf(rs.getString("nombre")));
-                    HcompanyData.put("K-" + ConfigFileHandler.getDBName(i) + "-companyID",
-                    		         String.valueOf(rs.getString("id_char")));
-                }
-                
-                /*
-                 * Esta  consulta captura la fecha de bloqueo para los documentos
-                 */
-                
-                rs = st.executeQuery(SQLFormatAgent.getSentencia(ConfigFileHandler.getDBName(i),"SCS0088"));
-
-                while (rs.next()) {
-                    lockDate.put("K-" + ConfigFileHandler.getDBName(i),rs.getTimestamp("fecha"));
-                }
-                /*
-                 * Esta sentencia consulta la numeracion actual de todos los documentos
-                 * si el documento consultado no tiene numero, entonces se almacenara
-                 * como numero inicial 000000000, si por el contrario el numero si existe
-                 * a este se le suma un uno.
-                 */
-
-                rs = st.executeQuery(SQLFormatAgent.getSentencia(ConfigFileHandler.getDBName(i),"SCS0023"));
-
-				while (rs.next()) {
-                    Hconsecutive.put("K-" + ConfigFileHandler.getDBName(i) + "-"
-                            + rs.getString("codigo_tipo").trim(), consecutive(ConfigFileHandler.getDBName(i),
-                                                                  rs.getString("max")));
-				}
-                
-				
-                /* Se realiza la consulta para obtener el precio de costo, el saldo y el valor del saldo
-                 * de la tabla inventarios
-                 */
-
-                rs = st.executeQuery(SQLFormatAgent.getSentencia(ConfigFileHandler.getDBName(i),"SCS0037"));
-
-                /*
-                 * Se almacena la informaci�n en un objeto InfoInventario y luego en la
-                 * tabla hashtable Hinventarios
-                 */
-
-                while (rs.next()) {
-                    Hinventarios.put("K-" + ConfigFileHandler.getDBName(i) + "-"
-                                          + rs.getInt("id_bodega")+ "-"
-                                          + rs.getInt("id_prod_serv"),
-                                          new InfoInventario(rs.getDouble("pinventario"),
-                                        		  			 rs.getDouble("saldo"),
-                                        		  			 rs.getDouble("valor_saldo")));
-                }
-
-                /*
-                 * Se almacena los saldos actuales de los inventarios
-                 */
-                try {
-                	st.execute(SQLFormatAgent.getSentencia(ConfigFileHandler.getDBName(i),"SCS0063"));
-                }
-                catch(SQLNotFoundException SQLNFEe) {}
-                
-                /*
-                 * Esta metodo carga el perfil de todas las cuentas contables generadas.
-                 */
-
-                loadPerfilCta(ConfigFileHandler.getDBName(i),"SCS0038",null);
-
-                /*
-                 * Este metodo carga la informacion relacionada a asientos prefedinidos
-                 */
-                
-                loadAsientosPredefinidos(ConfigFileHandler.getDBName(i));
-
-                /*
-                 * Se realiza la consulta para obtener los saldos de la tabla
-                 * libro_aux
-                 */
-
-                Hlibro_aux.putAll(loadCache(ConfigFileHandler.getDBName(i),"SCS0041", new String[]{"centro","id_cta","id_tercero","id_prod_serv"},"saldo"));
-            }
-            catch (SQLException SQLEe) {
-            	SQLEe.printStackTrace();
-                LogAdmin.setMessage(Language.getWord("ERROR_LOADING_SL") + " "
-                        + ConfigFileHandler.getDBName(i) + SQLEe.getMessage(),
-                        ServerConstants.ERROR);
-            }
-            catch (SQLNotFoundException SQLNFEe) {
-            	SQLNFEe.printStackTrace();
-                LogAdmin.setMessage(Language.getWord("ERROR_LOADING_SL") + " "
-                        + ConfigFileHandler.getDBName(i) + SQLNFEe.getMessage(),
-                        ServerConstants.ERROR);
-            }
+        	class loadDB extends Thread {
+        		private int i;
+	        		loadDB(int i) {
+	        			this.i=i;
+	        		}
+        		public void run() {
+        			loadDB(ConfigFileHandler.getDBName(i));
+        		}
+        	}
+        	new loadDB(i).start();
     	}
         
         
+    }
+    
+    private static void loadDB(String bd) {
+
+    	Statement st = null;
+        ResultSet rs = null;
+
+        try {
+
+	        LogAdmin.setMessage(Language.getWord("LOADING_CACHE") + " "
+	                + bd, ServerConstants.MESSAGE);
+	
+	        /**
+	         * Establezco la conexion con la base de datos
+	         */
+	
+	        st = ConnectionsPool.getConnection(bd).createStatement();
+	
+	        LogAdmin.setMessage(Language.getWord("INIT_BDS"), ServerConstants.MESSAGE);
+	        LogAdmin.setMessage(Language.getWord("LOADING_ST") + " " + bd , ServerConstants.MESSAGE);
+	
+	        /*
+	         * Esta es la unica maldita sentencia que encontraras en el codigo de emaku
+	         */
+	        
+	                 	  
+	        rs = st.executeQuery("SELECT trim(codigo) as codigo,sentencia FROM "+
+	        "sentencia_sql ORDER BY codigo desc");
+	        /*
+	         * Se almacena la información en la hashtable Hinstrucciones 
+	         */
+	        
+	        while(rs.next()){
+	            Hinstrucciones.put("K-"+bd+"-"+
+		                           rs.getString("codigo"),
+			                       rs.getString("sentencia"));
+	        }                
+	        
+	        /*
+	         * Esta sentencia carga las transacciones a las que tienen permisos
+	         * los usuarios
+	         */
+	        
+	        Htransacciones.putAll(loadCache(bd,"SCS0001", new String[]{"login","codigo","password"},"ok"));
+	
+	        /*
+	         * Esta consulta carga las sentencias a las que tienen permisos
+	         * los usuarios 
+	         */
+	
+	        Hpermisos.putAll(loadCache(bd,"SCS0002", new String[]{"login","codigo","password"},"ok"));
+	        
+	        /*
+	         * Se realiza la consulta para obtener los drivers de la tabla
+	         * transacciones
+	         */
+	
+	        rs = st.executeQuery(SQLFormatAgent.getSentencia(bd,
+	        					 "SCS0015"));
+	
+	        /*
+	         * Se almacena la información en la tabla hashtable Hlogica_drivers
+	         */
+	
+	        SAXBuilder builder = new SAXBuilder(false);
+	
+	        while (rs.next()) {
+	            try {
+	            ByteArrayInputStream bufferInDrv;
+	            ByteArrayInputStream bufferInMth;
+	            Document docDrv = null;
+	            Document docMth = null;
+	            try {
+	                bufferInDrv = new ByteArrayInputStream(rs.getString("args_driver").getBytes());
+	                docDrv = builder.build(bufferInDrv);	                
+	            }
+	            catch(NullPointerException NPEe) {}
+	            
+	            try {
+	                bufferInMth = new ByteArrayInputStream(rs.getString("args_metodo").getBytes());
+	                docMth = builder.build(bufferInMth);
+	            }
+	            catch(NullPointerException NPEe) {}
+	            Hlogica_drivers.put("K-" + bd + "-"
+	                    + rs.getString("codigo").trim(), 
+	                    new BusinessRulesStructure(rs.getString("driver"),
+	                            			  docDrv,
+	                            			  rs.getString("metodo"),
+	                            			  docMth));
+	            }
+	            catch(IOException IOEe) {
+	                LogAdmin.setMessage(Language.getWord("ERR_LOADING_LG") + " "
+	                        + bd + " "+rs.getString("codigo")+" "+IOEe.getMessage(),
+	                        ServerConstants.ERROR);
+	            }
+	            catch(JDOMException JDOMEe) {
+	                LogAdmin.setMessage(Language.getWord("ERR_LOADING_LG") + " "
+	                        + bd + " "+rs.getString("codigo")+" " + JDOMEe.getMessage(),
+	                        ServerConstants.ERROR);
+	            }
+	        }
+	        
+	        /*
+	         * Esta consulta captura el nombre de la empresa y su Nit
+	         */
+	        
+	        rs = st.executeQuery(SQLFormatAgent.getSentencia(bd,"SCS0054"));
+	
+	        while (rs.next()) {                	
+	            HcompanyData.put("K-" + bd + "-company",
+	            		         String.valueOf(rs.getString("nombre")));
+	            HcompanyData.put("K-" + bd + "-companyID",
+	            		         String.valueOf(rs.getString("id_char")));
+	        }
+	        
+	        /*
+	         * Esta  consulta captura la fecha de bloqueo para los documentos
+	         */
+	        
+	        rs = st.executeQuery(SQLFormatAgent.getSentencia(bd,"SCS0088"));
+	
+	        while (rs.next()) {
+	            lockDate.put("K-" + bd,rs.getTimestamp("fecha"));
+	        }
+	        /*
+	         * Esta sentencia consulta la numeracion actual de todos los documentos
+	         * si el documento consultado no tiene numero, entonces se almacenara
+	         * como numero inicial 000000000, si por el contrario el numero si existe
+	         * a este se le suma un uno.
+	         */
+	
+	        rs = st.executeQuery(SQLFormatAgent.getSentencia(bd,"SCS0023"));
+	
+			while (rs.next()) {
+	            Hconsecutive.put("K-" + bd + "-"
+	                    + rs.getString("codigo_tipo").trim(), consecutive(bd,
+	                                                          rs.getString("max")));
+			}
+	        
+			
+	        /* Se realiza la consulta para obtener el precio de costo, el saldo y el valor del saldo
+	         * de la tabla inventarios
+	         */
+	
+	        rs = st.executeQuery(SQLFormatAgent.getSentencia(bd,"SCS0037"));
+	
+	        /*
+	         * Se almacena la informaci�n en un objeto InfoInventario y luego en la
+	         * tabla hashtable Hinventarios
+	         */
+	
+	        while (rs.next()) {
+	            Hinventarios.put("K-" + bd + "-"
+	                                  + rs.getInt("id_bodega")+ "-"
+	                                  + rs.getInt("id_prod_serv"),
+	                                  new InfoInventario(rs.getDouble("pinventario"),
+	                                		  			 rs.getDouble("saldo"),
+	                                		  			 rs.getDouble("valor_saldo")));
+	        }
+	
+	        /*
+	         * Se almacena los saldos actuales de los inventarios
+	         */
+	        try {
+	        	st.execute(SQLFormatAgent.getSentencia(bd,"SCS0063"));
+	        }
+	        catch(SQLNotFoundException SQLNFEe) {}
+	        
+	        /*
+	         * Esta metodo carga el perfil de todas las cuentas contables generadas.
+	         */
+	
+	        loadPerfilCta(bd,"SCS0038",null);
+	
+	        /*
+	         * Este metodo carga la informacion relacionada a asientos prefedinidos
+	         */
+	        
+	        loadAsientosPredefinidos(bd);
+	
+	        /*
+	         * Se realiza la consulta para obtener los saldos de la tabla
+	         * libro_aux
+	         */
+	
+	        Hlibro_aux.putAll(loadCache(bd,"SCS0041", new String[]{"centro","id_cta","id_tercero","id_prod_serv"},"saldo"));
+        }
+        catch (SQLException SQLEe) {
+        	SQLEe.printStackTrace();
+            LogAdmin.setMessage(Language.getWord("ERROR_LOADING_SL") + " "
+                    + bd + SQLEe.getMessage(),
+                    ServerConstants.ERROR);
+        }
+        catch (SQLNotFoundException SQLNFEe) {
+        	SQLNFEe.printStackTrace();
+            LogAdmin.setMessage(Language.getWord("ERROR_LOADING_SL") + " "
+                    + bd + SQLNFEe.getMessage(),
+                    ServerConstants.ERROR);
+        } catch (SQLBadArgumentsException SQLBAEe) {
+			// TODO Auto-generated catch block
+			SQLBAEe.printStackTrace();
+            LogAdmin.setMessage(Language.getWord("ERROR_LOADING_SL") + " "
+                    + bd + SQLBAEe.getMessage(),
+                    ServerConstants.ERROR);
+		}
+
         StatementsClosingHandler.close(st);
         StatementsClosingHandler.close(rs);
         st=null;
         rs=null;
+
     }
     
     public static void removePerfilCta(String bd,String[] args) 
