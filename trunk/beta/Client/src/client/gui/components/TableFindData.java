@@ -958,7 +958,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 			}
 		}
 		JTtabla.getSelectionModel().clearSelection();
-		TMFDtabla.setQuery(doc);
+		TMFDtabla.setQuery(doc,false);
 		/*Thread t = new Thread() {
 			public void run() {
 				if (sendRecord != null || singleSendRecord != null) {

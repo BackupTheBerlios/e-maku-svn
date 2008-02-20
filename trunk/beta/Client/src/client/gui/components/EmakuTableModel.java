@@ -8,6 +8,7 @@ import static client.gui.components.Formula.SUPER;
 import static client.gui.components.Formula.SUPERBEANNQ;
 import static client.gui.components.Formula.SUPERNQ;
 
+import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
@@ -33,6 +34,7 @@ import javax.swing.table.AbstractTableModel;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.output.*;
 
 import bsh.EvalError;
 import client.Run;
@@ -103,6 +105,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     private int currentIndex = 0;
     private boolean isInitQuery;
     private String [] argsQuery;
+	private ArrayList<Object> arrivedKeys = new ArrayList<Object>();
     
     public EmakuTableModel(GenericForm GFforma,
             		  String sqlCode,
@@ -1946,110 +1949,138 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     	 */
     			
     	loadingQuery = true;
+    	Element header = doc.getRootElement().getChild("header");
         List Lrows = doc.getRootElement().getChildren("row");
         Iterator Irows = Lrows.iterator();
         int max = Lrows.size();
         
-        if (tagDataColumn==-1 && max > 0) {
-            /*
-             * Se limpia la tabla antes de desplegar la consulta nueva
-             */
-            clean();
-            /*
-             * Cargando informacion
-             */
-            
-            //for (int i=0;Irows.hasNext() && i<rows;i++) {
-            int i=0;
-            for (;Irows.hasNext();i++) {
-                Element Erow = (Element) Irows.next();
-                List Lcol = Erow.getChildren();
-            	//try {
-                if (VdataRows.size() <= i) {
-    				Vector<Object> col = new Vector<Object>();
-        			for (int k=0;k<ATFDargs.length;k++) {
-        			    col.add(addCols(k,Lcol));
-        			}
-        			/* Se adiciona la nueva fila al vector de filas */
-        			VdataRows.add(col);
-        			rows++;
-        			fireTableDataChanged();
-    			}
-        		for (int j=0;j<ATFDargs.length;j++) {
-        			updateCells(addCols(j,Lcol),i,j);
-        		}
-            	/*}
-            	catch (ArrayIndexOutOfBoundsException IAOBEe) {
-            		
-                }*/
+        if (max>0) {
+        	if (tagDataColumn==-1) {
+                /*
+                 * Se limpia la tabla antes de desplegar la consulta nueva
+                 */
+                clean();
+                /*
+                 * Cargando informacion
+                 */
                 
-	            if (formulas!=null) {
-                    calcular(i,0,false);
+                //for (int i=0;Irows.hasNext() && i<rows;i++) {
+                int i=0;
+                for (;Irows.hasNext();i++) {
+                    Element Erow = (Element) Irows.next();
+                    List Lcol = Erow.getChildren();
+                	//try {
+                    if (VdataRows.size() <= i) {
+        				Vector<Object> col = new Vector<Object>();
+            			for (int k=0;k<ATFDargs.length;k++) {
+            			    col.add(addCols(k,Lcol));
+            			}
+            			/* Se adiciona la nueva fila al vector de filas */
+            			VdataRows.add(col);
+            			rows++;
+            			fireTableDataChanged();
+        			}
+            		for (int j=0;j<ATFDargs.length;j++) {
+            			updateCells(addCols(j,Lcol),i,j);
+            		}
+                	/*}
+                	catch (ArrayIndexOutOfBoundsException IAOBEe) {
+                		
+                    }*/
+                    
+    	            if (formulas!=null) {
+                        calcular(i,0,false);
+                    }
                 }
             }
+            else if (tagDataColumn>-1) {
+            	XMLOutputter out = new XMLOutputter();
+            	out.setFormat(Format.getPrettyFormat());
+            	try {
+					out.output(doc,System.out);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+            	Element Erow = null;
+            	String tagDataValue = null;
+            	Erow = (Element) Lrows.get(0);
+            	/*
+            	 * Esta validacion la añadi por problemas al exportar datos
+            	 * desde un combo, cuando el combo no tiene seleccion de 
+            	 * registros, esta exportando un answer por codigo que envia 
+            	 * un solo col, si la tabla tiene mas de una columna y el 
+            	 * tagDataColumn es mayor a 0 (es mayor a 0 cuado se trabaja
+            	 * con sendRecord) entonces ocurre una excepcion.
+            	 * Codigo por revisar..
+            	 * 
+            	 * 2007-07-05				pipelx
+            	 */
+            	
+            	if (tagDataColumn<=Erow.getChildren().size()) {
+    	        	Element element = (Element) Erow.getChildren().get(tagDataColumn);
+    	        	tagDataValue = element.getValue().trim();
+    	        	boolean b = false;
+    	        	
+    	        	for (int k =0 ; k < arrivedKeys.size() ; k++) {
+    	        		String s = arrivedKeys.get(k).toString().trim();
+    	        		if (s.equals(tagDataValue)) {
+    	        			b = true;
+    	        			arrivedKeys.remove(k);
+    	        			break;
+    	        		}
+    	        	}
+    	        	
+    	        	for(int i=0; !b && i < VdataRows.size() && currentIndex > 0 ; i++) {
+    	        		Object strData = getValueAt(i,tagDataColumn);
+    	        		if (tagDataValue.equals(strData.toString().trim())){
+    	        			deleteRow(i);
+    	        			i --;
+    	        		}
+    	        	}
+    	        	
+    	        	/*Aqui va la llenada de datos.*/
+    	        	int currentRow = currentIndex;
+    	        	for (int i=0;  i < max ; i++) {
+    	        		Element RowQuery = (Element) Lrows.get(i);
+    	        		List Lcol = RowQuery.getChildren();
+    	                
+    	        		if (VdataRows.size() <= i) {
+    	    				Vector<Object> col = new Vector<Object>();
+    	        			for (int k=0;k<ATFDargs.length;k++) {
+    	        			    col.add(addCols(k,Lcol));
+    	        			}
+    	        			VdataRows.add(col);
+    	        			rows++;
+    	        			fireTableDataChanged();
+    	    			}
+    	                
+    	        		for (int j=0;!b && j<ATFDargs.length;j++) {
+    	        			Object obj = addCols(j,Lcol);
+    	        			if ((search || header!=null) && j==0){
+    	        				setValueAt(obj, currentRow,0);
+    	        			}
+    	        			else {
+    	        				updateCells(obj,currentRow,j);
+    	        			}
+    		            }
+    	        		
+    	        		if (header!=null) {
+	    	        		arrivedKeys.add(addCols(tagDataColumn,Lcol));
+	    	        	}
+    	        		
+    		            if (formulas!=null) {
+    	                    calcular(currentRow,0,false);
+    	                }
+    		            
+    		            if (!b) {
+    		            	currentRow++;
+    		            }
+    	        	}
+    	        	System.out.println("Current Index " + currentIndex);
+            	}
+            }
         }
-        else if (tagDataColumn>-1 && max > 0 ) {
-        	Element Erow = null;
-        	String tagDataValue = null;
-        	Erow = (Element) Lrows.get(0);
-        	/*
-        	 * Esta validacion la añadi por problemas al exportar datos
-        	 * desde un combo, cuando el combo no tiene seleccion de 
-        	 * registros, esta exportando un answer por codigo que envia 
-        	 * un solo col, si la tabla tiene mas de una columna y el 
-        	 * tagDataColumn es mayor a 0 (es mayor a 0 cuado se trabaja
-        	 * con sendRecord) entonces ocurre una excepcion.
-        	 * Codigo por revisar..
-        	 * 
-        	 * 2007-07-05				pipelx
-        	 */
-        	
-        	if (tagDataColumn<=Erow.getChildren().size()) {
-	        	Element element = (Element) Erow.getChildren().get(tagDataColumn);
-	        	tagDataValue = element.getValue().trim();
-	        	
-	        	for(int i=0; i < VdataRows.size() && currentIndex > 0 ; i++) {
-	        		Object strData = getValueAt(i,tagDataColumn);
-	        		if (tagDataValue.equals(strData.toString().trim())){
-	        			deleteRow(i);
-	        			i --;
-	        		}
-	        	}
-	        	
-	        	/*Aqui va la llenada de datos.*/
-	        	int currentRow = currentIndex;
-	        	for (int i=0;  i < max ; i++) {
-	        		Element RowQuery = (Element) Lrows.get(i);
-	        		List Lcol = RowQuery.getChildren();
-	                if (VdataRows.size() <= i) {
-	    				Vector<Object> col = new Vector<Object>();
-	        			for (int k=0;k<ATFDargs.length;k++) {
-	        			    col.add(addCols(k,Lcol));
-	        			}
-	        			VdataRows.add(col);
-	        			rows++;
-	        			fireTableDataChanged();
-	    			}
-
-	        		for (int j=0;j<ATFDargs.length;j++) {
-	        			if (search && j==0){
-	        				setValueAt(addCols(j,Lcol), currentRow,0);
-	        			}
-	        			else {
-	        				updateCells(addCols(j,Lcol),currentRow,j);
-	        			}
-		            }
-	        		
-		            if (formulas!=null) {
-	                    calcular(currentRow,0,false);
-	                }
-
-	        		currentRow++;
-	        	}
-
-        	}
-        }
-        else if (max==0) {
+        else {
         	clean();
         }
         totalizar();
