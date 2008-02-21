@@ -2026,13 +2026,13 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     	        		if (s.equals(tagDataValue)) {
     	        			b = true;
     	        			arrivedKeys.remove(k);
-    	        			break;
+    	        			//break;
     	        		}
     	        	}
     	        	
-    	        	for(int i=0; !b && i < VdataRows.size() && currentIndex > 0 ; i++) {
+    	        	for(int i=0;  i < VdataRows.size() && currentIndex > 0 ; i++) {
     	        		Object strData = getValueAt(i,tagDataColumn);
-    	        		if (tagDataValue.equals(strData.toString().trim())){
+    	        		if (tagDataValue.equals(strData.toString().trim()) && !b){
     	        			deleteRow(i);
     	        			i --;
     	        		}
@@ -2075,8 +2075,12 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     		            if (!b) {
     		            	currentRow++;
     		            }
+    		            else {
+    		            	currentIndex--;
+    		            }
+    		            System.out.println("Current Row==>" + currentRow);
     	        	}
-    	        	System.out.println("Current Index " + currentIndex);
+    	        	System.out.println("Current Index==>" + currentIndex);
             	}
             }
         }
