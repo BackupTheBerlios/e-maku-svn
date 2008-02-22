@@ -8,7 +8,7 @@ public class RecordEvent extends EventObject {
 
 	private static final long serialVersionUID = -9028662223570110161L;
 	private Element element;
-	private Element rowsLoaded;
+	//private Element rowsLoaded;
 	
 	public RecordEvent(Object source,Element e) {
 		super(source);
@@ -19,7 +19,7 @@ public class RecordEvent extends EventObject {
 		return element;
 	}
 	
-	public boolean isRowsLoaded() {
+	/*public boolean isRowsLoaded() {
 		if (rowsLoaded!=null) {
 			return true;
 		}
@@ -32,5 +32,5 @@ public class RecordEvent extends EventObject {
 	
 	public void setRowsLoaded(Element e) {
 		this.rowsLoaded = e;
-	}
+	}*/
 }
