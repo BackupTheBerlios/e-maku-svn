@@ -1,13 +1,14 @@
 package common.gui.components;
 
-import java.util.EventObject;
+import java.util.*;
 
-import org.jdom.Element;
+import org.jdom.*;
 
 public class RecordEvent extends EventObject {
 
 	private static final long serialVersionUID = -9028662223570110161L;
 	private Element element;
+	private Element rowsLoaded;
 	
 	public RecordEvent(Object source,Element e) {
 		super(source);
@@ -16,5 +17,20 @@ public class RecordEvent extends EventObject {
 	
 	public Element getElement() {
 		return element;
+	}
+	
+	public boolean isRowsLoaded() {
+		if (rowsLoaded!=null) {
+			return true;
+		}
+		return false;
+	}
+	
+	public Element getRowsLoaded() {
+		return rowsLoaded;
+	}
+	
+	public void setRowsLoaded(Element e) {
+		this.rowsLoaded = e;
 	}
 }
