@@ -2,7 +2,6 @@ package client.gui.components;
 
 import static client.gui.components.Formula.*;
 
-import java.io.*;
 import java.lang.reflect.*;
 import java.math.*;
 import java.text.*;
@@ -13,8 +12,6 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 import org.jdom.*;
-import org.jdom.output.*;
-import org.jdom.output.Format;
 
 import bsh.*;
 import client.*;
@@ -1968,14 +1965,14 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             }
             else if (tagDataColumn>-1) {
             	
-            	XMLOutputter out = new XMLOutputter();
+            	/*XMLOutputter out = new XMLOutputter();
             	out.setFormat(Format.getPrettyFormat());
             	try {
 					out.output(doc,System.out);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}*/
             	/* Limpiamos la tabla en caso de que llegue otro answer */
 				if (header!=null) {
 					clean();
