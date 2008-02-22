@@ -74,7 +74,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     private boolean isInitQuery;
     private String [] argsQuery;
 	private HashMap<String,Integer> arrivedKeys = new HashMap<String, Integer>();
-	private Element rowsLoaded = new Element("arrived");
+	private Hashtable<String, Integer> rowsLoaded = new Hashtable<String, Integer>();
     
     public EmakuTableModel(GenericForm GFforma,
             		  String sqlCode,
@@ -2010,18 +2010,24 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
                 			fireTableDataChanged();
             			}
             			arrivedKeys.put(valueKey, currentRow);
-            			//String record = "";
+            			String record = "";
             			for (int j=0;j<ATFDargs.length;j++) {
-            				//Element col = (Element)listCols.get(j);
+            				Element col = (Element)listCols.get(j);
             				Object obj = addCols(j,listCols);
             				if (j==0 && search) {
+            					record+=col.getValue().trim();
         						setValueAt(obj,currentRow,j);
             				}
             				else {
             					updateCells(obj,currentRow,j);
             				}
-            				//record+=col.getValue().trim();
                 		}
+            			if (header!=null) {
+            				this.rowsLoaded.put(record,currentRow);
+            			}
+            			else {
+            				this.rowsLoaded.remove(record);
+            			}
             			currentRow++;
             		} 
             	}
@@ -2201,7 +2207,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		return argsQuery.length;
 	}
 
-	public Element getRowsLoaded() {
+	public Hashtable<String,Integer> getRowsLoaded() {
 		return rowsLoaded ;
 	}
 

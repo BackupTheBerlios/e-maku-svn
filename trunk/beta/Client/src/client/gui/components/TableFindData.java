@@ -153,6 +153,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 
 	private HashMap<String, Integer> lastValue = new HashMap<String, Integer>();
 
+	private Hashtable<String, Integer> rowsLoaded = new Hashtable<String, Integer>();
+
 	/**
 	 * Constructor ...
 	 * 
@@ -1065,6 +1067,12 @@ public class TableFindData extends JPanel implements AnswerListener,
 	private void notificando(RecordEvent event) {
 		for (RecordListener l : recordListener) {
 			l.arriveRecordEvent(event);
+			rowsLoaded = event.getRowsLoaded();
+			if (rowsLoaded.size() > 0) {
+				for (int i = 0 ; i < TMFDtabla.getCurrentIndex(); i++)  {
+					sendRecord(i,new Element("unknow"),singleSendRecord);
+				}
+			}
 		}
 	}
 
@@ -1133,6 +1141,9 @@ public class TableFindData extends JPanel implements AnswerListener,
 			 * Este codigo verifica que el registro no exista anteriormente si
 			 * proviene de un arriveAnswer, la validación no se realiza
 			 */
+			Object  [] keysL = rowsLoaded.keySet().toArray();
+			Object  [] keysH = lastValue.keySet().toArray();
+			
 			if (!arriveAnswerEvent) {
 				boolean containValue = false;
 				for (int i = 0; i < lastValue.size(); i++) {
