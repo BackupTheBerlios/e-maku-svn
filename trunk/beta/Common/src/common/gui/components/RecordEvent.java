@@ -8,7 +8,7 @@ public class RecordEvent extends EventObject {
 
 	private static final long serialVersionUID = -9028662223570110161L;
 	private Element element;
-	//private Element rowsLoaded;
+	private Hashtable<String,Integer> rowsLoaded;
 	
 	public RecordEvent(Object source,Element e) {
 		super(source);
@@ -19,18 +19,18 @@ public class RecordEvent extends EventObject {
 		return element;
 	}
 	
-	/*public boolean isRowsLoaded() {
+	public boolean isRowsLoaded() {
 		if (rowsLoaded!=null) {
 			return true;
 		}
 		return false;
 	}
 	
-	public Element getRowsLoaded() {
+	public Hashtable<String,Integer> getRowsLoaded() {
 		return rowsLoaded;
 	}
 	
-	public void setRowsLoaded(Element e) {
-		this.rowsLoaded = e;
-	}*/
+	public void setRowsLoaded(Hashtable<String,Integer> hash) {
+		this.rowsLoaded = hash;
+	}
 }
