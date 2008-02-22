@@ -8,6 +8,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -43,6 +44,7 @@ import javax.swing.table.TableColumn;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.output.*;
 
 import com.toedter.calendar.JDateChooser;
 import common.gui.components.AnswerEvent;
@@ -718,6 +720,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 	}
 
 	public void deleteRow(int indice) {
+		Element e = new Element("delete");
+		verificaSendRecord(indice,e, singleSendRecord);
 		TMFDtabla.deleteRow(indice);
 	}
 
@@ -1079,6 +1083,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 	public boolean sendRecord(int rowIndex, Element element, String record) {
 		int j = 0;
 		int cont = 0;
+		String elmName = element.getName();
 		/*
 		 * Este codigo verifica que el registro este lleno en su totalidad,
 		 * cuando se llena una tabla a partir de una consulta esta validación se
@@ -1141,9 +1146,10 @@ public class TableFindData extends JPanel implements AnswerListener,
 			 * Este codigo verifica que el registro no exista anteriormente si
 			 * proviene de un arriveAnswer, la validación no se realiza
 			 */
-			Object  [] keysL = rowsLoaded.keySet().toArray();
-			Object  [] keysH = lastValue.keySet().toArray();
-			
+			if ("delete".equals(elmName)) {
+				//lastValue.remove(currentVal);
+				return true;
+			} 
 			if (!arriveAnswerEvent) {
 				boolean containValue = false;
 				for (int i = 0; i < lastValue.size(); i++) {
@@ -1189,7 +1195,9 @@ public class TableFindData extends JPanel implements AnswerListener,
 						RecordEvent event = new RecordEvent(this, element);
 						notificando(event);
 					} else if (singleSendRecord != null) {
-						verificaSendRecord(e.getFirstRow(),new Element("table"), singleSendRecord);
+						int r = e.getFirstRow();
+						Element e = new Element("table");
+						verificaSendRecord(r,e, singleSendRecord);
 					}
 				}
 			};

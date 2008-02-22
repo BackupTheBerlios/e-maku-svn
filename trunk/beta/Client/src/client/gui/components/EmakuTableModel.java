@@ -2,6 +2,7 @@ package client.gui.components;
 
 import static client.gui.components.Formula.*;
 
+import java.io.*;
 import java.lang.reflect.*;
 import java.math.*;
 import java.text.*;
@@ -12,6 +13,8 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 import org.jdom.*;
+import org.jdom.output.*;
+import org.jdom.output.Format;
 
 import bsh.*;
 import client.*;
@@ -1919,6 +1922,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     			
     	loadingQuery = true;
     	Element rootNode = doc.getRootElement();
+    	String rootNodeName = rootNode.getName();
     	Element header = rootNode.getChild("header");
         List listRows = rootNode.getChildren("row");
         int max = listRows.size();
@@ -1963,6 +1967,15 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
                 }
             }
             else if (tagDataColumn>-1) {
+            	
+            	XMLOutputter out = new XMLOutputter();
+            	out.setFormat(Format.getPrettyFormat());
+            	try {
+					out.output(doc,System.out);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             	/* Limpiamos la tabla en caso de que llegue otro answer */
 				if (header!=null) {
 					clean();
@@ -1973,6 +1986,11 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 				 * o puede ser por medio de sendrecord
 				 * */ 
 				int currentRow = currentIndex;
+				boolean delete = false;
+				if ("delete".equals(rootNodeName)) {
+					delete = true;
+				}
+				
             	for (int i=0;i < max ; i ++){
             		Element row=(Element)listRows.get(i);
             		List listCols=row.getChildren();
@@ -1983,15 +2001,21 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             		if (arrivedKeys.containsKey(valueKey)) {
             			int index = arrivedKeys.get(valueKey);
             			/* Se actualiza la fila indexada */
-            			for (int j=0;j<ATFDargs.length;j++) {
-            				Object obj = addCols(j,listCols);
-            				if (j==0 && search) {
-        						setValueAt(obj,index,j);
-            				}
-            				else {
-            					updateCells(obj,index,j);
-            				}
-                		}
+            			if (delete) {
+            				deleteRow(index);
+            				arrivedKeys.remove(valueKey);
+            			}
+            			else {
+	            			for (int j=0;j<ATFDargs.length;j++) {
+	            				Object obj = addCols(j,listCols);
+	            				if (j==0 && search) {
+	        						setValueAt(obj,index,j);
+	            				}
+	            				else {
+	            					updateCells(obj,index,j);
+	            				}
+	                		}
+            			}
             		}
             		/* Si la llave no esta indexada entonces procedemos a
             		 * isertar los datos en la ultima fila
