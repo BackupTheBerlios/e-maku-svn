@@ -1993,10 +1993,6 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             		List listCols=row.getChildren();
             		Element tagDataElement=(Element)listCols.get(tagDataColumn);
             		String valueKey = tagDataElement.getValue().trim();
-            		System.out.println("Current key values:");
-            		for (String s : arrivedKeys.keySet()) {
-            			System.out.println(s);
-            		}
             		/* Se verifica si ese valor ya esta indexado */
             		if (arrivedKeys.containsKey(valueKey)) {
             			int index = arrivedKeys.get(valueKey);
