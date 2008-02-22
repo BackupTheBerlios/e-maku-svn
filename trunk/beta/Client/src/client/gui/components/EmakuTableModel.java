@@ -1,58 +1,26 @@
 package client.gui.components;
 
-import static client.gui.components.Formula.BEANSHELL;
-import static client.gui.components.Formula.BEANSHELLNQ;
-import static client.gui.components.Formula.SIMPLE;
-import static client.gui.components.Formula.SIMPLENQ;
-import static client.gui.components.Formula.SUPER;
-import static client.gui.components.Formula.SUPERBEANNQ;
-import static client.gui.components.Formula.SUPERNQ;
+import static client.gui.components.Formula.*;
 
-import java.io.*;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
-import java.text.DateFormat;
+import java.lang.reflect.*;
+import java.math.*;
+import java.text.*;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.Vector;
+import java.util.*;
 
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.table.AbstractTableModel;
+import javax.swing.*;
+import javax.swing.table.*;
 
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.output.*;
+import org.jdom.*;
 
-import bsh.EvalError;
-import client.Run;
+import bsh.*;
+import client.*;
 
-import common.gui.components.ChangeValueEvent;
-import common.gui.components.ChangeValueListener;
-import common.gui.components.DataErrorException;
-import common.gui.components.VoidPackageException;
-import common.gui.forms.EndEventGenerator;
-import common.gui.forms.ExternalValueChangeEvent;
-import common.gui.forms.ExternalValueChangeListener;
-import common.gui.forms.GenericForm;
-import common.gui.forms.InstanceFinishingListener;
-import common.gui.forms.NotFoundComponentException;
-import common.misc.formulas.FormulaCalculator;
-import common.misc.language.Language;
-import common.transactions.TransactionServerException;
-import common.transactions.TransactionServerResultSet;
+import common.gui.components.*;
+import common.gui.forms.*;
+import common.misc.formulas.*;
+import common.misc.language.*;
+import common.transactions.*;
 
 /**
  * TMFindData.java Creado el 06-abr-2005
@@ -105,7 +73,8 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     private int currentIndex = 0;
     private boolean isInitQuery;
     private String [] argsQuery;
-	private ArrayList<Object> arrivedKeys = new ArrayList<Object>();
+	private HashMap<String,Integer> arrivedKeys = new HashMap<String, Integer>();
+	private Element rowsLoaded = new Element("arrived");
     
     public EmakuTableModel(GenericForm GFforma,
             		  String sqlCode,
@@ -1949,10 +1918,10 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     	 */
     			
     	loadingQuery = true;
-    	Element header = doc.getRootElement().getChild("header");
-        List Lrows = doc.getRootElement().getChildren("row");
-        Iterator Irows = Lrows.iterator();
-        int max = Lrows.size();
+    	Element rootNode = doc.getRootElement();
+    	Element header = rootNode.getChild("header");
+        List listRows = rootNode.getChildren("row");
+        int max = listRows.size();
         
         if (max>0) {
         	if (tagDataColumn==-1) {
@@ -1966,8 +1935,8 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
                 
                 //for (int i=0;Irows.hasNext() && i<rows;i++) {
                 int i=0;
-                for (;Irows.hasNext();i++) {
-                    Element Erow = (Element) Irows.next();
+                for (;i<max;i++) {
+                    Element Erow = (Element) listRows.get(i);
                     List Lcol = Erow.getChildren();
                 	//try {
                     if (VdataRows.size() <= i) {
@@ -1994,93 +1963,67 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
                 }
             }
             else if (tagDataColumn>-1) {
-            	XMLOutputter out = new XMLOutputter();
-            	out.setFormat(Format.getPrettyFormat());
-            	try {
-					out.output(doc,System.out);
-				} catch (IOException e) {
-					e.printStackTrace();
+            	/* Limpiamos la tabla en caso de que llegue otro answer */
+				if (header!=null) {
+					clean();
 				}
-            	Element Erow = null;
-            	String tagDataValue = null;
-            	Erow = (Element) Lrows.get(0);
-            	/*
-            	 * Esta validacion la añadi por problemas al exportar datos
-            	 * desde un combo, cuando el combo no tiene seleccion de 
-            	 * registros, esta exportando un answer por codigo que envia 
-            	 * un solo col, si la tabla tiene mas de una columna y el 
-            	 * tagDataColumn es mayor a 0 (es mayor a 0 cuado se trabaja
-            	 * con sendRecord) entonces ocurre una excepcion.
-            	 * Codigo por revisar..
-            	 * 
-            	 * 2007-07-05				pipelx
-            	 */
-            	
-            	if (tagDataColumn<=Erow.getChildren().size()) {
-    	        	Element element = (Element) Erow.getChildren().get(tagDataColumn);
-    	        	tagDataValue = element.getValue().trim();
-    	        	boolean b = false;
-    	        	
-    	        	for (int k =0 ; k < arrivedKeys.size() ; k++) {
-    	        		String s = arrivedKeys.get(k).toString().trim();
-    	        		if (s.equals(tagDataValue)) {
-    	        			b = true;
-    	        			arrivedKeys.remove(k);
-    	        			//break;
-    	        		}
-    	        	}
-    	        	
-    	        	for(int i=0;  i < VdataRows.size() && currentIndex > 0 ; i++) {
-    	        		Object strData = getValueAt(i,tagDataColumn);
-    	        		if (tagDataValue.equals(strData.toString().trim()) && !b){
-    	        			deleteRow(i);
-    	        			i --;
-    	        		}
-    	        	}
-    	        	
-    	        	/*Aqui va la llenada de datos.*/
-    	        	int currentRow = currentIndex;
-    	        	for (int i=0;  i < max ; i++) {
-    	        		Element RowQuery = (Element) Lrows.get(i);
-    	        		List Lcol = RowQuery.getChildren();
-    	                
-    	        		if (VdataRows.size() <= i) {
-    	    				Vector<Object> col = new Vector<Object>();
-    	        			for (int k=0;k<ATFDargs.length;k++) {
-    	        			    col.add(addCols(k,Lcol));
-    	        			}
-    	        			VdataRows.add(col);
-    	        			rows++;
-    	        			fireTableDataChanged();
-    	    			}
-    	                
-    	        		for (int j=0;!b && j<ATFDargs.length;j++) {
-    	        			Object obj = addCols(j,Lcol);
-    	        			if ((search || header!=null) && j==0){
-    	        				setValueAt(obj, currentRow,0);
-    	        			}
-    	        			else {
-    	        				updateCells(obj,currentRow,j);
-    	        			}
-    		            }
-    	        		
-    	        		if (header!=null) {
-	    	        		arrivedKeys.add(addCols(tagDataColumn,Lcol));
-	    	        	}
-    	        		
-    		            if (formulas!=null) {
-    	                    calcular(currentRow,0,false);
-    	                }
-    		            
-    		            if (!b) {
-    		            	currentRow++;
-    		            }
-    		            else {
-    		            	currentIndex--;
-    		            }
-    		            System.out.println("Current Row==>" + currentRow);
-    	        	}
-    	        	System.out.println("Current Index==>" + currentIndex);
+				
+				/*
+				 * Vamos a recorrer el paquete xml que llega, puede ser un answer
+				 * o puede ser por medio de sendrecord
+				 * */ 
+				int currentRow = currentIndex;
+            	for (int i=0;i < max ; i ++){
+            		Element row=(Element)listRows.get(i);
+            		List listCols=row.getChildren();
+            		Element tagDataElement=(Element)listCols.get(tagDataColumn);
+            		String valueKey = tagDataElement.getValue().trim();
+            		
+            		/* Se verifica si ese valor ya esta indexado */
+            		if (arrivedKeys.containsKey(valueKey)) {
+            			int index = arrivedKeys.get(valueKey);
+            			/* Se actualiza la fila indexada */
+            			for (int j=0;j<ATFDargs.length;j++) {
+            				Object obj = addCols(j,listCols);
+            				if (j==0 && search) {
+        						setValueAt(obj,index,j);
+            				}
+            				else {
+            					updateCells(obj,index,j);
+            				}
+                		}
+            		}
+            		/* Si la llave no esta indexada entonces procedemos a
+            		 * isertar los datos en la ultima fila
+            		 */
+            		else {
+            			/* Esto es para adicionar mas filas si la tabla se queda
+            			 * corta
+            			 */
+            			if (VdataRows.size() <= i) {
+            				Vector<Object> col = new Vector<Object>();
+                			for (int k=0;k<ATFDargs.length;k++) {
+                			    col.add(addCols(k,listCols));
+                			}
+                			VdataRows.add(col);
+                			rows++;
+                			fireTableDataChanged();
+            			}
+            			arrivedKeys.put(valueKey, currentRow);
+            			//String record = "";
+            			for (int j=0;j<ATFDargs.length;j++) {
+            				//Element col = (Element)listCols.get(j);
+            				Object obj = addCols(j,listCols);
+            				if (j==0 && search) {
+        						setValueAt(obj,currentRow,j);
+            				}
+            				else {
+            					updateCells(obj,currentRow,j);
+            				}
+            				//record+=col.getValue().trim();
+                		}
+            			currentRow++;
+            		} 
             	}
             }
         }
@@ -2090,7 +2033,6 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         totalizar();
         loadingQuery = false;
         doc = null;
-
     }
 
     private Object addCols(int j,List Lcol) {
@@ -2257,6 +2199,14 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	
 	public int getSizeArgsQuery() {
 		return argsQuery.length;
+	}
+
+	public Element getRowsLoaded() {
+		return rowsLoaded ;
+	}
+
+	public boolean isInitQuery() {
+		return isInitQuery;
 	}
 
 }

@@ -1178,11 +1178,11 @@ public class TableFindData extends JPanel implements AnswerListener,
 						RecordEvent event = new RecordEvent(this, element);
 						notificando(event);
 					} else if (singleSendRecord != null) {
-						verificaSendRecord(e.getFirstRow(),
-								new Element("table"), singleSendRecord);
+						verificaSendRecord(e.getFirstRow(),new Element("table"), singleSendRecord);
 					}
 				}
 			};
+			
 			if (!arriveAnswerEvent) {
 				SwingUtilities.invokeLater(t);
 			}
@@ -1199,14 +1199,6 @@ public class TableFindData extends JPanel implements AnswerListener,
 	}
 
 	public void arriveRecordEvent(RecordEvent e) {
-		/**
-		 * Esta clase se encarga de generar una consulta si diera lugar a ello y
-		 * esperar hasta que la información se encuentre disponible para cargar
-		 * los datos por medio del metodo setQuery.
-		 * 
-		 * @author ajo
-		 * 
-		 */
 		/*
 		 * class CargarDatos implements Runnable { Element e; public CargarDatos
 		 * (Element e) { this.e=e; } public void run() { synchronized(TMFDtabla) {
@@ -1223,10 +1215,11 @@ public class TableFindData extends JPanel implements AnswerListener,
 			doc.setRootElement(elm);
 			System.out.println("Cargando datos recordEvent");
 			TMFDtabla.setQuery(doc, true);
-			JTtabla.scrollRectToVisible(JTtabla.getCellRect(TMFDtabla
-					.getCurrentIndex(), 0, false));
-			JTtabla.updateUI();
-
+			e.setRowsLoaded(TMFDtabla.getRowsLoaded());
+			if (JTtabla.isFocusOwner()) {
+				JTtabla.scrollRectToVisible(JTtabla.getCellRect(TMFDtabla.getCurrentIndex(), 0, false));
+			}
+			//JTtabla.updateUI();
 		}
 	}
 
