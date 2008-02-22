@@ -73,7 +73,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     private int currentIndex = 0;
     private boolean isInitQuery;
     private String [] argsQuery;
-	private HashMap<String,Integer> arrivedKeys = new HashMap<String, Integer>();
+	private Hashtable<String,Integer> arrivedKeys = new Hashtable<String, Integer>();
 	private Hashtable<String, Integer> rowsLoaded = new Hashtable<String, Integer>();
     
     public EmakuTableModel(GenericForm GFforma,
@@ -1963,10 +1963,10 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
                     }
                 }
             }
-            else if (tagDataColumn>-1) {
+            else if (tagDataColumn>-1) synchronized (arrivedKeys) {
             	
             	/*XMLOutputter out = new XMLOutputter();
-            	out.setFormat(Format.getPrettyFormat());
+            	out.setFormat(org.jdom.output.Format.getPrettyFormat());
             	try {
 					out.output(doc,System.out);
 				} catch (IOException e) {
@@ -1993,7 +1993,10 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             		List listCols=row.getChildren();
             		Element tagDataElement=(Element)listCols.get(tagDataColumn);
             		String valueKey = tagDataElement.getValue().trim();
-            		
+            		System.out.println("Current key values:");
+            		for (String s : arrivedKeys.keySet()) {
+            			System.out.println(s);
+            		}
             		/* Se verifica si ese valor ya esta indexado */
             		if (arrivedKeys.containsKey(valueKey)) {
             			int index = arrivedKeys.get(valueKey);
@@ -2001,6 +2004,13 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             			if (delete) {
             				deleteRow(index);
             				arrivedKeys.remove(valueKey);
+            				Object [] keys = arrivedKeys.keySet().toArray();
+            				for (int j=0; j < keys.length ; j++) {
+            					Integer current = arrivedKeys.get(keys[j]);
+            					if (index < current) {
+            						arrivedKeys.put((String) keys[j],current-1);
+            					}
+            				}
             			}
             			else {
 	            			for (int j=0;j<ATFDargs.length;j++) {
