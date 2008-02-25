@@ -369,8 +369,8 @@ public class XMLTextArea extends JTextArea implements Couplable, FocusListener, 
 				currIndex++;
 			}
 		}
-		if (passed) {
+		//if (passed) {
 			this.setText(newText);
-		}
+		//}
 	}
 }
