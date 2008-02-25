@@ -1,67 +1,24 @@
 package client.gui.components;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
+import java.awt.*;
+import java.awt.event.*;
+import java.lang.reflect.*;
+import java.math.*;
+import java.text.*;
+import java.util.*;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
-import java.util.Vector;
 
-import javax.swing.AbstractCellEditor;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.table.*;
 
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.output.*;
+import org.jdom.*;
 
-import com.toedter.calendar.JDateChooser;
-import common.gui.components.AnswerEvent;
-import common.gui.components.AnswerListener;
-import common.gui.components.DataErrorException;
-import common.gui.components.RecordEvent;
-import common.gui.components.RecordListener;
-import common.gui.components.VoidPackageException;
-import common.gui.forms.EndEventGenerator;
-import common.gui.forms.ExternalValueChangeEvent;
-import common.gui.forms.ExternalValueChangeListener;
-import common.gui.forms.GenericForm;
-import common.gui.forms.InstanceFinishingListener;
-import common.gui.forms.NotFoundComponentException;
-import common.misc.text.TextDataValidator;
-import common.transactions.TransactionServerException;
-import common.transactions.TransactionServerResultSet;
+import com.toedter.calendar.*;
+import common.gui.components.*;
+import common.gui.forms.*;
+import common.misc.text.*;
+import common.transactions.*;
 
 /**
  * TableFindData.java Creado el 06-abr-2005
@@ -641,7 +598,6 @@ public class TableFindData extends JPanel implements AnswerListener,
 										sendRecord(sel, element,singleSendRecord);
 										// if (fullRow) {
 										RecordEvent event = new RecordEvent(this, element);
-										System.out.println("Notificando por aqui");
 										notificando(event);
 										// }
 									}
