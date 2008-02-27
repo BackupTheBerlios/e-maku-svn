@@ -772,12 +772,14 @@ public class LNInventarios {
 						 */
 						if (historyInv.containsKey(rfDocumento)) {
 							valorSalida = historyInv.get(rfDocumento).getValorEntrada();
+							System.out.println("lo encontro  "+valorSalida);
 						}
 						/*
 						 * si no esta en el historial, toca consultar el valor de salida en la base de datos.
 						 */
 						else {
 							valorSalida = getDBValue( "SCS0078",rfDocumento,idProducto);
+							System.out.println("no encontro nada "+valorSalida+" rf: "+rfDocumento+" idProducto "+idProducto);
 						}
 					}
 					else if (tipoDocumento.equals("FA") || tipoDocumento.equals("FC") || tipoDocumento.equals("FM") || tipoDocumento.equals("IJ")){
@@ -837,8 +839,8 @@ public class LNInventarios {
 				 * Si ponderar es verdadero entonces se pondera el valor del inventario teniendo en cuenta
 				 * que las las cantidades del saldo sean diferentes de 0.
 				 */
-				
-				if (ponderar) {
+				System.out.println("producto: "+idProducto+" estado: "+estado+" valor: "+pinventario);
+				if (ponderar && estado) {
 
 					/*
 					 * Se verifica que el saldo o el valor del saldo no sean 0, si es asi entonces el 
@@ -857,6 +859,8 @@ public class LNInventarios {
 							pinventario=valorSalida;
 						}
 					}
+					System.out.println("producto ponderado : "+idProducto+" estado: "+estado+" valor: "+pinventario);
+
 				}
 				
 				/* 

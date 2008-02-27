@@ -59,7 +59,9 @@ public class PrintingManager {
 		String os = System.getProperty("os.name");
 		if (this.type.equals(ImpresionType.PLAIN)) {
 			if (os.equals("Linux")){
-				docFlavor = DocFlavor.INPUT_STREAM.TEXT_PLAIN_HOST;
+				// Con cups no funciona en TEXT_PLAIN_HOST
+				// Cambiado a autosense ....
+				docFlavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
 			}
 			else {
 				docFlavor = DocFlavor.INPUT_STREAM.AUTOSENSE;

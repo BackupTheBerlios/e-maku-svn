@@ -170,6 +170,9 @@ public class ReportMaker extends Thread {
 
 					  String company = LinkingCache.getCompanyData(EmakuServerSocket.getCompanyNameKey(socket));
 					  String companyID = LinkingCache.getCompanyData(EmakuServerSocket.getCompanyIDKey(socket));
+					  String address = LinkingCache.getAddress(EmakuServerSocket.getBd(socket));
+					  String phone = LinkingCache.getPhone(EmakuServerSocket.getBd(socket));
+					  String city = LinkingCache.getCity(EmakuServerSocket.getBd(socket));
 
 					  if (company == null) {
 						  company = Language.getWord("DATANOTFOUND");
@@ -181,6 +184,9 @@ public class ReportMaker extends Thread {
 
 					  parameters.put("Empresa", company);
 					  parameters.put("Nit", companyID);
+					  parameters.put("Direccion", address);
+					  parameters.put("Telefono", phone);
+					  parameters.put("Ciudad", city);
 					  parameters.put("Fecha", DateValidator.getFormattedDate());
 					  parameters.put("Qhatu", ServerConstants.QHATU);
 					  parameters.put("Url", ServerConstants.QHATU_URL);

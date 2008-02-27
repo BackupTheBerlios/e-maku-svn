@@ -450,15 +450,17 @@ public class GenericData extends JPanel implements DateListener,
 						XMLTextField field = (XMLTextField) e.getSource();
 						String text = field.getText();
 						if ("NUMERIC".equals(field.getType())) {
+							NumberFormat nf = NumberFormat.getNumberInstance();
+		        			DecimalFormat form = (DecimalFormat) nf;
 							try {
-								NumberFormat nf = NumberFormat.getNumberInstance();
-			        			DecimalFormat form = (DecimalFormat) nf;
 			        			form.applyPattern("###,###,##0.00");
 			        			//System.out.println("texto: "+text);
 			        			field.setText(nf.format(Double.parseDouble(text)));
 			        			//field.setNumberValue(nf.parse(text).doubleValue());
 			        			field.setNumberValue(Double.parseDouble(text));
 							} catch (NumberFormatException NFEe) {
+								field.setText(nf.format(Double.parseDouble(text)));
+			        			//field.setNumberValue(Double.parseDouble(text));
 								NFEe.printStackTrace();
 							}
 /*							catch (ParseException Pe) {

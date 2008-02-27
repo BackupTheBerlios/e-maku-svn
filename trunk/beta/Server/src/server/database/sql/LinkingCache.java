@@ -211,6 +211,12 @@ public class LinkingCache {
 	            		         String.valueOf(rs.getString("nombre")));
 	            HcompanyData.put("K-" + bd + "-companyID",
 	            		         String.valueOf(rs.getString("id_char")));
+	            HcompanyData.put("K-" + bd + "-address",
+       		         String.valueOf(rs.getString("direccion")));
+	            HcompanyData.put("K-" + bd + "-phone",
+	       		         String.valueOf(rs.getString("numero")));
+	            HcompanyData.put("K-" + bd + "-city",
+	       		         String.valueOf(rs.getString("ciudad")));
 	        }
 	        
 	        /*
@@ -489,6 +495,17 @@ public class LinkingCache {
         return HcompanyData.get(key);
     }
     
+    public static String getAddress(String bd) {
+        return HcompanyData.get("K-"+bd+"-address");
+    }
+
+    public static String getPhone(String bd) {
+        return HcompanyData.get("K-"+bd+"-phone");
+    }
+    public static String getCity(String bd) {
+    	System.out.println("Retornando ciudad: "+HcompanyData.get("K"+bd+"-city"));
+        return HcompanyData.get("K-"+bd+"-city");
+    }
     
     private static String consecutive(String nombreBD,String value) {
         if (value!=null && !value.equals("")) {
