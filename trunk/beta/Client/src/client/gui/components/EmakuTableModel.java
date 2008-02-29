@@ -2039,7 +2039,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             			arrivedKeys.put(valueKey, currentRow);
             			String record = "";
             			System.out.println("cols: "+ATFDargs.length+" elementos: "+listCols.size());
-            			for (int j=0;j<ATFDargs.length;j++) {
+            			for (int j=0;j<ATFDargs.length && j < listCols.size();j++) {
                 			System.out.println("indice: "+j+" valores: "+((Element)listCols.get(j)).getValue());
             				Element col = (Element)listCols.get(j);
             				Object obj = addCols(j,listCols);
