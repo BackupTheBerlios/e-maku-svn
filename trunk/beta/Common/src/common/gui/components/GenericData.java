@@ -459,14 +459,14 @@ public class GenericData extends JPanel implements DateListener,
 			        			//field.setNumberValue(nf.parse(text).doubleValue());
 			        			field.setNumberValue(Double.parseDouble(text));
 							} catch (NumberFormatException NFEe) {
-								field.setText(nf.format(Double.parseDouble(text)));
+								field.setText(text);
 			        			//field.setNumberValue(Double.parseDouble(text));
-								NFEe.printStackTrace();
-							}
-/*							catch (ParseException Pe) {
+								//NFEe.printStackTrace();
+							}/*
+							catch (ParseException Pe) {
 								Pe.printStackTrace();
-							}
-*/						}
+							}*/
+						}
 						if (!"".equals(text) &&
 							(field.isExportvalue() || field.getKeyExternalValue() != null)) {
 							exportar(field);
@@ -947,24 +947,18 @@ public class GenericData extends JPanel implements DateListener,
 				Iterator j = e.getChildren().iterator();
 				for (int k = 0; j.hasNext(); k++) {
 					Element f = (Element) j.next();
-					XMLTextField XMLRefText = ((XMLTextField) VFields
-							.get(k));
+					XMLTextField XMLRefText = ((XMLTextField) VFields.get(k));
 
 					if (XMLRefText.getFormatDate() != null) {
 						try {
-							Format formatter = new SimpleDateFormat(
-									XMLRefText.getFormatDate());
-							XMLRefText.setText(formatter
-									.format(Timestamp.valueOf(f
-											.getValue().trim())));
+							Format formatter = new SimpleDateFormat(XMLRefText.getFormatDate());
+							XMLRefText.setText(formatter.format(Timestamp.valueOf(f.getValue().trim())));
 						} catch (IllegalArgumentException IAEe) {
 							XMLRefText.setText(f.getValue().trim());
 						}
-					} else if (XMLTextField.NUMERIC.equals(XMLRefText
-							.getType())) {
+					} else if (XMLTextField.NUMERIC.equals(XMLRefText.getType())) {
 						try {
-							XMLRefText.setNumberValue(Double
-									.parseDouble(f.getValue().trim()));
+							XMLRefText.setNumberValue(Double.parseDouble(f.getValue().trim()));
 							// XMLRefText.setText(Double.parseDouble(f.getValue().trim())));
 						} catch (NumberFormatException NFEe) {
 						}

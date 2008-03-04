@@ -2,6 +2,7 @@ package client.gui.components;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.lang.reflect.*;
 import java.math.*;
 import java.text.*;
@@ -13,6 +14,7 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 
 import org.jdom.*;
+import org.jdom.output.XMLOutputter;
 
 import com.toedter.calendar.*;
 import common.gui.components.*;
@@ -598,7 +600,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 										sendRecord(sel, element,singleSendRecord);
 										// if (fullRow) {
 										RecordEvent event = new RecordEvent(this, element);
-										notificando(event);
+										notificando(event,singleSendRecord);
 										// }
 									}
 
@@ -1023,13 +1025,13 @@ public class TableFindData extends JPanel implements AnswerListener,
 		recordListener.removeElement(listener);
 	}
 
-	private void notificando(RecordEvent event) {
+	private void notificando(RecordEvent event,String record) {
 		for (RecordListener l : recordListener) {
 			l.arriveRecordEvent(event);
 			rowsLoaded = event.getRowsLoaded();
 			if (rowsLoaded!=null && rowsLoaded.size() > 0) {
 				for (int i = 0 ; i < TMFDtabla.getCurrentIndex(); i++)  {
-					sendRecord(i,new Element("unknow"),singleSendRecord);
+					sendRecord(i,new Element("unknow"),record);
 				}
 			}
 		}
@@ -1147,8 +1149,11 @@ public class TableFindData extends JPanel implements AnswerListener,
 								&& !JTtabla.getValueAt(i, 0).equals(""); i++) {
 							sendRecord(i, element, sendRecord);
 						}
+						XMLOutputter out = new XMLOutputter();
+		            	out.setFormat(org.jdom.output.Format.getPrettyFormat());
+		            	
 						RecordEvent event = new RecordEvent(this, element);
-						notificando(event);
+						notificando(event,sendRecord);
 					} else if (singleSendRecord != null) {
 						int r = e.getFirstRow();
 						Element e = new Element("table");
@@ -1168,7 +1173,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 	private void verificaSendRecord(int row, Element e, String recordType) {
 		if (sendRecord(row, e, recordType)) {
 			RecordEvent event = new RecordEvent(this, e);
-			notificando(event);
+			notificando(event,recordType);
 		}
 	}
 
@@ -1187,7 +1192,6 @@ public class TableFindData extends JPanel implements AnswerListener,
 			Document doc = new Document();
 			Element elm = (Element) ((Element) e.getElement()).clone();
 			doc.setRootElement(elm);
-			System.out.println("Cargando datos recordEvent");
 			TMFDtabla.setQuery(doc, true);
 			e.setRowsLoaded(TMFDtabla.getRowsLoaded());
 			if (JTtabla.isFocusOwner()) {

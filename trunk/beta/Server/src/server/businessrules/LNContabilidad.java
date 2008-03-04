@@ -505,7 +505,15 @@ public class LNContabilidad {
 			asiento[8]="0";
 		} 
 		
-		if (!asiento[7].equals("0") && !asiento[8].equals("0")) {
+		if (debug) {
+			System.out.println("debito: [" + asiento[7] + "]  credito: ["+asiento[8]+"]");
+		}
+		double valor = Double.parseDouble(asiento[7]) + Double.parseDouble(asiento[8]);
+		if (valor>0) {
+			
+			if (debug) {
+				System.out.println("generando ...");
+			}
 			/*
 			 * Se reemplaza el numero de la cuenta contable por su id
 			 */

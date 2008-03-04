@@ -1,26 +1,58 @@
 package client.gui.components;
 
-import static client.gui.components.Formula.*;
+import static client.gui.components.Formula.BEANSHELL;
+import static client.gui.components.Formula.BEANSHELLNQ;
+import static client.gui.components.Formula.SIMPLE;
+import static client.gui.components.Formula.SIMPLENQ;
+import static client.gui.components.Formula.SUPER;
+import static client.gui.components.Formula.SUPERBEANNQ;
+import static client.gui.components.Formula.SUPERNQ;
 
-import java.lang.reflect.*;
-import java.math.*;
-import java.text.*;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
-import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.table.AbstractTableModel;
 
-import org.jdom.*;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.output.XMLOutputter;
 
-import bsh.*;
-import client.*;
+import bsh.EvalError;
+import client.Run;
 
-import common.gui.components.*;
-import common.gui.forms.*;
-import common.misc.formulas.*;
-import common.misc.language.*;
-import common.transactions.*;
+import common.gui.components.ChangeValueEvent;
+import common.gui.components.ChangeValueListener;
+import common.gui.components.DataErrorException;
+import common.gui.components.VoidPackageException;
+import common.gui.forms.EndEventGenerator;
+import common.gui.forms.ExternalValueChangeEvent;
+import common.gui.forms.ExternalValueChangeListener;
+import common.gui.forms.GenericForm;
+import common.gui.forms.InstanceFinishingListener;
+import common.gui.forms.NotFoundComponentException;
+import common.misc.formulas.FormulaCalculator;
+import common.misc.language.Language;
+import common.transactions.TransactionServerException;
+import common.transactions.TransactionServerResultSet;
 
 /**
  * TMFindData.java Creado el 06-abr-2005
@@ -1988,7 +2020,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 					delete = true;
 				}
 				
-            	for (int i=0;i < max ; i ++){
+            	for (int i=0;i < max; i ++){
             		Element row=(Element)listRows.get(i);
             		List listCols=row.getChildren();
             		Element tagDataElement=(Element)listCols.get(tagDataColumn);
@@ -2038,9 +2070,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             			}
             			arrivedKeys.put(valueKey, currentRow);
             			String record = "";
-            			System.out.println("cols: "+ATFDargs.length+" elementos: "+listCols.size());
             			for (int j=0;j<ATFDargs.length && j < listCols.size();j++) {
-                			System.out.println("indice: "+j+" valores: "+((Element)listCols.get(j)).getValue());
             				Element col = (Element)listCols.get(j);
             				Object obj = addCols(j,listCols);
             				if (j==0 && search) {

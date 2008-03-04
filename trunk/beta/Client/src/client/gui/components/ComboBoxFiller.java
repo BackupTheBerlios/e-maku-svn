@@ -618,7 +618,7 @@ public class ComboBoxFiller extends JComboBox implements
 	                    }
 	                    
                         AnswerEvent event = new AnswerEvent(this,sql,doc);
-	                    notificando(event);
+	                    notificando(event,b);
                     }
 			    }
 	        }
@@ -729,10 +729,11 @@ public class ComboBoxFiller extends JComboBox implements
 	 * 
 	 * @param event
 	 */
-	private void notificando(AnswerEvent event) {
+	private void notificando(AnswerEvent event,boolean empty) {
 		for(AnswerListener l:answerListener) {
 			if (l.containSqlCode(event.getSqlCode())) {
-				l.arriveAnswerEvent(event);
+				if (!(l instanceof TableFindData && !empty))
+					l.arriveAnswerEvent(event);
 			}
 		}
 	}
