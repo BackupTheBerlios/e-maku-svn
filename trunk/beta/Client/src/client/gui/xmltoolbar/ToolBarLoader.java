@@ -103,11 +103,12 @@ public class ToolBarLoader extends JPanel {
 
     private JToolBar loadJToolbar(Iterator j) {
         JToolBar toolBar = new JToolBar();
+        toolBar.setVisible(false);
         while (j.hasNext()) {
             Element element = (Element) j.next();
             List menuItemList = element.getChildren();
             Iterator k = menuItemList.iterator();
-            toolBar.add(loadJButton(k));
+            toolBar.add(loadJButton(toolBar,k));
         }
         return toolBar;
     }
@@ -116,8 +117,8 @@ public class ToolBarLoader extends JPanel {
      * Metodo encargado de cargar los Botones al JToolBar
      */
 
-    private EmakuButtonGroup loadJButton(Iterator j) {
-        button = new EmakuButtonGroup();
+    private EmakuButtonGroup loadJButton(JToolBar toolBar,Iterator j) {
+        button = new EmakuButtonGroup(toolBar);
         while (j.hasNext()) {
             Element element = (Element) j.next();
             if (element.getName().equals("Activo")) {
@@ -145,6 +146,7 @@ public class ToolBarLoader extends JPanel {
             }
             else if (element.getName().equals("Clase")) {
                 button.setClassName(element.getValue());
+                toolBar.setVisible(true);
             }
             else if (element.getName().equals("ArgConstructor")) {
                 List argsList = element.getChildren();

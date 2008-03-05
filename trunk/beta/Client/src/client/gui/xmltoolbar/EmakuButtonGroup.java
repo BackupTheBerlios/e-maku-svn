@@ -24,20 +24,22 @@
 	package client.gui.xmltoolbar;
 
 	import java.awt.Dimension;
-	import java.awt.event.ActionEvent;
-	import java.awt.event.ActionListener;
-	import java.lang.reflect.Constructor;
-	import java.lang.reflect.InvocationTargetException;
-	import java.lang.reflect.Method;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
-	import javax.swing.JButton;
+import javax.swing.JButton;
+import javax.swing.JToolBar;
 
-	import client.control.ACPFormEvent;
-	import client.control.ACPFormListener;
-	import client.control.ACPHandler;
-	import client.gui.components.MainWindow;
-	import client.misc.ClientConstants;
-	import common.gui.forms.GenericForm;
+import client.control.ACPFormEvent;
+import client.control.ACPFormListener;
+import client.control.ACPHandler;
+import client.gui.components.MainWindow;
+import client.misc.ClientConstants;
+
+import common.gui.forms.GenericForm;
 
 	/**
 	 * Clase encargada de generar los JButton y la manipulaci?n de los eventos de cada
@@ -54,6 +56,7 @@
 	    private String method;
 	    private String transaction;
 	    private boolean activo;
+	    private JToolBar toolBar;
 	    private Object[] ArgConstructor = null;
 	    private Class[] TypeArgConstructor = null;
 
@@ -62,7 +65,8 @@
 	     * para crear de si misma los eventos de cada JMenuItem
 	     */
 	    
-	    public EmakuButtonGroup() {
+	    public EmakuButtonGroup(JToolBar toolBar) {
+	    	this.toolBar=toolBar;
 	        this.addActionListener(this);
 	        ACPHandler.addACPFormListener(this);
 	    }
@@ -200,11 +204,16 @@
 		public void setTransaction(String transaction) {
 			this.transaction = transaction;
 			setEnabled(false);
+			setVisible(false);
 		}
 
 		public void arriveACPForm(ACPFormEvent e) {
 			if (e.getTransaction().equals(transaction)) {
 				setEnabled(true);
+				setVisible(true);
+				if (!toolBar.isVisible()) {
+					toolBar.setVisible(true);
+				}
 			}
 		}
 	}

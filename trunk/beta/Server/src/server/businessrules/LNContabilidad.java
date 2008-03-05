@@ -1072,6 +1072,12 @@ public class LNContabilidad {
 		}
 		asiento[7] = String.valueOf(nsaldo);
 
+		if (debug) {
+			System.out.println("Datos a almacenar"); 
+			for (int i=0;i<asiento.length;i++) {
+			System.out.println("Campo "+i+": "+asiento[i]); }
+		}
+	
 		QueryRunner RQsalidas;
 
 		if (tipo == LIBRO_AUX_INV) {
@@ -1084,12 +1090,6 @@ public class LNContabilidad {
 			RQsalidas = new QueryRunner(bd, "SCI00O6", asiento);
 		}
 
-		/*
-		 * Depurando ....
-		 * 
-		 * System.out.println("Datos a almacenar"); for (int i=0;i<asiento.length;i++) {
-		 * System.out.println("Campo "+i+": "+asiento[i]); }
-		 */
 		RQsalidas.ejecutarSQL();
 
 	}
