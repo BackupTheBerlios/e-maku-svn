@@ -196,4 +196,11 @@
         <es_ES></es_ES>
         <en_US>Import Excel File</en_US>
     </sentence>       
+    <sentence>
+        <key>ERROR_VALUE_MIN</key>
+        <es_CO>Error, verifique el valor minimo en uno de los registros de la columna </es_CO>
+        <es_EC></es_EC>
+        <es_ES></es_ES>
+        <en_US>Error, verify the min value in one of de column records </en_US>
+    </sentence>       
 </language>

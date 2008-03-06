@@ -8,7 +8,6 @@ import static client.gui.components.Formula.SUPER;
 import static client.gui.components.Formula.SUPERBEANNQ;
 import static client.gui.components.Formula.SUPERNQ;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
@@ -34,7 +33,6 @@ import javax.swing.table.AbstractTableModel;
 
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.output.XMLOutputter;
 
 import bsh.EvalError;
 import client.Run;
@@ -1579,18 +1577,38 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     	}
     }
     
-    
     /**
      * Metodo generico para retornar un <package/> 
      * @return retorna un <package/>
+     * @throws VoidPackageException 
      */
-    public Element getPackage() {
+    public Element getPackage() throws VoidPackageException {
         Element pack = new Element("package");
         for (int i=0;i<rows; i++) {
 	            Element subpack = new Element("subpackage");
 	            StructureSubPackage subpackage = new StructureSubPackage();
+	        	Boolean valueOk = true;
+	        	String columnName = null;
 	            for (int j=0;j<getColumnCount();j++) {
 	            	subpackage = makeSubPackage(i,j,subpack);
+                    if (ATFDargs[j].getMinValue()!= null) {
+                        Object value = getValueAt(i, j);
+                    	Double validValue = null;
+                    	if (value instanceof BigDecimal) {
+                    		validValue=((BigDecimal)value).doubleValue();
+                    	}
+                    	else if (value instanceof Integer) {
+                    		validValue=((Integer)value).doubleValue();
+                    	}
+                    	if(validValue!=null && validValue<=ATFDargs[j].getMinValue()){ 
+                            columnName = Language.getWord(ATFDargs[j].getName());
+                            if ("".equals(columnName)) {
+                            	columnName = Language.getWord(ATFDargs[j].getName());
+                            }
+                            valueOk = false;
+                    	}
+                    }
+
 	                if (subpackage.isValidPackage()) {
 	                    break;
 	                }    	
@@ -1598,7 +1616,12 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	            if (subpackage.isValidPackage()) {
 	                break;
 	            }
-	            pack.addContent(subpackage.getSubPackage());
+	            if (valueOk) {
+	            	pack.addContent(subpackage.getSubPackage());
+	            }
+	            else {
+	        		throw new VoidPackageException("\n"+Language.getWord("ERROR_VALUE_MIN")+columnName);
+	            }
         }
         return pack;
     }
@@ -1607,16 +1630,36 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
      * Metodo generico para retornar un <package/> validando el contenido
      * de una columna
      * @return retorna un <package/>
+     * @throws VoidPackageException 
      */
-    public Element getPackage(boolean maxmin,int col,double validValue) {
+    public Element getPackage(boolean maxmin,int col,double validMValue) throws VoidPackageException {
         Element pack = new Element("package");
         for (int i=0;i<rows; i++) {
-        	if ((maxmin && ((Number)getValueAt(i,col)).intValue()<=validValue) ||
-        	    (!maxmin && ((Number)getValueAt(i,col)).intValue()>validValue))	{
+        	if ((maxmin && ((Number)getValueAt(i,col)).intValue()<=validMValue) ||
+        	    (!maxmin && ((Number)getValueAt(i,col)).intValue()>validMValue))	{
 	            Element subpack = new Element("subpackage");
 	            StructureSubPackage subpackage = new StructureSubPackage();
+	        	Boolean valueOk = true;
+	        	String columnName = null;
 	            for (int j=0;j<getColumnCount();j++) {
 	            	subpackage = makeSubPackage(i,j,subpack);
+                    if (ATFDargs[j].getMinValue()!= null) {
+                        Object value = getValueAt(i, j);
+                    	Double validValue = null;
+                    	if (value instanceof BigDecimal) {
+                    		validValue=((BigDecimal)value).doubleValue();
+                    	}
+                    	else if (value instanceof Integer) {
+                    		validValue=((Integer)value).doubleValue();
+                    	}
+                    	if(validValue!=null && validValue<=ATFDargs[j].getMinValue()){ 
+                            columnName = Language.getWord(ATFDargs[j].getName());
+                            if ("".equals(columnName)) {
+                            	columnName = Language.getWord(ATFDargs[j].getName());
+                            }
+                            valueOk = false;
+                    	}
+                    }
 	                if (subpackage.isValidPackage()) {
 	                    break;
 	                }    	
@@ -1624,7 +1667,12 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	            if (subpackage.isValidPackage()) {
 	                break;
 	            }
-	            pack.addContent(subpackage.getSubPackage());
+	            if (valueOk) {
+	            	pack.addContent(subpackage.getSubPackage());
+	            }
+	            else {
+	        		throw new VoidPackageException("\n"+Language.getWord("ERROR_VALUE_MIN")+columnName);
+	            }
         	}
         }
         return pack;
@@ -1632,7 +1680,6 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     
     public StructureSubPackage makeSubPackage(int i,int j,Element subpack) {
     	StructureSubPackage subpackage = new StructureSubPackage();
-    	
         for (int k=0;k<getColumnCount();k++) {
             if (ATFDargs[k].getOrderReturn()==j) {
                 Object value = getValueAt(i, k);
@@ -1675,13 +1722,13 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
                     		field.setText("NULL");
                     }
                     else {
-                    		field.setText(value.toString());
+                		field.setText(value.toString());
                     }
                 }
                 subpack.addContent(field);
             }
         }
-        subpackage.setSubPackage(subpack);
+    	subpackage.setSubPackage(subpack);
         return subpackage;
     }
     

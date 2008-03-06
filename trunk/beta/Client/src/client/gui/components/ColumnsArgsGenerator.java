@@ -60,6 +60,7 @@ public class ColumnsArgsGenerator {
 	private int selected;
 	private boolean specializedCellEditable = true;
 	private Element args;
+	private Double minValue;
 	
 	private short columnDebit = -1;
 	private short columnCredit = -1;
@@ -120,6 +121,9 @@ public class ColumnsArgsGenerator {
     		}
     		else if (attrib.equals("importValueCombo")) {
     			importValueCombo.add(value);
+    		}
+    		else if("minValue".equals(attrib)) {
+    			minValue = new Double(value);
     		}
     		else if (attrib.equals("type")) {
     			type = value;
@@ -275,6 +279,7 @@ public class ColumnsArgsGenerator {
     		else if ("valideEnabledCol".equals(attrib)) {
    				valideEnabledCol = value;
     		}
+    		
     	}
 
     	if (type.equals("INT") || type.equals("INTEGER")) { 
@@ -531,5 +536,9 @@ public class ColumnsArgsGenerator {
 			return false;
 		}
 		return true;
+	}
+
+	public Double getMinValue() {
+		return minValue;
 	}
 }
