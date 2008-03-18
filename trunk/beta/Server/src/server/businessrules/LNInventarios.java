@@ -3,6 +3,8 @@ package server.businessrules;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
@@ -142,7 +144,7 @@ public class LNInventarios {
 		} else if (NOTA.equals(tipoMovimiento)) {
 			nota(pack);
 		} else if (RECOVER.equals(tipoMovimiento)) {
-			recover(pack);
+			recover();
 		} else if (RECOVERDOC.equals(tipoMovimiento)) {
 			recoverDocument();
 		} else if (DELETE.equals(tipoMovimiento)) {
@@ -576,9 +578,14 @@ public class LNInventarios {
 
 	private String[] ponderar(String idBodega, String idProdServ,
 			double cantidad, double valor) {
-
+		double saldoAnt = saldo;
 		saldo += cantidad;
-		vsaldo += (cantidad * valor);
+		if ((cantidad<0 && saldoAnt==Math.abs(cantidad)) || (valor<0 && cantidad==saldoAnt)) {
+			vsaldo=0;
+		}
+		else {
+			vsaldo+=(cantidad * valor);
+		}
 		double pcosto = (vsaldo / saldo);
 		try {
 			BigDecimal bigDecimal = new BigDecimal(pcosto);
@@ -615,27 +622,45 @@ public class LNInventarios {
 	}
 
 	public void recoverDocument() throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
+		
+
+		HashMap<Integer,RecoverData> recoverList = new HashMap<Integer,RecoverData>();
+
 		QueryRunner RQdocument = new QueryRunner(bd,"SCS0082",new String[]{CacheKeys.getKey("ndocumento")});
 		ResultSet RSdocument = RQdocument.ejecutarSELECT();
 		System.out.println("Recalculando editados");
-		//int i=0;
-		while (RSdocument.next()) {
-			//System.out.println("registro "+(i++));
-			recoverData(RSdocument.getString(1),
-						RSdocument.getString(2),
-						RSdocument.getString(3));	
+		int i=0;
+		for (;RSdocument.next();i++) {
+			recoverList.put(i,new RecoverData(recoverList,
+										  i,
+										  RSdocument.getString(1),
+										  RSdocument.getString(2),
+										  RSdocument.getString(3)));
+			recoverList.get(i).start();
+			//System.out.println("+++++++++++++++lanzado hilo No. "+i);
 		}
 		
 		QueryRunner RQdropDocument = new QueryRunner(bd,"SCS0085",new String[] {CacheKeys.getKey("ndocumento")});
 		ResultSet RSdropDocument = RQdropDocument.ejecutarSELECT();
 		System.out.println("Recalculando los elimiandos");
-		//i=0;
-		while (RSdropDocument.next()) {
-			//System.out.println("registro "+(i++));
-			recoverData(RSdropDocument.getString(1),
-						RSdropDocument.getString(2),
-						RSdropDocument.getString(3));	
+		for (;RSdropDocument.next();i++) {
+			recoverList.put(i,new RecoverData(recoverList,
+										  i,
+										  RSdropDocument.getString(1),
+										  RSdropDocument.getString(2),
+										  RSdropDocument.getString(3)));
+			recoverList.get(i).start();
+			//System.out.println("+++++++++++++++lanzado hilo No. "+i);
 		}
+		
+		while (recoverList.size()>0) {
+			try {
+				System.out.println("----------Numero de registros: "+recoverList.size());
+				Thread.sleep(1000);
+			}
+			catch(InterruptedException e) {}
+		}
+		
 		QueryRunner RQdpDocument = new QueryRunner(bd,"SCD0003",new String[]{});
 		RQdpDocument.ejecutarSQL();
 
@@ -647,31 +672,45 @@ public class LNInventarios {
 		RQdpDocument.closeStatement();
 	}
 
-	public void recover(Element pack) {
-		Iterator i = pack.getChildren().iterator();
-		
-		String fecha = null;
-		String idBodega = null;
-		String idProducto = null;
-		
-		/*
-		 * Recoleccion de argumentos
-		 */
+	public void recover() throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
+		HashMap<Integer,RecoverData> recoverList = new HashMap<Integer,RecoverData>();
 
-		while (i.hasNext()) {
-			Element field = (Element) i.next();
-			String nameField = field.getAttributeValue("name");
-			nameField = nameField.toLowerCase();
-			if ("fecha".equals(nameField)) {
-				fecha = field.getText();
-			} else if ("idbodega".equals(nameField)) {
-				idBodega = field.getText();
-			} else if ("idproducto".equals(nameField)) {
-				idProducto = field.getText();
+		QueryRunner RQdpDocument = new QueryRunner(bd,"SCD0003",new String[]{});
+		QueryRunner RQdocument = new QueryRunner(bd,"SCS0090");
+		ResultSet RSdocument = RQdocument.ejecutarSELECT();
+		System.out.println("Recalculando editados");
+		int i=0;
+		for (;RSdocument.next();i++) {
+			try {
+				recoverList.put(i,new RecoverData(recoverList,
+											  i,
+											  null,
+											  RSdocument.getString(1),
+											  RSdocument.getString(2)));
+			recoverList.get(i).start();
+			System.out.println("+++++++++++++++ producto: "+RSdocument.getString(2)+" lanzado hilo No. "+i);
+			Thread.sleep(100);
 			}
+			catch(InterruptedException e) {}
 		}
+
+
+		while (recoverList.size()>0) {
+			try {
+				System.out.println("----------Numero de registros: "+recoverList.size());
+				Thread.sleep(100);
+			}
+			catch(InterruptedException e) {}
+		}
+		recoverList = null;
+		System.gc();
+		RQdpDocument.ejecutarSQL();
+
+
+		RQdocument.closeStatement();
+		RSdocument.close();
+		RQdpDocument.closeStatement();
 		
-		recoverData(fecha,idBodega,idProducto);
 	}
 	
 	private void recoverData(String fecha,String idBodega, String idProducto) {
@@ -772,19 +811,17 @@ public class LNInventarios {
 						 */
 						if (historyInv.containsKey(rfDocumento)) {
 							valorSalida = historyInv.get(rfDocumento).getValorEntrada();
-							System.out.println("lo encontro  "+valorSalida);
+							//System.out.println("lo encontro  "+valorSalida);
 						}
 						/*
 						 * si no esta en el historial, toca consultar el valor de salida en la base de datos.
 						 */
 						else {
 							valorSalida = getDBValue( "SCS0078",rfDocumento,idProducto);
-							System.out.println("no encontro nada "+valorSalida+" rf: "+rfDocumento+" idProducto "+idProducto);
+							//System.out.println("no encontro nada "+valorSalida+" rf: "+rfDocumento+" idProducto "+idProducto);
 						}
 					}
 					else if (tipoDocumento.equals("FA") || tipoDocumento.equals("FC") || tipoDocumento.equals("FM") || tipoDocumento.equals("IJ")){
-						//if (idProducto.equals("1474"))
-							//System.out.println("valor salida:"+valorSalida+"valor Inventario: "+pinventario);
 						valorSalida=pinventario;
 						ponderar=false;
 					}
@@ -832,14 +869,24 @@ public class LNInventarios {
 				/*
 				 * Recalculando informacion
 				 */
+				double nuevoValorEntrada = valorEntrada<0 && entrada==Math.abs(saldoAnt) && valorEntrada==pinventario?valorSaldoAnt*-1:entrada*valorEntrada;
+				/*
+				 * Si se va a sacar la totalidad del inventario, esta debe salir al valor del saldo,
+				 * no a la multiplicacion del pinventario * numero de unidades, ya que esto presenta 
+				 * un desface por la perdida de decimales y genera saldos con cantidad 0 y valor diferene
+				 * de 0.
+				 */
+				
+				double nuevoValorSalida = saldoAnt==salida && valorSalida==pinventario?valorSaldoAnt:salida*valorSalida;
+				
 				saldoAnt = saldoAnt + entrada - salida;
-				valorSaldoAnt =roundValue(valorSaldoAnt + (entrada*valorEntrada) - (salida*valorSalida));
+				valorSaldoAnt =roundValue(valorSaldoAnt + nuevoValorEntrada - nuevoValorSalida);
 
 				/*
 				 * Si ponderar es verdadero entonces se pondera el valor del inventario teniendo en cuenta
 				 * que las las cantidades del saldo sean diferentes de 0.
 				 */
-				System.out.println("producto: "+idProducto+" estado: "+estado+" valor: "+pinventario);
+				//System.out.println("producto: "+idProducto+" estado: "+estado+" valor: "+pinventario);
 				if (ponderar && estado) {
 
 					/*
@@ -859,7 +906,7 @@ public class LNInventarios {
 							pinventario=valorSalida;
 						}
 					}
-					System.out.println("producto ponderado : "+idProducto+" estado: "+estado+" valor: "+pinventario);
+					//System.out.println("producto ponderado : "+idProducto+" estado: "+estado+" valor: "+pinventario);
 
 				}
 				
@@ -986,6 +1033,29 @@ public class LNInventarios {
 		}
 		public void setValorSalida(double valorSalida) {
 			this.valorSalida = valorSalida;
+		}
+	}
+	
+	class RecoverData extends Thread {
+
+		String _fecha;
+		String _bodega;
+		String _producto;
+		HashMap<Integer,RecoverData> recoverList;
+		Integer index;
+		
+		RecoverData(HashMap<Integer,RecoverData> recoverList,Integer index,String fecha,String bodega,String producto) {
+			this.recoverList=recoverList;
+			this.index=index;
+			this._fecha=fecha;
+			this._bodega=bodega;
+			this._producto=producto;
+		}
+		
+		public void run() {
+			recoverData(_fecha,_bodega,_producto);
+			recoverList.remove(index);
+			System.out.println("--------------Removido hilo "+index);
 		}
 	}
 }

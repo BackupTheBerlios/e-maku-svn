@@ -63,6 +63,9 @@ public class CacheKeys {
     	keys.put(key,value);
     }
     
+    public static boolean containKey(String key) {
+    	return keys.containsKey(key);
+    }
     /*
     public static String getKey(int index) {
     	Vector vector = new Vector(keys.values());
@@ -73,6 +76,10 @@ public class CacheKeys {
     	return keys.values().iterator();
     }
     
+    public static Iterator getHKeys() {
+    	return keys.keySet().iterator();
+    }
+
     public static String getDate() {
         return date;
     }

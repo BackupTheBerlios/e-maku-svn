@@ -905,19 +905,18 @@ public class LNContabilidad {
 								bodega = CacheKeys.getKey("bodegaEntrante");
 							}
 							
-							System.out.println("Valor de la columna: "+
-												valueAccount+
-												" pinventario: "+
-												LinkingCache.getPCosto(bd,bodega, idProdServ));
-							valueAccount = valueAccount
-									* LinkingCache.getPCosto(bd,bodega, idProdServ);
+							if (valueAccount==LinkingCache.getSaldoInventario(bd, bodega, idProdServ)) {
+								valueAccount = LinkingCache.getVSaldoInventario(bd, bodega, idProdServ);
+							}
+							else {
+								valueAccount = valueAccount	* LinkingCache.getPCosto(bd,bodega, idProdServ);
+							}
 							try {
 								BigDecimal bigDecimal = new BigDecimal(
 										valueAccount);
 								bigDecimal = bigDecimal.setScale(2,
 										BigDecimal.ROUND_HALF_UP);
 								valueAccount = bigDecimal.doubleValue();
-								System.out.println("Valor del registor: "+valueAccount);
 							} catch (NumberFormatException NFEe) {
 							}
 
@@ -930,9 +929,13 @@ public class LNContabilidad {
 										LIBRO_AUX_INV,
 										LinkingCache.isPCNaturaleza(bd,account));
 					} else if (LinkingCache.isPCTerceros(bd, account)) {
+						String idTercero = CacheKeys.getKey("idTercero");
+						if (idTercero== null) {
+							idTercero = tercero;
+						}
 						asientosConTipo(idCta, 
 										valueAccount, 
-										CacheKeys.getKey("idTercero"), 
+										idTercero, 
 										debito, 
 										LIBRO_AUX_TER,
 										LinkingCache.isPCNaturaleza(bd,account));

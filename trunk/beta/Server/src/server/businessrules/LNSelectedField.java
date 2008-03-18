@@ -3,6 +3,7 @@ package server.businessrules;
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -55,6 +56,7 @@ public class LNSelectedField {
 	private String conditional;
 	private int[] cols;
 	private QueryRunner RQfields;
+	private ArrayList<String> discartKeys;
 
 
     public LNSelectedField(SocketChannel sock,Document doc,Element pack, String idTransaction) {
@@ -150,6 +152,7 @@ public class LNSelectedField {
 	throws SQLNotFoundException, SQLBadArgumentsException {
 		Iterator i = parameters.getChildren().iterator();
 		String sql = "";
+		discartKeys = new ArrayList<String>();
 		while (i.hasNext()) {
 			Element e = (Element) i.next();
 			String attribute = e.getAttributeValue("attribute");
@@ -160,6 +163,8 @@ public class LNSelectedField {
 				sql = value;
 			} else if ("conditional".equals(attribute)) {
 				conditional = value;
+			} else if ("discartKey".equals(attribute)) {
+				discartKeys.add(value);
 			}
 		}
 
@@ -206,27 +211,36 @@ public class LNSelectedField {
 			}
 		}
 
-		String[] fieldSQL = new String[cols.length + CacheKeys.size()];
-
+		//String[] fieldSQL = new String[cols.length + CacheKeys.size()];
+		ArrayList<String> fieldSQL = new ArrayList<String>();
 		/*
 		 * Primero se adiciona las llaves ...
 		 */
-		Iterator keys = CacheKeys.getKeys();
-		int i = 0;
+		Iterator<String> valueKeys = CacheKeys.getKeys();
+		Iterator<String> keys = CacheKeys.getHKeys();
 
-		for (; keys.hasNext(); i++) {
-			fieldSQL[i] = (String) keys.next();
+		while (keys.hasNext()) {
+			String key = (String)keys.next();
+			boolean discart = false;
+			for (int k=0;k<discartKeys.size();k++) {
+				if (key.equals(discartKeys.get(k))) {
+					discart=true;
+					break;
+				}
+			}
+			if (!discart)
+				fieldSQL.add((String) valueKeys.next());
 		}
 
 		/*
 		 * Luego se adicionan los valores del paquete
 		 */
 
-		for (int j = 0; j < cols.length; j++, i++) {
-			fieldSQL[i] = ((Element) lpack.get(cols[j])).getValue();
+		for (int j = 0; j < cols.length; j++) {
+			fieldSQL.add(((Element) lpack.get(cols[j])).getValue());
 		}
 
-		RQfields.ejecutarSQL(fieldSQL);
+		RQfields.ejecutarSQL(fieldSQL.toArray(new String[fieldSQL.size()]));
 	}
 
 	private String formulaReplacer(String var,List lpack) {
