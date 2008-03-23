@@ -1,5 +1,7 @@
 package common.gui.components.treeutils;
 
+import java.awt.*;
+
 import javax.swing.*;
 
 /**
@@ -31,14 +33,17 @@ import javax.swing.*;
 public class TreeCheckBox extends JCheckBox {
 
 	private static final long serialVersionUID = 1L;
-	private String transaction;	
-	public TreeCheckBox() {}
+	private String transaction;
+	
+	public TreeCheckBox() {
+		this.setLayout(new FlowLayout(FlowLayout.RIGHT));
+	}
 	
 	public TreeCheckBox(String text,boolean selected,String transaction) {
 		super(text,selected);
 		this.transaction = transaction;
 	}
-	
+			
 	public String getTransaction() {
 		return transaction;
 	}

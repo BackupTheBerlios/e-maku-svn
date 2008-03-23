@@ -33,6 +33,7 @@ public class TreeCheckNode {
 	private boolean selected;
 	private String transaction;
 	private boolean enabled = true;
+	private String icon;
 	
 	public TreeCheckNode(String text, boolean selected) {
 		this.text = text;
@@ -73,5 +74,13 @@ public class TreeCheckNode {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 }

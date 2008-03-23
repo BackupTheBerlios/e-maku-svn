@@ -33,12 +33,20 @@ public class NodeContainer extends Vector {
 
 	private static final long serialVersionUID = 1L;
 	private String name;
-
+	private String icon;
+	
 	public NodeContainer(String name) {
 		this.name = name;
 	}
 
 	public String toString() {
-		return "[" + name + "]";
+		return name;
+	}
+
+	public void setIcon(String newIcon) {
+		this.icon = newIcon;
+	}
+	public String getIcon() {
+		return icon;
 	}
 }

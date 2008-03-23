@@ -17,6 +17,7 @@ import org.jdom.input.*;
 
 import common.gui.components.treeutils.*;
 import common.gui.forms.*;
+import common.misc.*;
 import common.misc.language.*;
 import common.misc.parameters.*;
 import common.transactions.*;
@@ -60,7 +61,6 @@ public class EmakuUserPermissions extends JPanel implements Couplable, AnswerLis
 	private String driverEvent = "";
 	private Vector<String> sqlCode = new Vector<String>();
 	private Vector<AnswerListener> AnswerListener = new Vector<AnswerListener>();
-	private Hashtable<String,TreeCheckNode> checks = new Hashtable<String, TreeCheckNode>();
 	
 	public EmakuUserPermissions(GenericForm genericForm,Document doc) {
 		this.genericForm = genericForm;
@@ -142,6 +142,7 @@ public class EmakuUserPermissions extends JPanel implements Couplable, AnswerLis
 			String value = e.getChildText("Text");
 			value = Language.getWord(value);
 			NodeContainer nm = new NodeContainer(value);
+			nm.setIcon(e.getChildText("Icon"));
 			for (int i = 0; i < max; i++) {
 				Element cnode = (Element) list.get(i);
 				Object obj = loadTree(cnode);
@@ -157,10 +158,9 @@ public class EmakuUserPermissions extends JPanel implements Couplable, AnswerLis
 			value = Language.getWord(value);
 			TreeCheckNode cnode = new TreeCheckNode(value,false);
 			cnode.setTransaction(transaction);
+			cnode.setIcon(e.getChildText("Icon"));
 			cnode.setEnabled(transaction==null ? false : true);
-			if (transaction!=null) {
-				checks.put(cnode.getTransaction(),cnode);
-			}
+			cnode.setSelected(!cnode.isEnabled());
 			return cnode;
 		}
 		return null;
@@ -170,11 +170,13 @@ public class EmakuUserPermissions extends JPanel implements Couplable, AnswerLis
 		int max = p.getChildCount();
 		for (int i=0; i < max ; i++) {
 			DefaultMutableTreeNode q = (DefaultMutableTreeNode) p.getChildAt(i);
-			if (q.getUserObject() instanceof Container) {
+			if (q.getUserObject() instanceof NodeContainer) {
 				cleanRoot(q);
 			}
 			else {
-				((TreeCheckNode)q.getUserObject()).setSelected(false);
+				if(((TreeCheckNode)q.getUserObject()).isEnabled()) {
+					((TreeCheckNode)q.getUserObject()).setSelected(false);
+				}
 			}
 		}
 	}
@@ -203,7 +205,7 @@ public class EmakuUserPermissions extends JPanel implements Couplable, AnswerLis
 		int max = p.getChildCount();
 		for (int i=0; i < max ; i++) {
 			DefaultMutableTreeNode q = (DefaultMutableTreeNode) p.getChildAt(i);
-			if (q.getUserObject() instanceof Container) {
+			if (q.getUserObject() instanceof NodeContainer) {
 				loadChekValues(q,code);
 			}
 			else {
@@ -323,6 +325,7 @@ public class EmakuUserPermissions extends JPanel implements Couplable, AnswerLis
 			TreeCheckNode checkBoxNode = null;
 			checkBoxNode = new TreeCheckNode(cbox.getText(),cbox.isSelected());
 			checkBoxNode.setTransaction(cbox.getTransaction());
+			checkBoxNode.setEnabled(cbox.isEnabled());
 			sendTransaction(checkBoxNode);
 			return checkBoxNode;
 		}
@@ -397,6 +400,7 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
 			         JTree tree, Object value,boolean selected,boolean expanded,
 			         boolean leaf, int row,boolean hasFocus) {
 		Component returnValue;
+		Object obj = ((DefaultMutableTreeNode) value).getUserObject();
 		if (leaf) {
 			//String stringValue = tree.convertValueToText(
 			//		                  value,selected,expanded,leaf,row,false);
@@ -412,7 +416,6 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
 			}
 
 			if ((value != null) && (value instanceof DefaultMutableTreeNode)) {
-				Object obj = ((DefaultMutableTreeNode) value).getUserObject();
 				if (obj instanceof TreeCheckNode) {
 					TreeCheckNode node = (TreeCheckNode) obj;
 					checkBox.setText(node.getText());
@@ -424,8 +427,29 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
 			}
 			returnValue = checkBox;
 		} else {
-			returnValue = defaultCell.getTreeCellRendererComponent(
-					            tree,value,selected,expanded,leaf,row,hasFocus);
+			//returnValue = defaultCell.getTreeCellRendererComponent(
+			//		            tree,value,selected,expanded,leaf,row,hasFocus);
+			if (obj instanceof NodeContainer) {
+				NodeContainer node = (NodeContainer)obj;
+				if (node!=null && node.getIcon()!=null) {
+					ImageIcon icon = null;
+					try {
+	            		icon = new ImageIcon(this.getClass().getResource(Icons.getIcon(node.getIcon())));
+	            	}
+	            	catch(NullPointerException NPEe) {
+	            		icon = new ImageIcon(this.getClass().getResource(node.getIcon()));
+	            	}			
+					returnValue = new JLabel(node.toString(),icon,JLabel.LEFT);
+				}
+				else {
+					returnValue = defaultCell.getTreeCellRendererComponent(
+							    tree,value,selected,expanded,leaf,row,hasFocus);
+				}
+			}
+			else {
+				returnValue = defaultCell.getTreeCellRendererComponent(
+								tree,value,selected,expanded,leaf,row,hasFocus);
+			}
 		}
 		return returnValue;
 	}
