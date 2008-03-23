@@ -1343,9 +1343,9 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
         }
 	}
 
-	public String getExteralValuesString(Object key) {
+	public String getExternalValueString(Object key) {
     	if (child) {
-        	return GFforma.getExteralValuesString(key);
+        	return GFforma.getExternalValueString(key);
         }
         else {
         	try {
@@ -1448,7 +1448,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 	    Iterator it = v.iterator();
 	    while (it.hasNext()) {
 	       Integer element =  (Integer) it.next();
-	       elementXML.addContent(new Element("field").setText(getExteralValuesString(exportFields.get(element))));
+	       elementXML.addContent(new Element("field").setText(getExternalValueString(exportFields.get(element))));
 	    }
 		return elementXML;
 	}
@@ -1478,7 +1478,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 				String text = null;
 				TypeExportValue te = checkExportValue(value);
 				if (TypeExportValue.STRING.equals(te)) {
-					text = getExteralValuesString(value);
+					text = getExternalValueString(value);
 				}
 				else if (TypeExportValue.DOUBLE.equals(te)) {
 					text = String.valueOf(getExteralValues(value));							
@@ -1559,7 +1559,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 			Element elm = (Element) it.next();
 			String value = elm.getValue();
 			if ("importValue".equals(elm.getAttributeValue("attribute"))) {
-				String importValue = getExteralValuesString(value);
+				String importValue = getExternalValueString(value);
 				if (importValue==null || importValue.trim().equals("")) {
 					text += blankImport;
 				}
@@ -1597,7 +1597,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 					if (isKey) {
 						TypeExportValue te = checkExportValue(acumText);
 						if (TypeExportValue.STRING.equals(te)) {
-							formulaFinal += getExteralValuesString(acumText);
+							formulaFinal += getExternalValueString(acumText);
 						}
 						else if (TypeExportValue.DOUBLE.equals(te)) {
 							formulaFinal += getExteralValues(acumText);							

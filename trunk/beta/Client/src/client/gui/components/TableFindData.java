@@ -252,7 +252,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 						":");
 				initImps = new String[STargs.countTokens()];
 				for (int j = 0; j < initImps.length; j++) {
-					initImps[j] = GFform.getExteralValuesString(STargs
+					initImps[j] = GFform.getExternalValueString(STargs
 							.nextToken());
 				}
 			} else if (args.getAttributeValue("attribute").equals(
@@ -998,7 +998,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 			 */
 
 			for (int i = 1; i < TMFDtabla.getSizeArgsQuery(); i++) {
-				String valueImport = GFforma.getExteralValuesString(TMFDtabla
+				String valueImport = GFforma.getExternalValueString(TMFDtabla
 						.getImpValue(i - 1));
 				String valueTable = TMFDtabla.getArgQuery(i);
 				if (!valueImport.equals(valueTable)) {

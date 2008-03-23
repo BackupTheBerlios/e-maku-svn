@@ -387,7 +387,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		        	ind++;
 		        	
 		        	for ( ; ind < argsQuery.length ; ind++) {
-		        		argsQuery[ind] = GFforma.getExteralValuesString(impValues.get(ind-1));
+		        		argsQuery[ind] = GFforma.getExternalValueString(impValues.get(ind-1));
 		        	}
 		        	
 		            Document Dquery = TransactionServerResultSet.getResultSetST(sqlCode,argsQuery);

@@ -308,7 +308,7 @@ KeyListener, FocusListener, AnswerListener {
 		}
 
 		for (; i < field.getImportValues().length; i++) {
-			argumentos[i] = GFforma.getExteralValuesString(XMLimpValues[i]);
+			argumentos[i] = GFforma.getExternalValueString(XMLimpValues[i]);
 		}
 		argumentos[i] = field.getText();
 		Vector<String> sqlCode = field.getSqlCode();

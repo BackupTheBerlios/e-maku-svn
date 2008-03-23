@@ -398,7 +398,7 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 	
 	public void changeExternalValue(ExternalValueChangeEvent e) {
 		String key = e.getExternalValue();
-		String value = genericForm.getExteralValuesString(key);
+		String value = genericForm.getExternalValueString(key);
 		if ("".equals(value)) { return; }
 		if (key.equals("catalogue") || key.equals("warehouse")) {
 			if (key.equals("warehouse") && JRDebit.isSelected()) {

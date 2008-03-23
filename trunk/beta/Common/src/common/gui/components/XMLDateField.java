@@ -283,7 +283,7 @@ implements Couplable,KeyListener, DocumentListener, AnswerListener, InstanceFini
 		}
 
 		for (; i < importValue.size(); i++) {
-			argumentos[i] = GFforma.getExteralValuesString(XMLimpValues[i]);
+			argumentos[i] = GFforma.getExternalValueString(XMLimpValues[i]);
 		}
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormatString);
 

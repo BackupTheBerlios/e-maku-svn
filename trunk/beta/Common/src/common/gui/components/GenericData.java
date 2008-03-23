@@ -566,7 +566,7 @@ public class GenericData extends JPanel implements DateListener,
 			impValues[i] = field.getConstantValue(i);
 		}
 		for (; i < impValues.length ; i++,j++) {
-			impValues[i] = GFforma.getExteralValuesString(imps[j]);
+			impValues[i] = GFforma.getExternalValueString(imps[j]);
 		}
 		return impValues;
 	}
@@ -678,7 +678,7 @@ public class GenericData extends JPanel implements DateListener,
 		}
 
 		for (; i < xmltf.getImportValues().length; i++) {
-			argumentos[i] = GFforma.getExteralValuesString(XMLimpValues[i]);
+			argumentos[i] = GFforma.getExternalValueString(XMLimpValues[i]);
 		}
 		argumentos[i] = xmltf.getText();
 		Vector<String> sqlCode = querys;
@@ -1146,8 +1146,8 @@ public class GenericData extends JPanel implements DateListener,
 								.getCalculateDate(), "+");
 						if (stk.countTokens() < 2)
 							stk = new StringTokenizer(xmltf.getCalculateDate(),"-");
-						String val1 = GFforma.getExteralValuesString(stk.nextToken());
-						String val2 = GFforma.getExteralValuesString(stk.nextToken());
+						String val1 = GFforma.getExternalValueString(stk.nextToken());
+						String val2 = GFforma.getExternalValueString(stk.nextToken());
 						if (val1 != null && val2 != null) {
 							DateFormat df = null;
 							Date date = null;
@@ -1183,7 +1183,7 @@ public class GenericData extends JPanel implements DateListener,
 				if (xmltf.getSqlLocal() != null && xmltf.getImportValues().length>0) {
 					new EmakuUIFieldFiller(GFforma, namebutton, enablebutton,
 							xmltf.getSqlLocal(), new String[] {
-													GFforma.getExteralValuesString(
+													GFforma.getExternalValueString(
 							                                                        xmltf.getImportValues()[0]) }, null,
 							                                                        VFields).start();
 				}

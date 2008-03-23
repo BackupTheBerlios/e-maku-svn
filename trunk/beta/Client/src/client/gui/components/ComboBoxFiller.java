@@ -393,7 +393,7 @@ public class ComboBoxFiller extends JComboBox implements
 					int keysLength = keys!=null ? keys.length : 0 ; 
 					args= keysLength > 0 ?  new String[keysLength] : null;
 					for (int ind=0 ; ind < keysLength && args!=null; ind++) {
-						args[ind] = GFforma.getExteralValuesString(keys[ind]);
+						args[ind] = GFforma.getExternalValueString(keys[ind]);
 						if (args[ind]==null || args[ind].equals("")) {
 							if (blankArgs) {
 								args[ind]="";
@@ -637,7 +637,7 @@ public class ComboBoxFiller extends JComboBox implements
     			args = new String[XMLimpValues.length+1];
     		}
 			for (; i < args.length -1 ; i++) {
-				args[i] =  GFforma.getExteralValuesString((String)XMLimpValues[i]);
+				args[i] =  GFforma.getExternalValueString((String)XMLimpValues[i]);
 			}
 			args[i] =  (String) getItemAt(getSelectedIndex());
 			SwingUtilities.invokeLater(new SearchingSQL(args));		
