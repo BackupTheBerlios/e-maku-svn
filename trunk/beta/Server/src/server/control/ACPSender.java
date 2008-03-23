@@ -22,7 +22,6 @@ import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
 import server.database.sql.StatementsClosingHandler;
 
-import com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException;
 import common.comunications.SocketWriter;
 import common.misc.ZipHandler;
 
@@ -164,11 +163,11 @@ public class ACPSender extends Thread{
 	                element.addContent(transaction);
 	                selement.addContent(element);
                 }
-                catch (MalformedByteSequenceException e) {
+/*                catch (MalformedByteSequenceException e) {
                 	e.printStackTrace();
                     System.out.println("Buffer:"+rs.getString("perfil"));
                 }
-                catch (JDOMException e) {
+*/                catch (JDOMException e) {
                     e.printStackTrace();
                     System.out.println("Buffer:"+rs.getString("perfil"));
                 } catch (IOException e) {

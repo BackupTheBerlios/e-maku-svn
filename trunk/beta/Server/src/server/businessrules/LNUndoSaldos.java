@@ -1,10 +1,10 @@
 package server.businessrules;
 
 import java.util.Enumeration;
+import java.util.Hashtable;
 
 import server.database.sql.LinkingCache;
 
-import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
 
 /**
  * 
@@ -32,8 +32,8 @@ import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
 public class LNUndoSaldos {
 
 	
-	private static Hashtable HSaldoAntInv = new Hashtable();
-	private static Hashtable HSaldoAntLibroAux = new Hashtable();
+	private static Hashtable<String,Double> HSaldoAntInv = new Hashtable<String,Double>();
+	private static Hashtable<String,Double> HSaldoAntLibroAux = new Hashtable<String,Double>();
 	
 	/**
 	 * 
@@ -78,20 +78,20 @@ public class LNUndoSaldos {
 
 	public static void undoSaldos() {
 		if (HSaldoAntInv.size()>0) {
-			Enumeration Ekeys = HSaldoAntInv.keys();
-			Enumeration Evalues = HSaldoAntInv.elements();
+			Enumeration<String> Ekeys = HSaldoAntInv.keys();
+			Enumeration<Double> Evalues = HSaldoAntInv.elements();
 			while(Ekeys.hasMoreElements()) {
-				LinkingCache.setVSaldoInventario((String)Ekeys.nextElement(),
-												((Double)Evalues.nextElement()).doubleValue());
+				LinkingCache.setVSaldoInventario(Ekeys.nextElement(),
+												(Evalues.nextElement()).doubleValue());
 			}
 			HSaldoAntInv.clear();
 		}
 		if (HSaldoAntLibroAux.size()>0) {
-			Enumeration Ekeys = HSaldoAntLibroAux.keys();
-			Enumeration Evalues = HSaldoAntLibroAux.elements();
+			Enumeration<String> Ekeys = HSaldoAntLibroAux.keys();
+			Enumeration<Double> Evalues = HSaldoAntLibroAux.elements();
 			while(Ekeys.hasMoreElements()) {
-				LinkingCache.setVSaldoInventario((String)Ekeys.nextElement(),
-												((Double)Evalues.nextElement()).doubleValue());
+				LinkingCache.setVSaldoInventario(Ekeys.nextElement(),
+												(Evalues.nextElement()).doubleValue());
 			}
 			HSaldoAntLibroAux.clear();
 		}
