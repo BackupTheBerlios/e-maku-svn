@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.List;
 
 import javax.swing.*;
+import javax.swing.border.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
@@ -113,6 +114,22 @@ public class EmakuUserPermissions extends JPanel implements Couplable, AnswerLis
 			tree.setCellRenderer(renderer);
 			tree.setEditable(true);
 			tree.setCellEditor(new CheckBoxNodeEditor(tree));
+			tree.addKeyListener(new KeyAdapter() {
+				public void keyReleased(KeyEvent e) {
+					int keyCode = e.getKeyCode();
+					if (KeyEvent.VK_SPACE == keyCode) {
+						DefaultMutableTreeNode tnode = null;
+						TreePath tp = tree.getSelectionPath();
+						tnode = (DefaultMutableTreeNode)tp.getLastPathComponent();
+						Object node = tnode.getUserObject();
+						if (node instanceof TreeCheckNode) {
+							boolean b = ((TreeCheckNode)node).isSelected();
+							((TreeCheckNode)node).setSelected(!b);
+							tree.treeDidChange();
+						}
+					}
+				}
+			});
 			tree.addTreeSelectionListener(new TreeSelectionListener() {
 				public void valueChanged(TreeSelectionEvent e) {
 					String key = "";
@@ -372,6 +389,7 @@ public class EmakuUserPermissions extends JPanel implements Couplable, AnswerLis
 class CheckBoxNodeRenderer implements TreeCellRenderer {
 	
 	private TreeCheckBox checkBox = new TreeCheckBox();
+	private JLabel label = new JLabel();
 	private DefaultTreeCellRenderer defaultCell = new DefaultTreeCellRenderer();
 	private Color selectionForeground;
 	private Color selectionBackground;
@@ -439,7 +457,19 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
 	            	catch(NullPointerException NPEe) {
 	            		icon = new ImageIcon(this.getClass().getResource(node.getIcon()));
 	            	}			
-					returnValue = new JLabel(node.toString(),icon,JLabel.LEFT);
+					label.setText(node.toString());
+					label.setIcon(icon);
+					label.setFocusCycleRoot(true);
+					if (selected) {
+						label.setForeground(selectionForeground);
+						label.setBackground(selectionBackground);
+						label.setBorder(new LineBorder(selectionBackground));
+					} else {
+						label.setForeground(textForeground);
+						label.setBackground(textBackground);
+						label.setBorder(new LineBorder(textBackground));
+					}
+					returnValue = label;
 				}
 				else {
 					returnValue = defaultCell.getTreeCellRendererComponent(
