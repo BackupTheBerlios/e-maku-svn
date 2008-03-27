@@ -126,6 +126,7 @@ public class EmakuUserPermissions extends JPanel implements Couplable, AnswerLis
 							boolean b = ((TreeCheckNode)node).isSelected();
 							((TreeCheckNode)node).setSelected(!b);
 							tree.treeDidChange();
+							sendTransaction((TreeCheckNode) node);
 						}
 					}
 				}
