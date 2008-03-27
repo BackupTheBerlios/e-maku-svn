@@ -53,7 +53,7 @@ public class About extends JInternalFrame {
         this.setVisible(true);
         
         
-        this.setBounds((MainWindow.getAncho()/2)-200,(MainWindow.getAlto()/2)-210,420,410);
+        this.setBounds((MainWindow.getWidthValue()/2)-200,(MainWindow.getHeightValue()/2)-210,420,410);
         this.setFrameIcon(new ImageIcon(this.getClass().getResource("/icons/ico_acerca.png")));
         this.setClosable(true);
         JTPpestanas = new JTabbedPane();
@@ -63,7 +63,7 @@ public class About extends JInternalFrame {
 
         this.getContentPane().add(JTPpestanas,BorderLayout.CENTER);
 
-        MainWindow.getJDPanel().add(this);
+        MainWindow.getDesktopPane().add(this);
         try {
             this.setSelected(true);
         }

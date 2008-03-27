@@ -14,7 +14,7 @@ import server.database.sql.LinkingCache;
 import server.misc.ServerConstants;
 import server.misc.settings.ConfigFileHandler;
 import server.misc.settings.ConfigFileNotLoadException;
-import server.reports.ReportMaker;
+//import server.reports.ReportMaker;
 
 import common.misc.formulas.BeanShell;
 import common.misc.language.Language;
@@ -41,6 +41,7 @@ import common.misc.log.LogAdmin;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez</A>
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda</A>
  */
+
 public class Run {
 
 	/**
@@ -58,6 +59,11 @@ public class Run {
 				System.out.println("    El usuario indicado para iniciar este servicio es \"emaku\".");
 				System.exit(0);	
 			}
+		}
+		
+		if (ServerConstants.EMAKU_HOME == null) {
+    		System.out.println("ERROR: Variable EMAKU_HOME is undefined! Please set it up!");
+    		return;
 		}
 		
 		String emakuConfigFile = ServerConstants.CONF + ServerConstants.SEPARATOR + "server.conf";

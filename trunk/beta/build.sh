@@ -1,5 +1,7 @@
 #!/bin/bash
+
 ROOT=$PWD
+EMAKU_SHELL=bash
 
 check_root() {
              if [ "$USER" != "root" ] ; then
@@ -161,7 +163,7 @@ install_server() {
              cp -f $ROOT/bin/emaku-server-daemon-$ARCH $EMAKU_HOME/bin/emaku-server-daemon
              cp -f $ROOT/lib/contrib/lib$ARCH/libwrapper.so $EMAKU_HOME/lib/contrib/
 
-             echo "#!/bin/sh" > $EMAKU_HOME/bin/emaku-server
+             echo "#!/bin/$EMAKU_SHELL" > $EMAKU_HOME/bin/emaku-server
              echo " " >> $EMAKU_HOME/bin/emaku-server
              echo "EMAKU_HOME=$EMAKU_HOME" >> $EMAKU_HOME/bin/emaku-server
              echo "export EMAKU_HOME" >> $EMAKU_HOME/bin/emaku-server
@@ -184,7 +186,7 @@ install_server() {
              echo " Instalando scripts de inicio..."
 
              if [ -d /etc/init.d ] ; then
-               echo "#!/bin/sh" > /etc/init.d/emaku 
+               echo "#!/bin/$EMAKU_SHELL" > /etc/init.d/emaku 
                echo " " >> /etc/init.d/emaku 
                echo "EMAKU_USER=emaku" >> /etc/init.d/emaku
                echo "EMAKU_DAEMON=$EMAKU_HOME/bin/emaku-server" >> /etc/init.d/emaku
@@ -222,7 +224,7 @@ install_server() {
 install_client() {
              mkdir -p $EMAKU_HOME/themes
              cp -f $ROOT/themes/*.jar $EMAKU_HOME/themes/
-             echo "#!/bin/sh" > $EMAKU_HOME/bin/emaku-client
+             echo "#!/bin/$EMAKU_SHELL" > $EMAKU_HOME/bin/emaku-client
              echo " " >> $EMAKU_HOME/bin/emaku-client
              echo "EMAKU_HOME=$EMAKU_HOME" >> $EMAKU_HOME/bin/emaku-client
              echo "export EMAKU_HOME" >> $EMAKU_HOME/bin/emaku-client

@@ -55,17 +55,17 @@ public class MainWindow extends JFrame {
 	/**
      * Objeto para pocicion de JInternalFrames
      */
-    private static JDesktopPane JDPpanel;
+    private static JDesktopPane desktopPane;
 
     /**
      * Vectores de las barras de herramientas
      */
-    private static Vector Vtoolbar1;
-    private static JFrame refWindow = null;
+    private static Vector toolbarVector;
+    private static JFrame frame = null;
     
     public MainWindow(final String jarDirectory,String title) {
         setTitle(title);
-        MainWindow.refWindow = this;
+        MainWindow.frame = this;
         this.setBounds(0, 0, ClientConstants.MAX_WIN_SIZE_WIDTH,
                 ClientConstants.MAX_WIN_SIZE_HEIGHT);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -89,14 +89,14 @@ public class MainWindow extends JFrame {
                 try {
         			url = new URL(jarDirectory+"/menu.xml");
         			menu = new MenuLoader(url);
-        			if (menu.Loading()) {
+        			if (menu.loadMenu()) {
         		        menu.setDisabledAll();
-        		        refWindow.setJMenuBar(menu);
+        		        frame.setJMenuBar(menu);
         			}
         	        url = new URL(jarDirectory+"/toolbar.xml");
         	        toolbar1 = new ToolBarLoader(url);
-        	        Vtoolbar1 = toolbar1.load();
-        	        refWindow.getContentPane().add(toolbar1, BorderLayout.NORTH);
+        	        toolbarVector = toolbar1.load();
+        	        frame.getContentPane().add(toolbar1, BorderLayout.NORTH);
         	        setDisabledAll();
         		} catch (MalformedURLException e1) {
         			// TODO Auto-generated catch block
@@ -117,7 +117,7 @@ public class MainWindow extends JFrame {
          * Adicionando componentes al panel central
          */
 
-        JDPpanel = new JDesktopPane() {
+        desktopPane = new JDesktopPane() {
 			private static final long serialVersionUID = -2087223016881101556L;
 			@Override
 			public Component add(Component comp) {
@@ -125,14 +125,14 @@ public class MainWindow extends JFrame {
 				if (component instanceof JInternalFrame && 
 					!((JInternalFrame)component).isIcon()) {
 					component.setLocation(
-							(JDPpanel.getWidth()/2)-(component.getWidth()/2),
-							(JDPpanel.getHeight()/2)-(component.getHeight()/2));
+							(desktopPane.getWidth()/2)-(component.getWidth()/2),
+							(desktopPane.getHeight()/2)-(component.getHeight()/2));
 				}
 				return component;
 			}
 		};
-        JPcentral.add(JDPpanel,BorderLayout.CENTER);
-        JDPpanel.setBackground(Color.LIGHT_GRAY);
+        JPcentral.add(desktopPane,BorderLayout.CENTER);
+        desktopPane.setBackground(Color.LIGHT_GRAY);
         
         
         this.getContentPane().add(JPcentral, BorderLayout.CENTER);
@@ -170,9 +170,9 @@ public class MainWindow extends JFrame {
      */
 
     public void setDisabledAll() {
-    	int max = Vtoolbar1!=null ? Vtoolbar1.size() : 0;
+    	int max = toolbarVector!=null ? toolbarVector.size() : 0;
         for (int i = 0; i < max; i++) {
-        	EmakuButtonGroup button = (EmakuButtonGroup) Vtoolbar1.elementAt(i); 
+        	EmakuButtonGroup button = (EmakuButtonGroup) toolbarVector.elementAt(i); 
             if (!button.getActivo()) {
                 button.setEnabled(false);
             }
@@ -180,25 +180,25 @@ public class MainWindow extends JFrame {
     }
 
     public static Vector getVtoolbar1() {
-        return Vtoolbar1;
+        return toolbarVector;
     }
-    public static void setVtoolbar1(Vector vtoolbar1) {
-        Vtoolbar1 = vtoolbar1;
+    public static void setToolBarVector(Vector barVector) {
+        toolbarVector = barVector;
     }
-    public static JLayeredPane getJDPpanel() {
-        return JDPpanel;
+    public static JLayeredPane getPane() {
+        return desktopPane;
     }
-    public static int getAncho(){
-        return JDPpanel.getWidth();
+    public static int getWidthValue(){
+        return desktopPane.getWidth();
     }
-    public static int getAlto(){
-        return JDPpanel.getHeight();
+    public static int getHeightValue(){
+        return desktopPane.getHeight();
     }
-    public static JDesktopPane getJDPanel(){
-        return JDPpanel;
+    public static JDesktopPane getDesktopPane(){
+        return desktopPane;
     }
     
-    public static JFrame getRefWindow() {
-    	return refWindow;
+    public static JFrame getFrame() {
+    	return frame;
     }
 }

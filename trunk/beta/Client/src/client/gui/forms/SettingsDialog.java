@@ -9,7 +9,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Hashtable;
 import java.util.Vector;
 import java.util.ArrayList;
 import java.io.File;
@@ -66,11 +65,11 @@ public class SettingsDialog extends JDialog {
 
 	private JTextField JTFPort;
     
-    	private JTextField JTCash;
+    private JTextField JTCash;
     
-    	private JComboBox JCBLang;
+    private JComboBox JCBLang;
     
-    	private JComboBox JCBLogs;
+    private JComboBox JCBLogs;
 
 	private JComboBox JCBThemes;
 
@@ -160,8 +159,8 @@ public class SettingsDialog extends JDialog {
         		cash = ConfigFileHandler.getCash();
         		currentLanguage = ConfigFileHandler.getLanguage();
         		currentLogMode = ConfigFileHandler.getLogMode();
-			currentTheme = ConfigFileHandler.getLookAndFeel();
-			proccessCompanies(ConfigFileHandler.getCompanies());
+        		currentTheme = ConfigFileHandler.getLookAndFeel();
+        		proccessCompanies(ConfigFileHandler.getCompanies());
         	} catch (ConfigFileNotLoadException e1) {
         		e1.printStackTrace();
         	}

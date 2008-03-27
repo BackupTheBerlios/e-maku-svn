@@ -165,11 +165,11 @@ import common.gui.forms.GenericForm;
 				    	}
 				    	else {
 				    		 Dimension size = new Dimension();
-				             size.height = MainWindow.getAncho();
-				             size.width = MainWindow.getAlto();
+				             size.height = MainWindow.getWidthValue();
+				             size.width = MainWindow.getHeightValue();
 				             new GenericForm(
 				            		 ACPHandler.getDocForm(transaction),
-				            		 MainWindow.getJDPanel(),
+				            		 MainWindow.getDesktopPane(),
 				            		 ClientConstants.KeyClient,
 				            		 size,
 				                     transaction);

@@ -12,6 +12,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
@@ -58,47 +59,43 @@ import common.misc.language.Language;
 public class MenuLoader extends JMenuBar {
 
 	private static final long serialVersionUID = 1526271282346654939L;
-
-	private JMenuItemXML JMItmp;
-
-    private URL FileXML;
-
-    private static Vector<JMenuItemXML> Items;
+	private JMenuItemXML xmlMenuItem;
+    private URL xmlFile;
+    private static Vector<JMenuItemXML> items;
 
     /**
      * Constructor con parametro relacionado al archivo XML del menu
      */
-    public MenuLoader(URL FileXML) {
-        this.FileXML = FileXML;
+    public MenuLoader(URL xmlFile) {
+        this.xmlFile = xmlFile;
     }
 
     /**
      * Metodo encargado de cargar el menu
      */
-    public boolean Loading() {
+    public boolean loadMenu() {
         try {
             SAXBuilder builder = new SAXBuilder(false);
-            Document doc = builder.build(this.FileXML);
-            Element raiz = doc.getRootElement();
+            Document doc = builder.build(this.xmlFile);
+            Element root = doc.getRootElement();
             String string = "JMenu";
-			java.util.List Ljmenu = raiz.getChildren(string);
-            Iterator i = Ljmenu.iterator();
-            Items = new Vector<JMenuItemXML>();
+			List<Element> menuList = root.getChildren(string);
+            Iterator<Element> i = menuList.iterator();
+            items = new Vector<JMenuItemXML>();
             /**
              * Ciclo encargado de leer las primeras etiquetas del archivo XML,
              * en este caso JMenu
              */
 
             while (i.hasNext()) {
-                Element datos = (Element) i.next();
-
-                java.util.List Lsubdatos = datos.getChildren();
-                Iterator j = Lsubdatos.iterator();
+                Element elements = (Element) i.next();
+                List<Element> subDataList = elements.getChildren();
+                Iterator<Element> j = subDataList.iterator();
                 /**
                  * Se adicionara todos los menus principales a la clase MenuLoader
                  */
                 
-                this.add(CargarJMenu(j));
+                this.add(loadJMenu(j));
             }
             return true;
         }
@@ -116,64 +113,64 @@ public class MenuLoader extends JMenuBar {
      * Metodo encargado de cargar los submenus al menu padre
      */
 
-    private JMenuXML CargarJMenu(Iterator j) {
+    private JMenuXML loadJMenu(Iterator<Element> j) {
         String value="";
-        boolean menuVisible = false;
+        boolean isMenuVisible = false;
         try {
-	        JMenuXML JMtmp = new JMenuXML();
-	        JMtmp.setVisible(false);
+	        JMenuXML jMenu = new JMenuXML();
+	        jMenu.setVisible(false);
 	        while (j.hasNext()) {
-	            Element subdatos = (Element) j.next();
-	            value=subdatos.getValue();
-	            if (subdatos.getName().equals("Text")){
-	            	String text = "".equals(Language.getWord(subdatos.getValue()))?subdatos.getValue():Language.getWord(subdatos.getValue());
-	                JMtmp.setText(Language.getWord(text));
+	            Element subData = (Element) j.next();
+	            value=subData.getValue();
+	            if (subData.getName().equals("Text")){
+	            	String text = "".equals(Language.getWord(subData.getValue()))?subData.getValue():Language.getWord(subData.getValue());
+	                jMenu.setText(Language.getWord(text));
 	            }
-	            else if (subdatos.getName().equals("Mnemonic")) {
+	            else if (subData.getName().equals("Mnemonic")) {
 	            	//TODO Por Problemas con los menemonic
 	            	if (!"".equals(value.trim())) {
 		            	char langNemo = Language.getNemo(value);
 		            	char nemo = ' '==langNemo?value.charAt(0):langNemo;
-		                JMtmp.setMnemonic(nemo);
+		                jMenu.setMnemonic(nemo);
 	            	}
 	            }
-	            else if (subdatos.getName().equals("Icon"))
+	            else if (subData.getName().equals("Icon"))
 	            	try {
-	            		JMtmp.setIcon(new ImageIcon(this.getClass().getResource(Icons.getIcon(value))));
+	            		jMenu.setIcon(new ImageIcon(this.getClass().getResource(Icons.getIcon(value))));
 	            	}
 	            	catch(NullPointerException NPEe) {
-	            		JMtmp.setIcon(new ImageIcon(this.getClass().getResource(value)));
+	            		jMenu.setIcon(new ImageIcon(this.getClass().getResource(value)));
 	            	}
-	            else if (subdatos.getName().equals("JSeparator"))
-	                JMtmp.add(new JSeparator());
+	            else if (subData.getName().equals("JSeparator"))
+	                jMenu.add(new JSeparator());
 	            else {
-	                java.util.List Ljmenuitem = subdatos.getChildren();
-	                Iterator k = Ljmenuitem.iterator();
-	                if (subdatos.getName().equals("JMenuItem")) {
-	                    JMenuItemXML JMItmp = CargarJMenuItem(k);
-	                    if (JMItmp != null) {
-	                        JMtmp.add(JMItmp);
-	                        if (JMItmp.getTransaction()!= null) {
-	                        	JMtmp.setTransaction(JMItmp.getTransaction());
+	                List<Element> menuItemList = subData.getChildren();
+	                Iterator<Element> k = menuItemList.iterator();
+	                if (subData.getName().equals("JMenuItem")) {
+	                    JMenuItemXML xmlItem = loadJMenuItem(k);
+	                    if (xmlItem != null) {
+	                        jMenu.add(xmlItem);
+	                        if (xmlItem.getTransaction()!= null) {
+	                        	jMenu.setTransaction(xmlItem.getTransaction());
 	                        }
-		                    if (JMItmp.isVisible()) {
-		                    	menuVisible=true;
+		                    if (xmlItem.isVisible()) {
+		                    	isMenuVisible=true;
 		                    }
 	                    }
-	                } else if (subdatos.getName().equals("JMenu")) {
+	                } else if (subData.getName().equals("JMenu")) {
 	                    /**
 	                     * LLamado Recursivo a CargarJMenu
 	                     */
-	                	JMenuXML JMsub = CargarJMenu(k);
-	                	if (JMsub!=null) {
-	                		JMtmp.add(JMsub);
-	                		JMtmp.setTransactions(JMsub.getTransactions());
+	                	JMenuXML subMenu = loadJMenu(k);
+	                	if (subMenu!=null) {
+	                		jMenu.add(subMenu);
+	                		jMenu.setTransactions(subMenu.getTransactions());
 	                	}
 	                }
 	            }
 	        }
-		    JMtmp.setVisible(menuVisible);
-	    	return JMtmp;
+		    jMenu.setVisible(isMenuVisible);
+	    	return jMenu;
         }
     
         catch(NullPointerException NPEe) {
@@ -187,55 +184,60 @@ public class MenuLoader extends JMenuBar {
      * Metodo encargado de cargar los Items al menu padre
      */
 
-    private JMenuItemXML CargarJMenuItem(Iterator j) {
-        JMItmp = new JMenuItemXML();
+    private JMenuItemXML loadJMenuItem(Iterator<Element> j) {
+        xmlMenuItem = new JMenuItemXML();
         while (j.hasNext()) {
-            Element subdatos = (Element) j.next();
-            String value = subdatos.getValue();
-            if (subdatos.getName().equals("Transaction")) {
-            	JMItmp.setTransaction(subdatos.getValue());
-            } else if (subdatos.getName().equals("Activo")) {
-                JMItmp.setActivo(true);
-            } else if (subdatos.getName().equals("Acelerator")) {
-            } else if (subdatos.getName().equals("ActionCommand"))
-                JMItmp.setActionCommand(subdatos.getValue());
-            else if (subdatos.getName().equals("Icon"))
+            Element subData = (Element) j.next();
+            String value = subData.getValue();
+            
+            if (subData.getName().equals("Transaction")) {
+            	xmlMenuItem.setTransaction(subData.getValue());
+            } else if (subData.getName().equals("Activo")) {
+                xmlMenuItem.setActive(true);
+            } else if (subData.getName().equals("Acelerator")) {
+            	
+            } else if (subData.getName().equals("ActionCommand")) {
+                xmlMenuItem.setActionCommand(subData.getValue());
+            }
+            else if (subData.getName().equals("Icon")) {
             	try {
-	                JMItmp.setIcon(new ImageIcon(this.getClass().getResource(
-	                        Icons.getIcon(subdatos.getValue()))));
+	                xmlMenuItem.setIcon(new ImageIcon(this.getClass().getResource(
+	                        Icons.getIcon(subData.getValue()))));
             	}
             	catch (NullPointerException NPEe) {
-            	    JMItmp.setIcon(new ImageIcon(this.getClass().getResource(
-	                        subdatos.getValue())));
+            	    xmlMenuItem.setIcon(new ImageIcon(this.getClass().getResource(
+	                        subData.getValue())));
             	}
-            else if (subdatos.getName().equals("Text"))
-                JMItmp.setText(Language.getWord(subdatos.getValue()));
-            else if (subdatos.getName().equals("Mnemonic"))
+            }
+            else if (subData.getName().equals("Text")) {
+                xmlMenuItem.setText(Language.getWord(subData.getValue()));
+            }
+            else if (subData.getName().equals("Mnemonic")) {
             	//TODO Por Problemas con los menemonic
             	if (!"".equals(value.trim())) {
 	            	char langNemo = Language.getNemo(value);
 	            	char nemo = ' '==langNemo?value.charAt(0):langNemo;
-	            	JMItmp.setMnemonic(nemo);
+	            	xmlMenuItem.setMnemonic(nemo);
             	}
-                
-            else if (subdatos.getName().equals("Clase")) {
-                JMItmp.setClassName(subdatos.getValue());
-            } else if (subdatos.getName().equals("ArgConstructor")) {
-                java.util.List Largs = subdatos.getChildren();
-                JMItmp.setArgConstructor(ArgConstructor(Largs));
-            } else if (subdatos.getName().equals("TypeArgConstructor")) {
-                java.util.List Largs = subdatos.getChildren();
-                JMItmp.setTypeArgConstructor(TypeArgConstructor(Largs));
-            } else if (subdatos.getName().equals("Metodo")) {
-                JMItmp.setMethod(subdatos.getValue());
-            } else if (subdatos.getName().equals("JMenu")) {
-                java.util.List Ljmenuitem = subdatos.getChildren();
-                Iterator k = Ljmenuitem.iterator();
-                JMItmp.add(CargarJMenu(k));
+            }   
+            else if (subData.getName().equals("Clase")) {
+                xmlMenuItem.setClassName(subData.getValue());
+            } else if (subData.getName().equals("ArgConstructor")) {
+                List<Element> listArgs = subData.getChildren();
+                xmlMenuItem.setArgConstructor(ArgConstructor(listArgs));
+            } else if (subData.getName().equals("TypeArgConstructor")) {
+                List<Element> listArgs = subData.getChildren();
+                xmlMenuItem.setTypeArgConstructor(typeArgConstructor(listArgs));
+            } else if (subData.getName().equals("Metodo")) {
+                xmlMenuItem.setMethod(subData.getValue());
+            } else if (subData.getName().equals("JMenu")) {
+                List<Element> listMenuItem = subData.getChildren();
+                Iterator<Element> k = listMenuItem.iterator();
+                xmlMenuItem.add(loadJMenu(k));
             }
         }
-        Items.addElement(JMItmp);
-        return JMItmp;
+        items.addElement(xmlMenuItem);
+        return xmlMenuItem;
     }
 
     /**
@@ -243,14 +245,14 @@ public class MenuLoader extends JMenuBar {
      * clases en caso de que estas tengan argumentos
      */
 
-    private Object[] ArgConstructor(java.util.List Largs) {
-        if (Largs.size() > 0) {
-            Object[] args = new Object[Largs.size()];
-            Iterator j = Largs.iterator();
+    private Object[] ArgConstructor(List<Element> argsList) {
+        if (argsList.size() > 0) {
+            Object[] args = new Object[argsList.size()];
+            Iterator<Element> j = argsList.iterator();
             int i = 0;
             while (j.hasNext()) {
-                Element Earg = (Element) j.next();
-                args[i] = Earg.getValue();
+                Element argElements = (Element) j.next();
+                args[i] = argElements.getValue();
                 i++;
             }
             return args;
@@ -267,20 +269,20 @@ public class MenuLoader extends JMenuBar {
      * cada argumento, suministrado por el arreglo Class[]
      */
 
-    private Class[] TypeArgConstructor(java.util.List Largs) {
-        if (Largs.size() > 0) {
-            Class[] typeargs = new Class[Largs.size()];
-            Iterator j = Largs.iterator();
+    private Class[] typeArgConstructor(List<Element> argsList) {
+        if (argsList.size() > 0) {
+            Class[] argsType = new Class[argsList.size()];
+            Iterator<Element> j = argsList.iterator();
             int i = 0;
             while (j.hasNext()) {
-                Element Earg = (Element) j.next();
-                if (Earg.getName().equals("Int"))
-                    typeargs[i] = int.class;
-                if (Earg.getName().equals("String"))
-                    typeargs[i] = String.class;
+                Element argElements = (Element) j.next();
+                if (argElements.getName().equals("Int"))
+                    argsType[i] = int.class;
+                if (argElements.getName().equals("String"))
+                    argsType[i] = String.class;
                 i++;
             }
-            return typeargs;
+            return argsType;
         }
         return null;
     }
@@ -290,9 +292,9 @@ public class MenuLoader extends JMenuBar {
      */
 
     public void setEnabledAll() {
-        for (int i = 0; i < Items.size(); i++) {
-            Items.elementAt(i).setEnabled(true);
-            Items.elementAt(i).setVisible(true);
+        for (int i = 0; i < items.size(); i++) {
+            items.elementAt(i).setEnabled(true);
+            items.elementAt(i).setVisible(true);
         }
     }
 
@@ -302,10 +304,10 @@ public class MenuLoader extends JMenuBar {
      */
 
     public void setDisabledAll() {
-        for (int i = 0; i < Items.size(); i++) {
-            if (!Items.elementAt(i).getActivo()) {
-                Items.elementAt(i).setEnabled(false);
-            	Items.elementAt(i).setVisible(false);
+        for (int i = 0; i < items.size(); i++) {
+            if (!items.elementAt(i).getState()) {
+                items.elementAt(i).setEnabled(false);
+            	items.elementAt(i).setVisible(false);
             }
         }
     }
@@ -316,10 +318,10 @@ public class MenuLoader extends JMenuBar {
      */
 
     public void setEnabled(String actioncommand) {
-        for (int i = 0; i < Items.size(); i++) {
-            if (Items.elementAt(i).getActionCommand().equals(actioncommand)) {
-                Items.elementAt(i).setEnabled(true);
-            	Items.elementAt(i).setVisible(true);
+        for (int i = 0; i < items.size(); i++) {
+            if (items.elementAt(i).getActionCommand().equals(actioncommand)) {
+                items.elementAt(i).setEnabled(true);
+            	items.elementAt(i).setVisible(true);
             }
         }
     }
@@ -330,10 +332,10 @@ public class MenuLoader extends JMenuBar {
      */
 
     public void setDisabled(String actioncommand) {
-        for (int i = 0; i < Items.size(); i++) {
-            if (Items.elementAt(i).getActionCommand().equals(actioncommand))
-                Items.elementAt(i).setEnabled(false);
-            	Items.elementAt(i).setVisible(false);
+        for (int i = 0; i < items.size(); i++) {
+            if (items.elementAt(i).getActionCommand().equals(actioncommand))
+                items.elementAt(i).setEnabled(false);
+            	items.elementAt(i).setVisible(false);
         }
     }
 }
@@ -352,12 +354,12 @@ class JMenuXML extends JMenu implements ACPFormListener {
 		transactions.put(key,"");
 	}
 	
-	public Hashtable getTransactions() {
+	public Hashtable<String,String> getTransactions() {
 		return transactions;
 	}
 	
-	public void setTransactions(Hashtable transactions) {
-		Enumeration e = transactions.keys();
+	public void setTransactions(Hashtable<String,String> transactions) {
+		Enumeration<String> e = transactions.keys();
 		while(e.hasMoreElements()) {
 			String key = (String)e.nextElement();
 			this.transactions.put(key,"");
@@ -389,11 +391,11 @@ class JMenuItemXML extends JMenuItem implements ActionListener , ACPFormListener
 
 	private static final long serialVersionUID = -2350472869777111566L;
 	private String transaction;
-    private String ClassName = null;
+    private String className = null;
     private String method;
-    private boolean activo;
-    private Object[] ArgConstructor = null;
-    private Class[] TypeArgConstructor = null;
+    private boolean isActive;
+    private Object[] argConstructor = null;
+    private Class[] typeArgConstructor = null;
 
     /**
      * Como esta clase es una implementacion de ActionListener, se aprovecha
@@ -409,16 +411,16 @@ class JMenuItemXML extends JMenuItem implements ActionListener , ACPFormListener
      * Este metodo asigna la propiedad si el menu puede ser desactivado o no
      */
 
-    public void setActivo(boolean activo) {
-        this.activo = activo;
+    public void setActive(boolean activo) {
+        this.isActive = activo;
     }
 
     /**
      * Este metodo retorna si el menu puede ser desactivado o no
      */
 
-    public boolean getActivo() {
-        return activo;
+    public boolean getState() {
+        return isActive;
     }
 
     public String getTransaction() {
@@ -438,7 +440,7 @@ class JMenuItemXML extends JMenuItem implements ActionListener , ACPFormListener
      */
 
     public void setClassName(String ClassName) {
-        this.ClassName = ClassName;
+        this.className = ClassName;
     }
 
     /**
@@ -456,7 +458,7 @@ class JMenuItemXML extends JMenuItem implements ActionListener , ACPFormListener
      */
 
     public void setArgConstructor(Object[] ArgConstructor) {
-        this.ArgConstructor = ArgConstructor;
+        this.argConstructor = ArgConstructor;
     }
 
     /**
@@ -465,7 +467,7 @@ class JMenuItemXML extends JMenuItem implements ActionListener , ACPFormListener
      */
 
     public void setTypeArgConstructor(Class[] TypeArgConstructor) {
-        this.TypeArgConstructor = TypeArgConstructor;
+        this.typeArgConstructor = TypeArgConstructor;
     }
 
     /**
@@ -475,18 +477,18 @@ class JMenuItemXML extends JMenuItem implements ActionListener , ACPFormListener
     public void actionPerformed(ActionEvent e) {
     	class ActionOption extends Thread {
     		public void run() {
-		        if (ClassName!=null) {
+		        if (className!=null) {
 			        try {
-			            Class<?> cls = Class.forName(ClassName);
+			            Class<?> classObject = Class.forName(className);
 			            if (method == null) {
-			                if (TypeArgConstructor != null)
-			                    validarArgumentos();
+			                if (typeArgConstructor != null)
+			                    validArguments();
 			
-			                Constructor cons = cls.getConstructor(TypeArgConstructor);
-			                cons.newInstance(ArgConstructor);
+			                Constructor constructorVar = classObject.getConstructor(typeArgConstructor);
+			                constructorVar.newInstance(argConstructor);
 			            } else {
-			                Method meth = cls.getMethod(method, new Class[] {});
-			                meth.invoke(cls.newInstance(), new Object[]{});
+			                Method methodVar = classObject.getMethod(method, new Class[] {});
+			                methodVar.invoke(classObject.newInstance(), new Object[]{});
 			            }
 			        }
 			        catch (ClassNotFoundException CNFEe) {
@@ -512,11 +514,10 @@ class JMenuItemXML extends JMenuItem implements ActionListener , ACPFormListener
 		        }
 		        else {
 		            Dimension size = new Dimension();
-		            size.height = MainWindow.getAncho();
-		            size.width = MainWindow.getAlto();
-		            
+		            size.height = MainWindow.getWidthValue();
+		            size.width = MainWindow.getHeightValue();
 		            new GenericForm(ACPHandler.getDocForm(transaction),
-		                    						   MainWindow.getJDPanel(),
+		                    						   MainWindow.getDesktopPane(),
 		                    						   ClientConstants.KeyClient,
 		                    						   size,
 		                    						   transaction);
@@ -532,16 +533,16 @@ class JMenuItemXML extends JMenuItem implements ActionListener , ACPFormListener
      * tipo se lo obtiene del arreglo TypeArgConstructor
      */
 
-    private void validarArgumentos() {
+    private void validArguments() {
         /**
          * Por el momento solo manejo argumentos de tipo entero, una vez existan
          * de otro tipo se formatearan adicionando sentencias if
          */
-        for (int i = 0; i < TypeArgConstructor.length; i++) {
-            if (TypeArgConstructor[i].getName().equals("int"))
-                ArgConstructor[i] = new Integer(ArgConstructor[i].toString());
-            if (TypeArgConstructor[i].getName().equals("String"))
-                ArgConstructor[i] = ArgConstructor[i].toString();
+        for (int i = 0; i < typeArgConstructor.length; i++) {
+            if (typeArgConstructor[i].getName().equals("int"))
+                argConstructor[i] = new Integer(argConstructor[i].toString());
+            if (typeArgConstructor[i].getName().equals("String"))
+                argConstructor[i] = argConstructor[i].toString();
         }
     }
 

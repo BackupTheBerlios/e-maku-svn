@@ -150,7 +150,7 @@ public class HeadersValidator implements ArrivedPackageListener {
     
     private static void displayError() {
         JOptionPane.showMessageDialog(
-        						MainWindow.getRefWindow(),
+        						MainWindow.getFrame(),
         						raiz.getChild("errorMsg").getText(),
         						"",
         						JOptionPane.ERROR_MESSAGE);

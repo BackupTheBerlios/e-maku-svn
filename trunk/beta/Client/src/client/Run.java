@@ -52,9 +52,7 @@ public class Run {
 
 	public static void main(String[] args) {
 
-		Locale locale = Locale.getDefault();
-
-		System.out.println("LANG: " + locale.getDisplayLanguage());
+		System.out.println("LANG: " + getLanguageSupport());
 
 		if (ClientConstants.EMAKU_HOME == null) {
             		System.out.println("ERROR: Variable EMAKU_HOME is undefined! Please set it up!");
@@ -155,12 +153,19 @@ public class Run {
 			e.printStackTrace();
 		}	
 	}
+	
+	private static String getLanguageSupport() {
+		Locale locale = Locale.getDefault();
+		String support = locale.toString();
+
+		return support;
+	}
 
 	public static void exit() {
 		int confirm = -1;
 		try {
 			confirm=JOptionPane.showConfirmDialog(
-					MainWindow.getRefWindow(),
+					MainWindow.getFrame(),
 					Language.getWord("CLOSE_CURRENT_APP"),
 					"",JOptionPane.YES_NO_OPTION);
 			if(confirm==JOptionPane.YES_OPTION){

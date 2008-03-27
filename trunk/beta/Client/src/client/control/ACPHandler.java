@@ -107,7 +107,7 @@ public class ACPHandler {
 			}
 		}
 		Splash.hide();
-		MainWindow.getRefWindow().setVisible(true);
+		MainWindow.getFrame().setVisible(true);
 	}
 
 	/**

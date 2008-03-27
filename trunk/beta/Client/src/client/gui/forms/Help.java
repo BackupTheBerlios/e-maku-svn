@@ -26,7 +26,7 @@ public class Help extends JInternalFrame {
       this.setSize(400,300);
       this.getContentPane().add(base);
       
-      MainWindow.getJDPanel().add(this);
+      MainWindow.getDesktopPane().add(this);
       try {
           this.setSelected(true);
       }
