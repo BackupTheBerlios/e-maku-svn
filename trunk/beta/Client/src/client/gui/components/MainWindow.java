@@ -119,7 +119,7 @@ public class MainWindow extends JFrame {
 
         desktopPane = new JDesktopPane() {
 			private static final long serialVersionUID = -2087223016881101556L;
-			@Override
+			
 			public Component add(Component comp) {
 				Component component = super.add(comp);
 				if (component instanceof JInternalFrame && 

@@ -221,7 +221,7 @@ public class SwingGUI extends GUI implements GUIFactory {
 			frame.setIconifiable(true);
 			
 			decode_pdf.addHierarchyBoundsListener(new HierarchyBoundsAdapter() {
-				@Override
+				
 				public void ancestorResized(HierarchyEvent e) {
 					zoom();
 				}
