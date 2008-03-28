@@ -11,6 +11,8 @@ import java.util.StringTokenizer;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
 import server.comunications.EmakuServerSocket;
 import server.database.sql.QueryRunner;
@@ -61,6 +63,7 @@ public class LNSelectedField {
 
     public LNSelectedField(SocketChannel sock,Document doc,Element pack, String idTransaction) {
     	try {
+    		CacheKeys.cleanKeys();
             analizar(doc.getRootElement(),pack,EmakuServerSocket.getBd(sock),false);
 	    	RQfields.commit();
 	        RunTransaction.successMessage(sock,
@@ -115,38 +118,60 @@ public class LNSelectedField {
             	pack = (Element)paquetes.clone();
         	
             try {
+            	/*
+            	 * Si en la logica de negocios encuentra un LNData entonces....
+            	 */
             	if (data.getName().equals("LNData")) {
+            		System.out.println("Es un Data");
             		Element args = (Element)data.getChildren("parameters").iterator().next();
     				parametrizar(args,bd);
-    				RQfields.setAutoCommit(false);
-		            if (((Element)pack.getChildren().iterator().next()).getName().equals("field")) {
-		            	getFields(pack);
+    				/*
+    				 * Si es un paquete simple entonces lo procesa
+    				 */
+    				if (((Element)pack.getChildren().iterator().next()).getName().equals("field")) {
+                		System.out.println("Es un field sin cosas");
+    	            	getFields(pack);
+    	            }
+    				/*
+    				 * Sin no es porque viene un conjunto de paquetes que deben ser procesados
+    				 */
+    				else {
+    					System.out.println("Es un conjunto de packages");
+    					getSubPackage(pack);
+    				}
+            	}
+            	/*
+            	 * Si encuentra una sentencia entonces
+            	 */
+            	else if (data.getName().equals("arg")) {
+       				/*
+    				 * Si es un paquete simple entonces lo procesa
+    				 */
+ 	            	if (((Element)pack.getChildren().iterator().next()).getName().equals("field")) {
+	            		System.out.println("Es un field con cosas");
+		            	getFields(bd,data,pack);
 		            }
-		            else {
-		            	getSubPackage(pack);
+ 	   				/*
+    				 * Sin no es porque viene un conjunto de paquetes que deben ser procesados
+    				 */
+ 		            else {
+		            	System.out.println("debe ser subarg");
+						getSubPackage(bd,data,pack);
 		            }
             	}
-	            else {
-                    analizar((Element)data.clone(),(Element)paquetes.clone(),bd,true);
-	            }
+            	/*
+            	 * Sino es porque encontro un conjunto de sentencias
+            	 */
+            	
+            	else {
+            		System.out.println("Hay un conjunto de sentencias q deben ser procesadas");
+            		analizar((Element)data.clone(),(Element)pack.clone(),bd,true);
+            	}
             }
             catch(NoSuchElementException NSEEe) {}
         }
 	}
 
-	private void getSubPackage(Element paquete) 
-	throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
-    	Iterator subpack = paquete.getChildren().iterator();
-    	while (subpack.hasNext()) {
-    		Element fields = (Element)subpack.next();
-            if (((Element)fields.getChildren().iterator().next()).getName().equals("field")) {
-            	getFields(fields);
-            }
-            else {
-            	getSubPackage(fields);
-            }
-    	}
-	}
 	
 	private void parametrizar(Element parameters, String bd) 
 	throws SQLNotFoundException, SQLBadArgumentsException {
@@ -164,6 +189,7 @@ public class LNSelectedField {
 			} else if ("conditional".equals(attribute)) {
 				conditional = value;
 			} else if ("discartKey".equals(attribute)) {
+				System.out.println("Este es value: "+value.toString());
 				discartKeys.add(value);
 			}
 		}
@@ -180,6 +206,41 @@ public class LNSelectedField {
 			cols[j] = Integer.parseInt(STcols.nextToken());
 		}
 		
+	}
+	
+	public void getFields(String bd,Element args,Element pack) 
+	throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
+
+	    RQfields = new QueryRunner(bd, args.getValue());
+//		String[] fieldSQL = new String[cols.length + CacheKeys.size()];
+		ArrayList<String> fieldSQL = new ArrayList<String>();
+		/*
+		 * Primero se adiciona las llaves ...
+		 */
+		Iterator<String> valueKeys = CacheKeys.getKeys();
+
+		while (valueKeys.hasNext()) {
+			String key = (String)valueKeys.next();
+			fieldSQL.add(key);
+		}
+
+		Iterator i = pack.getChildren().iterator();
+		while (i.hasNext()) {
+			Element value = (Element)i.next();
+			String text = value.getText();
+			String key = value.getAttributeValue("attribute");
+			String nameField = value.getAttributeValue("nameField");
+			
+			if ("key".equals(key)) {
+				nameField = nameField==null?"":nameField;
+				CacheKeys.setKey(nameField, text);
+			}
+			if (!"".equals(text)) {
+				fieldSQL.add(text);
+			}
+		}
+		
+		RQfields.ejecutarSQL(fieldSQL.toArray(new String[fieldSQL.size()]));
 	}
 	/**
 	 * Este metodo se encarga de generar latransaccion para paquetes que
@@ -203,6 +264,17 @@ public class LNSelectedField {
 		 * Se verifica si la variable condicional es verdadera para contiunar,
 		 * si por el contrario no lo es, se retorna el metodo.
 		 */
+		
+		System.out.println("\n-----------------------------");
+		try {
+	        XMLOutputter xmlOutputter = new XMLOutputter();
+	        xmlOutputter.setFormat(Format.getPrettyFormat());
+	        xmlOutputter.output(pack,System.out);
+	    }
+	    catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    
 		List lpack = pack.getChildren();
 
 		if (conditional != null) {
@@ -235,14 +307,41 @@ public class LNSelectedField {
 		/*
 		 * Luego se adicionan los valores del paquete
 		 */
-
 		for (int j = 0; j < cols.length; j++) {
+			System.out.println("solicitando col: "+cols[j]);
 			fieldSQL.add(((Element) lpack.get(cols[j])).getValue());
 		}
-
 		RQfields.ejecutarSQL(fieldSQL.toArray(new String[fieldSQL.size()]));
+		
+	}
+	
+	private void getSubPackage(Element paquete) 
+	throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+    	Iterator subpack = paquete.getChildren().iterator();
+    	while (subpack.hasNext()) {
+    		Element fields = (Element)subpack.next();
+            if (((Element)fields.getChildren().iterator().next()).getName().equals("field")) {
+            	getFields(fields);
+            }
+        else {
+            	getSubPackage(fields);
+            }
+    	}
 	}
 
+	private void getSubPackage(String bd,Element data,Element paquete) 
+	throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+    	Iterator subpack = paquete.getChildren().iterator();
+    	while (subpack.hasNext()) {
+    		Element fields = (Element)subpack.next();
+            if (((Element)fields.getChildren().iterator().next()).getName().equals("field")) {
+            	getFields(bd,data,fields);
+            }
+        else {
+            	getSubPackage(bd,data,fields);
+            }
+    	}
+	}
 	private String formulaReplacer(String var,List lpack) {
 		String newVar = "";
 		for (int j = 0; j < var.length(); j++) {
