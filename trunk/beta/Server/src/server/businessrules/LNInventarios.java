@@ -201,8 +201,6 @@ public class LNInventarios {
 				} else if ("idproducto".equals(nameField)) {
 					record[3] = field.getValue();
 				} else if ("cantidad".equals(nameField)) {
-					System.out.println("Asignando cantidad... "
-							+ field.getValue());
 					record[4] = field.getValue();
 				} else if ("creditos".equals(nameField)
 						&& !field.getValue().startsWith("0")) {
@@ -266,7 +264,6 @@ public class LNInventarios {
 			SQLBadArgumentsException, SQLException {
 		String record[] = movimientoInventario(pack);
 		QueryRunner RQmovimiento = null;
-		System.out.println("tipo de movimiento " + tipoMovimiento);
 		if (SALIDA.equals(tipoMovimiento)) {
 			RQmovimiento = new QueryRunner(bd, "SCI00O4");
 		} else if (ENTRADA.equals(tipoMovimiento)) {
@@ -366,8 +363,7 @@ public class LNInventarios {
 			double _cantidad = Double.parseDouble(record[4]);
 			if (_cantidad > 0) {
 				tipoMovimiento = SALIDA;
-				record[5] = String.valueOf(LinkingCache.getPCosto(bd,
-						record[2], record[3]));
+				record[5] = record[5]==null || record[5]=="0" || record[5]=="0.0"?String.valueOf(LinkingCache.getPCosto(bd,	record[2], record[3])):record[5];
 				conversion = -1;
 			} else {
 				tipoMovimiento = ENTRADA;
@@ -402,6 +398,7 @@ public class LNInventarios {
 		record[6] = ponderado[0];
 		record[7] = ponderado[1];
 		record[8] = ponderado[2];
+
 		return record;
 	}
 
@@ -860,9 +857,9 @@ public class LNInventarios {
 							valorEntrada = getDBValue( "SCS0079",orden,idProducto);
 						}
 					}
-					else if (tipoDocumento.equals("IJ")){
-						valorEntrada=pinventario;
-						ponderar=false;
+					else if (tipoDocumento.equals("IJ") && pinventario!=0){
+							valorEntrada=pinventario;
+							ponderar=false;
 					}
 				}
 				
