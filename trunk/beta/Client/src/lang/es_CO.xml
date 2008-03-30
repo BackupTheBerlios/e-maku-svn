@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language locale="es_CO">
+  <sentence>
+    <key>SETTINGS</key>
+    <value>Configuración</value>
+  </sentence>
+  <sentence>
+    <key>TITLE-CONEC</key>
+    <value>Conexión a Base de Datos</value>
+  </sentence>
+  <sentence>
+    <key>CONNECT</key>
+    <value>Conectar</value>
+  </sentence>
+  <sentence>
+    <key>BD</key>
+    <value>Empresa:</value>
+  </sentence>
+  <sentence>
+    <key>USER</key>
+    <value>Usuario:</value>
+  </sentence>
+  <sentence>
+    <key>PASS</key>
+    <value>Contraseña:</value>
+  </sentence>
+  <sentence>
+    <key>CANCEL</key>
+    <value>Cancelar</value>
+  </sentence>
+  <sentence>
+    <key>ACCEPT</key>
+    <value>Aceptar</value>
+  </sentence>
+  <sentence>
+    <key>ERR_CONNECT</key>
+    <value>Error 235: No se pudo establecer comunicación con el servidor</value>
+  </sentence>
+  <sentence>
+    <key>ERR_TITLE_CONNECT</key>
+    <value>Error de Conexión</value>
+  </sentence>
+  <sentence>
+    <key>PORT</key>
+    <value>Puerto</value>
+  </sentence>
+  <sentence>
+    <key>HOST</key>
+    <value>Host</value>
+  </sentence>
+  <sentence>
+    <key>ERR_UNRESOLVED_ADDRESS</key>
+    <value>Error 236: No se pudo resolver la dirección del servidor de transacciones.</value>
+  </sentence>
+  <sentence>
+    <key>CLOSE_CURRENT_APP</key>
+    <value>Desea cerrar la aplicación?</value>
+  </sentence>
+  <sentence>
+    <key>LOADING</key>
+    <value>Cargando...</value>
+  </sentence>
+  <sentence>
+    <key>PAGE</key>
+    <value>Página</value>
+  </sentence>
+  <sentence>
+    <key>OF</key>
+    <value>de</value>
+  </sentence>
+  <sentence>
+    <key>LOAD_REPORT</key>
+    <value>Cargando reporte...</value>
+  </sentence>
+  <sentence>
+    <key>PRINTER_OP</key>
+    <value>Opciones de Impresión</value>
+  </sentence>
+  <sentence>
+    <key>PRINTER_NAME</key>
+    <value>Nombre de Impresora:</value>
+  </sentence>
+  <sentence>
+    <key>ALL</key>
+    <value>Todo</value>
+  </sentence>
+  <sentence>
+    <key>RANGE</key>
+    <value>Rango</value>
+  </sentence>
+  <sentence>
+    <key>COPIES</key>
+    <value>Copias:</value>
+  </sentence>
+  <sentence>
+    <key>PRINTING_AREA</key>
+    <value>Area de Impresión</value>
+  </sentence>
+  <sentence>
+    <key>ERROR</key>
+    <value>Error!</value>
+  </sentence>
+  <sentence>
+    <key>BAD_RANGE</key>
+    <value>El rango de paginas a imprimir debe ser de la forma A-B,C-D,F,G-H</value>
+  </sentence>
+  <sentence>
+    <key>BAD_COPIES</key>
+    <value>El número de copias de impresión debe ser un valor númerico</value>
+  </sentence>
+  <sentence>
+    <key>IMPORT_EXCEL_FILE</key>
+    <value>Importar Archivo de Excel</value>
+  </sentence>
+  <sentence>
+    <key>ERROR_VALUE_MIN</key>
+    <value>Error, verifique el valor minimo en uno de los registros de la columna</value>
+  </sentence>
+</language>
+

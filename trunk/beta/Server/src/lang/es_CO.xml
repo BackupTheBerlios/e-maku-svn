@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language locale="es_CO">
+  <sentence>
+    <key>ACCEPT</key>
+    <value>Aceptar</value>
+  </sentence>
+  <sentence>
+    <key>REPORTS</key>
+    <value>INFO: Cargando Reportes</value>
+  </sentence>
+  <sentence>
+    <key>CONFIGFILE</key>
+    <value>Cargando archivo de configuración desde</value>
+  </sentence>
+  <sentence>
+    <key>NODEBUG</key>
+    <value>No hay mensaje de depuración</value>
+  </sentence>
+  <sentence>
+    <key>ERROR</key>
+    <value>ERROR</value>
+  </sentence>
+  <sentence>
+    <key>REP_ERROR</key>
+    <value>Reporte No Encontrado</value>
+  </sentence>
+  <sentence>
+    <key>REFERENCE</key>
+    <value>Referencia:</value>
+  </sentence>
+  <sentence>
+    <key>DATANOTFOUND</key>
+    <value>Dato no encontrado</value>
+  </sentence>
+  <sentence>
+    <key>LOADING_CF</key>
+    <value>INFO: Cargando archivo de configuración...</value>
+  </sentence>
+  <sentence>
+    <key>UNLOADING_ST</key>
+    <value>INFO: Finalizando el servidor de transacciones...</value>
+  </sentence>
+  <sentence>
+    <key>LOADING_DB</key>
+    <value>INFO: Cargando base de datos...</value>
+  </sentence>
+  <sentence>
+    <key>LOADING_ST</key>
+    <value>INFO: Cargando sentencias SQL...</value>
+  </sentence>
+  <sentence>
+    <key>ERR_CLASS</key>
+    <value>No se pudo cargar el driver de la base de datos</value>
+  </sentence>
+  <sentence>
+    <key>ERR_SQL</key>
+    <value>El servidor de transacciones no pudo conectarse a la base de datos</value>
+  </sentence>
+  <sentence>
+    <key>ERR_CONFIG</key>
+    <value>No se pudo cargar el archivo de configuración</value>
+  </sentence>
+  <sentence>
+    <key>ERR_PARAMETERS_DOCUMENT</key>
+    <value>Parámetros incorrectos en el archivo de configuración</value>
+  </sentence>
+  <sentence>
+    <key>ERR_LOADING_ST</key>
+    <value>No se pueden cargar las sentencias SQL en cache</value>
+  </sentence>
+  <sentence>
+    <key>ERR_HAVE_CHILDREN</key>
+    <value>La cuenta no debe tener subcuentas para ser eliminada</value>
+  </sentence>
+  <sentence>
+    <key>ERR_HAVE_CHILDREN_EDIT</key>
+    <value>Si desea convertir una cuenta en subcuenta, esta no puede tener subcuentas previas asociadas</value>
+  </sentence>
+  <sentence>
+    <key>ERR_HAVE_DATA</key>
+    <value>No se pudo eliminar la cuenta, posiblemente contiene registros contables</value>
+  </sentence>
+  <sentence>
+    <key>ERR_LOADING_LG</key>
+    <value>No se pudieron cargar las sentencias de lógica de negocios en cache</value>
+  </sentence>
+  <sentence>
+    <key>ERR_MODULE_LG</key>
+    <value>No se pudo cargar el módulo de procesamiento de la transacción</value>
+  </sentence>
+  <sentence>
+    <key>ERR_NOT_DRIVER_LG</key>
+    <value>No se ha definido módulo para procesar la transacción</value>
+  </sentence>
+  <sentence>
+    <key>ERR_INVALID_ARGS</key>
+    <value>Argumentos inválidos para procesar la transacción</value>
+  </sentence>
+  <sentence>
+    <key>ERR_FOUND_DRIVER_LG</key>
+    <value>No se encontró el módulo para procesar la transacción</value>
+  </sentence>
+  <sentence>
+    <key>ERR_COD_NOT_FOUND</key>
+    <value>El siguiente código no fue encontrado</value>
+  </sentence>
+  <sentence>
+    <key>ERR_COD_ARGS</key>
+    <value>Argumentos inválidos para la sentencia</value>
+  </sentence>
+  <sentence>
+    <key>ERR_CONSECUTIVE</key>
+    <value>Un problema ocurrió mientras se generaba el número consecutivo</value>
+  </sentence>
+  <sentence>
+    <key>ERR_POOL</key>
+    <value>No pudo cargar el pool de conexiones en la base de datos</value>
+  </sentence>
+  <sentence>
+    <key>ERR_PERFIL_CTA</key>
+    <value>No pudo consultar el perfíl de la cuenta de detalle</value>
+  </sentence>
+  <sentence>
+    <key>ERR_ST</key>
+    <value>No se pudo crear el estamento</value>
+  </sentence>
+  <sentence>
+    <key>ERR_DELETE_DOCUMENT_NOT_FOUND</key>
+    <value>El documento a borrar no existe</value>
+  </sentence>
+  <sentence>
+    <key>ERR_ANNUL_DOCUMENT_NOT_FOUND</key>
+    <value>El documento a anular no existe</value>
+  </sentence>
+  <sentence>
+    <key>ERR_ANNUL_RF_DOCUMENT_NOT_FOUND</key>
+    <value>El documento referencia al documento a anular no existe</value>
+  </sentence>
+  <sentence>
+    <key>ERR_RS</key>
+    <value>Inconsistencia en el resultado de la consulta</value>
+  </sentence>
+  <sentence>
+    <key>LOADING_CACHE</key>
+    <value>INFO: Cargando cache de enlace</value>
+  </sentence>
+  <sentence>
+    <key>LOADING_SL</key>
+    <value>INFO: Cargando saldos de las bases de datos</value>
+  </sentence>
+  <sentence>
+    <key>ERROR_LOADING_SL</key>
+    <value>El servidor no pudo cargar caches de las bases de datos</value>
+  </sentence>
+  <sentence>
+    <key>EXECUTE_IUD_OK</key>
+    <value>INFO: La instrucción fue ejecutada con éxito</value>
+  </sentence>
+  <sentence>
+    <key>EXECUTE_IUD_ERR</key>
+    <value>La instrucción no pudo ser ejecutada</value>
+  </sentence>
+  <sentence>
+    <key>OK_CREATING_XML</key>
+    <value>INFO: Estructura XML creada con éxito</value>
+  </sentence>
+  <sentence>
+    <key>INIT_BDS</key>
+    <value>INFO: Inicializando bases de datos</value>
+  </sentence>
+  <sentence>
+    <key>NEW_SOCKET_CLIENT</key>
+    <value>INFO: Se ha establecido una nueva conexión TCP/IP</value>
+  </sentence>
+  <sentence>
+    <key>SOCKET_SERVER_OPEN</key>
+    <value>INFO: Servidor eMaku escuchando por el puerto</value>
+  </sentence>
+  <sentence>
+    <key>ERR_IO_SOCKET</key>
+    <value>Falla de entrada y salida en sockets</value>
+  </sentence>
+  <sentence>
+    <key>ERR_WRITING_SOCKET</key>
+    <value>Falla escribiendo socket</value>
+  </sentence>
+  <sentence>
+    <key>OK_CNX</key>
+    <value>INFO: Autenticación exitosa</value>
+  </sentence>
+  <sentence>
+    <key>ERR_CNX</key>
+    <value>Autenticación fallída</value>
+  </sentence>
+  <sentence>
+    <key>ERR_FORMAT_PROTOCOL</key>
+    <value>Formato de paquete inválido</value>
+  </sentence>
+  <sentence>
+    <key>SQL_ACCESS_DENIED</key>
+    <value>Permiso denegado para ejecutar la instrucción SQL</value>
+  </sentence>
+  <sentence>
+    <key>TRANSACTION_ACCESS_DENIED</key>
+    <value>Permiso denegado para ejecutar la transacción</value>
+  </sentence>
+  <sentence>
+    <key>TRANSACTION_OK</key>
+    <value>INFO: Transacción exitosa</value>
+  </sentence>
+  <sentence>
+    <key>ERR_ARGS</key>
+    <value>Argumentos del componente inválidos</value>
+  </sentence>
+  <sentence>
+    <key>ERR_DATA</key>
+    <value>Error en los datos a trasladar, posiblemente las cantidades sean igual a 0</value>
+  </sentence>
+  <sentence>
+    <key>ERR_PACKAGE_NOT_FOUND</key>
+    <value>Etiqueta XML no encontrada</value>
+  </sentence>
+  <sentence>
+    <key>ERR_DONT_HAVE_BALANCE_EXCEPTION</key>
+    <value>No hay partida doble al finalizar los asientos contables</value>
+  </sentence>
+  <sentence>
+    <key>ERR_DONT_HAVE_KEY_EXCEPTION</key>
+    <value>No existe registro de la llave en el cache</value>
+  </sentence>
+  <sentence>
+    <key>ACPFAILURE</key>
+    <value>Acceso denegado, por favor compruebe la empresa, el nombre de usuario y la contraseña</value>
+  </sentence>
+  <sentence>
+    <key>DBNFEX</key>
+    <value>No existe la empresa</value>
+  </sentence>
+  <sentence>
+    <key>ERR_NOT_FOUND_COMPONENT</key>
+    <value>El siguiente componente no fue encontrado:</value>
+  </sentence>
+  <sentence>
+    <key>ERR_ANNUL_DOC0</key>
+    <value>El documento</value>
+  </sentence>
+  <sentence>
+    <key>ERR_ANNUL_DOC1</key>
+    <value>fue anulado con anterioridad</value>
+  </sentence>
+  <sentence>
+    <key>NO_SUCH_METHOD</key>
+    <value>El siguiente método no fue encontrado:</value>
+  </sentence>
+  <sentence>
+    <key>ERR_INVALID_DATE</key>
+    <value>Error, no se puede ingresar o modificar documentos con la fecha asignada al documento</value>
+  </sentence>
+</language>
+
