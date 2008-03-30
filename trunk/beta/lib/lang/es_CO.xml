@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language locale="es_CO">
+  <sentence>
+    <key>CLIENT_VER</key>
+    <value>Cliente eMaku 1.0</value>
+  </sentence>
+  <sentence>
+    <key>OPT</key>
+    <value>Opciones:</value>
+  </sentence>
+  <sentence>
+    <key>RECONFIG</key>
+    <value>-r o --reconfigure : Configura parametros de conexion</value>
+  </sentence>
+  <sentence>
+    <key>HELP</key>
+    <value>-h o --help        : Muestra este mensaje</value>
+  </sentence>
+  <sentence>
+    <key>OPT</key>
+    <value>Opciones:</value>
+  </sentence>
+  <sentence>
+    <key>CONFIG</key>
+    <value>Configuración</value>
+  </sentence>
+  <sentence>
+    <key>LANG</key>
+    <value>Idioma: </value>
+  </sentence>
+  <sentence>
+    <key>HOST</key>
+    <value>Host: </value>
+  </sentence>
+  <sentence>
+    <key>PORT</key>
+    <value>Puerto: </value>
+  </sentence>
+  <sentence>
+    <key>TERM</key>
+    <value>Terminal: </value>
+  </sentence>
+  <sentence>
+    <key>LOG_TYPE</key>
+    <value>Tipo de Log: </value>
+  </sentence>
+  <sentence>
+    <key>THEME</key>
+    <value>Tema: </value>
+  </sentence>
+  <sentence>
+    <key>DEFAULT</key>
+    <value>Por Omisión</value>
+  </sentence>
+  <sentence>
+    <key>VERBOSE</key>
+    <value>Consola</value>
+  </sentence>
+  <sentence>
+    <key>V_FILE</key>
+    <value>Archivo</value>
+  </sentence>
+  <sentence>
+    <key>NONE</key>
+    <value>Ninguno</value>
+  </sentence>
+  <sentence>
+    <key>ACCEPT</key>
+    <value>Aceptar</value>
+  </sentence>
+  <sentence>
+    <key>CANCEL</key>
+    <value>Cancelar</value>
+  </sentence>
+  <sentence>
+    <key>ADD</key>
+    <value>Adicionar</value>
+  </sentence>
+  <sentence>
+    <key>ADD_CMP</key>
+    <value>Adicionando Empresa...</value>
+  </sentence>
+  <sentence>
+    <key>EDIT</key>
+    <value>Editar</value>
+  </sentence>
+  <sentence>
+    <key>EDIT_CMP</key>
+    <value>Editando Empresa...</value>
+  </sentence>
+  <sentence>
+    <key>REMOVE</key>
+    <value>Eliminar</value>
+  </sentence>
+  <sentence>
+    <key>GENERAL</key>
+    <value>General</value>
+  </sentence>
+  <sentence>
+    <key>COMPANIES</key>
+    <value>Compañias</value>
+  </sentence>
+  <sentence>
+    <key>EMPTY_SERVER</key>
+    <value>El campo servidor se encuentra vacio!\nPor favor, ingrese un valor.</value>
+  </sentence>
+  <sentence>
+    <key>NUM_PORT</key>
+    <value>El campo puerto debe contener un valor numerico!\nPor favor, corrija el valor ingresado.</value>
+  </sentence>
+  <sentence>
+    <key>NO_COMPANY</key>
+    <value>Ninguna empresa fue configurada!\nPor favor, ingrese al menos una.</value>
+  </sentence>
+  <sentence>
+    <key>NAME</key>
+    <value>Nombre: </value>
+  </sentence>
+  <sentence>
+    <key>JAR_FILE</key>
+    <value>Archivo Jar: </value>
+  </sentence>
+  <sentence>
+    <key>DIR</key>
+    <value>Directorio: </value>
+  </sentence>
+  <sentence>
+    <key>EMPTY_NAME</key>
+    <value>El campo Nombre se encuentra vacio!\nPor favor, ingrese un valor.</value>
+  </sentence>
+  <sentence>
+    <key>COMPANY_EXISTS</key>
+    <value>El Nombre de la empresa ya existe!\nPor favor, ingrese un valor diferente.</value>
+  </sentence>
+  <sentence>
+    <key>EMPTY_JAR</key>
+    <value>El campo Archivo Jar se encuentra vacio!\nPor favor, ingrese un valor.</value>
+  </sentence>
+  <sentence>
+    <key>EMPTY_DIR</key>
+    <value>El campo Directorio se encuentra vacio!\nPor favor, ingrese un valor.</value>
+  </sentence>
+  <sentence>
+    <key>MISS_CONFIG</key>
+    <value>ERROR: El archivo de configuración (client.conf) es incorrecto o está incompleto.</value>
+  </sentence>
+  <sentence>
+    <key>MISS_CONFIG2</key>
+    <value>       Por favor, revise y corrija las etiquetas faltantes.</value>
+  </sentence>
+  <sentence>
+    <key>JAR_ERROR1</key>
+    <value>El archivo JAR que contiene la parametrización de la compañía</value>
+  </sentence>
+  <sentence>
+    <key>JAR_ERROR2</key>
+    <value>no se encuentra en la ruta</value>
+  </sentence>
+  <sentence>
+    <key>JAR_ERROR3</key>
+    <value>Por favor, agregue el archivo</value>
+  </sentence>
+  <sentence>
+    <key>JAR_ERROR4</key>
+    <value>en dicha ruta o elimine esta</value>
+  </sentence>
+  <sentence>
+    <key>JAR_ERROR5</key>
+    <value>empresa de la configuración actual.</value>
+  </sentence>
+  <sentence>
+    <key>ERROR</key>
+    <value>Error</value>
+  </sentence>
+  <sentence>
+    <key>THEME_ERROR1</key>
+    <value>Advertencia: El tema</value>
+  </sentence>
+  <sentence>
+    <key>THEME_ERROR2</key>
+    <value>no existe!</value>
+  </sentence>
+  <sentence>
+    <key>THEME_ERROR3</key>
+    <value>Advertencia: Tema no cargado.</value>
+  </sentence>
+  <sentence>
+    <key>LOOK1</key>
+    <value>INFO: Cargando tema </value>
+  </sentence>
+  <sentence>
+    <key>LOOK2</key>
+    <value>INFO: Desde </value>
+  </sentence>
+</language>

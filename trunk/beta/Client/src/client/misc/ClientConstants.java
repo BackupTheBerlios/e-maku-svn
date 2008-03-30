@@ -30,12 +30,16 @@ public interface ClientConstants {
 	public final String HOME = System.getProperty("user.home");
     public final String SEPARATOR = System.getProperty("file.separator");
     public final String TMP = System.getProperty("java.io.tmpdir");
-	public final String CONF = HOME+SEPARATOR+".qhatu"+SEPARATOR;
+	public final String CONF = HOME + SEPARATOR + ".qhatu"+SEPARATOR;
+	public final String LANG = System.getenv("EMAKU_HOME") + SEPARATOR + "lib" 
+								+ SEPARATOR + "lang" + SEPARATOR;
+	public final String THEMES = ClientConstants.EMAKU_HOME + ClientConstants.SEPARATOR + "themes" 
+						+ ClientConstants.SEPARATOR;
+	public final String COMPANIES = System.getenv("EMAKU_HOME") + ClientConstants.SEPARATOR 
+						+ "lib" + ClientConstants.SEPARATOR + "companies" + ClientConstants.SEPARATOR;
 
     public final int ERROR = 0;
-
     public final int WARNING = 1;
-
     public final int MESSAGE = 2;
 
     public final long MAX_SIZE_FILE_LOG = 5242880;

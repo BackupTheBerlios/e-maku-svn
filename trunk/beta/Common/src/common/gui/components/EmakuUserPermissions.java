@@ -66,7 +66,7 @@ public class EmakuUserPermissions extends JPanel implements Couplable, AnswerLis
 	public EmakuUserPermissions(GenericForm genericForm,Document doc) {
 		this.genericForm = genericForm;
 		this.setLayout(new BorderLayout());
-		path = EmakuParametersStructure.getParameter("jarPath")+"/misc/menu.xml";
+		path = EmakuParametersStructure.getParameter("jarPath")+"/conf/menu.xml";
 		Element rootElement = doc.getRootElement();
 		Iterator args = rootElement.getChildren().iterator();
 		while (args.hasNext()) {

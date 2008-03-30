@@ -47,7 +47,7 @@ import common.misc.parameters.EmakuParametersStructure;
 
 public class HeadersValidator implements ArrivedPackageListener {
 
-    private static Element raiz;
+    private static Element root;
     private String title;
 
     /**
@@ -64,13 +64,13 @@ public class HeadersValidator implements ArrivedPackageListener {
     
     public void validPackage(ArrivedPackageEvent APe) {
     	
-    		Document doc = APe.getDoc();
+    	Document doc = APe.getDoc();
 
         /*
          * Obtenemos la raiz del documento si el documento no tiene raiz
          */
-        raiz = doc.getRootElement();
-        String nombre = raiz.getName();
+        root = doc.getRootElement();
+        String nombre = root.getName();
         
         /*
          * Se validan las cabeceras genericas, que necesitan acceso desde el paquete
@@ -85,8 +85,8 @@ public class HeadersValidator implements ArrivedPackageListener {
 			    if(nombre.equals("ACPBegin")) {
 			        Connection.dispose();          
 			        ACPHandler.ACPBegin(doc);
-			        String company = raiz.getChildText("companyName");
-			        String companyID = raiz.getChildText("companyID");
+			        String company = root.getChildText("companyName");
+			        String companyID = root.getChildText("companyID");
 			        title = "[ eMaku ] - ";
 
 			        /*
@@ -98,14 +98,14 @@ public class HeadersValidator implements ArrivedPackageListener {
 			        if(company != null && companyID != null) {
 			        	title += company + " / Nit: " + companyID;
 			        }
-			   		new MainWindow(ConfigFileHandler.getJarDirectory()+"/misc",title);
+			   		new MainWindow(ConfigFileHandler.getJarDirectory()+"/conf",title);
 			    }
 			    
 			    else if(nombre.equals("ACPZip")) {
 			    	ACPHandler.ACPData(doc);
 			    }
 			    else if(nombre.equals("ACPFAILURE")) {
-			        String message = raiz.getChildText("message");
+			        String message = root.getChildText("message");
 			        JOptionPane.showMessageDialog(null,message);
 			        Connection.setEnabled();
 			        Connection.setCursorState(Cursor.DEFAULT_CURSOR);
@@ -151,7 +151,7 @@ public class HeadersValidator implements ArrivedPackageListener {
     private static void displayError() {
         JOptionPane.showMessageDialog(
         						MainWindow.getFrame(),
-        						raiz.getChild("errorMsg").getText(),
+        						root.getChild("errorMsg").getText(),
         						"",
         						JOptionPane.ERROR_MESSAGE);
     }

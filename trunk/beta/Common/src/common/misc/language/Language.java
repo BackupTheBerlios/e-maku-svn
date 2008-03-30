@@ -31,21 +31,19 @@ import org.jdom.input.*;
 
 public class Language  {
     
-    private static Hashtable <String,messageStructure>glossary;
+    private static Hashtable <String,messageStructure>glossary = new Hashtable<String,messageStructure>();
     
     public void loadLanguage(String lang) {
-    	String languageCode = lang.substring(0,lang.indexOf('_'));
-    	Locale.setDefault(new Locale(languageCode));
     	loadLanguage(null,lang);
     }
     
-    private void loadWorks(Document doc,String lang) {
+    private void loadWords(Document doc) {
         Element root = doc.getRootElement();
-        List words = root.getChildren("sentence");
-        Iterator i = words.iterator();
+        List<Element> words = root.getChildren("sentence");
+        Iterator<Element> i = words.iterator();
         while (i.hasNext()) {
             Element fields = (Element)i.next();
-        	String message = fields.getChildText(lang);
+        	String message = fields.getChildText("value");
             if (fields.getChild("key").getAttribute("errorCode")!=null) {
             	String codeError = fields.getChild("key").getAttribute("errorCode").getValue();
             	glossary.put(fields.getChildText("key"),new messageStructure(codeError,message));
@@ -62,23 +60,22 @@ public class Language  {
      * @param lang idioma para el ST, Ej. <code>SPANISH</code>
      */
     public void loadLanguage(String directory,String lang) {
-        Language.glossary = new Hashtable<String,messageStructure>();
         try {
             SAXBuilder builder = new SAXBuilder(false);
-            loadWorks(builder.build(this.getClass().getResource("/language.xml")),lang);
             if (directory!=null) {
-            	loadWorks(builder.build(directory+"/language.xml"),lang);
+            	loadWords(builder.build(directory + lang + ".xml"));
+            } else {
+            	loadWords(builder.build(this.getClass().getResource("/lang/") + lang + ".xml"));
             }
         }
         catch (JDOMException JDOMEe) {
-            System.out.println(JDOMEe.getMessage());
+            JDOMEe.printStackTrace();
         }
         catch (FileNotFoundException FNFEe) {
         	FNFEe.printStackTrace();
         }
         catch (IOException IOEe) {
         	IOEe.printStackTrace();
-            System.out.println(IOEe.getMessage());
         }
     }
     
@@ -116,7 +113,6 @@ public class Language  {
     		this.errorCode=errorCode;
     		this.message=message;
     	}
-    	
 		public String getErrorCode() {
 			return errorCode;
 		}

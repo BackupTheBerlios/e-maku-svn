@@ -4,12 +4,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
-import java.util.Locale;
 
 import bsh.Interpreter;
 import client.gui.components.MainWindow;
@@ -51,19 +50,26 @@ public class Run {
 	public static final Interpreter shellScript = new Interpreter();
 
 	public static void main(String[] args) {
-
-		System.out.println("LANG: " + getLanguageSupport());
-
+		
 		if (ClientConstants.EMAKU_HOME == null) {
-            		System.out.println("ERROR: Variable EMAKU_HOME is undefined! Please set it up!");
+			String locale = getLocale();
+			if (locale.equals("es_CO")) {
+				System.out.println("ERROR: La variable EMAKU_HOME no esta definida! Por favor, asignele un valor!");
+			} else if (locale.equals("pt_PT")) {
+				System.out.println("ERROR: Variável EMAKU_HOME é indefinida! Por favor, designe-o um valor!");
+			} else {
+				System.out.println("ERROR: Variable EMAKU_HOME is undefined! Please, set it up!");
+			}
+			
 			return;
 		}
+		
+		initLocale();
 
 		for(int i=0;i<args.length;i++) {
 			if(args[i].equals("-r") || args[i].equals("--reconfigure")) {
-
 				String path = ClientConstants.CONF + "client.conf";
-            			File file = new File(path);
+            	File file = new File(path);
 				if(file.exists()) {
 					SettingsDialog dialog = new SettingsDialog(null,SettingsDialog.EDIT);
 					dialog.pack();
@@ -74,10 +80,10 @@ public class Run {
 				} 
 			} else {
 				if(args[i].equals("-h") || args[i].equals("--help")) {
-					System.out.println(" Cliente eMaku 1.0");
-					System.out.println(" Opciones:");
-					System.out.println(" -r o --reconfigure : Configura parametros de conexion");
-					System.out.println(" -h o --help        : Muestra este mensaje");
+					System.out.println(" " + Language.getWord("CLIENT_VER"));
+					System.out.println(" " + Language.getWord("OPT"));
+					System.out.println(" " + Language.getWord("RECONFIG"));
+					System.out.println(" " + Language.getWord("HELP"));
 					System.out.println();
 					System.exit(0);
 				}
@@ -107,20 +113,20 @@ public class Run {
 	private static void setLookAndFeel() {
 		try {
 			String theme = ConfigFileHandler.getLookAndFeel();
-			String jarPath = ClientConstants.EMAKU_HOME + ClientConstants.SEPARATOR + "themes" + ClientConstants.SEPARATOR 
-			+ theme + ".jar";
+			String jarPath = ClientConstants.THEMES + theme + ".jar";
 			File file = new File(jarPath);
 			
 			if (!file.exists()) {
-				System.out.println("WARNING: The theme " + jarPath + " does not exist!");
-				System.out.println("WARNING: It could not be loaded!");
+				System.out.println(Language.getWord("THEME_ERROR1") + " " + jarPath + " " + Language.getWord("THEME_ERROR2"));
+				System.out.println(Language.getWord("THEME_ERROR3"));
 			} else {
 				ClassPathUpdater.addFile(jarPath);
 				String lookAndFeel = ClassPathUpdater.getMainClass();
-				System.out.println("INFO: Loading LookAndFeel " + lookAndFeel);
-				System.out.println("INFO: From " + jarPath);
+				System.out.println(Language.getWord("LOOK1") + lookAndFeel);
+				System.out.println(Language.getWord("LOOK2") + jarPath);
 				UIManager.setLookAndFeel(lookAndFeel);
 			}
+			
 			Font f = new Font("Tahoma", Font.PLAIN, 12);
 			Font f2 = new Font("Tahoma",Font.BOLD,14);
 			UIManager.put("Menu.font",			f);
@@ -154,13 +160,16 @@ public class Run {
 		}	
 	}
 	
-	private static String getLanguageSupport() {
-		Locale locale = Locale.getDefault();
-		String support = locale.toString();
-
-		return support;
+	private static String getLocale() {
+		return Locale.getDefault().toString();
 	}
-
+	
+	private static void initLocale() {
+		String locale = getLocale();
+		Language lang = new Language();
+		lang.loadLanguage(ClientConstants.LANG,locale);
+	}
+	
 	public static void exit() {
 		int confirm = -1;
 		try {
@@ -168,7 +177,7 @@ public class Run {
 					MainWindow.getFrame(),
 					Language.getWord("CLOSE_CURRENT_APP"),
 					"",JOptionPane.YES_NO_OPTION);
-			if(confirm==JOptionPane.YES_OPTION){
+			if(confirm == JOptionPane.YES_OPTION){
 				SocketConnector.getSock().close();
 			}
 		}

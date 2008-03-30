@@ -9,6 +9,8 @@ import javax.swing.JOptionPane;
 
 import org.jdom.Element;
 
+import common.misc.language.Language;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
@@ -44,179 +46,179 @@ import java.awt.event.MouseEvent;
 
 public class CompanyDialog extends JDialog {
 
-        final JTextField JTFName;
+	private static final long serialVersionUID = 1L;
+	final JTextField JTFName;
 	final JTextField JTFJar;
 	final JTextField JTFDir;
-	private Element root;
+	//private Element root;
 	private String name;
 	private String oldName;
 
-public CompanyDialog(JDialog parent,String title,final String label,String name,String jar,String dir) {
-	 super(parent, true);
-	 oldName = name;	
-         this.setTitle(title);
-         this.setResizable(false);
-         this.setLocationByPlatform(true);
-         this.setAlwaysOnTop(true);
+	public CompanyDialog(JDialog parent,String title,final String label,String name,String jar,String dir) {
+		super(parent, true);
+		oldName = name;	
+		this.setTitle(title);
+		this.setResizable(false);
+		this.setLocationByPlatform(true);
+		this.setAlwaysOnTop(true);
 
-         JPanel JPlabels = new JPanel();
-         JPanel JPfields = new JPanel();
-         JPlabels.setLayout(new GridLayout(3, 1));
-         JPfields.setLayout(new GridLayout(3, 1));
+		JPanel JPlabels = new JPanel();
+		JPanel JPfields = new JPanel();
+		JPlabels.setLayout(new GridLayout(3, 1));
+		JPfields.setLayout(new GridLayout(3, 1));
 
-         JLabel JLName = new JLabel("Nombre: ");
-         JPanel JPLName = new JPanel(new FlowLayout(FlowLayout.LEFT));
-         JPLName.add(JLName);
+		JLabel JLName = new JLabel(Language.getWord("NAME"));
+		JPanel JPLName = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPLName.add(JLName);
 
-         JLabel JLJar = new JLabel("Archivo Jar: ");
-         JPanel JPLJar = new JPanel(new FlowLayout(FlowLayout.LEFT));
-         JPLJar.add(JLJar);
+		JLabel JLJar = new JLabel(Language.getWord("JAR_FILE"));
+		JPanel JPLJar = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPLJar.add(JLJar);
 
-         JLabel JLDir = new JLabel("Directorio: ");
-         JPanel JPLDir = new JPanel(new FlowLayout(FlowLayout.LEFT));
-         JPLDir.add(JLDir);
+		JLabel JLDir = new JLabel(Language.getWord("DIR"));
+		JPanel JPLDir = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPLDir.add(JLDir);
 
-	 JPlabels.add(JPLName);
-	 JPlabels.add(JPLJar);
-	 JPlabels.add(JPLDir);
+		JPlabels.add(JPLName);
+		JPlabels.add(JPLJar);
+		JPlabels.add(JPLDir);
 
-         JTFName = new JTextField(10);
-         JTFName.setText(name);
-         JTFName.addActionListener(new ActionListener() {
-             public void actionPerformed(ActionEvent e) {
-                 JTFName.transferFocus();
-             }
-         });
+		JTFName = new JTextField(10);
+		JTFName.setText(name);
+		JTFName.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JTFName.transferFocus();
+			}
+		});
 
-         JPanel JPTName = new JPanel(new FlowLayout(FlowLayout.LEFT));
-         JPTName.add(JTFName);
+		JPanel JPTName = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPTName.add(JTFName);
 
-         JTFJar = new JTextField(10);
-         JTFJar.setText(jar);
-         JTFJar.addActionListener(new ActionListener() {
-             public void actionPerformed(ActionEvent e) {
-                 JTFJar.transferFocus();
-             }
-         });
+		JTFJar = new JTextField(10);
+		JTFJar.setText(jar);
+		JTFJar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JTFJar.transferFocus();
+			}
+		});
 
-         JPanel JPTJar = new JPanel(new FlowLayout(FlowLayout.LEFT));
-         JPTJar.add(JTFJar);
+		JPanel JPTJar = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPTJar.add(JTFJar);
 
-         JTFDir = new JTextField(10);
-         JTFDir.setText(dir);
-         JTFDir.addActionListener(new ActionListener() {
-             public void actionPerformed(ActionEvent e) {
-                 JTFDir.transferFocus();
-             }
-         });
+		JTFDir = new JTextField(10);
+		JTFDir.setText(dir);
+		JTFDir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JTFDir.transferFocus();
+			}
+		});
 
-         JPanel JPTDir = new JPanel(new FlowLayout(FlowLayout.LEFT));
-         JPTDir.add(JTFDir);
+		JPanel JPTDir = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPTDir.add(JTFDir);
 
-	 JPfields.add(JPTName);
-         JPfields.add(JPTJar);
-         JPfields.add(JPTDir);
+		JPfields.add(JPTName);
+		JPfields.add(JPTJar);
+		JPfields.add(JPTDir);
 
-         JPanel JPForm = new JPanel(new BorderLayout());
-	 JPForm.add(JPlabels,BorderLayout.WEST);
-	 JPForm.add(JPfields,BorderLayout.CENTER);
+		JPanel JPForm = new JPanel(new BorderLayout());
+		JPForm.add(JPlabels,BorderLayout.WEST);
+		JPForm.add(JPfields,BorderLayout.CENTER);
 
-        JPanel JPsouth = new JPanel();
-        JPsouth.setLayout(new FlowLayout(FlowLayout.CENTER));
+		JPanel JPsouth = new JPanel();
+		JPsouth.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-        JButton JBAccept = new JButton(label);
-	JBAccept.setMnemonic('A');
-        
-        JBAccept.addMouseListener(new MouseAdapter() {
-            public void mouseReleased(MouseEvent e) {
-            	       packingData(label);
-	    }
-        });
-        
-        JBAccept.addKeyListener(new KeyAdapter() {
-            public void keyReleased(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			packingData(label);
-                }
-            }
-        });
+		JButton JBAccept = new JButton(label);
+		JBAccept.setMnemonic('A');
 
-        JButton JBCancel = new JButton("Cancelar");
-	JBCancel.setMnemonic('C');
-        JBCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	setVisible(false);
-            }
-        });
+		JBAccept.addMouseListener(new MouseAdapter() {
+			public void mouseReleased(MouseEvent e) {
+				packingData(label);
+			}
+		});
 
-	JPsouth.add(JBAccept);
-	JPsouth.add(JBCancel);
+		JBAccept.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					packingData(label);
+				}
+			}
+		});
 
-	 this.getContentPane().add(JPForm, BorderLayout.CENTER);
-	 this.getContentPane().add(JPsouth, BorderLayout.SOUTH);
-         this.getContentPane().add(new JPanel(), BorderLayout.WEST);
-         this.getContentPane().add(new JPanel(), BorderLayout.EAST);
-    }
+		JButton JBCancel = new JButton(Language.getWord("CANCEL"));
+		JBCancel.setMnemonic(Language.getNemo("CANCEL"));
+		JBCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+			}
+		});
 
-    public String getName() {
-        return JTFName.getText().trim();
-    }
+		JPsouth.add(JBAccept);
+		JPsouth.add(JBCancel);
 
-    public String getJarFile() {
-        return JTFJar.getText().trim();
-    }
-
-    public String getDirectory() {
-        return JTFDir.getText().trim();
-    }
-
-    private void packingData(String label) {
-    
-    	name              = getName();
-    	String jarFile    = getJarFile();
-    	String directory  = getDirectory();
-  
-    	if (name.length() < 1) {
-    		JOptionPane.showMessageDialog(this,"El campo Nombre se encuentra vacio!\nPor favor, ingrese un valor.");
-		JTFName.requestFocus();
-    		return;
-    	}
-
-	if(SettingsDialog.alreadyExists(name)) {
-		JOptionPane.showMessageDialog(this,"El Nombre de la empresa ya existe!\nPor favor, ingrese un valor diferente.");
-		JTFName.requestFocus();
-    		return;
+		this.getContentPane().add(JPForm, BorderLayout.CENTER);
+		this.getContentPane().add(JPsouth, BorderLayout.SOUTH);
+		this.getContentPane().add(new JPanel(), BorderLayout.WEST);
+		this.getContentPane().add(new JPanel(), BorderLayout.EAST);
 	}
 
-    	if (jarFile.length() < 1) {
-    		JOptionPane.showMessageDialog(this,"El campo Archivo Jar se encuentra vacio!\nPor favor, ingrese un valor.");
-		JTFJar.requestFocus();
-    		return;
-    	}
-
-    	if (!(jarFile.toLowerCase().endsWith(".jar"))) {
-    		JOptionPane.showMessageDialog(this,"El campo Archivo Jar debe incluir la extension .jar!\nPor favor, adicionela.");
-		JTFJar.requestFocus();
-    		return;
-    	}
-
-    	if (directory.length() < 1) {
-    		JOptionPane.showMessageDialog(this,"El campo Directorio se encuentra vacio!\nPor favor, ingrese un valor.");
-		JTFDir.requestFocus();
-    		return;
-    	}
-
-	Element root = new Element("company");
-	root.addContent(new Element("name").setText(name));
-	root.addContent(new Element("jarFile").setText(jarFile));
-	root.addContent(new Element("directory").setText(directory));
-
-	if(label.equals("Adicionar")) {
-	  SettingsDialog.addCompany(root,name);
-	} else {
-	  SettingsDialog.editCompany(root,oldName);
+	public String getName() {
+		return JTFName.getText().trim();
 	}
 
-	setVisible(false);
-    }
+	public String getJarFile() {
+		return JTFJar.getText().trim();
+	}
+
+	public String getDirectory() {
+		return JTFDir.getText().trim();
+	}
+
+	private void packingData(String label) {
+
+		name              = getName();
+		String jarFile    = getJarFile();
+		String directory  = getDirectory();
+
+		if (name.length() < 1) {
+			JOptionPane.showMessageDialog(this,Language.getWord("EMPTY_NAME"));
+			JTFName.requestFocus();
+			return;
+		}
+
+		if(SettingsDialog.alreadyExists(name)) {
+			JOptionPane.showMessageDialog(this,Language.getWord("COMPANY_EXISTS"));
+			JTFName.requestFocus();
+			return;
+		}
+
+		if (jarFile.length() < 1) {
+			JOptionPane.showMessageDialog(this,Language.getWord("EMPTY_JAR"));
+			JTFJar.requestFocus();
+			return;
+		}
+
+		if (!(jarFile.toLowerCase().endsWith(".jar"))) {
+			jarFile = jarFile + ".jar";
+			JTFJar.setText(jarFile);
+		}
+
+		if (directory.length() < 1) {
+			JOptionPane.showMessageDialog(this,Language.getWord("EMPTY_DIR"));
+			JTFDir.requestFocus();
+			return;
+		}
+
+		Element root = new Element("company");
+		root.addContent(new Element("name").setText(name));
+		root.addContent(new Element("jarFile").setText(jarFile));
+		root.addContent(new Element("directory").setText(directory));
+
+		if(label.equals(Language.getWord("ADD"))) {
+			SettingsDialog.addCompany(root,name);
+		} else {
+			SettingsDialog.editCompany(root,oldName);
+		}
+
+		setVisible(false);
+	}
 }

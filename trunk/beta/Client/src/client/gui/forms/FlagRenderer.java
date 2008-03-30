@@ -7,7 +7,9 @@ import javax.swing.JList;
 import javax.swing.GrayFilter;
 
 import java.awt.Component;
+import java.net.URL;
 
+import java.util.Locale;
 import java.util.TreeMap;
 
     /**
@@ -46,16 +48,12 @@ import java.util.TreeMap;
         {	
             // We put the label
             String langCode = (String) value;
+            String lang = langCode.substring(0,2);
+            String country = langCode.substring(3,5);
             
-            if (langCode.equals("es_CO"))
-                setText("Español (CO)");
-            else {
-                  if (langCode.equals("es_ES"))
-                      setText("Español (ES)");
-                  else
-                	  if (langCode.equals("en_US"))
-                          setText("English (US)");
-            }
+            
+            Locale locale = new Locale(lang,country);
+            setText(locale.getDisplayLanguage() + " (" + locale.getCountry() + ")");       
             
             if (isSelected) {
                 setForeground(list.getSelectionForeground());
@@ -69,16 +67,25 @@ import java.util.TreeMap;
 
             if (!icons.containsKey(langCode))
             {
-                ImageIcon icon;
-                icon = new ImageIcon(this.getClass().getResource("/icons/ico_" + langCode + ".png"));
-                icons.put(langCode, icon);
-                icon = new ImageIcon(GrayFilter.createDisabledImage(icon.getImage()));
-                grayIcons.put(langCode, icon);
+            	ImageIcon icon;
+            	URL url = this.getClass().getResource("/icons/ico_" + langCode + ".png");
+            	if (url != null) {
+            		icon = new ImageIcon(url);
+            	}
+            	else {
+            		icon = new ImageIcon(this.getClass().getResource("/icons/ico_" + "NOFLAG.png"));
+            	}
+            	icons.put(langCode, icon);
+            	icon = new ImageIcon(GrayFilter.createDisabledImage(icon.getImage()));
+            	grayIcons.put(langCode, icon);	                
             }
-            if (isSelected || index == -1)
+            
+            if (isSelected || index == -1) {
                 setIcon((ImageIcon) icons.get(langCode));
-            else
+            }
+            else {
                 setIcon((ImageIcon) grayIcons.get(langCode));
+            }
 
             return this;
         }

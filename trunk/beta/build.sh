@@ -137,9 +137,12 @@ install_base() {
              mkdir -p $EMAKU_HOME/lib
              mkdir -p $EMAKU_HOME/lib/contrib
              mkdir -p $EMAKU_HOME/lib/emaku
+             mkdir -p $EMAKU_HOME/lib/companies
+             mkdir -p $EMAKU_HOME/lib/lang
              mkdir -p $EMAKU_HOME/bin 
              cp -f $ROOT/lib/contrib/*.jar $EMAKU_HOME/lib/contrib/
              cp -f $ROOT/lib/emaku/*.jar $EMAKU_HOME/lib/emaku/ 
+             cp -f $ROOT/lib/lang/*.xml $EMAKU_HOME/lib/lang/
              echo "$EMAKU_HOME" > $ROOT/install.log
 }
 
