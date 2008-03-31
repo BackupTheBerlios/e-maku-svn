@@ -130,13 +130,13 @@ public class QueryEditor extends JDialog implements ActionListener {
 		}
 
 		else if ("save".equals(command)) {
-			DataBaseManager.connect();
+			//DataBaseManager.connect();
 			try {
 				DataBaseManager.setQuery(sqlCode,editor.getText());
 			} catch (SQLException SQLE) {
 				System.out.println(SQLE.getMessage());
 			}
-			DataBaseManager.close();
+			//DataBaseManager.close();
 		}
 	}
 	

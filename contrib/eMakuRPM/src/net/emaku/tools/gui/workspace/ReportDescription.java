@@ -14,18 +14,18 @@ public class ReportDescription extends JTextPane {
 
 	public ReportDescription(String reportCode) {
 		this.reportCode = reportCode;
-		DataBaseManager.connect();
+		//DataBaseManager.connect();
 		description = DataBaseManager.getReportDescription(reportCode);
-		DataBaseManager.close();
+		//DataBaseManager.close();
 		setText(description);
 	}
 	
 	public void updateDescription() {
 		String current = getText();
 		if(!current.equals(description)) {
-			DataBaseManager.connect();
+			//DataBaseManager.connect();
 			DataBaseManager.updateReportDescription(reportCode,current);
-			DataBaseManager.close();
+			//DataBaseManager.close();
 		}
 	}
 

@@ -26,9 +26,9 @@ import org.jdom.output.XMLOutputter;
 import com.Ostermiller.Syntax.*;
 import net.emaku.tools.gui.CopyInterface;
 
-// This is the XML Editor for the workspace
+// This is the XML Editor for the Report workspace
 
-public class TemplateEditor extends JTextPane implements ActionListener, MouseListener, KeyListener {
+public class ReportEditor extends JTextPane implements ActionListener, MouseListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	private final int INIT = -1;
@@ -47,7 +47,7 @@ public class TemplateEditor extends JTextPane implements ActionListener, MouseLi
 	private int lines[] = new int[5]; 
 	private NumbersPanel numberPanel;
 
-	public TemplateEditor(String xml) {
+	public ReportEditor(String xml) {
 		loadReport(xml);
 		document.setHighlightStyle(style);
 		setDocument(document);	
@@ -64,13 +64,6 @@ public class TemplateEditor extends JTextPane implements ActionListener, MouseLi
 		for(int i=0;i<contents.length;i++) {
 			contents[i] = "";
 		}
-		/*
-		settings = "";
-		header = "";
-		columns = "";
-		records = "";
-		footer = "";
-		*/
 	}
 
 	private void loadReport(String xml) {
@@ -94,7 +87,7 @@ public class TemplateEditor extends JTextPane implements ActionListener, MouseLi
 			Element root = doc.getRootElement();
 			XMLOutputter xmlOutputter = new XMLOutputter();
 			xmlOutputter.setFormat(Format.getPrettyFormat());		
-			Iterator i = root.getChildren().iterator();
+			Iterator<Element> i = root.getChildren().iterator();
 
 			while( i.hasNext() ) {
 				Element element = (Element) i.next();
@@ -335,16 +328,6 @@ public class TemplateEditor extends JTextPane implements ActionListener, MouseLi
 			numberPanel.addOneLine(index);
 			lines[currentSection]++;			
 		}
-		/*
-		if(key == 8) {
-		   numberPanel.removeOneLine();
-		   lines[currentSection]--;
-		}
-		if(key == 127) {
-			int position = getCaretPosition();
-			char letter = getText().charAt(position);
-			System.out.println("CHAR: " + letter);
-        }*/
 	}
 
 	public void keyReleased(KeyEvent e) {

@@ -20,16 +20,20 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
 import net.emaku.tools.db.DataBaseManager;
+import net.emaku.tools.structures.FormsData;
 import net.emaku.tools.xml.TemplateManager;
 import net.emaku.tools.gui.workspace.ETabbedPane;
-import net.emaku.tools.gui.workspace.ReportTree.SortableTreeNode;
-import net.emaku.tools.gui.workspace.ButtonBar;
-import net.emaku.tools.gui.workspace.ReportTree;
-import net.emaku.tools.gui.workspace.WorkSpace;
+import net.emaku.tools.gui.workspace.ResourcesTree.SortableTreeNode;
+import net.emaku.tools.gui.workspace.FormButtonBar;
+import net.emaku.tools.gui.workspace.ReportButtonBar;
+import net.emaku.tools.gui.workspace.FormWorkSpace;
+import net.emaku.tools.gui.workspace.ResourcesTree;
+import net.emaku.tools.gui.workspace.ReportWorkSpace;
 
 import org.jdom.Document;
 import org.jdom.JDOMException;
@@ -45,17 +49,24 @@ import net.emaku.tools.jar.JarManager;
 public class ReportManagerGUI extends JFrame {  
 
 	private static final long serialVersionUID = 1L;
-	private ButtonBar buttonBar;
-	private ReportTree tree;
+	public final int REPORT = 0;
+	public final int FORM = 1; 
+	private ReportButtonBar reportButtonBar;
+	private FormButtonBar formButtonBar;
+	private ResourcesTree tree;
 	private JScrollPane jscroll;
 	private File root;
-	public Hashtable<String,WorkSpace> editors;
-	private ETabbedPane jtabbedPane;
+	public Hashtable<String,ReportWorkSpace> reportEditors;
+	public Hashtable<String,FormWorkSpace> formEditors;
+	private ETabbedPane reportsTab, formsTab;
 	private Hashtable<String,String> codeQuerys = new Hashtable<String,String>();
 	private static String reportRoot;
 	private String currentCategory;
 	public static String separator = System.getProperty("file.separator");
-	private WorkSpace workspace;
+	private ReportWorkSpace reportWorkSpace;
+	private FormWorkSpace formWorkSpace;
+	JTabbedPane global;
+	
 	private Vector<String> updates = new Vector<String>();
     private static int MAX_WIN_SIZE_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
     private static int MAX_WIN_SIZE_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -63,7 +74,7 @@ public class ReportManagerGUI extends JFrame {
 	public ReportManagerGUI(String reportRoot) {
 		ReportManagerGUI.reportRoot = reportRoot;
 		this.setSize(800,600);
-		this.setTitle("E-Maku Report Manager 1.0");
+		this.setTitle("E-Maku Resources Manager 1.0");
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -83,7 +94,9 @@ public class ReportManagerGUI extends JFrame {
 		JarManager.init();
 		TemplateManager.setFrame(this);
 		
-		this.editors = new Hashtable<String,WorkSpace>();
+		this.reportEditors = new Hashtable<String,ReportWorkSpace>();
+		this.formEditors = new Hashtable<String,FormWorkSpace>();
+		
 		this.getContentPane().add(jsplitpane,BorderLayout.CENTER);
         this.setLocation(
                 (MAX_WIN_SIZE_WIDTH / 2) - this.getWidth() / 2,
@@ -94,8 +107,8 @@ public class ReportManagerGUI extends JFrame {
 	
 	public JScrollPane getPanelList() {
 		jscroll = new JScrollPane();
-		SortableTreeNode rootNode = new SortableTreeNode("eMaku Reports");
-		tree = new ReportTree(this,rootNode);
+		SortableTreeNode rootNode = new SortableTreeNode("eMaku Resources");
+		tree = new ResourcesTree(this,rootNode);
 		jscroll.setViewportView(tree);
 		return jscroll;
 	}
@@ -104,12 +117,15 @@ public class ReportManagerGUI extends JFrame {
 
 		root = new File(path);
 		jscroll = new JScrollPane();
-		SortableTreeNode rootNode = new SortableTreeNode("eMaku Reports");
+		SortableTreeNode rootNode = new SortableTreeNode("eMaku Resources");
     	
-		tree = new ReportTree(this,rootNode);
-        tree.loadRoot(root);
-		jscroll.setViewportView(tree);
-		
+		tree = new ResourcesTree(this,rootNode);
+        tree.loadReports(root);
+        tree.loadForms();
+		tree.expandRow(0);
+		System.gc();
+
+		jscroll.setViewportView(tree);	
 		return jscroll;
 	}
 	
@@ -124,21 +140,42 @@ public class ReportManagerGUI extends JFrame {
 	
 	public JPanel getPanelSource() {
 		JPanel jpanel = new JPanel(new BorderLayout());
-		jtabbedPane = new ETabbedPane(this);
-		jpanel.add(jtabbedPane,BorderLayout.CENTER);
+		reportsTab = new ETabbedPane(this);
+		formsTab = new ETabbedPane(this);
 		
-		JPanel jpsouth	= new JPanel(new BorderLayout());	
-		buttonBar = new ButtonBar(this);
-		jpsouth.add(buttonBar,BorderLayout.EAST);
+		JPanel reportsPanel = new JPanel(new BorderLayout());
+		reportButtonBar = new ReportButtonBar(this);
+		JPanel jpSouth	= new JPanel(new BorderLayout());
+		jpSouth.add(reportButtonBar,BorderLayout.EAST);
+		reportsPanel.add(reportsTab,BorderLayout.CENTER);
+		reportsPanel.add(jpSouth,BorderLayout.SOUTH);
 		
-		jpanel.add(jpsouth,BorderLayout.SOUTH);
+		JPanel formsPanel = new JPanel(new BorderLayout());
+		formButtonBar = new FormButtonBar(this);
+		JPanel tempo	= new JPanel(new BorderLayout());
+		tempo.add(formButtonBar,BorderLayout.EAST);
+		formsPanel.add(formsTab,BorderLayout.CENTER);
+		formsPanel.add(tempo,BorderLayout.SOUTH);		
+
+		global = new JTabbedPane();
+		global.addTab("REPORTS",reportsPanel);
+		global.addTab("FORMS",formsPanel);
 		
+		jpanel.add(global,BorderLayout.CENTER);
+				
 		return jpanel;
 	}
 	
-	public void removeTabFromHash(Object key) {
-		System.out.println("Removing report " + key);
-	    editors.remove(key);
+	public void setActiveResource(int resource) {
+		global.setSelectedIndex(resource);
+	}
+
+	public void removeObjectTabFromHash(int resource,Object key) {
+		if (resource == REPORT) {
+			reportEditors.remove(key);
+		} else {
+			formEditors.remove(key);			
+		}
 	}	  
 	
 	public void exit() {
@@ -146,13 +183,13 @@ public class ReportManagerGUI extends JFrame {
 		String message = "Do you want to exit?";
 		int op = JOptionPane.showConfirmDialog(this,message,"Exit",paneOption);
 		if (op == JOptionPane.YES_OPTION) {
+			DataBaseManager.close();
 			System.exit(0);
 		}
 	}
 
 	public String loadXML(String path) {
 		path = root.getAbsolutePath() + path;
-		System.out.println("PATH from loadXML: " + path);
 		String str = "";
 		try {
 			File file = new File(path);
@@ -192,7 +229,7 @@ public class ReportManagerGUI extends JFrame {
 	public void loadNewReport(String reportCode, TreeNode treeNode) {
 
 		String xmlTemplate = ""; 
-		System.out.println("New report: " + reportCode);
+		//System.out.println("New report: " + reportCode);
 		String sqlCode = reportCode.substring(reportCode.length()-3,reportCode.length());
 		try {
 			String prefix = "CRE";
@@ -225,24 +262,22 @@ public class ReportManagerGUI extends JFrame {
 		setDatabaseRecords(sqlCode,reportCode);
 		tree.addNewReport(reportCode,treeNode);
 		String reportPath = separator+currentCategory+separator+reportCode;
-		workspace = new WorkSpace(reportCode,xmlTemplate);
-		jtabbedPane.addTab(reportPath,workspace);
-		editors.put(reportPath,workspace);	
-		jtabbedPane.setSelectedIndex(jtabbedPane.getTabCount()-1); 
+		reportWorkSpace = new ReportWorkSpace(this,reportCode,xmlTemplate);
+		reportsTab.addTab(reportPath,reportWorkSpace);
+		reportEditors.put(reportPath,reportWorkSpace);	
+		reportsTab.setSelectedIndex(reportsTab.getTabCount()-1); 
 
-		if (jtabbedPane.getTabCount() == 1) {
-			setButtonsState(true);
+		if (reportsTab.getTabCount() == 1) {
+			setReportButtonsState(REPORT,true);
 		}
 
 		updateGUI();
-		jtabbedPane.setSelectedIndex(jtabbedPane.getTabCount()-1);		
-		System.out.println("*** Saving new report...");
+		reportsTab.setSelectedIndex(reportsTab.getTabCount()-1);		
 		saveReport();
 	}
 	
 	private void setDatabaseRecords(String sqlCode,String reportCode) {
-		DataBaseManager.connect();
-		System.out.println("Updating report record in database...II");
+		//DataBaseManager.connect();
 		String sentenceID = DataBaseManager.getSQLId(sqlCode);
 		if(sentenceID.equals("NO_ID")) {
 			boolean ok = DataBaseManager.insertSQLRecord(sqlCode);
@@ -263,11 +298,10 @@ public class ReportManagerGUI extends JFrame {
     public void saveReport() {
     	try {
     		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-    		String key = jtabbedPane.getTitleAt(jtabbedPane.getSelectedIndex());
+    		String key = reportsTab.getTitleAt(reportsTab.getSelectedIndex());
     		String path = root.getAbsolutePath()+key+".xml";
-    		System.out.println("PATH from saveFile: " + path);
 
-    		WorkSpace ws = editors.get(key);
+    		ReportWorkSpace ws = reportEditors.get(key);
     		String str = ws.getReport();
     		ws.getDescription().updateDescription();
     		
@@ -290,64 +324,102 @@ public class ReportManagerGUI extends JFrame {
     	}
     }	
 	
+    public void saveForm() {
+    	String key = formsTab.getTitleAt(formsTab.getSelectedIndex());
+    	String[] parser = key.split("/");
+    	FormsData data = formWorkSpace.getData();
+    	if(parser[2] != null) {
+    		DataBaseManager.updateForm(parser[2],data);
+    	}
+    }
 	
 	public void loadReport(String category, String reportCode) {
 		String reportPath = "/" + category + "/" + reportCode;	
-		System.out.println("PATH from loadReport: " + reportPath);
 		String report = loadXML(reportPath + ".xml");
 		
 		if(report == null) {
 			return;
 		}
 		
-		workspace = new WorkSpace(reportCode,report);
-		jtabbedPane.addTab(reportPath,workspace);
-		editors.put(reportPath,workspace);	
-		jtabbedPane.setSelectedIndex(jtabbedPane.getTabCount()-1);
+		reportWorkSpace = new ReportWorkSpace(this,reportCode,report);
+		reportsTab.addTab(reportPath,reportWorkSpace);
+		reportEditors.put(reportPath,reportWorkSpace);	
+		reportsTab.setSelectedIndex(reportsTab.getTabCount()-1);
 	}
-		
+
+	public void loadForm(String category, String formCode) {
+		String formPath = "/" + category + "/" + formCode;	
+		FormsData form = DataBaseManager.getForm(formCode);
+
+		formWorkSpace = new FormWorkSpace(formCode,form);
+		formsTab.addTab(formPath,formWorkSpace);
+		formEditors.put(formPath,formWorkSpace);	
+		formsTab.setSelectedIndex(formsTab.getTabCount()-1);
+	}
+	
 	public void updateGUI() {
 		tree.updateUI();
-		jtabbedPane.updateUI();		
+		reportsTab.updateUI();		
 	}	
 	
-	public boolean containsReport(String path) {
-		return editors.containsKey(path);
+	public boolean containsObject(int resource, String path) {
+		if (resource == REPORT) {
+			return reportEditors.containsKey(path);
+		} else {
+			return formEditors.containsKey(path);
+		}
 	} 
-	
-	public void addTab() {
-		jtabbedPane.plusTab();
+
+	public void addObjectTab(int resource) {
+		if (resource == REPORT) {
+			reportsTab.plusTab();
+		} else {
+			formsTab.plusTab();
+		}
 	}
 	
-	public int tabCount() {
-		return jtabbedPane.getTabCount();
+	public int objectTabCount(int resource) {
+		if (resource == REPORT) {
+			return reportsTab.getTabCount();
+		} else {
+			return formsTab.getTabCount();
+		}
 	}
 	
-	public String getTabTitle(int i) {
-		return jtabbedPane.getTitleAt(i);
+	public String getObjectTabTitle(int resource,int index) {
+		if (resource == REPORT) {
+			return reportsTab.getTitleAt(index);
+		} else {
+			return formsTab.getTitleAt(index);
+		}
 	}
 	
-	public void setActiveTab(int i) {
-		jtabbedPane.setSelectedIndex(i);
+	public void setActiveObjectTab(int resource,int index) {
+		if (resource == REPORT) {
+			reportsTab.setSelectedIndex(index);
+		} else {
+			formsTab.setSelectedIndex(index);
+		}
 	}
 	
-	public void closeTab() {
-		System.out.println("COUNT: " + jtabbedPane.getTabCount());
-		if (jtabbedPane.getTabCount() > 0) { 
-			removeTabFromHash(jtabbedPane.getTitleAt(jtabbedPane.getSelectedIndex()));
-			jtabbedPane.removeTabAt(jtabbedPane.getSelectedIndex());
-			if(jtabbedPane.getTabCount() == 0) {
-			   setButtonsState(false);
+	public void closeObjectTab(int resource) {
+		ETabbedPane tab = reportsTab;
+		if (resource == FORM) {
+			tab = formsTab;
+		} 		
+		System.out.println("COUNT: " + tab.getTabCount());
+		if (tab.getTabCount() > 0) { 
+			removeObjectTabFromHash(resource,tab.getTitleAt(tab.getSelectedIndex()));
+			tab.removeTabAt(tab.getSelectedIndex());
+			if(tab.getTabCount() == 0) {
+				setReportButtonsState(resource,false);
 			}	
 		}
 	}
 	
 	public void previewReport() {
-		DataBaseManager.connect();
-		String path = jtabbedPane.getTitleAt(jtabbedPane.getSelectedIndex());
-		System.out.println("PATH from preview: " + path);
-		
-		WorkSpace ws = editors.get(path);
+		String path = reportsTab.getTitleAt(reportsTab.getSelectedIndex());		
+		ReportWorkSpace ws = reportEditors.get(path);
 		String str = ws.getReport();
 		
 		byte[] bytes = null;			
@@ -356,27 +428,39 @@ public class ReportManagerGUI extends JFrame {
 		}
 
 		TemplateManager.showGenericReportPreview(new ByteArrayInputStream(bytes));
-		DataBaseManager.close();
+	}
+	
+	public void previewForm() {
+		// This method execute the xml form and produce a graphical form
 	}
 	
 	public void reloadReport() {
-		String key = jtabbedPane.getTitleAt(jtabbedPane.getSelectedIndex());
+		String key = reportsTab.getTitleAt(reportsTab.getSelectedIndex());
 		String path = reportRoot+key+".xml";
-		System.out.println("PATH from reload: " + path);
-		WorkSpace ws = editors.get(path);
+		ReportWorkSpace ws = reportEditors.get(path);
 		if (ws != null) {
 			String str = loadXML(path);
 			ws.reloadReport(str);
 		} else {
-			System.out.println("Problemas...");
+			System.out.println("Problems at reloadReport()...");
 		}
 	}
 	
+	public void reloadForm() {
+		String key = formsTab.getTitleAt(formsTab.getSelectedIndex());
+    	String[] parser = key.split("/");
+    	if(parser[2] != null) {
+    		FormsData data = DataBaseManager.getForm(parser[2]);
+    		FormWorkSpace ws = formEditors.get(key);
+    		ws.reloadForm(data);
+    	}
+	}
+
 	public void openQuery() {
 		Thread thread = new Thread() {
 			public void run() {
 				
-				String report = jtabbedPane.getTitleAt(jtabbedPane.getSelectedIndex());
+				String report = reportsTab.getTitleAt(reportsTab.getSelectedIndex());
 				String prefix = report.substring(report.length() - 7, report.length()-4);
 				String flag = "SRP";
 				
@@ -384,12 +468,11 @@ public class ReportManagerGUI extends JFrame {
 			    	flag = "CRP";
 			    	
 				String key = report.substring(report.length() - 3, report.length());
-				System.out.println("Query: " + flag + key);
 				
-				DataBaseManager.connect();
+				//DataBaseManager.connect();
 				String sqlCode = flag + key; 
 				String query = DataBaseManager.getQuery(sqlCode);
-				DataBaseManager.close();
+				//DataBaseManager.close();
 				QueryEditor editor = new QueryEditor(true,ReportManagerGUI.this,query,sqlCode);
 				editor.setSize(700,500);
 				editor.setLocationRelativeTo(ReportManagerGUI.this);
@@ -399,10 +482,14 @@ public class ReportManagerGUI extends JFrame {
 		thread.start();	
 	}
 	
-	public void setButtonsState(boolean flag) {
-		buttonBar.setButtonsState(flag);
+	public void setReportButtonsState(int resource, boolean flag) {
+		if (resource == REPORT) {
+			reportButtonBar.setButtonsState(flag);
+		} else {
+			formButtonBar.setButtonsState(flag);
+		}
 	}
-		
+	
 	private void exportModifiedReports() {
 		ExportBar exportBar = new ExportBar(this,updates);
 		exportBar.setSize(480,150);

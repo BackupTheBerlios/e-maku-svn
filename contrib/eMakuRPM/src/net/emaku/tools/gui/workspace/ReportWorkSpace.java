@@ -12,23 +12,26 @@ import javax.swing.JSplitPane;
 import javax.swing.border.Border;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import net.emaku.tools.gui.ReportManagerGUI;
+
 /* This class represents the whole right side of the application GUI including the Report Structure Tree, 
    the Report Description and the Template Editor (XML)
 */
 
-public class WorkSpace extends JSplitPane {
+public class ReportWorkSpace extends JSplitPane {
 
 	private static final long serialVersionUID = 1L;
-	private TemplateEditor editor;
+	private ReportEditor editor;
 	private String reportCode;
 	private ReportDescription reportDescription;
+	//private ReportButtonBar buttonBar;
 		
-	public WorkSpace(String reportCode, String report) {
+	public ReportWorkSpace(ReportManagerGUI gui, String reportCode, String report) {
 		super(JSplitPane.VERTICAL_SPLIT);
 		
 		System.out.println("From workspace: " + reportCode);
 		this.reportCode = reportCode;				
-		editor = new TemplateEditor(report);
+		editor = new ReportEditor(report);
 		NumbersPanel panel = new NumbersPanel(editor.getLinesTotal(0));
 		editor.setNumberPanel(panel);
 		
@@ -65,11 +68,14 @@ public class WorkSpace extends JSplitPane {
 		center.add(panel,BorderLayout.WEST);
 		JScrollPane scroll = new JScrollPane(center);
 		
+		/*JPanel jpsouth	= new JPanel(new BorderLayout());	
+		buttonBar = new ReportButtonBar(gui);
+		jpsouth.add(buttonBar,BorderLayout.EAST);*/
+		
 		JPanel editorPanel = new JPanel();
 		editorPanel.setLayout(new BorderLayout());
-		editorPanel.add(new EditorMenu(editor),BorderLayout.NORTH);
+		//editorPanel.add(new EditorMenu(editor),BorderLayout.NORTH);
 		editorPanel.add(scroll,BorderLayout.CENTER);
-		//editorPanel.add(new SearchPanel(editor),BorderLayout.SOUTH);
 		
 		setBottomComponent(editorPanel);
 	}

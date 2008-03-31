@@ -18,9 +18,9 @@ import org.jdom.input.SAXBuilder;
 public class EditorMenu extends JMenuBar implements ActionListener {
 	
 	private static final long serialVersionUID = 1L;
-	private TemplateEditor editor;
+	private ReportEditor editor;
 
-	public EditorMenu(TemplateEditor gui) {		
+	public EditorMenu(ReportEditor gui) {		
 		this.editor = gui;		
 		loadMenu("editor.menu.xml");
 	}
@@ -30,7 +30,7 @@ public class EditorMenu extends JMenuBar implements ActionListener {
 		try {
 			Document doc = builder.build(menu);
 			Element root = doc.getRootElement();
-			Iterator i = root.getChildren().iterator();
+			Iterator<Element> i = root.getChildren().iterator();
 
 			while( i.hasNext() ) {
 				Element element = (Element) i.next();
@@ -38,7 +38,7 @@ public class EditorMenu extends JMenuBar implements ActionListener {
 				if ("jmenu".equals(name)) {
 					JMenu jmenu = new JMenu(element.getAttributeValue("name"));
 					jmenu.setMnemonic(KeyEvent.VK_E);
-					Iterator j = element.getChildren().iterator();
+					Iterator<Element> j = element.getChildren().iterator();
 					while(j.hasNext()) {
 						Element item = (Element) j.next();
 						if ("item".equals(item.getName())) {

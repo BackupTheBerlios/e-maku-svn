@@ -105,7 +105,7 @@ public class ExportBar extends JDialog implements ActionListener {
 			public void run() {
 				try {
 					setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-					DataBaseManager.connect();
+					//DataBaseManager.connect();
 					setLimits(0, total);
 					addRecord("* Starting export process...");
 					String[] cursor = {"|","/","--","\\"};
@@ -153,7 +153,7 @@ public class ExportBar extends JDialog implements ActionListener {
 		
 		thread = new Thread() {
 			public void run() {
-				DataBaseManager.connect();
+				//DataBaseManager.connect();
 				setLimits(0, max);
 				addRecord("* Starting export process...");
 				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));

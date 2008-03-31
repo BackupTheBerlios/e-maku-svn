@@ -7,11 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
+import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import net.emaku.tools.gui.ExportBar;
+import net.emaku.tools.structures.FormsData;
 
 // This class manages the database connection
 
@@ -93,13 +95,75 @@ public class DataBaseManager {
 			Statement st = connection.createStatement();
 			resultSet = st.executeQuery(query);	
 		} catch (SQLException e) {
-			System.out.println("ERROR: Can not fetch result set at DataBaseManager Class");
+			System.out.println("ERROR: Can not fetch the result set at DataBaseManager Class");
 			frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     		JOptionPane.showMessageDialog(frame,e.getMessage(),"Error in SQL Query!",
     				JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 		return resultSet;
+	}
+	
+	public static Vector<String> getForms() {
+		Vector<String> formCodes = new Vector<String>();
+		String query = "SELECT codigo FROM transacciones ORDER BY codigo";
+		ResultSet rs = null;
+		try {
+			Statement st = connection.createStatement();
+			rs = st.executeQuery(query);
+			while (rs.next()) {
+				String code = rs.getString(1).trim();
+				formCodes.add(code);
+			} 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return formCodes;	
+	}
+
+	public static FormsData getForm(String code) {
+		FormsData form = new FormsData(); 
+		String query = "SELECT nombre,descripcion,driver,args_driver,metodo,args_metodo,perfil FROM " +
+				"transacciones WHERE codigo='" + code + "'";
+		ResultSet rs = null;
+		try {
+			Statement st = connection.createStatement();
+			rs = st.executeQuery(query);
+			if (rs.next()) {
+				String name = rs.getString(1);
+				String description = rs.getString(2);
+				String driver = rs.getString(3);
+				String argsDriver = rs.getString(4);
+				String method = rs.getString(5);
+				String argsMethod = rs.getString(6);
+				String profile = rs.getString(7);
+				form = new FormsData(name,description,driver,argsDriver,method,argsMethod,profile);
+			} 
+		} catch (SQLException e) {
+			System.out.println("ERROR: " + e.getMessage());
+			e.printStackTrace();
+		}
+
+		return form;	
+	}
+	
+	public static boolean updateForm(String sqlCode,FormsData data) {
+		boolean result = false;
+		String query = "UPDATE transacciones SET nombre='" + data.getName() + "',descripcion='" + data.getDescription() 
+		+ "',driver='" + data.getDriver() + "',args_driver='" + data.getDriverArgs() + "',metodo='" + data.getMethod() 
+		+ "',args_metodo='" + data.getMethodArgs() + "',perfil='" + data.getProfile() 
+		+ "' WHERE codigo=\'" + sqlCode +"\'";
+		
+		try {
+			Statement st = connection.createStatement();
+			result = st.execute(query);
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 	
 	public static boolean updateReportDescription(String sqlCode,String text) {

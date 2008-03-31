@@ -25,11 +25,11 @@ public class ETabbedPane extends JTabbedPane implements MouseListener {
 
 	private static final long serialVersionUID = 7423353291901251301L;
     private int tabsTotal;
-    private ReportManagerGUI gui;
+    //private ReportManagerGUI gui;
 	
 	public ETabbedPane(ReportManagerGUI gui) {
 		super();
-		this.gui = gui;
+		//this.gui = gui;
 		addMouseListener(this);
 		tabsTotal = 0;
 	}
@@ -41,22 +41,19 @@ public class ETabbedPane extends JTabbedPane implements MouseListener {
 	public void addTab(String title, Component component, Icon extraIcon) {
 		super.addTab(title, new CloseTabIcon(extraIcon), component);
         tabsTotal++;
-		System.out.println("tabsTotal:" + tabsTotal);
 	}
 
-	public void removeTabAt(int index) {
+	/*
+	public void removeTabAt(int resource,int index) {
 		String key = getTitleAt(index);
-		gui.removeTabFromHash(key);
-		System.out.println("Removing tab "+ key);
+		gui.removeObjectTabFromHash(resource,key);
 		super.removeTabAt(index);
 		tabsTotal--;
-		System.out.println("tabsTotal:" + tabsTotal);
 		if (tabsTotal==0)
-			gui.setButtonsState(false);
-	}
+			gui.setReportButtonsState(resource,false);
+	}*/
 		
 	public void minusTab() {
-		System.out.println("Ejecuntado minustab...");
 		tabsTotal--;
 	}
 
@@ -68,21 +65,17 @@ public class ETabbedPane extends JTabbedPane implements MouseListener {
 
 		int tabNumber = getUI().tabForCoordinate(this, e.getX(), e.getY());
 		
-		if (tabNumber < 0)
+		if (tabNumber < 0) {
 			return;
+		}
 		
-		System.out.println("Cerrando ventana...");
-		Rectangle rect = ((CloseTabIcon) getIconAt(tabNumber)).getBounds();
-		System.out.println("Revisando x/y...");
-		
+		Rectangle rect = ((CloseTabIcon) getIconAt(tabNumber)).getBounds();	
 		if (rect.contains(e.getX(), e.getY())) {
-			System.out.println("Removiendo tab: " + tabNumber);
 			try {
 			      removeTabAt(tabNumber);
 			}catch (Exception ex) {
 				System.out.println("Error capturado... :S");
 			}
-			System.out.println("tabsTotal:" + tabsTotal);
 		}
 	}
 

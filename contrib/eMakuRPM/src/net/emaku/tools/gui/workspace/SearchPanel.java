@@ -20,7 +20,7 @@ public class SearchPanel extends JPanel implements KeyListener, ActionListener {
 	//private TemplateEditor editor;
 	private JButton next;
 
-	public SearchPanel(TemplateEditor editor) {
+	public SearchPanel(ReportEditor editor) {
 		//this.editor = editor;
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		next = new JButton("Search");

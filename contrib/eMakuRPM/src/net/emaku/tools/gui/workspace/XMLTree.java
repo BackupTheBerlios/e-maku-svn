@@ -14,9 +14,9 @@ import javax.swing.tree.TreePath;
 public class XMLTree extends JTree implements MouseListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
-	private TemplateEditor editor;
+	private ReportEditor editor;
 	
-	public XMLTree(DefaultMutableTreeNode root, TemplateEditor editor) {
+	public XMLTree(DefaultMutableTreeNode root, ReportEditor editor) {
 		super(root);
 		this.editor = editor;
 		root.add(new DefaultMutableTreeNode("Settings"));

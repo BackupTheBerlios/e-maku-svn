@@ -10,6 +10,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.util.Collections;
 import java.util.Vector;
 import java.util.Arrays;
 
@@ -22,23 +23,27 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
+import net.emaku.tools.db.DataBaseManager;
 import net.emaku.tools.gui.ReportManagerGUI;
 import net.emaku.tools.gui.ReportDialog;
 
 // This class represents the structure of one report in a JTree
 
-public class ReportTree extends JTree implements ActionListener, MouseListener, KeyListener{
+public class ResourcesTree extends JTree implements ActionListener, MouseListener, KeyListener{
 
 	private static final long serialVersionUID = 1L;
 	private SortableTreeNode rootNode;
+	private SortableTreeNode reportsNode = new SortableTreeNode("Reports");
+	private SortableTreeNode formsNode = new SortableTreeNode("Forms");
     private Vector<String> categories = new Vector<String>();
     private ReportManagerGUI frame;
     private String currentCategory;
     private File directory;
     private String separator = System.getProperty("file.separator");
     private DefaultTreeModel model; 
+    private Vector<String> forms;
     
-	public ReportTree(ReportManagerGUI frame, SortableTreeNode rootNode) {
+	public ResourcesTree(ReportManagerGUI frame, SortableTreeNode rootNode) {
 		super(rootNode);
 		model = new DefaultTreeModel(rootNode);
 		this.frame = frame;
@@ -48,11 +53,11 @@ public class ReportTree extends JTree implements ActionListener, MouseListener, 
 		addKeyListener(this);
 	}
 	
-	public void loadRoot(File directory) {
+	public void loadReports(File directory) {
 		this.directory = directory;
 		System.out.println("* Reports root: " + directory);
 		File [] reports = directory.listFiles();
-		rootNode.removeAllChildren();
+		reportsNode.removeAllChildren();
 		
 		for (File component : reports ) {
 			String categoryName = component.getName();
@@ -92,18 +97,65 @@ public class ReportTree extends JTree implements ActionListener, MouseListener, 
 						}
 					}
 					if (category.getChildCount()>0) {
-						rootNode.add(category);
+						reportsNode.add(category);
 					}
 				}
 			}
 		}
-		if (rootNode.getChildCount()>0) {
+		if (reportsNode.getChildCount()>0) {
 			this.updateUI();
 		}
 		else {
 			JOptionPane.showMessageDialog(frame,"There are no reports availables!");
 		}
-		System.gc();
+		rootNode.add(reportsNode);
+	}
+	
+	public void loadForms() {
+		forms = DataBaseManager.getForms();
+		SortableTreeNode trNode = new SortableTreeNode("TR");
+		SortableTreeNode dgtNode = new SortableTreeNode("DGT");
+		SortableTreeNode group = null;
+		
+		//Iterator<String> iterator;
+		//TreeMap<String,FormsData> treeMap = new TreeMap<String,FormsData>(forms);
+		//iterator = treeMap.keySet().iterator();
+		int before = 0;
+		
+		Collections.sort(forms);
+		int size = forms.size();
+				
+		for(int i=0; i< size; i++) {
+			String code = forms.elementAt(i);
+			int reportNumber = getNumberFromTransaction(code);
+			int floor = before/10;
+			int tenGroups = reportNumber/10;
+			
+			if ((reportNumber % 10 == 0) || (floor != tenGroups)) {
+				if (floor != tenGroups) {
+					tenGroups = tenGroups*10;
+					group = new SortableTreeNode(tenGroups + " - " + (tenGroups+9));									
+				} else {
+					group = new SortableTreeNode(reportNumber + " - " + (reportNumber+9));
+				}
+				if(code.startsWith("TR")) {
+					trNode.add(group);
+				} else if(code.startsWith("DGT")) {
+					dgtNode.add(group);
+				}
+			}
+			
+			SortableTreeNode transaction = new SortableTreeNode(code);
+			if(group != null) {
+				group.add(transaction);
+				before = reportNumber;
+			}			
+		}
+		
+		formsNode.add(trNode);
+		formsNode.add(dgtNode);
+		
+		rootNode.add(formsNode);
 	}
 
 	private int getNumberFromReport(String name) {
@@ -115,6 +167,19 @@ public class ReportTree extends JTree implements ActionListener, MouseListener, 
 			number = number.substring(1,number.length());
 		}
 		int k = Integer.parseInt(number);
+		return k;
+	}
+	
+	private int getNumberFromTransaction(String name) {
+		String number = name.substring(name.length()-5,name.length());
+		while(number.startsWith("0")) {
+			if (number.length()==1) {
+				break;
+			}
+			number = number.substring(1,number.length());
+		}
+		int k = Integer.parseInt(number); 
+		
 		return k;
 	}
 	
@@ -228,30 +293,50 @@ public class ReportTree extends JTree implements ActionListener, MouseListener, 
 			frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			TreePath treepath = getSelectionPath();
 			int num = treepath.getPathCount();	
-			System.out.println("Treepath Num: " + num);
+			//System.out.println("Treepath Num: " + num);
 			
-			if (frame.tabCount() == 0) {
-				frame.setButtonsState(true);
-			}
-			
-			if (num == 4) {
-				String reportPath = separator + treepath.getPathComponent(1)+separator+treepath.getPathComponent(3);
-				if (!frame.containsReport(reportPath)) {
-					String category = treepath.getPathComponent(1).toString();
-					String report = treepath.getPathComponent(3).toString();
-					frame.loadReport(category,report);
-				}
-				int max = frame.tabCount();
-				for (int i = 0 ; i < max ; i++) {
-					String str = frame.getTabTitle(i);
-					if (str.equals(reportPath)) {
-						frame.setActiveTab(i);
-						break;
+			if (num == 5) {
+				String category = treepath.getPathComponent(2).toString();
+				String objectPath = separator + category +separator+treepath.getPathComponent(4);
+				String object = treepath.getPathComponent(4).toString();
+
+				int resource = -1;
+				if(object.startsWith("REP") || object.startsWith("CRE")) {
+					resource = frame.REPORT;
+					if (frame.objectTabCount(frame.REPORT) == 0) {
+						frame.setReportButtonsState(resource,true);
+					}		
+					if (!frame.containsObject(frame.REPORT,objectPath)) {		
+						frame.loadReport(category,object);
 					}
-				} 
+				}
+				
+				if(object.startsWith("TR") || object.startsWith("DGT")) {
+					resource = frame.FORM;
+					if (frame.objectTabCount(frame.FORM) == 0) {
+						frame.setReportButtonsState(resource,true);
+					}		
+					if (!frame.containsObject(frame.FORM, objectPath)) {		
+						frame.loadForm(category,object);
+					}
+				}
+
+				frame.setActiveResource(resource);
+				activeTab(objectPath,resource);
 			}
 			frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		} 
+	}
+
+	private void activeTab(String objectPath, int resource) {
+		int max = frame.objectTabCount(resource);
+		for (int i = 0 ; i < max ; i++) {
+			String str = frame.getObjectTabTitle(resource,i);
+			if (str.equals(objectPath)) {
+				frame.setActiveObjectTab(resource,i);
+				break;
+			}
+		} 				
 	}
 
 	public void mouseEntered(MouseEvent arg0) {
@@ -330,13 +415,13 @@ public class ReportTree extends JTree implements ActionListener, MouseListener, 
 				String path = directory.getAbsolutePath()+separator+currentCategory+separator+reportCode+".xml";
 				System.out.println("PATH from keyPressed: " + path);
 
-				if (!frame.containsReport(path)) {
+				if (!frame.containsObject(frame.REPORT,path)) {
 					frame.loadReport(currentCategory,reportCode);
-					frame.addTab();
-					System.out.println("Total de Tabs: " + frame.tabCount());
+					frame.addObjectTab(frame.REPORT);
+					System.out.println("Total de Tabs: " + frame.objectTabCount(frame.REPORT));
 
-					if(frame.tabCount()==1)
-						frame.setButtonsState(true);	
+					if(frame.objectTabCount(frame.REPORT)==1)
+						frame.setReportButtonsState(frame.REPORT,true);	
 				} 
 				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			}
@@ -373,7 +458,6 @@ public class ReportTree extends JTree implements ActionListener, MouseListener, 
 			dialog.setVisible(true);
 
 			String reportCode = dialog.getReportName();				
-			System.out.println("Proof: " + reportCode);
 			if (reportCode == null) {
 				return;
 			}
@@ -471,6 +555,8 @@ public class ReportTree extends JTree implements ActionListener, MouseListener, 
 			return 1;
 		}
 	}
+	
+
 
 }
 
