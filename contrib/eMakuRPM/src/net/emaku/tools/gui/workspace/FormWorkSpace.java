@@ -143,7 +143,7 @@ public class FormWorkSpace extends JSplitPane implements ActionListener {
 	}
 	
 	private void openExternalZoom() {
-		externalFrame = new JFrame(formCode);
+		externalFrame = new JFrame(formCode + " - " + data.getName());
 	    int height = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
         int width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         externalFrame.setSize(new Dimension(width,height));
