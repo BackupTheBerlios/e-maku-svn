@@ -28,6 +28,7 @@ public class ExternalButtonBar extends JPanel implements ActionListener {
 		jbuttonPreview.setActionCommand("preview");
 		jbuttonPreview.setMnemonic(KeyEvent.VK_P);
 		jbuttonPreview.addActionListener(this);
+		jbuttonPreview.setEnabled(false);
 
 		jbuttonReload 	= new JButton("Reload");
 		jbuttonReload.setActionCommand("reload");
@@ -62,15 +63,15 @@ public class ExternalButtonBar extends JPanel implements ActionListener {
 		if ("close".equals(action)) {
 			gui.closeZoom();
 		}
+		if ("save".equals(action)) {
+            gui.saveForm();
+		}
+		if ("reload".equals(action)) {
+			gui.reloadForm();
+		}
 		/*
 		if ("preview".equals(action)) {
 			gui.previewForm();
-		} else if ("reload".equals(action)) {
-			gui.reloadForm();
-		} else if ("save".equals(action)) {
-            gui.saveForm();
-		} else if ("close".equals(action)) {
-			gui.closeObjectTab(gui.FORM);
 		}*/
 	}
 }

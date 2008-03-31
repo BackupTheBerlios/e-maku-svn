@@ -11,8 +11,6 @@ public class Run {
 	
 	public static void main(String[] args) {
 		try {
-			System.out.println("* Starting eMaku Report Manager...");
-			
 			// Getting the eMaku RPM home variable from environment
 			root = System.getenv("RPM_HOME");
 			checkEnvironment(root);

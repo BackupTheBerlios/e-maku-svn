@@ -28,7 +28,6 @@ public class DataBaseManager {
 	
 	public static void connect() {
 		try {
-			System.out.println("* Loading database connection...");
 			Class.forName(properties.getProperty("driver"));
 			connection = DriverManager.getConnection(
 					properties.getProperty("url"),
@@ -148,6 +147,24 @@ public class DataBaseManager {
 		return form;	
 	}
 	
+	public static String getProfile(String code) {
+		String profile = ""; 
+		String query = "SELECT perfil FROM transacciones WHERE codigo='" + code + "'";
+		ResultSet rs = null;
+		try {
+			Statement st = connection.createStatement();
+			rs = st.executeQuery(query);
+			if (rs.next()) {
+				profile = rs.getString(1);
+			} 
+		} catch (SQLException e) {
+			System.out.println("ERROR: " + e.getMessage());
+			e.printStackTrace();
+		}
+
+		return profile;	
+	}
+	
 	public static boolean updateForm(String sqlCode,FormsData data) {
 		boolean result = false;
 		String query = "UPDATE transacciones SET nombre='" + data.getName() + "',descripcion='" + data.getDescription() 
@@ -165,11 +182,26 @@ public class DataBaseManager {
 		
 		return result;
 	}
+
+	public static boolean updateProfile(String sqlCode,String xml) {
+		boolean result = false;
+		String query = "UPDATE transacciones SET perfil='" + xml 
+		+ "' WHERE codigo=\'" + sqlCode +"\'";
+		
+		try {
+			Statement st = connection.createStatement();
+			result = st.execute(query);
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
 	
 	public static boolean updateReportDescription(String sqlCode,String text) {
 		boolean result = false;
 		String query = "UPDATE reportes SET descripcion='" + text + "' WHERE codigo=\'" + sqlCode +"\'";
-		System.out.println("Q: " + query);
 		try {
 			Statement st = connection.createStatement();
 			result = st.execute(query);
@@ -184,7 +216,6 @@ public class DataBaseManager {
 	public static boolean insertSQLRecord(String sqlCode) {
 		boolean result = false;
 		String query = "INSERT INTO sentencia_sql (codigo,nombre,descripcion,sentencia) VALUES ('"+sqlCode+"','','','')";
-		System.out.println("Q: " + query);
 		try {
 			Statement st = connection.createStatement();
 			result = st.execute(query);
@@ -199,7 +230,6 @@ public class DataBaseManager {
 		boolean result = false;
 		String query = "INSERT INTO reportes (id_reporte,codigo,nombre,descripcion,id_sentencia_sql,plantilla) " +
 				"VALUES ((SELECT max(id_reporte)+1 FROM reportes),'"+reportCode+"','','',"+sqlId+",'')";
-		System.out.println("Q: " + query);
 		try {
 			Statement st = connection.createStatement();
 			result = st.execute(query);
@@ -212,7 +242,6 @@ public class DataBaseManager {
 	
 	public static String getReportDescription(String reportCode) {
 		String sql = "SELECT descripcion FROM reportes WHERE codigo=\'"+reportCode+"\'";
-		System.out.println("Q: " + sql);
 		String description = "";
 		try {
 			Statement st = connection.createStatement();
@@ -230,7 +259,6 @@ public class DataBaseManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Desc: " + description);
 		
 		return description;
 	}
@@ -238,7 +266,6 @@ public class DataBaseManager {
 	public static boolean existsRecord(String reportCode) {
 		boolean flag = true;
 		String sql = "SELECT id_reporte FROM reportes WHERE codigo=\'"+reportCode+"\'";
-		System.out.println("Q: " + sql);
 		try {
 			Statement st = connection.createStatement();
 			ResultSet resultSet = st.executeQuery(sql);
@@ -256,7 +283,6 @@ public class DataBaseManager {
 	
 	public static String getSQLId(String sqlCode) {
 		String sql = "SELECT id_sentencia_sql FROM sentencia_sql WHERE codigo='" + sqlCode + "'";
-		System.out.println("Q: " + sql);
 		String id = "";
 		try {
 			Statement st = connection.createStatement();
@@ -270,9 +296,7 @@ public class DataBaseManager {
 			resultSet.close();	
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-		System.out.println("SQL Id: " + id);
-		
+		}	
 		return id;
 	}
 	

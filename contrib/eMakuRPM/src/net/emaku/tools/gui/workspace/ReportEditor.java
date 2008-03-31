@@ -82,7 +82,6 @@ public class ReportEditor extends JTextPane implements ActionListener, MouseList
 		
 		try {
 			SAXBuilder builder = new SAXBuilder(false);
-			//System.out.println("XML: " + xml);
 			Document doc = builder.build(new StringReader(xml));
 			Element root = doc.getRootElement();
 			XMLOutputter xmlOutputter = new XMLOutputter();
@@ -123,7 +122,6 @@ public class ReportEditor extends JTextPane implements ActionListener, MouseList
 	}
 	
 	public void setSection(int section) {
-		System.out.println("SECTION: " + section);
 		lastSection = currentSection;
 		updateSection(lastSection);
 

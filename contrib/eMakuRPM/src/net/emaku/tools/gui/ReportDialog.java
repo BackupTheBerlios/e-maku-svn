@@ -26,7 +26,7 @@ public class ReportDialog extends JDialog  implements ActionListener {
 	private JTextField jtextReportName;
 	private HashMap<String,String> reportNames = new HashMap<String,String>();
 	
-	public ReportDialog(JFrame parent, Vector categories, String currentCategory) {
+	public ReportDialog(JFrame parent, Vector<String> categories, String currentCategory) {
 	  
 	  super(parent,true);
 	  this.currentCategory = currentCategory;
@@ -138,7 +138,6 @@ public class ReportDialog extends JDialog  implements ActionListener {
 		if ("accept".equals(action)) {
 			reportName = jtextReportName.getText();
             currentCategory = (String)categoriesCombo.getSelectedItem();
-            System.out.println("R: " + reportName);
             
             if (!isAValidFormat(reportName)) {
           	  JOptionPane.showMessageDialog(this,"The report name has not a valid format.", 
@@ -152,8 +151,7 @@ public class ReportDialog extends JDialog  implements ActionListener {
 	  						"ERROR!", JOptionPane.ERROR_MESSAGE);	
             	return;
             }
-            
-            
+                        
           	setVisible(false);
 		} 
 		else if("cancel".equals(action)) {

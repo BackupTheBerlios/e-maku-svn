@@ -23,7 +23,7 @@ import javax.swing.text.StyledDocument;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-import net.emaku.tools.db.DataBaseManager;
+//import net.emaku.tools.db.DataBaseManager;
 import net.emaku.tools.jar.JarManager;
 import net.emaku.tools.xml.TemplateManager;
 
@@ -105,7 +105,6 @@ public class ExportBar extends JDialog implements ActionListener {
 			public void run() {
 				try {
 					setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-					//DataBaseManager.connect();
 					setLimits(0, total);
 					addRecord("* Starting export process...");
 					String[] cursor = {"|","/","--","\\"};
@@ -139,7 +138,7 @@ public class ExportBar extends JDialog implements ActionListener {
 					}
 					setProcessEnd();
 				} catch(Exception e) {
-					System.out.println("Error procesando hilo");
+					System.out.println("Error processing thread...");
 				}					
 			}
 		};
@@ -153,7 +152,6 @@ public class ExportBar extends JDialog implements ActionListener {
 		
 		thread = new Thread() {
 			public void run() {
-				//DataBaseManager.connect();
 				setLimits(0, max);
 				addRecord("* Starting export process...");
 				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -205,7 +203,7 @@ public class ExportBar extends JDialog implements ActionListener {
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
-			System.out.println("Exception at addRecord");
+			System.out.println("Exception at addRecord method");
 		}
 		
 		int textLength = infoArea.getDocument().getLength();
@@ -230,7 +228,6 @@ public class ExportBar extends JDialog implements ActionListener {
 		if(thread.isAlive()) {
 			error = 2;
 		}
-		//DataBaseManager.close();
 		JarManager.clean();
 		dispose();
 	}

@@ -55,7 +55,6 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 	
 	public void loadReports(File directory) {
 		this.directory = directory;
-		System.out.println("* Reports root: " + directory);
 		File [] reports = directory.listFiles();
 		reportsNode.removeAllChildren();
 		
@@ -64,7 +63,6 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 			if (component.isDirectory() && !categoryName.startsWith(".")) {
 				SortableTreeNode category = new SortableTreeNode(categoryName);
 				categories.add(categoryName);
-				System.out.println("Category: " + categoryName);
 				String[] childs = component.list();
 				Arrays.sort(childs);
 				
@@ -115,11 +113,7 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 		forms = DataBaseManager.getForms();
 		SortableTreeNode trNode = new SortableTreeNode("TR");
 		SortableTreeNode dgtNode = new SortableTreeNode("DGT");
-		SortableTreeNode group = null;
-		
-		//Iterator<String> iterator;
-		//TreeMap<String,FormsData> treeMap = new TreeMap<String,FormsData>(forms);
-		//iterator = treeMap.keySet().iterator();
+		SortableTreeNode group = null;		
 		int before = 0;
 		
 		Collections.sort(forms);
@@ -154,7 +148,6 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 		
 		formsNode.add(trNode);
 		formsNode.add(dgtNode);
-		
 		rootNode.add(formsNode);
 	}
 
@@ -201,7 +194,6 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 		int nodes = initNode.getChildCount();	
 		for (int i=0; i < nodes ; i++) {
 			treeNode = rootNode.getChildAt(i);
-			System.out.println("getCategoryNode: " + treeNode.toString() + " - " + category);
 			if (treeNode.toString().equals(category)) {
 				exist = true;
 				break;
@@ -226,7 +218,6 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 			int internalNodes = treeNode.getChildCount();
 			for (int j=0; j < internalNodes ; j++) {
 				subCategory = treeNode.getChildAt(j);
-				System.out.println("getSubCategoryNode: " + subCategory.toString() + " - " + range);
 				if (subCategory.toString().equals(range)) {
 					flag = true;
 					break;
@@ -250,7 +241,6 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 			for (int i=0; i < nodesValue ; i++) {
 				String leaf = tn.getChildAt(i).toString();
 				if (leaf.equals(reportCode)) {
-					System.out.println("Compare: " + leaf + " - " + reportCode);
 					existValue = true;
 					break;
 				}
@@ -293,11 +283,10 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 			frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			TreePath treepath = getSelectionPath();
 			int num = treepath.getPathCount();	
-			//System.out.println("Treepath Num: " + num);
 			
 			if (num == 5) {
 				String category = treepath.getPathComponent(2).toString();
-				String objectPath = separator + category +separator+treepath.getPathComponent(4);
+				String objectPath = separator + category + separator + treepath.getPathComponent(4);
 				String object = treepath.getPathComponent(4).toString();
 
 				int resource = -1;
@@ -346,9 +335,7 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 	}
 
 	public void mousePressed(MouseEvent arg0) {
-		if ( arg0.getButton() == MouseEvent.BUTTON3 && arg0.isPopupTrigger() ) {
-			System.out.println("Objeto selecionado: " + arg0.getComponent().toString());
-	        
+		if ( arg0.getButton() == MouseEvent.BUTTON3 && arg0.isPopupTrigger() ) {      
 	        TreePath selPath = getPathForLocation(arg0.getX(), arg0.getY());
 
 	        if (selPath != null) {
@@ -389,7 +376,6 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 		if (key == KeyEvent.VK_ENTER) {
 			TreePath branch = getSelectionPath();
 			int level = branch.getPathCount();
-			System.out.println("LEVEL: " + level);
 
 			switch(level) {
 			case 1:
@@ -412,13 +398,12 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 					return;
 				}
 
-				String path = directory.getAbsolutePath()+separator+currentCategory+separator+reportCode+".xml";
-				System.out.println("PATH from keyPressed: " + path);
+				String path = directory.getAbsolutePath() + separator + currentCategory 
+								+ separator + reportCode+".xml";
 
 				if (!frame.containsObject(frame.REPORT,path)) {
 					frame.loadReport(currentCategory,reportCode);
 					frame.addObjectTab(frame.REPORT);
-					System.out.println("Total de Tabs: " + frame.objectTabCount(frame.REPORT));
 
 					if(frame.objectTabCount(frame.REPORT)==1)
 						frame.setReportButtonsState(frame.REPORT,true);	
@@ -444,7 +429,7 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 			createNewReport();
 		}
 		else if ("newCategory".equals(action)) {
-			System.out.println("Metodo no implementado");
+			System.out.println("Method is missing");
 		}	
 	}
 
@@ -491,7 +476,7 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 		return rootNode;
 	}
 	
-	public static class SortableTreeNode extends DefaultMutableTreeNode implements Comparable {
+	public static class SortableTreeNode extends DefaultMutableTreeNode implements Comparable<SortableTreeNode> {
 
 		private static final long serialVersionUID = 1L;
 
@@ -516,8 +501,7 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 		}
 
 		public void remove() {
-			@SuppressWarnings("unused")
-			SortableTreeNode parent = (SortableTreeNode)getParent();
+			//SortableTreeNode parent = (SortableTreeNode)getParent();
 			super.removeFromParent();
 		}
 
@@ -536,8 +520,8 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 				}
 			}
 		}
-
-		public int compareTo(Object object) {
+		
+		public int compareTo(SortableTreeNode object) throws ClassCastException {
 			String first = this.toString();
 			String second = object.toString();
             char c = first.charAt(0);
@@ -554,9 +538,24 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
             }
 			return 1;
 		}
+/*
+		public int compareTo(Object object) throws ClassCastException {
+			String first = this.toString();
+			String second = object.toString();
+            char c = first.charAt(0);
+            if(Character.isDigit(c)) {
+    			String minor = first.substring(0,first.indexOf("-")).trim();
+    			String max = second.substring(0,second.indexOf("-")).trim();
+    			if(Integer.parseInt(minor) > Integer.parseInt(max)) {
+                   return 0;
+    			}
+            } else {
+            	if (first.compareTo(second) == 1) {
+            		return 0;
+            	}	
+            }
+			return 1;
+		}
+*/
 	}
-	
-
-
 }
-

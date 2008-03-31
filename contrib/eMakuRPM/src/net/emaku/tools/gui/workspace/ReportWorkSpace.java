@@ -24,12 +24,10 @@ public class ReportWorkSpace extends JSplitPane {
 	private ReportEditor editor;
 	private String reportCode;
 	private ReportDescription reportDescription;
-	//private ReportButtonBar buttonBar;
 		
 	public ReportWorkSpace(ReportManagerGUI gui, String reportCode, String report) {
 		super(JSplitPane.VERTICAL_SPLIT);
 		
-		System.out.println("From workspace: " + reportCode);
 		this.reportCode = reportCode;				
 		editor = new ReportEditor(report);
 		NumbersPanel panel = new NumbersPanel(editor.getLinesTotal(0));
@@ -37,8 +35,7 @@ public class ReportWorkSpace extends JSplitPane {
 		
 		setDividerLocation(130);
 		JPanel north = new JPanel();
-		north.setLayout(new BorderLayout());
-		
+		north.setLayout(new BorderLayout());		
 		Border etched1 = BorderFactory.createEtchedBorder();
 		
 		JPanel treePanel = new JPanel();
@@ -67,21 +64,15 @@ public class ReportWorkSpace extends JSplitPane {
 		center.add(editor,BorderLayout.CENTER);
 		center.add(panel,BorderLayout.WEST);
 		JScrollPane scroll = new JScrollPane(center);
-		
-		/*JPanel jpsouth	= new JPanel(new BorderLayout());	
-		buttonBar = new ReportButtonBar(gui);
-		jpsouth.add(buttonBar,BorderLayout.EAST);*/
-		
+				
 		JPanel editorPanel = new JPanel();
 		editorPanel.setLayout(new BorderLayout());
-		//editorPanel.add(new EditorMenu(editor),BorderLayout.NORTH);
 		editorPanel.add(scroll,BorderLayout.CENTER);
 		
 		setBottomComponent(editorPanel);
 	}
 	
 	public String getReport() {
-		System.out.println("Capturing: " + reportCode);
 		return editor.getReportText();
 	}
 	

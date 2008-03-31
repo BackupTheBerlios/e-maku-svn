@@ -65,7 +65,7 @@ public class ReportManagerGUI extends JFrame {
 	public static String separator = System.getProperty("file.separator");
 	private ReportWorkSpace reportWorkSpace;
 	private FormWorkSpace formWorkSpace;
-	JTabbedPane global;
+	private JTabbedPane global;
 	
 	private Vector<String> updates = new Vector<String>();
     private static int MAX_WIN_SIZE_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
@@ -140,8 +140,8 @@ public class ReportManagerGUI extends JFrame {
 	
 	public JPanel getPanelSource() {
 		JPanel jpanel = new JPanel(new BorderLayout());
-		reportsTab = new ETabbedPane(this);
-		formsTab = new ETabbedPane(this);
+		reportsTab = new ETabbedPane(this,REPORT);
+		formsTab = new ETabbedPane(this,FORM);
 		
 		JPanel reportsPanel = new JPanel(new BorderLayout());
 		reportButtonBar = new ReportButtonBar(this);
@@ -187,7 +187,11 @@ public class ReportManagerGUI extends JFrame {
 			System.exit(0);
 		}
 	}
-
+	
+	public void conf() {
+		new SettingsDialog(this);
+	}
+	
 	public String loadXML(String path) {
 		path = root.getAbsolutePath() + path;
 		String str = "";
@@ -229,7 +233,6 @@ public class ReportManagerGUI extends JFrame {
 	public void loadNewReport(String reportCode, TreeNode treeNode) {
 
 		String xmlTemplate = ""; 
-		//System.out.println("New report: " + reportCode);
 		String sqlCode = reportCode.substring(reportCode.length()-3,reportCode.length());
 		try {
 			String prefix = "CRE";
@@ -258,7 +261,6 @@ public class ReportManagerGUI extends JFrame {
 		} catch(IOException ex) {
 			ex.printStackTrace();
 		}
-		System.out.println("Updating report record in database...I");
 		setDatabaseRecords(sqlCode,reportCode);
 		tree.addNewReport(reportCode,treeNode);
 		String reportPath = separator+currentCategory+separator+reportCode;
@@ -277,7 +279,6 @@ public class ReportManagerGUI extends JFrame {
 	}
 	
 	private void setDatabaseRecords(String sqlCode,String reportCode) {
-		//DataBaseManager.connect();
 		String sentenceID = DataBaseManager.getSQLId(sqlCode);
 		if(sentenceID.equals("NO_ID")) {
 			boolean ok = DataBaseManager.insertSQLRecord(sqlCode);
@@ -407,7 +408,6 @@ public class ReportManagerGUI extends JFrame {
 		if (resource == FORM) {
 			tab = formsTab;
 		} 		
-		System.out.println("COUNT: " + tab.getTabCount());
 		if (tab.getTabCount() > 0) { 
 			removeObjectTabFromHash(resource,tab.getTitleAt(tab.getSelectedIndex()));
 			tab.removeTabAt(tab.getSelectedIndex());
@@ -458,21 +458,16 @@ public class ReportManagerGUI extends JFrame {
 
 	public void openQuery() {
 		Thread thread = new Thread() {
-			public void run() {
-				
+			public void run() {			
 				String report = reportsTab.getTitleAt(reportsTab.getSelectedIndex());
 				String prefix = report.substring(report.length() - 7, report.length()-4);
 				String flag = "SRP";
-				
 			    if (prefix.equals("CRE"))
 			    	flag = "CRP";
 			    	
-				String key = report.substring(report.length() - 3, report.length());
-				
-				//DataBaseManager.connect();
+				String key = report.substring(report.length() - 3, report.length());				
 				String sqlCode = flag + key; 
 				String query = DataBaseManager.getQuery(sqlCode);
-				//DataBaseManager.close();
 				QueryEditor editor = new QueryEditor(true,ReportManagerGUI.this,query,sqlCode);
 				editor.setSize(700,500);
 				editor.setLocationRelativeTo(ReportManagerGUI.this);
@@ -523,8 +518,6 @@ public class ReportManagerGUI extends JFrame {
 	}
 	
 	public void updateReportsJar() {
-		//System.out.println("Jar Size: " + JarManager.getJarSize() + " - Tree Size: " + getReportCount());
-
 		if (JarManager.getJarSize() != getReportCount()) {
 			int paneOption = JOptionPane.YES_NO_OPTION;
 			String message = "The file reports.jar does not contain all the reports designed." + 

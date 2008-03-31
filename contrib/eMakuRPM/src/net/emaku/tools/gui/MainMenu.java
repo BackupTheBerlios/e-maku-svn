@@ -31,14 +31,14 @@ public class MainMenu extends JMenuBar implements ActionListener {
 		try {
 			Document doc = builder.build(menu);
 			Element root = doc.getRootElement();
-			Iterator i = root.getChildren().iterator();
+			Iterator<Element> i = root.getChildren().iterator();
 
 			while( i.hasNext() ) {
 				Element element = (Element) i.next();
 				String name = element.getName();
 				if ("jmenu".equals(name)) {
 					JMenu jmenu = new JMenu(element.getAttributeValue("name"));
-					Iterator j = element.getChildren().iterator();
+					Iterator<Element> j = element.getChildren().iterator();
 					while(j.hasNext()) {
 						Element item = (Element) j.next();
 						if ("item".equals(item.getName())) {
@@ -71,7 +71,10 @@ public class MainMenu extends JMenuBar implements ActionListener {
 		
 		if ("exit".equals(action)) {
 			gui.exit();
-		} else if ("export".equals(action)) {
+		} else if ("conf".equals(action)) {
+			gui.conf();
+		} 
+		else if ("export".equals(action)) {
 			gui.exportAllReports();
 		}  else if ("clean_jar".equals(action)) {
 			gui.resetJarFile();

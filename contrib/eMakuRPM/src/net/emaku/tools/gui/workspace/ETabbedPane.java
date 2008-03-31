@@ -25,11 +25,13 @@ public class ETabbedPane extends JTabbedPane implements MouseListener {
 
 	private static final long serialVersionUID = 7423353291901251301L;
     private int tabsTotal;
-    //private ReportManagerGUI gui;
+    private ReportManagerGUI gui;
+    private int resource;
 	
-	public ETabbedPane(ReportManagerGUI gui) {
+	public ETabbedPane(ReportManagerGUI gui,int resource) {
 		super();
-		//this.gui = gui;
+		this.gui = gui;
+		this.resource = resource;
 		addMouseListener(this);
 		tabsTotal = 0;
 	}
@@ -43,15 +45,15 @@ public class ETabbedPane extends JTabbedPane implements MouseListener {
         tabsTotal++;
 	}
 
-	/*
 	public void removeTabAt(int resource,int index) {
 		String key = getTitleAt(index);
 		gui.removeObjectTabFromHash(resource,key);
 		super.removeTabAt(index);
 		tabsTotal--;
-		if (tabsTotal==0)
+		if (tabsTotal==0) {
 			gui.setReportButtonsState(resource,false);
-	}*/
+		}
+	}
 		
 	public void minusTab() {
 		tabsTotal--;
@@ -64,7 +66,6 @@ public class ETabbedPane extends JTabbedPane implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 
 		int tabNumber = getUI().tabForCoordinate(this, e.getX(), e.getY());
-		
 		if (tabNumber < 0) {
 			return;
 		}
@@ -72,7 +73,7 @@ public class ETabbedPane extends JTabbedPane implements MouseListener {
 		Rectangle rect = ((CloseTabIcon) getIconAt(tabNumber)).getBounds();	
 		if (rect.contains(e.getX(), e.getY())) {
 			try {
-			      removeTabAt(tabNumber);
+			      removeTabAt(resource,tabNumber);
 			}catch (Exception ex) {
 				System.out.println("Error capturado... :S");
 			}
@@ -99,13 +100,9 @@ public class ETabbedPane extends JTabbedPane implements MouseListener {
  */
 class CloseTabIcon implements Icon {
 	private int x_pos;
-
 	private int y_pos;
-
 	private int width;
-
 	private int height;
-
 	private Icon fileIcon;
 
 	public CloseTabIcon(Icon fileIcon) {

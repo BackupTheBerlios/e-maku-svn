@@ -69,13 +69,8 @@ public class TemplateManager {
 			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
 			bytesReport = new ByteArrayOutputStream();
 			xout.output(rootOUT.getDocument(),byteArray);
-			//xout.output(rootOUT.getDocument(),new FileOutputStream(file_out+".xml"));
-			System.out.println("* Compiling report ..");
-			JasperDesign jasperDesign =  JRXmlLoader.load(new ByteArrayInputStream(byteArray.toByteArray()));
-			
-			System.out.println("* JRXmlLoader passed ....");
+			JasperDesign jasperDesign =  JRXmlLoader.load(new ByteArrayInputStream(byteArray.toByteArray()));			
 			JasperCompileManager.compileReportToStream(jasperDesign,bytesReport);
-			System.out.println("* The report has compiled successfully");
 
 			JRResultSetDataSource jrRS = new JRResultSetDataSource(DataBaseManager.getResultSet(frame,sqlCode));
 			JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
@@ -115,13 +110,8 @@ public class TemplateManager {
 			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
 			bytesReport = new ByteArrayOutputStream();
 			xout.output(rootOUT.getDocument(),byteArray);
-			//xout.output(rootOUT.getDocument(),new FileOutputStream(file_out+".xml"));
-			System.out.println("* Compiling report ..");
-			JasperDesign jasperDesign =  JRXmlLoader.load(new ByteArrayInputStream(byteArray.toByteArray()));
-			
-			System.out.println("* JRXmlLoader passed ....");
+			JasperDesign jasperDesign =  JRXmlLoader.load(new ByteArrayInputStream(byteArray.toByteArray()));			
 			JasperCompileManager.compileReportToStream(jasperDesign,bytesReport);
-			System.out.println("* The report has compiled");
 			
 			if (preview) {
 				JRResultSetDataSource jrRS = new JRResultSetDataSource(DataBaseManager.getResultSet(frame,sqlCode));
@@ -175,7 +165,6 @@ public class TemplateManager {
 				}
 			}
 			
-			System.out.println("SENTENCE: " + sentence);
 			frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			ResultSet result = DataBaseManager.getResultSet(frame,sentence);
 			if (result != null) {
@@ -302,23 +291,20 @@ public class TemplateManager {
 			file_out =  rootIN.getChildText("code");
 			sqlCode =  rootIN.getChildText("sqlCode");
 			name =  rootIN.getChildText("name");
-			System.out.println("* Report code: " +file_out + " Query code: " + sqlCode);
 			Element fieldSet = rootIN.getChild("field_set");
 			
 			xout = new XMLOutputter();
 			xout.setFormat(Format.getPrettyFormat());
 			
-			List listFields = fieldSet.getChildren();
-			Iterator it = listFields.iterator();
+			List<Element> listFields = fieldSet.getChildren();
+			Iterator<Element> it = listFields.iterator();
 			int i=0;
-			//System.out.println("* Report Fields");
-			//System.out.println("* =====================");
-			Iterator itStyle = rootOUT.getChildren("style").iterator();
+			Iterator<Element> itStyle = rootOUT.getChildren("style").iterator();
 			while (itStyle.hasNext()) {
 				itStyle.next();
 				i++;
 			}
-			Iterator itParams = rootOUT.getChildren("parameter").iterator();
+			Iterator<Element> itParams = rootOUT.getChildren("parameter").iterator();
 			while (itParams.hasNext()) {
 				itParams.next();
 				i++;
@@ -327,15 +313,12 @@ public class TemplateManager {
 			while (it.hasNext()) {
 				Element element = (Element) it.next();
 				rootOUT.addContent(i,(Element) element.clone());
-				//System.out.println("* - " +element.getAttributeValue("name"));
 				i++;
 			}
-			//System.out.println("* =====================");
 			Element title = rootIN.getChild("title_set").getChild("text");
 			rootOUT.getChild("pageHeader").getChild("band").getChild("staticText").addContent((Element)title.clone());
-			System.out.println("* Report Title: " + title.getText());
 			
-			List listColumn = rootIN.getChild("column_header_set").getChildren(); 
+			List<Element> listColumn = rootIN.getChild("column_header_set").getChildren(); 
 			it = listColumn.iterator();
 			Element columnHeader = rootOUT.getChild("columnHeader");
 			while (it.hasNext()) {
@@ -344,7 +327,7 @@ public class TemplateManager {
 			}
 			it = null;
 			it = rootIN.getChild("field_set").getChildren().iterator();
-			Iterator itFields = rootIN.getChild("column_header_set").getChildren().iterator();
+			Iterator<Element> itFields = rootIN.getChild("column_header_set").getChildren().iterator();
 			
 			while (it.hasNext()) {
 				Element element = (Element) it.next();
@@ -363,14 +346,6 @@ public class TemplateManager {
 				textField.addContent(textFieldExpresion);
 				rootOUT.getChild("detail").getChild("band").addContent(textField);
 			}
-			/* it = rootIN.getChild("footer_set").getChildren().iterator();
-			
-			while (it.hasNext()) {
-				Element element = (Element) ((Element) it.next()).clone();
-				rootOUT.getChild("pageFooter").getChild("band").addContent(element);
-			} */
-			
-			System.out.println("* The xml file has check ");
 
 			XMLOutputter out = new XMLOutputter();
 			out.setFormat(Format.getPrettyFormat());
