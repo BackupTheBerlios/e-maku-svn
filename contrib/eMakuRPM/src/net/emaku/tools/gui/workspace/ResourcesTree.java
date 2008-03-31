@@ -111,8 +111,8 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 	
 	public void loadForms() {
 		forms = DataBaseManager.getForms();
-		SortableTreeNode trNode = new SortableTreeNode("TR");
-		SortableTreeNode dgtNode = new SortableTreeNode("DGT");
+		SortableTreeNode trNode = new SortableTreeNode("General");
+		SortableTreeNode dgtNode = new SortableTreeNode("DrugStore");
 		SortableTreeNode group = null;		
 		int before = 0;
 		
