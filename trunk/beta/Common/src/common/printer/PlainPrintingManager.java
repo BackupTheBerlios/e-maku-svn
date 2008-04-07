@@ -239,10 +239,10 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 
 		Iterator it_template = pack_template.getChildren().iterator();
 		Iterator it_transaction = pack_transaction.getChildren().iterator();
-		while(it_template.hasNext() && it_transaction.hasNext()) {
+		while(it_template.hasNext()) {
 			int rowInit = -1;
 			Element el_template = (Element)it_template.next();
-			if (el_template.getName().equals("subpackage")) {
+			if (el_template.getName().equals("subpackage")  && it_transaction.hasNext()) {
 				Attribute attr = el_template.getAttribute("rowInit");
 				
 				Attribute attMaxAcum = el_template.getAttribute("maxRowsAcum");
@@ -330,7 +330,13 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 					}
 				}
 			}
+			else if (el_template.getName().equals("metadata")) {
+				processMetadata(el_template);
+			}
 			else {
+				if (!it_transaction.hasNext()) {
+					break;
+				}
 				Element el_transaction = (Element)it_transaction.next();
 
 				Iterator itAttribs = el_template.getAttributes().iterator();
@@ -374,13 +380,14 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 	private void addValue(String value,HashMap<String,Attribute> attribs) throws DataConversionException {
 		
 		int row = -1; 
-		
+		boolean last = false;
 		try {
 			row=  attribs.get("row").getIntValue();
 		}
 		catch(DataConversionException e) {
 			if (attribs.get("row").getValue().equals("last")) {
 				row=  currentRow;
+				last = true;
 			}
 			else {
 				row= currentRow--;
@@ -398,6 +405,9 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 			int width = attribs.get("width").getIntValue();
 			int height = attribs.get("height").getIntValue();
 			textPrinterBuffer.insertTextArea(value,row,col,width,height,true);
+			if (last) {
+				currentRow +=height; 
+			}
 			passed = true;
 		}
 		else if ("STRING".equals(type)) {
