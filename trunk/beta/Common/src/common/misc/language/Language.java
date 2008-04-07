@@ -6,6 +6,7 @@ import java.util.*;
 import org.jdom.*;
 import org.jdom.input.*;
 
+
 /**
  * Language.java Creado el 17-jun-2005
  * 
@@ -63,9 +64,10 @@ public class Language  {
         try {
             SAXBuilder builder = new SAXBuilder(false);
             if (directory!=null) {
+            	System.out.println("directorio: "+directory + lang + ".xml");
             	loadWords(builder.build(directory + lang + ".xml"));
             } else {
-            	loadWords(builder.build(this.getClass().getResource("/lang/") + lang + ".xml"));
+            		loadWords(builder.build(this.getClass().getResource("/lang/") + lang + ".xml"));
             }
         }
         catch (JDOMException JDOMEe) {

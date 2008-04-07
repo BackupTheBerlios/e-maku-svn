@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -128,9 +129,16 @@ public class ConfigFileHandler extends EmakuParametersStructure {
 			companies = new ArrayList<Element>();
 			builder = new SAXBuilder(false);
 			String path = ClientConstants.CONF + "client.conf";
-			File file = new File(path);
-			doc = builder.build(file);
-			root = doc.getRootElement();
+			System.out.println("path: "+path);
+			if (ClientConstants.WEBSTART) {
+				doc = builder.build(new URL(path));
+				root = doc.getRootElement();
+			}
+			else {
+				File file = new File(path);
+				doc = builder.build(file);
+				root = doc.getRootElement();
+			}
 			List<Element> configList = root.getChildren();
 			Iterator<Element> i = configList.iterator();
 
@@ -189,7 +197,7 @@ public class ConfigFileHandler extends EmakuParametersStructure {
 			lang.loadLanguage(language);
 		}
 		catch (FileNotFoundException FNFEe) {
-
+			FNFEe.printStackTrace();
 			throw new ConfigFileNotLoadException();
 		}
 		catch (JDOMException JDOMEe) {
@@ -197,6 +205,7 @@ public class ConfigFileHandler extends EmakuParametersStructure {
 			throw new ConfigFileNotLoadException();
 		}
 		catch (IOException IOEe) {
+			IOEe.printStackTrace();
 			throw new ConfigFileNotLoadException();
 		}
 	}
@@ -230,7 +239,7 @@ public class ConfigFileHandler extends EmakuParametersStructure {
 		
 		String jarBytes = ClientConstants.COMPANIES + jarFile;
 		File file = new File(jarBytes);
-		if (!file.exists()) {
+		if (!file.exists() && !ClientConstants.WEBSTART) {
 			Splash.hide();
     		JOptionPane.showMessageDialog(new JFrame(),Language.getWord("JAR_ERROR1") 
 			+ " \"" + nameCompany + "\"\n" + Language.getWord("JAR_ERROR2") + " " + ClientConstants.COMPANIES 
@@ -243,7 +252,13 @@ public class ConfigFileHandler extends EmakuParametersStructure {
 			}
 			System.exit(0);
 		} else {
-			String jar = "jar:file:" + jarBytes + "!/";
+			String jar = null;
+			if (ClientConstants.WEBSTART) {
+				jar="jar:" + jarBytes + "!/";
+			}
+			else {
+				jar="jar:file:" + jarBytes + "!/";
+			}
 			jarDirectory = jar+directory;
 			EmakuParametersStructure.setJarDirectoryTemplates(jarDirectory + "/printer-templates");
 			EmakuParametersStructure.addParameter("jarFile",jarFile);

@@ -77,7 +77,7 @@ public class Connection {
         connectionFrame.setResizable(false);
         connectionFrame.setLayout(new BorderLayout());
         
-        JLabel imgLabel = new JLabel(new ImageIcon(connectionFrame.getClass().getResource("/icons/e-maku_splash.png")),JLabel.CENTER);
+        JLabel imgLabel = new JLabel(new ImageIcon(Connection.class.getResource("/icons/e-maku_splash.png")),JLabel.CENTER);
         
         JPanel imgPanel = new JPanel();
         imgPanel.add(imgLabel);

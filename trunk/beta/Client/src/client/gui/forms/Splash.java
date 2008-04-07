@@ -55,7 +55,8 @@ public class Splash {
         
         splashWindow.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         
-        URL url = splashWindow.getClass().getResource("/icons/e-maku_splash.png");
+        URL url = Splash.class.getResource("/icons/e-maku_splash.png");
+        System.out.println("url: "+url);
         ImageIcon icon = new ImageIcon(url);
         int width  = icon.getIconWidth();
         int height = icon.getIconHeight();

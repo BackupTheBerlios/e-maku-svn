@@ -50,7 +50,13 @@ public class Run {
 	public static final Interpreter shellScript = new Interpreter();
 
 	public static void main(String[] args) {
-		
+
+		System.out.println("emaku_home: "+
+					ClientConstants.EMAKU_HOME+
+					" protocolo "+
+					ClientConstants.class.getResource("")+
+					" encogida "+ClientConstants.class.getResource("").toString().substring(0,8));
+			
 		if (ClientConstants.EMAKU_HOME == null) {
 			String locale = getLocale();
 			if (locale.equals("es_CO")) {

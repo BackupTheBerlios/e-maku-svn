@@ -25,18 +25,20 @@ import java.awt.Toolkit;
  */
 public interface ClientConstants {
 
+	public final boolean WEBSTART = ClientConstants.class.getResource("").toString().substring(0,8).equals("jar:http")?true:false;
+	public final String URL = ClientConstants.class.getResource("").getPath().substring(0,ClientConstants.class.getResource("").getPath().length()-35);
 	public final String KeyClient = "client";
-	public final String EMAKU_HOME = System.getenv("EMAKU_HOME");
-	public final String HOME = System.getProperty("user.home");
-    public final String SEPARATOR = System.getProperty("file.separator");
+	
+	public final String EMAKU_HOME = WEBSTART?URL:System.getenv("EMAKU_HOME");
+	public final String HOME = WEBSTART?URL:System.getProperty("user.home");
+    public final String SEPARATOR = WEBSTART?"/":System.getProperty("file.separator");
+    
     public final String TMP = System.getProperty("java.io.tmpdir");
 	public final String CONF = HOME + SEPARATOR + ".qhatu"+SEPARATOR;
-	public final String LANG = System.getenv("EMAKU_HOME") + SEPARATOR + "lib" 
-								+ SEPARATOR + "lang" + SEPARATOR;
-	public final String THEMES = ClientConstants.EMAKU_HOME + ClientConstants.SEPARATOR + "themes" 
-						+ ClientConstants.SEPARATOR;
-	public final String COMPANIES = System.getenv("EMAKU_HOME") + ClientConstants.SEPARATOR 
-						+ "lib" + ClientConstants.SEPARATOR + "companies" + ClientConstants.SEPARATOR;
+	public final String LANG = EMAKU_HOME + SEPARATOR + "lib"	+ SEPARATOR + "lang" + SEPARATOR;
+	public final String THEMES = EMAKU_HOME + SEPARATOR + "themes"+SEPARATOR;
+	public final String COMPANIES = EMAKU_HOME + ClientConstants.SEPARATOR 
+						+ "lib" + SEPARATOR + "companies" + SEPARATOR;
 
     public final int ERROR = 0;
     public final int WARNING = 1;
