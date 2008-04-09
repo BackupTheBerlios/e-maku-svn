@@ -26,10 +26,13 @@ import javax.swing.tree.TreeNode;
 
 import net.emaku.tools.db.DataBaseManager;
 import net.emaku.tools.structures.FormsData;
+import net.emaku.tools.structures.QueriesData;
 import net.emaku.tools.xml.TemplateManager;
 import net.emaku.tools.gui.workspace.ETabbedPane;
 import net.emaku.tools.gui.workspace.ResourcesTree.SortableTreeNode;
 import net.emaku.tools.gui.workspace.FormButtonBar;
+import net.emaku.tools.gui.workspace.QueryButtonBar;
+import net.emaku.tools.gui.workspace.QueryWorkSpace;
 import net.emaku.tools.gui.workspace.ReportButtonBar;
 import net.emaku.tools.gui.workspace.FormWorkSpace;
 import net.emaku.tools.gui.workspace.ResourcesTree;
@@ -49,22 +52,28 @@ import net.emaku.tools.jar.JarManager;
 public class ReportManagerGUI extends JFrame {  
 
 	private static final long serialVersionUID = 1L;
-	public final int REPORT = 0;
-	public final int FORM = 1; 
+	public final int FORM = 0;
+	public final int QUERY = 1;
+	public final int REPORT = 2;
+	
 	private ReportButtonBar reportButtonBar;
 	private FormButtonBar formButtonBar;
+	private QueryButtonBar queryButtonBar;
+	
 	private ResourcesTree tree;
 	private JScrollPane jscroll;
 	private File root;
 	public Hashtable<String,ReportWorkSpace> reportEditors;
 	public Hashtable<String,FormWorkSpace> formEditors;
-	private ETabbedPane reportsTab, formsTab;
+	public Hashtable<String,QueryWorkSpace> queryEditors;
+	private ETabbedPane reportsTab, formsTab, queriesTab;
 	private Hashtable<String,String> codeQuerys = new Hashtable<String,String>();
 	private static String reportRoot;
 	private String currentCategory;
 	public static String separator = System.getProperty("file.separator");
 	private ReportWorkSpace reportWorkSpace;
 	private FormWorkSpace formWorkSpace;
+	private QueryWorkSpace queryWorkSpace;
 	private JTabbedPane global;
 	
 	private Vector<String> updates = new Vector<String>();
@@ -96,6 +105,7 @@ public class ReportManagerGUI extends JFrame {
 		
 		this.reportEditors = new Hashtable<String,ReportWorkSpace>();
 		this.formEditors = new Hashtable<String,FormWorkSpace>();
+		this.queryEditors = new Hashtable<String,QueryWorkSpace>();
 		
 		this.getContentPane().add(jsplitpane,BorderLayout.CENTER);
         this.setLocation(
@@ -120,8 +130,11 @@ public class ReportManagerGUI extends JFrame {
 		SortableTreeNode rootNode = new SortableTreeNode("eMaku Resources");
     	
 		tree = new ResourcesTree(this,rootNode);
-        tree.loadReports(root);
+		tree.loadReports(root);
         tree.loadForms();
+        tree.loadQueries();
+        
+        tree.setTree();
 		tree.expandRow(0);
 		System.gc();
 
@@ -140,8 +153,23 @@ public class ReportManagerGUI extends JFrame {
 	
 	public JPanel getPanelSource() {
 		JPanel jpanel = new JPanel(new BorderLayout());
-		reportsTab = new ETabbedPane(this,REPORT);
 		formsTab = new ETabbedPane(this,FORM);
+		queriesTab = new ETabbedPane(this,QUERY);
+		reportsTab = new ETabbedPane(this,REPORT);
+		
+		JPanel formsPanel = new JPanel(new BorderLayout());
+		formButtonBar = new FormButtonBar(this);
+		JPanel tempo	= new JPanel(new BorderLayout());
+		tempo.add(formButtonBar,BorderLayout.EAST);
+		formsPanel.add(formsTab,BorderLayout.CENTER);
+		formsPanel.add(tempo,BorderLayout.SOUTH);	
+		
+		JPanel queriesPanel = new JPanel(new BorderLayout());
+		queryButtonBar = new QueryButtonBar(this);
+		JPanel southPanel = new JPanel(new BorderLayout());
+		southPanel.add(queryButtonBar,BorderLayout.EAST);
+		queriesPanel.add(queriesTab,BorderLayout.CENTER);
+		queriesPanel.add(southPanel,BorderLayout.SOUTH);
 		
 		JPanel reportsPanel = new JPanel(new BorderLayout());
 		reportButtonBar = new ReportButtonBar(this);
@@ -149,17 +177,11 @@ public class ReportManagerGUI extends JFrame {
 		jpSouth.add(reportButtonBar,BorderLayout.EAST);
 		reportsPanel.add(reportsTab,BorderLayout.CENTER);
 		reportsPanel.add(jpSouth,BorderLayout.SOUTH);
-		
-		JPanel formsPanel = new JPanel(new BorderLayout());
-		formButtonBar = new FormButtonBar(this);
-		JPanel tempo	= new JPanel(new BorderLayout());
-		tempo.add(formButtonBar,BorderLayout.EAST);
-		formsPanel.add(formsTab,BorderLayout.CENTER);
-		formsPanel.add(tempo,BorderLayout.SOUTH);		
 
 		global = new JTabbedPane();
-		global.addTab("REPORTS",reportsPanel);
 		global.addTab("FORMS",formsPanel);
+		global.addTab("QUERIES",queriesPanel);
+		global.addTab("REPORTS",reportsPanel);
 		
 		jpanel.add(global,BorderLayout.CENTER);
 				
@@ -173,8 +195,10 @@ public class ReportManagerGUI extends JFrame {
 	public void removeObjectTabFromHash(int resource,Object key) {
 		if (resource == REPORT) {
 			reportEditors.remove(key);
-		} else {
+		} else if (resource == FORM) {
 			formEditors.remove(key);			
+		} else if (resource == QUERY) {
+			queryEditors.remove(key);			
 		}
 	}	  
 	
@@ -270,7 +294,7 @@ public class ReportManagerGUI extends JFrame {
 		reportsTab.setSelectedIndex(reportsTab.getTabCount()-1); 
 
 		if (reportsTab.getTabCount() == 1) {
-			setReportButtonsState(REPORT,true);
+			setBarButtonsState(REPORT,true);
 		}
 
 		updateGUI();
@@ -333,6 +357,15 @@ public class ReportManagerGUI extends JFrame {
     		DataBaseManager.updateForm(parser[2],data);
     	}
     }
+    
+    public void saveQuery() {
+    	String key = queriesTab.getTitleAt(queriesTab.getSelectedIndex());
+    	String[] parser = key.split("/");
+    	QueriesData data = queryWorkSpace.getData();
+    	if(parser[2] != null) {
+    		DataBaseManager.updateQuery(parser[2],data);
+    	}
+    }
 	
 	public void loadReport(String category, String reportCode) {
 		String reportPath = "/" + category + "/" + reportCode;	
@@ -358,6 +391,15 @@ public class ReportManagerGUI extends JFrame {
 		formsTab.setSelectedIndex(formsTab.getTabCount()-1);
 	}
 	
+	public void loadQuery(String category, String queryCode) {
+		String formPath = "/" + category + "/" + queryCode;	
+		QueriesData query = DataBaseManager.geteMakuQuery(queryCode);
+		queryWorkSpace = new QueryWorkSpace(queryCode,query);
+		queriesTab.addTab(formPath,queryWorkSpace);
+		queryEditors.put(formPath,queryWorkSpace);	
+		queriesTab.setSelectedIndex(formsTab.getTabCount()-1);
+	}
+	
 	public void updateGUI() {
 		tree.updateUI();
 		reportsTab.updateUI();		
@@ -366,53 +408,68 @@ public class ReportManagerGUI extends JFrame {
 	public boolean containsObject(int resource, String path) {
 		if (resource == REPORT) {
 			return reportEditors.containsKey(path);
-		} else {
+		} else if (resource == FORM) {
 			return formEditors.containsKey(path);
-		}
+		} else {
+			return queryEditors.containsKey(path);
+		} 
 	} 
 
 	public void addObjectTab(int resource) {
 		if (resource == REPORT) {
 			reportsTab.plusTab();
-		} else {
+		} else if (resource == FORM) {
 			formsTab.plusTab();
+		} else if (resource == QUERY) {
+			queriesTab.plusTab();
 		}
 	}
 	
 	public int objectTabCount(int resource) {
 		if (resource == REPORT) {
 			return reportsTab.getTabCount();
-		} else {
+		} else if (resource == FORM) {
 			return formsTab.getTabCount();
+		} else {
+			return queriesTab.getTabCount();
 		}
 	}
 	
 	public String getObjectTabTitle(int resource,int index) {
 		if (resource == REPORT) {
 			return reportsTab.getTitleAt(index);
-		} else {
+		} else if (resource == FORM){
 			return formsTab.getTitleAt(index);
+		} else {
+			return queriesTab.getTitleAt(index);
 		}
 	}
 	
 	public void setActiveObjectTab(int resource,int index) {
 		if (resource == REPORT) {
 			reportsTab.setSelectedIndex(index);
-		} else {
+		} else if (resource == FORM) {
 			formsTab.setSelectedIndex(index);
+		} else if (resource == QUERY) {
+			queriesTab.setSelectedIndex(index);
 		}
 	}
 	
 	public void closeObjectTab(int resource) {
-		ETabbedPane tab = reportsTab;
+		ETabbedPane tab = null;
 		if (resource == FORM) {
 			tab = formsTab;
-		} 		
+		} else if  (resource == REPORT) {
+			tab = reportsTab;
+		} else if  (resource == QUERY) {
+			tab = queriesTab;
+		}
+		
 		if (tab.getTabCount() > 0) { 
 			removeObjectTabFromHash(resource,tab.getTitleAt(tab.getSelectedIndex()));
 			tab.removeTabAt(tab.getSelectedIndex());
 			if(tab.getTabCount() == 0) {
-				setReportButtonsState(resource,false);
+				setBarButtonsState(resource,false);
 			}	
 		}
 	}
@@ -455,6 +512,16 @@ public class ReportManagerGUI extends JFrame {
     		ws.reloadForm(data);
     	}
 	}
+	
+	public void reloadQuery() {
+		String key = queriesTab.getTitleAt(queriesTab.getSelectedIndex());
+    	String[] parser = key.split("/");
+    	if(parser[2] != null) {
+    		QueriesData data = DataBaseManager.geteMakuQuery(parser[2]);
+    		QueryWorkSpace ws = queryEditors.get(key);
+    		ws.reloadQuery(data);
+    	}
+	}
 
 	public void openQuery() {
 		Thread thread = new Thread() {
@@ -477,11 +544,13 @@ public class ReportManagerGUI extends JFrame {
 		thread.start();	
 	}
 	
-	public void setReportButtonsState(int resource, boolean flag) {
+	public void setBarButtonsState(int resource, boolean flag) {
 		if (resource == REPORT) {
 			reportButtonBar.setButtonsState(flag);
-		} else {
+		} else if (resource == FORM) {
 			formButtonBar.setButtonsState(flag);
+		} else if (resource == QUERY) {
+			queryButtonBar.setButtonsState(flag);
 		}
 	}
 	

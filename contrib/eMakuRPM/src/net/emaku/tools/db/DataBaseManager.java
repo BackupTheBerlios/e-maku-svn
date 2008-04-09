@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 
 import net.emaku.tools.gui.ExportBar;
 import net.emaku.tools.structures.FormsData;
+import net.emaku.tools.structures.QueriesData;
 
 // This class manages the database connection
 
@@ -120,6 +121,24 @@ public class DataBaseManager {
 
 		return formCodes;	
 	}
+	
+	public static Vector<String> getQueries() {
+		Vector<String> formCodes = new Vector<String>();
+		String query = "SELECT codigo FROM sentencia_sql ORDER BY codigo";
+		ResultSet rs = null;
+		try {
+			Statement st = connection.createStatement();
+			rs = st.executeQuery(query);
+			while (rs.next()) {
+				String code = rs.getString(1).trim();
+				formCodes.add(code);
+			} 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return formCodes;	
+	}
 
 	public static FormsData getForm(String code) {
 		FormsData form = new FormsData(); 
@@ -145,6 +164,46 @@ public class DataBaseManager {
 		}
 
 		return form;	
+	}
+	
+	public static QueriesData geteMakuQuery(String code) {
+		QueriesData queries = new QueriesData(); 
+		String query = "SELECT nombre,descripcion,sentencia FROM " +
+				"sentencia_sql WHERE codigo='" + code + "'";
+		ResultSet rs = null;
+		try {
+			Statement st = connection.createStatement();
+			rs = st.executeQuery(query);
+			if (rs.next()) {
+				String name = rs.getString(1);
+				String description = rs.getString(2);
+				String sentence = rs.getString(3);
+				queries = new QueriesData(name,description,sentence);
+			} 
+		} catch (SQLException e) {
+			System.out.println("ERROR: " + e.getMessage());
+			e.printStackTrace();
+		}
+
+		return queries;	
+	}
+	
+	public static String getSQLQuery(String code) {
+		String sql = ""; 
+		String query = "SELECT sentencia FROM sentencia_sql WHERE codigo='" + code + "'";
+		ResultSet rs = null;
+		try {
+			Statement st = connection.createStatement();
+			rs = st.executeQuery(query);
+			if (rs.next()) {
+				sql = rs.getString(1);
+			} 
+		} catch (SQLException e) {
+			System.out.println("ERROR: " + e.getMessage());
+			e.printStackTrace();
+		}
+
+		return sql;	
 	}
 	
 	public static String getProfile(String code) {
@@ -182,6 +241,38 @@ public class DataBaseManager {
 		
 		return result;
 	}
+	public static boolean updateQuery(String sqlCode,QueriesData data) {
+		boolean result = false;
+		String query = "UPDATE sentencia_sql SET nombre='" + data.getName() + "',descripcion='" 
+				+ data.getDescription()  + "',sentencia='" + data.getSQL() + "' WHERE codigo=\'" + sqlCode +"\'";
+		try {
+			Statement st = connection.createStatement();
+			result = st.execute(query);
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	
+	public static boolean updateEmakuSQL(String sqlCode,String xml) {
+		boolean result = false;
+		String query = "UPDATE sentencia_sql SET sentencia='" + xml 
+		+ "' WHERE codigo=\'" + sqlCode +"\'";
+		
+		try {
+			Statement st = connection.createStatement();
+			result = st.execute(query);
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 
 	public static boolean updateProfile(String sqlCode,String xml) {
 		boolean result = false;

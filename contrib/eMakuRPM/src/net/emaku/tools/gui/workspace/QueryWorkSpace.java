@@ -21,39 +21,35 @@ import javax.swing.JToolBar;
 
 import net.emaku.tools.Run;
 import net.emaku.tools.db.DataBaseManager;
-import net.emaku.tools.structures.FormsData;
+import net.emaku.tools.structures.QueriesData;
 
 /* 
- * This class represents the whole right side of the application GUI for the Form module
+ * This class represents the whole right side of the application GUI for the Query module
 */
 
-public class FormWorkSpace extends JSplitPane implements ActionListener {
+public class QueryWorkSpace extends JSplitPane implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
-	private FormEditor editor;
+	private QueryEditor editor;
 	private JTextField nameField;
 	private JTextField descField;
-	private JTextField driverField;
-	private JTextField argsDriverField;
-	private JTextField methodField;
-	private JTextField argsMethodField;
 	private JPanel northPanel = new JPanel(new BorderLayout());
-	private FormsData data;
-	private String formCode;
+	private QueriesData data;
+	private String queryCode;
 	private JFrame externalFrame;
-	private FormEditor fe;
+	private QueryEditor qe;
 		
-	public FormWorkSpace(String formCode, FormsData data) {
+	public QueryWorkSpace(String queryCode, QueriesData data) {
 		super(JSplitPane.VERTICAL_SPLIT);
-		this.formCode = formCode;
+		this.queryCode = queryCode;
 		this.data = data;
 		setDataPanel();
 		
-		editor = new FormEditor(data.getProfile());
+		editor = new QueryEditor(data.getSQL());
 		NumbersPanel panel = new NumbersPanel(editor.getLinesTotal());
 		//editor.setNumberPanel(panel);
 		
-		setDividerLocation(140);
+		setDividerLocation(50);
 		JPanel north = new JPanel();
 		north.setLayout(new BorderLayout());
 
@@ -89,20 +85,12 @@ public class FormWorkSpace extends JSplitPane implements ActionListener {
 	}
 	
 	private void setDataPanel(){
-		JPanel labels = new JPanel(new GridLayout(6, 1));
-		JPanel fields = new JPanel(new GridLayout(6, 1));
+		JPanel labels = new JPanel(new GridLayout(2, 1));
+		JPanel fields = new JPanel(new GridLayout(2, 1));
 		JLabel nameLabel = new JLabel("Name: ");
 		labels.add(nameLabel);
 		JLabel descLabel = new JLabel("Description: ");
 		labels.add(descLabel);
-		JLabel driverLabel = new JLabel("Driver: ");
-		labels.add(driverLabel);
-		JLabel argsDriverLabel = new JLabel("Driver Args: ");
-		labels.add(argsDriverLabel);
-		JLabel methodLabel = new JLabel("Method: ");
-		labels.add(methodLabel);
-		JLabel argsMethodLabel = new JLabel("Method Args: ");
-		labels.add(argsMethodLabel);
 		
 		nameField = new JTextField(10);
 		nameField.setText(data.getName());
@@ -111,46 +99,23 @@ public class FormWorkSpace extends JSplitPane implements ActionListener {
 		descField = new JTextField(10);
 		descField.setText(data.getDescription());
 		fields.add(descField);
-
-		driverField = new JTextField(10);
-		driverField.setText(data.getDriver());
-		fields.add(driverField);
-
-		argsDriverField = new JTextField(10);
-		argsDriverField.setText(data.getDriverArgs());
-		fields.add(argsDriverField);
-
-		methodField = new JTextField(10);
-		methodField.setText(data.getMethod());
-		fields.add(methodField);
-
-		argsMethodField = new JTextField(10);
-		argsMethodField.setText(data.getMethodArgs());
-		fields.add(argsMethodField);
 		
 		northPanel.add(labels,BorderLayout.WEST);
 		northPanel.add(fields,BorderLayout.CENTER);
 	}
 	
-	public FormsData getData() {
-		return new FormsData(nameField.getText(),descField.getText(),driverField.getText(),
-				argsDriverField.getText(),methodField.getText(),argsMethodField.getText(),
-				editor.getProfile());
+	public QueriesData getData() {
+		return new QueriesData(nameField.getText(),descField.getText(),editor.getQuery());
 	}
 	
-	public void reloadForm(FormsData form) {
+	public void reloadQuery(QueriesData form) {
 		nameField.setText(form.getName());
-		descField.setText(form.getDescription());
-		driverField.setText(form.getDriver());
-		argsDriverField.setText(form.getDriverArgs());
-		methodField.setText(form.getMethod());
-		argsMethodField.setText(form.getMethodArgs());
-		
-		editor.updateText(form.getProfile());
+		descField.setText(form.getDescription());		
+		editor.updateText(form.getSQL());
 	}
 	
 	private void openExternalZoom() {
-		externalFrame = new JFrame(formCode + " - " + data.getName());
+		externalFrame = new JFrame(queryCode + " - " + data.getName());
 	    int height = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
         int width = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         externalFrame.setSize(new Dimension(width,height));
@@ -161,14 +126,14 @@ public class FormWorkSpace extends JSplitPane implements ActionListener {
 				closeZoom();
 			}
 		});
-		fe = new FormEditor(editor.getText());
+		qe = new QueryEditor(editor.getQuery());
 		NumbersPanel panel = new NumbersPanel(editor.getLinesTotal());
 		JPanel xmlZone = new JPanel(new BorderLayout());
-		xmlZone.add(fe,BorderLayout.CENTER);
+		xmlZone.add(qe,BorderLayout.CENTER);
 		xmlZone.add(panel,BorderLayout.WEST);
 		JScrollPane scroll = new JScrollPane(xmlZone);
 		
-		ExternalFormButtonBar bar = new ExternalFormButtonBar(this);
+		ExternalQueryButtonBar bar = new ExternalQueryButtonBar(this);
 		JPanel south = new JPanel(new BorderLayout());
 		south.add(bar,BorderLayout.EAST);
 
@@ -182,19 +147,19 @@ public class FormWorkSpace extends JSplitPane implements ActionListener {
 	}
 	
 	public void closeZoom() {
-		String data = fe.getText();
+		String data = qe.getText();
 		editor.updateText(data);
 		externalFrame.setVisible(false);
 	}
 	
-	public void reloadForm() {
-		String data = DataBaseManager.getProfile(formCode);
-		fe.updateText(data);
+	public void reloadQuery() {
+		String data = DataBaseManager.getSQLQuery(queryCode);
+		qe.updateText(data);
 		editor.updateText(data);
 	}
 	
-	public void saveForm() {
-		DataBaseManager.updateProfile(formCode,fe.getText());
+	public void saveQuery() {
+		DataBaseManager.updateEmakuSQL(queryCode,qe.getText());
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -205,4 +170,3 @@ public class FormWorkSpace extends JSplitPane implements ActionListener {
 		}
 	}
 }
-

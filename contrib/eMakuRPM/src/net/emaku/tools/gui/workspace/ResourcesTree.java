@@ -35,6 +35,8 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 	private SortableTreeNode rootNode;
 	private SortableTreeNode reportsNode = new SortableTreeNode("Reports");
 	private SortableTreeNode formsNode = new SortableTreeNode("Forms");
+	private SortableTreeNode queriesNode = new SortableTreeNode("Queries");
+	
     private Vector<String> categories = new Vector<String>();
     private ReportManagerGUI frame;
     private String currentCategory;
@@ -42,6 +44,7 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
     private String separator = System.getProperty("file.separator");
     private DefaultTreeModel model; 
     private Vector<String> forms;
+    private Vector<String> queries;
     
 	public ResourcesTree(ReportManagerGUI frame, SortableTreeNode rootNode) {
 		super(rootNode);
@@ -104,9 +107,8 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 			this.updateUI();
 		}
 		else {
-			JOptionPane.showMessageDialog(frame,"There are no reports availables!");
+			JOptionPane.showMessageDialog(frame,"There are not reports availables!");
 		}
-		rootNode.add(reportsNode);
 	}
 	
 	public void loadForms() {
@@ -148,7 +150,69 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 		
 		formsNode.add(trNode);
 		formsNode.add(dgtNode);
+	}
+	
+	public void loadQueries() {
+		queries = DataBaseManager.getQueries();
+		SortableTreeNode selNode = new SortableTreeNode("SEL");
+		SortableTreeNode crpNode = new SortableTreeNode("CRP");
+		SortableTreeNode scsNode = new SortableTreeNode("SCS");
+		SortableTreeNode dgselNode = new SortableTreeNode("DGSEL");
+		SortableTreeNode dgupdNode = new SortableTreeNode("DGUPD");
+		SortableTreeNode dgdelNode = new SortableTreeNode("DGDEL");
+		SortableTreeNode group = null;		
+		int before = 0;
+		
+		Collections.sort(queries);
+		int size = queries.size();
+				
+		for(int i=0; i< size; i++) {
+			String code = queries.elementAt(i);
+			int reportNumber = getNumberFromQuery(code);
+			int floor = before/10;
+			int tenGroups = reportNumber/10;
+			
+			if ((reportNumber % 10 == 0) || (floor != tenGroups)) {
+				if (floor != tenGroups) {
+					tenGroups = tenGroups*10;
+					group = new SortableTreeNode(tenGroups + " - " + (tenGroups+9));									
+				} else {
+					group = new SortableTreeNode(reportNumber + " - " + (reportNumber+9));
+				}
+				if(code.startsWith("SEL")) {
+					selNode.add(group);
+				} else if(code.startsWith("CRP")) {
+					crpNode.add(group);
+				} else if(code.startsWith("SCS")) {
+					scsNode.add(group);
+				} else if(code.startsWith("DGSEL")) {
+					dgselNode.add(group);
+				} else if(code.startsWith("DGUPD")) {
+					dgupdNode.add(group);
+				} else if(code.startsWith("DGDEL")) {
+					dgdelNode.add(group);
+				}
+			}
+			
+			SortableTreeNode transaction = new SortableTreeNode(code);
+			if(group != null) {
+				group.add(transaction);
+				before = reportNumber;
+			}			
+		}
+		
+		queriesNode.add(crpNode);
+		queriesNode.add(dgselNode);
+		queriesNode.add(dgupdNode);
+		queriesNode.add(dgdelNode);
+		queriesNode.add(scsNode);
+		queriesNode.add(selNode);
+	}
+	
+	public void setTree() {
 		rootNode.add(formsNode);
+		rootNode.add(queriesNode);
+		rootNode.add(reportsNode);
 	}
 
 	private int getNumberFromReport(String name) {
@@ -163,7 +227,7 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 		return k;
 	}
 	
-	private int getNumberFromTransaction(String name) {
+	private int getNumberFromTransaction(String name) {		
 		String number = name.substring(name.length()-5,name.length());
 		while(number.startsWith("0")) {
 			if (number.length()==1) {
@@ -172,6 +236,17 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 			number = number.substring(1,number.length());
 		}
 		int k = Integer.parseInt(number); 
+		
+		return k;
+	}
+	
+	private int getNumberFromQuery(String name) {
+		char letter = name.charAt(0);
+		while(!Character.isDigit(letter) || letter == '0') {
+			name = name.substring(1,name.length());
+			letter = name.charAt(0);
+		}
+		int k = Integer.parseInt(name);
 		
 		return k;
 	}
@@ -288,12 +363,14 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 				String category = treepath.getPathComponent(2).toString();
 				String objectPath = separator + category + separator + treepath.getPathComponent(4);
 				String object = treepath.getPathComponent(4).toString();
+				//System.out.println("OBJECT: " + object + " - " + objectPath);
 
 				int resource = -1;
 				if(object.startsWith("REP") || object.startsWith("CRE")) {
 					resource = frame.REPORT;
+					//System.out.println("* Opening a report...");
 					if (frame.objectTabCount(frame.REPORT) == 0) {
-						frame.setReportButtonsState(resource,true);
+						frame.setBarButtonsState(resource,true);
 					}		
 					if (!frame.containsObject(frame.REPORT,objectPath)) {		
 						frame.loadReport(category,object);
@@ -302,11 +379,24 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 				
 				if(object.startsWith("TR") || object.startsWith("DGT")) {
 					resource = frame.FORM;
+					//System.out.println("* Opening a form...");
 					if (frame.objectTabCount(frame.FORM) == 0) {
-						frame.setReportButtonsState(resource,true);
+						frame.setBarButtonsState(resource,true);
 					}		
 					if (!frame.containsObject(frame.FORM, objectPath)) {		
 						frame.loadForm(category,object);
+					}
+				}
+				
+				if(object.startsWith("CRP") || object.startsWith("DGSEL") || object.startsWith("DGUPD") 
+						|| object.startsWith("DGDEL") || object.startsWith("SCS") || object.startsWith("SEL")) {
+					resource = frame.QUERY;
+					//System.out.println("* Opening a query...");
+					if (frame.objectTabCount(frame.QUERY) == 0) {
+						frame.setBarButtonsState(resource,true);
+					}		
+					if (!frame.containsObject(frame.QUERY, objectPath)) {		
+						frame.loadQuery(category,object);
 					}
 				}
 
@@ -406,7 +496,7 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 					frame.addObjectTab(frame.REPORT);
 
 					if(frame.objectTabCount(frame.REPORT)==1)
-						frame.setReportButtonsState(frame.REPORT,true);	
+						frame.setBarButtonsState(frame.REPORT,true);	
 				} 
 				frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			}

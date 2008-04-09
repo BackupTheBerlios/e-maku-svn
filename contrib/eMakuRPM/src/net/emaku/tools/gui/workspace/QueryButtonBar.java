@@ -9,27 +9,21 @@ import javax.swing.JPanel;
 
 import net.emaku.tools.gui.ReportManagerGUI;
 
-//This class contains the button bar for the form workspace
+//This class contains the button bar for the query workspace
 
-public class FormButtonBar extends JPanel implements ActionListener {
+public class QueryButtonBar extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JButton jbuttonReload;
 	private JButton jbuttonSave;
-	private JButton jbuttonClose;
-	private JButton jbuttonPreview;	
+	private JButton jbuttonClose;	
 	private ReportManagerGUI gui;
 	
-	public FormButtonBar(ReportManagerGUI gui) {
+	public QueryButtonBar(ReportManagerGUI gui) {
 
 		this.gui = gui;
 
 		setLayout(new FlowLayout(FlowLayout.LEFT));	
-
-		jbuttonPreview = new JButton("Preview");
-		jbuttonPreview.setActionCommand("preview");
-		jbuttonPreview.setMnemonic(KeyEvent.VK_P);
-		jbuttonPreview.addActionListener(this);
 
 		jbuttonReload 	= new JButton("Reload");
 		jbuttonReload.setActionCommand("reload");
@@ -48,14 +42,12 @@ public class FormButtonBar extends JPanel implements ActionListener {
 
 		setButtonsState(false);
 
-		add(jbuttonPreview);
 		add(jbuttonReload);
 		add(jbuttonSave);
 		add(jbuttonClose);
 	}
 	
 	public void setButtonsState(boolean flag) {
-		jbuttonPreview.setEnabled(false);
         jbuttonReload.setEnabled(flag);
         jbuttonSave.setEnabled(flag);
         jbuttonClose.setEnabled(flag);
@@ -64,14 +56,12 @@ public class FormButtonBar extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		
-		if ("preview".equals(action)) {
-			gui.previewForm();
-		} else if ("reload".equals(action)) {
-			gui.reloadForm();
+		if ("reload".equals(action)) {
+			gui.reloadQuery();
 		} else if ("save".equals(action)) {
-            gui.saveForm();
+            gui.saveQuery();
 		} else if ("close".equals(action)) {
-			gui.closeObjectTab(gui.FORM);
+			gui.closeObjectTab(gui.QUERY);
 		}
 	}
 }

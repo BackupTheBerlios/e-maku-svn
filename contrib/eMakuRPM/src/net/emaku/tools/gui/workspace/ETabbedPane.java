@@ -51,7 +51,7 @@ public class ETabbedPane extends JTabbedPane implements MouseListener {
 		super.removeTabAt(index);
 		tabsTotal--;
 		if (tabsTotal==0) {
-			gui.setReportButtonsState(resource,false);
+			gui.setBarButtonsState(resource,false);
 		}
 	}
 		

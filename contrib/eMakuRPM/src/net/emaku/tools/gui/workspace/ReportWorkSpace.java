@@ -22,13 +22,13 @@ public class ReportWorkSpace extends JSplitPane {
 
 	private static final long serialVersionUID = 1L;
 	private ReportEditor editor;
-	private String reportCode;
+	//private String reportCode;
 	private ReportDescription reportDescription;
 		
 	public ReportWorkSpace(ReportManagerGUI gui, String reportCode, String report) {
 		super(JSplitPane.VERTICAL_SPLIT);
 		
-		this.reportCode = reportCode;				
+		//this.reportCode = reportCode;				
 		editor = new ReportEditor(report);
 		NumbersPanel panel = new NumbersPanel(editor.getLinesTotal(0));
 		editor.setNumberPanel(panel);

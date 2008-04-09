@@ -7,28 +7,21 @@ import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-//This class contains the button bar for the workspace
+//This class contains the button bar for the external editor
 
-public class ExternalButtonBar extends JPanel implements ActionListener {
+public class ExternalQueryButtonBar extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JButton jbuttonReload;
 	private JButton jbuttonSave;
-	private JButton jbuttonClose;
-	private JButton jbuttonPreview;	
-	private FormWorkSpace gui;
+	private JButton jbuttonClose;	
+	private QueryWorkSpace gui;
 	
-	public ExternalButtonBar(FormWorkSpace gui) {
+	public ExternalQueryButtonBar(QueryWorkSpace gui) {
 
 		this.gui = gui;
 
 		setLayout(new FlowLayout(FlowLayout.LEFT));	
-
-		jbuttonPreview = new JButton("Preview");
-		jbuttonPreview.setActionCommand("preview");
-		jbuttonPreview.setMnemonic(KeyEvent.VK_P);
-		jbuttonPreview.addActionListener(this);
-		jbuttonPreview.setEnabled(false);
 
 		jbuttonReload 	= new JButton("Reload");
 		jbuttonReload.setActionCommand("reload");
@@ -45,14 +38,12 @@ public class ExternalButtonBar extends JPanel implements ActionListener {
 		jbuttonClose.setMnemonic(KeyEvent.VK_C);
 		jbuttonClose.addActionListener(this);
 
-		add(jbuttonPreview);
 		add(jbuttonReload);
 		add(jbuttonSave);
 		add(jbuttonClose);
 	}
 	
 	public void setButtonsState(boolean flag) {
-		jbuttonPreview.setEnabled(false);
         jbuttonReload.setEnabled(flag);
         jbuttonSave.setEnabled(flag);
         jbuttonClose.setEnabled(flag);
@@ -64,14 +55,11 @@ public class ExternalButtonBar extends JPanel implements ActionListener {
 			gui.closeZoom();
 		}
 		if ("save".equals(action)) {
-            gui.saveForm();
+            gui.saveQuery();
 		}
 		if ("reload".equals(action)) {
-			gui.reloadForm();
+			gui.reloadQuery();
 		}
-		/*
-		if ("preview".equals(action)) {
-			gui.previewForm();
-		}*/
+
 	}
 }

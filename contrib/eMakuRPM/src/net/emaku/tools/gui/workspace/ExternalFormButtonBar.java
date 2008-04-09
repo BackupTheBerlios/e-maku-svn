@@ -7,20 +7,18 @@ import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import net.emaku.tools.gui.ReportManagerGUI;
+//This class contains the button bar for the workspace
 
-//This class contains the button bar for the form workspace
-
-public class FormButtonBar extends JPanel implements ActionListener {
+public class ExternalFormButtonBar extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JButton jbuttonReload;
 	private JButton jbuttonSave;
 	private JButton jbuttonClose;
 	private JButton jbuttonPreview;	
-	private ReportManagerGUI gui;
+	private FormWorkSpace gui;
 	
-	public FormButtonBar(ReportManagerGUI gui) {
+	public ExternalFormButtonBar(FormWorkSpace gui) {
 
 		this.gui = gui;
 
@@ -30,6 +28,7 @@ public class FormButtonBar extends JPanel implements ActionListener {
 		jbuttonPreview.setActionCommand("preview");
 		jbuttonPreview.setMnemonic(KeyEvent.VK_P);
 		jbuttonPreview.addActionListener(this);
+		jbuttonPreview.setEnabled(false);
 
 		jbuttonReload 	= new JButton("Reload");
 		jbuttonReload.setActionCommand("reload");
@@ -46,8 +45,6 @@ public class FormButtonBar extends JPanel implements ActionListener {
 		jbuttonClose.setMnemonic(KeyEvent.VK_C);
 		jbuttonClose.addActionListener(this);
 
-		setButtonsState(false);
-
 		add(jbuttonPreview);
 		add(jbuttonReload);
 		add(jbuttonSave);
@@ -63,15 +60,18 @@ public class FormButtonBar extends JPanel implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
-		
+		if ("close".equals(action)) {
+			gui.closeZoom();
+		}
+		if ("save".equals(action)) {
+            gui.saveForm();
+		}
+		if ("reload".equals(action)) {
+			gui.reloadForm();
+		}
+		/*
 		if ("preview".equals(action)) {
 			gui.previewForm();
-		} else if ("reload".equals(action)) {
-			gui.reloadForm();
-		} else if ("save".equals(action)) {
-            gui.saveForm();
-		} else if ("close".equals(action)) {
-			gui.closeObjectTab(gui.FORM);
-		}
+		}*/
 	}
 }
