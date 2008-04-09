@@ -615,5 +615,9 @@ public class ReportManagerGUI extends JFrame {
 	public void setCurrentCategory(String category) {
 		currentCategory = category;
 	}
+	
+	public void search() {
+		new SearchDialog(this);
+	}
 		
 }

@@ -73,7 +73,9 @@ public class MainMenu extends JMenuBar implements ActionListener {
 			gui.exit();
 		} else if ("conf".equals(action)) {
 			gui.conf();
-		} 
+		} else if ("search".equals(action)) {
+			gui.search();
+		}
 		else if ("export".equals(action)) {
 			gui.exportAllReports();
 		}  else if ("clean_jar".equals(action)) {

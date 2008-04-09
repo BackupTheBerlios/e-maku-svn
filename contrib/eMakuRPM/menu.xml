@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
-	<jmenu name="File">
+<jmenu name="File">
 		<item name="Open Root" action="root" />
 		<item name="Settings" action="conf" />
 		<separator />
 		<item name="Exit" action="exit" />
-	</jmenu>
+</jmenu>
+<jmenu name="Search">
+                <item name="Search" action="search" />
+</jmenu>
 <jmenu name="Reports">
                 <item name="Clean Jar" action="clean_jar" />
 		<item name="Update Jar" action="update" />
