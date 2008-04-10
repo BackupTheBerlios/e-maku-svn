@@ -13,6 +13,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 
 import net.emaku.tools.db.DataBaseManager;
+import net.emaku.tools.gui.workspace.ResourcesTree;
 
 public class ResultPanel extends JPanel implements MouseListener {
 
@@ -21,9 +22,11 @@ public class ResultPanel extends JPanel implements MouseListener {
 	private Vector<Vector<String>> fData,qData,rData;
 	private JPanel forms,queries,reports;
 	private int total;
+	private ReportManagerGUI frame;
 	
-	public ResultPanel(String space,String keywords) {
+	public ResultPanel(ReportManagerGUI frame,String space,String keywords) {
 		super();
+		this.frame = frame;
 		this.setLayout(new BorderLayout());
 		total = 0;
 		tabbedPane = new JTabbedPane();
@@ -164,9 +167,15 @@ public class ResultPanel extends JPanel implements MouseListener {
 		return total;
 	}
 
-	public void mouseClicked(MouseEvent arg0) {
-		JTable table = (JTable) arg0.getComponent();
-		System.out.println("OBJ: " + table.getValueAt(table.getSelectedRow(), 0).toString());
+	public void mouseClicked(MouseEvent e) {
+		if ( e.getClickCount() == 2 ) {
+			JTable table = (JTable) e.getComponent();
+			String node = table.getValueAt(table.getSelectedRow(), 0).toString();
+			String category = ResourcesTree.searchCategory(node.trim());
+			if (category != null) {
+				frame.openObject(category,node);
+			}
+		}
 	}
 
 	public void mouseEntered(MouseEvent arg0) {

@@ -619,5 +619,60 @@ public class ReportManagerGUI extends JFrame {
 	public void search() {
 		new SearchDialog(this);
 	}
-		
+	
+	private void activeTab(String objectPath, int resource) {
+		int max = objectTabCount(resource);
+		for (int i = 0 ; i < max ; i++) {
+			String str = getObjectTabTitle(resource,i);
+			if (str.equals(objectPath)) {
+				setActiveObjectTab(resource,i);
+				break;
+			}
+		} 				
+	}
+	
+	public void openObject(String category, String object) {
+		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		String objectPath = separator + category + separator + object;
+		int resource = -1;
+		if(object.startsWith("REP") || object.startsWith("CRE")) {
+			resource = REPORT;
+			//System.out.println("* Opening a report...");
+			if (objectTabCount(REPORT) == 0) {
+				setBarButtonsState(resource,true);
+			}		
+			if (!containsObject(REPORT,objectPath)) {		
+				loadReport(category,object);
+			}
+		}
+
+		if(object.startsWith("TR") || object.startsWith("DGT")) {
+			resource = FORM;
+			//System.out.println("* Opening a form...");
+			if (objectTabCount(FORM) == 0) {
+				setBarButtonsState(resource,true);
+			}		
+			if (!containsObject(FORM, objectPath)) {		
+				loadForm(category,object);
+			}
+		}
+
+		if(object.startsWith("CRP") || object.startsWith("DGSEL") || object.startsWith("DGUPD") 
+				|| object.startsWith("DGDEL") || object.startsWith("SCS") || object.startsWith("SEL") 
+				|| object.startsWith("SRP")) {
+			resource = QUERY;
+			//System.out.println("* Opening a query...");
+			if (objectTabCount(QUERY) == 0) {
+				setBarButtonsState(resource,true);
+			}		
+			if (!containsObject(QUERY, objectPath)) {		
+				loadQuery(category,object);
+			}
+		}
+
+		setActiveResource(resource);	
+		activeTab(objectPath,resource);
+		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+	}
+	
 }

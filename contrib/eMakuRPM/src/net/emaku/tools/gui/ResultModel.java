@@ -55,7 +55,10 @@ public class ResultModel extends AbstractTableModel {
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		return tableData.get(rowIndex).get(columnIndex);
+		if (rowIndex >= 0) {
+			return tableData.get(rowIndex).get(columnIndex);
+		}
+		return 0;
 	}
 	
 	public Class<?> getColumnClass(int columnIndex) {

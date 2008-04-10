@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.Vector;
 import java.util.Arrays;
 
@@ -32,7 +33,7 @@ import net.emaku.tools.gui.ReportDialog;
 public class ResourcesTree extends JTree implements ActionListener, MouseListener, KeyListener{
 
 	private static final long serialVersionUID = 1L;
-	private SortableTreeNode rootNode;
+	private static SortableTreeNode rootNode;
 	private SortableTreeNode reportsNode = new SortableTreeNode("Reports");
 	private SortableTreeNode formsNode = new SortableTreeNode("Forms");
 	private SortableTreeNode queriesNode = new SortableTreeNode("Queries");
@@ -42,7 +43,7 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
     private String currentCategory;
     private File directory;
     private String separator = System.getProperty("file.separator");
-    private DefaultTreeModel model; 
+    private static DefaultTreeModel model; 
     private Vector<String> forms;
     private Vector<String> queries;
     
@@ -50,7 +51,7 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 		super(rootNode);
 		model = new DefaultTreeModel(rootNode);
 		this.frame = frame;
-		this.rootNode = rootNode;
+		ResourcesTree.rootNode = rootNode;
 		setFont(new Font("Monospaced", 0, 10));
 		addMouseListener(this);
 		addKeyListener(this);
@@ -157,6 +158,7 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 		SortableTreeNode selNode = new SortableTreeNode("SEL");
 		SortableTreeNode crpNode = new SortableTreeNode("CRP");
 		SortableTreeNode scsNode = new SortableTreeNode("SCS");
+		SortableTreeNode srpNode = new SortableTreeNode("SRP");
 		SortableTreeNode dgselNode = new SortableTreeNode("DGSEL");
 		SortableTreeNode dgupdNode = new SortableTreeNode("DGUPD");
 		SortableTreeNode dgdelNode = new SortableTreeNode("DGDEL");
@@ -185,6 +187,8 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 					crpNode.add(group);
 				} else if(code.startsWith("SCS")) {
 					scsNode.add(group);
+				} else if(code.startsWith("SRP")) {
+					srpNode.add(group);
 				} else if(code.startsWith("DGSEL")) {
 					dgselNode.add(group);
 				} else if(code.startsWith("DGUPD")) {
@@ -207,6 +211,7 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 		queriesNode.add(dgdelNode);
 		queriesNode.add(scsNode);
 		queriesNode.add(selNode);
+		queriesNode.add(srpNode);
 	}
 	
 	public void setTree() {
@@ -355,67 +360,15 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 	public void mouseClicked(MouseEvent e) {
 		
 		if ( e.getClickCount() == 2 ) {
-			frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			TreePath treepath = getSelectionPath();
 			int num = treepath.getPathCount();	
 			
 			if (num == 5) {
 				String category = treepath.getPathComponent(2).toString();
-				String objectPath = separator + category + separator + treepath.getPathComponent(4);
 				String object = treepath.getPathComponent(4).toString();
-				//System.out.println("OBJECT: " + object + " - " + objectPath);
-
-				int resource = -1;
-				if(object.startsWith("REP") || object.startsWith("CRE")) {
-					resource = frame.REPORT;
-					//System.out.println("* Opening a report...");
-					if (frame.objectTabCount(frame.REPORT) == 0) {
-						frame.setBarButtonsState(resource,true);
-					}		
-					if (!frame.containsObject(frame.REPORT,objectPath)) {		
-						frame.loadReport(category,object);
-					}
-				}
-				
-				if(object.startsWith("TR") || object.startsWith("DGT")) {
-					resource = frame.FORM;
-					//System.out.println("* Opening a form...");
-					if (frame.objectTabCount(frame.FORM) == 0) {
-						frame.setBarButtonsState(resource,true);
-					}		
-					if (!frame.containsObject(frame.FORM, objectPath)) {		
-						frame.loadForm(category,object);
-					}
-				}
-				
-				if(object.startsWith("CRP") || object.startsWith("DGSEL") || object.startsWith("DGUPD") 
-						|| object.startsWith("DGDEL") || object.startsWith("SCS") || object.startsWith("SEL")) {
-					resource = frame.QUERY;
-					//System.out.println("* Opening a query...");
-					if (frame.objectTabCount(frame.QUERY) == 0) {
-						frame.setBarButtonsState(resource,true);
-					}		
-					if (!frame.containsObject(frame.QUERY, objectPath)) {		
-						frame.loadQuery(category,object);
-					}
-				}
-
-				frame.setActiveResource(resource);
-				activeTab(objectPath,resource);
+				frame.openObject(category,object);
 			}
-			frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		} 
-	}
-
-	private void activeTab(String objectPath, int resource) {
-		int max = frame.objectTabCount(resource);
-		for (int i = 0 ; i < max ; i++) {
-			String str = frame.getObjectTabTitle(resource,i);
-			if (str.equals(objectPath)) {
-				frame.setActiveObjectTab(resource,i);
-				break;
-			}
-		} 				
 	}
 
 	public void mouseEntered(MouseEvent arg0) {
@@ -566,6 +519,43 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 		return rootNode;
 	}
 	
+	public static DefaultMutableTreeNode findNode(String target) {
+		//System.out.println("Looking for " + target + "...");
+		DefaultMutableTreeNode node = null;
+		Enumeration<DefaultMutableTreeNode> enumeration = rootNode.breadthFirstEnumeration(); 
+		
+        while(enumeration.hasMoreElements())
+        {
+            //get the node
+            node = (DefaultMutableTreeNode)enumeration.nextElement();
+            //match the string with the user-object of the node
+            if(target.equals(node.getUserObject().toString()))
+            {
+                //tree node with string found
+            	return node;                        
+            }
+        } 
+        return node;
+	}
+	
+	public static String searchCategory(String target) {
+		DefaultMutableTreeNode node = findNode(target);
+		String category = null;
+        if(node != null)
+        {
+            //make the node visible by scroll to it
+            TreeNode[] nodes = model.getPathToRoot(node);
+            TreePath path = new TreePath(nodes);
+            /* int total = path.getPathCount();
+            for(int i=0;i<total;i++) {
+            	System.out.println("NODE: " + path.getPathComponent(i).toString());
+            } */  
+            category = path.getPathComponent(2).toString();
+        } 
+        
+        return category;
+	}
+	
 	public static class SortableTreeNode extends DefaultMutableTreeNode implements Comparable<SortableTreeNode> {
 
 		private static final long serialVersionUID = 1L;
@@ -591,7 +581,6 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 		}
 
 		public void remove() {
-			//SortableTreeNode parent = (SortableTreeNode)getParent();
 			super.removeFromParent();
 		}
 
@@ -628,24 +617,5 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
             }
 			return 1;
 		}
-/*
-		public int compareTo(Object object) throws ClassCastException {
-			String first = this.toString();
-			String second = object.toString();
-            char c = first.charAt(0);
-            if(Character.isDigit(c)) {
-    			String minor = first.substring(0,first.indexOf("-")).trim();
-    			String max = second.substring(0,second.indexOf("-")).trim();
-    			if(Integer.parseInt(minor) > Integer.parseInt(max)) {
-                   return 0;
-    			}
-            } else {
-            	if (first.compareTo(second) == 1) {
-            		return 0;
-            	}	
-            }
-			return 1;
-		}
-*/
 	}
 }

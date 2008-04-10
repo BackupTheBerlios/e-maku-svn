@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -23,9 +22,11 @@ public class SearchDialog extends JDialog implements ActionListener {
 	private JButton search,clean,cancel;
 	private ResultPanel dynamicPanel;
 	private boolean dynamicPanelIsVisible = false;
+	private ReportManagerGUI frame;
 	
-	public SearchDialog(JFrame frame) {
+	public SearchDialog(ReportManagerGUI frame) {
 		super(frame);
+		this.frame = frame;
 		setTitle("Search Tool");
 		setLayout(new BorderLayout());
 		setInterface();
@@ -99,7 +100,7 @@ public class SearchDialog extends JDialog implements ActionListener {
 	public void expandInternalPanel()  {
 		String keywords = pattern.getText();
 		String space = searchSpace.getSelectedItem().toString();
-		dynamicPanel = new ResultPanel(space,keywords);
+		dynamicPanel = new ResultPanel(frame,space,keywords);
 
 		//  Add the details panel to the dialog
 		getContentPane().add (dynamicPanel, BorderLayout.CENTER);
