@@ -11,9 +11,7 @@ public class ResultModel extends AbstractTableModel {
 	private String[] titles = {"Code","Description"};
 	private Class[] types = {String.class,String.class};
 	private Vector<Vector<String>> tableData = new Vector<Vector<String>>();
-	//private Vector<String> recordsVector = new Vector<String>();
 		
-	@SuppressWarnings("unchecked")
 	public void addRow() {
 		Vector<String> vector = new Vector<String>();
 		vector.add("");
@@ -22,16 +20,14 @@ public class ResultModel extends AbstractTableModel {
 		fireTableDataChanged();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void addRow(String code, String description) {
-		Vector vector = new Vector();
+		Vector<String> vector = new Vector<String>();
 		vector.add(code);
 		vector.add(description);
 		tableData.add(vector);
 		fireTableDataChanged();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void clear() {
 		tableData.clear();
 		fireTableDataChanged();
@@ -66,7 +62,6 @@ public class ResultModel extends AbstractTableModel {
 		return types[columnIndex];
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void setValueAt(Object element,int rowIndex, int columnIndex) {
 		tableData.get(rowIndex).set(columnIndex,element.toString());
 	}
@@ -81,15 +76,13 @@ public class ResultModel extends AbstractTableModel {
 	}
 		
 	// This method fills the table of users online
-    public synchronized void setQuery(Vector<Vector<String>> data) {
-
+    public synchronized void setQuery(Vector<Vector<String>> records) {
     	class LoadData extends Thread {
     		private Vector<Vector<String>> data;
 
     		LoadData(Vector<Vector<String>> data) {
     			this.data=data;
     		}
-
     		public void run() {
     			// Cleaning the table
     			clear();
@@ -100,6 +93,6 @@ public class ResultModel extends AbstractTableModel {
     			System.gc();
     		}
       	}
-    	new LoadData(data).start();
+    	new LoadData(records).start();
     }
 }

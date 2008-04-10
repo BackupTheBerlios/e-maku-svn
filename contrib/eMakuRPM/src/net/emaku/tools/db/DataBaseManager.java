@@ -188,10 +188,58 @@ public class DataBaseManager {
 		return queries;	
 	}
 	
-	public static Vector<Vector<String>> getSearchResult(String space, String keywords) {
+	public static Vector<Vector<String>> getQueriesEntries(String keywords) {
 		Vector<Vector<String>> result = new Vector<Vector<String>>();
 		String query = "SELECT codigo,descripcion FROM " +
 				"sentencia_sql WHERE nombre LIKE '%" + keywords + "%' OR descripcion LIKE '%" + keywords + "%'";
+		ResultSet rs = null;
+		try {
+			Statement st = connection.createStatement();
+			rs = st.executeQuery(query);
+			while(rs.next()) {
+				String code = rs.getString(1);
+				String description = rs.getString(2);
+				Vector<String> record = new Vector<String>();
+				record.add(code);
+				record.add(description);
+				result.add(record);
+			} 
+		} catch (SQLException e) {
+			System.out.println("ERROR: " + e.getMessage());
+			e.printStackTrace();
+		}
+
+		return result;	
+	}
+	
+	public static Vector<Vector<String>> getReportsEntries(String keywords) {
+		Vector<Vector<String>> result = new Vector<Vector<String>>();
+		String query = "SELECT codigo,descripcion FROM " +
+				"reportes WHERE nombre LIKE '%" + keywords + "%' OR descripcion LIKE '%" + keywords + "%'";
+		ResultSet rs = null;
+		try {
+			Statement st = connection.createStatement();
+			rs = st.executeQuery(query);
+			while(rs.next()) {
+				String code = rs.getString(1);
+				String description = rs.getString(2);
+				Vector<String> record = new Vector<String>();
+				record.add(code);
+				record.add(description);
+				result.add(record);
+			} 
+		} catch (SQLException e) {
+			System.out.println("ERROR: " + e.getMessage());
+			e.printStackTrace();
+		}
+
+		return result;	
+	}
+	
+	public static Vector<Vector<String>> getFormsEntries(String keywords) {
+		Vector<Vector<String>> result = new Vector<Vector<String>>();
+		String query = "SELECT codigo,descripcion FROM " +
+				"transacciones WHERE nombre LIKE '%" + keywords + "%' OR descripcion LIKE '%" + keywords + "%'";
 		ResultSet rs = null;
 		try {
 			Statement st = connection.createStatement();

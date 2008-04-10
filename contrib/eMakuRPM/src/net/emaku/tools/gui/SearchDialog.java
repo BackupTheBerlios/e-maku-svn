@@ -6,7 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -15,8 +14,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import net.emaku.tools.db.DataBaseManager;
 
 public class SearchDialog extends JDialog implements ActionListener {
 
@@ -33,7 +30,7 @@ public class SearchDialog extends JDialog implements ActionListener {
 		setLayout(new BorderLayout());
 		setInterface();
 
-		setSize(new Dimension(500,140));
+		setSize(new Dimension(600,140));
 		setLocationRelativeTo(frame);
 		setVisible(true);
 	}
@@ -99,9 +96,10 @@ public class SearchDialog extends JDialog implements ActionListener {
 		}
 	}
 	
-	public void expandInternalPanel(Vector<Vector<String>> result)  {
-				
-		dynamicPanel = new ResultPanel(result);
+	public void expandInternalPanel()  {
+		String keywords = pattern.getText();
+		String space = searchSpace.getSelectedItem().toString();
+		dynamicPanel = new ResultPanel(space,keywords);
 
 		//  Add the details panel to the dialog
 		getContentPane().add (dynamicPanel, BorderLayout.CENTER);
@@ -117,8 +115,18 @@ public class SearchDialog extends JDialog implements ActionListener {
 			detailSize = dynamicPanel.getPreferredSize ();
 		}
 
-		//  Increase the height of the dialog to fit the added details area
-		dialogSize.height += detailSize.height; 
+		int total = dynamicPanel.getRecordsTotal();
+		if(total==0) {
+			//  Increase the height of the dialog to fit the added details area
+			dialogSize.height += detailSize.height;
+		} else {
+			int size = total*10;
+			if (size <= 180) {
+				size = 180;
+			}
+			dialogSize.height += size;
+		}
+		
 		setSize(dialogSize);
 		//  Cause the new layout to take effect
 		invalidate ();
@@ -137,11 +145,8 @@ public class SearchDialog extends JDialog implements ActionListener {
 		if (dynamicPanelIsVisible) {
 			collapseInternalPanel();
 		}
-		String space = searchSpace.getSelectedItem().toString();
-		String keywords = pattern.getText();
-		Vector<Vector<String>> data = DataBaseManager.getSearchResult(space,keywords);
 		clean.setEnabled(true);
-		expandInternalPanel(data);
+		expandInternalPanel();
 	}
 	
 	private void clean() {
