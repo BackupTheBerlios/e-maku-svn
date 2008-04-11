@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.ToolTipManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
@@ -75,6 +76,7 @@ public class ReportManagerGUI extends JFrame {
 	private FormWorkSpace formWorkSpace;
 	private QueryWorkSpace queryWorkSpace;
 	private JTabbedPane global;
+	private static JFrame frame;
 	
 	private Vector<String> updates = new Vector<String>();
     private static int MAX_WIN_SIZE_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
@@ -84,6 +86,7 @@ public class ReportManagerGUI extends JFrame {
 		ReportManagerGUI.reportRoot = reportRoot;
 		this.setSize(800,600);
 		this.setTitle("E-Maku Resources Manager 1.0");
+		frame = this;
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -119,6 +122,7 @@ public class ReportManagerGUI extends JFrame {
 		jscroll = new JScrollPane();
 		SortableTreeNode rootNode = new SortableTreeNode("eMaku Resources");
 		tree = new ResourcesTree(this,rootNode);
+		ToolTipManager.sharedInstance().registerComponent(tree);
 		jscroll.setViewportView(tree);
 		return jscroll;
 	}
@@ -130,6 +134,7 @@ public class ReportManagerGUI extends JFrame {
 		SortableTreeNode rootNode = new SortableTreeNode("eMaku Resources");
     	
 		tree = new ResourcesTree(this,rootNode);
+		ToolTipManager.sharedInstance().registerComponent(tree);
 		tree.loadReports(root);
         tree.loadForms();
         tree.loadQueries();
@@ -389,6 +394,10 @@ public class ReportManagerGUI extends JFrame {
 		formsTab.addTab(formPath,formWorkSpace);
 		formEditors.put(formPath,formWorkSpace);	
 		formsTab.setSelectedIndex(formsTab.getTabCount()-1);
+	}
+	
+	public static JFrame getFrame() {
+		return frame;
 	}
 	
 	public void loadQuery(String category, String queryCode) {

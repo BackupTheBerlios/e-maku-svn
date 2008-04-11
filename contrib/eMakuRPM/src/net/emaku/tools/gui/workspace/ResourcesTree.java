@@ -12,6 +12,7 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Vector;
 import java.util.Arrays;
 
@@ -46,6 +47,7 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
     private static DefaultTreeModel model; 
     private Vector<String> forms;
     private Vector<String> queries;
+    private Hashtable<String,String> toolTipHash;
     
 	public ResourcesTree(ReportManagerGUI frame, SortableTreeNode rootNode) {
 		super(rootNode);
@@ -113,7 +115,10 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 	}
 	
 	public void loadForms() {
+		//formHash = DataBaseManager.getForms();
+		//forms = new Vector<String>(formHash.keySet());
 		forms = DataBaseManager.getForms();
+		
 		SortableTreeNode trNode = new SortableTreeNode("General");
 		SortableTreeNode dgtNode = new SortableTreeNode("DrugStore");
 		SortableTreeNode group = null;		
@@ -218,6 +223,7 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
 		rootNode.add(formsNode);
 		rootNode.add(queriesNode);
 		rootNode.add(reportsNode);
+		toolTipHash = DataBaseManager.getToolTips();
 	}
 
 	private int getNumberFromReport(String name) {
@@ -617,5 +623,14 @@ public class ResourcesTree extends JTree implements ActionListener, MouseListene
             }
 			return 1;
 		}
+	}
+	
+	public String getToolTipText(MouseEvent e) {
+		Object tip = null;
+		TreePath path = getPathForLocation(e.getX(), e.getY());
+		if (path != null) {
+			tip = path.getLastPathComponent();
+		}
+		return tip == null ? null : toolTipHash.get(tip.toString());
 	}
 }

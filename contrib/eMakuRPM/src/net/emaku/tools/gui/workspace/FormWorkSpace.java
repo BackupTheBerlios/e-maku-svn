@@ -2,6 +2,7 @@ package net.emaku.tools.gui.workspace;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -9,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -34,10 +36,11 @@ public class FormWorkSpace extends JSplitPane implements ActionListener {
 	private JTextField nameField;
 	private JTextField descField;
 	private JTextField driverField;
-	private JTextField argsDriverField;
+	private String argsDriverField;
+	private JButton argsDriverButton;
 	private JTextField methodField;
 	private JTextField argsMethodField;
-	private JPanel northPanel = new JPanel(new BorderLayout());
+	private JPanel northPanel;
 	private FormsData data;
 	private String formCode;
 	private JFrame externalFrame;
@@ -47,6 +50,7 @@ public class FormWorkSpace extends JSplitPane implements ActionListener {
 		super(JSplitPane.VERTICAL_SPLIT);
 		this.formCode = formCode;
 		this.data = data;
+		northPanel = new JPanel(new BorderLayout());
 		setDataPanel();
 		
 		editor = new FormEditor(data.getProfile());
@@ -89,25 +93,19 @@ public class FormWorkSpace extends JSplitPane implements ActionListener {
 	}
 	
 	private void setDataPanel(){
-		JPanel labels = new JPanel(new GridLayout(6, 1));
-		JPanel fields = new JPanel(new GridLayout(6, 1));
+		JPanel labels = new JPanel(new GridLayout(3, 1));
+		JPanel fields = new JPanel(new GridLayout(3, 1));
 		JLabel nameLabel = new JLabel("Name: ");
 		labels.add(nameLabel);
 		JLabel descLabel = new JLabel("Description: ");
 		labels.add(descLabel);
 		JLabel driverLabel = new JLabel("Driver: ");
 		labels.add(driverLabel);
-		JLabel argsDriverLabel = new JLabel("Driver Args: ");
-		labels.add(argsDriverLabel);
-		JLabel methodLabel = new JLabel("Method: ");
-		labels.add(methodLabel);
-		JLabel argsMethodLabel = new JLabel("Method Args: ");
-		labels.add(argsMethodLabel);
 		
 		nameField = new JTextField(10);
-		nameField.setText(data.getName());
+		nameField.setText(data.getDescription());
 		fields.add(nameField);
-
+		
 		descField = new JTextField(10);
 		descField.setText(data.getDescription());
 		fields.add(descField);
@@ -115,26 +113,61 @@ public class FormWorkSpace extends JSplitPane implements ActionListener {
 		driverField = new JTextField(10);
 		driverField.setText(data.getDriver());
 		fields.add(driverField);
-
-		argsDriverField = new JTextField(10);
-		argsDriverField.setText(data.getDriverArgs());
-		fields.add(argsDriverField);
-
-		methodField = new JTextField(10);
-		methodField.setText(data.getMethod());
-		fields.add(methodField);
-
-		argsMethodField = new JTextField(10);
-		argsMethodField.setText(data.getMethodArgs());
-		fields.add(argsMethodField);
 		
-		northPanel.add(labels,BorderLayout.WEST);
-		northPanel.add(fields,BorderLayout.CENTER);
+		argsDriverField = data.getDriverArgs();
+		
+		JPanel top = new JPanel(new BorderLayout());
+		top.add(labels,BorderLayout.WEST);
+		top.add(fields,BorderLayout.CENTER);
+		
+		JPanel medium = new JPanel(new BorderLayout());
+		JLabel argsDriverLabel = new JLabel("Driver Args: ");
+		labels.add(argsDriverLabel);
+		argsDriverButton = new JButton("Edit");	
+		argsDriverButton.setMnemonic('E');
+		argsDriverButton.setPreferredSize(new Dimension(50,5));
+		argsDriverButton.setBorder(BorderFactory.createEtchedBorder());
+		argsDriverButton.setActionCommand("ARGSDRIVER");
+		argsDriverButton.addActionListener(this);
+		
+		JPanel internal = new JPanel(new BorderLayout());
+		internal.add(argsDriverButton,BorderLayout.CENTER);
+		
+		JPanel edit = new JPanel(new BorderLayout());
+		edit.add(internal,BorderLayout.WEST);
+		medium.add(argsDriverLabel,BorderLayout.WEST);
+		medium.add(edit,BorderLayout.CENTER);
+		
+		JPanel external = new JPanel(new BorderLayout());
+		external.add(medium,BorderLayout.CENTER);
+		
+		JPanel labels2 = new JPanel(new GridLayout(3, 1));
+		JPanel fields2 = new JPanel(new GridLayout(3, 1));
+		
+		JLabel methodLabel = new JLabel("Method: ");
+		labels2.add(methodLabel);
+		JLabel argsMethodLabel = new JLabel("Method Args: ");
+		labels2.add(argsMethodLabel);
+		
+		methodField = new JTextField(10);
+		methodField.setText(data.getDriver());
+		fields2.add(methodField);
+		argsMethodField = new JTextField(10);
+		argsMethodField.setText(data.getDriver());
+		fields2.add(argsMethodField);		
+		
+		JPanel bottom = new JPanel(new BorderLayout());
+		bottom.add(labels2,BorderLayout.WEST);
+		bottom.add(fields2,BorderLayout.CENTER);
+		
+		northPanel.add(top,BorderLayout.NORTH);
+		northPanel.add(external,BorderLayout.CENTER);
+		northPanel.add(bottom,BorderLayout.SOUTH);
 	}
 	
 	public FormsData getData() {
 		return new FormsData(nameField.getText(),descField.getText(),driverField.getText(),
-				argsDriverField.getText(),methodField.getText(),argsMethodField.getText(),
+				argsDriverField,methodField.getText(),argsMethodField.getText(),
 				editor.getProfile());
 	}
 	
@@ -142,11 +175,19 @@ public class FormWorkSpace extends JSplitPane implements ActionListener {
 		nameField.setText(form.getName());
 		descField.setText(form.getDescription());
 		driverField.setText(form.getDriver());
-		argsDriverField.setText(form.getDriverArgs());
+		argsDriverField = form.getDriverArgs();
 		methodField.setText(form.getMethod());
 		argsMethodField.setText(form.getMethodArgs());
 		
 		editor.updateText(form.getProfile());
+	}
+	
+	public String getDriverArgs() {
+		return argsDriverField;
+	}
+	
+	public void setDriverArgs(String value) {
+		argsDriverField = value;
 	}
 	
 	private void openExternalZoom() {
@@ -203,6 +244,11 @@ public class FormWorkSpace extends JSplitPane implements ActionListener {
 			openExternalZoom();
 			return;
 		}
+		if ("ARGSDRIVER".equals(action)) {
+			new ArgsDialog(this);
+			return;
+		}
+
 	}
 }
 

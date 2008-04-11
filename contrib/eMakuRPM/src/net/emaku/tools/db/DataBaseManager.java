@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Hashtable;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -22,6 +23,7 @@ public class DataBaseManager {
 	
 	private static Properties properties;
 	private static Connection connection;
+	private static Hashtable<String,String> objectCodes = new Hashtable<String,String>();
 	
 	public static void loadDBProperties(Properties properties) { 
 		DataBaseManager.properties = properties;
@@ -106,14 +108,19 @@ public class DataBaseManager {
 	
 	public static Vector<String> getForms() {
 		Vector<String> formCodes = new Vector<String>();
-		String query = "SELECT codigo FROM transacciones ORDER BY codigo";
+		String query = "SELECT codigo,nombre FROM transacciones ORDER BY codigo";
 		ResultSet rs = null;
 		try {
 			Statement st = connection.createStatement();
 			rs = st.executeQuery(query);
 			while (rs.next()) {
 				String code = rs.getString(1).trim();
+				String name = rs.getString(2).trim();
+				if (name == null) {
+					name = "Description undefined";
+				}
 				formCodes.add(code);
+				objectCodes.put(code, name);
 			} 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -123,21 +130,50 @@ public class DataBaseManager {
 	}
 	
 	public static Vector<String> getQueries() {
-		Vector<String> formCodes = new Vector<String>();
-		String query = "SELECT codigo FROM sentencia_sql ORDER BY codigo";
+		Vector<String> queryCodes = new Vector<String>();
+		String query = "SELECT codigo,nombre FROM sentencia_sql ORDER BY codigo";
 		ResultSet rs = null;
 		try {
 			Statement st = connection.createStatement();
 			rs = st.executeQuery(query);
 			while (rs.next()) {
 				String code = rs.getString(1).trim();
-				formCodes.add(code);
+				String name = rs.getString(2);
+				if (name == null) {
+					name = "Description undefined";
+				}
+				queryCodes.add(code);
+				objectCodes.put(code, name);
 			} 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return formCodes;	
+		return queryCodes;	
+	}
+	
+	public static void getReportTips() {
+		String query = "SELECT codigo,nombre FROM reportes ORDER BY codigo";
+		ResultSet rs = null;
+		try {
+			Statement st = connection.createStatement();
+			rs = st.executeQuery(query);
+			while (rs.next()) {
+				String code = rs.getString(1).trim();
+				String name = rs.getString(2).trim();
+				if (name == null) {
+					name = "Description undefined";
+				}
+				objectCodes.put(code, name);
+			} 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static Hashtable<String,String> getToolTips() {
+		getReportTips();
+		return objectCodes;
 	}
 
 	public static FormsData getForm(String code) {
