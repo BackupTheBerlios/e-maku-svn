@@ -162,6 +162,9 @@ public class ACPSender extends Thread{
 	                transaction.addContent(form.detachRootElement());
 	                element.addContent(transaction);
 	                selement.addContent(element);
+	                bufferIn.close();
+	                bufferIn = null;
+	                form = null;
                 }
 /*                catch (MalformedByteSequenceException e) {
                 	e.printStackTrace();
@@ -176,25 +179,31 @@ public class ACPSender extends Thread{
             }
             
         	cnx.setRootElement(selement);
-            SocketWriter.writing(sock,compressDocument(cnx));
-    		StatementsClosingHandler.close(rs);
-            StatementsClosingHandler.close(st);
+        	Document doc = compressDocument(cnx);
+            SocketWriter.writing(sock,doc);
+            selement.removeContent();
+            selement = null;
+    		//StatementsClosingHandler.close(rs);
+            //StatementsClosingHandler.close(st);
+            doc = null;
+            rs.close();
             rs=null;
+            st.close();
             st=null;
             
         	System.gc();
         	synchronized(sock) {
-            Document prueba = new Document();
-            prueba.setRootElement(new Element("ACPData"));
-    		Element el = new Element("CACHE-QUERY").setText("CH00003");
-    		prueba.getRootElement().addContent(el);
-            SocketWriter.writing(sock,compressDocument(prueba));
- 
-            Document prueba2 = new Document();
-            prueba2.setRootElement(new Element("ACPData"));
-    		Element el2 = new Element("CACHE-QUERY").setText("CH00004");
-    		prueba2.getRootElement().addContent(el2);
-            SocketWriter.writing(sock,compressDocument(prueba2));
+	            Document prueba = new Document();
+	            prueba.setRootElement(new Element("ACPData"));
+	    		Element el = new Element("CACHE-QUERY").setText("CH00003");
+	    		prueba.getRootElement().addContent(el);
+	            SocketWriter.writing(sock,compressDocument(prueba));
+	 
+	            Document prueba2 = new Document();
+	            prueba2.setRootElement(new Element("ACPData"));
+	    		Element el2 = new Element("CACHE-QUERY").setText("CH00004");
+	    		prueba2.getRootElement().addContent(el2);
+	            SocketWriter.writing(sock,compressDocument(prueba2));
         	}
 
         }

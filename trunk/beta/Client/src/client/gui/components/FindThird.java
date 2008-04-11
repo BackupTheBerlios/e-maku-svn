@@ -1,54 +1,20 @@
 package client.gui.components;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.StringTokenizer;
-import java.util.Vector;
+import java.awt.*;
+import java.awt.event.*;
+import java.lang.reflect.*;
+import java.util.*;
 
-import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.ListCellRenderer;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
+import javax.swing.*;
+import javax.swing.event.*;
 
-import org.jdom.Document;
-import org.jdom.Element;
+import org.jdom.*;
 
-import common.gui.components.AnswerEvent;
-import common.gui.components.AnswerListener;
-import common.gui.components.VoidPackageException;
-import common.gui.components.XMLTextField;
-import common.gui.forms.EndEventGenerator;
-import common.gui.forms.GenericForm;
-import common.gui.forms.InstanceFinishingListener;
-import common.gui.forms.NotFoundComponentException;
-import common.misc.Icons;
-import common.misc.language.Language;
-import common.transactions.TransactionServerException;
-import common.transactions.TransactionServerResultSet;
+import common.gui.components.*;
+import common.gui.forms.*;
+import common.misc.*;
+import common.misc.language.*;
+import common.transactions.*;
 
 /**
  * FindThird.java Creado el 25-abr-2005
@@ -116,6 +82,7 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
 	private boolean multiRecords = true;
 	private boolean containsSecondName= true;
 	private String exportValue;
+	private Font font;
 	
     public FindThird(final GenericForm form,Document doc) {
         
@@ -209,6 +176,20 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
             else if ("exportValue".equals(e.getAttributeValue("attribute"))) {
         		exportValue  = e.getValue();
             }
+            else if ("font".equals(e.getAttributeValue("attribute"))) { 
+        		try {
+    				StringTokenizer STfont = new StringTokenizer(e.getValue(), ",");
+    				font= new Font(
+    				                STfont.nextToken(),
+    				                Integer.parseInt(STfont.nextToken()),
+    				                Integer.parseInt(STfont.nextToken()));
+    				
+    			} catch (NumberFormatException NFEe) {
+    				font = null;
+    			} catch (NoSuchElementException NSEEe) {
+    				font = null;
+    			}
+            }
             else if ("subarg".equals(e.getName())) {
 	            	Iterator it = e.getChildren().iterator();
 	            	while (it.hasNext()) {
@@ -293,12 +274,24 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
         JCBdireccion.setEnabled(enabled);
         JCBtelefono = new JComboBox();
         JCBtelefono.setEnabled(enabled);
-
+        JLabel label = null;
         if (!containsSecondName) {
-        	JPetiquetas1.add(new JLabel(Language.getWord("VER")));
+        	label = new JLabel(Language.getWord("VER"));
+        	if (font!=null) {
+        		label.setFont(font);
+        	}
+        	JPetiquetas1.add(label);
         }
-        JPetiquetas1.add(new JLabel(Language.getWord("ADDRESS")));
-        JPetiquetas1.add(new JLabel(Language.getWord("PHONE")));
+        label = new JLabel(Language.getWord("ADDRESS"));
+        if (font!=null) {
+    		label.setFont(font);
+    	}
+        JPetiquetas1.add(label);
+        label = new JLabel(Language.getWord("PHONE"));
+        if (font!=null) {
+    		label.setFont(font);
+    	}
+        JPetiquetas1.add(label);
         
         if (!containsSecondName) {
         	JPfields1.add(JPver);
@@ -407,7 +400,14 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
         
         this.addTab(tab1, new ImageIcon(this.getClass().getResource(Icons.getIcon("NTERCERO"))),JPgen);
         this.addTab(tab2, new ImageIcon(this.getClass().getResource(Icons.getIcon("ETERCERO"))),JPmod);
-        
+        if (font!=null) {
+			XMLTFfind.setFont(font);
+			XMLTFfind.getLabel().setFont(font);
+		    JCBfined.setFont(font);
+		    JCBver.setFont(font);
+		    JCBdireccion.setFont(font);
+		    JCBtelefono.setFont(font);
+        }
     }
 
     /**

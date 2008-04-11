@@ -50,6 +50,7 @@ public class SocketWriter {
 	            
 	            ByteArrayInputStream bufferIn = new ByteArrayInputStream(bufferOut.toByteArray());
 	            bufferOut.close();
+	            bufferOut = null;
 	            return sendBuffer(sock,bufferIn);
 	        }
 	        catch (FileNotFoundException e) {

@@ -258,7 +258,10 @@ public class ReportMaker extends Thread {
 			end = calendar.getTimeInMillis();
 			System.out.println("paquete escrito en "+((end-init)/1000)+" segundos"); 
 	        rs.close();
-
+	        rs = null;
+	        os.close();
+	        os = null;
+	        System.gc();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (SQLNotFoundException e) {
