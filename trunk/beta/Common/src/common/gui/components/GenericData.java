@@ -1142,8 +1142,7 @@ public class GenericData extends JPanel implements DateListener,
 				}
 				if (xmltf.isCalculateDate()) {
 					try {
-						StringTokenizer stk = new StringTokenizer(xmltf
-								.getCalculateDate(), "+");
+						StringTokenizer stk = new StringTokenizer(xmltf.getCalculateDate(), "+");
 						if (stk.countTokens() < 2)
 							stk = new StringTokenizer(xmltf.getCalculateDate(),"-");
 						String val1 = GFforma.getExternalValueString(stk.nextToken());
@@ -1161,9 +1160,10 @@ public class GenericData extends JPanel implements DateListener,
 							}
 							Calendar cal = Calendar.getInstance();
 							cal.setTime(date);
-							cal.add(Calendar.DAY_OF_MONTH, Integer.parseInt(val2));
+							cal.add(Calendar.DAY_OF_MONTH, Double.valueOf(val2).intValue());
 							Format formatter = new SimpleDateFormat(xmltf.getFormatDate());
 							xmltf.setText(formatter.format(cal.getTime()));
+							
 							if (xmltf.isSendRecord() && !xmltf.getText().equals(oldValue)) {
 								notificando(xmltf, formatter.format(cal.getTime()));
 							}
