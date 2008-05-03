@@ -104,6 +104,8 @@ public class PrintingManager {
 	private void printPDF() throws PrinterException {
 		
 		PrinterJob printJob = PrinterJob.getPrinterJob();
+		System.out.println("printer: "+printer);
+		System.out.println("selectPrintService: "+selectPrinservice(printer));
 		printJob.setPrintService(selectPrinservice(printer));
 		PageFormat pf = printJob.defaultPage();
 		boolean printFile=true;

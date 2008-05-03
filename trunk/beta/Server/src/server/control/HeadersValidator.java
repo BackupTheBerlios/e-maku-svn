@@ -185,6 +185,15 @@ public class HeadersValidator {
             /* Recepcion de un paquete de solicitud de un reporte */
             else if (nom_raiz.equals("REPORTREQUEST")) {
                 System.out.println("Nueva solicitud de un reporte");
+                XMLOutputter xmlOutputter = new XMLOutputter();
+                xmlOutputter.setFormat(Format.getPrettyFormat());
+                
+                try {
+                    xmlOutputter.output(doc,System.out);
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
                 new ReportMaker(raiz, sock, false);
             }
             /* Solicitud de reporte en formato xls */

@@ -59,6 +59,8 @@ public class LNDocuments {
     private static Element pack;
     private static LNGenericSQL LNGtransaccion;
     private static double partidaDoble = 0;
+    private static String date;
+    private static String minDate;
     /*
      * Estos seis atributos son necesarios para poder generar un 
      * documento, ellos pueden venir con la transaccion, o 
@@ -68,6 +70,7 @@ public class LNDocuments {
     
     private static String idDocument;
     private static String linkDocument;
+    private static String multiDocument;
     private static String rfDocument;
     private static String consecutive;
     private static boolean cash;
@@ -496,6 +499,7 @@ public class LNDocuments {
 	                                }
 	                            }
 	                        }
+	                        
 	                        else {
 	    	                    undoTransaction(Language.getWord("ERR_PACKAGE_NOT_FOUND")+" "+subargs.getValue());
 	    	                    return;
@@ -515,6 +519,93 @@ public class LNDocuments {
                             }
                         }
 	                }
+	                else if (sql.getName().equals("multiDocument")) {
+	                	int repeat = Integer.parseInt(subpackage.getValue());
+	                	Element e = new Element("multipackage");
+	                    while (j.hasNext()) {
+	                    	e.addContent((Element)((Element)j.next()).clone());
+	                    }
+                		LNGtransaccion.setGenerable(true);
+	                	for (int h=0;h<repeat;h++) {
+	                        CacheKeys.cleanKeys();
+	                        CacheKeys.setDate(LNDocuments.date);
+	                        CacheKeys.setDate(LNDocuments.minDate);
+	                		LNGtransaccion.setGenerable(true);
+	                		System.out.println("Documento "+h);
+	                		LNGtransaccion.removeKey("ndocumento");
+	                    	// Se obtiene su consecutivo
+	                    	String consecutiveLinkDocument = LinkingCache.getConsecutive(bd,multiDocument);
+	                    	// Se crea el documento alterno
+	                    	createDocument(multiDocument.trim(),consecutiveLinkDocument);
+	                    	
+	                    	String keyDocument = getDocumentKey(multiDocument,consecutiveLinkDocument);
+	    	                
+	    	                Element infoDocumentPack = new Element("package");
+	                        infoDocumentPack.addContent(new Element("field").setText(getDocumentKey(multiDocument,consecutiveLinkDocument)));
+	                        infoDocumentPack.addContent(new Element("field").setText(keyDocument));
+	                        infoDocumentPack.addContent(new Element("field").setText(EmakuServerSocket.getLoging(sock)));
+	                        
+	                        if (cash) {
+		                        infoDocumentPack.addContent(new Element("field").setText(EmakuServerSocket.getLoging(sock)));
+	                            getTransaction(LNGtransaccion,"SCI0016",infoDocumentPack);
+	                        }
+	                        else {
+	                            getTransaction(LNGtransaccion,"SCI0017",infoDocumentPack);
+	                        }
+	    	                LNGtransaccion.setKey("ndocumento",keyDocument);
+	    	                
+		                    
+		                    
+		                    Iterator isubargs = sql.getChildren().iterator();
+		                    Iterator ipackage = e.getChildren().iterator();
+
+		                    while (isubargs.hasNext()) {
+		                        Element subargs = (Element)isubargs.next();
+		                        Element msubpackage = (Element)ipackage.next();
+		                        
+		                    	if ("addKey".equals(subargs.getAttributeValue("attribute"))) {
+		                    		LNGtransaccion.setGenerable(false);
+		                    	} else if("removeKey".equals(subargs.getAttributeValue("attribute"))	){
+		                    		LNGtransaccion.removeKey(subargs.getValue());
+		                    		CacheKeys.removeKey(subargs.getValue());
+				            		LNGtransaccion.setGenerable(false);
+				            	}
+				            	else {
+				            		LNGtransaccion.setGenerable(true);
+				            	}
+		    
+		                        if (subargs.getName().equals("arg")) {
+		    			            if (((Element)msubpackage.getChildren().iterator().next()).getName().equals("field")) {
+		    			                getTransaction(LNGtransaccion,subargs.getValue(), msubpackage);
+		    			            }
+		    			            else {
+		    			        		getfields(LNGtransaccion,subargs.getValue(),msubpackage);
+		    			            }
+		                        }
+		                        else if (subargs.getName().equals("LNData")) {
+		                            if (((Element)msubpackage.getChildren().iterator().next()).getName().equals("field")) {
+			    	                    validLNData(subargs,msubpackage);
+		                            }
+		                            else {
+		                    	        Iterator ipack = msubpackage.getChildren().iterator();
+		                                while (ipack.hasNext()) {
+		                                    Element epack = (Element)ipack.next();
+		    	    	                    validLNData(subargs,epack);
+		                                }
+		                            }
+		                        }
+		                        
+		                        else {
+		    	                    undoTransaction(Language.getWord("ERR_PACKAGE_NOT_FOUND")+" "+subargs.getValue());
+		    	                    return;
+		                        }
+		                    }
+			        		LinkingCache.incrementeConsecutive(bd,multiDocument);
+
+	                	}
+    	                multiDocument=null;
+
+                    }
 	                else {
 	                    undoTransaction(Language.getWord("ERR_PACKAGE_NOT_FOUND")+" "+sql.getName());
 	                    return;
@@ -522,7 +613,7 @@ public class LNDocuments {
 	                }
 	            }
 	            catch(NoSuchElementException NSEEe) {
-	            	
+	            	NSEEe.printStackTrace();
 	            } 
 
 	        }
@@ -949,6 +1040,10 @@ public class LNDocuments {
             else if (subpackage.getAttributeValue("attribute").equals("linkDocument")) {
             	LNDocuments.linkDocument=value;
             }
+            // Multi Dcument
+            else if (subpackage.getAttributeValue("attribute").equals("multiDocument")) {
+            	LNDocuments.multiDocument=value;
+            }
             else if (subpackage.getAttributeValue("attribute").equals("rfDocument")) {
             	LNDocuments.rfDocument=value;
             }
@@ -964,6 +1059,8 @@ public class LNDocuments {
             else if (subpackage.getAttributeValue("attribute").equals("date")) {
                 GregorianCalendar fecha = new GregorianCalendar();
                 SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                LNDocuments.date =formato.format(fecha.getTime());
+                LNDocuments.minDate = formato.format(fecha.getTime());
                 CacheKeys.setDate(formato.format(fecha.getTime()));
             	CacheKeys.setMinDate(formato.format(fecha.getTime()));
             }

@@ -838,7 +838,29 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
         return this;
     }
 
-    /**
+    public Element getKeyPackage() throws VoidPackageException {
+
+        Element pack = new Element("package");
+
+    	try {
+	        String keyFind = Vkeys.get(JCBfined.getSelectedIndex());
+	        DataThird DTdata = Hthird.get(keyFind);
+	        
+	        Element id = new Element("field");
+	        id.setText(keyFind);
+	        id.setAttribute("attribute","key");
+	        id.setAttribute("name","idTercero");
+	        pack.addContent(id);
+    	}
+    	catch(ArrayIndexOutOfBoundsException AIOOBE) {
+    		if (!returnBlankPackage) {
+    			throw new VoidPackageException(Language.getWord("ERR_NOT_SELECTED_THIRD"));
+    		}
+    	}
+        return pack;
+    }
+
+	/**
      * Este metodo retorna un elemento de un terecero definido tabla: tercero_def
      * @return retorna un Elemento
      * @throws VoidPackageException 
