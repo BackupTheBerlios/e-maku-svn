@@ -84,10 +84,22 @@ public class LNDocuments {
     private static final String ANNUL_DOCUMENT = "annulDocument";
     public static final String DELETE_DOCUMENT = "deleteDocument";
     public static final String EDIT_DOCUMENT = "editDocument";
+    public static String ndocument;
     
-    /**
-     * 
+    /*
+     *  Inicializando variables estaticas en instanciacion de la clase
      */
+    
+    {
+        idDocument = null;
+        linkDocument = null;
+        multiDocument = null;
+        rfDocument = null;
+        consecutive = null;
+        cash = false;
+        lockDocument = false;
+    };
+    
     public LNDocuments(SocketChannel sock,Document doc,	Element pack, String idTransaction) {
     	makeTransaction(sock,doc,pack,idTransaction);
     }
@@ -199,7 +211,7 @@ public class LNDocuments {
 	                         * se hace la siguiente consulta
 	                         */
 	                        
-	                        String keyDocument = getDocumentKey(idDocument,consecutive);
+	                        ndocument = getDocumentKey(idDocument,consecutive);
 	                    	
 	                    
 	                    	/*
@@ -214,7 +226,7 @@ public class LNDocuments {
 		    	                
 		    	                Element infoDocumentPack = new Element("package");
 		                        infoDocumentPack.addContent(new Element("field").setText(getDocumentKey(linkDocument,consecutiveLinkDocument)));
-		                        infoDocumentPack.addContent(new Element("field").setText(keyDocument));
+		                        infoDocumentPack.addContent(new Element("field").setText(ndocument));
 		                        infoDocumentPack.addContent(new Element("field").setText(EmakuServerSocket.getLoging(sock)));
 		                        
 		                        if (cash) {
@@ -224,11 +236,9 @@ public class LNDocuments {
 		                        else {
 		                            getTransaction(LNGtransaccion,"SCI0017",infoDocumentPack);
 		                        }
-		    	                
-		    	                linkDocument=null;
 	                        }
 	                        
-	    	                LNGtransaccion.setKey("ndocumento",getDocumentKey(idDocument,consecutive));
+	    	                LNGtransaccion.setKey("ndocumento",ndocument);
 	    	                
 	    	                /*
 	    	                 * Una vez almacenado el documento se procede a almacenar la informacion de control
@@ -522,8 +532,11 @@ public class LNDocuments {
 	                else if (sql.getName().equals("multiDocument")) {
 	                	int repeat = Integer.parseInt(subpackage.getValue());
 	                	Element e = new Element("multipackage");
+	                	int n=0;
 	                    while (j.hasNext()) {
-	                    	e.addContent((Element)((Element)j.next()).clone());
+	                    	Element sb = (Element)((Element)j.next()).clone();
+	                    	e.addContent(sb);
+	                    	System.out.println("paquete "+(n++)+" valor "+sb.getValue());
 	                    }
                 		LNGtransaccion.setGenerable(true);
 	                	for (int h=0;h<repeat;h++) {
@@ -542,7 +555,7 @@ public class LNDocuments {
 	    	                
 	    	                Element infoDocumentPack = new Element("package");
 	                        infoDocumentPack.addContent(new Element("field").setText(getDocumentKey(multiDocument,consecutiveLinkDocument)));
-	                        infoDocumentPack.addContent(new Element("field").setText(keyDocument));
+	                        infoDocumentPack.addContent(new Element("field").setText(ndocument));
 	                        infoDocumentPack.addContent(new Element("field").setText(EmakuServerSocket.getLoging(sock)));
 	                        
 	                        if (cash) {
@@ -633,8 +646,10 @@ public class LNDocuments {
 		         * correspondiente.
 		         */
 		        if (CREATE_DOCUMENT.equals(LNDocuments.actionDocument)) {
+		        	System.out.println("Se creo un documento, avanzando consecutivo...");
 	        		LinkingCache.incrementeConsecutive(bd,idDocument);
 	        		if (linkDocument!=null){
+	        			System.out.println("Se creo un documento enlace, avanzando consecutivo...");
 	        			LinkingCache.incrementeConsecutive(bd,linkDocument);
 	        		}
 	        	} else if (DELETE_DOCUMENT.equals(LNDocuments.actionDocument)) {
