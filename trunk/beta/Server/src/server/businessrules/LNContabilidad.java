@@ -152,7 +152,15 @@ public class LNContabilidad {
 							String account = STval.nextToken();
 							String col = STval.nextToken();
 							colData.addElement(col);
-							colAccount.addElement(account);
+							System.out.println("Account: "+col);
+							if (account.equals("getName")) {
+								System.out.println("Desde getName "+CacheKeys.getKey("account"));
+								colAccount.addElement(CacheKeys.getKey("account"));
+							}
+							else {
+								System.out.println("Su valor...");
+								colAccount.addElement(account);
+							}
 						} catch (NoSuchElementException NSEEe) {
 							NSEEe.printStackTrace();
 						}
@@ -790,7 +798,7 @@ public class LNContabilidad {
 			boolean debito = false;
 			String account = colAccount.get(k);
 			
-
+			System.out.println("cuenta: "+account);
 
 			/*
 			 * Ser verifica si en las columnas viene especificado el codigo del
@@ -798,7 +806,7 @@ public class LNContabilidad {
 			 * columna para obtener el codigo del producto.
 			 */
 
-			if (getColIdProdServ() > -1) {
+			if (LinkingCache.isPCInventarios(bd, account) && getColIdProdServ() > -1) {
 				Element eIdProdServ = (Element) colElement
 						.get(getColIdProdServ());
 				idProdServ = (String) eIdProdServ.getText();

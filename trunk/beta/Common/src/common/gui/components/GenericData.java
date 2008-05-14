@@ -817,13 +817,13 @@ public class GenericData extends JPanel implements DateListener,
 			if ("conditional".equals(arg.getAttributeValue("attribute"))){
 				String s = arg.getValue();
 				s = GFforma.parseFormula(s);
+				System.out.println("formula: "+s+" evaluado: "+GFforma.eval(s));
 				error = !(Boolean) GFforma.eval(s);
 			}
 			if ("errorMessage".equals(arg.getAttributeValue("attribute"))) {
 				errorMessage = arg.getValue();
 			}
 		}
-		
 		if (error) {
 			if (errorMessage!=null) {
 				throw new Exception(errorMessage);
@@ -1142,7 +1142,8 @@ public class GenericData extends JPanel implements DateListener,
 				}
 				if (xmltf.isCalculateDate()) {
 					try {
-						StringTokenizer stk = new StringTokenizer(xmltf.getCalculateDate(), "+");
+						StringTokenizer stk = new StringTokenizer(xmltf
+								.getCalculateDate(), "+");
 						if (stk.countTokens() < 2)
 							stk = new StringTokenizer(xmltf.getCalculateDate(),"-");
 						String val1 = GFforma.getExternalValueString(stk.nextToken());
@@ -1160,10 +1161,9 @@ public class GenericData extends JPanel implements DateListener,
 							}
 							Calendar cal = Calendar.getInstance();
 							cal.setTime(date);
-							cal.add(Calendar.DAY_OF_MONTH, Double.valueOf(val2).intValue());
+							cal.add(Calendar.DAY_OF_MONTH, Integer.parseInt(val2));
 							Format formatter = new SimpleDateFormat(xmltf.getFormatDate());
 							xmltf.setText(formatter.format(cal.getTime()));
-							
 							if (xmltf.isSendRecord() && !xmltf.getText().equals(oldValue)) {
 								notificando(xmltf, formatter.format(cal.getTime()));
 							}

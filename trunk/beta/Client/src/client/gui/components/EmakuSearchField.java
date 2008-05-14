@@ -62,6 +62,8 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 	private int maxlength;
 	private boolean withPanel = true;
 	private String exportValue;
+	private String nameField;
+	private String key;
 	private Vector<String> sqlCode = new Vector<String>();
 	private boolean searchQuery = false;
 
@@ -99,10 +101,16 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 			} else if ("exportValue".equals(name)) {
 				this.exportValue=value;
 			}
-			else if ("sqlCode".equals(elm.getAttributeValue("attribute"))) {
+			else if ("sqlCode".equals(name)) {
 				sqlCode.add(elm.getValue());
 				searchQuery = true;
 			} 		
+			else if ("addAttribute".equals(name)) {
+				key = value;
+			}
+         	else if ("nameField".equals(name)) {
+                nameField = value;
+        	}
 		}
 		
 		XMLTField = new XMLTextField(labelName,size,maxlength);
@@ -344,8 +352,23 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 	
 	public Element getPackage() throws VoidPackageException {
         Element pack = new Element("package");
-        pack.addContent(new Element("field").setText(XMLTField.getText()));
-    	return pack;
+        String data = XMLTField.getText();
+        if (!data.equals("")) {
+        	Element element = new Element("field");
+        	element.setText(XMLTField.getText());
+        	if (key!=null) {
+        		element.setAttribute("attribute",key);
+        	}
+        	if (nameField!=null) {
+        		element.setAttribute("name",nameField);
+        	}
+
+        	pack.addContent(element);
+    		return pack;
+        }
+        else {
+        	throw new VoidPackageException(XMLTField.getLabel().getText());
+        }
 	}
 
 	
