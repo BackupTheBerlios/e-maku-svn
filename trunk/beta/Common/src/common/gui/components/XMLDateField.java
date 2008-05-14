@@ -170,6 +170,17 @@ implements Couplable,KeyListener, DocumentListener, AnswerListener, InstanceFini
         return pack;
     }
 
+    public Element getOnlyDatePackage() throws VoidPackageException {
+        Element pack = new Element("package");
+        if (this.getDate()!=null && !this.getDate().equals("")) {
+            Element field = new Element("field");
+            SimpleDateFormat sdf = new SimpleDateFormat(this.getDateFormatString());
+            field.setText(sdf.format(this.getDate()).substring(0,11));
+            pack.addContent(field);
+        }
+        return pack;
+    }
+
     public void arriveAnswerEvent(AnswerEvent AEe) {
     	DateFormat  df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     	String date = "";

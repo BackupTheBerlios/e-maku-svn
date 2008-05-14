@@ -848,7 +848,9 @@ public class LinkingCache {
 			consecutive = rs.getString(1);
 		}
 		Hconsecutive.remove("K-"+bd+"-"+key);
-		Hconsecutive.put("K-"+bd+"-"+key,consecutive);
+		if (consecutive!=null) {
+			Hconsecutive.put("K-"+bd+"-"+key,consecutive);
+		}
 		incrementeConsecutive(bd,key);
         StatementsClosingHandler.close(st);
         StatementsClosingHandler.close(rs);

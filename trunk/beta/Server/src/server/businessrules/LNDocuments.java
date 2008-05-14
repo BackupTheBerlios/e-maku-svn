@@ -369,12 +369,15 @@ public class LNDocuments {
                         }
 	                } else if (actionDocument.equals(DELETE_DOCUMENT)) {
 		                	/*
-		                	 * El primer paquete recibido del cliente debe ser el numero de documento
-		                	 * a borrar, se lo obtiene para adicionar su llave primaria para poder
+		                	 * se recibe  el numero de documento a borrar
+		                	 * se lo obtiene para adicionar su llave primaria para poder
 		                	 * hacer los procedimientos necesarios para la anulacion
 		                	 */
 		                	String numero = subpackage.getValue();
 	    	                String key = getPrimaryKey(numero);
+                        	if (i.hasNext()) {
+                        		subpackage = (Element)j.next();
+                        	}
 	    	                
 	                        /*
 	                         * Si no existe fecha definida en las caches, entonces el segundo argumento a recibir
@@ -391,15 +394,8 @@ public class LNDocuments {
 
 	    	             
                         if (key==null) {
-                        	
-                        		undoTransaction(Language.getWord("ERR_DELETE_DOCUMENT_NOT_FOUND"));
-                        		break;
-                        }
-	    	                if (i.hasNext()) {
-                        		subpackage = (Element) j.next();
-                        }
-                        else {
-                        		break;
+                    		undoTransaction(Language.getWord("ERR_DELETE_DOCUMENT_NOT_FOUND"));
+                    		break;
                         }
 	                	
 	                } else if (actionDocument.equals(EDIT_DOCUMENT)) {
