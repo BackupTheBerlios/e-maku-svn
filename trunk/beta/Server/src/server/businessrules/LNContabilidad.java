@@ -806,7 +806,7 @@ public class LNContabilidad {
 			 * columna para obtener el codigo del producto.
 			 */
 
-			if (LinkingCache.isPCInventarios(bd, account) && getColIdProdServ() > -1) {
+			if (getColIdProdServ() > -1) {
 				Element eIdProdServ = (Element) colElement
 						.get(getColIdProdServ());
 				idProdServ = (String) eIdProdServ.getText();

@@ -375,6 +375,20 @@ public class LNDocuments {
 		                	 */
 		                	String numero = subpackage.getValue();
 	    	                String key = getPrimaryKey(numero);
+	    	                
+	                        /*
+	                         * Si no existe fecha definida en las caches, entonces el segundo argumento a recibir
+	                         * debe ser la fecha
+	                         */
+	                        if ("".equals(CacheKeys.getDate())) {
+	                        	String dateDocument = subpackage.getValue();
+	                        	CacheKeys.setDate(dateDocument);
+	                        	CacheKeys.setMinDate(dateDocument);
+	                        	if (i.hasNext()) {
+	                        		subpackage = (Element)j.next();
+	                        	}
+	                        }
+
 	    	             
                         if (key==null) {
                         	

@@ -64,6 +64,8 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 	private String exportValue;
 	private String nameField;
 	private String key;
+	private boolean enabled= true;
+	private boolean editable= true;
 	private Vector<String> sqlCode = new Vector<String>();
 	private boolean searchQuery = false;
 
@@ -111,9 +113,17 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
          	else if ("nameField".equals(name)) {
                 nameField = value;
         	}
+         	else if ("enabled".equals(name)) {
+     			enabled = Boolean.parseBoolean(value);
+        	}
+         	else if ("editable".equals(name)) {
+                editable = Boolean.parseBoolean(value);
+        	}
 		}
 		
 		XMLTField = new XMLTextField(labelName,size,maxlength);
+		XMLTField.setEditable(editable);
+		XMLTField.setEnabled(enabled);
 		XMLTField.addKeyListener(this);
 		XMLTField.addFocusListener(this);
 		
