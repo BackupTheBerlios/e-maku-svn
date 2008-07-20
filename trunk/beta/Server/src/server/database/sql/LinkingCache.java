@@ -884,6 +884,7 @@ public class LinkingCache {
             }
         }
         catch (NumberFormatException NFEe){
+        	NFEe.printStackTrace();
             LogAdmin.setMessage(Language.getWord("ERR_CONSECUTIVE") + " "
                     + bd + NFEe.getMessage(),
                     ServerConstants.ERROR);

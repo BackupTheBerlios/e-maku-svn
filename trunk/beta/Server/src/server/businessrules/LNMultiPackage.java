@@ -136,7 +136,7 @@ public class LNMultiPackage {
     
     private void getTransaction(String sql,Element pack) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
-      //  System.out.println("Sentencia: "+sql);
+        System.out.println("Sentencia: "+sql);
         LNGtransaccion.setArgs(pack,idTransaction);
         LNGtransaccion.generar(sql);
     }

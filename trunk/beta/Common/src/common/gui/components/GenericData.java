@@ -351,6 +351,8 @@ public class GenericData extends JPanel implements DateListener,
 				}
 				if (defaultText != null) {
 					XMLText.setText(defaultText);
+					if (exportValue!=null)
+						GFforma.setExternalValues(exportValue, defaultText);
 				}
 				if (importValue != null) {
 					XMLText.setImportValue(importValue);
@@ -573,7 +575,8 @@ public class GenericData extends JPanel implements DateListener,
 	
 	private void processQuery(XMLTextField field) {
 
-		String text = field.getText();
+		String text = field.getType().equals("NUMERIC")?String.valueOf(field.getNumberValue()):field.getText();
+		System.out.println("numero: "+text+" formato: "+field.getType());
 		field.setSendQuery(true);
 		Vector<String> sqlCode = field.getSqlCode();
 		String sqlLocal = field.getSqlLocal();
@@ -680,7 +683,7 @@ public class GenericData extends JPanel implements DateListener,
 		for (; i < xmltf.getImportValues().length; i++) {
 			argumentos[i] = GFforma.getExternalValueString(XMLimpValues[i]);
 		}
-		argumentos[i] = xmltf.getText();
+		argumentos[i] = xmltf.getType().equals("NUMERIC")?String.valueOf(xmltf.getNumberValue()):xmltf.getText();
 		Vector<String> sqlCode = querys;
 		if (querys==null) {
 			sqlCode = xmltf.getSqlCode();
@@ -747,6 +750,14 @@ public class GenericData extends JPanel implements DateListener,
 				if (xmltemp.getType().equals("NUMERIC") && !xmltemp.isImportvalue()) {
 					xmltemp.setText("0,00");
 					xmltemp.setNumberValue(0.00);
+				}
+				if (xmltemp.isExportvalue()) {
+					if (xmltemp.getType().equals("NUMERIC")) {
+						GFforma.setExternalValues(xmltemp.getExportvalue(),0);
+					}
+					else {
+						GFforma.setExternalValues(xmltemp.getExportvalue(),"");
+					}
 				}
 			}
 			if (xmltemp.isSystemDate()) {
@@ -817,7 +828,7 @@ public class GenericData extends JPanel implements DateListener,
 			if ("conditional".equals(arg.getAttributeValue("attribute"))){
 				String s = arg.getValue();
 				s = GFforma.parseFormula(s);
-				System.out.println("formula: "+s+" evaluado: "+GFforma.eval(s));
+				System.out.println("formula: "+s);
 				error = !(Boolean) GFforma.eval(s);
 			}
 			if ("errorMessage".equals(arg.getAttributeValue("attribute"))) {
@@ -992,11 +1003,11 @@ public class GenericData extends JPanel implements DateListener,
 						XMLRefText.setNumberValue(0);
 					} catch (NumberFormatException NFEe) {
 					}
-					if (XMLRefText.isExportvalue()) {
-						exportar(XMLRefText);
-					}
-
 				}
+				if (XMLRefText.isExportvalue()) {
+					exportar(XMLRefText);
+				}
+
 			}
 			if (Sargs != null) {
 				if ("NEW".equals(Sargs)) {

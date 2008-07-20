@@ -1,21 +1,38 @@
 package common.printer;
 
-import java.awt.*;
+import java.awt.BasicStroke;
 import java.awt.Font;
-import java.awt.geom.*;
-import java.io.*;
-import java.text.*;
-import java.util.*;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
+import java.awt.geom.RoundRectangle2D;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.StringTokenizer;
 
-import org.jdom.*;
+import org.jdom.Attribute;
+import org.jdom.DataConversionException;
 import org.jdom.Element;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
-import com.lowagie.text.*;
+import com.lowagie.text.DocumentException;
 import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.*;
-import common.control.*;
-import common.misc.text.*;
-import common.printer.PrintingManager.*;
+import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.pdf.PdfWriter;
+import common.control.ClientHeaderValidator;
+import common.control.SuccessEvent;
+import common.control.SuccessListener;
+import common.misc.text.NumberToLetterConversor;
+import common.printer.PrintingManager.ImpresionType;
 
 
 public class PostScriptManager implements AbstractManager, SuccessListener {
@@ -38,6 +55,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 	private PdfWriter pdfWriter;
 	private ArrayList<Graphics2D> objects = new ArrayList<Graphics2D>();
 	private int pageCount = 1;
+	final static BasicStroke stroke = new BasicStroke(0.3f);
 	
 	public PostScriptManager() {
 		ClientHeaderValidator.addSuccessListener(this);
@@ -161,7 +179,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 			Attribute attr = attribs.get("row");
 			int row = attr.getIntValue();
 			int col =  attribs.get("col").getIntValue();
-			
+			g2d.setStroke(stroke);
 			if ("line".equals(name)) {
 				int row2 = attribs.get("row2").getIntValue();
 				int col2 = attribs.get("col2").getIntValue();
@@ -204,7 +222,25 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 	 * @throws DataConversionException
 	 */
 	private void processElement(Element pack_template, Element pack_transaction) throws DataConversionException {
-
+		System.out.println("template: ");
+		try {
+	        XMLOutputter xmlOutputter = new XMLOutputter();
+	        xmlOutputter.setFormat(Format.getPrettyFormat());
+	        xmlOutputter.output(pack_template,System.out);
+	    }
+	    catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    
+		System.out.println("transaccion: ");
+	    try {
+	        XMLOutputter xmlOutputter = new XMLOutputter();
+	        xmlOutputter.setFormat(Format.getPrettyFormat());
+	        xmlOutputter.output(pack_transaction,System.out);
+	    }
+	    catch (IOException e) {
+	        e.printStackTrace();
+	    }
 		Iterator it_template = pack_template.getChildren().iterator();
 		Iterator it_transaction = pack_transaction.getChildren().iterator();
 		while(it_template.hasNext() && it_transaction.hasNext()) {
@@ -305,7 +341,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 	 * @throws DataConversionException
 	 */
 	private void addValue(String value,HashMap<String,Attribute> attribs) throws DataConversionException {
-		
+		System.out.println("valor: "+value);
 		if (attribs.size()==0) {
 			return;
 		}

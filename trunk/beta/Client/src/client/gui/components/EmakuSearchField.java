@@ -68,7 +68,10 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 	private boolean editable= true;
 	private Vector<String> sqlCode = new Vector<String>();
 	private boolean searchQuery = false;
-
+	private boolean returnNullValue;
+	private Font font;
+	private String defaultText;
+	
 	public EmakuSearchField(GenericForm GFforma,Document doc) {
 		this.GFforma=GFforma;
 		this.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -107,6 +110,12 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 				sqlCode.add(elm.getValue());
 				searchQuery = true;
 			} 		
+			else if ("nullValue".equals(name) || "blankPackage".equals(name)) {
+                this.returnNullValue = Boolean.parseBoolean(value);
+         	}
+			else if ("defaultText".equals(elm.getAttributeValue("attribute"))) {
+				defaultText = elm.getValue();
+			}
 			else if ("addAttribute".equals(name)) {
 				key = value;
 			}
@@ -118,7 +127,21 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
         	}
          	else if ("editable".equals(name)) {
                 editable = Boolean.parseBoolean(value);
-        	}
+        	}else if ("font"
+					.equals(elm.getAttributeValue("attribute"))) {
+				try {
+					StringTokenizer STfont = new StringTokenizer(elm
+							.getValue(), ",");
+					font = new Font(
+					                STfont.nextToken(),
+					                Integer.parseInt(STfont.nextToken()),
+					                Integer.parseInt(STfont.nextToken()));
+				} catch (NumberFormatException NFEe) {
+					font = null;
+				} catch (NoSuchElementException NSEEe) {
+					font = null;
+				}
+			}
 		}
 		
 		XMLTField = new XMLTextField(labelName,size,maxlength);
@@ -126,8 +149,16 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 		XMLTField.setEnabled(enabled);
 		XMLTField.addKeyListener(this);
 		XMLTField.addFocusListener(this);
-		
+		if (font != null) {
+			XMLTField.getLabel().setFont(font);
+			XMLTField.setFont(font);
+		}
 		XMLTFkey = new XMLTextField("KEY",size,maxlength);
+		if (defaultText != null) {
+			XMLTField.setText(defaultText);
+			if (exportValue!=null)
+				GFforma.setExternalValues(exportValue, defaultText);
+		}
 		XMLTFkey.addFocusListener(this);
 		XMLTFkey.addKeyListener(this);
 		
@@ -182,6 +213,8 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 	public void clean() {
 		XMLTField.setText("");
 		XMLTFkey.setText("");
+		if (exportValue!=null)
+			GFforma.setExternalValues(exportValue, "");
 		SQLCBselection.clear();
 	}
 	
@@ -251,7 +284,7 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 		}
 		if(s.equals(XMLTField))  {
 			String str = XMLTField.getText();
-			GFforma.setExternalValues(exportValue,str.equals("") ? null :str);
+			GFforma.setExternalValues(exportValue,str);
 		}
 		if (searchQuery) {
 			for (int j = 0; j < sqlCode.size(); j++) {
@@ -363,17 +396,18 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 	public Element getPackage() throws VoidPackageException {
         Element pack = new Element("package");
         String data = XMLTField.getText();
-        if (!data.equals("")) {
-        	Element element = new Element("field");
-        	element.setText(XMLTField.getText());
-        	if (key!=null) {
-        		element.setAttribute("attribute",key);
+        if (!data.equals("") || returnNullValue) {
+        	if (!data.equals("")) {
+	        	Element element = new Element("field");
+	        	element.setText(XMLTField.getText());
+	        	if (key!=null) {
+	        		element.setAttribute("attribute",key);
+	        	}
+	        	if (nameField!=null) {
+	        		element.setAttribute("name",nameField);
+	        	}
+	        	pack.addContent(element);
         	}
-        	if (nameField!=null) {
-        		element.setAttribute("name",nameField);
-        	}
-
-        	pack.addContent(element);
     		return pack;
         }
         else {

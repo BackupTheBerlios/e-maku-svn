@@ -223,6 +223,16 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
         XMLTFfind = new XMLTextField("FIND",20,50);
         XMLTFfind.setEnabled(enabled);
         JCBfined = new JComboBox();
+        
+        /*
+         * Si exporta valor, incializa en -1, es un valor que no encontra en la BD, si
+         * exporta nulo, causa una excepcion por el tipo de dato ya que "" no se puede
+         * castear a entero y id de la tabla general es un entero
+         */
+        
+        if (exportValue!=null) {
+			GFforma.setExternalValues(exportValue,"-1");
+		}
 //        JCBfined.setMaximumRowCount(3);
         JCBfined.setPreferredSize(new Dimension(300,80));
         JCBfined.setRenderer(new WrappableListCellRenderer());
@@ -962,6 +972,10 @@ public class FindThird extends JTabbedPane implements AnswerListener, InstanceFi
         Hthird = new Hashtable<String,DataThird>();
         Hphones = new Hashtable<String,Vector<DataPhone>>();
         Haddress = new Hashtable<String,Vector<DataAddress>>();
+        if (exportValue!=null) {
+			GFforma.setExternalValues(exportValue,"-1");
+		}
+
 	}
 
 	public void arriveAnswerEvent(AnswerEvent AEe) {

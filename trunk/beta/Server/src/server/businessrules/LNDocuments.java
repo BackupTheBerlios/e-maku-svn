@@ -90,15 +90,6 @@ public class LNDocuments {
      *  Inicializando variables estaticas en instanciacion de la clase
      */
     
-    {
-        idDocument = null;
-        linkDocument = null;
-        multiDocument = null;
-        rfDocument = null;
-        consecutive = null;
-        cash = false;
-        lockDocument = false;
-    };
     
     public LNDocuments(SocketChannel sock,Document doc,	Element pack, String idTransaction) {
     	makeTransaction(sock,doc,pack,idTransaction);
@@ -124,6 +115,14 @@ public class LNDocuments {
      */
     
     private static synchronized void makeTransaction(SocketChannel _sock,Document _doc,	Element _pack, String _idTransaction) {
+        idDocument = null;
+        linkDocument = null;
+        multiDocument = null;
+        rfDocument = null;
+        consecutive = null;
+        cash = false;
+        lockDocument = false;
+ 
     	LNDocuments.sock=_sock;
         LNDocuments.doc=_doc;
         LNDocuments.pack=_pack;

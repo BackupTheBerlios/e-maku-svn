@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -131,6 +133,19 @@ public class XMLComboBox extends ComboBoxFiller {
 	    if (!"".equals(getLabel().getText())) {
 	    	panel.add(JLlabel,BorderLayout.WEST);
     	}
+	    
+	    this.addKeyListener(new KeyAdapter() {
+			
+			
+			public void keyReleased(KeyEvent e) {
+				int keyCode = e.getKeyCode();
+				//typed = false;
+				if ( (keyCode==KeyEvent.VK_ENTER) || (keyCode==KeyEvent.VK_TAB)) {
+					transferFocus();
+				}
+				
+			}
+		});
 	}
     
 	/**

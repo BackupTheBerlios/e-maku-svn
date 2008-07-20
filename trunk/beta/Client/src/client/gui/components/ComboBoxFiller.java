@@ -676,8 +676,9 @@ public class ComboBoxFiller extends JComboBox implements
 	        exportar();
         }
 		catch (NullPointerException NPEe) {
+			exportar();
 			//this.removeAllItems();
-		}
+		} 
 	}
 	
 	public void initiateFinishEvent(EndEventGenerator e) {
