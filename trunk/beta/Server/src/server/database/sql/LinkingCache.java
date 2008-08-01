@@ -462,13 +462,13 @@ public class LinkingCache {
         	for (String subData:key) {
         		subkey+=rs.getString(subData).trim()+"-";
         	}
-        	/*
-            System.out.println("K-" + 
+        	
+            /*System.out.println("K-" + 
           		  bd + 
           		  "-" +
           		  subkey.substring(0,subkey.length()-1)+" valor: "+
-                    rs.getObject(rsValue));
-                    */
+                    rs.getObject(rsValue));*/
+                    
             tabla.put("K-" + 
             		  bd + 
             		  "-" +
@@ -503,7 +503,6 @@ public class LinkingCache {
         return HcompanyData.get("K-"+bd+"-phone");
     }
     public static String getCity(String bd) {
-    	System.out.println("Retornando ciudad: "+HcompanyData.get("K"+bd+"-city"));
         return HcompanyData.get("K-"+bd+"-city");
     }
     
@@ -803,6 +802,14 @@ public class LinkingCache {
             return false;
     }
     
+    public static void setPermisosSQL(String bd,String login) throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+        Hpermisos.putAll(loadCache(bd,"SCS0091", new String[]{login},new String[]{"login","codigo","password"},"ok"));
+    }
+    
+    public static void removePermisosSQL(String key) {
+    	Hpermisos.remove(key);    	
+    }
+
     /**
      * Este metodo consulta permisos en Transaccion
      * @param key Codigo de la Transaccion
@@ -816,7 +823,13 @@ public class LinkingCache {
             return false;
     }
     
-
+    public static void setPermisosTransacciones(String key) {
+    	Htransacciones.put(key, true);
+    }
+    
+    public static void removePermisosTransacciones(String key) {
+    	Htransacciones.remove(key);    	
+    }
     /**
      * Este metodo actualiza la numeracion de un documento
      * @param bd Nombre de la base de datos

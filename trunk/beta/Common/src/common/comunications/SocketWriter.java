@@ -100,6 +100,7 @@ public class SocketWriter {
             return true;
         }
         catch (IOException IOEe) {
+        	IOEe.printStackTrace();
             LogAdmin.setMessage(Language.getWord("ERR_WRITING_SOCKET") + "\n"
                     + IOEe.getMessage(), CommonConstants.ERROR);
             return false;
