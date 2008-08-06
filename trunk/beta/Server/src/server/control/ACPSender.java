@@ -101,7 +101,7 @@ public class ACPSender extends Thread{
 	        element.addContent(new Element("companyID").setText(companyID));
 	        element.addContent(new Element("transactions").setText(numTrans));
 	        element.addContent(new Element("querys").setText(numQuerys));
-			SocketWriter.writing(sock,this.docACPBegin);
+			SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,this.docACPBegin);
         }
         catch (SQLException e) {
 			e.printStackTrace();
@@ -180,7 +180,7 @@ public class ACPSender extends Thread{
             
         	cnx.setRootElement(selement);
         	Document doc = compressDocument(cnx);
-            SocketWriter.writing(sock,doc);
+            SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,doc);
             selement.removeContent();
             selement = null;
     		//StatementsClosingHandler.close(rs);
@@ -197,13 +197,13 @@ public class ACPSender extends Thread{
 	            prueba.setRootElement(new Element("ACPData"));
 	    		Element el = new Element("CACHE-QUERY").setText("CH00003");
 	    		prueba.getRootElement().addContent(el);
-	            SocketWriter.writing(sock,compressDocument(prueba));
+	            SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,compressDocument(prueba));
 	 
 	            Document prueba2 = new Document();
 	            prueba2.setRootElement(new Element("ACPData"));
 	    		Element el2 = new Element("CACHE-QUERY").setText("CH00004");
 	    		prueba2.getRootElement().addContent(el2);
-	            SocketWriter.writing(sock,compressDocument(prueba2));
+	            SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,compressDocument(prueba2));
         	}
 
         }

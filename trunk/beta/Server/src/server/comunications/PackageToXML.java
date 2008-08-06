@@ -85,16 +85,23 @@ public class PackageToXML extends Thread {
 	                            + " " + channel.socket();
 	                            LogAdmin.setMessage("\n--------------------\n"+tmp+"\n"+new String(EmakuServerSocket.getBufferTmp(channel).toByteArray())+"\n------------------\n", ServerConstants.ERROR);
 	                        }
+                        	catch(NullPointerException e) {
+                        		System.out.println("Aqui tambien se caia esta mierda...");
+                        	}
 	                        finally {
-                                bufferIn.close();
-                                bufferIn = null;
-                                builder = null;
-                                doc = null;
-	                        	EmakuServerSocket.getBufferTmp(channel).close();
-	                        	EmakuServerSocket.setBufferTmp(channel,null);
-                		        //System.gc();
-	                        	EmakuServerSocket.setBufferTmp(channel,new ByteArrayOutputStream());
-	
+	                        	try {
+	                                bufferIn.close();
+	                                bufferIn = null;
+	                                builder = null;
+	                                doc = null;
+		                        	EmakuServerSocket.getBufferTmp(channel).close();
+		                        	EmakuServerSocket.setBufferTmp(channel,null);
+	                		        //System.gc();
+		                        	EmakuServerSocket.setBufferTmp(channel,new ByteArrayOutputStream());
+	                        	}
+	                        	catch(NullPointerException e) {
+	                        		System.out.println("Aqui se caia esta mierda...");
+	                        	}
 	                        }
 	                    }
 	                    

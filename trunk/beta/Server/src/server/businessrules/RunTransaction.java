@@ -199,7 +199,7 @@ public class RunTransaction extends Thread {
 			String message) {
 		ErrorXML error = new ErrorXML();
 		LogAdmin.setMessage(message, ServerConstants.ERROR);
-		SocketWriter.writing(sock, error.returnError(ServerConstants.ERROR,
+		SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock, error.returnError(ServerConstants.ERROR,
 				EmakuServerSocket.getBd(sock), id_transaction, message));
 
 	}
@@ -208,7 +208,7 @@ public class RunTransaction extends Thread {
 			String message,Element element) {
 		ErrorXML error = new ErrorXML();
 		LogAdmin.setMessage(message, ServerConstants.ERROR);
-		SocketWriter.writing(sock, error.returnError(id_transaction, message,element));
+		SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock, error.returnError(id_transaction, message,element));
 
 	}
 
@@ -216,7 +216,7 @@ public class RunTransaction extends Thread {
 			String id_transaction, String message) {
 		SuccessXML success = new SuccessXML();
 		LogAdmin.setMessage(message, ServerConstants.MESSAGE);
-		SocketWriter.writing(sock, success.returnSuccess(id_transaction,
+		SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock, success.returnSuccess(id_transaction,
 				message));
 	}
 
@@ -224,7 +224,7 @@ public class RunTransaction extends Thread {
 			String id_transaction, String message, Element element) {
 		SuccessXML success = new SuccessXML();
 		LogAdmin.setMessage(message, ServerConstants.MESSAGE);
-		SocketWriter.writing(sock, success.returnSuccess(id_transaction,
+		SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock, success.returnSuccess(id_transaction,
 				message, element));
 	}
 

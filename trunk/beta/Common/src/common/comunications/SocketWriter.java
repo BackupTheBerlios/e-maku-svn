@@ -5,14 +5,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SocketChannel;
+import java.util.Hashtable;
 
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
-
-import common.misc.CommonConstants;
-import common.misc.language.Language;
-import common.misc.log.LogAdmin;
 
 /**
  * SocketWriter.java Creado el 23-jul-2004
@@ -38,7 +36,11 @@ import common.misc.log.LogAdmin;
 public class SocketWriter {
 
     
-    public static boolean writing(SocketChannel sock,Document doc) {
+	public static boolean writing(SocketChannel sock,Document doc) {
+		return writing(null,sock,doc);
+	}
+	
+    public static boolean writing(Hashtable channels,SocketChannel sock,Document doc) {
         synchronized(sock) {
 	        try {
 	            ByteArrayOutputStream bufferOut = new ByteArrayOutputStream();
@@ -51,11 +53,18 @@ public class SocketWriter {
 	            ByteArrayInputStream bufferIn = new ByteArrayInputStream(bufferOut.toByteArray());
 	            bufferOut.close();
 	            bufferOut = null;
-	            return sendBuffer(sock,bufferIn);
+	            return sendBuffer(channels,sock,bufferIn);
 	        }
 	        catch (FileNotFoundException e) {
 	            e.printStackTrace();
 	            return false;
+	        }
+	        catch (ClosedChannelException e) {
+	        	if (channels!=null) {
+	        		channels.remove(sock);
+	        	}
+	        	e.printStackTrace();
+	        	return false;
 	        }
 	        catch (IOException e) {
 	            e.printStackTrace();
@@ -64,46 +73,48 @@ public class SocketWriter {
         }
     }
     
-    public static void writing(SocketChannel sock, String data) {
+    public static void writing(Hashtable channels,SocketChannel sock, String data)  {
         ByteArrayInputStream bufferIn = new ByteArrayInputStream(data.getBytes());
-        sendBuffer(sock,bufferIn);
+        sendBuffer(channels,sock,bufferIn);
     }
 
-    public static void writing(SocketChannel sock, ByteArrayOutputStream data) {
+    public static void writing(Hashtable channels,SocketChannel sock, ByteArrayOutputStream data)  {
         ByteArrayInputStream bufferIn = new ByteArrayInputStream(data.toByteArray());
-        sendBuffer(sock,bufferIn);
+        sendBuffer(channels,sock,bufferIn);
     }
-    private static boolean sendBuffer(SocketChannel sock,ByteArrayInputStream buffer) {
-        
+    private static boolean sendBuffer(Hashtable channels,SocketChannel sock,ByteArrayInputStream buffer) {
         try {
-            ByteBuffer buf = ByteBuffer.allocate(8192);
-            byte[] bytes = new byte[8192];
-
-            int count = 0;
-
-            while (count >= 0) {
-
-                buf.clear();
-                
-                count = buffer.read(bytes);
-                
-                for (int i=0;i<count;i++) {
-                    buf.put(bytes[i]);
-                }
-  
-                buf.flip();
-                
-                while (buf.remaining()>0)
-                    sock.write(buf);
-                
-            }
-            return true;
+	        ByteBuffer buf = ByteBuffer.allocate(8192);
+	        byte[] bytes = new byte[8192];
+	
+	        int count = 0;
+	
+	        while (count >= 0) {
+	
+	            buf.clear();
+	                
+	            count = buffer.read(bytes);
+	                
+	            for (int i=0;i<count;i++) {
+	                buf.put(bytes[i]);
+	            }
+	  
+	            buf.flip();
+	                
+	            while (buf.remaining()>0)
+	                sock.write(buf);
+	                
+	        }
+	        return true;
         }
-        catch (IOException IOEe) {
-        	IOEe.printStackTrace();
-            LogAdmin.setMessage(Language.getWord("ERR_WRITING_SOCKET") + "\n"
-                    + IOEe.getMessage(), CommonConstants.ERROR);
-            return false;
-        }
+        catch (ClosedChannelException e) {
+        	e.printStackTrace();
+        	channels.remove(sock);
+        	return false;
+        } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
     }
 }

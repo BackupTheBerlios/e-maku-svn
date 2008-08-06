@@ -124,7 +124,7 @@ public class XLSReportMaker extends Thread {
 						rootXLS.addContent(titleReport);
 						Document doc = new Document(rootXLS);
 						synchronized (socket) {
-							SocketWriter.writing(socket, doc);
+							SocketWriter.writing(EmakuServerSocket.getHchannelclients(),socket, doc);
 							calendar = Calendar.getInstance();
 							long end = calendar.getTimeInMillis();
 							System.out.println("paquete escrito en "+((end-init)/1000)+" segundos");

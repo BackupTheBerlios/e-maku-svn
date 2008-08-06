@@ -253,7 +253,7 @@ public class ReportMaker extends Thread {
 	    	XMLOutputter out = new XMLOutputter(); 
 	    	out.setFormat(Format.getPrettyFormat());
 	    	out.output(docZip, System.out); */
-			SocketWriter.writing(this.socket,docZip);
+			SocketWriter.writing(EmakuServerSocket.getHchannelclients(),this.socket,docZip);
 			calendar = Calendar.getInstance();
 			end = calendar.getTimeInMillis();
 			System.out.println("paquete escrito en "+((end-init)/1000)+" segundos"); 

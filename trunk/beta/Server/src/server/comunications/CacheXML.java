@@ -6,18 +6,18 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Hashtable;
 
-import server.database.sql.StatementsClosingHandler;
+import org.jdom.Document;
+import org.jdom.output.XMLOutputter;
+
 import server.database.sql.QueryRunner;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
+import server.database.sql.StatementsClosingHandler;
 import server.misc.ServerConstants;
 
+import common.comunications.SocketWriter;
 import common.misc.language.Language;
 import common.misc.log.LogAdmin;
-import common.comunications.SocketWriter;
-
-import org.jdom.Document;
-import org.jdom.output.XMLOutputter;
 
 /**
  * CacheXML.java Creado el 06-sep-2004
@@ -116,7 +116,7 @@ public class CacheXML extends Document {
                  * 		<header>
                  */
                 
-                SocketWriter.writing(sock,
+                SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,
                         ServerConstants.CONTEN_TYPE+
                         ServerConstants.TAGS_CACHE_ANSWER[0]+
                         ServerConstants.TAGS_SQL[0]+ XMLformat.escapeAttributeEntities(SQL) +
@@ -130,7 +130,7 @@ public class CacheXML extends Document {
                      */
                     
                     if (!keys.containsKey(RSMDinfo.getColumnName(i)))
-	                    SocketWriter.writing(sock,
+	                    SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,
 	                            ServerConstants.TAGS_COL_HEAD[0]+
 	                            XMLformat.escapeAttributeEntities(RSMDinfo.getColumnTypeName(i))+
 	                            ServerConstants.TAGS_COL_HEAD[1]+
@@ -142,7 +142,7 @@ public class CacheXML extends Document {
                  * Generacion de etiquetas
                  * 		</header>
                  */
-                SocketWriter.writing(sock,ServerConstants.TAGS_HEAD[1]);
+                SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,ServerConstants.TAGS_HEAD[1]);
                         	                
                 /*
                  * Se recorre el resulset para a�adir los datos que contenga, y
@@ -152,7 +152,7 @@ public class CacheXML extends Document {
                 String new_key_data="";
                 String old_key_data=null;
                 if (num_col_keys==0) {
-    				SocketWriter.writing(sock,ServerConstants.TAGS_VALUE[0]+
+    				SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,ServerConstants.TAGS_VALUE[0]+
 							  				  ServerConstants.TAGS_KEY[0]+
 							  				  ServerConstants.TAGS_KEY[1]+
 							  				  ServerConstants.TAGS_ANSWER[0]);
@@ -165,12 +165,12 @@ public class CacheXML extends Document {
                 			new_key_data+=RSdatos.getString(j).trim();
                 			if (j==num_col_keys) {
                 				if (!new_key_data.equals(old_key_data) && old_key_data!=null){
-                					SocketWriter.writing(sock,ServerConstants.TAGS_ANSWER[1]+
+                					SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,ServerConstants.TAGS_ANSWER[1]+
                 											  ServerConstants.TAGS_VALUE[1]);
                 				}
 
                 				if (!new_key_data.equals(old_key_data))
-                					SocketWriter.writing(sock,ServerConstants.TAGS_VALUE[0]+
+                					SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,ServerConstants.TAGS_VALUE[0]+
                 											  ServerConstants.TAGS_KEY[0]+
 				                            			      new_key_data+
 				                            			      ServerConstants.TAGS_KEY[1]+
@@ -182,10 +182,10 @@ public class CacheXML extends Document {
                                 /*
                                  * <row>
                                  */
-                                SocketWriter.writing(sock,ServerConstants.TAGS_ROW[0]);
+                                SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,ServerConstants.TAGS_ROW[0]);
                 				
                 			}
-                            SocketWriter.writing(sock,ServerConstants.TAGS_COL[0] + 
+                            SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,ServerConstants.TAGS_COL[0] + 
                             		XMLformat.escapeAttributeEntities(RSdatos.getString(j).trim())+
 					                                    ServerConstants.TAGS_COL[1]
                                 );
@@ -193,16 +193,16 @@ public class CacheXML extends Document {
                                 /*
                                  * <row>
                                  */
-                                SocketWriter.writing(sock,ServerConstants.TAGS_ROW[1]);
+                                SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,ServerConstants.TAGS_ROW[1]);
                 			}
                 		}
                 	}
        				old_key_data=new_key_data;
                 }
-                SocketWriter.writing(sock,ServerConstants.TAGS_ANSWER[1]+
+                SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,ServerConstants.TAGS_ANSWER[1]+
                 						  ServerConstants.TAGS_VALUE[1]+
                 						  ServerConstants.TAGS_CACHE_ANSWER[1]+"\n");
-                SocketWriter.writing(sock,new String ("\n\r\f"));
+                SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,new String ("\n\r\f"));
 
                 StatementsClosingHandler.close(RSdatos);
                 LogAdmin.setMessage(Language.getWord("OK_CREATING_XML"),
@@ -214,28 +214,28 @@ public class CacheXML extends Document {
                     Language.getWord("ERR_RS") + " " + SQLEe.getMessage();
                 LogAdmin.setMessage(err, ServerConstants.ERROR);
                 ErrorXML error = new ErrorXML();
-                SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR, bd, err));
-            }
+                SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,error.returnError(ServerConstants.ERROR, bd, err));
+            } 
             rselect.closeStatement();
         }
         catch (SQLNotFoundException QNFEe) {
             String err = QNFEe.getMessage();
             LogAdmin.setMessage(err, ServerConstants.ERROR);
             ErrorXML error = new ErrorXML();
-            SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR, bd, err));
+            SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,error.returnError(ServerConstants.ERROR, bd, err));
 
         } 
         catch (SQLException SQLEe) {
             String err = Language.getWord("ERR_ST") + " " + SQLEe.getMessage();
             LogAdmin.setMessage(err, ServerConstants.ERROR);
             ErrorXML error = new ErrorXML();
-            SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR, bd, err));
+            SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,error.returnError(ServerConstants.ERROR, bd, err));
         }
         catch (SQLBadArgumentsException QBAEe) {
             String err = QBAEe.getMessage();
             LogAdmin.setMessage(err, ServerConstants.ERROR);
             ErrorXML error = new ErrorXML();
-            SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR, bd, err));
+            SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,error.returnError(ServerConstants.ERROR, bd, err));
         }
     }
 }

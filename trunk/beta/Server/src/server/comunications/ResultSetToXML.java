@@ -2,6 +2,7 @@ package server.comunications;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.channels.SocketChannel;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -143,7 +144,7 @@ public class ResultSetToXML extends Document implements Runnable {
 	                }
 	                writeBufferSocket(sock,ServerConstants.TAGS_ANSWER[1]);
 	                bufferSocket.write(new String ("\n\r\f").getBytes());
-	                SocketWriter.writing(sock,bufferSocket);
+	                SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,bufferSocket);
 	                bufferSocket.close();
 	                StatementsClosingHandler.close(RSdatos);
 	//	                LogAdmin.setMessage(Language.getWord("OK_CREATING_XML"),
@@ -155,7 +156,7 @@ public class ResultSetToXML extends Document implements Runnable {
 	            String err = QNFEe.getMessage();
 	            LogAdmin.setMessage(err, ServerConstants.ERROR);
 	            ErrorXML error = new ErrorXML();
-	            SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR, bd, id,err));
+	            SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,error.returnError(ServerConstants.ERROR, bd, id,err));
 	            QNFEe.printStackTrace();
 	
 	        } 
@@ -164,20 +165,30 @@ public class ResultSetToXML extends Document implements Runnable {
                     Language.getWord("ERR_RS") + " " +sql+" "+SQLEe.getMessage();
                 LogAdmin.setMessage(err, ServerConstants.ERROR);
                 ErrorXML error = new ErrorXML();
-                SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR, bd, id,err));
+                SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,error.returnError(ServerConstants.ERROR, bd, id,err));
                 SQLEe.printStackTrace();
-            }
-            catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             }
 	        catch (SQLBadArgumentsException QBAEe) {
 	            String err = QBAEe.getMessage();
 	            LogAdmin.setMessage(err, ServerConstants.ERROR);
 	            ErrorXML error = new ErrorXML();
-	            SocketWriter.writing(sock,error.returnError(ServerConstants.ERROR, bd, id,err));
+	            SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,error.returnError(ServerConstants.ERROR, bd, id,err));
 	            QBAEe.printStackTrace();
-	        }
+	        } catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+	            String err = e.getMessage();
+				e.printStackTrace();
+	            LogAdmin.setMessage(err, ServerConstants.ERROR);
+	            ErrorXML error = new ErrorXML();
+	            SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,error.returnError(ServerConstants.ERROR, bd, id,err));
+			} catch (IOException e) {
+	            String err = e.getMessage();
+				e.printStackTrace();
+	            LogAdmin.setMessage(err, ServerConstants.ERROR);
+	            ErrorXML error = new ErrorXML();
+	            SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,error.returnError(ServerConstants.ERROR, bd, id,err));
+			}
+
 	        finally {
 	            rselect.closeStatement();
 	        }
@@ -218,8 +229,8 @@ public class ResultSetToXML extends Document implements Runnable {
                 bufferSocket.write(bytes[i]);
             }
             else {
-                SocketWriter.writing(sock,bufferSocket);
-                bufferSocket = new ByteArrayOutputStream();
+                SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,bufferSocket);
+				bufferSocket = new ByteArrayOutputStream();
                 i--;
             }
         }

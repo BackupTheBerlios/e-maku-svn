@@ -130,7 +130,7 @@ public class HeadersValidator {
                     		" "+valida.getQuery()+" "+
                             sock.socket();
                     LogAdmin.setMessage(tmp, ServerConstants.MESSAGE);
-                    SocketWriter.writing(sock, error.returnError(ServerConstants.ERROR,
+                    SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock, error.returnError(ServerConstants.ERROR,
 					            	      EmakuServerSocket.getBd(sock),
 					            	      valida.getId(),
 					            	      tmp));
@@ -154,7 +154,7 @@ public class HeadersValidator {
              */
             
             else if (nom_raiz.equals("DATE")) {
-                SocketWriter.writing(sock,DATESender.getPackage());
+                SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,DATESender.getPackage());
                 
             }
             
@@ -173,7 +173,7 @@ public class HeadersValidator {
             else if (nom_raiz.equals("UPDATECODE")) {
                 String bd = EmakuServerSocket.getBd(sock);
                 String key = raiz.getChild("idDocument").getValue();
-                SocketWriter.writing(sock,
+                SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,
                                     UPDATECODESender.getPackage(key,
                                                               LinkingCache.getConsecutive(bd,key)));
 
@@ -217,7 +217,7 @@ public class HeadersValidator {
                 catch (IOException e) {
                     e.printStackTrace();
                 }
-                SocketWriter.writing(sock, error.returnError(
+                SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock, error.returnError(
                         ServerConstants.ERROR, "", tmp));
             }
 
@@ -238,12 +238,12 @@ public class HeadersValidator {
 	                ACPSender docacp = new ACPSender(sock,bd,login);
 	                docacp.start();
 	            } else {
-	                SocketWriter.writing(sock, new AcpFailure(Language.getWord("ACPFAILURE")));
+	                SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock, new AcpFailure(Language.getWord("ACPFAILURE")));
 	            }
 	        	
             } else {
             	LogAdmin.setMessage(Language.getWord("DBNFEX") + raiz.getChild("db").getValue(), ServerConstants.ERROR);
-            	SocketWriter.writing(sock, new AcpFailure(Language.getWord("ACPFAILURE")));
+            	SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock, new AcpFailure(Language.getWord("ACPFAILURE")));
             }
 
         } 
@@ -294,7 +294,7 @@ public class HeadersValidator {
 
                 LogAdmin.setMessage(tmp, ServerConstants.ERROR);
 
-                SocketWriter.writing(sock, error.returnError(
+                SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock, error.returnError(
                         ServerConstants.ERROR, "", tmp));
                 //SocketServer.setDecrementSocketsCount();
             }

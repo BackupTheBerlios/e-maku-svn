@@ -888,9 +888,9 @@ public class LinkingCache {
             Hashtable clientes = EmakuServerSocket.getHchannelclients();
             Enumeration sockets = clientes.keys();
             while (sockets.hasMoreElements()) {
-                SocketChannel sock = (SocketChannel)sockets.nextElement();
+            	SocketChannel sock = (SocketChannel)sockets.nextElement();
                 if (EmakuServerSocket.getBd(sock).equals(bd)) {
-		            SocketWriter.writing(sock,
+		            SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,
 		                    UPDATECODESender.getPackage(key,
 		                                              LinkingCache.getConsecutive(bd,key)));
                 }
@@ -901,7 +901,7 @@ public class LinkingCache {
             LogAdmin.setMessage(Language.getWord("ERR_CONSECUTIVE") + " "
                     + bd + NFEe.getMessage(),
                     ServerConstants.ERROR);
-        }
+        } 
         
     }
     
