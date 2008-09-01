@@ -1,38 +1,26 @@
 package common.printer;
 
-import java.awt.BasicStroke;
+import java.awt.*;
 import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.Stroke;
-import java.awt.geom.RoundRectangle2D;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.StringTokenizer;
+import java.awt.geom.*;
+import java.io.*;
+import java.text.*;
+import java.util.*;
 
-import org.jdom.Attribute;
-import org.jdom.DataConversionException;
+import org.jdom.*;
+import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.output.*;
 import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
 
-import com.lowagie.text.DocumentException;
+import com.lowagie.text.*;
 import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfWriter;
-import common.control.ClientHeaderValidator;
-import common.control.SuccessEvent;
-import common.control.SuccessListener;
-import common.misc.text.NumberToLetterConversor;
-import common.printer.PrintingManager.ImpresionType;
+import com.lowagie.text.pdf.*;
+import common.control.*;
+import common.misc.XMLUtils;
+import common.misc.text.*;
+import common.printer.PrintingManager.*;
+import common.transactions.*;
 
 
 public class PostScriptManager implements AbstractManager, SuccessListener {
@@ -55,6 +43,9 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 	private PdfWriter pdfWriter;
 	private ArrayList<Graphics2D> objects = new ArrayList<Graphics2D>();
 	private int pageCount = 1;
+	private Vector<Query> sqlData = new Vector<Query>();
+	private String documentPrefix;
+	
 	final static BasicStroke stroke = new BasicStroke(0.3f);
 	
 	public PostScriptManager() {
@@ -211,8 +202,41 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 			else if ("font".equals(name)) {
 				g2d.setFont(new Font(attribs.get("name").getValue(),Font.PLAIN,attribs.get("size").getIntValue()));
 			}
-			
+			else if ("documentPrefix".equals(name)) {
+				documentPrefix = e.getValue();
+			}
+			else if ("sqlData".equals(name)) {
+				sqlData.add(new Query(e.getTextTrim(),col,row));
+				System.out.println("Adicionando un sql");
+			}
 		}
+		
+		Iterator<Query> sqls = sqlData.iterator();
+		if (ndocument!=null) {
+			System.out.println("ndocumento NO es nulo");
+			Document request = null;
+			while (sqls.hasNext()) {
+				Query query = sqls.next();
+				String sql = query.getSql();
+				g2d.drawString(sql,query.getX(),query.getY());
+				String [] args = {ndocument,documentPrefix};
+				try {
+					request = TransactionServerResultSet.getResultSetST(sql,args);
+					//XMLUtils.debugDocument(request);
+					Element rootElement = request.getRootElement();
+					Element row = rootElement.getChild("row");
+					String strVal = row.getChildText("col");
+					g2d.drawString(strVal,query.getX(),query.getY());
+					request = null;
+				} catch (TransactionServerException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		else {
+			System.out.println("ndocumento es nulo");
+		}
+		
 	}
 	
 	/**
@@ -249,7 +273,6 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 			if (el_template.getName().equals("subpackage")) {
 
 				int rowInit = el_template.getAttribute("rowInit").getIntValue();
-				int rowInitOrig = rowInit; 
 				int rowAcum = el_template.getAttribute("rowAcum").getIntValue();
 				Attribute attMaxAcum = el_template.getAttribute("maxRowsAcum");
 				int maxAcum = attMaxAcum!=null ? attMaxAcum.getIntValue() : -1;
@@ -548,5 +571,30 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 
 	public void setWidth(int width) {
 		this.width = width;
+	}
+	
+	class Query {
+		private int x;
+		private int y;
+		private String sql;
+		
+		Query(String sql,int x,int y) {
+			this.x=x;
+			this.y=y;
+			this.sql=sql;
+		}
+
+		protected String getSql() {
+			return sql;
+		}
+
+		protected int getX() {
+			return x;
+		}
+
+		protected int getY() {
+			return y;
+		}
+		
 	}
 }
