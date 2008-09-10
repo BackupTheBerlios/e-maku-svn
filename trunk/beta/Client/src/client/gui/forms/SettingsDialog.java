@@ -62,8 +62,6 @@ public class SettingsDialog extends JDialog {
 	
 	private static final long serialVersionUID = 7799638277510459773L;
 
-	private JTextField jtfHost;
-	private JTextField jtfPort;
     private JTextField jtfCash;
     
     private JComboBox jcbLang;
@@ -99,8 +97,6 @@ public class SettingsDialog extends JDialog {
         this.setLocationByPlatform(true);
         this.setAlwaysOnTop(true);
         
-        String host = "localhost";
-        String port = "9117";
         String cash = "CA001";
         String currentLanguage = "es_CO";
         String currentLogMode = "Default";
@@ -108,21 +104,13 @@ public class SettingsDialog extends JDialog {
         
         JPanel JPlabels = new JPanel();
         JPanel JPfields = new JPanel();
-        JPlabels.setLayout(new GridLayout(6, 1));
-        JPfields.setLayout(new GridLayout(6, 1));
+        JPlabels.setLayout(new GridLayout(4, 1));
+        JPfields.setLayout(new GridLayout(4, 1));
 
         JLabel JLLang = new JLabel(Language.getWord("LANG"));
         JPanel JPLLang = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPLLang.add(JLLang);
-        
-        JLabel JLHost = new JLabel(Language.getWord("HOST"));
-        JPanel JPLHost = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JPLHost.add(JLHost);
-        
-        JLabel JLPort = new JLabel(Language.getWord("PORT"));
-        JPanel JPLPort = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JPLPort.add(JLPort);
-        
+                
         JLabel JLBox = new JLabel(Language.getWord("TERM"));
         JPanel JPLBox = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPLBox.add(JLBox);        
@@ -136,8 +124,6 @@ public class SettingsDialog extends JDialog {
         JPLTheme.add(JLTheme);     
 
         JPlabels.add(JPLLang);
-        JPlabels.add(JPLHost);
-        JPlabels.add(JPLPort);
         JPlabels.add(JPLBox);
         JPlabels.add(JPLog);
         JPlabels.add(JPLTheme);
@@ -147,9 +133,7 @@ public class SettingsDialog extends JDialog {
         if (flag == EDIT) {
         	try {
         		noFile = false;
-        		ConfigFileHandler.loadSettings();        		
-        		host = ConfigFileHandler.getHost();
-        		port = String.valueOf(ConfigFileHandler.getServerPort());
+        		ConfigFileHandler.loadSettings();
         		cash = ConfigFileHandler.getCash();
         		currentLanguage = ConfigFileHandler.getLanguage();
         		currentLogMode = ConfigFileHandler.getLogMode();
@@ -160,16 +144,6 @@ public class SettingsDialog extends JDialog {
         	}
         }
 
-        jtfHost = new JTextField(10);
-        jtfHost.setText(host);
-        jtfHost.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                jtfHost.transferFocus();
-            }
-        });
-
-        jtfPort = new JTextField(10);
-        jtfPort.setText(port);
         
         jcbLang = new JComboBox(getFileList(ClientConstants.LANG,".xml"));
         jcbLang.setRenderer(new FlagRenderer());
@@ -187,12 +161,6 @@ public class SettingsDialog extends JDialog {
         
         JPanel JPLang = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPLang.add(jcbLang);
-
-        JPanel JPHost = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JPHost.add(jtfHost);
-       
-        JPanel JPPort = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JPPort.add(jtfPort);
         
         JPanel JPBox = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPBox.add(jtfCash);    
@@ -204,8 +172,6 @@ public class SettingsDialog extends JDialog {
         JPThemes.add(jcbThemes);
         
         JPfields.add(JPLang);
-        JPfields.add(JPHost);
-        JPfields.add(JPPort);
         JPfields.add(JPBox);
         JPfields.add(JPLogs);
         JPfields.add(JPThemes);
@@ -261,7 +227,7 @@ public class SettingsDialog extends JDialog {
         
         addButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		CompanyDialog dialog = new CompanyDialog(SettingsDialog.this,Language.getWord("ADD_CMP"),Language.getWord("ADD"),"","","");
+        		CompanyDialog dialog = new CompanyDialog(SettingsDialog.this,Language.getWord("ADD_CMP"),Language.getWord("ADD"),"","","","","");
         		dialog.pack();
         		dialog.setLocationRelativeTo(SettingsDialog.this);
         		dialog.setVisible(true);
@@ -276,8 +242,10 @@ public class SettingsDialog extends JDialog {
                 Element xml = findCompany(name);
                 String jar  = xml.getChild("jarFile").getValue();
                 String dir  = xml.getChild("directory").getValue();
+                String host  = xml.getChild("host").getValue();
+                String port  = xml.getChild("serverport").getValue();
 
-                CompanyDialog dialog = new CompanyDialog(SettingsDialog.this,Language.getWord("EDIT_CMP"),Language.getWord("EDIT"),name,jar,dir);
+                CompanyDialog dialog = new CompanyDialog(SettingsDialog.this,Language.getWord("EDIT_CMP"),Language.getWord("EDIT"),name,jar,dir,host,port);
                 dialog.pack();
                 dialog.setLocationRelativeTo(SettingsDialog.this);
                 dialog.setVisible(true);
@@ -359,75 +327,29 @@ public class SettingsDialog extends JDialog {
     	return boxCode;
     }
     
-    /**
-     * Este metodo retorna la ip o el nombre del host correspondiente al
-     * servidor
-     * 
-     * @return algo
-     */
-    public String getHost() {
-        return jtfHost.getText();
-    }
 
-    /**
-     * Este metodo retorna el puerto correspondiente al servidor
-     * 
-     * @return algo
-     */
-    public String getPort() {
-        return jtfPort.getText();
-    }
     
-    /**
-     * Este metodo limpia el campo correspondiente al puerto del servidor
-     * 
-     */
-    public void cleanPort() {
-        jtfPort.setText("");
-        jtfPort.requestFocus();
-    }
-    
-    /**
-     * Este metodo limpia el campo correspondiente al servidor
-     * 
-     */
     public void cleanServer() {
-        jtfHost.requestFocus();
+        jcbLang.requestFocus();
     }  
 
     
     private void packingData() {
     
-    	String serverAddress = getHost();
-    	String serverPort    = getPort();
     	String language      = getLanguage();
     	String logType       = getLog();
     	String pos           = getBox();
     	String theme         = getTheme();
    
-    	if (serverAddress.length() < 1) {
-    		JOptionPane.showMessageDialog(this,Language.getWord("EMPTY_SERVER"));
-    		cleanServer();
-    		return;
-    	}
 
-    	if (!isNumber(serverPort)) {
-    		JOptionPane.showMessageDialog(this,Language.getWord("NUM_PORT"));
-    		cleanPort();
-    		return;
-    	}
 
     	if (companies.size() == 0) {
     		JOptionPane.showMessageDialog(this,Language.getWord("NO_COMPANY"));
     		tabPane.setSelectedIndex(1);
     		return;			
-    	}
-
-    	if (serverPort.length() < 1) {
-    		serverPort = "9117";
     	}     
 
-    	callConfigFile(serverAddress,serverPort,language,logType,pos,theme,companies);
+    	callConfigFile(language,logType,pos,theme,companies);
 
     	if(noFile) {
     		callConnection();
@@ -436,8 +358,8 @@ public class SettingsDialog extends JDialog {
 
     }
       
-    private void callConfigFile(String serverAddress, String serverPort, String language, String logType, String pos, String theme, Vector<Element> companies) {
-        ConfigFileHandler.buildNewFile(serverAddress,serverPort,language,logType,pos,theme,companies);
+    private void callConfigFile(String language, String logType, String pos, String theme, Vector<Element> companies) {
+        ConfigFileHandler.buildNewFile(language,logType,pos,theme,companies);
     }
 
     private void callConnection()  {
@@ -478,6 +400,8 @@ public class SettingsDialog extends JDialog {
     			e.getChild("name").setText(newName);
     			e.getChild("jarFile").setText(values.getChild("jarFile").getText());
     			e.getChild("directory").setText(values.getChild("directory").getText());
+    			e.getChild("host").setText(values.getChild("directory").getText());
+    			e.getChild("serverport").setText(values.getChild("directory").getText());
     			companies.setElementAt(e,i);
     			if(!name.equals(newName)) {
     				int index = names.getSelectedIndex();

@@ -1,32 +1,22 @@
 package client.misc.settings;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
+import org.jdom.*;
+import org.jdom.input.*;
+import org.jdom.output.*;
 
-import client.gui.forms.Splash;
-import client.misc.ClientConstants;
+import client.gui.forms.*;
+import client.misc.*;
 
-import common.comunications.SocketConnector;
-import common.misc.Icons;
-import common.misc.language.Language;
-import common.misc.parameters.EmakuParametersStructure;
+import common.comunications.*;
+import common.misc.*;
+import common.misc.language.*;
+import common.misc.parameters.*;
 /**
  * ConfigFile.java Creado el 25-jun-2004
  * 
@@ -54,14 +44,17 @@ public class ConfigFileHandler extends EmakuParametersStructure {
 	private static Document doc;
 	private static Element root;
 	private static Language lang = new Language();
-	private static int serverport;
-	private static String host;
+	//private static int serverport;
+	//private static String host;
 	private static String language;
 	private static String logMode;
 	private static String jarDirectory;
 	private static String lookAndFeel;
 	private static String cash;
 	private static ArrayList<Element> companies;
+	//private static Vector<String> parameters;
+	private static Hashtable<String,HostConnection> HTHostConnections = new Hashtable<String, HostConnection>();;
+	private static String currentCompany = "";
 	
 	/**
 	 * Este metodo sirve para crear un nuevo archivo de configuracion
@@ -75,19 +68,18 @@ public class ConfigFileHandler extends EmakuParametersStructure {
 	 * @param log
 	 *            tipo de log a generar
 	 */
-	public static void buildNewFile(String host, String port, String language, String log, String cash, String theme, Vector<Element> companiesVector) {
+	public static void buildNewFile(String language, String log, String cash, String theme, Vector<Element> companiesVector) {
 
 		Element rootNode = new Element("configuration");
 		doc = new Document(rootNode);
 
 		rootNode.addContent(new Element("language").setText(language));
-		rootNode.addContent(new Element("host").setText(host));
-		rootNode.addContent(new Element("serverport").setText(port));
 		rootNode.addContent(new Element("log").setText(log));
 		rootNode.addContent(new Element("cash").setText(cash));
 		rootNode.addContent(new Element("lookAndFeel").setText(theme));
 
 		for(Element element:companiesVector) {
+			loadHostConnections(element);
 			rootNode.addContent(element);
 		} 
 
@@ -106,9 +98,11 @@ public class ConfigFileHandler extends EmakuParametersStructure {
 				FileOutputStream outFile = new FileOutputStream(file);
 				out.output(doc, outFile);
 				outFile.close();
-				ConfigFileHandler.host = host;
-				ConfigFileHandler.serverport = Integer.parseInt(port);
-				lang.loadLanguage(language);
+				try {
+					ConfigFileHandler.loadSettings();
+				} catch (ConfigFileNotLoadException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		catch (FileNotFoundException e) {
@@ -124,6 +118,7 @@ public class ConfigFileHandler extends EmakuParametersStructure {
 	 * 
 	 * @throws ConfigFileNotLoadException
 	 */
+	@SuppressWarnings("unchecked")
 	public static void loadSettings() throws ConfigFileNotLoadException {
 		try {
 			companies = new ArrayList<Element>();
@@ -148,47 +143,40 @@ public class ConfigFileHandler extends EmakuParametersStructure {
 			 */
 
 			int counter = 0;
-			Vector<String> parameters = new Vector<String>();
+			//parameters = new Vector<String>();
 			while (i.hasNext()) {
 				Element data = (Element) i.next();
 				String name = data.getName(); 
 				if (name.equals("language")) {
 					language = data.getValue();
-					parameters.add("language");
+					//parameters.add("language");
 					counter++;
 				} 
-				else if (name.equals("host")) {
-					host = data.getValue();
-					parameters.add("host");
-					counter++;
-				} else if (name.equals("serverport")) {
-					serverport = Integer.parseInt(data.getValue());
-					parameters.add("serverport");
-					counter++;
-				} else if (name.equals("log")) {
+				else if (name.equals("log")) {
 					logMode = data.getValue();
-					parameters.add("log");
+					//parameters.add("log");
 					counter++;
 				} 
 				else if (name.equals("lookAndFeel")) {
 					lookAndFeel = data.getValue();
-					parameters.add("lookAndFeel");
+					//parameters.add("lookAndFeel");
 					counter++;
 				}
 				else if (name.equals("cash")) {
 					cash = data.getValue();
-					parameters.add("cash");
+					//parameters.add("cash");
 					counter++;
 				}
 				else if (name.equals("company")) {
+					loadHostConnections(data);
 					companies.add((Element)data.clone());
-					parameters.add("company");
+					//parameters.add("company");
 					counter++;
 				}
 				EmakuParametersStructure.addParameter(name,data.getValue());
 			}
 
-			if(counter < 7) {
+			if(counter < 5) {
 				System.out.println(Language.getWord("MISS_CONFIG"));
 				System.out.println(Language.getWord("MISS_CONFIG2"));
 				System.exit(0);
@@ -210,6 +198,31 @@ public class ConfigFileHandler extends EmakuParametersStructure {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	private static void loadHostConnections(Element e) {
+		
+		Iterator it = e.getChildren().iterator();
+		HostConnection hostConnection = new HostConnection();
+		String key = null;
+		while (it.hasNext()) {
+			Element config = (Element) it.next();
+			String name = config.getName();
+			String value = config.getValue();
+			if (name.equals("name")) {
+				key = value.trim();
+			}
+			else if (name.equals("host")) {
+				hostConnection.setHost(value);
+			} else if (name.equals("serverport")) {
+				hostConnection.setPort(Integer.parseInt(value));
+			}
+		}
+		if (key!=null) {
+			HTHostConnections.put(key,hostConnection);
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked"})
 	public static void loadJarFile(String nameCompany) {
 		Iterator<Element> i = root.getChildren("company").iterator();
 		boolean isCompany = false;
@@ -228,12 +241,12 @@ public class ConfigFileHandler extends EmakuParametersStructure {
 				if (name.equals("name") && value.trim().equals(nameCompany.trim())) {
 					isCompany = true;
 				} 
-				if (name.equals("jarFile")) {
-					jarFile = config.getValue();
+				else if (name.equals("jarFile")) {
+					jarFile = value;
 				} 
-				if (name.equals("directory")) {
-					directory = config.getValue();
-				} 
+				else if (name.equals("directory")) {
+					directory = value;
+				}
 			}
 		}
 		
@@ -275,7 +288,12 @@ public class ConfigFileHandler extends EmakuParametersStructure {
 	 * @return la ip o el nombre del servidor de transacciones
 	 */
 	public static String getHost() {
-		return host;
+		HostConnection hc = HTHostConnections.get(ConfigFileHandler.currentCompany);
+		 if (hc!=null) {
+			 return hc.getHost();
+		 }
+		 System.out.println("Host not set in the client.conf");
+		return null;
 	}
 
 	public static String getLanguage() {
@@ -302,7 +320,12 @@ public class ConfigFileHandler extends EmakuParametersStructure {
 	 * @return serverport
 	 */
 	 public static int getServerPort() {
-		 return serverport;
+		 HostConnection hc = HTHostConnections.get(ConfigFileHandler.currentCompany);
+		 if (hc!=null) {
+			 return hc.getPort();
+		 }
+		 System.out.println("Port not set in the client.conf");
+		 return -1;
 	 }
 	 /**
 	  * 
@@ -322,4 +345,26 @@ public class ConfigFileHandler extends EmakuParametersStructure {
 		 return jarDirectory;
 	 }
 
+	public static void setCurrentCompany(String company) {
+		ConfigFileHandler.currentCompany = company;
+	}
 }
+
+class HostConnection {
+	
+	private String host;
+	private int port;
+	
+	public String getHost() {
+		return host;
+	}
+	public void setHost(String host) {
+		this.host = host;
+	}
+	public int getPort() {
+		return port;
+	}
+	public void setPort(int port) {
+		this.port = port;
+	}
+ }

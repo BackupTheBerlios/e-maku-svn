@@ -167,6 +167,7 @@ public class Connection {
             SocketConnector socketConnector;
             connectButton.setEnabled(false);
             connectionFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            ConfigFileHandler.setCurrentCompany(authPanel.getDataBase());
 			try {
 				PackageToXML packageXML = new PackageToXML();
 				HeadersValidator headers = new HeadersValidator();

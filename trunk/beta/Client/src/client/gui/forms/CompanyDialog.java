@@ -50,11 +50,14 @@ public class CompanyDialog extends JDialog {
 	final JTextField JTFName;
 	final JTextField JTFJar;
 	final JTextField JTFDir;
+	final JTextField JTFHost;
+	final JTextField JTFPort;
 	//private Element root;
 	private String name;
 	private String oldName;
 
-	public CompanyDialog(JDialog parent,String title,final String label,String name,String jar,String dir) {
+	public CompanyDialog(JDialog parent,String title,final String label,String name,String jar,String dir,String host, String port) {
+		
 		super(parent, true);
 		oldName = name;	
 		this.setTitle(title);
@@ -64,8 +67,8 @@ public class CompanyDialog extends JDialog {
 
 		JPanel JPlabels = new JPanel();
 		JPanel JPfields = new JPanel();
-		JPlabels.setLayout(new GridLayout(3, 1));
-		JPfields.setLayout(new GridLayout(3, 1));
+		JPlabels.setLayout(new GridLayout(5, 1));
+		JPfields.setLayout(new GridLayout(5, 1));
 
 		JLabel JLName = new JLabel(Language.getWord("NAME"));
 		JPanel JPLName = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -78,10 +81,20 @@ public class CompanyDialog extends JDialog {
 		JLabel JLDir = new JLabel(Language.getWord("DIR"));
 		JPanel JPLDir = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPLDir.add(JLDir);
+		
+		JLabel JLHost = new JLabel(Language.getWord("HOST"));
+		JPanel JPLHost = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPLHost.add(JLHost);
+		
+		JLabel JLPort = new JLabel(Language.getWord("PORT"));
+		JPanel JPLPort = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPLPort.add(JLPort);
 
 		JPlabels.add(JPLName);
 		JPlabels.add(JPLJar);
 		JPlabels.add(JPLDir);
+		JPlabels.add(JPLHost);
+		JPlabels.add(JPLPort);
 
 		JTFName = new JTextField(10);
 		JTFName.setText(name);
@@ -112,13 +125,36 @@ public class CompanyDialog extends JDialog {
 				JTFDir.transferFocus();
 			}
 		});
-
+		
 		JPanel JPTDir = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPTDir.add(JTFDir);
+		
+		JTFHost = new JTextField(10);
+		JTFHost.setText(host);
+		JTFHost.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JTFHost.transferFocus();
+			}
+		});
+		
+		JPanel JPTHost = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPTHost.add(JTFHost);
+		
+		JTFPort = new JTextField(10);
+		JTFPort.setText(port);
+		JTFPort.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JTFPort.transferFocus();
+			}
+		});
+		JPanel JPTPort = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPTPort.add(JTFPort);
 
 		JPfields.add(JPTName);
 		JPfields.add(JPTJar);
 		JPfields.add(JPTDir);
+		JPfields.add(JPTHost);
+		JPfields.add(JPTPort);
 
 		JPanel JPForm = new JPanel(new BorderLayout());
 		JPForm.add(JPlabels,BorderLayout.WEST);
@@ -172,12 +208,22 @@ public class CompanyDialog extends JDialog {
 	public String getDirectory() {
 		return JTFDir.getText().trim();
 	}
+	
+	public String getHost() {
+		return JTFHost.getText().trim();
+	}
+	
+	public String getPort() {
+		return JTFPort.getText().trim();
+	}
 
 	private void packingData(String label) {
 
 		name              = getName();
 		String jarFile    = getJarFile();
 		String directory  = getDirectory();
+		String host       = getHost();
+		String serverport = getPort();
 
 		if (name.length() < 1) {
 			JOptionPane.showMessageDialog(this,Language.getWord("EMPTY_NAME"));
@@ -212,6 +258,8 @@ public class CompanyDialog extends JDialog {
 		root.addContent(new Element("name").setText(name));
 		root.addContent(new Element("jarFile").setText(jarFile));
 		root.addContent(new Element("directory").setText(directory));
+		root.addContent(new Element("host").setText(host));
+		root.addContent(new Element("serverport").setText(serverport));
 
 		if(label.equals(Language.getWord("ADD"))) {
 			SettingsDialog.addCompany(root,name);
