@@ -3,6 +3,8 @@ package server.database.connection;
 import java.sql.*;
 import java.util.*;
 
+import com.javaexchange.dbConnectionBroker.DbConnectionBroker;
+
 import server.misc.*;
 import server.misc.settings.*;
 
@@ -32,9 +34,10 @@ import common.misc.log.*;
  */
 public class ConnectionsPool {
 
-	//private static Hashtable<String, PooledConnections> Hpoolbds;
-	private static Hashtable<String, Connection> Hpoolbds;
-
+	private static Hashtable<String, PooledConnections> Hpoolbds;
+	//private static Hashtable<String, Connection> Hpoolbds;
+	private DbConnectionBroker myBroker;
+	
 	/**
 	 * Este metodo carga todas las bases de datos existentes en el fichero de
 	 * configuracion
@@ -42,8 +45,8 @@ public class ConnectionsPool {
 
 	public static void CargarBD() throws ConnectionsPoolException {
 
-		//Hpoolbds = new Hashtable<String, PooledConnections>();
-		Hpoolbds = new Hashtable<String, Connection>();
+		Hpoolbds = new Hashtable<String, PooledConnections>();
+		//Hpoolbds = new Hashtable<String, Connection>();
 		int max = ConfigFileHandler.getDBSize();
 		for (int i = 0; i < max; i++)
 			try {
@@ -54,8 +57,8 @@ public class ConnectionsPool {
 				String user = ConfigFileHandler.getUser(i);
 				String password = ConfigFileHandler.getPassword(i);
 				Class.forName(driver);
-				//PooledConnections c = new PooledConnections(driver, url,user, password, 10);
-				Connection c = DriverManager.getConnection(url, user, password);
+				PooledConnections c = new PooledConnections(driver, url,user, password, 10);
+				//Connection c = DriverManager.getConnection(url, user, password);
 				Hpoolbds.put(ConfigFileHandler.getDBName(i), c);
 			} catch (ClassNotFoundException CNFEe) {
 				LogAdmin.setMessage("ERR_CLASS", Language.getWord("ERR_CLASS"),CNFEe.getMessage(), ServerConstants.ERROR);
@@ -78,8 +81,16 @@ public class ConnectionsPool {
 	 */
 
 	public static Connection getConnection(String nombreBD) {
-		//return Hpoolbds.get(nombreBD).getConnection();
-		return Hpoolbds.get(nombreBD);
+		return Hpoolbds.get(nombreBD).getConnection();
+	}
+	
+	
+	public static Connection getMultiConnection(String nombreBD) {
+		return Hpoolbds.get(nombreBD).getMultiConnection();
+	}
+
+	public static void freeMultiConnection(String nombreBD,Connection conn) {
+		Hpoolbds.get(nombreBD).freeConnection(conn);
 	}
 
 	public static boolean chekDataBase(String DataBase) {

@@ -126,14 +126,28 @@ public class TableDataFields extends GenericData implements InstanceFinishingLis
     	class addTotalClass extends Thread {
 	    
     		public void run() {
-    			addTotalEvent();
+    			try {
+    				while (true) {
+	    				Thread.sleep(1000);
+	    				try {
+	    					addTotalEvent();
+	    					break;
+	    				}
+	    				catch(NullPointerException e) {
+	    					
+	    				}
+    				}
+    			}
+    			catch(InterruptedException e) {
+    				e.printStackTrace();
+    			}
 			}
     	}
     	new addTotalClass().start();
     	
     }
     
-    private void addTotalEvent() {
+    private void addTotalEvent() throws NullPointerException {
 		try {
           	TMFDtabla = (EmakuTableModel) GFforma.invokeMethod("client.gui.components.TableFindData"+getEnlaceTabla(),
 	        "getTMFDtabla");

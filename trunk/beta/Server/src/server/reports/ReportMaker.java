@@ -189,7 +189,7 @@ public class ReportMaker extends Thread {
 					  parameters.put("Ciudad", city);
 					  parameters.put("Fecha", DateValidator.getFormattedDate());
 					  parameters.put("Qhatu", ServerConstants.QHATU);
-					  parameters.put("Url", ServerConstants.QHATU_URL);
+					  //parameters.put("Url", ServerConstants.QHATU_URL);
 
 					  JRBaseFiller filler = createFiller(ReportsStore.getReportClass(codigo));
 					  JasperPrint jasperPrint = filler.fill(parameters,jrRS);

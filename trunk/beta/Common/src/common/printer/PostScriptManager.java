@@ -218,7 +218,6 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 			while (sqls.hasNext()) {
 				Query query = sqls.next();
 				String sql = query.getSql();
-				g2d.drawString(sql,query.getX(),query.getY());
 				String [] args = {ndocument,documentPrefix};
 				try {
 					request = TransactionServerResultSet.getResultSetST(sql,args);

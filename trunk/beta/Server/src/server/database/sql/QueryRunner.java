@@ -1,12 +1,13 @@
 package server.database.sql;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import server.database.connection.ConnectionsPool;
-
 import org.jdom.Element;
+
+import server.database.connection.ConnectionsPool;
 
 
 /**
@@ -72,7 +73,7 @@ public class QueryRunner extends Element {
     public QueryRunner(String bd) {
         this.bd=bd;
     }
-    
+
     /**
      * Metodo encargado de ejcutar la sentencia sql
      * 
@@ -80,6 +81,7 @@ public class QueryRunner extends Element {
      */
     public ResultSet ejecutarSELECT() throws SQLException{
         try {
+        	
 	    	st = ConnectionsPool.getConnection(bd).createStatement();
 	        //System.out.println("SENTENCIA SQL :: "+sql);
 	        ResultSet rs = st.executeQuery(sql);
@@ -90,10 +92,32 @@ public class QueryRunner extends Element {
 		}
     }
 
+    /**
+     * Metodo encargado de ejcutar la sentencia sql
+     * 
+     * @return retorna el resultado de la consulta
+     */
+    public ResultSet ejecutarMTSELECT(Connection conn) throws SQLException{
+        try {
+        	
+	    	Statement st = conn.createStatement();
+	        //System.out.println("SENTENCIA SQL :: "+sql);
+	        ResultSet rs = st.executeQuery(sql);
+	        return rs;
+    	}
+		catch(SQLException SQLEe) {
+			throw new SQLException(cod_sql+" "+SQLEe.getMessage()+" "+SQLEe.getErrorCode());
+		}
+    }
+
     public boolean ejecutarSQL(String cod_sql,String[] args) 
     throws SQLException,SQLNotFoundException, SQLBadArgumentsException {
     	try {
 	        this.cod_sql = cod_sql;
+	        System.out.println("Estos son los argumentos: ");
+	        for (String a:args) {
+	        	System.out.println("a: "+a);
+	        }
 	        sql = SQLFormatAgent.getSentencia(bd,cod_sql,args);
 	        st = ConnectionsPool.getConnection(bd).createStatement();
 	        //System.out.println("SENTENCIA SQL :: "+sql);

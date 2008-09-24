@@ -989,7 +989,8 @@ public class LNDocuments {
         ResultSet RSdatos = RQkey.ejecutarSELECT();
         while (RSdatos.next()) {
             primaryKey=RSdatos.getString(1);
-        }
+    }
+        
         
         RSdatos.close();
         RQkey.closeStatement();

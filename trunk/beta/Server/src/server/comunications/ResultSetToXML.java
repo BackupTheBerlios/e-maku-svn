@@ -4,15 +4,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.channels.SocketChannel;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 
+import server.database.connection.ConnectionsPool;
+import server.database.connection.PooledConnections;
 import server.database.sql.QueryRunner;
 import server.database.sql.SQLBadArgumentsException;
+import server.database.sql.SQLFormatAgent;
 import server.database.sql.SQLNotFoundException;
 import server.database.sql.StatementsClosingHandler;
 import server.misc.ServerConstants;
@@ -85,26 +90,46 @@ public class ResultSetToXML extends Document implements Runnable {
      * Metodo encargado de ejcutar y transmitir la sentencia sql
      */
     public void run() {
-
-        
-        	QueryRunner rselect = null;
+    		Connection conn=null;
+    		Statement st = null;
+        	ResultSet RSdatos	= null;
         	try {
+            	String sqlCode = null;
+            	while (true) {
+            		try {
+	            		conn = ConnectionsPool.getMultiConnection(bd);
+	            		if (conn!=null) {
+	            			break;
+	            		}
+	            		else {
+	            			System.out.println("Dio null :S");
+	            			Thread.sleep(1000);
+	            		}
+            		}
+            		catch(InterruptedException e) {
+            			e.printStackTrace();
+            		}
+            	}
+            	st = conn.createStatement();
+            	
 	            bufferSocket = new ByteArrayOutputStream();
                 XMLOutputter XMLformat = new XMLOutputter();
 	            
 	
 	            if(args==null ) {
-	                rselect = new QueryRunner(bd, sql);
+	                sqlCode = SQLFormatAgent.getSentencia(bd,sql);
 	            }
 	            else {
-	                rselect = new QueryRunner(bd, sql,args);
+	                sqlCode = SQLFormatAgent.getSentencia(bd, sql, args);
 	            }
-	            
-	            ResultSet RSdatos = rselect.ejecutarSELECT();
+	            System.out.println("ejecutando "+sql);
+	            RSdatos = st.executeQuery(sqlCode);
 	
                 ResultSetMetaData RSMDinfo = RSdatos.getMetaData();
                 int columnas = RSMDinfo.getColumnCount();
+                System.out.println("preparando para transmitir");
                 synchronized(sock) {
+                    System.out.println("Transmitiendo");
 	                writeBufferSocket(sock,
 	                        ServerConstants.CONTEN_TYPE+
 	                        ServerConstants.TAGS_ANSWER[0]+
@@ -190,7 +215,20 @@ public class ResultSetToXML extends Document implements Runnable {
 			}
 
 	        finally {
-	            rselect.closeStatement();
+	            try {
+	            	if (RSdatos!=null) {
+	            		RSdatos.close();
+	            	}
+	            	if (st!=null) {
+	            		st.close();
+	            	}
+	            	ConnectionsPool.freeMultiConnection(bd, conn);
+                    System.out.println("Fin de la transmision");
+
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	        }
         
     }

@@ -48,7 +48,7 @@ public interface ServerConstants {
             						   "            </row>\n"};
     public final String [] TAGS_COL_HEAD = {"       <col type=\"","\">"};
     public final String [] TAGS_COL = {"                <col>","</col>\n"};
-    public final String QHATU       = "Reporte elaborado con eMaku [ http://www.qhatu.net ]";
+    public final String QHATU       = "Reporte elaborado con eMaku";
     public final String QHATU_URL   = "http://www.qhatu.net";
     
     //public static int MAX_WIN_SIZE_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
