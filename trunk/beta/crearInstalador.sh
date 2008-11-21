@@ -1,4 +1,5 @@
 #!/bin/bash
+#
 
 ROOT=/home/emaku/beta.berlios/beta
 
