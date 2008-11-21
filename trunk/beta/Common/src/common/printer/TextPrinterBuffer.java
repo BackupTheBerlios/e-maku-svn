@@ -81,7 +81,7 @@ public class TextPrinterBuffer {
 	 * @param col
 	 * @param width
 	 */
-	public void insertString(String str, int row, int col,Integer width) {
+	public void insertString(String str, int row, int col,Integer width) throws ArrayIndexOutOfBoundsException {
 		if (row==0 || col ==0 || str==null || "".equals(str)) { return; }
 		if (row > buffer.size() ) {
 			while (row > buffer.size()) {
@@ -115,13 +115,24 @@ public class TextPrinterBuffer {
 	 * @return
 	 */
 	public String getBufferString() {
+		return getBufferString(true);
+	}
+	
+	
+	/**
+	 * Retorna el contenido del buffer
+	 * @return
+	 */
+	public String getBufferString(boolean endofline) {
 		StringBuilder string = new StringBuilder();
-		int i=0;
-		for (; i< buffer.size()-1;i++) {
-			string.append(buffer.get(i)+"\n");
-		}
-		if (buffer.size()>0) {
-			string.append(buffer.get(i));	
+		if (endofline) {
+			int i=0;
+			for (; i< buffer.size()-1;i++) {
+				string.append(buffer.get(i)+"\n");
+			}
+			if (buffer.size()>0) {
+				string.append(buffer.get(i));	
+			}
 		}
 		return string.toString();
 	}

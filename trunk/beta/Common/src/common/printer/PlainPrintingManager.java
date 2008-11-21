@@ -49,6 +49,7 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 	
 	public void process(Element rootTemplate,Element rootTransact) {
 		textPrinterBuffer.clear();
+		this.currentRow = 1;
 		try {
 			Attribute ATTRequesNumeration = rootTemplate.getAttribute("requestNumeration");
 			if (ATTRequesNumeration!=null && ATTRequesNumeration.getBooleanValue()) {
@@ -115,8 +116,13 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 				System.out.println("Generador en " + (end-init) + " milisegundos ");
 			}
 		}
+		catch (ArrayIndexOutOfBoundsException e) {
+			e.printStackTrace();
+			System.out.println(textPrinterBuffer.getBufferString());
+		}
 		catch (DataConversionException e) {
 			e.printStackTrace();
+			System.out.println(textPrinterBuffer.getBufferString());
 		}
 	}
 	

@@ -314,10 +314,11 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 	    			doc.setRootElement(printJob);
 	    			builTransaction(vector,action,printJob,null);
 	    			String pathTemplate = element.getChildText("printerTemplate");
+	    			String jarDirTemplates = EmakuParametersStructure.getJarDirectoryTemplates();
 	    			try {
 						SAXBuilder sax = new SAXBuilder(false);
 						Document template = null;
-						URL url = new URL(EmakuParametersStructure.getJarDirectoryTemplates()+pathTemplate);
+						URL url = new URL(jarDirTemplates+pathTemplate);
 						if (url!=null){
 							template = sax.build(url);
 							Element rootTemplate= template.getRootElement();
@@ -334,14 +335,14 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 											 !ATprinter.getValue().trim().equals("") ?  
 											 ATprinter.getValue() : 
 											 null ;
-							
+							System.out.println("template path: "+jarDirTemplates+pathTemplate);
 							if ("PLAIN".equals(typePrinter) ) {
 								plainManager.setNdocument(lastNumber);
 								plainManager.process(rootTemplate,printJob);
 								if (plainManager.isSuccessful()) {
-									System.out.println("================================");
+									System.out.println("========================================");
 									System.out.println(plainManager.toString());
-									System.out.println("================================");
+									System.out.println("========================================");
 									ImpresionType        IType     = plainManager.getImpresionType();
 									ByteArrayInputStream IStream   = plainManager.getStream();
 									new PrintingManager(IType,IStream, silent, copies,printer,0,0);
@@ -364,12 +365,13 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 							//System.gc();
 						}
 						else {
-							System.out.println("Plantilla "+pathTemplate+" no encontrada");
+							System.out.println("Plantilla "+jarDirTemplates+pathTemplate+" no encontrada");
 							JOptionPane.showInternalMessageDialog(GFforma,"NO SE ENCONTRO LA PLANTILLA DE IMPRESION");
 						}
 					} catch (FileNotFoundException e) {
-						JOptionPane.showInternalMessageDialog(GFforma,"NO SE ENCONTRO LA PLANTILLA DE IMPRESION");
 						e.printStackTrace();
+						System.out.println("Plantilla "+jarDirTemplates+pathTemplate+" no encontrada");
+						JOptionPane.showInternalMessageDialog(GFforma,"NO SE ENCONTRO LA PLANTILLA DE IMPRESION");
 					} catch (PrintException e) {
 						e.printStackTrace();
 					} catch (IOException e) {
