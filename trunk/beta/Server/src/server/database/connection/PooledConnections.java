@@ -25,17 +25,18 @@ public class PooledConnections {
 		try {
 			Class.forName(driver);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
-			myBroker = new DbConnectionBroker(driver,url,username,password,2,8,"/tmp/poolConections",1);
+			String tmpDir      = System.getProperty("java.io.tmpdir");
+			String osSeparator = System.getProperty("file.separator");
+			String logFile     = osSeparator+tmpDir+osSeparator+"poolConections";
+			myBroker = new DbConnectionBroker(driver,url,username,password,2,8,logFile,1);
 		} 
 		catch (IOException e)  { 
 			e.printStackTrace();
 		}
 		transConnection = DriverManager.getConnection(url, username, password);
-		
 	}
 
 	public Connection getConnection() {
