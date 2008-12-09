@@ -203,7 +203,6 @@ public class LinkingCache {
 	        /*
 	         * Esta consulta captura el nombre de la empresa y su Nit
 	         */
-	        
 	        rs = st.executeQuery(SQLFormatAgent.getSentencia(bd,"SCS0054"));
 	
 	        while (rs.next()) {                	
@@ -247,7 +246,7 @@ public class LinkingCache {
 	        /* Se realiza la consulta para obtener el precio de costo, el saldo y el valor del saldo
 	         * de la tabla inventarios
 	         */
-	
+			
 	        rs = st.executeQuery(SQLFormatAgent.getSentencia(bd,"SCS0037"));
 	
 	        /*

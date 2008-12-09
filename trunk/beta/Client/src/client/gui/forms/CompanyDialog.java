@@ -62,7 +62,7 @@ public class CompanyDialog extends JDialog {
 		oldName = name;	
 		this.setTitle(title);
 		this.setResizable(false);
-		this.setLocationByPlatform(true);
+		//this.setLocationByPlatform(true);
 		this.setAlwaysOnTop(true);
 
 		JPanel JPlabels = new JPanel();

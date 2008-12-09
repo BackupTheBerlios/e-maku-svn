@@ -195,7 +195,7 @@ public class HeadersValidator {
                 catch (IOException e) {
                     e.printStackTrace();
                 }
-                new ReportMaker(raiz, sock, false);
+                new ReportMaker(raiz, sock, false).start();
             }
             /* Solicitud de reporte en formato xls */
             else if ("XLSREPORTREQUEST".equals(nom_raiz)) {

@@ -94,7 +94,7 @@ public class SettingsDialog extends JDialog {
         super(parent, true);
         this.setTitle(Language.getWord("CONFIG"));
         this.setResizable(false);
-        this.setLocationByPlatform(true);
+        //this.setLocationByPlatform(true);
         this.setAlwaysOnTop(true);
         
         String cash = "CA001";

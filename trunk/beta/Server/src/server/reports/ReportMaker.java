@@ -3,6 +3,7 @@ package server.reports;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -34,6 +35,7 @@ import org.jdom.Element;
 
 import server.comunications.EmakuServerSocket;
 import server.control.ReportsStore;
+import server.database.connection.ConnectionsPool;
 import server.database.sql.LinkingCache;
 import server.database.sql.QueryRunner;
 import server.database.sql.SQLBadArgumentsException;
@@ -90,7 +92,7 @@ public class ReportMaker extends Thread {
 		this.socket = sock;
 		this.dataBase = EmakuServerSocket.getBd(socket);
 		this.reportType = reportType;
-		start();
+		//start();
 	}
 
 	public ReportMaker() {
@@ -118,13 +120,29 @@ public class ReportMaker extends Thread {
 		try {
 			Calendar calendar = Calendar.getInstance();
 			long init = calendar.getTimeInMillis();
-
-			ResultSet rs;
+			
 			codigo = element.getChildText("driver");
-			rs = new QueryRunner(
-					dataBase,
-					"SCS0050",
-					new String[] { codigo }).ejecutarSELECT();
+			Connection conn;
+        	while (true) {
+        		try {
+            		conn = ConnectionsPool.getMultiConnection(dataBase);
+            		if (conn!=null) {
+            			break;
+            		}
+            		else {
+            			System.out.println("Dio null :S");
+            			Thread.sleep(1000);
+            		}
+        		}
+        		catch(InterruptedException e) {
+        			e.printStackTrace();
+        		}
+        	}
+
+			ResultSet rs = new QueryRunner(
+											dataBase,
+											"SCS0050",
+											new String[] { codigo }).ejecutarMTSELECT(conn);
 			boolean next = rs.next();
 			String title = null;
 			String sql = null;
@@ -153,9 +171,9 @@ public class ReportMaker extends Thread {
 						Element arg = (Element) it.next();
 						args[i] = arg.getValue();
 					}
-					rs = new QueryRunner(EmakuServerSocket.getBd(socket), sql, args).ejecutarSELECT();
+					rs = new QueryRunner(EmakuServerSocket.getBd(socket), sql, args).ejecutarMTSELECT(conn);
 				} else {
-					rs = new QueryRunner(EmakuServerSocket.getBd(socket), sql).ejecutarSELECT();
+					rs = new QueryRunner(EmakuServerSocket.getBd(socket), sql).ejecutarMTSELECT(conn);
 				}
 				
 				int resultSize = rs.getFetchSize();
@@ -258,7 +276,9 @@ public class ReportMaker extends Thread {
 			end = calendar.getTimeInMillis();
 			System.out.println("paquete escrito en "+((end-init)/1000)+" segundos"); 
 	        rs.close();
+	        conn.close();
 	        rs = null;
+	        conn=null;
 	        os.close();
 	        os = null;
 	        System.gc();
