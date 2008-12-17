@@ -142,7 +142,6 @@ public class PrintingManager {
 		if (printFile) {
 			printJob.print(pras);
 		}
-		
 		decode_pdf.closePdfFile();
 	}
 	

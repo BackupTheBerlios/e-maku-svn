@@ -47,7 +47,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 	private String documentPrefix;
 	private int currentRow = 1;
 	private int rowAcum=0;
-	ByteArrayInputStream in;
+	//ByteArrayInputStream in;
 	
 	final static BasicStroke stroke = new BasicStroke(0.3f);
 	
@@ -131,12 +131,16 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 			}
 			
 			if ( countPacks > 0 ) {
-				this.in = new ByteArrayInputStream(outPut.toByteArray());
+				//this.in = new ByteArrayInputStream(outPut.toByteArray());
 				this.successful = true;
 				calendar = Calendar.getInstance();
 				long end = calendar.getTimeInMillis();
 				System.out.println("Generador en " + (end-init) + " milisegundos ");
 			}
+			else {
+				//this.in = new ByteArrayInputStream(outPut.toByteArray());
+			}
+				
 			
 		}
 		catch (DataConversionException e) {
@@ -276,7 +280,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 	 * @throws DataConversionException
 	 */
 	private void processElement(Element pack_template, Element pack_transaction) throws DataConversionException {
-		/*
+		
 		System.out.println("template: ");
 		try {
 	        XMLOutputter xmlOutputter = new XMLOutputter();
@@ -296,7 +300,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 	    catch (IOException e) {
 	        e.printStackTrace();
 	    }
-	    */
+	    
 		Iterator it_template = pack_template.getChildren().iterator();
 		Iterator it_transaction = pack_transaction.getChildren().iterator();
 		while(it_template.hasNext() && it_transaction.hasNext()) {
@@ -578,6 +582,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 	}
 
 	public ByteArrayInputStream getStream() {
+		ByteArrayInputStream in = new ByteArrayInputStream(outPut.toByteArray());
 		return in;
 	}
 
