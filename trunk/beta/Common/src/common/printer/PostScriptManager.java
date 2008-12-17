@@ -45,6 +45,9 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 	private int pageCount = 1;
 	private Vector<Query> sqlData = new Vector<Query>();
 	private String documentPrefix;
+	private int currentRow = 1;
+	private int rowAcum=0;
+	ByteArrayInputStream in;
 	
 	final static BasicStroke stroke = new BasicStroke(0.3f);
 	
@@ -128,6 +131,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 			}
 			
 			if ( countPacks > 0 ) {
+				this.in = new ByteArrayInputStream(outPut.toByteArray());
 				this.successful = true;
 				calendar = Calendar.getInstance();
 				long end = calendar.getTimeInMillis();
@@ -168,11 +172,33 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 				attribs.put(attribute.getName(),attribute);
 			}
 			Attribute attr = attribs.get("row");
-			int row = attr.getIntValue();
+			
+			boolean lrow = true;
+			try {
+				lrow = attribs.get("incrementRow").getBooleanValue();
+			}
+			
+			catch(NullPointerException NPEe) {}
+			int row = 0;
+			String srow = attr.getValue();
+			if (srow.equals("last")) {
+				row=currentRow;
+			}
+			else {
+				row=Integer.valueOf(srow);
+			}
+			
 			int col =  attribs.get("col").getIntValue();
 			g2d.setStroke(stroke);
 			if ("line".equals(name)) {
-				int row2 = attribs.get("row2").getIntValue();
+				int row2 = 0;
+				String srow2 = attribs.get("row2").getValue();
+				if (srow2.equals("last")) {
+					row2=row;
+				}
+				else {
+					row2=Integer.parseInt(srow2);
+				}
 				int col2 = attribs.get("col2").getIntValue();
 				g2d.drawLine(col,row, col2,row2);
 			}
@@ -207,7 +233,12 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 			}
 			else if ("sqlData".equals(name)) {
 				sqlData.add(new Query(e.getTextTrim(),col,row));
-				System.out.println("Adicionando un sql");
+			}
+			if (lrow) {
+				currentRow=row+rowAcum;				
+			}
+			else {
+				currentRow=row;
 			}
 		}
 		
@@ -245,6 +276,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 	 * @throws DataConversionException
 	 */
 	private void processElement(Element pack_template, Element pack_transaction) throws DataConversionException {
+		/*
 		System.out.println("template: ");
 		try {
 	        XMLOutputter xmlOutputter = new XMLOutputter();
@@ -264,6 +296,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 	    catch (IOException e) {
 	        e.printStackTrace();
 	    }
+	    */
 		Iterator it_template = pack_template.getChildren().iterator();
 		Iterator it_transaction = pack_transaction.getChildren().iterator();
 		while(it_template.hasNext() && it_transaction.hasNext()) {
@@ -271,8 +304,18 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 			Element el_template = (Element)it_template.next();
 			if (el_template.getName().equals("subpackage")) {
 
-				int rowInit = el_template.getAttribute("rowInit").getIntValue();
-				int rowAcum = el_template.getAttribute("rowAcum").getIntValue();
+				int rowInit=0;
+				String srowInit = el_template.getAttribute("rowInit").getValue();
+				
+				rowAcum = el_template.getAttribute("rowAcum").getIntValue();
+				
+				if (srowInit.equals("last")) {
+					rowInit=currentRow+rowAcum;
+				}
+				else {
+					rowInit=Integer.valueOf(srowInit);
+				}
+
 				Attribute attMaxAcum = el_template.getAttribute("maxRowsAcum");
 				int maxAcum = attMaxAcum!=null ? attMaxAcum.getIntValue() : -1;
 				Attribute attrowInitNewPage = el_template.getAttribute("rowInitNewPage");
@@ -281,7 +324,13 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 				Attribute attmaxRowsAcumNewPage = el_template.getAttribute("maxRowsAcumNewPage");
 				int maxRowsAcumNewPage = attmaxRowsAcumNewPage!=null ? attmaxRowsAcumNewPage.getIntValue() : -1;
 				
-				
+				Iterator im = el_template.getChildren("metadata").iterator();
+				while (im.hasNext()) { 
+					Element element = (Element) im.next();
+					processMetadata(element);
+					rowInit = currentRow;
+				}
+
 				Iterator it = el_template.getChildren("field").iterator();
 				
 				ArrayList<HashMap<String,Attribute>> AttCols = new ArrayList<HashMap<String,Attribute>>(); 
@@ -310,6 +359,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 							i++;
 					}
 					rowInit+=rowAcum;
+					currentRow=rowInit;
 				}
 				if (it_transaction.hasNext()) {
 					System.out.println("Hojas Separadas por maximo numero de filas: "+ maxAcum);
@@ -328,6 +378,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 							i++;
 						}
 						rowInit+=rowAcum;
+						currentRow=rowInit;
 						if (index==maxAcum) {
 							//FIXME PUNTO DE PARTIDA PARA LA GENERACION DE OTRA HOJA
 							document.newPage();							
@@ -363,7 +414,6 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 	 * @throws DataConversionException
 	 */
 	private void addValue(String value,HashMap<String,Attribute> attribs) throws DataConversionException {
-		System.out.println("valor: "+value);
 		if (attribs.size()==0) {
 			return;
 		}
@@ -528,7 +578,6 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 	}
 
 	public ByteArrayInputStream getStream() {
-		ByteArrayInputStream in = new ByteArrayInputStream(outPut.toByteArray());
 		return in;
 	}
 
@@ -540,6 +589,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 	public void process(Element template, Element packages) {
 		this.rootTemplate = template;
 		this.rootTransact = packages;
+		currentRow=1;
 		process();
 	}
 	
