@@ -493,7 +493,7 @@ implements Couplable, KeyListener,PopupMenuListener,FocusListener,AnswerListener
 			Class[] ac = new Class[]{AnswerListener.class};
 			Object[] o = new Object[]{this};
 			for (int i=0 ; i < driverEvent.size() ; i++) {
-				System.out.println("Cargando addAnswer");
+				System.out.println("Cargando addAnswer "+driverEvent.get(i));
 				GFforma.invokeMethod((String)driverEvent.get(i),"addAnswerListener",ac,o);
 			}
 		}

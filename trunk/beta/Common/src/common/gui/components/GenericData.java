@@ -52,7 +52,7 @@ public class GenericData extends JPanel implements DateListener,
 	private String Sargs;
 	private String enlaceTabla = "";
 	private String namebutton = "SAVE";
-	private String driverEvent;
+	private Vector<String> driverEvent = new Vector<String>();
 	private String returnValue;
 	private boolean disableAll;
 	private boolean havePanel = true;
@@ -128,7 +128,7 @@ public class GenericData extends JPanel implements DateListener,
 				if (subargs.getAttributeValue("id") != null) {
 					id = subargs.getAttributeValue("id");
 				}
-				driverEvent = subargs.getValue() + id;
+				driverEvent.add(subargs.getValue() + id);
 			} else if ("driverEventRecord".equals(subargs
 					.getAttributeValue("attribute"))) {
 				String id = "";
@@ -1039,9 +1039,11 @@ public class GenericData extends JPanel implements DateListener,
 	public void callAddAnswerListener() throws InvocationTargetException,
 			NotFoundComponentException {
 		if (driverEvent != null) {
-			GFforma.invokeMethod(driverEvent, "addAnswerListener",
-							new Class[] { AnswerListener.class },
-							new Object[] { this });
+			Class[] ac = new Class[]{AnswerListener.class};
+			Object[] o = new Object[]{this};
+			for (int i=0 ; i < driverEvent.size() ; i++) {
+				GFforma.invokeMethod((String)driverEvent.get(i),"addAnswerListener",ac,o);
+			}
 		}
 		if (driverEventRecord != null) {
 				GFforma.invokeMethod(
@@ -1064,11 +1066,11 @@ public class GenericData extends JPanel implements DateListener,
 		}
 	}
 
-	public String getDriverEvent() {
+	public Vector<String> getDriverEvent() {
 		return driverEvent;
 	}
 
-	public void setDriverEvent(String driverEvent) {
+	public void setDriverEvent(Vector<String> driverEvent) {
 		this.driverEvent = driverEvent;
 	}
 
