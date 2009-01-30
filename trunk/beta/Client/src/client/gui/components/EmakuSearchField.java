@@ -325,10 +325,8 @@ implements Couplable, KeyListener,PopupMenuListener,FocusListener,AnswerListener
 							int i=0;
 							for(;i<importValues.size();i++) {
 								args[i]=GFforma.getExternalValueString(importValues.get(i));
-								System.out.println("ARgumento: "+args[i]);
 							}
 							args[i]=XMLTField.getText();
-							System.out.println("Argumento: "+args[i]);
 							doc = TransactionServerResultSet.getResultSetST(sql, args);//new String[]{XMLTField.getText()});
 						} catch (TransactionServerException e) {
 							e.printStackTrace();
@@ -465,11 +463,9 @@ implements Couplable, KeyListener,PopupMenuListener,FocusListener,AnswerListener
 
 	
 	public void arriveAnswerEvent(AnswerEvent AEe) {
-		System.out.println("llego un paquete");
 		try {
 			Document doc = AEe.getDocument();
 	        String select = doc.getRootElement().getChild("row").getChildText("col").trim();
-	        System.out.println("tiene: "+select);
 	        XMLTField.setText(select);
         }
 		catch (NullPointerException NPEe) {
@@ -493,7 +489,6 @@ implements Couplable, KeyListener,PopupMenuListener,FocusListener,AnswerListener
 			Class[] ac = new Class[]{AnswerListener.class};
 			Object[] o = new Object[]{this};
 			for (int i=0 ; i < driverEvent.size() ; i++) {
-				System.out.println("Cargando addAnswer "+driverEvent.get(i));
 				GFforma.invokeMethod((String)driverEvent.get(i),"addAnswerListener",ac,o);
 			}
 		}
