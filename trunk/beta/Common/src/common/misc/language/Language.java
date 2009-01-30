@@ -70,6 +70,7 @@ public class Language  {
             } else {
             	System.out.println("language: "+  lang + ".xml");
             	URL url = this.getClass().getResource("/lang/" + lang + ".xml");
+            	System.out.println(url.getFile());
             	File file = new File(url.getFile());
         		loadWords(builder.build(file));
             }

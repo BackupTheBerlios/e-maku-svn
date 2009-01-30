@@ -2,6 +2,7 @@ package client.gui.components;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import javax.swing.*;
@@ -37,7 +38,8 @@ import common.transactions.TransactionServerResultSet;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David Cepeda Piscal</A>
  */
 
-public class EmakuSearchField extends JPanel implements Couplable, KeyListener,PopupMenuListener,FocusListener {
+public class EmakuSearchField extends JPanel 
+implements Couplable, KeyListener,PopupMenuListener,FocusListener,AnswerListener , InstanceFinishingListener {
 
 	private static final long serialVersionUID = 246103248621691834L;
 
@@ -67,6 +69,8 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 	private boolean enabled= true;
 	private boolean editable= true;
 	private Vector<String> sqlCode = new Vector<String>();
+	private Vector <String>driverEvent = new Vector<String>();
+    private Vector <String>keySQL = new Vector<String>();
 	private boolean searchQuery = false;
 	private boolean returnNullValue;
 	private Font font;
@@ -83,6 +87,8 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 			
 			if ("sqlCombo".equals(name)) {
 				sqlCombo = value;
+			} else if ("importValueCombo".equals(name)) {
+				externalValues.add(value);
 			} else if ("noDataBeep".equals(name)) {
 				dataBeep = Boolean.parseBoolean(value);
 			} else if ("blankArgs".equals(name)) {
@@ -141,9 +147,20 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 				} catch (NoSuchElementException NSEEe) {
 					font = null;
 				}
-			}
+			}else if ("driverEvent".equals(elm.getAttributeValue("attribute"))) {
+         		String id="";
+            	if (elm.getAttributeValue("id")!= null) {
+            		id=elm.getAttributeValue("id");
+            	}
+            	if (!driverEvent.contains(value+id))
+            		driverEvent.addElement(value+id);
+         	}
+         	else if ("keySQL".equals(elm.getAttributeValue("attribute"))) {
+         		keySQL.addElement(value);
+         	}
 		}
 		
+		this.GFforma.addInitiateFinishListener(this);
 		XMLTField = new XMLTextField(labelName,size,maxlength);
 		XMLTField.setEditable(editable);
 		XMLTField.setEnabled(enabled);
@@ -436,21 +453,45 @@ public class EmakuSearchField extends JPanel implements Couplable, KeyListener,P
 	}
 
 	
-	public void arriveAnswerEvent(AnswerEvent e) {
+	public void arriveAnswerEvent(AnswerEvent AEe) {
+		System.out.println("llego un paquete");
+		try {
+			Document doc = AEe.getDocument();
+	        String select = doc.getRootElement().getChild("row").getChildText("col").trim();
+	        System.out.println("tiene: "+select);
+	        XMLTField.setText(select);
+        }
+		catch (NullPointerException NPEe) {
+			NPEe.printStackTrace();
+		} 
 		// TODO Auto-generated method stub
 		
 	}
 
 	
 	public boolean containSqlCode(String sqlCode) {
-		// TODO Auto-generated method stub
-		return false;
+		if (keySQL.contains(sqlCode))
+			return true;
+		else
+			return false;
 	}
 
 	
 	public void initiateFinishEvent(EndEventGenerator e) {
-		// TODO Auto-generated method stub
-		
+		try {
+			Class[] ac = new Class[]{AnswerListener.class};
+			Object[] o = new Object[]{this};
+			for (int i=0 ; i < driverEvent.size() ; i++) {
+				System.out.println("Cargando addAnswer");
+				GFforma.invokeMethod((String)driverEvent.get(i),"addAnswerListener",ac,o);
+			}
+		}
+		catch(NotFoundComponentException NFCEe) {
+			NFCEe.printStackTrace();
+		} 
+		catch (InvocationTargetException ITEe) {
+			ITEe.printStackTrace();
+		}
 	}
 	
 	public void addAnswerListener(AnswerListener listener ) {

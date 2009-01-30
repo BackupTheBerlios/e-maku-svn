@@ -47,6 +47,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 	private String documentPrefix;
 	private int currentRow = 1;
 	private int rowAcum=0;
+	private int countPacks = 0;
 	//ByteArrayInputStream in;
 	
 	final static BasicStroke stroke = new BasicStroke(0.3f);
@@ -113,7 +114,6 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 
 			Iterator itTemplate = rootTemplate.getChildren("package").iterator();
 			Iterator itTransact = rootTransact.getChildren("package").iterator();
-			int countPacks = 0;
 			while(itTemplate.hasNext() && itTransact.hasNext()) {
 				Element elmTemplate = (Element)itTemplate.next();
 				Element elmTransact = (Element)itTransact.next();
@@ -582,8 +582,14 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 	}
 
 	public ByteArrayInputStream getStream() {
-		ByteArrayInputStream in = new ByteArrayInputStream(outPut.toByteArray());
-		return in;
+		if (countPacks>0) {
+			ByteArrayInputStream in = new ByteArrayInputStream(outPut.toByteArray());
+			return in;
+		}
+		else {
+			return null;
+		}
+			
 	}
 
 	public boolean isSuccessful() {
