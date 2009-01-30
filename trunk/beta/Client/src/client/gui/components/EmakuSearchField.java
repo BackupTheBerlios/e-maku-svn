@@ -52,6 +52,7 @@ implements Couplable, KeyListener,PopupMenuListener,FocusListener,AnswerListener
 	private boolean dataSelected;
 	private String keyValue;
 	private ArrayList<String> externalValues = new ArrayList<String>();
+	private ArrayList<String> importValues = new ArrayList<String>();
 	private Vector<AnswerListener> answerListener = new Vector<AnswerListener>();
 	private int repeatKey = 1;
 	private String sqlCombo = null;
@@ -89,6 +90,8 @@ implements Couplable, KeyListener,PopupMenuListener,FocusListener,AnswerListener
 				sqlCombo = value;
 			} else if ("importValueCombo".equals(name)) {
 				externalValues.add(value);
+			} else if ("importValue".equals(name)) {
+				importValues.add(value);
 			} else if ("noDataBeep".equals(name)) {
 				dataBeep = Boolean.parseBoolean(value);
 			} else if ("blankArgs".equals(name)) {
@@ -318,7 +321,15 @@ implements Couplable, KeyListener,PopupMenuListener,FocusListener,AnswerListener
 						Document doc = null;
 						String sql = sqlCode.get(j);
 						try {
-							doc = TransactionServerResultSet.getResultSetST(sql, new String[]{XMLTField.getText()});
+							String[] args = new String[importValues.size()+1];
+							int i=0;
+							for(;i<importValues.size();i++) {
+								args[i]=GFforma.getExternalValueString(importValues.get(i));
+								System.out.println("ARgumento: "+args[i]);
+							}
+							args[i]=XMLTField.getText();
+							System.out.println("Argumento: "+args[i]);
+							doc = TransactionServerResultSet.getResultSetST(sql, args);//new String[]{XMLTField.getText()});
 						} catch (TransactionServerException e) {
 							e.printStackTrace();
 						}
