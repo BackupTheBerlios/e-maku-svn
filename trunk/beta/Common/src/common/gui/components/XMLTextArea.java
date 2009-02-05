@@ -291,19 +291,21 @@ public class XMLTextArea extends JTextArea implements Couplable, FocusListener, 
 			
 			int n=0;
 			try {
-				while (true) {
-					try {
-						GFforma.invokeMethod(recordEvent.get(n),"addRecordListener",rc,o);
-						n++;
-						if (n==recordEvent.size())
+				if (n<recordEvent.size()) {
+					while (true) {
+						try {
+							GFforma.invokeMethod(recordEvent.get(n),"addRecordListener",rc,o);
+							n++;
+							if (n==recordEvent.size())
+								break;
+						} catch (InvocationTargetException e1) {
+							e1.printStackTrace();
 							break;
-					} catch (InvocationTargetException e1) {
-						e1.printStackTrace();
-						break;
-					} catch (NotFoundComponentException e1) {
-						Thread.sleep(500);
+						} catch (NotFoundComponentException e1) {
+							Thread.sleep(500);
+						}
+		
 					}
-	
 				}
 			}
 			catch(InterruptedException IEe) {

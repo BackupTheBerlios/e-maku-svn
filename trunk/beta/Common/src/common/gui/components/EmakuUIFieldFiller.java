@@ -98,6 +98,7 @@ public class EmakuUIFieldFiller extends Thread {
     }
     
     public boolean searchQuery() {
+    	
     	int row = 0;
         try {
         	int size =0;
@@ -121,8 +122,9 @@ public class EmakuUIFieldFiller extends Thread {
 	            ind=0;
 	            doc = TransactionServerResultSet.getResultSetST(sql,new_args);
 	            
-	            if (doc==null)
+	            if (doc==null) {
 	                return false;
+	            }
 	            
 	            Iterator i = doc.getRootElement().getChildren("row").iterator();
 	            row = doc.getRootElement().getChildren("row").size();

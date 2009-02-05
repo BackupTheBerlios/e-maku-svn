@@ -215,6 +215,10 @@ public class ComboBoxFiller extends JComboBox implements
 		this.saveKey=saveKey;
         this.GFforma.addChangeExternalValueListener(this);
         this.addPopupMenuListener(this);
+        importValue = new Vector<String>();
+        for(String key:keys) {
+        	importValue.add(key);
+        }
         generar();
 	}
 
@@ -491,7 +495,6 @@ public class ComboBoxFiller extends JComboBox implements
 	 */
 	public void changeExternalValue(ExternalValueChangeEvent e) {
 		String ext = e.getExternalKey();
-		
 		if (keys!=null) {
 			if (!e.getExternalValue().equals(exportValue) && importValue==null) {
 				generar(noDataMessage,dataBeep);
