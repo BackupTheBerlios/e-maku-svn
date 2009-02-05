@@ -161,6 +161,11 @@ public class ColumnsArgsGenerator {
     				ColumnClass = String.class;
 
     			}
+    			else if (value.equals("TEXTILEPRODUCT")) {
+    				typeDate = new String();
+    				ColumnClass = String.class;
+
+    			}
     			else if (value.equals("TOUCHBUTTONS")) {
     				typeDate = new Integer(0);
     				ColumnClass = Integer.class;

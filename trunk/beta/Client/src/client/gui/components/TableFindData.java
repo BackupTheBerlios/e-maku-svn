@@ -524,6 +524,13 @@ public class TableFindData extends JPanel implements AnswerListener,
 					cellEditor = new EmakuDetailedProductCellEditor(GFforma, k,
 							ATFDargs, JTtabla);
 					dataColumn.setCellEditor(cellEditor);
+				} else if (ATFDargs[k].getType().equals("TEXTILEPRODUCT")) {
+					TableColumn dataColumn = JTtabla.getColumn(JTtabla
+							.getColumnName(k));
+					EmakuTextileProductCellEditor cellEditor = null;
+					cellEditor = new EmakuTextileProductCellEditor(GFforma, k,
+							ATFDargs, JTtabla);
+					dataColumn.setCellEditor(cellEditor);
 				} else if (ATFDargs[k].getType().equals("TOUCHBUTTONS")) {
 					TableColumn dataColumn = JTtabla.getColumn(JTtabla
 							.getColumnName(k));
@@ -1221,7 +1228,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 				}
 			}
 		}
-
+		/**
 		for (int n = 0; n < recordEvent.size(); n++) {
 			try {
 				GFforma.invokeMethod(recordEvent.get(n), "addRecordListener",
@@ -1233,6 +1240,29 @@ public class TableFindData extends JPanel implements AnswerListener,
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+		}
+		*/
+		int n=0;
+		try {
+			if(recordEvent.size()>0) {
+				while (true) {
+					try {
+						GFforma.invokeMethod(recordEvent.get(n),"addRecordListener",rc,o);
+						n++;
+						if (n==recordEvent.size())
+							break;
+					} catch (InvocationTargetException e1) {
+						e1.printStackTrace();
+						break;
+					} catch (NotFoundComponentException e1) {
+						Thread.sleep(500);
+					}
+	
+				}
+			}
+		}
+		catch(InterruptedException IEe) {
+			IEe.printStackTrace();
 		}
 	}
 

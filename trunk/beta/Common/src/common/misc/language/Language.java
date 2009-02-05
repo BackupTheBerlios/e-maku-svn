@@ -68,11 +68,14 @@ public class Language  {
             	System.out.println("directorio: "+directory + lang + ".xml");
             	loadWords(builder.build(directory + lang + ".xml"));
             } else {
+            	/*
             	System.out.println("language: "+  lang + ".xml");
             	URL url = this.getClass().getResource("/lang/" + lang + ".xml");
             	System.out.println(url.getFile());
             	File file = new File(url.getFile());
         		loadWords(builder.build(file));
+        		*/
+            	loadWords(builder.build(this.getClass().getResource("/lang/") + lang + ".xml"));
             }
         }
         catch (JDOMException JDOMEe) {

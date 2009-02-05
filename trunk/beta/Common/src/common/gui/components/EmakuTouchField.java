@@ -327,6 +327,7 @@ KeyListener, FocusListener, AnswerListener {
 					Document doc = null;
 					String sql = sqlCode.get(j);
 					try {
+						System.out.println("Consultando "+sql);
 						doc = TransactionServerResultSet.getResultSetST(sql, argumentos);
 					} catch (TransactionServerException e) {
 						e.printStackTrace();

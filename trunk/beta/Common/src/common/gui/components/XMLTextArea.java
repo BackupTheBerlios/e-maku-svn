@@ -301,7 +301,7 @@ public class XMLTextArea extends JTextArea implements Couplable, FocusListener, 
 						e1.printStackTrace();
 						break;
 					} catch (NotFoundComponentException e1) {
-						Thread.sleep(5000);
+						Thread.sleep(500);
 					}
 	
 				}
