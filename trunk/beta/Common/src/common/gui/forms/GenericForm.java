@@ -92,7 +92,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
     private JDesktopPane JDPpanel;
     private Dimension size;
     private boolean child;
-    private HashMap <Object,Object>externalValues = new HashMap<Object,Object>();;
+    private HashMap <Object,Object>externalValues = new HashMap<Object,Object>();
     /*
      * En esta variable se almacena el id de la transaccion que genera la forma,
      * este parametro es recibido por referencia
@@ -147,6 +147,8 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 	private Interpreter shellScript;
 	private ArrayList<GenericForm> forms = new ArrayList<GenericForm>();
 	private enum TypeExportValue{STRING,DOUBLE};
+	private ArrayList<String> notCleanValue = new ArrayList<String>();
+	
     /**
      * 
      * este construcor se instancia cuando se generara una forma hija
@@ -166,7 +168,6 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
         Document form = new Document();
         form.setRootElement(e);
         generar(form);
-        
         EndEventGenerator event = new EndEventGenerator(this);
         notificando(event);
     }
@@ -550,6 +551,9 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
             	String key = s.substring(0,index);
             	String value = s.substring(index+1,s.length());
             	setExternalValues(key, value);
+            }
+            else if (nombre.equals("notCleanExportValue")) {
+            	notCleanValue.add(e.getValue());
             }
             
             /*
@@ -1285,13 +1289,15 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
         	for (int i =0 ; i< keys.length ; i++) {
         		Object key = keys[i]; 
         		Object obj = externalValues.get(key);
-        		if ( obj instanceof Double) {
-        			externalValues.remove(key);
-        			externalValues.put(key,new Double(0));
-        		}
-        		else {
-        			externalValues.remove(key);
-        		}
+    			if(!notCleanValue.contains(key)) {
+	        		if ( obj instanceof Double) {
+	        			externalValues.remove(key);
+	        			externalValues.put(key,new Double(0));
+	        		}
+	        		else {
+	        			externalValues.remove(key);
+	        		}
+    			}
         	}
         	setExternalValues("userLogin", EmakuParametersStructure.getParameter("userLogin"));
     	}

@@ -111,7 +111,7 @@ implements FocusListener,KeyListener, ActionListener,ExternalValueChangeListener
 		});
 		
 */	
-		ImageIcon i1 = new ImageIcon(getClass().getResource(Icons.getIcon("DELETE")));
+		ImageIcon i1 = new ImageIcon(getClass().getResource(Icons.getIcon("ACEPTAR")));
 		ImageIcon i2 = new ImageIcon(getClass().getResource(Icons.getIcon("EXIT")));
 		
 		JBOk = new JButton(i1);
