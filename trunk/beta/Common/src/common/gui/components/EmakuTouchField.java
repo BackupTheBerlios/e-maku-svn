@@ -52,6 +52,7 @@ KeyListener, FocusListener, AnswerListener {
 	private boolean notified;
 	private Vector<String> keySQL;
 	private boolean withoutButton;
+	private boolean withBill;
 	
 	public EmakuTouchField(GenericForm genericForm, Document doc) {
 		Element rootElement = doc.getRootElement();
@@ -134,10 +135,13 @@ KeyListener, FocusListener, AnswerListener {
 			else if ("withoutButton".equals(elm.getAttributeValue("attribute"))) {
 				withoutButton = Boolean.parseBoolean(elm.getValue());
 			}
+			else if ("withBill".equals(elm.getAttributeValue("attribute"))) {
+				withBill = Boolean.parseBoolean(elm.getValue());
+			}
 		}
 		setSqlCode(sqlCode);
 		generar();
-		touchButtons = new TouchButtons(this,font);
+		touchButtons = new TouchButtons(this,font,withBill);
 		if (!withoutButton) {
 			ImageIcon icon = url!=null ? new ImageIcon(url) : null;
 			JBTouch = icon!=null ? new JButton(icon) : new JButton("X");
