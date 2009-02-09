@@ -92,6 +92,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     private Hashtable externalValues;
     private int valideLink = -1;
     private ArrayList<TableTotalListener> tableTotalListener = new ArrayList<TableTotalListener>();
+    private ArrayList<DeleteRecordListener> deleteRecordListener = new ArrayList<DeleteRecordListener>();
     private Vector<String> deleteLink;
     private int keyLink;
     private Vector impValues;
@@ -456,12 +457,16 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		            message("ERR_QUERY",STe.getMessage());
 		        }
 		        catch (NoSuchElementException NSEe) {
+			        	message("ERR_NOCODE");
 			        	updateCells(ATFDargs[0].getTypeDate(),rowIndex,0);
 			        	updateCells(ATFDargs[2].getTypeDate(),rowIndex,2);
-			        	message("ERR_NOCODE");
 			        	if (currentIndex<rowIndex) {
 			        		currentIndex = rowIndex ;	
 			        	}
+			        	else {
+			        		currentIndex = rowIndex ;	
+			        	}
+			        	notificaDeleteRecordEvent(rowIndex);
 		        }
 		        
 		        /* Y ni que decir de este mundo de excepciones */
@@ -958,7 +963,24 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             l.totalColEvent(event);
         }
     }
+
     
+    public synchronized void addDeleteRecordEventListener(DeleteRecordListener listener ) {
+        deleteRecordListener.add(listener);
+    }
+
+    public synchronized void removeDeleteRecordListener(DeleteRecordListener listener ) {
+        deleteRecordListener.remove(listener);
+    }
+
+    public synchronized void notificaDeleteRecordEvent(int row) {
+    	DeleteRecordEvent event = new DeleteRecordEvent(this,row);
+        for (DeleteRecordListener l:deleteRecordListener) {
+            l.deleteRecordEvent(event);
+        }
+    }
+    
+
     /**
      * Metodo encargado de actualizar el valor de una celda
      * @param value valor actualizado

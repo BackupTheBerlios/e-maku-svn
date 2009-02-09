@@ -218,15 +218,22 @@ KeyListener, FocusListener, AnswerListener {
     			form.applyPattern("###,###,##0.00");
     			this.setText(nf.format(Double.parseDouble(text)));
     			this.setNumberValue(nf.parse(text).doubleValue());
+    			if (isExportvalue()) {
+    				try {
+    					GFforma.setExternalValues(getExportvalue(),getNumberValue());
+    				}
+    				catch (NumberFormatException NFE) {}
+    			}
 			}
 			catch (NumberFormatException NFEe) {}
 			catch (ParseException Pe) {}
-		}
-		if (isExportvalue()) {
-			try {
-				GFforma.setExternalValues(getExportvalue(),getNumberValue());
+		} else {
+			if (isExportvalue()) {
+				try {
+					GFforma.setExternalValues(getExportvalue(),getText());
+				}
+				catch (NumberFormatException NFE) {}
 			}
-			catch (NumberFormatException NFE) {}
 		}
 	}
 
@@ -331,7 +338,6 @@ KeyListener, FocusListener, AnswerListener {
 					Document doc = null;
 					String sql = sqlCode.get(j);
 					try {
-						System.out.println("Consultando "+sql);
 						doc = TransactionServerResultSet.getResultSetST(sql, argumentos);
 					} catch (TransactionServerException e) {
 						e.printStackTrace();

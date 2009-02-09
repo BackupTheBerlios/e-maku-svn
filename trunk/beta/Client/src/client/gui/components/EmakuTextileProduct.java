@@ -87,8 +87,8 @@ implements FocusListener,KeyListener, ActionListener,ExternalValueChangeListener
 		comboBoxGrupo = new ComboBoxFiller(genericForm,"SEL0370",new String[]{"seccion"},"grupo",true);
 		comboBoxSGrupo = new ComboBoxFiller(genericForm,"SEL0372",new String[]{"seccion","grupo"},"sgrupo",true);
 		comboBoxMarca = new ComboBoxFiller(genericForm,"MTSEL0041",new String[]{"seccion","grupo","sgrupo"},"marca",true);
-		comboBoxTalla = new ComboBoxFiller(genericForm,"MTSEL0047",new String[]{"marca"},"talla",true);
-		comboBoxColor = new ComboBoxFiller(genericForm,"MTSEL0048",new String[]{"marca"},"color",true);
+		comboBoxTalla = new ComboBoxFiller(genericForm,"MTSEL0047",new String[]{"marca","sgrupo"},"talla",true);
+		comboBoxColor = new ComboBoxFiller(genericForm,"MTSEL0048",new String[]{"marca","sgrupo"},"color",true);
 		this.setSqlLocal("MTSEL0043");
 		Dimension d = new Dimension(170,20);
 		comboBoxSeccion.setPreferredSize(d);
@@ -253,7 +253,7 @@ implements FocusListener,KeyListener, ActionListener,ExternalValueChangeListener
 	
 
 	public void changeExternalValue(ExternalValueChangeEvent e) {
-		String key = e.getExternalValue();
+		String key = e.getExternalValue();			
 		if (key.equals("marca") || 
 		    key.equals("talla") || 
 			key.equals("color")) {

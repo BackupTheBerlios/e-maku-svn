@@ -44,7 +44,7 @@ import common.transactions.*;
  */
 
 public class TableFindData extends JPanel implements AnswerListener,
-		ExternalValueChangeListener, RecordListener, InstanceFinishingListener {
+		ExternalValueChangeListener, RecordListener, InstanceFinishingListener, DeleteRecordListener {
 
 	private static final long serialVersionUID = 3348132353954885841L;
 
@@ -115,6 +115,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 	private HashMap<String, Integer> lastValue = new HashMap<String, Integer>();
 
 	private Hashtable<String, Integer> rowsLoaded = new Hashtable<String, Integer>();
+	
+	private String deleteRecord;
 
 	/**
 	 * Constructor ...
@@ -204,6 +206,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 			} else if (args.getAttributeValue("attribute").equals(
 					"singleSendRecord")) {
 				this.singleSendRecord = args.getValue();
+			} else if (args.getAttributeValue("attribute").equals("deleteRecord")) {
+				deleteRecord=args.getValue();
 			}
 			/*
 			 * Se captura las columnas que generaran totales
@@ -386,6 +390,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 		 */
 
 		GFform.addInitiateFinishListener(this);
+		TMFDtabla.addDeleteRecordEventListener(this);
+
 		if (font != null) {
 			JTtabla.setFont(font);
 			JTtabla.getTableHeader().setFont(font);
@@ -683,6 +689,20 @@ public class TableFindData extends JPanel implements AnswerListener,
 		return this;
 	}
 
+	public void deleteRecordCode(String code) {
+		int j = TMFDtabla.getCurrentIndex();
+		for(;j>=0;j--) {
+			String value = TMFDtabla.getValueAt(j,0).toString();
+			if (value.equals(code)) {
+				deleteRow(j);
+				JTtabla.changeSelection(j, 0, false, false);
+				JTtabla.updateUI();
+				TMFDtabla.totalizar();
+				break;
+			}
+		}
+	}
+	
 	public void deleteRow(int indice) {
 		Element e = new Element("delete");
 		verificaSendRecord(indice,e, singleSendRecord);
@@ -1017,7 +1037,11 @@ public class TableFindData extends JPanel implements AnswerListener,
 				reloadData();
 			}
 		}
-
+		
+		String value = GFforma.getExternalValueString(deleteRecord);
+		if (e.getExternalValue().equals(deleteRecord) && !value.equals("")) {
+				deleteRecordCode(value);
+		}
 	}
 
 	public void setQuery(String sqlCode) {
@@ -1185,6 +1209,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 	}
 
 	public void arriveRecordEvent(RecordEvent e) {
+	
 		/*
 		 * class CargarDatos implements Runnable { Element e; public CargarDatos
 		 * (Element e) { this.e=e; } public void run() { synchronized(TMFDtabla) {
@@ -1438,5 +1463,14 @@ public class TableFindData extends JPanel implements AnswerListener,
 			return true;
 		else
 			return false;
+	}
+
+	public void deleteRecordEvent(DeleteRecordEvent e) {
+		// TODO Auto-generated method stub
+		int indice = e.getRow();
+		deleteRow(indice);
+		JTtabla.changeSelection(e.getRow(), 0, false, false);
+		JTtabla.updateUI();
+		TMFDtabla.totalizar();
 	}
 }
