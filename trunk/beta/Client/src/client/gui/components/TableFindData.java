@@ -390,8 +390,10 @@ public class TableFindData extends JPanel implements AnswerListener,
 		 */
 
 		GFform.addInitiateFinishListener(this);
-		TMFDtabla.addDeleteRecordEventListener(this);
-
+		if (TMFDtabla!=null) {
+			TMFDtabla.addDeleteRecordEventListener(this);
+		}
+		
 		if (font != null) {
 			JTtabla.setFont(font);
 			JTtabla.getTableHeader().setFont(font);

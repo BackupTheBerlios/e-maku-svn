@@ -41,12 +41,12 @@ public class CreditCardButtons extends JPanel implements ActionListener {
 	
 	private GenericForm genericForm;
 	private EmakuTouchField emakuTouchField;
-	private JButton[][] ccButtons = {{new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_american_express_130x70.png"))),
-											  	new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_diners_130x70.png")))},
-												 {new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_mastercard_130x70.png"))),
-											      new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_visa_130x70.png")))},
-												 {new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_visa_electron_130x70.png"))),
-												 new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_debito_130x70.png")))}};
+	private JButton[][] ccButtons = {{new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_american_express_100x65.png"))),
+											  	new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_diners_100x65.png")))},
+												 {new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_mastercard_100x65.png"))),
+											      new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_visa_100x65.png")))},
+												 {new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_visa_electron_100x65.png"))),
+												 new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_debito_100x65.png")))}};
 	
 	private JButton[][] buttons = {{new JButton("7"),new JButton("8"),new JButton("9")},
 			   {new JButton("4"),new JButton("5"),new JButton("6")},
