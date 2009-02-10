@@ -3,6 +3,7 @@ package common.gui.components;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.IllegalComponentStateException;
 import java.awt.event.ActionEvent;
@@ -22,6 +23,7 @@ import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 
@@ -43,10 +45,15 @@ KeyListener, FocusListener, AnswerListener {
 	private static final long serialVersionUID = -8059783384089564101L;
 	private TouchButtons touchButtons;
 	private JButton JBTouch = new JButton();
+	private JButton JBimportButton = new JButton();
+	private JButton JBcard= new JButton();
+	private CreditCardButtons creditCard;
 	protected JPopupMenu popupTouch;
 	private Font font;
 	private Vector<RecordListener> recordListener = new Vector<RecordListener>();
 	private Vector<AnswerListener> AnswerListener = new Vector<AnswerListener>();
+	private String importValueButton;
+	private String cardSelection;
 	private GenericForm GFforma;
 	private int sequence = 0;
 	private boolean notified;
@@ -91,9 +98,12 @@ KeyListener, FocusListener, AnswerListener {
 					importValue = new Vector<String>();
 				}
 				importValue.addElement(elm.getValue());
-			} else if ("maxValue".equals(elm.getAttributeValue("attribute"))) {
+			}else if ("maxValue".equals(elm.getAttributeValue("attribute"))) {
 				setMaxValue(elm.getValue());
-			} else if ("enabled".equals(elm.getAttributeValue("attribute"))) {
+			}
+			 else if ("maxValue".equals(elm.getAttributeValue("attribute"))) {
+					setMaxValue(elm.getValue());
+				}else if ("enabled".equals(elm.getAttributeValue("attribute"))) {
 				setEnabled(Boolean.parseBoolean(elm.getValue()));
 			} else if ("font".equals(elm.getAttributeValue("attribute"))) {
 				try {
@@ -138,18 +148,44 @@ KeyListener, FocusListener, AnswerListener {
 			else if ("withBill".equals(elm.getAttributeValue("attribute"))) {
 				withBill = Boolean.parseBoolean(elm.getValue());
 			}
+			else if ("importButton".equals(elm.getAttributeValue("attribute"))) {
+				importValueButton=elm.getValue();
+			}
+			else if ("card".equals(elm.getAttributeValue("attribute"))) {
+				cardSelection=elm.getValue();
+			}
+
 		}
 		setSqlCode(sqlCode);
 		generar();
-		touchButtons = new TouchButtons(this,font,withBill);
+		JPanel JPeast = new JPanel(new BorderLayout());
+		getJPtext().add(JPeast,BorderLayout.EAST);
 		if (!withoutButton) {
+			touchButtons = new TouchButtons(this,font,withBill);
 			ImageIcon icon = url!=null ? new ImageIcon(url) : null;
 			JBTouch = icon!=null ? new JButton(icon) : new JButton("X");
 			JBTouch.setFocusable(false);
 			JBTouch.setActionCommand("display");
 			JBTouch.addActionListener(this);
+			JPeast.add(JBTouch,BorderLayout.WEST);
 			popupTouch.add(touchButtons);
-			getJPtext().add(JBTouch,BorderLayout.EAST);
+		}
+		if (importValueButton!=null && cardSelection==null) {
+			JBimportButton = new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_aceptar_32x32.png")));
+			JBimportButton.setFocusable(false);
+			JBimportButton.setActionCommand("importValue");
+			JBimportButton.addActionListener(this);
+			JPeast.add(JBimportButton,BorderLayout.EAST);
+		}
+
+		if (cardSelection!=null) {
+			creditCard = new CreditCardButtons(genericForm,this,font,importValueButton);
+			JBcard = new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_card_32x32.png")));
+			JBcard.setFocusable(false);
+			JBcard.setActionCommand("card");
+			JBcard.addActionListener(this);
+			JPeast.add(JBcard,BorderLayout.CENTER);
+			popupTouch.add(creditCard);
 		}
 		addKeyListener(this);
 		addFocusListener(this);
@@ -244,8 +280,12 @@ KeyListener, FocusListener, AnswerListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
-		if ("display".equals(command)) {
+		if ("display".equals(command) || "card".equals(command)) {
 			displayButtons();
+		} 
+		if ("importValue".equals(command)) {
+			this.setText(GFforma.getExternalValueString(importValueButton));
+			doFormat();
 		}
 	}
 	

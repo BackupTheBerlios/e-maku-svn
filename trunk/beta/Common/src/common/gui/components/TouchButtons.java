@@ -11,6 +11,26 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.text.BadLocationException;
 
+
+/**
+ * CreditCardButton.java Creado el 10-feb-2009
+ * 
+ * Este archivo es parte de E-Maku <A
+ * 
+ * E-Maku es Software Libre; usted puede redistribuirlo y/o realizar
+ * modificaciones bajo los terminos de la Licencia Publica General GNU GPL como
+ * esta publicada por la Fundacion del Software Libre (FSF); tanto en la version
+ * 2 de la licencia, o cualquier version posterior.
+ * 
+ * E-Maku es distribuido con la expectativa de ser util, pero SIN NINGUNA
+ * GARANTIA; sin ninguna garantia aun por COMERCIALIZACION o por un PROPOSITO
+ * PARTICULAR. Consulte la Licencia Publica General GNU GPL para mas detalles.
+ * <br>
+ * Esta clase crea un panel de botones para pago con tarjetas <br>
+ * 
+ * @author <A href='mailto:pipelx@gmail.com'>Luis Felipe Hernandez </A>
+ */
+
 public class TouchButtons extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 5953946428251386838L;

@@ -40,7 +40,7 @@ import common.transactions.*;
  * Esta clase se encarga de consultar informacion al ST y desplegar sus
  * resultados en las demas celdas <br>
  * 
- * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez </A>
+ * @author <A href='mailto:felipe@gmail.com'>Luis Felipe Hernandez </A>
  */
 
 public class TableFindData extends JPanel implements AnswerListener,
