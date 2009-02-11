@@ -40,7 +40,7 @@ public class TouchButtons extends JPanel implements ActionListener {
 								 {new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_billete_10000_100x50.png"))),
 							      new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_billete_5000_100x50.png")))},
 								 {new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_billete_2000_100x50.png"))),
-								 new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_billete_1000_100x50.jpg")))}};
+								 new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_billete_1000_100x50.png")))}};
 	
 	private JButton[][] buttons = {{new JButton("7"),new JButton("8"),new JButton("9")},
 								   {new JButton("4"),new JButton("5"),new JButton("6")},
