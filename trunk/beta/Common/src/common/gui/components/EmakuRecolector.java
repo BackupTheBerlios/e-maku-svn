@@ -3,8 +3,10 @@ package common.gui.components;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -135,8 +137,13 @@ public class EmakuRecolector extends JPanel implements Couplable, ActionListener
 		JButton button = (JButton)e.getSource();
 		Runtime aplicacion = Runtime.getRuntime(); 
         try{
-        	
-        	aplicacion.exec("cmd.exe /K C:/recolector_sp2.bat"); 
+        	String linea;
+            Process p = Runtime.getRuntime().exec(new String[]{"cmd.exe", "/C", "Start","C://recolector_sp2.bat"});
+            BufferedReader input = new BufferedReader (new InputStreamReader (p.getInputStream()));
+            while ((linea = input.readLine()) != null) {
+                 System.out.println(linea);
+             } 
+        	//aplicacion.exec("cmd.exe /K C:/recolector_sp2.bat"); 
     		file = new File("c:","sp2datos.txt");
     		raf = new RandomAccessFile(file,"r");
     		String line = new String();
