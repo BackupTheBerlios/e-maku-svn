@@ -134,15 +134,19 @@ public class EmakuRecolector extends JPanel implements Couplable, ActionListener
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		JButton button = (JButton)e.getSource();
-		Runtime aplicacion = Runtime.getRuntime(); 
+		final JButton button = (JButton)e.getSource();
         try{
         	Thread h = new Thread() {
         		public void run () {
                 	String linea=null;
                     Process p=null;
 					try {
-						p = Runtime.getRuntime().exec(new String[]{"cmd.exe", "/C", "Start","C://recolector_sp2.bat"});
+						if (button.getName().equals("unitech")) {
+							p = Runtime.getRuntime().exec(new String[]{"cmd.exe", "/C", "Start","C://recolector_unit.bat"});		
+						}
+						else {
+							p = Runtime.getRuntime().exec(new String[]{"cmd.exe", "/C", "Start","C://recolector_sp2.bat"});
+						}
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -186,7 +190,6 @@ public class EmakuRecolector extends JPanel implements Couplable, ActionListener
 			IEe.printStackTrace();
 		}
         finally {
-        	aplicacion=null;
 			file = null;
 			element = null;
 			System.gc();
