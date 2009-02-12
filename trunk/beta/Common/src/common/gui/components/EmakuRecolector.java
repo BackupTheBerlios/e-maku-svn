@@ -137,12 +137,28 @@ public class EmakuRecolector extends JPanel implements Couplable, ActionListener
 		JButton button = (JButton)e.getSource();
 		Runtime aplicacion = Runtime.getRuntime(); 
         try{
-        	String linea;
-            Process p = Runtime.getRuntime().exec(new String[]{"cmd.exe", "/C", "Start","C://recolector_sp2.bat"});
-            BufferedReader input = new BufferedReader (new InputStreamReader (p.getInputStream()));
-            while ((linea = input.readLine()) != null) {
-                 System.out.println(linea);
-             } 
+        	Thread h = new Thread() {
+        		public void run () {
+                	String linea=null;
+                    Process p=null;
+					try {
+						p = Runtime.getRuntime().exec(new String[]{"cmd.exe", "/C", "Start","C://recolector_sp2.bat"});
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                    BufferedReader input = new BufferedReader (new InputStreamReader (p.getInputStream()));
+                    try {
+						while ((linea = input.readLine()) != null) {
+						     System.out.println(linea);
+						 }
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} 
+        		}
+        	};
+        	h.start();
         	//aplicacion.exec("cmd.exe /K C:/recolector_sp2.bat");
     		while (file==null || !file.exists()) {
         		file = new File("c:","sp2datos.txt");
