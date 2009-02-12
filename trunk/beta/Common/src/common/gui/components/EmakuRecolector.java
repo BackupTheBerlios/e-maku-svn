@@ -148,6 +148,7 @@ public class EmakuRecolector extends JPanel implements Couplable, ActionListener
     			rows.addContent(new Element("col").setText(STlinea.nextToken()));
     			element.addContent(rows);
     		}
+    		
     		raf.close();    		
     		notificando();
         }
@@ -155,6 +156,7 @@ public class EmakuRecolector extends JPanel implements Couplable, ActionListener
         	IOe.printStackTrace();
         }
         finally {
+        	aplicacion=null;
 			file = null;
 			element = null;
 			System.gc();
