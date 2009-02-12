@@ -141,6 +141,7 @@ public class EmakuRecolector extends JPanel implements Couplable, ActionListener
                 	String linea=null;
                     Process p=null;
 					try {
+						System.out.println("que es esto: "+button.getName());
 						if (button.getName().equals("unitech")) {
 							p = Runtime.getRuntime().exec(new String[]{"cmd.exe", "/C", "Start","C://recolector_unit.bat"});		
 						}
