@@ -135,6 +135,7 @@ public class EmakuRecolector extends JPanel implements Couplable, ActionListener
 		JButton button = (JButton)e.getSource();
 		Runtime aplicacion = Runtime.getRuntime(); 
         try{
+        	
         	aplicacion.exec("cmd.exe /K C:/recolector_sp2.bat"); 
     		file = new File("c:","sp2datos.txt");
     		raf = new RandomAccessFile(file,"r");
@@ -148,6 +149,8 @@ public class EmakuRecolector extends JPanel implements Couplable, ActionListener
     			element.addContent(rows);
     		}
     		raf.close();
+    		aplicacion.exec("cmd.exe /K C:/delete.bat"); 
+    		
     		notificando();
         }
         catch(IOException IOe) {
