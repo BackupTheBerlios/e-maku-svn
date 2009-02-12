@@ -143,8 +143,12 @@ public class EmakuRecolector extends JPanel implements Couplable, ActionListener
             while ((linea = input.readLine()) != null) {
                  System.out.println(linea);
              } 
-        	//aplicacion.exec("cmd.exe /K C:/recolector_sp2.bat"); 
-    		file = new File("c:","sp2datos.txt");
+        	//aplicacion.exec("cmd.exe /K C:/recolector_sp2.bat");
+    		while (file==null || !file.exists()) {
+        		file = new File("c:","sp2datos.txt");
+    			System.out.print(".");
+    			Thread.sleep(500);
+    		}
     		raf = new RandomAccessFile(file,"r");
     		String line = new String();
 			element = new Element("table");
@@ -161,7 +165,10 @@ public class EmakuRecolector extends JPanel implements Couplable, ActionListener
         }
         catch(IOException IOe) {
         	IOe.printStackTrace();
-        }
+        } catch (InterruptedException IEe) {
+			// TODO Auto-generated catch block
+			IEe.printStackTrace();
+		}
         finally {
         	aplicacion=null;
 			file = null;
