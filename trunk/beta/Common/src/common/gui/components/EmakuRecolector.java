@@ -148,9 +148,7 @@ public class EmakuRecolector extends JPanel implements Couplable, ActionListener
     			rows.addContent(new Element("col").setText(STlinea.nextToken()));
     			element.addContent(rows);
     		}
-    		raf.close();
-    		aplicacion.exec("cmd.exe /K C:/delete.bat"); 
-    		
+    		raf.close();    		
     		notificando();
         }
         catch(IOException IOe) {
