@@ -133,10 +133,10 @@ public class EmakuRecolector extends JPanel implements Couplable, ActionListener
 
 	public void actionPerformed(ActionEvent e) {
 		JButton button = (JButton)e.getSource();
-		file = new File("/home/felipe","pruebas_recBarras.txt");
 		Runtime aplicacion = Runtime.getRuntime(); 
         try{
-        	//aplicacion.exec("cmd.exe /K C:/java/fichero.bat"); 
+        	aplicacion.exec("cmd.exe /K C:/recolector_sp2.bat"); 
+    		file = new File("c:","sp2datos.txt");
     		raf = new RandomAccessFile(file,"r");
     		String line = new String();
 			element = new Element("table");

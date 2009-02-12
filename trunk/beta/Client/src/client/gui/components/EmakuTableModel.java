@@ -2002,7 +2002,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
      * @param search
      */
     public void setQuery(Document doc,boolean search) {
-
+    	System.out.println("corriendo con search en "+search);
     	/*
     	 * Anteriormente la carga de los datos se hacia en un hilo,
     	 * el hilo lo elimine porque no encontre razon para trabajarlo,
