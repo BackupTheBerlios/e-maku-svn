@@ -3,7 +3,6 @@ package common.gui.components;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.IllegalComponentStateException;
 import java.awt.event.ActionEvent;
@@ -12,10 +11,12 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
@@ -35,6 +36,7 @@ import common.gui.forms.ExternalValueChangeEvent;
 import common.gui.forms.ExternalValueChangeListener;
 import common.gui.forms.GenericForm;
 import common.gui.forms.InstanceFinishingListener;
+import common.gui.forms.NotFoundComponentException;
 import common.transactions.TransactionServerException;
 import common.transactions.TransactionServerResultSet;
 
@@ -60,6 +62,7 @@ KeyListener, FocusListener, AnswerListener {
 	private Vector<String> keySQL;
 	private boolean withoutButton;
 	private boolean withBill;
+	private ArrayList<String> cleanImportValue;
 	
 	public EmakuTouchField(GenericForm genericForm, Document doc) {
 		Element rootElement = doc.getRootElement();
@@ -92,13 +95,20 @@ KeyListener, FocusListener, AnswerListener {
 			} else if ("maxlength".equals(elm.getAttributeValue("attribute"))) {
 				setNChars(Integer.parseInt(elm.getValue()));
 			} else if ("exportValue".equals(elm.getAttributeValue("attribute"))) {
-				setExportvalue(elm.getValue());
+				this.setExportvalue(elm.getValue());
 			} else if ("importValue".equals(elm.getAttributeValue("attribute"))) {
 				if (importValue == null) {
 					importValue = new Vector<String>();
 				}
 				importValue.addElement(elm.getValue());
-			}else if ("maxValue".equals(elm.getAttributeValue("attribute"))) {
+			} else if ("cleanImportValue".equals(elm.getAttributeValue("attribute"))) {
+				if (cleanImportValue==null) {
+					cleanImportValue=new ArrayList<String>();
+				}
+				StringTokenizer iv = new StringTokenizer(elm.getValue(),",");
+				cleanImportValue.add(iv.nextToken()+iv.nextToken());
+			}
+			else if ("maxValue".equals(elm.getAttributeValue("attribute"))) {
 				setMaxValue(elm.getValue());
 			}
 			 else if ("maxValue".equals(elm.getAttributeValue("attribute"))) {
@@ -187,6 +197,7 @@ KeyListener, FocusListener, AnswerListener {
 			JPeast.add(JBcard,BorderLayout.CENTER);
 			popupTouch.add(creditCard);
 		}
+		setImportValue(importValue);
 		addKeyListener(this);
 		addFocusListener(this);
 	}
@@ -281,11 +292,33 @@ KeyListener, FocusListener, AnswerListener {
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if ("display".equals(command) || "card".equals(command)) {
+			if ("NUMERIC".equals(getType())) {
+				this.setNumberValue(0);
+			}
+			this.setText("");
 			displayButtons();
 		} 
 		if ("importValue".equals(command)) {
 			this.setText(GFforma.getExternalValueString(importValueButton));
 			doFormat();
+		}
+	}
+	
+	public void cleanImportComponentes() {
+		if (cleanImportValue!=null) {
+			Iterator<String> i = cleanImportValue.iterator();
+			while (i.hasNext()) {
+				String componente = i.next();
+				try {
+					GFforma.invokeMethod(componente,"clean");
+				} catch (InvocationTargetException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (NotFoundComponentException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 		}
 	}
 	
@@ -318,6 +351,9 @@ KeyListener, FocusListener, AnswerListener {
 				Element col = new Element("col");
 				if ("value".equals(tok)) {
 					col.setText(value);
+				}
+				else if (this.containImportValue(tok)) {
+					col.setText(GFforma.getExternalValueString(tok));
 				}
 				else if ("sequence".equals(tok)) {
 					col.setText(String.valueOf(++sequence));
@@ -409,7 +445,8 @@ KeyListener, FocusListener, AnswerListener {
 		}
 	}
 	
-	public void changeExternalValue(ExternalValueChangeEvent e) {}
+	public void changeExternalValue(ExternalValueChangeEvent e) {
+	}
 
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();

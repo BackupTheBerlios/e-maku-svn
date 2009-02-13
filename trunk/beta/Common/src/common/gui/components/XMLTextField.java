@@ -386,6 +386,12 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 		}
 	}
 
+	public boolean containImportValue(String value) {
+		if (importValue==null)
+			return false;
+		return importValue.contains(value);
+	}
+	
 	public String getConstantValue(int index) {
 		try {
 			return constantValue.get(index);

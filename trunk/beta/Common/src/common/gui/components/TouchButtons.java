@@ -79,9 +79,9 @@ public class TouchButtons extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		JButton b = (JButton)e.getSource();
 		String value = !b.getText().equals("")?b.getText():b.getName();
-		System.out.println(value);
 		if ("OK".equals(value)) {
 			touchField.doFormat();
+			touchField.cleanImportComponentes();
 		}
 		else if ("C".equals(value)) {
 			touchField.setText("");

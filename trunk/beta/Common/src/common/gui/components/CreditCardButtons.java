@@ -42,11 +42,16 @@ public class CreditCardButtons extends JPanel implements ActionListener {
 	private GenericForm genericForm;
 	private EmakuTouchField emakuTouchField;
 	private JButton[][] ccButtons = {{new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_american_express_100x65.png"))),
-											  	new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_diners_100x65.png")))},
-												 {new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_mastercard_100x65.png"))),
-											      new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_visa_100x65.png")))},
-												 {new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_visa_electron_100x65.png"))),
-												 new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_debito_100x65.png")))}};
+								  	  new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_diners_100x65.png"))),
+									  new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_mastercard_100x65.png")))},
+								     {new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_visa_100x65.png"))),
+									  new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_visa_electron_100x65.png"))),
+									  new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_american_debito_100x65.png")))},
+									 {new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_maestro_debito_100x65.png"))),
+									  new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_mastercard_debito_100x65.png"))),
+									  new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_visa_debito_100x65.png")))}
+														  
+	};
 	
 	private JButton[][] buttons = {{new JButton("7"),new JButton("8"),new JButton("9")},
 			   {new JButton("4"),new JButton("5"),new JButton("6")},
@@ -60,7 +65,7 @@ public class CreditCardButtons extends JPanel implements ActionListener {
 		this.genericForm=genericForm;
 		this.emakuTouchField=emakuTouchField;
 		this.importValueButton=importValueButton;
-		JPanel cards = new JPanel(new GridLayout(3,2));
+		JPanel cards = new JPanel(new GridLayout(3,3));
 		int i=0;
 		for(JButton[] row:ccButtons) {
 			for(JButton col:row) {
@@ -71,11 +76,12 @@ public class CreditCardButtons extends JPanel implements ActionListener {
 		}
 		
 		JPanel matriz = new JPanel(new GridLayout(5,3));
+		Font num = new Font("Dialog",1,30);
 		for(JButton[] row:buttons) {
 			for(JButton col:row) {
 				if (col!=null) {
 					matriz.add(col);
-					col.setFont(font);
+					col.setFont(num);
 					col.addActionListener(this);
 				}
 			}
