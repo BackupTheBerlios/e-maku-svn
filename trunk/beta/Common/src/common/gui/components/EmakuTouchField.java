@@ -242,7 +242,9 @@ KeyListener, FocusListener, AnswerListener {
 	}
 
 	public Element getPackage() throws VoidPackageException {
-		return this.getPackage();
+		Element pack = new Element("package");
+		pack.addContent(this.getElementText());
+		return pack;
 	}
 
 	public Component getPanel() {
