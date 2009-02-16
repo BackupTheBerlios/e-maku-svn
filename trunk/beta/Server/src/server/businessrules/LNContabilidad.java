@@ -72,6 +72,8 @@ public class LNContabilidad {
 
 	private String centroCosto;
 
+	private String constantTh;
+	
 	private double base;
 
 	private int colCost = -1;
@@ -135,6 +137,8 @@ public class LNContabilidad {
 				inventario = e.getValue().toLowerCase().trim();
 			} else if ("centrocosto".equals(attribute)) {
 				centroCosto = e.getValue().toLowerCase().trim();
+			} else if ("constantth".equals(attribute)) {
+				constantTh = e.getValue().toLowerCase().trim();
 			}
 
 			/*
@@ -342,9 +346,16 @@ public class LNContabilidad {
 					 * Si el asiento es de una cuenta de terceros entonces ...
 					 */
 					if (LinkingCache.isPCTerceros(bd, account)) {
+						String th;
+						if (constantTh!=null) {
+							th=constantTh;
+						}
+						else {
+							th = CacheKeys.getKey("idTercero");
+						}
 						asientosConTipo(idCta, 
 										valueAccount, 
-										CacheKeys.getKey("idTercero"), 
+										th, 
 										debito, LIBRO_AUX_TER,
 										LinkingCache.isPCNaturaleza(bd,account));
 					}

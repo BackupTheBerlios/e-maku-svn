@@ -63,6 +63,7 @@ KeyListener, FocusListener, AnswerListener {
 	private boolean withoutButton;
 	private boolean withBill;
 	private ArrayList<String> cleanImportValue;
+	private String keyValue;
 	
 	public EmakuTouchField(GenericForm genericForm, Document doc) {
 		Element rootElement = doc.getRootElement();
@@ -96,7 +97,10 @@ KeyListener, FocusListener, AnswerListener {
 				setNChars(Integer.parseInt(elm.getValue()));
 			} else if ("exportValue".equals(elm.getAttributeValue("attribute"))) {
 				this.setExportvalue(elm.getValue());
-			} else if ("importValue".equals(elm.getAttributeValue("attribute"))) {
+			} else if ("exportKeyValue".equals(elm.getAttributeValue("attribute"))) {
+				keyValue = elm.getValue();
+			}
+			else if ("importValue".equals(elm.getAttributeValue("attribute"))) {
 				if (importValue == null) {
 					importValue = new Vector<String>();
 				}
@@ -199,7 +203,7 @@ KeyListener, FocusListener, AnswerListener {
 		}
 
 		if (cardSelection!=null) {
-			creditCard = new CreditCardButtons(genericForm,this,font,importValueButton);
+			creditCard = new CreditCardButtons(genericForm,this,font,importValueButton,keyValue);
 			JBcard = new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_card_32x32.png")));
 			JBcard.setFocusable(false);
 			JBcard.setActionCommand("card");

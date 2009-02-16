@@ -60,18 +60,20 @@ public class CreditCardButtons extends JPanel implements ActionListener {
 			   {new JButton("C"),new JButton("<<"),new JButton("X")}};
 
 	private String importValueButton;
-		
-	public CreditCardButtons(GenericForm genericForm,EmakuTouchField emakuTouchField,Font font,String importValueButton) {
+	private String keyValue;
+	
+	public CreditCardButtons(GenericForm genericForm,EmakuTouchField emakuTouchField,Font font,String importValueButton,String keyValue) {
 		this.genericForm=genericForm;
 		this.emakuTouchField=emakuTouchField;
 		this.importValueButton=importValueButton;
+		this.keyValue=keyValue;
 		JPanel cards = new JPanel(new GridLayout(3,3));
 		int i=0;
 		for(JButton[] row:ccButtons) {
 			for(JButton col:row) {
 				cards.add(col);
 				col.addActionListener(this);
-				col.setName((i++)+"M");
+				col.setName((i++)+"");
 			}
 		}
 		
@@ -95,6 +97,7 @@ public class CreditCardButtons extends JPanel implements ActionListener {
 		JButton b = (JButton)e.getSource();
 		String value = b.getText();
 		if ("".equals(value)) {
+			genericForm.setExternalValues(keyValue, b.getName());
 			if (emakuTouchField.getText().equals("0")) {
 				System.out.println("valor: "+importValueButton);
 				emakuTouchField.setText(genericForm.getExternalValueString(importValueButton));
