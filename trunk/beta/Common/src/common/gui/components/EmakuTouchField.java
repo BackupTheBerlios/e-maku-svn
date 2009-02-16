@@ -166,6 +166,16 @@ KeyListener, FocusListener, AnswerListener {
 			}
 
 		}
+		
+		if (getExportvalue()!=null) {
+			if (getType().equals("NUMERIC")) {
+				GFforma.setExternalValues(getExportvalue(),0);
+			}
+			else {
+				GFforma.setExternalValues(getExportvalue(),"");
+			}
+		}
+		
 		setSqlCode(sqlCode);
 		generar();
 		JPanel JPeast = new JPanel(new BorderLayout());
@@ -197,6 +207,8 @@ KeyListener, FocusListener, AnswerListener {
 			JPeast.add(JBcard,BorderLayout.CENTER);
 			popupTouch.add(creditCard);
 		}
+		
+		
 		setImportValue(importValue);
 		addKeyListener(this);
 		addFocusListener(this);

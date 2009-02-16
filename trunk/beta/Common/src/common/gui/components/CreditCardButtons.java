@@ -96,6 +96,7 @@ public class CreditCardButtons extends JPanel implements ActionListener {
 		String value = b.getText();
 		if ("".equals(value)) {
 			if (emakuTouchField.getText().equals("0")) {
+				System.out.println("valor: "+importValueButton);
 				emakuTouchField.setText(genericForm.getExternalValueString(importValueButton));
 			}
 			emakuTouchField.doFormat();
