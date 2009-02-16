@@ -238,11 +238,11 @@ KeyListener, FocusListener, AnswerListener {
 	}
 
 	public Element getPackage(Element args) throws Exception {
-		return this.getPackage();
+		return null;
 	}
 
 	public Element getPackage() throws VoidPackageException {
-		return null;
+		return this.getPackage();
 	}
 
 	public Component getPanel() {
