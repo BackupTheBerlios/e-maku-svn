@@ -238,7 +238,7 @@ KeyListener, FocusListener, AnswerListener {
 	}
 
 	public Element getPackage(Element args) throws Exception {
-		return null;
+		return this.getPackage();
 	}
 
 	public Element getPackage() throws VoidPackageException {
