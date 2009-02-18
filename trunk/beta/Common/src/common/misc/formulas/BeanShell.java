@@ -13,6 +13,9 @@ public class BeanShell {
 	public static synchronized boolean eval(String condition) {
 		Boolean b;
 		try {
+			if (shellScript==null ) {
+				shellScript = new Interpreter();
+			}
 			b = (Boolean)shellScript.eval(condition);
 		} catch (EvalError e) {
 			e.printStackTrace();

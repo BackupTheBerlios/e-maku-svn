@@ -865,6 +865,10 @@ public class TableFindData extends JPanel implements AnswerListener,
 		}
 		return element;
 	}
+	
+	public EmakuTableModel getEmakuTableModel() {
+		return TMFDtabla;
+	}
 
 	/**
 	 * Metodo utilizado solo para la forma de creacion de Grupos de Asientos
