@@ -268,30 +268,66 @@ KeyListener, FocusListener, AnswerListener {
 	}
 	
 	
+	public void doFormat(double value) {
+		format(value);
+		sendData(false);
+		disposePopup();
+	}
+
 	public void doFormat() {
 		format();
 		sendData(false);
 		disposePopup();
 	}
-	
+
 	public void format() {
+		String value = getText();
 		if ("NUMERIC".equals(getType())) {
-			String text = getText();
 			try {
 				NumberFormat nf = NumberFormat.getNumberInstance();
     			DecimalFormat form = (DecimalFormat) nf;
-    			form.applyPattern("###,###,##0.00");
-    			this.setText(nf.format(Double.parseDouble(text)));
-    			this.setNumberValue(nf.parse(text).doubleValue());
+    			form.applyPattern("###,###,###.00");
+    			this.setText(nf.format(Double.parseDouble(value)));
+    			this.setNumberValue(nf.parse(value).doubleValue());
     			if (isExportvalue()) {
     				try {
+    					System.out.println("exportando si args : "+getNumberValue()+" texto "+getText());
+    					GFforma.setExternalValues(getExportvalue(),getNumberValue());
+    				}
+    				catch (NumberFormatException NFE) {}
+    			}
+			}
+			catch (NumberFormatException NFEe) {} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			if (isExportvalue()) {
+				try {
+					GFforma.setExternalValues(getExportvalue(),getText());
+				}
+				catch (NumberFormatException NFE) {}
+			}
+		}
+	}
+	
+	public void format(double value) {
+		if ("NUMERIC".equals(getType())) {
+			try {
+				NumberFormat nf = NumberFormat.getNumberInstance();
+    			DecimalFormat form = (DecimalFormat) nf;
+    			form.applyPattern("###,###,###.00");
+    			this.setText(nf.format(value));
+    			this.setNumberValue(value);
+    			if (isExportvalue()) {
+    				try {
+    					System.out.println("exportando con args: "+getNumberValue()+" texto "+getText());
     					GFforma.setExternalValues(getExportvalue(),getNumberValue());
     				}
     				catch (NumberFormatException NFE) {}
     			}
 			}
 			catch (NumberFormatException NFEe) {}
-			catch (ParseException Pe) {}
 		} else {
 			if (isExportvalue()) {
 				try {
@@ -317,8 +353,11 @@ KeyListener, FocusListener, AnswerListener {
 			displayButtons();
 		} 
 		if ("importValue".equals(command)) {
-			this.setText(GFforma.getExternalValueString(importValueButton));
-			doFormat();
+			double value = 0;
+			if ("NUMERIC".equals(getType())) {
+				value = GFforma.getExteralValues(importValueButton);
+			}			
+			doFormat(value);
 		}
 	}
 	

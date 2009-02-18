@@ -35,12 +35,16 @@ public class TouchButtons extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 5953946428251386838L;
 	private JButton JBOk = new JButton("OK");
-	private JButton[][] bills = {{new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_billete_50000_100x50.png"))),
-								  new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_billete_20000_100x50.png")))},
-								 {new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_billete_10000_100x50.png"))),
-							      new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_billete_5000_100x50.png")))},
-								 {new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_billete_2000_100x50.png"))),
-								 new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_billete_1000_100x50.png")))}};
+	private JButton[] bills = {new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_billete_50000_100x50.png"))),
+								  new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_billete_20000_100x50.png"))),
+								  new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_billete_10000_100x50.png"))),
+							      new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_billete_5000_100x50.png"))),
+								 new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_billete_2000_100x50.png"))),
+								 new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_billete_1000_100x50.png"))),
+  						         new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_moneda_500_50x50.png"))),
+								 new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_moneda_200_50x50.png"))),
+								 new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_moneda_100_50x50.png"))),
+								 new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_moneda_50_50x50.png")))};
 	
 	private JButton[][] buttons = {{new JButton("7"),new JButton("8"),new JButton("9")},
 								   {new JButton("4"),new JButton("5"),new JButton("6")},
@@ -54,14 +58,12 @@ public class TouchButtons extends JPanel implements ActionListener {
 		this.touchField = emakuTouchField;
 		this.setLayout(new BorderLayout());
 		
-		JPanel mbills = new JPanel(new GridLayout(3,2));
+		JPanel mbills = new JPanel(new GridLayout(5,2));
 		int i=0;
-		for(JButton[] row:bills) {
-			for(JButton col:row) {
-				mbills.add(col);
-				col.addActionListener(this);
-				col.setName((i++)+"M");
-			}
+		for(JButton col:bills) {
+			mbills.add(col);
+			col.addActionListener(this);
+			col.setName((i++)+"M");
 		}
 		
 		JPanel matriz = new JPanel(new GridLayout(5,3));
@@ -106,6 +108,14 @@ public class TouchButtons extends JPanel implements ActionListener {
 			touchField.setText("2000");
 		}else if ("5M".equals(value)) {
 			touchField.setText("1000");
+		}else if ("6M".equals(value)) {
+			touchField.setText("500");
+		}else if ("7M".equals(value)) {
+			touchField.setText("200");
+		}else if ("8M".equals(value)) {
+			touchField.setText("100");
+		}else if ("9M".equals(value)) {
+			touchField.setText("500");
 		}
 		else {
 			try {

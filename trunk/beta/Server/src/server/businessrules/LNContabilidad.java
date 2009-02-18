@@ -353,6 +353,7 @@ public class LNContabilidad {
 						else {
 							th = CacheKeys.getKey("idTercero");
 						}
+						System.out.println("tercero: "+th);
 						asientosConTipo(idCta, 
 										valueAccount, 
 										th, 
