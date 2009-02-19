@@ -2002,7 +2002,6 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
      * @param search
      */
     public void setQuery(Document doc,boolean search) {
-    	System.out.println("corriendo con search en "+search);
     	/*
     	 * Anteriormente la carga de los datos se hacia en un hilo,
     	 * el hilo lo elimine porque no encontre razon para trabajarlo,
@@ -2111,6 +2110,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             			}
             			else {
 	            			for (int j=0;j<ATFDargs.length;j++) {
+
 	            				Object obj = addCols(j,listCols);
 	            				if (j==0 && search) {
 	        						setValueAt(obj,index,j);

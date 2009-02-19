@@ -256,7 +256,12 @@ KeyListener, FocusListener, AnswerListener {
 	}
 
 	public Element getPrintPackage() {
-		return null;
+		try {
+			return getPackage();
+		}
+		catch (VoidPackageException e) {
+			return null;
+		}
 	}
 
 	public void validPackage(Element args) throws Exception {
