@@ -2144,8 +2144,8 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             				Object obj = addCols(j,listCols);
             				if (j==0 && search) {
             					record+=col.getValue().trim();
-        						setValueAt(obj,currentRow,j);
-            				}
+		                    	setValueAt(obj,currentRow,j);
+    		    			}
             				else {
             					updateCells(obj,currentRow,j);
             				}
@@ -2196,6 +2196,10 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 					e.printStackTrace();
 				}
             }
+            else if (ATFDargs[j].getType().equals("INTEGER") || ATFDargs[j].getType().equals("INTEGER")) {
+            	Number n = new Double(newValue);
+            	obj = new Integer(n.intValue());
+            }
             else {
                 try {
                 	Class<?> c = ATFDargs[j].getColumnClass();
@@ -2222,6 +2226,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
                     if (e.getCause().getClass().getName().equals("java.lang.NumberFormatException")) {
                         obj = ATFDargs[j].getTypeDate();
                     	//obj = null;
+                        //e.printStackTrace();
                     }
                     else {
                         e.printStackTrace();
@@ -2232,6 +2237,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         catch(IndexOutOfBoundsException e) {
             obj = ATFDargs[j].getTypeDate();
         	//obj = null;
+            //e.printStackTrace();
         }
         
         return obj;
