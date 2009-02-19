@@ -139,6 +139,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 		Iterator i = parameters.getChildren("arg").iterator();
 		Vector<String> impValues = new Vector<String>();
 		int tagDataColumn = -1;
+		String conditionatedRecord = null;
 
 		while (i.hasNext()) {
 
@@ -201,6 +202,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 						.toUpperCase(), STexportTotalCols.nextToken());
 			} else if (args.getAttributeValue("attribute").equals("tagData")) {
 				tagDataColumn = Integer.parseInt(args.getValue());
+			} else if (args.getAttributeValue("attribute").equals("conditionatedRecord")) {
+				conditionatedRecord = args.getValue();
 			} else if (args.getAttributeValue("attribute").equals("sendRecord")) {
 				this.sendRecord = args.getValue();
 			} else if (args.getAttributeValue("attribute").equals(
@@ -355,6 +358,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 						totales, externalValues, ATFDargs);
 			}
 			TMFDtabla.setTagDataColumn(tagDataColumn);
+			TMFDtabla.setConditionatedRecord(conditionatedRecord);
 			// TableSorter sorter = new TableSorter(TMFDtabla);
 			JTtabla = new JTable(TMFDtabla) {
 

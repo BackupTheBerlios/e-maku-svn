@@ -47,6 +47,7 @@ import common.gui.forms.ExternalValueChangeListener;
 import common.gui.forms.GenericForm;
 import common.gui.forms.InstanceFinishingListener;
 import common.gui.forms.NotFoundComponentException;
+import common.misc.formulas.BeanShell;
 import common.misc.formulas.FormulaCalculator;
 import common.misc.language.Language;
 import common.transactions.TransactionServerException;
@@ -101,6 +102,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     private HashMap importTotalCol;
     private boolean loadingQuery = false;
     private int tagDataColumn = -1;
+    private String conditionatedRecord;
     private int currentIndex = 0;
     private boolean isInitQuery;
     private String [] argsQuery;
@@ -2139,8 +2141,13 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             			}
             			arrivedKeys.put(valueKey, currentRow);
             			String record = "";
+            			boolean addRecord = true;
             			for (int j=0;j<ATFDargs.length && j < listCols.size();j++) {
             				Element col = (Element)listCols.get(j);
+            				if (conditionatedRecord!=null && !BeanShell.eval(formulaReplacer(conditionatedRecord,listCols))) {
+            					addRecord = false;
+            					break;
+            				}
             				Object obj = addCols(j,listCols);
             				if (j==0 && search) {
             					record+=col.getValue().trim();
@@ -2150,13 +2157,15 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             					updateCells(obj,currentRow,j);
             				}
                 		}
-            			if (header!=null) {
-            				this.rowsLoaded.put(record,currentRow);
+            			if (addRecord) {
+	            			if (header!=null) {
+	            				this.rowsLoaded.put(record,currentRow);
+	            			}
+	            			else {
+	            				this.rowsLoaded.remove(record);
+	            			}
+	            			currentRow++;
             			}
-            			else {
-            				this.rowsLoaded.remove(record);
-            			}
-            			currentRow++;
             		} 
             	}
             }
@@ -2169,6 +2178,38 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         doc = null;
     }
 
+	private String formulaReplacer(String var,List table) {
+		String newVar = "";
+		for (int j = 0; j < var.length(); j++) {
+			if (j+10<var.length() && var.substring(j,j+11).equals(".startsWith")) {
+				String s = ".startsWith("+var.substring(j+12,var.indexOf(")",j+12))+")";
+				newVar+=s;
+				j=var.indexOf(")",j);
+			}
+			else if (j+7<var.length() && var.substring(j,j+7).equals(".equals")) {
+				String s = ".equals("+var.substring(j+8,var.indexOf(")",j+8))+")";
+				newVar+=s;
+				j=var.indexOf(")",j);
+			}
+			else if ((var.charAt(j) >= 65 && var.charAt(j) <= 90) ||
+				(var.charAt(j) >= 97 && var.charAt(j) <= 122)) {
+					int col;
+
+					if (var.charAt(j) <= 90) {
+						col = var.charAt(j) - 65;
+					}
+					/* cuando es minuscula */
+					else {
+						col = var.charAt(j) - 97;
+					}
+					newVar += ((Element)table.get(col)).getValue();
+					
+			} else {
+				newVar += var.substring(j, j + 1);
+			}
+		}
+		return newVar;
+	}
     private Object addCols(int j,List Lcol) {
         Object obj = null;
         try {
@@ -2327,6 +2368,10 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 
 	public void setTagDataColumn(int tagDataColumn) {
 		this.tagDataColumn = tagDataColumn;
+	}
+
+	public void setConditionatedRecord(String conditionatedRecord) {
+		this.conditionatedRecord=conditionatedRecord;
 	}
 
 	public int getCurrentIndex() {
