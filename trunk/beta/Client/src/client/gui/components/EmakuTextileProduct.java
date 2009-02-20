@@ -46,7 +46,6 @@ implements FocusListener,KeyListener, ActionListener,ExternalValueChangeListener
 	private ComboBoxFiller comboBoxMarca;
 	private ComboBoxFiller comboBoxTalla;
 	private ComboBoxFiller comboBoxColor;
-	private XMLTextField barra;
 	private JButton JBOk;
 	private JButton JBCancel;
 	private int rowIndex;
@@ -168,6 +167,7 @@ implements FocusListener,KeyListener, ActionListener,ExternalValueChangeListener
 	}
 	
 	public void clean() {
+		this.setText("");
 		comboBoxSeccion.setSelectedIndex(0);
 		comboBoxGrupo.removeAllItems();
 		comboBoxSGrupo.removeAllItems();

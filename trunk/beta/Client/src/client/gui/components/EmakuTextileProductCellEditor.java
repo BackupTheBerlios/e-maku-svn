@@ -26,6 +26,7 @@ public class EmakuTextileProductCellEditor extends AbstractCellEditor implements
 	 */
 	
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+		textileProduct.clean();
 		textileProduct.setEnabled(table.getModel().isCellEditable(row, column));
 		return textileProduct;
 	}
