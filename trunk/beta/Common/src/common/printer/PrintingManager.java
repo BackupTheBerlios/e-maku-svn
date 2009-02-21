@@ -1,19 +1,36 @@
 package common.printer;
 
-import java.awt.print.*;
-import java.io.*;
-import java.text.*;
-import java.util.*;
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
-import javax.print.*;
-import javax.print.attribute.*;
-import javax.print.attribute.standard.*;
-import javax.swing.*;
+import javax.print.Doc;
+import javax.print.DocFlavor;
+import javax.print.DocPrintJob;
+import javax.print.PrintException;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.print.ServiceUI;
+import javax.print.SimpleDoc;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.standard.Copies;
+import javax.print.attribute.standard.JobName;
+import javax.print.attribute.standard.PageRanges;
+import javax.swing.JOptionPane;
 
-import org.jpedal.*;
-import org.jpedal.exception.*;
+import org.jpedal.PdfDecoder;
+import org.jpedal.exception.PdfException;
 
-import common.misc.*;
+import common.misc.CommonConstants;
 
 public class PrintingManager {
 	
@@ -134,6 +151,13 @@ public class PrintingManager {
 		
 		printJob.setPageable(decode_pdf);
 		decode_pdf.setPageFormat(pf);
+		try {
+			decode_pdf.setPagePrintRange(1, decode_pdf.getPageCount());
+		} catch (PdfException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Se daño paginando");
+			e.printStackTrace();
+		}
 		pras.add(new PageRanges(1,decode_pdf.getPageCount()));
 		if (!silent) {
 			printFile=printJob.printDialog(pras);
