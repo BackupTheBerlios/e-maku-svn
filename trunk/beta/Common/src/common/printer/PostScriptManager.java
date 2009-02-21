@@ -2,6 +2,7 @@ package common.printer;
 
 import java.awt.*;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.geom.*;
 import java.io.*;
 import java.text.*;
@@ -216,6 +217,13 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 				int height = attribs.get("height").getIntValue();
 				g2d.drawRect(col,row,width,height);
 			}
+			else if ("image".equals(name)) {
+				Image imagen = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource(e.getTextTrim())); 
+				int width = attribs.get("width").getIntValue();
+				int height = attribs.get("height").getIntValue();
+				g2d.drawImage(imagen,row,col,width,height,null);
+			}
+
 			else if ("field".equals(name)) {
 				String value = e.getTextTrim();
 				value = " ".equals(value) || "".equals(value) ? "  " : value;
