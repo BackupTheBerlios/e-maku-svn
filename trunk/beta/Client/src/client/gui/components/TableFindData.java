@@ -762,7 +762,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 						try {
 							Object obj = TMFDtabla.getValueAt(i, Integer
 									.parseInt(value));
-							if (ATFDargs[j].getType().equals("DECIMAL")) {
+							System.out.println("columna: "+j+" valor "+obj);
+							if (ATFDargs[Integer.parseInt(value)].getType().equals("DECIMAL")) {
 								NumberFormat nf = NumberFormat
 										.getNumberInstance();
 								DecimalFormat form = (DecimalFormat) nf;
