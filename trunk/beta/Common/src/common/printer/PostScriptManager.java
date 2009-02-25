@@ -1,27 +1,53 @@
 package common.printer;
 
-import java.awt.*;
+import java.awt.BasicStroke;
 import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.geom.*;
-import java.io.*;
-import java.text.*;
-import java.util.*;
+import java.awt.Toolkit;
+import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
-import org.jdom.*;
+import javax.imageio.ImageIO;
+
+import net.sourceforge.barbecue.Barcode;
+import net.sourceforge.barbecue.BarcodeException;
+import net.sourceforge.barbecue.BarcodeFactory;
+import net.sourceforge.barbecue.BarcodeImageHandler;
+import net.sourceforge.barbecue.output.OutputException;
+
+import org.jdom.Attribute;
+import org.jdom.DataConversionException;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.output.*;
 import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
-import com.lowagie.text.*;
+import com.lowagie.text.DocumentException;
 import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.*;
-import common.control.*;
-import common.misc.XMLUtils;
-import common.misc.text.*;
-import common.printer.PrintingManager.*;
-import common.transactions.*;
+import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.pdf.PdfWriter;
+import common.control.ClientHeaderValidator;
+import common.control.SuccessEvent;
+import common.control.SuccessListener;
+import common.misc.text.NumberToLetterConversor;
+import common.printer.PrintingManager.ImpresionType;
+import common.transactions.TransactionServerException;
+import common.transactions.TransactionServerResultSet;
 
 
 public class PostScriptManager implements AbstractManager, SuccessListener {
@@ -103,7 +129,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 				e.printStackTrace();
 			}
 			cb = pdfWriter.getDirectContent();
-			g2d = cb.createGraphicsShapes(width,height);
+			g2d = cb.createGraphicsShapes(width,height,false,1f);
 			if (orientation!=null && "LANDSCAPE".equals(orientation)) {
 				g2d.translate(width-10,0);
 				g2d.rotate(90*Math.PI/180);
@@ -218,10 +244,35 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 				g2d.drawRect(col,row,width,height);
 			}
 			else if ("image".equals(name)) {
-				Image imagen = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource(e.getTextTrim())); 
-				int width = attribs.get("width").getIntValue();
-				int height = attribs.get("height").getIntValue();
-				g2d.drawImage(imagen,row,col,width,height,null);
+				//Image imagen = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource(e.getTextTrim()));
+				BufferedImage image;
+				try {
+					image = ImageIO.read(this.getClass().getResource(e.getTextTrim()));
+					g2d.drawImage(image,col,row,image.getWidth(),image.getHeight(),null);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			else if ("barcodeImage".equals(name)) {
+				try {
+					String value = ndocument==null ? "" : ndocument;
+					Barcode barcode = BarcodeFactory.createCode128B(value);
+					barcode.setBarHeight(50);
+					BufferedImage image = BarcodeImageHandler.getImage(barcode);
+					
+					// Barcode supports a direct draw method to Graphics2D that lets you position the
+					// barcode on the canvas
+					g2d.drawImage(image,col,row,image.getWidth(),image.getHeight(),null);
+					
+				}
+				catch (BarcodeException BEe) {
+					BEe.printStackTrace();
+					    // Error handling
+					} catch (OutputException Oe) {
+					// TODO Auto-generated catch block
+					Oe.printStackTrace();
+				}
 			}
 
 			else if ("field".equals(name)) {
@@ -281,6 +332,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 		
 	}
 	
+
 	/**
 	 * 
 	 * @param pack_template
@@ -665,4 +717,5 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 		}
 		
 	}
+
 }

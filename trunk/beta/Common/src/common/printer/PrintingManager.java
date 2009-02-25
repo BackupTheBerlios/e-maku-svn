@@ -35,7 +35,7 @@ import common.misc.CommonConstants;
 public class PrintingManager {
 	
 	public static enum ImpresionType {PLAIN,POSTSCRIPT,PDF};	
-	private ImpresionType type;
+	private ImpresionType type;  
 	private DocFlavor docFlavor;
 	private PrintService[] jps;
 	private static int count=0;

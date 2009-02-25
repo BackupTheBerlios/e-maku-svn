@@ -1603,7 +1603,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 					if (isKey) {
 						TypeExportValue te = checkExportValue(acumText);
 						if (TypeExportValue.STRING.equals(te)) {
-							formulaFinal += getExternalValueString(acumText);
+							formulaFinal += "\""+getExternalValueString(acumText)+"\"";
 						}
 						else if (TypeExportValue.DOUBLE.equals(te)) {
 							formulaFinal += getExteralValues(acumText);							
@@ -1612,6 +1612,9 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 						}
 					}
 					else if (acumText.equals("equals")) {
+						formulaFinal += acumText;
+					}
+					else if (acumText.equals("int")) {
 						formulaFinal += acumText;
 					}
 					else {
@@ -1709,6 +1712,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 		}
 		catch(Exception e) {
 			System.out.println("La evaluacion de la formula fallo, retornando 0");
+			System.out.println("formula: "+script);
 			System.out.println("causa: "+e.getCause());
 			System.out.println("mensaje: "+e.getMessage());
 			System.out.println("pila:");

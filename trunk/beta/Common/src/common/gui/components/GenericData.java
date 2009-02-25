@@ -67,6 +67,7 @@ public class GenericData extends JPanel implements DateListener,
 	private Vector<ChangeValueListener> changeValueListener = new Vector<ChangeValueListener>();
 	private Vector<RecordListener> recordListener = new Vector<RecordListener>();
 	private String driverEventRecord;
+	private boolean returnNullValue;
 	
 	public GenericData() {}
 
@@ -139,7 +140,11 @@ public class GenericData extends JPanel implements DateListener,
 			} else if ("returnValue".equals(subargs
 					.getAttributeValue("attribute"))) {
 				returnValue = value;
-			} else if ("mode".equals(subargs.getAttributeValue("attribute"))) {
+			} else if ("returnNullValue".equals(subargs
+					.getAttributeValue("attribute"))) {
+				returnNullValue = Boolean.parseBoolean(value);
+				System.out.println("nullValue: "+returnNullValue);
+			}else if ("mode".equals(subargs.getAttributeValue("attribute"))) {
 				Sargs = value;
 			} else if ("keySQL".equals(subargs.getAttributeValue("attribute"))) {
 				if (keySQL == null) {
@@ -883,7 +888,15 @@ public class GenericData extends JPanel implements DateListener,
 				String text = Field.getText();
 				if (Field.isReturnValue()) {
 					if (Field.isNullValue()) {
-						pack.addContent(Field.getElementText());
+						if (returnNullValue && text.equals("")) {
+							Element elm = Field.getElementText();
+							elm.setText("NULL");
+							System.out.println("adicionando paquete NULL: "+elm.getText());
+							pack.addContent(elm);
+						}
+						else {
+							pack.addContent(Field.getElementText());
+						}
 					} else {
 						if (!text.equals("")) {
 							Element elm = Field.getElementText();
@@ -1227,7 +1240,7 @@ public class GenericData extends JPanel implements DateListener,
 					return new Double((Integer)val);
 				}
 			} catch (EvalError e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 		return ((Double) FormulaCalculator.operar(formulaFinal)).doubleValue();

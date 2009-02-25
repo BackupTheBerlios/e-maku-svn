@@ -767,10 +767,10 @@ public class TableFindData extends JPanel implements AnswerListener,
 								NumberFormat nf = NumberFormat
 										.getNumberInstance();
 								DecimalFormat form = (DecimalFormat) nf;
-								form.applyPattern("###,####,###.00");
+								form.applyPattern("###,####,###");
 								concept += form.format(obj);
 							} else {
-								concept += obj;
+								concept += obj.toString().trim();
 							}
 
 						} catch (NumberFormatException NFEe) {
