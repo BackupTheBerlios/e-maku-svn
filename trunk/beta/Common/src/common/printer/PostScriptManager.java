@@ -265,7 +265,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 					
 					// Barcode supports a direct draw method to Graphics2D that lets you position the
 					// barcode on the canvas
-					g2d.drawImage(image,col,row,image.getWidth(),image.getWidth(),null);
+					g2d.drawImage(image,col,row,image.getWidth(),(int)(image.getWidth()/2),null);
 					
 				}
 				catch (BarcodeException BEe) {
