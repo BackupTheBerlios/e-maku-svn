@@ -140,6 +140,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 			processMetadata(rootTemplate.getChild("metadata"));
 
 			Iterator itTemplate = rootTemplate.getChildren("package").iterator();
+			
 			Iterator itTransact = rootTransact.getChildren("package").iterator();
 			while(itTemplate.hasNext() && itTransact.hasNext()) {
 				Element elmTemplate = (Element)itTemplate.next();
@@ -465,7 +466,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 					}
 				}
 			}
-			else {
+			else if (el_template.getName().equals("field")){
 				Element el_transaction = (Element)it_transaction.next();
 
 				Iterator itAttribs = el_template.getAttributes().iterator();
@@ -476,6 +477,50 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 					attribs.put(attribute.getName(),attribute);
 				}
 				addValue(el_transaction.getValue(),attribs);
+			}
+			else if (el_template.getName().equals("line")){
+				int row1 = 0;
+				int row2 = 0;
+				String srow1 = el_template.getAttributeValue("row");
+				String srow2 = el_template.getAttributeValue("row2");
+				int col1 = Integer.parseInt(el_template.getAttributeValue("col"));
+				int col2 = Integer.parseInt(el_template.getAttributeValue("col2"));
+				
+				if (srow1.equals("last")) {
+					row1=currentRow;
+				}
+				else {
+					row1=Integer.parseInt(srow1);
+				}
+
+				if (srow2.equals("last")) {
+					row2=currentRow;
+				}
+				else {
+					row2=Integer.parseInt(srow2);
+				}
+				System.out.println("Dibujando una linea de "+row1);
+				
+				g2d.drawLine(col1,row1, col2,row2);
+				currentRow+=Integer.parseInt(el_template.getAttributeValue("rowAcum"));
+
+			} 
+			else  if (el_template.getName().equals("text")){
+				Iterator itAttribs = el_template.getChildren().iterator();
+				System.out.println("Va un texto "+el_template.getValue());
+				int row = 0;
+				String srow1 = el_template.getAttributeValue("row");
+				int col = Integer.parseInt(el_template.getAttributeValue("col"));
+				
+				if (srow1.equals("last")) {
+					row=currentRow;
+				}
+				else {
+					row=Integer.parseInt(srow1);
+				}
+
+				g2d.drawString(el_template.getValue(),col,row);
+				currentRow+=Integer.parseInt(el_template.getAttributeValue("rowAcum"));
 			}
 		}
 	}
@@ -490,17 +535,39 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 		if (attribs.size()==0) {
 			return;
 		}
-		
-		int row =  attribs.get("row").getIntValue() + rowNextPage;
+		int row = 0;
+		String srow = attribs.get("row").getValue();
+		if (srow.equals("last")) {
+			row=currentRow;
+		}
+		else {
+			row =  attribs.get("row").getIntValue() + rowNextPage;
+		}
+
 		int col =  attribs.get("col").getIntValue();
 		
+		//Attribute rowAcum = attribs.get("rowAcum");
 		Attribute attribute = attribs.get("type");
 		Attribute fontSize = attribs.get("fontSize");
 		Attribute fontName = attribs.get("fontName");
+		Attribute fontStyle = attribs.get("fontStyle");
+		Attribute textLine = attribs.get("textLine");
+		Attribute textCol = attribs.get("textCol");
+		Attribute srowAcum = attribs.get("rowAcum");
+		int rowAcum = 0;
+		if (srowAcum!=null) {
+			rowAcum = srowAcum.getIntValue();
+		}
 		
+		System.out.println("textline: "+textLine+" textcol: "+textCol);
 		String type = attribute!=null ? attribute.getValue() : null ;
 		value = !"NULL".equals(value) && !"".equals(value) ?value:"";
 		Font currentFont =  g2d.getFont();
+		
+		if (fontSize!=null && fontName!=null && fontStyle!=null) {
+			Font newFont = new Font(fontName.getValue(),fontStyle.getIntValue(),fontSize.getIntValue());
+			g2d.setFont(newFont);
+		} 
 		if (fontSize!=null && fontName!=null) {
 			Font newFont = new Font(fontName.getValue(),0,fontSize.getIntValue());
 			g2d.setFont(newFont);
@@ -509,11 +576,14 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 			Font newFont = new Font(currentFont.getFamily(),0,currentFont.getSize());
 			g2d.setFont(newFont);
 		}
+		if (textLine!=null && textCol!=null) {
+			System.out.println("Dibulando..");
+			g2d.drawString(textLine.getValue(),textCol.getIntValue(),row);
+		}
 		
 		if ("TEXT".equals(type)) {
 			int width = attribs.get("width").getIntValue();
 			int height = attribs.get("height").getIntValue();
-			int rowAcum = attribs.get("rowAcum").getIntValue();
 			
 			value = value.replaceAll("\n", " ");
 			StringBuffer buf = new StringBuffer(value);
@@ -559,6 +629,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 				}
 			}
 			g2d.drawString(value,col,row);
+			row+=rowAcum;
 			
 		}
 		else if ("DATE".equals(type)) {
@@ -574,6 +645,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 			
 			value = sdf.format(c.getTime());
 			g2d.drawString(value,col,row);
+			row+=rowAcum;
 		}
 		else if ("NUMERIC".equals(type)) {
 			String mask = attribs.get("mask").getValue();
@@ -581,6 +653,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 			value = !"NULL".equals(value) && !"".equals(value) ? formatter.format(Double.parseDouble(value)):"";
 			FontMetrics m = g2d.getFontMetrics();
 			g2d.drawString(value, col-m.stringWidth(value),row);
+			row+=rowAcum;
 		}
 		else if ("NUMTOLETTERS".equals(type)) {
             try {
@@ -590,7 +663,6 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
                 Double d = Double.parseDouble(value);
                 String letters = String.valueOf(d.intValue());
                 letters = NumberToLetterConversor.letters(letters, null);
-    			int rowAcum = attribs.get("rowAcum").getIntValue();
     			
     			value = value.replaceAll("\n", " ");
     			StringBuffer buf = new StringBuffer(letters);
@@ -631,6 +703,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
             }
         }
 		g2d.setFont(currentFont);
+		currentRow=row;
 	}
 
 	/**
