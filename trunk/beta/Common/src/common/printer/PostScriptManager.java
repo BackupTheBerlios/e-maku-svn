@@ -17,6 +17,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
@@ -283,6 +284,13 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 				value = " ".equals(value) || "".equals(value) ? "  " : value;
 				g2d.drawString(value,col,row);
 			}
+			else if ("time".equals(name)) {
+				Calendar calendario = new GregorianCalendar();
+				int hora =calendario.get(Calendar.HOUR_OF_DAY);
+				int minutos = calendario.get(Calendar.MINUTE);
+				int segundos = calendario.get(Calendar.SECOND);
+				g2d.drawString(hora+":"+minutos+":"+segundos,col,row);
+			}
 			else if ("ndocument".equals(name)) {
 				String value = ndocument==null ? "" : ndocument;
 				g2d.drawString(value,col,row);
@@ -499,15 +507,27 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 				else {
 					row2=Integer.parseInt(srow2);
 				}
-				System.out.println("Dibujando una linea de "+row1);
-				
 				g2d.drawLine(col1,row1, col2,row2);
 				currentRow+=Integer.parseInt(el_template.getAttributeValue("rowAcum"));
 
 			} 
 			else  if (el_template.getName().equals("text")){
-				Iterator itAttribs = el_template.getChildren().iterator();
-				System.out.println("Va un texto "+el_template.getValue());
+				Attribute fontSize = el_template.getAttribute("fontSize");
+				Attribute fontName = el_template.getAttribute("fontName");
+				Attribute fontStyle = el_template.getAttribute("fontStyle");
+				Attribute textLine = el_template.getAttribute("textLine");
+				Attribute textCol = el_template.getAttribute("textCol");
+				Attribute srowAcum = el_template.getAttribute("rowAcum");
+				int rowAcum = 0;
+				if (srowAcum!=null) {
+					rowAcum = srowAcum.getIntValue();
+				}
+				
+				if (fontSize!=null && fontName!=null && fontStyle!=null) {
+					Font newFont = new Font(fontName.getValue(),fontStyle.getIntValue(),fontSize.getIntValue());
+					g2d.setFont(newFont);
+				} 
+
 				int row = 0;
 				String srow1 = el_template.getAttributeValue("row");
 				int col = Integer.parseInt(el_template.getAttributeValue("col"));
