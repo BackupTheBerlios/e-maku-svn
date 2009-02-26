@@ -418,11 +418,17 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 					Iterator iterator = element.getChildren().iterator();
 					int i=0;
 					while(iterator.hasNext()) {
+
 							Element elmt = (Element) iterator.next();
+							Attribute incrementRow = (Attribute)(AttCols.get(i)).get("incrementRow");
 							Attribute att = new Attribute("row",String.valueOf(rowInit));
 							AttCols.get(i).put("row",att);
 							addValue(elmt.getValue(),AttCols.get(i));
 							i++;
+							if (incrementRow != null && Boolean.parseBoolean(incrementRow.getValue())) {
+								rowInit+=rowAcum;
+								currentRow=rowInit;
+							}
 					}
 					rowInit+=rowAcum;
 					currentRow=rowInit;
@@ -438,6 +444,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 						int i=0;
 						while(iterator.hasNext()) {
 							Element elmt = (Element) iterator.next();
+							AttCols.get(i);
 							Attribute att = new Attribute("row",String.valueOf(rowInit));
 							AttCols.get(i).put("row",att);
 							addValue(elmt.getValue(),AttCols.get(i));
