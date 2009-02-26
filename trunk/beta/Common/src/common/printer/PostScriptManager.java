@@ -11,6 +11,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -122,11 +124,14 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 
 			document = new com.lowagie.text.Document(pageSize);
 			try {
-				pdfWriter = PdfWriter.getInstance(document,outPut);
+				pdfWriter = PdfWriter.getInstance(document,new FileOutputStream("prueba.pdf"));
 				document.addTitle("outout.pdf");
 				document.open();
 				
 			} catch (DocumentException e) {
+				e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			cb = pdfWriter.getDirectContent();
