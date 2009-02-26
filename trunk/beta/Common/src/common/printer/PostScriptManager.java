@@ -258,8 +258,8 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 				try {
 					String value = ndocument==null ? "" : ndocument;
 					Barcode barcode = BarcodeFactory.createCode128B(value);
-					barcode.setBarHeight(50);
-					barcode.setBarWidth(2);
+					barcode.setBarHeight(25);
+					barcode.setBarWidth(1);
 					BufferedImage image = BarcodeImageHandler.getImage(barcode);
 					
 					// Barcode supports a direct draw method to Graphics2D that lets you position the
