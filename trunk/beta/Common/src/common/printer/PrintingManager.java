@@ -133,6 +133,7 @@ public class PrintingManager {
 		
 		pf.setPaper(paper);
 		PdfDecoder decode_pdf = new PdfDecoder();
+		decode_pdf.setSize(width, height);
 		try {
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			byte [] buffer = new byte[255];
