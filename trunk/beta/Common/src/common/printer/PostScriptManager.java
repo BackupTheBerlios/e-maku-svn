@@ -3,12 +3,17 @@ package common.printer;
 import java.awt.BasicStroke;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -53,7 +58,7 @@ import common.transactions.TransactionServerException;
 import common.transactions.TransactionServerResultSet;
 
 
-public class PostScriptManager implements AbstractManager, SuccessListener {
+public class PostScriptManager implements AbstractManager, SuccessListener, Printable{
 	
 	private static final long serialVersionUID = 3641816256967941893L;
 	private Graphics2D g2d;
@@ -824,6 +829,21 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 			return y;
 		}
 		
+	}
+
+	public int print(Graphics graphics, PageFormat pf, int pageIndex) throws PrinterException {
+		Paper p = pf.getPaper();
+		p.setImageableArea( 0, 0, width,height);
+		pf.setPaper(p);
+		g2d= (Graphics2D)graphics;
+		g2d.setClip(0, 0,width,height);
+		switch (pageIndex) {
+			case 0:
+				process();
+				return PAGE_EXISTS;
+			default:
+				return NO_SUCH_PAGE;
+		}
 	}
 
 }

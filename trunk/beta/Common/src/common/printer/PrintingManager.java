@@ -93,7 +93,34 @@ public class PrintingManager {
 				e.printStackTrace();
 			}
 		}
-		
+		else if (type.equals(ImpresionType.POSTSCRIPT)) {
+			if (os.equals("Linux")){
+				// Con cups no funciona en TEXT_PLAIN_HOST
+				// Cambiado a autosense ....
+				docFlavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
+			}
+			else {
+				docFlavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
+			}
+			if (!silent) {
+				PrintService defaultService = ServiceUI.printDialog(null, 200, 200,jps, selectPrinservice(printer), docFlavor, pras);
+				if (defaultService!=null) {
+					CommonConstants.printSelect = defaultService;
+					print(defaultService,is,pras);
+				}
+			}
+			else {
+				PrintService ps = selectPrinservice(printer);
+				if (ps!=null) {
+					System.out.println("Sera que imprime plano?");
+					print(ps,is,pras);
+				}
+				else {
+					System.out.println("Impresora "+printer+"no econtrada");
+				}
+			}
+
+		}
 	}
 	
 	private void printTextPlain() throws PrintException {
@@ -175,8 +202,11 @@ public class PrintingManager {
 	}
 	
 	private void print(PrintService ps, Object printData, PrintRequestAttributeSet pras) throws PrintException {
+		System.out.println("intentando imprimir postscript");
 		DocPrintJob job = ps.createPrintJob();
 		System.out.println("printer name=>"+ps.getName());
+		System.out.println("printData=>"+printData);
+		System.out.println("docFlavor=>"+docFlavor);
 		Doc doc = new SimpleDoc(printData, docFlavor,null);
 		job.print(doc, pras);
 		try {
