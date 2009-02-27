@@ -910,15 +910,15 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 	public int print(Graphics graphics, PageFormat pf, int pageIndex) throws PrinterException {
 		System.out.println("que ara esto");
 		Paper p = pf.getPaper();
-		System.out.println("antes de tirarme el tamaño del papel: "+p.getHeight()+","+p.getWidth());
-		p.setSize(height,width);
-		p.setImageableArea( 0, 0, width,height);
+		System.out.println("antes de tirarme el tamaño del papel: "+p.getWidth()+","+currentRow);
+		p.setSize(width,currentRow);
+		p.setImageableArea( 0, 0,width, currentRow);
 		pf.setPaper(p);
 		g2d= (Graphics2D)graphics;
-		g2d.setClip(0, 0,width,height);
+		g2d.setClip(0, 0,width,currentRow);
 		switch (pageIndex) {
 			case 0:
-				processPDF();
+				processPostScript();
 				return PAGE_EXISTS;
 			default:
 				return NO_SUCH_PAGE;

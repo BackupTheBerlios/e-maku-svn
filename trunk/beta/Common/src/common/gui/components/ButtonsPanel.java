@@ -358,6 +358,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 								new PrintingManager(IType,IStream, silent, copies,printer,width,height);
 								postScriptManager = new PostScriptManager(lastNumber);		
 							} else {
+								/*
 								postScriptManager.setNdocument(lastNumber);
 								postScriptManager.processPDF(rootTemplate,printJob);
 								ByteArrayInputStream IStream   = postScriptManager.getStream();
@@ -366,11 +367,11 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 								int height = postScriptManager.getHeight();
 								new PrintingManager(IType,IStream, silent, copies,printer,width,height);
 								postScriptManager = new PostScriptManager(lastNumber);
-								/*
+								*/
 								postScriptManager.load(rootTemplate,printJob);
 								new PrintingManager(postScriptManager,silent, copies,printer);
 								postScriptManager = new PostScriptManager(postScriptManager.getNdocument());
-								*/
+								
 							}
 							//TODO Comentado por cristian,
 							//Esta llamada la garbage collector es verificación
