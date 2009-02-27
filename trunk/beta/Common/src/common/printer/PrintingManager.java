@@ -49,6 +49,36 @@ public class PrintingManager {
 	private int height;
 	
 	public PrintingManager (
+			PostScriptManager postScriptManager,
+			boolean silent,
+			int copies,
+			String printer) throws PrintException {
+		this.docFlavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
+		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
+		pras.add(new Copies(copies));
+		jps = CommonConstants.printServices;
+		if ((jps==null ) || jps.length == 0) {
+			showErroDialog();
+			return;
+		}
+		PrintService defaultService = null;
+		System.out.println("Printer name " + printer);
+		PrintService ps = selectPrinservice(printer);
+		if (silent && ps!=null) {
+			System.out.println("fue nulo...");
+			print(ps,postScriptManager,pras);
+		}
+		else {
+			defaultService = ServiceUI.printDialog(null, 200, 200,jps, ps,docFlavor,pras);
+			if (defaultService!=null) {
+				System.out.println(" no es silenciosa "+postScriptManager);
+				CommonConstants.printSelect = defaultService;
+				print(defaultService,postScriptManager,pras);
+			}
+		}
+	}
+
+	public PrintingManager (
 			ImpresionType type,
 			ByteArrayInputStream is,
 			boolean silent,

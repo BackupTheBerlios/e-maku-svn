@@ -47,7 +47,12 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 		textPrinterBuffer.clear();
 	}
 	
-	public void process(Element rootTemplate,Element rootTransact) {
+	public void processPDF(Element rootTemplate,Element rootTransact) {
+		processPostScript(rootTemplate,rootTransact);
+	}
+	
+	
+	public void processPostScript(Element rootTemplate,Element rootTransact) {
 		textPrinterBuffer.clear();
 		this.currentRow = 1;
 		try {
@@ -563,4 +568,5 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 	public void setNdocument(String lastNumber) {
 		vars.put("ndocument",lastNumber);
 	}
+
 }

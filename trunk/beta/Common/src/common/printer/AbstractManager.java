@@ -9,5 +9,6 @@ public interface AbstractManager {
 	public ByteArrayInputStream getStream();
 	public boolean isSuccessful();
 	public ImpresionType getImpresionType();
-	public void process(Element template, Element packages);
+	public void processPDF(Element template, Element packages);
+	public void processPostScript(Element template, Element packages);
 }

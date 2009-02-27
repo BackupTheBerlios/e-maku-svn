@@ -338,7 +338,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 							System.out.println("template path: "+jarDirTemplates+pathTemplate);
 							if ("PLAIN".equals(typePrinter) ) {
 								plainManager.setNdocument(lastNumber);
-								plainManager.process(rootTemplate,printJob);
+								plainManager.processPostScript(rootTemplate,printJob);
 								if (plainManager.isSuccessful()) {
 									System.out.println("========================================");
 									System.out.println(plainManager.toString());
@@ -350,7 +350,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 								plainManager = new PlainPrintingManager(lastNumber);
 							} else if ("GRAPHIC".equals(typePrinter) ) {
 								postScriptManager.setNdocument(lastNumber);
-								postScriptManager.process(rootTemplate,printJob);
+								postScriptManager.processPDF(rootTemplate,printJob);
 								ByteArrayInputStream IStream   = postScriptManager.getStream();
 								ImpresionType        IType     = postScriptManager.getImpresionType();
 								int width = postScriptManager.getWidth();
@@ -358,14 +358,11 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 								new PrintingManager(IType,IStream, silent, copies,printer,width,height);
 								postScriptManager = new PostScriptManager(lastNumber);		
 							} else {
-								postScriptManager.setNdocument(lastNumber);
-								postScriptManager.process(rootTemplate,printJob);
-								ByteArrayInputStream IStream   = postScriptManager.getStream();
-								ImpresionType        IType     = ImpresionType.POSTSCRIPT;
-								int width = postScriptManager.getWidth();
-								int height = postScriptManager.getHeight();
-								new PrintingManager(IType,IStream, silent, copies,printer,width,height);
-								postScriptManager = new PostScriptManager(lastNumber);
+								
+								postScriptManager.load(rootTemplate,printJob);
+								new PrintingManager(postScriptManager,silent, copies,printer);
+								postScriptManager = new PostScriptManager(postScriptManager.getNdocument());
+
 							}
 							//TODO Comentado por cristian,
 							//Esta llamada la garbage collector es verificación

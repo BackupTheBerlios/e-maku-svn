@@ -58,7 +58,7 @@ import common.transactions.TransactionServerException;
 import common.transactions.TransactionServerResultSet;
 
 
-public class PostScriptManager implements AbstractManager, SuccessListener, Printable{
+public class PostScriptManager implements AbstractManager, SuccessListener, Printable {
 	
 	private static final long serialVersionUID = 3641816256967941893L;
 	private Graphics2D g2d;
@@ -91,12 +91,77 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 		ClientHeaderValidator.addSuccessListener(this);
 	}
 	
+	
+	
 	public PostScriptManager(String iddoc) {
 		ClientHeaderValidator.addSuccessListener(this);
 		this.ndocument=iddoc;
 	}
-
-	public void process() {
+	
+	public void load(Element rootTemplate,Element rootTransact) {
+		this.rootTemplate = rootTemplate;
+		this.rootTransact = rootTransact;
+	}
+	 
+	public void processPostScript() {
+		try {
+			Attribute ATTRequesNumeration = rootTemplate.getAttribute("requestNumeration");
+			if (ATTRequesNumeration!=null && ATTRequesNumeration.getBooleanValue()) {
+				int times = 0;
+				while (!success) {
+					try {
+						if (times<=100) {
+							Thread.sleep(100);
+						}
+						else {
+							System.out.println("No se pudo obtner la numeracion de " + rootTemplate.getAttributeValue("name"));
+							return;
+						}
+						times++;
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			Calendar calendar = Calendar.getInstance();
+			long init = calendar.getTimeInMillis();
+			
+			processMetadata(rootTemplate.getChild("metadata"));
+			Element settings = rootTemplate.getChild("settings");
+			
+			width  = settings.getAttribute("width").getIntValue();
+			height = settings.getAttribute("height").getIntValue();
+			Iterator itTemplate = rootTemplate.getChildren("package").iterator();
+			Iterator itTransact = rootTransact.getChildren("package").iterator();
+			int countPacks = 0;
+			while(itTemplate.hasNext() && itTransact.hasNext()) {
+				Element elmTemplate = (Element)itTemplate.next();
+				Element elmTransact = (Element)itTransact.next();
+				Attribute attr = elmTemplate.getAttribute("validate");
+				countPacks += elmTransact.getChildren().size();
+				boolean validate = attr != null ? attr.getBooleanValue() : false;
+				if (validate) {
+					if (elmTransact.getChildren().size() > 0) {
+						processElement(elmTemplate,elmTransact);
+					}
+				}
+				else {
+					processElement(elmTemplate,elmTransact);
+				}
+			}
+			if ( countPacks > 0 ) {
+				this.successful = true;
+				calendar = Calendar.getInstance();
+				long end = calendar.getTimeInMillis();
+				System.out.println("Generador en " + (end-init) + " milisegundos ");
+			}
+		}
+		catch (DataConversionException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	public void processPDF() {
 		try {
 			Attribute ATTRequesNumeration = rootTemplate.getAttribute("requestNumeration");
 			if (ATTRequesNumeration!=null && ATTRequesNumeration.getBooleanValue()) {
@@ -765,16 +830,27 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 			
 	}
 
+	public ByteArrayInputStream getPostScriptInputStream() {
+		return null;
+	}
+	
 	public boolean isSuccessful() {
 		return this.successful;
 	}
 	
 	
-	public void process(Element template, Element packages) {
+	public void processPostScript(Element template, Element packages) {
 		this.rootTemplate = template;
 		this.rootTransact = packages;
 		currentRow=1;
-		process();
+		processPostScript();
+	}
+	
+	public void processPDF(Element template, Element packages) {
+		this.rootTemplate = template;
+		this.rootTransact = packages;
+		currentRow=1;
+		processPDF();
 	}
 	
 	public void setIdTransaction(String idTransaction) {
@@ -832,6 +908,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 	}
 
 	public int print(Graphics graphics, PageFormat pf, int pageIndex) throws PrinterException {
+		System.out.println("que ara esto");
 		Paper p = pf.getPaper();
 		p.setImageableArea( 0, 0, width,height);
 		pf.setPaper(p);
@@ -839,11 +916,15 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 		g2d.setClip(0, 0,width,height);
 		switch (pageIndex) {
 			case 0:
-				process();
+				processPostScript();
 				return PAGE_EXISTS;
 			default:
 				return NO_SUCH_PAGE;
 		}
 	}
+
+
+
+	
 
 }
