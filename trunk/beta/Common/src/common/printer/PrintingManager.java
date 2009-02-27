@@ -94,7 +94,7 @@ public class PrintingManager {
 			}
 		}
 		else if (type.equals(ImpresionType.POSTSCRIPT)) {
-				docFlavor = DocFlavor.INPUT_STREAM.POSTSCRIPT;
+				docFlavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
 			if (!silent) {
 				PrintService defaultService = ServiceUI.printDialog(null, 200, 200,jps, selectPrinservice(printer), docFlavor, pras);
 				if (defaultService!=null) {
