@@ -136,8 +136,7 @@ public class PrintingManager {
 		PdfDecoder decode_pdf = new PdfDecoder();
 		decode_pdf.setSize(width, height);
 		decode_pdf.setPageFormat(pf);
-		decode_pdf.setPrintPageScalingMode(PrinterOptions.PAGE_SCALING_FIT_TO_PRINTER_MARGINS);
-		decode_pdf.setUsePDFPaperSize(true); 
+		decode_pdf.setUsePDFPaperSize(false); 
 		try {
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			byte [] buffer = new byte[255];
