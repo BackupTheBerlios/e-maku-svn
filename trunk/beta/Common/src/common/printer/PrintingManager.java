@@ -94,14 +94,7 @@ public class PrintingManager {
 			}
 		}
 		else if (type.equals(ImpresionType.POSTSCRIPT)) {
-			if (os.equals("Linux")){
-				// Con cups no funciona en TEXT_PLAIN_HOST
-				// Cambiado a autosense ....
-				docFlavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
-			}
-			else {
-				docFlavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
-			}
+				docFlavor = DocFlavor.INPUT_STREAM.POSTSCRIPT;
 			if (!silent) {
 				PrintService defaultService = ServiceUI.printDialog(null, 200, 200,jps, selectPrinservice(printer), docFlavor, pras);
 				if (defaultService!=null) {
