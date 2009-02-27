@@ -124,16 +124,17 @@ public class PostScriptManager implements AbstractManager, SuccessListener {
 
 			document = new com.lowagie.text.Document(pageSize);
 			try {
-				pdfWriter = PdfWriter.getInstance(document,new FileOutputStream("prueba.pdf"));
+//				pdfWriter = PdfWriter.getInstance(document,new FileOutputStream("prueba.pdf"));
+				pdfWriter = PdfWriter.getInstance(document,outPut);
 				document.addTitle("outout.pdf");
 				document.open();
 				
 			} catch (DocumentException e) {
 				e.printStackTrace();
-			} catch (FileNotFoundException e) {
+			}/* catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 			cb = pdfWriter.getDirectContent();
 			g2d = cb.createGraphicsShapes(width,height,false,1f);
 			if (orientation!=null && "LANDSCAPE".equals(orientation)) {
