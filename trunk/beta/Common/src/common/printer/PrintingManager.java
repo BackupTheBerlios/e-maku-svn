@@ -29,6 +29,7 @@ import javax.swing.JOptionPane;
 
 import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
+import org.jpedal.objects.PrinterOptions;
 
 import common.misc.CommonConstants;
 
@@ -135,6 +136,7 @@ public class PrintingManager {
 		PdfDecoder decode_pdf = new PdfDecoder();
 		decode_pdf.setSize(width, height);
 		decode_pdf.setPageFormat(pf);
+		decode_pdf.setPrintPageScalingMode(PrinterOptions.PAGE_SCALING_FIT_TO_PRINTER_MARGINS);
 		decode_pdf.setUsePDFPaperSize(true); 
 		try {
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
