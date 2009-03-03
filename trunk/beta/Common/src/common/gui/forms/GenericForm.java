@@ -1391,6 +1391,15 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
         }
 	}
 	
+	public boolean containExternalValues(String key) {
+		if (child) {
+        	return GFforma.containExternalValues(key);
+        }
+        else {
+	        return externalValues.containsKey(key);
+        } 
+	}
+	
 	public void setExternalValues(Object key,String value) {
 		if (child) {
         	GFforma.setExternalValues(key,value);
@@ -1711,12 +1720,13 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 			return shellScript.eval(script);
 		}
 		catch(Exception e) {
+			/*
 			System.out.println("La evaluacion de la formula fallo, retornando 0");
 			System.out.println("formula: "+script);
 			System.out.println("causa: "+e.getCause());
 			System.out.println("mensaje: "+e.getMessage());
 			System.out.println("pila:");
-			e.printStackTrace();
+			//e.printStackTrace();*/
 			return new Integer(0);
 		}
 	}

@@ -57,7 +57,6 @@ KeyListener, FocusListener, AnswerListener {
 	private String importValueButton;
 	private String cardSelection;
 	private GenericForm GFforma;
-	private int sequence = 0;
 	private boolean notified;
 	private Vector<String> keySQL;
 	private boolean withoutButton;
@@ -293,19 +292,15 @@ KeyListener, FocusListener, AnswerListener {
     			DecimalFormat form = (DecimalFormat) nf;
     			form.applyPattern("###,###,###.00");
     			this.setText(nf.format(Double.parseDouble(value)));
-    			this.setNumberValue(nf.parse(value).doubleValue());
+    			this.setNumberValue(Double.parseDouble(value));
     			if (isExportvalue()) {
     				try {
-    					System.out.println("exportando si args : "+getNumberValue()+" texto "+getText());
     					GFforma.setExternalValues(getExportvalue(),getNumberValue());
     				}
     				catch (NumberFormatException NFE) {}
     			}
 			}
-			catch (NumberFormatException NFEe) {} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			catch (NumberFormatException NFEe) {} 
 		} else {
 			if (isExportvalue()) {
 				try {
@@ -326,7 +321,6 @@ KeyListener, FocusListener, AnswerListener {
     			this.setNumberValue(value);
     			if (isExportvalue()) {
     				try {
-    					System.out.println("exportando con args: "+getNumberValue()+" texto "+getText());
     					GFforma.setExternalValues(getExportvalue(),getNumberValue());
     				}
     				catch (NumberFormatException NFE) {}
@@ -418,7 +412,12 @@ KeyListener, FocusListener, AnswerListener {
 					col.setText(GFforma.getExternalValueString(tok));
 				}
 				else if ("sequence".equals(tok)) {
+					double sequence = 0;
+					if (GFforma.containExternalValues("sequence_emaku_touch")) {
+						sequence = GFforma.getExteralValues("sequence_emaku_touch");
+					}
 					col.setText(String.valueOf(++sequence));
+					GFforma.setExternalValues("sequence_emaku_touch", sequence);
 				} else {
 					col.setText(tok.substring(1, tok.length() - 1));
 				}
@@ -530,6 +529,8 @@ KeyListener, FocusListener, AnswerListener {
 			notificando(this, text);
 			setNotified(notified);
 			searchOthersSqls(this);
+			this.setText("");
+		} else if (getExportvalue()!=null && isClean()) {
 			this.setText("");
 		}
 	}

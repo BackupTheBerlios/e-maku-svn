@@ -97,25 +97,25 @@ public class TouchButtons extends JPanel implements ActionListener {
 			}
 		}
 		else if ("0M".equals(value)) {
-			touchField.setText("50000");
+			touchField.setText(String.valueOf(touchField.getNumberValue()+50000));
 		}else if ("1M".equals(value)) {
-			touchField.setText("20000");
+			touchField.setText(String.valueOf(touchField.getNumberValue()+20000));
 		}else if ("2M".equals(value)) {
-			touchField.setText("10000");
+			touchField.setText(String.valueOf(touchField.getNumberValue()+10000));
 		}else if ("3M".equals(value)) {
-			touchField.setText("5000");
+			touchField.setText(String.valueOf(touchField.getNumberValue()+5000));
 		}else if ("4M".equals(value)) {
-			touchField.setText("2000");
+			touchField.setText(String.valueOf(touchField.getNumberValue()+2000));
 		}else if ("5M".equals(value)) {
-			touchField.setText("1000");
+			touchField.setText(String.valueOf(touchField.getNumberValue()+1000));
 		}else if ("6M".equals(value)) {
-			touchField.setText("500");
+			touchField.setText(String.valueOf(touchField.getNumberValue()+500));
 		}else if ("7M".equals(value)) {
-			touchField.setText("200");
+			touchField.setText(String.valueOf(touchField.getNumberValue()+200));
 		}else if ("8M".equals(value)) {
-			touchField.setText("100");
+			touchField.setText(String.valueOf(touchField.getNumberValue()+100));
 		}else if ("9M".equals(value)) {
-			touchField.setText("500");
+			touchField.setText(String.valueOf(touchField.getNumberValue()+50));
 		}
 		else {
 			try {

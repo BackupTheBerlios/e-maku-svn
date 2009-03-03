@@ -461,12 +461,20 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		        catch (NoSuchElementException NSEe) {
 			        	message("ERR_NOCODE");
 			        	updateCells(ATFDargs[0].getTypeDate(),rowIndex,0);
-			        	updateCells(ATFDargs[2].getTypeDate(),rowIndex,2);
+			        	//updateCells(ATFDargs[2].getTypeDate(),rowIndex,2);
+						if (GFforma.containExternalValues("sequence_emaku_touch")) {
+							double sequence = GFforma.getExteralValues("sequence_emaku_touch");
+							if (sequence>0) {
+								GFforma.setExternalValues("sequence_emaku_touch", --sequence);
+							}
+						}
+
 			        	if (currentIndex<rowIndex) {
+			        		System.out.println("me meti por el si");
 			        		currentIndex = rowIndex ;	
 			        	}
 			        	else {
-			        		currentIndex = rowIndex ;	
+			        		System.out.println("me meti por el no");
 			        	}
 			        	notificaDeleteRecordEvent(rowIndex);
 		        }
@@ -2067,15 +2075,15 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             }
             else if (tagDataColumn>-1) synchronized (arrivedKeys) {
             	
-            	/*XMLOutputter out = new XMLOutputter();
+/*            	XMLOutputter out = new XMLOutputter();
             	out.setFormat(org.jdom.output.Format.getPrettyFormat());
             	try {
 					out.output(doc,System.out);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}*/
-            	/* Limpiamos la tabla en caso de que llegue otro answer */
+				}
+*/            	/* Limpiamos la tabla en caso de que llegue otro answer */
 				if (header!=null) {
 					clean();
 				}
@@ -2084,6 +2092,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 				 * Vamos a recorrer el paquete xml que llega, puede ser un answer
 				 * o puede ser por medio de sendrecord
 				 * */ 
+				//currentIndex=currentIndex<0?0:currentIndex;
 				int currentRow = currentIndex;
 				boolean delete = false;
 				if ("delete".equals(rootNodeName)) {

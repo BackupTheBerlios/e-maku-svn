@@ -704,6 +704,12 @@ public class TableFindData extends JPanel implements AnswerListener,
 				JTtabla.changeSelection(j, 0, false, false);
 				JTtabla.updateUI();
 				TMFDtabla.totalizar();
+				if (GFforma.containExternalValues("sequence_emaku_touch")) {
+					double sequence = GFforma.getExteralValues("sequence_emaku_touch");
+					if (sequence>0) {
+						GFforma.setExternalValues("sequence_emaku_touch", --sequence);
+					}
+				}
 				break;
 			}
 		}
@@ -1221,17 +1227,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 
 	public void arriveRecordEvent(RecordEvent e) {
 	
-		/*
-		 * class CargarDatos implements Runnable { Element e; public CargarDatos
-		 * (Element e) { this.e=e; } public void run() { synchronized(TMFDtabla) {
-		 * Document doc = new Document(); doc.setRootElement(e);
-		 * TMFDtabla.setQuery(doc, true);
-		 * JTtabla.scrollRectToVisible(JTtabla.getCellRect(TMFDtabla.getCurrentIndex(),0,false));
-		 * JTtabla.updateUI(); } } }
-		 */
 		if (e.getElement().getChildren().size() > 0) {
-			// SwingUtilities.invokeLater(new
-			// CargarDatos((Element)e.getElement().clone()));
 			Document doc = new Document();
 			Element elm = (Element) ((Element) e.getElement()).clone();
 			doc.setRootElement(elm);
@@ -1240,7 +1236,6 @@ public class TableFindData extends JPanel implements AnswerListener,
 			if (JTtabla.isFocusOwner()) {
 				JTtabla.scrollRectToVisible(JTtabla.getCellRect(TMFDtabla.getCurrentIndex(), 0, false));
 			}
-			//JTtabla.updateUI();
 		}
 	}
 
