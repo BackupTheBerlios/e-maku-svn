@@ -1,5 +1,6 @@
 package common.printer;
 
+import java.awt.GraphicsConfiguration;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.awt.print.PrinterException;
@@ -69,6 +70,10 @@ public class PrintingManager {
 			print(ps,postScriptManager,pras);
 		}
 		else {
+			System.out.println("jps: "+jps);
+			System.out.println("ps: "+ps);
+			System.out.println("docFlavor: "+docFlavor);
+			System.out.println("pras: "+pras);
 			defaultService = ServiceUI.printDialog(null, 200, 200,jps, ps,docFlavor,pras);
 			if (defaultService!=null) {
 				System.out.println(" no es silenciosa "+postScriptManager);
