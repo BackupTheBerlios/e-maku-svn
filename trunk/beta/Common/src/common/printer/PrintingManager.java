@@ -1,7 +1,5 @@
 package common.printer;
 
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsEnvironment;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.awt.print.PrinterException;
@@ -55,6 +53,7 @@ public class PrintingManager {
 			boolean silent,
 			int copies,
 			String printer) throws PrintException {
+		System.out.println("Reimprimiendo");
 		this.docFlavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
 		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
 		pras.add(new Copies(copies));

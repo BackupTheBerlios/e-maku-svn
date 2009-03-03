@@ -426,7 +426,6 @@ KeyListener, FocusListener, AnswerListener {
 				break;
 			}
 		}
-
 		RecordEvent event = new RecordEvent(this, element);
 		int max = recordListener.size();
 		for (int i = 0; i < max; i++) {
@@ -528,9 +527,10 @@ KeyListener, FocusListener, AnswerListener {
 			}
 			notificando(this, text);
 			setNotified(notified);
+		} else if (getSqlCode()!=null) { 
 			searchOthersSqls(this);
-			this.setText("");
-		} else if (getExportvalue()!=null && isClean()) {
+		}
+		if (isClean()) {
 			this.setText("");
 		}
 	}
