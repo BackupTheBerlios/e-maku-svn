@@ -77,7 +77,7 @@ public class PrintingManager {
 			System.out.println("pras: "+pras);
 			GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 
-			defaultService = ServiceUI.printDialog(null, 200, 200,jps, ps,docFlavor,pras);
+			defaultService = ServiceUI.printDialog(gc, 200, 200,jps, ps,docFlavor,pras);
 			if (defaultService!=null) {
 				System.out.println(" no es silenciosa "+postScriptManager);
 				CommonConstants.printSelect = defaultService;
