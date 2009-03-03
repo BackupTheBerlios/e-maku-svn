@@ -75,9 +75,13 @@ public class PrintingManager {
 			System.out.println("ps: "+ps);
 			System.out.println("docFlavor: "+docFlavor);
 			System.out.println("pras: "+pras);
-			GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
-
-			defaultService = ServiceUI.printDialog(gc, 200, 200,jps, ps,docFlavor,pras);
+			//GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+			
+			//defaultService = ServiceUI.printDialog(gc, 200, 200,jps, ps,docFlavor,pras);
+			DocPrintJob job = ps.createPrintJob();
+			Doc doc = new SimpleDoc(postScriptManager, docFlavor,null);
+			job.print(doc, pras);
+			
 			if (defaultService!=null) {
 				System.out.println(" no es silenciosa "+postScriptManager);
 				CommonConstants.printSelect = defaultService;
@@ -86,6 +90,7 @@ public class PrintingManager {
 		}
 	}
 
+	
 	public PrintingManager (
 			ImpresionType type,
 			ByteArrayInputStream is,
