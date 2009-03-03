@@ -356,7 +356,9 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 			}
 			else if ("generateBarcodeImage".equals(name)) {
 				try {
-					Barcode barcode = BarcodeFactory.createCode128B(e.getTextTrim());
+					String value = ("0000000000"+e.getTextTrim());
+					value = value.substring(value.length()-10,value.length());
+					Barcode barcode = BarcodeFactory.createCode128B(value);
 					barcode.setBarHeight(5);
 					barcode.setBarWidth(1);
 					barcode.setDrawingText(false);
