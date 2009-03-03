@@ -354,6 +354,27 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 					Oe.printStackTrace();
 				}
 			}
+			else if ("generateBarcodeImage".equals(name)) {
+				try {
+					Barcode barcode = BarcodeFactory.createCode128B(e.getTextTrim());
+					barcode.setBarHeight(5);
+					barcode.setBarWidth(1);
+					barcode.setDrawingText(false);
+					BufferedImage image = BarcodeImageHandler.getImage(barcode);
+					
+					// Barcode supports a direct draw method to Graphics2D that lets you position the
+					// barcode on the canvas
+					g2d.drawImage(image,col,row,image.getWidth(),(int)(image.getWidth()/2.5),null);
+					
+				}
+				catch (BarcodeException BEe) {
+					BEe.printStackTrace();
+					    // Error handling
+					} catch (OutputException Oe) {
+					// TODO Auto-generated catch block
+					Oe.printStackTrace();
+				}
+			}
 
 			else if ("field".equals(name)) {
 				String value = e.getTextTrim();
