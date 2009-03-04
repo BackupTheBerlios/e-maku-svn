@@ -191,13 +191,12 @@ public class PrintingManager {
 		boolean printFile=true;
 		
 		Paper paper = new Paper();
-		paper.setSize(height,width);
+		paper.setSize(width,height);
 		paper.setImageableArea(0,0,width,height);
 		
 		pf.setPaper(paper);
 		PdfDecoder decode_pdf = new PdfDecoder();
 		//decode_pdf.setSize(width, height);
-		System.out.println("tamaño del papel: "+width+" ,"+height);
 		decode_pdf.setPageFormat(pf);
 		decode_pdf.setUsePDFPaperSize(false); 
 		try {

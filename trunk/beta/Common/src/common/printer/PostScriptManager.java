@@ -354,29 +354,6 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 					Oe.printStackTrace();
 				}
 			}
-			else if ("generateBarcodeImage".equals(name)) {
-				try {
-					String value = ("0000000000"+e.getTextTrim());
-					value = value.substring(value.length()-10,value.length());
-					Barcode barcode = BarcodeFactory.createCode128B(value);
-					barcode.setBarHeight(5);
-					barcode.setBarWidth(1);
-					barcode.setDrawingText(false);
-					BufferedImage image = BarcodeImageHandler.getImage(barcode);
-					
-					// Barcode supports a direct draw method to Graphics2D that lets you position the
-					// barcode on the canvas
-					g2d.drawImage(image,col,row,image.getWidth(),(int)(image.getWidth()/2.5),null);
-					
-				}
-				catch (BarcodeException BEe) {
-					BEe.printStackTrace();
-					    // Error handling
-					} catch (OutputException Oe) {
-					// TODO Auto-generated catch block
-					Oe.printStackTrace();
-				}
-			}
 
 			else if ("field".equals(name)) {
 				String value = e.getTextTrim();
@@ -641,6 +618,41 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 				g2d.drawString(el_template.getValue(),col,row);
 				currentRow+=Integer.parseInt(el_template.getAttributeValue("rowAcum"));
 			}
+			else if ("generateBarCodeImage".equals(el_template.getName())) {
+				try {
+					Element el_transaction = (Element)it_transaction.next();
+					String value = "0000000000"+el_transaction.getValue();
+					value = value.substring(value.length()-10,value.length());
+					Barcode barcode = BarcodeFactory.createCode128B(value);
+					barcode.setBarHeight(5);
+					barcode.setBarWidth(1);
+					barcode.setDrawingText(false);
+					BufferedImage image = BarcodeImageHandler.getImage(barcode);
+					int row = 0;
+					String srow1 = el_template.getAttributeValue("row");
+					int col = Integer.parseInt(el_template.getAttributeValue("col"));
+					
+					if (srow1.equals("last")) {
+						row=currentRow;
+					}
+					else {
+						row=Integer.parseInt(srow1);
+					}
+					
+					// Barcode supports a direct draw method to Graphics2D that lets you position the
+					// barcode on the canvas
+					g2d.drawImage(image,col,row,image.getWidth(),(int)(image.getWidth()/2.5),null);
+					
+				}
+				catch (BarcodeException BEe) {
+					BEe.printStackTrace();
+					    // Error handling
+					} catch (OutputException Oe) {
+					// TODO Auto-generated catch block
+					Oe.printStackTrace();
+				}
+			}
+
 		}
 	}
 	
@@ -931,9 +943,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 	}
 
 	public int print(Graphics graphics, PageFormat pf, int pageIndex) throws PrinterException {
-		System.out.println("que ara esto");
 		Paper p = pf.getPaper();
-		System.out.println("antes de tirarme el tamaño del papel: "+p.getWidth()+","+currentRow);
 		p.setSize(width,currentRow);
 		p.setImageableArea( 0, 0,width, currentRow);
 		pf.setPaper(p);
