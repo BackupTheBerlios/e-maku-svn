@@ -49,7 +49,7 @@ public class TouchButtons extends JPanel implements ActionListener {
 	private JButton[][] buttons = {{new JButton("7"),new JButton("8"),new JButton("9")},
 								   {new JButton("4"),new JButton("5"),new JButton("6")},
 								   {new JButton("1"),new JButton("2"),new JButton("3")},
-								   {new JButton("0"),new JButton("00"),new JButton("000")},
+								   {new JButton("0"),new JButton("00"),new JButton(".")},
 								   {new JButton("C"),new JButton("<<"),JBOk}};
 	
 	private EmakuTouchField touchField;
