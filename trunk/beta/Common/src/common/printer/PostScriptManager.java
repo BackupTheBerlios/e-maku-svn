@@ -690,7 +690,6 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 			rowAcum = srowAcum.getIntValue();
 		}
 		
-		System.out.println("textline: "+textLine+" textcol: "+textCol);
 		String type = attribute!=null ? attribute.getValue() : null ;
 		value = !"NULL".equals(value) && !"".equals(value) ?value:"";
 		Font currentFont =  g2d.getFont();
@@ -708,7 +707,6 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 			g2d.setFont(newFont);
 		}
 		if (textLine!=null && textCol!=null) {
-			System.out.println("Dibulando..");
 			g2d.drawString(textLine.getValue(),textCol.getIntValue(),row);
 		}
 		

@@ -99,6 +99,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 	private String sendRecord;
 
 	private String singleSendRecord;
+	private String lastSendRecord;
 
 	private Vector<RecordListener> recordListener = new Vector<RecordListener>();
 
@@ -206,6 +207,9 @@ public class TableFindData extends JPanel implements AnswerListener,
 				conditionatedRecord = args.getValue();
 			} else if (args.getAttributeValue("attribute").equals("sendRecord")) {
 				this.sendRecord = args.getValue();
+			} else if (args.getAttributeValue("attribute").equals(
+					"lastSendRecord")) {
+				this.lastSendRecord = args.getValue();
 			} else if (args.getAttributeValue("attribute").equals(
 					"singleSendRecord")) {
 				this.singleSendRecord = args.getValue();
@@ -616,6 +620,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 										Element element = new Element("table");
 										// boolean fullRow =
 										// sendRecord(sel,element,singleSendRecord);
+										System.out.println("llamando desde valueChanged");
 										sendRecord(sel, element,singleSendRecord);
 										// if (fullRow) {
 										RecordEvent event = new RecordEvent(this, element);
@@ -1079,13 +1084,15 @@ public class TableFindData extends JPanel implements AnswerListener,
 			rowsLoaded = event.getRowsLoaded();
 			if (rowsLoaded!=null && rowsLoaded.size() > 0) {
 				for (int i = 0 ; i < TMFDtabla.getCurrentIndex(); i++)  {
+					System.out.println("llamando desde notificando");
 					sendRecord(i,new Element("unknow"),record);
 				}
 			}
 		}
 	}
 
-	public boolean sendRecord(int rowIndex, Element element, String record) {
+	public synchronized  boolean sendRecord(int rowIndex, Element element, String record) {
+
 		int j = 0;
 		int cont = 0;
 		String elmName = element.getName();
@@ -1201,12 +1208,13 @@ public class TableFindData extends JPanel implements AnswerListener,
 		            	out.setFormat(org.jdom.output.Format.getPrettyFormat());
 		            	
 						RecordEvent event = new RecordEvent(this, element);
+
 						notificando(event,sendRecord);
 					} else if (singleSendRecord != null) {
 						int r = e.getFirstRow();
 						Element e = new Element("table");
 						verificaSendRecord(r,e, singleSendRecord);
-					}
+					} 
 				}
 			};
 			
@@ -1219,7 +1227,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 	}
 
 	private void verificaSendRecord(int row, Element e, String recordType) {
-		if (sendRecord(row, e, recordType)) {
+		if (sendRecord(row, e, recordType) && row==TMFDtabla.getCurrentIndex()-1) {
 			RecordEvent event = new RecordEvent(this, e);
 			notificando(event,recordType);
 		}
