@@ -233,6 +233,7 @@ KeyListener, FocusListener, AnswerListener {
 
 	public void clean() {
 		this.setText("");
+		this.setNumberValue(0);
 		setNotified(false);
 	}
 
