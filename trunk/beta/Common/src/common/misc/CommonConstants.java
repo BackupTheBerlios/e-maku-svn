@@ -51,6 +51,8 @@ public class CommonConstants {
     	ScpCodes.put("C",67);   // No. de Lineas
     	ScpCodes.put("E",69);   // 
     	ScpCodes.put("F",70);
-    	ScpCodes.put("NL",13);
+    	ScpCodes.put("CR",13);
+    	ScpCodes.put("SS",15);
+    	ScpCodes.put("LF",10);
     }
 }
