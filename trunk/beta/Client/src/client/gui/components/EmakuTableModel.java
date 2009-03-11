@@ -1034,7 +1034,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 				        			boolean search = true;
 				        			
 				        			for (int args=0; args <impVals.length;args++) {
-				        				
+				        				System.out.println("keyExports "+impVals[args]+" args "+args);
 				        				int indice = ((Integer)keysExports.get(impVals[args])).intValue();
 				        				String valueArg = null; 
 				        				valueArg =	String.valueOf(getValueAt(rowIndex,indice));

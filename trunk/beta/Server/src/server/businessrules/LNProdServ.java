@@ -1,6 +1,7 @@
 package server.businessrules;
 
 import java.nio.channels.SocketChannel;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
 
@@ -9,6 +10,7 @@ import org.jdom.Element;
 
 import server.comunications.EmakuServerSocket;
 import server.database.sql.LinkingCache;
+import server.database.sql.QueryRunner;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
 
@@ -61,6 +63,20 @@ public class LNProdServ {
 					   (Element)sn_pack.clone(),
 					   id_transaction);
 		}		
+		else if (action.equals("reload")) {
+			QueryRunner RQtransaction = new QueryRunner(EmakuServerSocket.getBd(sock),"SCS0093");
+			ResultSet rs = RQtransaction.ejecutarSELECT();
+			String initId = "85000";
+			if (rs.next()) {
+				initId = rs.getString(1);
+			}
+			new LNMultiPackage(sock,
+					   new Document((Element)doc.getRootElement().getChild("subarg").clone()),
+					   (Element)sn_pack.clone(),
+					   id_transaction);
+			LinkingCache.reloadAsientosPr(EmakuServerSocket.getBd(sock),"SCS0092",new String[]{initId});
+		}		
+
 	}
 
 }
