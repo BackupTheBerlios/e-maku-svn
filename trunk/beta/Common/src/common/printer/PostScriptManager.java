@@ -623,6 +623,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 					Element el_transaction = (Element)it_transaction.next();
 					String value = "0000000000"+el_transaction.getValue();
 					value = value.substring(value.length()-10,value.length());
+					System.out.println("Generando codigo"+value);
 					Barcode barcode = BarcodeFactory.createCode128B(value);
 					barcode.setBarHeight(5);
 					barcode.setBarWidth(1);

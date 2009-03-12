@@ -64,12 +64,14 @@ public class LNProdServ {
 					   id_transaction);
 		}		
 		else if (action.equals("reload")) {
+			System.out.println("Voy por reload..");
 			QueryRunner RQtransaction = new QueryRunner(EmakuServerSocket.getBd(sock),"SCS0093");
 			ResultSet rs = RQtransaction.ejecutarSELECT();
 			String initId = "85000";
 			if (rs.next()) {
 				initId = rs.getString(1);
 			}
+			System.out.println("Reload :"+initId);
 			new LNMultiPackage(sock,
 					   new Document((Element)doc.getRootElement().getChild("subarg").clone()),
 					   (Element)sn_pack.clone(),
