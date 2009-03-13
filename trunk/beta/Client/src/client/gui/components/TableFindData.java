@@ -1227,7 +1227,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 	}
 
 	private void verificaSendRecord(int row, Element e, String recordType) {
-		if (sendRecord(row, e, recordType) && row==TMFDtabla.getCurrentIndex()-1) {
+		if (recordType!=null && sendRecord(row, e, recordType) && row==TMFDtabla.getCurrentIndex()-1) {
 			RecordEvent event = new RecordEvent(this, e);
 			notificando(event,recordType);
 		}
