@@ -85,7 +85,8 @@ public class LNDocuments {
     public static final String DELETE_DOCUMENT = "deleteDocument";
     public static final String EDIT_DOCUMENT = "editDocument";
     public static String ndocument;
-    
+    public static boolean reloadProdServ;
+    public static String initProdServ;
     /*
      *  Inicializando variables estaticas en instanciacion de la clase
      */
@@ -122,7 +123,8 @@ public class LNDocuments {
         consecutive = null;
         cash = false;
         lockDocument = false;
- 
+        reloadProdServ = false;
+        
     	LNDocuments.sock=_sock;
         LNDocuments.doc=_doc;
         LNDocuments.pack=_pack;
@@ -667,6 +669,11 @@ public class LNDocuments {
 	        			LinkingCache.incrementeConsecutive(bd,linkDocument);
 	        		}
 	        	}
+		        
+		        if (reloadProdServ) {
+					LinkingCache.reloadAsientosPr(EmakuServerSocket.getBd(sock),"SCS0092",new String[]{initProdServ});
+					reloadProdServ = false;
+		        }
 	        }
 	        else {
 	        	undoTransaction(Language.getWord("ERR_DONT_HAVE_BALANCE_EXCEPTION")+" "+partidaDoble);
@@ -1099,9 +1106,22 @@ public class LNDocuments {
             
             else if (subpackage.getAttributeValue("attribute").equals("cash")) {
                 cash = true;
-            }
+            } 
             else if (subpackage.getAttributeValue("attribute").equals("lockDocument")) {
                 lockDocument = true;
+            }
+            // recuenta nuevos productos
+            else if (subpackage.getAttributeValue("attribute").equals("reloadProdServ")) {
+                reloadProdServ = true;
+    			System.out.println("Voy por reload..");
+    			QueryRunner RQtransaction = new QueryRunner(EmakuServerSocket.getBd(sock),"SCS0093");
+    			ResultSet rs = RQtransaction.ejecutarSELECT();
+    			initProdServ = "85000";
+    			if (rs.next()) {
+    				initProdServ = rs.getString(1);
+    			}
+    			///System.out.println("Reload :"+initId);
+
             }
         }
         
