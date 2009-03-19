@@ -10,9 +10,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -43,7 +43,7 @@ import common.gui.forms.GenericForm;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez </A>
  */
 
-public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenuListener,FocusListener {
+public class EmakuDataSearch extends JLabel implements KeyListener,PopupMenuListener,FocusListener {
 
 	private static final long serialVersionUID = 246103248621691834L;
 
@@ -54,7 +54,7 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 	private GenericForm GFforma;
 	private boolean dataSelected;
 	private String keyValue;
-	
+	private boolean enabledTextField;
 	public EmakuDataSearch(GenericForm GFforma,
 						   String sql,
 						   String[] externalValues,
@@ -63,15 +63,16 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 						   boolean dataBeep,
 						   String dataMessage,
 						   int selected,
-						   int repeatData) {
+						   int repeatData,
+						   boolean enabledTextField) {
 		this.addKeyListener(this);
+		this.enabledTextField=enabledTextField;
 		this.setLayout(new BorderLayout());
 		this.GFforma=GFforma;
 		this.keyValue=keyValue;
 		XMLTFkey = new XMLTextField("KEY", 16, 70);
 		XMLTFkey.addFocusListener(this);
 		XMLTFkey.addKeyListener(this);
-		
 		String[] args = new String[repeatData+externalValues.length];
 		
 		for (int i=0;i<externalValues.length;i++) {
@@ -102,7 +103,8 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 		JPMpopup.add(dataSearch());
 		this.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				if (!isEditable() && e.getClickCount() == 2) {
+				if (//!isEditable() && 
+						e.getClickCount() == 2) {
 					showDataSearch();
 				}
 			}
@@ -215,11 +217,17 @@ public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenu
 					storeData();
 				}
 				break;
+			case KeyEvent.VK_RIGHT:
+				if((s.equals(SQLCBselection)) && JPMpopup.isVisible()) {
+					storeData();
+				}
+				break;
 			case KeyEvent.VK_F2:
 				showDataSearch();
 				break;
+				
 			default :
-				if (!this.isEditable() &&
+				if (!this.isEnabled() &&
 					((keyCode >=60 &&  keyCode<=71) ||  keyCode >=65 &&  keyCode<=126)) {
 					showDataSearch();
 				}
