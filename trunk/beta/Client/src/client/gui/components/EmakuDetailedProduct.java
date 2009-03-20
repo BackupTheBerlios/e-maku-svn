@@ -91,7 +91,7 @@ public class EmakuDetailedProduct extends JComponent implements FocusListener,Ke
 		dataSearch = new EmakuDataSearch(
 							genericForm,sql,externalValues,
 							keyValue,blankArgs,dataBeep,
-							dataMessage,selected,repeatData,true) {
+							dataMessage,selected,repeatData) {
 			private static final long serialVersionUID = 6294167396739991593L;
 			public void storeData() {
 				super.storeData();

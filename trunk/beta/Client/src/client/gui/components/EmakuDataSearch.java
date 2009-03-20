@@ -10,9 +10,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -43,7 +43,7 @@ import common.gui.forms.GenericForm;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez </A>
  */
 
-public class EmakuDataSearch extends JLabel implements KeyListener,PopupMenuListener,FocusListener {
+public class EmakuDataSearch extends JTextField implements KeyListener,PopupMenuListener,FocusListener {
 
 	private static final long serialVersionUID = 246103248621691834L;
 
@@ -54,7 +54,6 @@ public class EmakuDataSearch extends JLabel implements KeyListener,PopupMenuList
 	private GenericForm GFforma;
 	private boolean dataSelected;
 	private String keyValue;
-	private boolean enabledTextField;
 	public EmakuDataSearch(GenericForm GFforma,
 						   String sql,
 						   String[] externalValues,
@@ -63,10 +62,8 @@ public class EmakuDataSearch extends JLabel implements KeyListener,PopupMenuList
 						   boolean dataBeep,
 						   String dataMessage,
 						   int selected,
-						   int repeatData,
-						   boolean enabledTextField) {
+						   int repeatData) {
 		this.addKeyListener(this);
-		this.enabledTextField=enabledTextField;
 		this.setLayout(new BorderLayout());
 		this.GFforma=GFforma;
 		this.keyValue=keyValue;
@@ -218,6 +215,11 @@ public class EmakuDataSearch extends JLabel implements KeyListener,PopupMenuList
 				}
 				break;
 			case KeyEvent.VK_RIGHT:
+				if((s.equals(SQLCBselection)) && JPMpopup.isVisible()) {
+					storeData();
+				}
+				break;
+			case KeyEvent.VK_LEFT:
 				if((s.equals(SQLCBselection)) && JPMpopup.isVisible()) {
 					storeData();
 				}

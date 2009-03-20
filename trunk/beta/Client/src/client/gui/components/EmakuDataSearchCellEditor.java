@@ -52,8 +52,7 @@ implements TableCellEditor {
 								ATFDargs[index].isDataBeep(),
 								ATFDargs[index].getNoDataMessage(),
 								ATFDargs[index].getSelected(),
-								ATFDargs[index].getRepeatData(),
-								ATFDargs[index].isEnabledTextField());
+								ATFDargs[index].getRepeatData());
 		table.addKeyListener(dataSearch);
 		this.clickCountToStart = 2;
 	}
@@ -93,7 +92,7 @@ implements TableCellEditor {
 			boolean isSelected, int row, int column) {
 		dataSearch.clean();
 		if (isSelected) {
-			//dataSearch.setEditable(ATFDargs[column].isSpecializedCellEditable());	
+			dataSearch.setEditable(ATFDargs[column].isSpecializedCellEditable());	
 		}
 		return dataSearch;
 	}

@@ -61,7 +61,6 @@ public class ColumnsArgsGenerator {
 	private boolean specializedCellEditable = true;
 	private Element args;
 	private Double minValue;
-	private boolean enabledTextField = true;
 	
 	private short columnDebit = -1;
 	private short columnCredit = -1;
@@ -189,9 +188,6 @@ public class ColumnsArgsGenerator {
     		}
     		else if (attrib.equals("printable")) {
     			printable = Boolean.parseBoolean(value);
-    		}
-    		else if (attrib.equals("enabledTextField")) {
-    			enabledTextField = Boolean.parseBoolean(value);
     		}
     		else if (attrib.equals("queryCol")) {
     			try {
@@ -549,13 +545,5 @@ public class ColumnsArgsGenerator {
 
 	public Double getMinValue() {
 		return minValue;
-	}
-
-	public boolean isEnabledTextField() {
-		return enabledTextField;
-	}
-
-	public void setEnabledTextField(boolean enabledTextField) {
-		this.enabledTextField = enabledTextField;
 	}
 }

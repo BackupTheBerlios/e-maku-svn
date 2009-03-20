@@ -1034,14 +1034,19 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 				        			boolean search = true;
 				        			
 				        			for (int args=0; args <impVals.length;args++) {
-				        				System.out.println("keyExports "+impVals[args]+" args "+args);
-				        				int indice = ((Integer)keysExports.get(impVals[args])).intValue();
+				        				int indice = -1; 
+				        				if (keysExports.containsKey(impVals[args]))
+				        					indice = ((Integer)keysExports.get(impVals[args])).intValue();
 				        				String valueArg = null; 
-				        				valueArg =	String.valueOf(getValueAt(rowIndex,indice));
-				        				
+				        				if (indice==-1) {
+				        					valueArg = GFforma.getExternalValueString(impVals[args]);
+				        				}
+				        				else {
+				        					valueArg =	String.valueOf(getValueAt(rowIndex,indice));
+				        				}
 				        				if(!"".equals(valueArg)) {
 				        					
-				        					if (ATFDargs[indice].getType().equals("COMBOSQL")) {
+				        					if (indice>-1 && ATFDargs[indice].getType().equals("COMBOSQL")) {
 								    			StringTokenizer stk = new StringTokenizer(valueArg," ");
 								    			String tok = "";
 								    			while(true) {
