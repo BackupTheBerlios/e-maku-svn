@@ -11,6 +11,7 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -178,15 +179,20 @@ public class EmakuRecolector extends JPanel implements Couplable, ActionListener
     		Hashtable<String,Integer> datos = new Hashtable<String,Integer>();
     		
     		while ((line=raf.readLine())!=null) {
-    			StringTokenizer STlinea = new StringTokenizer(line,",");
-    			String barra = STlinea.nextToken();
-    			int cantidad = Integer.parseInt(STlinea.nextToken());
-    			int val = 0;
-    			if (datos.containsKey(barra)) {
-    				val = datos.get(barra)+cantidad;
-    				datos.remove(barra);
+    			try {
+	    			StringTokenizer STlinea = new StringTokenizer(line,",");
+	    			String barra = STlinea.nextToken();
+	    			int cantidad = Integer.parseInt(STlinea.nextToken());
+	    			int val = 0;
+	    			if (datos.containsKey(barra)) {
+	    				val = datos.get(barra)+cantidad;
+	    				datos.remove(barra);
+	    			}
+					datos.put(barra,val+cantidad);
     			}
-				datos.put(barra,val+cantidad);
+    			catch(NoSuchElementException exc) {
+    				System.out.println("Espacio...");
+    			}
     		}
     		Iterator<String> i = datos.keySet().iterator();
     		element = new Element("table");
