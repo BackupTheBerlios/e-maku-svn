@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -172,12 +174,27 @@ public class EmakuRecolector extends JPanel implements Couplable, ActionListener
     		}
     		raf = new RandomAccessFile(file,"r");
     		String line = new String();
-			element = new Element("table");
+    		//Cargando y unificando
+    		Hashtable<String,Integer> datos = new Hashtable<String,Integer>();
+    		
     		while ((line=raf.readLine())!=null) {
-    			Element rows = new Element("row");
     			StringTokenizer STlinea = new StringTokenizer(line,",");
-    			rows.addContent(new Element("col").setText(STlinea.nextToken()));
-    			rows.addContent(new Element("col").setText(STlinea.nextToken()));
+    			String barra = STlinea.nextToken();
+    			int cantidad = Integer.parseInt(STlinea.nextToken());
+    			int val = 0;
+    			if (datos.containsKey(barra)) {
+    				val = datos.get(barra)+cantidad;
+    				datos.remove(barra);
+    			}
+				datos.put(barra,val+cantidad);
+    		}
+    		Iterator<String> i = datos.keySet().iterator();
+    		element = new Element("table");
+    		while (i.hasNext()) {
+    			Element rows = new Element("row");
+    			String barra = i.next();
+    			rows.addContent(new Element("col").setText(barra));
+    			rows.addContent(new Element("col").setText(String.valueOf(datos.get(barra))));
     			element.addContent(rows);
     		}
     		
