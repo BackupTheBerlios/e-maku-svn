@@ -200,7 +200,7 @@ public class EmakuRecolector extends JPanel implements Couplable, ActionListener
     		while (i.hasNext()) {
     			Element rows = new Element("row");
     			String barra = i.next();
-    			rows.addContent(new Element("col").setText(barra));
+    			rows.addContent(new Element("col").setText(barra.trim()));
     			rows.addContent(new Element("col").setText(String.valueOf(datos.get(barra))));
     			element.addContent(rows);
     		}
