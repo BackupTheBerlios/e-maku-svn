@@ -169,7 +169,8 @@ public class EmakuRecolector extends JPanel implements Couplable, ActionListener
         	h.start();
         	//aplicacion.exec("cmd.exe /K C:/recolector_sp2.bat");
     		while (file==null || !file.exists()) {
-        		file = new File("c:","sp2datos.txt");
+        		//file = new File("c:","sp2datos.txt");
+        		file = new File("/home/felipe","sp2datos.txt");
     			System.out.print(".");
     			Thread.sleep(500);
     		}
@@ -185,7 +186,7 @@ public class EmakuRecolector extends JPanel implements Couplable, ActionListener
 	    			int cantidad = Integer.parseInt(STlinea.nextToken());
 	    			int val = 0;
 	    			if (datos.containsKey(barra)) {
-	    				val = datos.get(barra)+cantidad;
+	    				val = datos.get(barra);
 	    				datos.remove(barra);
 	    			}
 					datos.put(barra,val+cantidad);
