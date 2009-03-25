@@ -3,6 +3,8 @@ package client.gui.components;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.InvocationTargetException;
@@ -86,6 +88,7 @@ public class MainWindow extends JFrame {
         		URL url= null;
                 MenuLoader menu=null;
                 ToolBarLoader toolbar1=null;
+                ToolBarLoader toolbar2=null;
                 try {
         			url = new URL(jarDirectory+"/menu.xml");
         			menu = new MenuLoader(url);
@@ -93,10 +96,21 @@ public class MainWindow extends JFrame {
         		        menu.setDisabledAll();
         		        frame.setJMenuBar(menu);
         			}
+        	        JPanel toolbar = new JPanel(new BorderLayout());
         	        url = new URL(jarDirectory+"/toolbar.xml");
         	        toolbar1 = new ToolBarLoader(url);
+        	        toolbar.add(toolbar1,BorderLayout.NORTH);
         	        toolbarVector = toolbar1.load();
-        	        frame.getContentPane().add(toolbar1, BorderLayout.NORTH);
+        	        try {
+            	        url = new URL(jarDirectory+"/toolbar2.xml");
+            	        toolbar2 = new ToolBarLoader(url);
+        	        	toolbarVector.addAll(toolbar2.load());
+            	        toolbar.add(toolbar2,BorderLayout.CENTER);
+        	        }
+        	        catch(NullPointerException npe) {
+        	        }
+        	        
+        	        frame.getContentPane().add(toolbar, BorderLayout.NORTH);
         	        setDisabledAll();
         		} catch (MalformedURLException e1) {
         			// TODO Auto-generated catch block
