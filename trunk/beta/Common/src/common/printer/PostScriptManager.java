@@ -250,8 +250,13 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 		}
 		catch (DataConversionException e) {
 			e.printStackTrace();
-		}		
-		g2d.dispose();
+		}	
+		try {
+			g2d.dispose();
+		}
+		catch(java.lang.RuntimeException e) {
+			e.printStackTrace();
+		}
 		try {
 			outPut.close();
 		} catch (IOException e) {
@@ -475,6 +480,19 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 				Attribute attmaxRowsAcumNewPage = el_template.getAttribute("maxRowsAcumNewPage");
 				int maxRowsAcumNewPage = attmaxRowsAcumNewPage!=null ? attmaxRowsAcumNewPage.getIntValue() : -1;
 				
+				/*
+				 * Agrupamiento
+				 */
+				Attribute atcolAcumGroup = el_template.getAttribute("colAcumGroup");
+				Attribute atcolTotalGroup = el_template.getAttribute("colTotalGroup");
+				Attribute atcolTextTotalGroup = el_template.getAttribute("colTextTotalGroup");
+				Attribute attextTotalGroup = el_template.getAttribute("textTotalGroup");
+				
+				int colAcumGroup = atcolAcumGroup!=null?atcolAcumGroup.getIntValue():-1;
+				int colTotalGroup = atcolTotalGroup!=null?atcolTotalGroup.getIntValue():-1;
+				int colTextTotalGroup = atcolTextTotalGroup!=null?atcolTextTotalGroup.getIntValue():0;
+				String textTotalGroup = attextTotalGroup!=null?attextTotalGroup.getValue():"";
+
 				Iterator im = el_template.getChildren("metadata").iterator();
 				while (im.hasNext()) { 
 					Element element = (Element) im.next();
@@ -519,25 +537,67 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 					currentRow=rowInit;
 				}
 				if (it_transaction.hasNext()) {
-					System.out.println("Hojas Separadas por maximo numero de filas: "+ maxAcum);
 					int index = 0;
+					String groupAcum = null;
+					double totalGroup = 0;
+					Element element = null;
+					Iterator iterator = null;
+					String next = null;
 					while (it_transaction.hasNext()) {
 						index++;
 						//FIXME HAY QUE OPTIMIZAR ESTO
-						Element element = (Element) it_transaction.next();
-						Iterator iterator = element.getChildren().iterator();
+						element = (Element) it_transaction.next();
+						iterator = element.getChildren().iterator();
+						
 						int i=0;
+						if (groupAcum!=null && colAcumGroup!=-1) {
+							if (it_transaction.hasNext()) {
+								next = ((Element)element.getChildren().get(colAcumGroup)).getValue();
+							}
+							if (!groupAcum.equals(next)) {
+								addInfoSubGrupo(AttCols.get(colTotalGroup),textTotalGroup,colTextTotalGroup,totalGroup,colTotalGroup,rowInit);
+								rowInit+=rowAcum+rowAcum;
+								currentRow=rowInit;
+								index++;
+								index++;
+								groupAcum=null;
+								totalGroup=0;
+								if (index>=maxAcum) {
+									//FIXME PUNTO DE PARTIDA PARA LA GENERACION DE OTRA HOJA
+									document.newPage();							
+									rowInit=rowInitNewPage;
+									maxAcum=maxRowsAcumNewPage;
+									g2d = cb.createGraphicsShapes(width,height);
+									processMetadata(rootTemplate.getChild("newpage"));
+									++pageCount;
+									index=0;
+								}
+							}
+						}						
+						
 						while(iterator.hasNext()) {
 							Element elmt = (Element) iterator.next();
 							AttCols.get(i);
 							Attribute att = new Attribute("row",String.valueOf(rowInit));
 							AttCols.get(i).put("row",att);
 							addValue(elmt.getValue(),AttCols.get(i));
+							//Almacena etiqueta de agrupamiento
+							if (colAcumGroup==i) {
+								groupAcum=elmt.getValue();
+							}
+							//Totaliza Agrupamiento
+							if (colTotalGroup==i) {
+								totalGroup+=Double.parseDouble(elmt.getValue());
+							}
+							
 							i++;
 						}
+						
 						rowInit+=rowAcum;
 						currentRow=rowInit;
-						if (index==maxAcum) {
+
+						
+						if (index>=maxAcum) {
 							//FIXME PUNTO DE PARTIDA PARA LA GENERACION DE OTRA HOJA
 							document.newPage();							
 							rowInit=rowInitNewPage;
@@ -547,6 +607,10 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 							++pageCount;
 							index=0;
 						}
+
+					}
+					if (groupAcum!=null && colAcumGroup!=-1) {
+						addInfoSubGrupo(AttCols.get(colTotalGroup),textTotalGroup,colTextTotalGroup,totalGroup,colTotalGroup,rowInit);
 					}
 				}
 			}
@@ -623,7 +687,6 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 					Element el_transaction = (Element)it_transaction.next();
 					String value = "0000000000"+el_transaction.getValue();
 					value = value.substring(value.length()-10,value.length());
-					System.out.println("Generando codigo"+value);
 					Barcode barcode = BarcodeFactory.createCode128B(value);
 					barcode.setBarHeight(5);
 					barcode.setBarWidth(1);
@@ -656,7 +719,26 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 
 		}
 	}
-	
+
+	private void addInfoSubGrupo(HashMap<String,Attribute> AttCols,
+								String textTotalGroup,
+								int colTextTotalGroup,
+								double totalGroup,
+								int colTotalGroup,
+								int rowInit) throws DataConversionException {
+		HashMap<String,Attribute> att = new HashMap<String,Attribute>();
+		Attribute attrow = new Attribute("row",String.valueOf(rowInit));
+		Attribute attcol = new Attribute("col",String.valueOf(colTextTotalGroup));
+		Attribute atttype = new Attribute("type","STRING");
+		att.put("row",attrow);
+		att.put("col",attcol);
+		att.put("type",atttype);
+		addValue(textTotalGroup,att);
+		AttCols.remove("row");
+		AttCols.put("row",attrow);
+		addValue(String.valueOf(totalGroup),AttCols);
+		
+	}
 	/**
 	 * 
 	 * @param value

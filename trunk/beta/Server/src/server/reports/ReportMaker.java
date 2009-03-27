@@ -130,7 +130,7 @@ public class ReportMaker extends Thread {
             			break;
             		}
             		else {
-            			System.out.println("Dio null :S");
+            			System.out.println("Conexiones agotadas al motor de base de datos...");
             			Thread.sleep(1000);
             		}
         		}
@@ -276,7 +276,7 @@ public class ReportMaker extends Thread {
 			end = calendar.getTimeInMillis();
 			System.out.println("paquete escrito en "+((end-init)/1000)+" segundos"); 
 	        rs.close();
-	        conn.close();
+        	ConnectionsPool.freeMultiConnection(dataBase, conn);
 	        rs = null;
 	        conn=null;
 	        os.close();

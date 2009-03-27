@@ -102,7 +102,7 @@ public class ResultSetToXML extends Document implements Runnable {
 	            			break;
 	            		}
 	            		else {
-	            			System.out.println("Dio null :S");
+	            			System.out.println("Conexiones agotadas al motor de base de datos...");
 	            			Thread.sleep(1000);
 	            		}
             		}
