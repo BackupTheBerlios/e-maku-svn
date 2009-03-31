@@ -916,10 +916,16 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     	
     	Double val = null;
 		try {
-			val = (Double)GFforma.invokeMethod((String)externalValues.get(aprox),
-					  "getDoubleValue",
-					  new Class[]{String.class},
-					  new Object[]{aprox});
+			try {
+				val= Double.parseDouble(aprox);
+			}
+			catch(ClassCastException e) {
+				val = (Double)GFforma.invokeMethod((String)externalValues.get(aprox),
+						  "getDoubleValue",
+						  new Class[]{String.class},
+						  new Object[]{aprox});
+			}		
+			
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		} catch (NotFoundComponentException e) {
