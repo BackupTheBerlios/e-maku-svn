@@ -877,7 +877,9 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		                }
 		            }
 		            double val = ((Double)(FormulaCalculator.operar(newVar))).doubleValue();
+		            System.out.println("Este es de nuevo: "+exportTotalCols.get(key.toUpperCase())+" "+val);
 		            GFforma.setExternalValues(exportTotalCols.get(key.toUpperCase()),val);
+		            
 		        }
 	            notificando();
             }
@@ -919,7 +921,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 			try {
 				val= Double.parseDouble(aprox);
 			}
-			catch(ClassCastException e) {
+			catch(NumberFormatException e) {
 				val = (Double)GFforma.invokeMethod((String)externalValues.get(aprox),
 						  "getDoubleValue",
 						  new Class[]{String.class},
