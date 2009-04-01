@@ -933,7 +933,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		} catch (NotFoundComponentException e) {
 			e.printStackTrace();
 		}
-    	
+    	System.out.println("valor: "+aprox+" val "+val);
     	Double result = (Double) FormulaCalculator.operar(var);
     	double decene = result % 100 ;
     	double daprox = val!= null ? val.doubleValue() : 0.00;
