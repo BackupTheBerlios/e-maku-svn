@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
@@ -168,13 +169,18 @@ public class EmakuRecolector extends JPanel implements Couplable, ActionListener
         	};
         	h.start();
         	//aplicacion.exec("cmd.exe /K C:/recolector_sp2.bat");
-    		while (file==null || !file.exists()) {
-        		file = new File("c:","sp2datos.txt");
-        		//file = new File("/home/felipe","sp2datos.txt");
-    			System.out.print(".");
-    			Thread.sleep(500);
+    		while (true) {
+    			try {
+	        		file = new File("c:","sp2datos.txt");
+	        		//file = new File("/home/felipe","sp2datos.txt");
+					raf = new RandomAccessFile(file,"r");
+					break;
+    			}
+    			catch(FileNotFoundException FNFe) {
+    				System.out.print(".");
+        			Thread.sleep(500);	
+    			}
     		}
-    		raf = new RandomAccessFile(file,"r");
     		String line = new String();
     		//Cargando y unificando
     		Hashtable<String,Integer> datos = new Hashtable<String,Integer>();
