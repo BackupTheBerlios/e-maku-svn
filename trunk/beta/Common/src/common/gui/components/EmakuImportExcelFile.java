@@ -138,7 +138,7 @@ public class EmakuImportExcelFile extends JPanel implements Couplable,ActionList
 					element = new Element("table");
 					//for (Sheet sheet:workbook.getSheets()) {
 					Sheet sheet = workbook.getSheet(0);
-						 for(int i=1;i<sheet.getRows();i++) {
+						 for(int i=3;i<sheet.getRows();i++) {
 							 Cell[] celdas = sheet.getRow(i);
 							 rows = new Element("row");
 							 for(Cell celda:celdas) {
