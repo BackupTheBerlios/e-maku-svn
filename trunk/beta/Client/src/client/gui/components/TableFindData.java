@@ -1033,7 +1033,6 @@ public class TableFindData extends JPanel implements AnswerListener,
 	}
 
 	public void changeExternalValue(ExternalValueChangeEvent e) {
-
 		if (TMFDtabla.impValuesSize() > 0 && e.getExternalValue() != null) {
 			boolean valueChange = false;
 
@@ -1050,12 +1049,13 @@ public class TableFindData extends JPanel implements AnswerListener,
 				String valueImport = GFforma.getExternalValueString(TMFDtabla
 						.getImpValue(i - 1));
 				String valueTable = TMFDtabla.getArgQuery(i);
-				if (!valueImport.equals(valueTable)) {
+				if (valueTable!=null && !valueImport.equals(valueTable)) {
 					valueChange = true;
 					break;
 				}
 			}
 			if (valueChange) {
+				System.out.println("recargando...");
 				reloadData();
 			}
 		}
@@ -1234,12 +1234,11 @@ public class TableFindData extends JPanel implements AnswerListener,
 	}
 
 	public void arriveRecordEvent(RecordEvent e) {
-	
 		if (e.getElement().getChildren().size() > 0) {
 			Document doc = new Document();
 			Element elm = (Element) ((Element) e.getElement()).clone();
 			doc.setRootElement(elm);
-			TMFDtabla.setQuery(doc, true);
+			TMFDtabla.setQuery(doc, e.isRecalculable());
 			e.setRowsLoaded(TMFDtabla.getRowsLoaded());
 			if (JTtabla.isFocusOwner()) {
 				JTtabla.scrollRectToVisible(JTtabla.getCellRect(TMFDtabla.getCurrentIndex(), 0, false));

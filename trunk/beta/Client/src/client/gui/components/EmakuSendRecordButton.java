@@ -64,6 +64,7 @@ implements ActionListener,Couplable {
 	private String masterTable;
 	private GenericForm GFforma;
 	private String conditional;
+	private boolean recalculable = true;
 	
 	public EmakuSendRecordButton(GenericForm GFforma, Document doc) {
 		this.GFforma=GFforma;
@@ -78,6 +79,9 @@ implements ActionListener,Couplable {
 			}
 			if ("conditional".equals(elm.getAttributeValue("attribute"))) {
 				conditional=elm.getValue();
+			}
+			if ("recalculable".equals(elm.getAttributeValue("attribute"))) {
+				recalculable=Boolean.parseBoolean(elm.getValue());
 			}
 		}
 		
@@ -245,6 +249,7 @@ implements ActionListener,Couplable {
 
 	public void notificando() {
 		RecordEvent event = new RecordEvent(this,element);
+		event.setRecalculable(recalculable);
 		for(RecordListener l:recordListener) {
 			l.arriveRecordEvent(event);
 		}

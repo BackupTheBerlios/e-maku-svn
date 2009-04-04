@@ -366,7 +366,8 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
      */
     
     public synchronized void setValueAt(Object value, int rowIndex, final int colIndex) {
-        /*
+        System.out.println("por setValueAt");
+    	/*
          * Esta clase se encarga de solicitar la busqueda al Servidor de transacciones
          * y cargarla a sus respectivos campos
          */
@@ -877,7 +878,6 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		                }
 		            }
 		            double val = ((Double)(FormulaCalculator.operar(newVar))).doubleValue();
-		            System.out.println("Este es de nuevo: "+exportTotalCols.get(key.toUpperCase())+" "+val);
 		            GFforma.setExternalValues(exportTotalCols.get(key.toUpperCase()),val);
 		            
 		        }
@@ -2039,7 +2039,8 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     	 * 
     	 * 2007-06-25                         pipelx.
     	 */
-    			
+    	System.out.println("Recalcular: "+search);
+    	
     	loadingQuery = true;
     	Element rootNode = doc.getRootElement();
     	String rootNodeName = rootNode.getName();
@@ -2087,16 +2088,16 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
                 }
             }
             else if (tagDataColumn>-1) synchronized (arrivedKeys) {
-            	
-/*            	XMLOutputter out = new XMLOutputter();
+            	/*
+            	XMLOutputter out = new XMLOutputter();
             	out.setFormat(org.jdom.output.Format.getPrettyFormat());
             	try {
 					out.output(doc,System.out);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-*/            	/* Limpiamos la tabla en caso de que llegue otro answer */
+				}*/
+            	/* Limpiamos la tabla en caso de que llegue otro answer */
 				if (header!=null) {
 					clean();
 				}
@@ -2195,6 +2196,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         else {
         	clean();
         }
+        
         totalizar();
         loadingQuery = false;
         doc = null;
