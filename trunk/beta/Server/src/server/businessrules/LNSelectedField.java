@@ -235,10 +235,10 @@ public class LNSelectedField {
 				nameField = nameField==null?"":nameField;
 				CacheKeys.setKey(nameField, text);
 			}
+			fieldSQL.add(text);
 			//if (!"".equals(text)) {
-			else {
-				fieldSQL.add(text);
-			}
+			//else {
+			//}
 		}
 		
 		RQfields.ejecutarSQL(fieldSQL.toArray(new String[fieldSQL.size()]));
