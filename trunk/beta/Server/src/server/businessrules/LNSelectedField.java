@@ -235,7 +235,8 @@ public class LNSelectedField {
 				nameField = nameField==null?"":nameField;
 				CacheKeys.setKey(nameField, text);
 			}
-			if (!"".equals(text)) {
+			//if (!"".equals(text)) {
+			else {
 				fieldSQL.add(text);
 			}
 		}
