@@ -1254,7 +1254,7 @@ public class LNContabilidad {
 					  RSdocument.getString(2),
 					  idTercero,
 					  idProducto));
-				recoverList.get(i).run();
+				recoverList.get(i).start();
 
 		}
 
@@ -1279,7 +1279,7 @@ public class LNContabilidad {
 					  RSdocument.getString(2),
 					  idTercero,
 					  idProducto));
-				recoverList.get(i).run();
+				recoverList.get(i).start();
 
 		}
 	
@@ -1400,6 +1400,8 @@ public class LNContabilidad {
 			else {
 				RQdata = new QueryRunner(bd, "SCS0072", new String[] { idCta,idTercero,idProducto });
 			}
+			System.out.println("consultas iniciales generadas");
+			
 			RQnaturaleza = new QueryRunner(bd,"SCS0073",new String[]{idCta});
 			RSnaturaleza = RQnaturaleza.ejecutarMTSELECT(conn2);
 			RSnaturaleza.next();
@@ -1407,6 +1409,7 @@ public class LNContabilidad {
 			
 			RSdata = RQdata.ejecutarMTSELECT(conn3);
 			RQupdate = new QueryRunner(bd,"SCU0003");
+			System.out.println("naturaleza consultada");
 			double saldo=0;
 			if (naturaleza) {
 				saldo=roundValue(recoverDebit(saldoAnt,RSdata,RQupdate));
@@ -1414,9 +1417,11 @@ public class LNContabilidad {
 			else {
 				saldo=roundValue(recoverCredit(saldoAnt,RSdata,RQupdate));
 			}
+			System.out.println("actualizando cache de saldos");
 			LinkingCache.setSaldoLibroAux(bd,"",idCta,
 										idTercero.equals("-1")?"":idTercero,
 										idProducto.equals("-1")?"":idProducto,saldo);
+			System.out.println("cache actualizada");
 
 
 			
@@ -1478,6 +1483,7 @@ public class LNContabilidad {
 		double debe  = 0;
 		double haber = 0;
 		double saldo = saldoAnt;
+		System.out.println("iniciando actualizacion de registros debit");
 		while (RSdata.next()) {
 			orden = RSdata.getString(1);
 			debe  = RSdata.getDouble(2);
@@ -1486,7 +1492,7 @@ public class LNContabilidad {
 			RQupdate.ejecutarSQL(new String[] {
 					String.valueOf(saldo),
 					orden});
-			System.out.println("actualizando "+orden+": "+saldo);
+			System.out.println("actualizando debit"+orden+": "+saldo);
 		}
 		System.out.println("retornando debit");
 
@@ -1510,6 +1516,7 @@ public class LNContabilidad {
 		double debe  = 0;
 		double haber = 0;
 		double saldo = saldoAnt;
+		System.out.println("iniciando actualizacion de registros credit");
 		while (RSdata.next()) {
 			orden = RSdata.getString(1);
 			debe  = RSdata.getDouble(2);
@@ -1518,7 +1525,7 @@ public class LNContabilidad {
 			RQupdate.ejecutarSQL(new String[] {
 					String.valueOf(saldo),
 					orden});
-			System.out.println("actualizando "+orden+": "+saldo);
+			System.out.println("actualizando credit "+orden+": "+saldo);
 		}
 		System.out.println("retornando credit");
 		return saldo;
