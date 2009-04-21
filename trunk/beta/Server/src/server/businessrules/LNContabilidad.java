@@ -1261,24 +1261,31 @@ public class LNContabilidad {
 		QueryRunner RQdropDocument = new QueryRunner(bd,"SCS0086",new String[]{CacheKeys.getKey("ndocumento")});
 		ResultSet RSdropDocument = RQdropDocument.ejecutarSELECT();
 		System.out.println("Recalculando los elimiandos contabilidad");
-		//i=0;
-		while (RSdropDocument.next()) {
+		for (;RSdropDocument.next();i++) {
 			String idTercero = RSdropDocument.getString(3)==null?"-1":RSdropDocument.getString(3);
 			String idProducto = RSdropDocument.getString(4)==null?"-1":RSdropDocument.getString(4);
 			//System.out.println("registro "+(i++)+" fecha "+RSdropDocument.getString(1)+" cuenta: "+RSdropDocument.getString(2)+" tercero "+idTercero+" producto "+idProducto);
 			/*System.out.println("Recuperando: "+RSdropDocument.getTimestamp(1)+"\n"+
 					RSdropDocument.getString(2)+"\n"+
 									idTercero+"\n"+
-									idProducto);*/
+									idProducto);
 			recoverData(RSdropDocument.getString(1),
 						RSdropDocument.getString(2),
 						idTercero,
-						idProducto);	
+						idProducto);	*/
+			recoverList.put(i,new RecoverData(recoverList,
+					  i,
+					  RSdocument.getString(1),
+					  RSdocument.getString(2),
+					  idTercero,
+					  idProducto));
+				recoverList.get(i).start();
+
 		}
 	
 		while (recoverList.size()>0) {
 			try {
-				System.out.println("----------Numero de registros: "+recoverList.size());
+				System.out.println("----------Numero de registros contab: "+recoverList.size());
 				Thread.sleep(1000);
 			}
 			catch(InterruptedException e) {}
@@ -1474,7 +1481,7 @@ public class LNContabilidad {
 			RQupdate.ejecutarSQL(new String[] {
 					String.valueOf(saldo),
 					orden});
-			//System.out.println("actualizando "+orden+": "+saldo);
+			System.out.println("actualizando "+orden+": "+saldo);
 		}
 		return saldo;
 	}
@@ -1504,7 +1511,7 @@ public class LNContabilidad {
 			RQupdate.ejecutarSQL(new String[] {
 					String.valueOf(saldo),
 					orden});
-			//System.out.println("actualizando "+orden+": "+saldo);
+			System.out.println("actualizando "+orden+": "+saldo);
 		}
 		return saldo;
 	}
