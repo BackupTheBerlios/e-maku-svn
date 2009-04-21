@@ -110,6 +110,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 	private boolean sendRecordOnSelectedRow;
 
 	private boolean arriveAnswerEvent;
+	private boolean singleValueRecord;
 
 	private String[] initImps;
 
@@ -280,7 +281,10 @@ public class TableFindData extends JPanel implements AnswerListener,
 			} else if (args.getAttributeValue("attribute").equals(
 					"sendRecordOnSelectedRow")) {
 				sendRecordOnSelectedRow = Boolean.parseBoolean(args.getValue());
-			} else if (args.getAttributeValue("attribute").equals("valideLink")) {
+			} else if (args.getAttributeValue("attribute").equals(
+					"singleValueRecord")) {
+				singleValueRecord = Boolean.parseBoolean(args.getValue());
+			}else if (args.getAttributeValue("attribute").equals("valideLink")) {
 				valideLink = Integer.parseInt(args.getValue());
 			} else if (args.getAttributeValue("attribute").equals("keyLink")) {
 				keyLink = Integer.parseInt(args.getValue());
@@ -630,8 +634,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 
 									if (protectSelected) {
 										if (sel > 0) {
-											if (TMFDtabla
-													.getValueAt(sel - 1, 0) == null
+											if (TMFDtabla.getValueAt(sel - 1, 0) == null
 													|| ""
 															.equals(TMFDtabla
 																	.getValueAt(
@@ -1114,7 +1117,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 		}
 
 		boolean fullRow = cont == ATFDargs.length ? true : false;
-		if (fullRow || arriveAnswerEvent) {
+		if (fullRow || arriveAnswerEvent || singleValueRecord) {
 
 			Element row = new Element("row");
 			StringTokenizer stk = new StringTokenizer(record, ",");
@@ -1124,6 +1127,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 				try {
 					Element col = new Element("col");
 					String tok = stk.nextToken();
+					System.out.println("tok: "+tok);
 					try {
 						int column = Integer.parseInt(tok);
 						String cellVal = TMFDtabla.getValueAt(rowIndex, column)
@@ -1234,10 +1238,23 @@ public class TableFindData extends JPanel implements AnswerListener,
 	}
 
 	public void arriveRecordEvent(RecordEvent e) {
+		System.out.println("llego--");
+    	XMLOutputter out = new XMLOutputter();
+    	out.setFormat(org.jdom.output.Format.getPrettyFormat());
+		Element elm = (Element) ((Element) e.getElement()).clone();
+		Document doc = new Document();
+		doc.setRootElement(elm);
+    	try {
+			out.output(doc,System.out);
+		} catch (IOException ex) {
+			// TODO Auto-generated catch block
+			ex.printStackTrace();
+		}
+
 		if (e.getElement().getChildren().size() > 0) {
-			Document doc = new Document();
-			Element elm = (Element) ((Element) e.getElement()).clone();
-			doc.setRootElement(elm);
+			//Document doc = new Document();
+			//Element elm = (Element) ((Element) e.getElement()).clone();
+			//doc.setRootElement(elm);
 			TMFDtabla.setQuery(doc, e.isRecalculable());
 			e.setRowsLoaded(TMFDtabla.getRowsLoaded());
 			if (JTtabla.isFocusOwner()) {

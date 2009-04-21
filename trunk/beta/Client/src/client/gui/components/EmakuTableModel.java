@@ -8,6 +8,7 @@ import static client.gui.components.Formula.SUPER;
 import static client.gui.components.Formula.SUPERBEANNQ;
 import static client.gui.components.Formula.SUPERNQ;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
@@ -33,6 +34,7 @@ import javax.swing.table.AbstractTableModel;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.output.XMLOutputter;
 
 import bsh.EvalError;
 import client.Run;
@@ -2088,15 +2090,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
                 }
             }
             else if (tagDataColumn>-1) synchronized (arrivedKeys) {
-            	/*
-            	XMLOutputter out = new XMLOutputter();
-            	out.setFormat(org.jdom.output.Format.getPrettyFormat());
-            	try {
-					out.output(doc,System.out);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
+            	
             	/* Limpiamos la tabla en caso de que llegue otro answer */
 				if (header!=null) {
 					clean();

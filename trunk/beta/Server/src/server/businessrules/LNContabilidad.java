@@ -24,6 +24,7 @@ package server.businessrules;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -32,6 +33,7 @@ import java.util.Vector;
 
 import org.jdom.Element;
 
+import server.businessrules.LNInventarios.RecoverData;
 import server.database.sql.LinkingCache;
 import server.database.sql.DontHaveKeyException;
 import server.database.sql.QueryRunner;
@@ -1234,14 +1236,24 @@ public class LNContabilidad {
 		ResultSet RSdocument = RQdocument.ejecutarSELECT();
 		System.out.println("Recalculando editados");
 		//int i=0;
-		while (RSdocument.next()) {
+		HashMap<Integer,RecoverData> recoverList = new HashMap<Integer,RecoverData>();
+		int i=0;
+		for (;RSdocument.next();i++) {
 			String idTercero = RSdocument.getString(3)==null?"-1":RSdocument.getString(3);
 			String idProducto = RSdocument.getString(4)==null?"-1":RSdocument.getString(4);
 			//System.out.println("registro "+(i++)+" fecha "+RSdocument.getString(1)+" cuenta: "+RSdocument.getString(2)+" tercero "+idTercero+" producto "+idProducto);
-			recoverData(RSdocument.getString(1),
+/*			recoverData(RSdocument.getString(1),
 						RSdocument.getString(2),
 						idTercero,
 						idProducto);	
+*/			recoverList.put(i,new RecoverData(recoverList,
+					  i,
+					  RSdocument.getString(1),
+					  RSdocument.getString(2),
+					  idTercero,
+					  idProducto));
+				recoverList.get(i).start();
+
 		}
 
 		QueryRunner RQdropDocument = new QueryRunner(bd,"SCS0086",new String[]{CacheKeys.getKey("ndocumento")});
@@ -1261,7 +1273,15 @@ public class LNContabilidad {
 						idTercero,
 						idProducto);	
 		}
-		
+	
+		while (recoverList.size()>0) {
+			try {
+				System.out.println("----------Numero de registros: "+recoverList.size());
+				Thread.sleep(1000);
+			}
+			catch(InterruptedException e) {}
+		}
+
 		QueryRunner RQdpDocument = new QueryRunner(bd,"SCD0004",new String[]{});
 		RQdpDocument.ejecutarSQL();
 
@@ -1508,4 +1528,30 @@ public class LNContabilidad {
 		RQdropDocument.closeStatement();
 		RQdeleteDocument.closeStatement();
 	}
+	
+	class RecoverData extends Thread {
+
+		String _fecha;
+		String _cuenta;
+		String _tercero;
+		String _producto;
+		HashMap<Integer,RecoverData> recoverList;
+		Integer index;
+		
+		RecoverData(HashMap<Integer,RecoverData> recoverList,Integer index,String fecha,String cuenta,String tercero,String producto) {
+			this.recoverList=recoverList;
+			this.index=index;
+			this._fecha=fecha;
+			this._cuenta=cuenta;
+			this._tercero=tercero;
+			this._producto=producto;
+		}
+		
+		public void run() {
+			recoverData(_fecha,_cuenta,_tercero,_producto);
+			recoverList.remove(index);
+			System.out.println("--------------Removido hilo "+index);
+		}
+	}
+
 }
