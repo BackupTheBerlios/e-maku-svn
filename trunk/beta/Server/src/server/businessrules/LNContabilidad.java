@@ -1254,7 +1254,7 @@ public class LNContabilidad {
 					  RSdocument.getString(2),
 					  idTercero,
 					  idProducto));
-				recoverList.get(i).start();
+				recoverList.get(i).run();
 
 		}
 
@@ -1279,7 +1279,7 @@ public class LNContabilidad {
 					  RSdocument.getString(2),
 					  idTercero,
 					  idProducto));
-				recoverList.get(i).start();
+				recoverList.get(i).run();
 
 		}
 	
@@ -1373,13 +1373,15 @@ public class LNContabilidad {
 		QueryRunner RQnaturaleza= null;
 		ResultSet RSnaturaleza  = null;
 		QueryRunner RQupdate 	= null;
+		Connection conn1 = getConnection(bd);
+		Connection conn2 = getConnection(bd);
+		Connection conn3 = getConnection(bd);
 		try {
 			if (LNDocuments.getActionDocument().equals(LNDocuments.EDIT_DOCUMENT) ||
 					LNDocuments.getActionDocument().equals(LNDocuments.DELETE_DOCUMENT)) {
 					fecha = CacheKeys.getMinDate();
 			}
 			
-			Connection conn1 = getConnection(bd);
 			if (fecha != null) {
 				RQsaldo = new QueryRunner(bd, "SCS0074",new String[] { fecha,idCta,idTercero,idProducto });
 				RQdata = new QueryRunner(bd, "SCS0075", new String[] { fecha,idCta,idTercero,idProducto });
@@ -1399,8 +1401,6 @@ public class LNContabilidad {
 				RQdata = new QueryRunner(bd, "SCS0072", new String[] { idCta,idTercero,idProducto });
 			}
 			RQnaturaleza = new QueryRunner(bd,"SCS0073",new String[]{idCta});
-			Connection conn2 = getConnection(bd);
-			Connection conn3 = getConnection(bd);
 			RSnaturaleza = RQnaturaleza.ejecutarMTSELECT(conn2);
 			RSnaturaleza.next();
 			boolean naturaleza = RSnaturaleza.getBoolean(1);
@@ -1414,11 +1414,6 @@ public class LNContabilidad {
 			else {
 				saldo=roundValue(recoverCredit(saldoAnt,RSdata,RQupdate));
 			}
-        	ConnectionsPool.freeMultiConnection(bd, conn2);
-        	ConnectionsPool.freeMultiConnection(bd, conn3);
-        	conn1=null;
-        	conn2=null;
-        	conn3=null;
 			LinkingCache.setSaldoLibroAux(bd,"",idCta,
 										idTercero.equals("-1")?"":idTercero,
 										idProducto.equals("-1")?"":idProducto,saldo);
@@ -1438,6 +1433,11 @@ public class LNContabilidad {
 			try {
 				RQsaldo.closeStatement();
 				RSsaldo.close();
+	        	ConnectionsPool.freeMultiConnection(bd, conn2);
+	        	ConnectionsPool.freeMultiConnection(bd, conn3);
+	        	conn1=null;
+	        	conn2=null;
+	        	conn3=null;
 			}
 			catch(NullPointerException NPEe) {} 
 			catch (SQLException e) {}
@@ -1448,11 +1448,16 @@ public class LNContabilidad {
 				RSsaldo.close();
 				RSdata.close();
 				RQupdate.closeStatement();
+	        	ConnectionsPool.freeMultiConnection(bd, conn2);
+	        	ConnectionsPool.freeMultiConnection(bd, conn3);
+	        	conn1=null;
+	        	conn2=null;
+	        	conn3=null;
 			}
 			catch(NullPointerException NPEe) {}
 			catch (SQLException e) {}
 		}
-
+		System.out.println("finalizando..");
 	}
 	
 	/**
@@ -1483,6 +1488,8 @@ public class LNContabilidad {
 					orden});
 			System.out.println("actualizando "+orden+": "+saldo);
 		}
+		System.out.println("retornando debit");
+
 		return saldo;
 	}
 	
@@ -1513,6 +1520,7 @@ public class LNContabilidad {
 					orden});
 			System.out.println("actualizando "+orden+": "+saldo);
 		}
+		System.out.println("retornando credit");
 		return saldo;
 	}
 	
@@ -1586,6 +1594,7 @@ public class LNContabilidad {
 		}
 		
 		public void run() {
+			System.out.println("--------------Iniciando hilo "+index);
 			recoverData(_fecha,_cuenta,_tercero,_producto);
 			recoverList.remove(index);
 			System.out.println("--------------Removido hilo "+index);
