@@ -1285,7 +1285,7 @@ public class LNContabilidad {
 	
 		while (recoverList.size()>0) {
 			try {
-				System.out.println("----------Numero de registros contab: "+recoverList.size());
+				//System.out.println("----------Numero de registros contab: "+recoverList.size());
 				Thread.sleep(1000);
 			}
 			catch(InterruptedException e) {}
