@@ -266,21 +266,6 @@ public class LNSelectedField {
 		 * Se verifica si la variable condicional es verdadera para contiunar,
 		 * si por el contrario no lo es, se retorna el metodo.
 		 */
-		Calendar calendar = Calendar.getInstance();
-		long init = calendar.getTimeInMillis();
-
-		System.out.println("\n-----------------------------");
-		try {
-	        XMLOutputter xmlOutputter = new XMLOutputter();
-	        xmlOutputter.setFormat(Format.getPrettyFormat());
-	        xmlOutputter.output(pack,System.out);
-	    }
-	    catch (IOException e) {
-	        e.printStackTrace();
-	    }
-		calendar = Calendar.getInstance();
-		long tout = calendar.getTimeInMillis();
-		System.out.println("Generador en " + (tout-init)/1000 + " segundos ");
 
 	    
 		List lpack = pack.getChildren();
@@ -290,9 +275,6 @@ public class LNSelectedField {
 				return;
 			}
 		}
-		calendar = Calendar.getInstance();
-		long end = calendar.getTimeInMillis();
-		System.out.println("Generador en " + (end-init)/1000 + " segundos ");
 
 		//String[] fieldSQL = new String[cols.length + CacheKeys.size()];
 		ArrayList<String> fieldSQL = new ArrayList<String>();

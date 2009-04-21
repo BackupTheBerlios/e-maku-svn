@@ -22,6 +22,7 @@
 package server.businessrules;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -34,6 +35,7 @@ import java.util.Vector;
 import org.jdom.Element;
 
 import server.businessrules.LNInventarios.RecoverData;
+import server.database.connection.ConnectionsPool;
 import server.database.sql.LinkingCache;
 import server.database.sql.DontHaveKeyException;
 import server.database.sql.QueryRunner;
@@ -1234,7 +1236,7 @@ public class LNContabilidad {
 	public void recoverDocument() throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
 		QueryRunner RQdocument = new QueryRunner(bd,"SCS0081",new String[]{CacheKeys.getKey("ndocumento")});
 		ResultSet RSdocument = RQdocument.ejecutarSELECT();
-		System.out.println("Recalculando editados");
+		System.out.println("Recalculando editados contabilidad");
 		//int i=0;
 		HashMap<Integer,RecoverData> recoverList = new HashMap<Integer,RecoverData>();
 		int i=0;
@@ -1258,7 +1260,7 @@ public class LNContabilidad {
 
 		QueryRunner RQdropDocument = new QueryRunner(bd,"SCS0086",new String[]{CacheKeys.getKey("ndocumento")});
 		ResultSet RSdropDocument = RQdropDocument.ejecutarSELECT();
-		System.out.println("Recalculando los elimiandos");
+		System.out.println("Recalculando los elimiandos contabilidad");
 		//i=0;
 		while (RSdropDocument.next()) {
 			String idTercero = RSdropDocument.getString(3)==null?"-1":RSdropDocument.getString(3);
@@ -1370,14 +1372,16 @@ public class LNContabilidad {
 					fecha = CacheKeys.getMinDate();
 			}
 			
+			Connection conn1 = getConnection(bd);
 			if (fecha != null) {
 				RQsaldo = new QueryRunner(bd, "SCS0074",new String[] { fecha,idCta,idTercero,idProducto });
 				RQdata = new QueryRunner(bd, "SCS0075", new String[] { fecha,idCta,idTercero,idProducto });
-				RSsaldo = RQsaldo.ejecutarSELECT();
+				RSsaldo = RQsaldo.ejecutarMTSELECT(conn1);
 				if (RSsaldo.next()) {
 					saldoAnt = RSsaldo.getDouble(1);
 				}
-				
+	        	ConnectionsPool.freeMultiConnection(bd, conn1);
+
 			}
 			
 			/*
@@ -1388,11 +1392,13 @@ public class LNContabilidad {
 				RQdata = new QueryRunner(bd, "SCS0072", new String[] { idCta,idTercero,idProducto });
 			}
 			RQnaturaleza = new QueryRunner(bd,"SCS0073",new String[]{idCta});
-			RSnaturaleza = RQnaturaleza.ejecutarSELECT();
+			Connection conn2 = getConnection(bd);
+			Connection conn3 = getConnection(bd);
+			RSnaturaleza = RQnaturaleza.ejecutarMTSELECT(conn2);
 			RSnaturaleza.next();
 			boolean naturaleza = RSnaturaleza.getBoolean(1);
 			
-			RSdata = RQdata.ejecutarSELECT();
+			RSdata = RQdata.ejecutarMTSELECT(conn3);
 			RQupdate = new QueryRunner(bd,"SCU0003");
 			double saldo=0;
 			if (naturaleza) {
@@ -1401,6 +1407,11 @@ public class LNContabilidad {
 			else {
 				saldo=roundValue(recoverCredit(saldoAnt,RSdata,RQupdate));
 			}
+        	ConnectionsPool.freeMultiConnection(bd, conn2);
+        	ConnectionsPool.freeMultiConnection(bd, conn3);
+        	conn1=null;
+        	conn2=null;
+        	conn3=null;
 			LinkingCache.setSaldoLibroAux(bd,"",idCta,
 										idTercero.equals("-1")?"":idTercero,
 										idProducto.equals("-1")?"":idProducto,saldo);
@@ -1527,6 +1538,26 @@ public class LNContabilidad {
 		RQdpDocument.closeStatement();
 		RQdropDocument.closeStatement();
 		RQdeleteDocument.closeStatement();
+	}
+	
+	private Connection getConnection(String dataBase) {
+		Connection conn;
+    	while (true) {
+    		try {
+        		conn = ConnectionsPool.getMultiConnection(dataBase);
+        		if (conn!=null) {
+        			break;
+        		}
+        		else {
+        			System.out.println("Conexiones agotadas al motor de base de datos...");
+        			Thread.sleep(1000);
+        		}
+    		}
+    		catch(InterruptedException e) {
+    			e.printStackTrace();
+    		}
+    	}
+    	return conn;
 	}
 	
 	class RecoverData extends Thread {
