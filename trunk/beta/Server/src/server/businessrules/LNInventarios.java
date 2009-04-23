@@ -562,12 +562,27 @@ public class LNInventarios {
 		ResultSet RSdatos = RQdocumento.ejecutarSELECT();
 		QueryRunner RQanular = new QueryRunner(bd, "SCU0006",new String[]{idDocumento});
 		RQanular.ejecutarSQL();
+		HashMap<Integer,RecoverData> recoverList = new HashMap<Integer,RecoverData>();
 
-		while (RSdatos.next()) {
-			recoverData(RSdatos.getString(1),
-					RSdatos.getString(2),
-					RSdatos.getString(3));
+		for(int i=0;RSdatos.next();i++) {
+			recoverList.put(i,new RecoverData(recoverList,
+					  i,
+					  RSdatos.getString(1),
+					  RSdatos.getString(2),
+					  RSdatos.getString(3),
+					  RSdatos.getDouble(4),
+					  RSdatos.getDouble(5)));
+				recoverList.get(i).start();
+
 		}
+		
+		while (recoverList.size()>0) {
+			try {
+				Thread.sleep(1000);
+			}
+			catch(InterruptedException e) {}
+		}
+
 		RSdatos.close();
 		RQdocumento.closeStatement();
 	}
@@ -631,9 +646,10 @@ public class LNInventarios {
 										  i,
 										  RSdocument.getString(1),
 										  RSdocument.getString(2),
-										  RSdocument.getString(3)));
+										  RSdocument.getString(3),
+										  RSdocument.getDouble(4),
+										  RSdocument.getDouble(5)));
 			recoverList.get(i).start();
-			//System.out.println("+++++++++++++++lanzado hilo No. "+i);
 		}
 		
 		QueryRunner RQdropDocument = new QueryRunner(bd,"SCS0085",new String[] {CacheKeys.getKey("ndocumento")});
@@ -644,14 +660,14 @@ public class LNInventarios {
 										  i,
 										  RSdropDocument.getString(1),
 										  RSdropDocument.getString(2),
-										  RSdropDocument.getString(3)));
+										  RSdropDocument.getString(3),
+										  RSdropDocument.getDouble(4),
+										  RSdropDocument.getDouble(5)));
 			recoverList.get(i).start();
-			//System.out.println("+++++++++++++++lanzado hilo No. "+i);
 		}
 		
 		while (recoverList.size()>0) {
 			try {
-				System.out.println("----------Numero de registros: "+recoverList.size());
 				Thread.sleep(1000);
 			}
 			catch(InterruptedException e) {}
@@ -677,23 +693,20 @@ public class LNInventarios {
 		System.out.println("Recalculando editados");
 		int i=0;
 		for (;RSdocument.next();i++) {
-			try {
-				recoverList.put(i,new RecoverData(recoverList,
-											  i,
-											  null,
-											  RSdocument.getString(1),
-											  RSdocument.getString(2)));
+			recoverList.put(i,new RecoverData(recoverList,
+					  i,
+					  null,
+					  RSdocument.getString(1),
+					  RSdocument.getString(2),
+					  0,
+					  0));
+
 			recoverList.get(i).start();
-			System.out.println("+++++++++++++++ producto: "+RSdocument.getString(2)+" lanzado hilo No. "+i);
-			Thread.sleep(100);
-			}
-			catch(InterruptedException e) {}
 		}
 
 
 		while (recoverList.size()>0) {
 			try {
-				System.out.println("----------Numero de registros: "+recoverList.size());
 				Thread.sleep(100);
 			}
 			catch(InterruptedException e) {}
@@ -709,9 +722,7 @@ public class LNInventarios {
 		
 	}
 	
-	private void recoverData(String fecha,String idBodega, String idProducto) {
-		double saldoAnt = 0;
-		double valorSaldoAnt =0;
+	private void recoverData(String fecha,String idBodega, String idProducto,double saldoAnt,double valorSaldoAnt) {
 		String orden       ="";
 		String rfDocumento ="";
 		String tipoDocumento ="";
@@ -732,22 +743,13 @@ public class LNInventarios {
 		 */
 		try {
 			if (fecha != null) {
-				QueryRunner RQsaldo = new QueryRunner(bd, "SCS0076",new String[] { fecha,idBodega,idProducto });
 				RQdata = new QueryRunner(bd, "SCS0077", new String[] { fecha,idBodega, idProducto });
-				ResultSet RSsaldo = RQsaldo.ejecutarSELECT();
-				if (RSsaldo.next()) {
-					pinventario = RSsaldo.getDouble(1);
-					saldoAnt = RSsaldo.getDouble(2);
-					valorSaldoAnt = RSsaldo.getDouble(3);
-				}
 				/*System.out.println("-----------------------------------------------------------");
 				System.out.println("Consultando saldos de: "+fecha+"-"+idBodega+"-"+idProducto);
 				System.out.println("pinventario: "+pinventario);
 				System.out.println("Saldo anterior: "+saldoAnt);
 				System.out.println("Valor Sdo Ant: "+valorSaldoAnt);
 				*/
-				RQsaldo.closeStatement();
-				RSsaldo.close();
 			}
 			else if (LNDocuments.getActionDocument().equals(LNDocuments.EDIT_DOCUMENT) ||
 					LNDocuments.getActionDocument().equals(LNDocuments.DELETE_DOCUMENT)) {
@@ -1039,19 +1041,24 @@ public class LNInventarios {
 		String _producto;
 		HashMap<Integer,RecoverData> recoverList;
 		Integer index;
+		double _saldo;
+		double _valorSaldo;
 		
-		RecoverData(HashMap<Integer,RecoverData> recoverList,Integer index,String fecha,String bodega,String producto) {
+		RecoverData(HashMap<Integer,RecoverData> recoverList,Integer index,String fecha,String bodega,String producto,double saldo,double valorSaldo) {
 			this.recoverList=recoverList;
 			this.index=index;
 			this._fecha=fecha;
 			this._bodega=bodega;
 			this._producto=producto;
+			this._saldo=saldo;
+			this._valorSaldo=valorSaldo;
 		}
 		
 		public void run() {
-			recoverData(_fecha,_bodega,_producto);
+			System.out.println("--------------Lanzando Hilo "+index);
+			recoverData(_fecha,_bodega,_producto,_saldo,_valorSaldo);
 			recoverList.remove(index);
-			System.out.println("--------------Removido hilo "+index);
+			System.out.println("--------------Removido hilo "+index+"----------Numero de registros: "+recoverList.size());
 		}
 	}
 }
