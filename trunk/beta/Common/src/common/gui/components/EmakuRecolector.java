@@ -139,9 +139,9 @@ public class EmakuRecolector extends JPanel implements Couplable, ActionListener
 
 	public void actionPerformed(ActionEvent e) {
 		final JButton button = (JButton)e.getSource();
-        try{
         	Thread h = new Thread() {
         		public void run () {
+        	        try{
                 	String linea=null;
                     Process p=null;
 					try {
@@ -164,68 +164,72 @@ public class EmakuRecolector extends JPanel implements Couplable, ActionListener
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					} 
+					}
+					
+		        	//aplicacion.exec("cmd.exe /K C:/recolector_sp2.bat");
+		    		while (true) {
+		    			try {
+			        		file = new File("c:","sp2datos.txt");
+			        		//file = new File("/home/felipe","sp2datos.txt");
+							raf = new RandomAccessFile(file,"r");
+							break;
+		    			}
+		    			catch(FileNotFoundException FNFe) {
+		    				System.out.print(".");
+		        			try {
+								Thread.sleep(500);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}	
+		    			}
+		    		}
+		    		String line = new String();
+		    		//Cargando y unificando
+		    		Hashtable<String,Integer> datos = new Hashtable<String,Integer>();
+		    		
+		    		while ((line=raf.readLine())!=null) {
+		    			try {
+			    			StringTokenizer STlinea = new StringTokenizer(line,",");
+			    			String barra = STlinea.nextToken();
+			    			int cantidad = Integer.parseInt(STlinea.nextToken());
+			    			int val = 0;
+			    			if (datos.containsKey(barra)) {
+			    				val = datos.get(barra);
+			    				datos.remove(barra);
+			    			}
+							datos.put(barra,val+cantidad);
+		    			}
+		    			catch(NoSuchElementException exc) {
+		    				System.out.println("Espacio...");
+		    			}
+		    		}
+		    		Iterator<String> i = datos.keySet().iterator();
+		    		element = new Element("table");
+		    		while (i.hasNext()) {
+		    			Element rows = new Element("row");
+		    			String barra = i.next();
+		    			rows.addContent(new Element("col").setText(barra.trim()));
+		    			rows.addContent(new Element("col").setText(String.valueOf(datos.get(barra))));
+		    			element.addContent(rows);
+		    		}
+		    		
+		    		raf.close();    		
+		    		notificando();
+                }
+                catch(IOException IOe) {
+                	IOe.printStackTrace();
+                } 
+                finally {
+        			file = null;
+        			element = null;
+        			System.gc();
+        		}
+
+
         		}
         	};
         	h.start();
-        	//aplicacion.exec("cmd.exe /K C:/recolector_sp2.bat");
-    		while (true) {
-    			try {
-	        		file = new File("c:","sp2datos.txt");
-	        		//file = new File("/home/felipe","sp2datos.txt");
-					raf = new RandomAccessFile(file,"r");
-					break;
-    			}
-    			catch(FileNotFoundException FNFe) {
-    				System.out.print(".");
-        			Thread.sleep(500);	
-    			}
-    		}
-    		String line = new String();
-    		//Cargando y unificando
-    		Hashtable<String,Integer> datos = new Hashtable<String,Integer>();
-    		
-    		while ((line=raf.readLine())!=null) {
-    			try {
-	    			StringTokenizer STlinea = new StringTokenizer(line,",");
-	    			String barra = STlinea.nextToken();
-	    			int cantidad = Integer.parseInt(STlinea.nextToken());
-	    			int val = 0;
-	    			if (datos.containsKey(barra)) {
-	    				val = datos.get(barra);
-	    				datos.remove(barra);
-	    			}
-					datos.put(barra,val+cantidad);
-    			}
-    			catch(NoSuchElementException exc) {
-    				System.out.println("Espacio...");
-    			}
-    		}
-    		Iterator<String> i = datos.keySet().iterator();
-    		element = new Element("table");
-    		while (i.hasNext()) {
-    			Element rows = new Element("row");
-    			String barra = i.next();
-    			rows.addContent(new Element("col").setText(barra.trim()));
-    			rows.addContent(new Element("col").setText(String.valueOf(datos.get(barra))));
-    			element.addContent(rows);
-    		}
-    		
-    		raf.close();    		
-    		notificando();
-        }
-        catch(IOException IOe) {
-        	IOe.printStackTrace();
-        } catch (InterruptedException IEe) {
-			// TODO Auto-generated catch block
-			IEe.printStackTrace();
-		}
-        finally {
-			file = null;
-			element = null;
-			System.gc();
-		}
-
 
 	}
 
