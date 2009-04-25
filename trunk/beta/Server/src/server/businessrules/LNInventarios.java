@@ -799,7 +799,8 @@ public class LNInventarios {
 					}
 					/*
 					 * Si no esta anulada y es una devolucion en compras entonces debe salir al valor al que se 
-					 * compro, esto lo sabemos por el rfdocumento.
+					 * compro, esto lo sabemos por el rfdocumento siempre y cuando la devolucion se cruce con la
+					 * compra, si no el valor de salida debe ser el ponderado.
 					 */
 					else if (tipoDocumento.equals("DC")) {
 						//System.out.println("Salida.. devolucion en compras");
@@ -807,7 +808,10 @@ public class LNInventarios {
 						 * Verificamos si el valor de la compra esta registrado en el historial y tomamos como valor
 						 * de la salida el mismo valor del ingreso
 						 */
-						if (historyInv.containsKey(rfDocumento)) {
+						if (rfDocumento==null) {
+							valorSalida = pinventario;
+						}
+						else if (historyInv.containsKey(rfDocumento)) {
 							valorSalida = historyInv.get(rfDocumento).getValorEntrada();
 							//System.out.println("lo encontro  "+valorSalida);
 						}
@@ -846,9 +850,12 @@ public class LNInventarios {
 						//System.out.println("Entrada.. devolucion en ventas");
 						/*
 						 * Verificamos si el valor de la venta esta registrado en el historial y tomamos como valor
-						 * de la entrada el mismo valor de la venta
+						 * de la entrada el mismo valor de la venta, siempre y cuando este se cruce con el valor de la venta
 						 */
-						if (historyInv.containsKey(rfDocumento)) {
+						if (rfDocumento==null) {
+							valorEntrada = pinventario;
+						}
+						else if (historyInv.containsKey(rfDocumento)) {
 							valorEntrada = historyInv.get(rfDocumento).getValorSalida();
 						}
 						/*

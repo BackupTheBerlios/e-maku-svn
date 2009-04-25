@@ -31,7 +31,7 @@ public class PooledConnections {
 			String tmpDir  = System.getProperty("java.io.tmpdir");
 			String fileSep = System.getProperty("file.separator");
 			String logFile = fileSep+tmpDir+fileSep+"poolConections";
-			myBroker = new DbConnectionBroker(driver,url,username,password,2,8,logFile,1);
+			myBroker = new DbConnectionBroker(driver,url,username,password,10,20,logFile,1);
 		} 
 		catch (IOException e)  { 
 			e.printStackTrace();
@@ -44,7 +44,20 @@ public class PooledConnections {
 	}
 
 	public Connection getMultiConnection() {
-		return myBroker.getConnection();
+		synchronized(myBroker) {
+			Connection conn = myBroker.getConnection();
+			while(conn==null) {
+				try {
+					System.out.println("conexiones agotadas");
+					myBroker.wait();
+					conn = myBroker.getConnection();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			return conn;
+		}
 	}
 	
 	public int getIdMultiConnection(Connection conn) {
@@ -52,7 +65,10 @@ public class PooledConnections {
 	}
 	
 	public void freeConnection(Connection conn) {
-		myBroker.freeConnection(conn);
+		synchronized(myBroker) {
+			myBroker.freeConnection(conn);
+			myBroker.notify();
+		}
 	}
 
 }

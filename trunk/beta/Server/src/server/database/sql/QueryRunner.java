@@ -131,6 +131,24 @@ public class QueryRunner extends Element {
     	}
     }
 
+    public boolean ejecutarSQL(Connection conn,String[] args) 
+    throws SQLException,SQLNotFoundException, SQLBadArgumentsException {
+    	try{
+	    	Statement st = conn.createStatement();
+	        sql = SQLFormatAgent.getSentencia(bd,cod_sql,args);
+	        //st = ConnectionsPool.getConnection(bd).createStatement();
+	        //System.out.println("SENTENCIA SQL :: "+sql);
+	        boolean status = st.execute(sql);
+	        st.close();
+	        st=null;
+	        return status;
+    	}
+    	catch(SQLException SQLEe) {
+    		throw new SQLException("SQL "+sql+" code "+cod_sql +" "+SQLEe.getMessage());
+    	}
+	        
+    }
+
     public boolean ejecutarSQL(String[] args) 
     throws SQLException,SQLNotFoundException, SQLBadArgumentsException {
     	try{
