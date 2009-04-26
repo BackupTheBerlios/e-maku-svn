@@ -1346,23 +1346,6 @@ public class LNContabilidad {
 	 */
 	
 	private void runThread(final int i,String fecha,String idTercero,String idProducto) throws InterruptedException {
-		class monitor extends Thread {
-			public void run() {
-				while (true) {
-					System.out.println("Hilo Generado "+i);
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						break;
-					}
-				}
-			}
-		}
-		monitor m = new monitor();
-		m.setPriority(Thread.MIN_PRIORITY);
-		m.start();
 		synchronized(recoverList) {
 			if (recoverList.size()>=4) {
 				try {
@@ -1385,6 +1368,27 @@ public class LNContabilidad {
 	
 	}
 	public void recover(Element pack) {
+		class monitor extends Thread {
+			int i;
+			public void setI(int i) {
+				this.i=i;
+			}
+			public void run() {
+				while (true) {
+					System.out.println("Hilo Generado "+i);
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						break;
+					}
+				}
+			}
+		}
+		monitor m = new monitor();
+		m.setPriority(Thread.MIN_PRIORITY);
+		m.start();
 		try {
 			Connection conn = ConnectionsPool.getMultiConnection(bd);
 
@@ -1395,6 +1399,7 @@ public class LNContabilidad {
 					String fecha = RSdocument.getString(1);
 					String idTercero = RSdocument.getString(2)==null?"-1":RSdocument.getString(2);
 					String idProducto = RSdocument.getString(3)==null?"-1":RSdocument.getString(3);
+					m.setI(i);
 					runThread(i,fecha,idTercero,idProducto);
 						//recoverList.notify();
 				}
@@ -1404,7 +1409,7 @@ public class LNContabilidad {
 			}
 			catch(InterruptedException e) {}
 			}
-	
+			m.interrupt();
 			RQdocument.closeStatement();
 			RSdocument.close();
 			ConnectionsPool.freeMultiConnection(bd, conn);
