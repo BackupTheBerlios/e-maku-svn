@@ -1345,7 +1345,24 @@ public class LNContabilidad {
 	 * @throws InterruptedException 
 	 */
 	
-	private void runThread(int i,String fecha,String idTercero,String idProducto) throws InterruptedException {
+	private void runThread(final int i,String fecha,String idTercero,String idProducto) throws InterruptedException {
+		class monitor extends Thread {
+			public void run() {
+				while (true) {
+					System.out.println("Hilo Generado "+i);
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						break;
+					}
+				}
+			}
+		}
+		monitor m = new monitor();
+		m.setPriority(Thread.MIN_PRIORITY);
+		m.start();
 		synchronized(recoverList) {
 			if (recoverList.size()>=4) {
 				try {
@@ -1655,7 +1672,6 @@ public class LNContabilidad {
 			synchronized(recoverList) {
 				recoverList.remove(index);
 				recoverList.notify();
-				System.out.println("--------------Removido hilo "+index);
 				//System.out.println("--------------Hilos pendientes: "+recoverList.size());
 			}
 		}
