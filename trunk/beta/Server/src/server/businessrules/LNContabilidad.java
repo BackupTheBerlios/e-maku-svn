@@ -1541,7 +1541,7 @@ public class LNContabilidad {
 		double haber = 0;
 		double saldo = saldoAnt;
 		while (RSdata.next()) {
-			System.out.print("*"+hilo);
+			//System.out.print("*"+hilo);
 			orden = RSdata.getString(1);
 			debe  = RSdata.getDouble(2);
 			haber = RSdata.getDouble(3);
@@ -1584,7 +1584,7 @@ public class LNContabilidad {
 			debe  = RSdata.getDouble(2);
 			haber = RSdata.getDouble(3);
 			saldo = roundValue(saldo + haber - debe);
-			System.out.print("+"+hilo);
+			//System.out.print("+"+hilo);
 			RQupdate.ejecutarSQL(conn,new String[] {
 					String.valueOf(saldo),
 					orden
@@ -1655,7 +1655,7 @@ public class LNContabilidad {
 			synchronized(recoverList) {
 				recoverList.remove(index);
 				recoverList.notify();
-				//System.out.println("--------------Removido hilo "+index);
+				System.out.println("--------------Removido hilo "+index);
 				//System.out.println("--------------Hilos pendientes: "+recoverList.size());
 			}
 		}
