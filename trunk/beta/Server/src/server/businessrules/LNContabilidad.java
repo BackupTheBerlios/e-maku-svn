@@ -1573,7 +1573,7 @@ public class LNContabilidad {
 					orden
 				});
 		}
-		System.out.println("");
+		//System.out.println("");
 		RQupdate.closeStatement();
 		ConnectionsPool.freeMultiConnection(bd, conn);
         conn=null;
@@ -1612,7 +1612,7 @@ public class LNContabilidad {
 					orden
 					});
 		}
-		System.out.println("");
+		//System.out.println("");
     	RQupdate.closeStatement();
 		ConnectionsPool.freeMultiConnection(bd, conn);
         conn=null;
