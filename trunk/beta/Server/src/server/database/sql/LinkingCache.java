@@ -475,7 +475,7 @@ public class LinkingCache {
                       rs.getObject(rsValue));
                       
         }
-        rs.last();
+        //rs.last();
         //System.out.println("Numero de registros: "+rs.getRow());
         StatementsClosingHandler.close(st);
         StatementsClosingHandler.close(rs);

@@ -1347,7 +1347,6 @@ public class LNContabilidad {
 	
 	private void runThread(int i,String fecha,String idTercero,String idProducto) throws InterruptedException {
 		synchronized(recoverList) {
-		
 			if (recoverList.size()>=4) {
 				try {
 					recoverList.wait();
@@ -1363,14 +1362,17 @@ public class LNContabilidad {
 					  idTercero,
 					  idProducto,
 					  0));
+				//recoverList.get(i).setPriority(Thread.MAX_PRIORITY);
 				recoverList.get(i).start();
 		}
 	
 	}
 	public void recover(Element pack) {
 		try {
+			Connection conn = ConnectionsPool.getMultiConnection(bd);
+
 			QueryRunner RQdocument = new QueryRunner(bd,"SCS0094");
-			ResultSet RSdocument = RQdocument.ejecutarSELECT();
+			ResultSet RSdocument = RQdocument.ejecutarMTSELECT(conn);
 			int i=0;
 				for (;RSdocument.next();i++) {
 					String fecha = RSdocument.getString(1);
@@ -1388,6 +1390,7 @@ public class LNContabilidad {
 	
 			RQdocument.closeStatement();
 			RSdocument.close();
+			ConnectionsPool.freeMultiConnection(bd, conn);
 		}
 		catch(SQLNotFoundException e) {
 			
@@ -1455,24 +1458,33 @@ public class LNContabilidad {
 			if (naturaleza) {
 				try {
 					saldo=roundValue(recoverDebit(conn,hilo,saldoAnt,RSdata));
+					LinkingCache.setSaldoLibroAux(bd,"",idCta,
+							idTercero.equals("-1")?"":idTercero,
+							idProducto.equals("-1")?"":idProducto,saldo);
 				}
 				catch(SQLException e) {
-					System.out.println("ups");
+					System.out.println("ups "+hilo);
+					if (conn!=null) {
+						ConnectionsPool.freeMultiConnection(bd, conn);
+				        conn=null;
+					}
 					recoverData(fecha,idCta,idTercero,idProducto,saldoAnt,hilo);
 				}
 			}
 			else {
 				try {
 					saldo=roundValue(recoverCredit(conn,hilo,saldoAnt,RSdata));
+					LinkingCache.setSaldoLibroAux(bd,"",idCta,
+							idTercero.equals("-1")?"":idTercero,
+							idProducto.equals("-1")?"":idProducto,saldo);
 				}
 				catch(SQLException e) {
-					System.out.println("ups");
+					System.out.println("ups "+hilo);
+					ConnectionsPool.freeMultiConnection(bd, conn);
+			        conn=null;
 					recoverData(fecha,idCta,idTercero,idProducto,saldoAnt,hilo);
 				}
 			}
-			LinkingCache.setSaldoLibroAux(bd,"",idCta,
-										idTercero.equals("-1")?"":idTercero,
-										idProducto.equals("-1")?"":idProducto,saldo);
 
 
 			
@@ -1529,7 +1541,7 @@ public class LNContabilidad {
 		double haber = 0;
 		double saldo = saldoAnt;
 		while (RSdata.next()) {
-			//System.out.print("*"+hilo);
+			System.out.print("*"+hilo);
 			orden = RSdata.getString(1);
 			debe  = RSdata.getDouble(2);
 			haber = RSdata.getDouble(3);
@@ -1539,6 +1551,7 @@ public class LNContabilidad {
 					orden
 				});
 		}
+		System.out.println("");
 		RQupdate.closeStatement();
 		ConnectionsPool.freeMultiConnection(bd, conn);
         conn=null;
@@ -1571,12 +1584,13 @@ public class LNContabilidad {
 			debe  = RSdata.getDouble(2);
 			haber = RSdata.getDouble(3);
 			saldo = roundValue(saldo + haber - debe);
-			//System.out.print("+"+hilo);
+			System.out.print("+"+hilo);
 			RQupdate.ejecutarSQL(conn,new String[] {
 					String.valueOf(saldo),
 					orden
 					});
 		}
+		System.out.println("");
     	RQupdate.closeStatement();
 		ConnectionsPool.freeMultiConnection(bd, conn);
         conn=null;
@@ -1636,13 +1650,13 @@ public class LNContabilidad {
 		}
 		
 		public void run() {
-			System.out.println("--------------Iniciando hilo "+index);
+			//System.out.println("--------------Iniciando hilo "+index);
 			recoverData(_fecha,_cuenta,_tercero,_producto,_saldoAnt,index);
 			synchronized(recoverList) {
 				recoverList.remove(index);
 				recoverList.notify();
-				System.out.println("--------------Removido hilo "+index);
-				System.out.println("--------------Hilos pendientes: "+recoverList.size());
+				//System.out.println("--------------Removido hilo "+index);
+				//System.out.println("--------------Hilos pendientes: "+recoverList.size());
 			}
 		}
 		
