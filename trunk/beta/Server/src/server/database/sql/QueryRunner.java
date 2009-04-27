@@ -143,10 +143,6 @@ public class QueryRunner extends Element {
 	        return status;
     	}
     	catch(SQLException SQLEe) {
-    		SQLEe.printStackTrace();
-    		System.out.println("--------");
-    		//SQLEe.getCause().printStackTrace();
-    		System.out.println("--------");
     		throw new SQLException("SQL "+sql+" code "+cod_sql +" "+SQLEe.getMessage());
     	}
 	        
