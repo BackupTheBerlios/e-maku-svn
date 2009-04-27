@@ -745,7 +745,10 @@ public class LNDocuments {
 		catch (InvalidDateException IDEe) {
 			// TODO Auto-generated catch block
 			undoTransaction(IDEe.getMessage());
-		}
+		}catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			undoTransaction(e.getMessage());
+		} 
         finally {
             CacheKeys.setKeys(new Hashtable());
         }
@@ -821,12 +824,13 @@ public class LNDocuments {
      * @throws SQLBadArgumentsException
      * @throws DontHaveKeyException 
      * @throws DontHaveBalanceException 
+     * @throws InterruptedException 
      */
     
     private static void validLNData(Element args,Element pack) throws SecurityException, 
     IllegalArgumentException, ClassNotFoundException, NoSuchMethodException, 
     InstantiationException, IllegalAccessException, InvocationTargetException, LNErrorProcecuteException, 
-    SQLBadArgumentsException, SQLNotFoundException, SQLException, DontHaveKeyException, DontHaveBalanceException {
+    SQLBadArgumentsException, SQLNotFoundException, SQLException, DontHaveKeyException, DontHaveBalanceException, InterruptedException {
  
         Iterator i = args.getChildren().iterator();
         String driver = null;
@@ -915,7 +919,7 @@ public class LNDocuments {
             	LNCprocesar.anular();
             }
             else if ("recover".equals(method)) {
-            	LNCprocesar.recover(pack);
+            	LNCprocesar.recover();
             }
             else if ("recoverDocument".equals(method)) {
             	LNCprocesar.recoverDocument();

@@ -57,7 +57,7 @@ public class ConnectionsPool {
 				String user = ConfigFileHandler.getUser(i);
 				String password = ConfigFileHandler.getPassword(i);
 				Class.forName(driver);
-				PooledConnections c = new PooledConnections(driver, url,user, password, 10);
+				PooledConnections c = new PooledConnections(driver, url,user, password, 20);
 				//Connection c = DriverManager.getConnection(url, user, password);
 				Hpoolbds.put(ConfigFileHandler.getDBName(i), c);
 			} catch (ClassNotFoundException CNFEe) {

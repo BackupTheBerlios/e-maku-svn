@@ -31,7 +31,7 @@ public class PooledConnections {
 			String tmpDir  = System.getProperty("java.io.tmpdir");
 			String fileSep = System.getProperty("file.separator");
 			String logFile = fileSep+tmpDir+fileSep+"poolConections";
-			myBroker = new DbConnectionBroker(driver,url,username,password,10,20,logFile,1);
+			myBroker = new DbConnectionBroker(driver,url,username,password,40,80,logFile,1,true,0,2);
 		} 
 		catch (IOException e)  { 
 			e.printStackTrace();

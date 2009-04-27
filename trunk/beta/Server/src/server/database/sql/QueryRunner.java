@@ -1,5 +1,6 @@
 package server.database.sql;
 
+import java.net.SocketException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -134,16 +135,18 @@ public class QueryRunner extends Element {
     public boolean ejecutarSQL(Connection conn,String[] args) 
     throws SQLException,SQLNotFoundException, SQLBadArgumentsException {
     	try{
-	    	Statement st = conn.createStatement();
 	        sql = SQLFormatAgent.getSentencia(bd,cod_sql,args);
-	        //st = ConnectionsPool.getConnection(bd).createStatement();
-	        //System.out.println("SENTENCIA SQL :: "+sql);
+	    	Statement st = conn.createStatement();
 	        boolean status = st.execute(sql);
 	        st.close();
 	        st=null;
 	        return status;
     	}
     	catch(SQLException SQLEe) {
+    		SQLEe.printStackTrace();
+    		System.out.println("--------");
+    		//SQLEe.getCause().printStackTrace();
+    		System.out.println("--------");
     		throw new SQLException("SQL "+sql+" code "+cod_sql +" "+SQLEe.getMessage());
     	}
 	        
