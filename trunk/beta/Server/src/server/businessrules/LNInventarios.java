@@ -1,8 +1,10 @@
 package server.businessrules;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -10,6 +12,9 @@ import java.util.Vector;
 
 import org.jdom.Element;
 
+import server.businessrules.LNContabilidad.Monitor;
+import server.businessrules.LNContabilidad.RecoverData;
+import server.database.connection.ConnectionsPool;
 import server.database.sql.LinkingCache;
 import server.database.sql.QueryRunner;
 import server.database.sql.SQLBadArgumentsException;
@@ -62,6 +67,8 @@ public class LNInventarios {
 	
 	private final String DELETE = "deletedocument";
 
+	private HashMap<Integer,RecoverData> recoverList = new HashMap<Integer,RecoverData>();
+
 	double saldo;
 
 	double vsaldo;
@@ -96,10 +103,11 @@ public class LNInventarios {
 	 * @throws SQLNotFoundException
 	 * @throws SQLBadArgumentsException
 	 * @throws SQLException
+	 * @throws InterruptedException 
 	 */
 
 	public void movimientos(Element pack) throws SQLNotFoundException,
-			SQLBadArgumentsException, SQLException {
+			SQLBadArgumentsException, SQLException, InterruptedException {
 
 		/*
 		 * Se verifica si el paquete entregado contiene un solo registro
@@ -556,35 +564,9 @@ public class LNInventarios {
 
 	private void anular() throws SQLException, SQLNotFoundException,
 			SQLBadArgumentsException {
-		String idDocumento = CacheKeys.getKey("ndocumento");
-		QueryRunner RQdocumento = new QueryRunner(bd, "SCS0051",
-				new String[] { idDocumento });
-		ResultSet RSdatos = RQdocumento.ejecutarSELECT();
-		QueryRunner RQanular = new QueryRunner(bd, "SCU0006",new String[]{idDocumento});
+		recoverAux("SCS0081",new String[]{CacheKeys.getKey("ndocumento")});
+		QueryRunner RQanular = new QueryRunner(bd, "SCU0006",new String[]{CacheKeys.getKey("ndocumento")});
 		RQanular.ejecutarSQL();
-		HashMap<Integer,RecoverData> recoverList = new HashMap<Integer,RecoverData>();
-
-		for(int i=0;RSdatos.next();i++) {
-			recoverList.put(i,new RecoverData(recoverList,
-					  i,
-					  RSdatos.getString(1),
-					  RSdatos.getString(2),
-					  RSdatos.getString(3),
-					  RSdatos.getDouble(4),
-					  RSdatos.getDouble(5)));
-				recoverList.get(i).start();
-
-		}
-		
-		while (recoverList.size()>0) {
-			try {
-				Thread.sleep(1000);
-			}
-			catch(InterruptedException e) {}
-		}
-
-		RSdatos.close();
-		RQdocumento.closeStatement();
 	}
 
 	private String[] ponderar(String idBodega, String idProdServ,
@@ -634,94 +616,104 @@ public class LNInventarios {
 
 	public void recoverDocument() throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
 		
-
-		HashMap<Integer,RecoverData> recoverList = new HashMap<Integer,RecoverData>();
-
-		QueryRunner RQdocument = new QueryRunner(bd,"SCS0082",new String[]{CacheKeys.getKey("ndocumento")});
-		ResultSet RSdocument = RQdocument.ejecutarSELECT();
-		System.out.println("Recalculando editados");
-		int i=0;
-		for (;RSdocument.next();i++) {
-			recoverList.put(i,new RecoverData(recoverList,
-										  i,
-										  RSdocument.getString(1),
-										  RSdocument.getString(2),
-										  RSdocument.getString(3),
-										  RSdocument.getDouble(4),
-										  RSdocument.getDouble(5)));
-			recoverList.get(i).start();
-		}
-		
-		QueryRunner RQdropDocument = new QueryRunner(bd,"SCS0085",new String[] {CacheKeys.getKey("ndocumento")});
-		ResultSet RSdropDocument = RQdropDocument.ejecutarSELECT();
-		System.out.println("Recalculando los elimiandos");
-		for (;RSdropDocument.next();i++) {
-			recoverList.put(i,new RecoverData(recoverList,
-										  i,
-										  RSdropDocument.getString(1),
-										  RSdropDocument.getString(2),
-										  RSdropDocument.getString(3),
-										  RSdropDocument.getDouble(4),
-										  RSdropDocument.getDouble(5)));
-			recoverList.get(i).start();
-		}
-		
-		while (recoverList.size()>0) {
-			try {
-				Thread.sleep(1000);
-			}
-			catch(InterruptedException e) {}
-		}
-		
+		recoverAux("SCS0082",new String[]{CacheKeys.getKey("ndocumento")});
+		recoverAux("SCS0085",new String[]{CacheKeys.getKey("ndocumento")});
 		QueryRunner RQdpDocument = new QueryRunner(bd,"SCD0003",new String[]{});
 		RQdpDocument.ejecutarSQL();
-
-
-		RQdocument.closeStatement();
-		RSdocument.close();
-		RQdropDocument.closeStatement();
-		RSdropDocument.close();
 		RQdpDocument.closeStatement();
 	}
 
-	public void recover() throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
-		HashMap<Integer,RecoverData> recoverList = new HashMap<Integer,RecoverData>();
-
+	public void recover() throws SQLNotFoundException, SQLBadArgumentsException, SQLException, InterruptedException {
+		
 		QueryRunner RQdpDocument = new QueryRunner(bd,"SCD0003",new String[]{});
-		QueryRunner RQdocument = new QueryRunner(bd,"SCS0090");
-		ResultSet RSdocument = RQdocument.ejecutarSELECT();
-		System.out.println("Recalculando editados");
-		int i=0;
-		for (;RSdocument.next();i++) {
+		recoverAux("SCS0090",null);
+		RQdpDocument.ejecutarSQL();
+		RQdpDocument.closeStatement();
+		
+	}
+
+	private void recoverAux(String sql,String args[]) {
+		Calendar calendar = Calendar.getInstance();
+		long init = calendar.getTimeInMillis();
+
+		Monitor m = new Monitor();
+		m.setPriority(Thread.MIN_PRIORITY);
+		m.start();
+		try {
+			Connection conn = ConnectionsPool.getMultiConnection(bd);
+
+			QueryRunner RQdocument = null;
+			if (args==null) {
+				RQdocument =new QueryRunner(bd,sql);
+			}
+			else {
+				RQdocument =new QueryRunner(bd,sql,args);
+			}
+			ResultSet RSdocument = RQdocument.ejecutarMTSELECT(conn);
+			int i=0;
+			for (;RSdocument.next();i++) {
+				m.setI(i);
+				runThread(i,RSdocument.getString(1),RSdocument.getString(2),RSdocument.getString(3),RSdocument.getDouble(4),RSdocument.getDouble(5));
+			}
+
+			calendar = Calendar.getInstance();
+			long end = calendar.getTimeInMillis();
+
+			synchronized(recoverList) {
+				while (recoverList.size()>0) {
+					try {
+						recoverList.wait();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}	
+			System.out.println("Inventario recosteado en " + (end-init)/1000 + " segundos ");
+			
+			m.interrupt();
+			RQdocument.closeStatement();
+			RSdocument.close();
+			ConnectionsPool.freeMultiConnection(bd, conn);
+		}
+		catch(SQLNotFoundException e) {
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLBadArgumentsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void runThread(int i,String fecha,String bodega,String idProducto,double saldo,double valorSaldo) throws InterruptedException {
+		synchronized(recoverList) {
+			if (recoverList.size()>=20) {
+				try {
+					recoverList.wait();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 			recoverList.put(i,new RecoverData(recoverList,
 					  i,
-					  null,
-					  RSdocument.getString(1),
-					  RSdocument.getString(2),
-					  0,
-					  0));
-
-			recoverList.get(i).start();
+					  fecha,
+					  bodega,
+					  idProducto,
+					  saldo,
+					  valorSaldo));
+				//recoverList.get(i).setPriority(Thread.MAX_PRIORITY);
+				recoverList.get(i).start();
 		}
-
-
-		while (recoverList.size()>0) {
-			try {
-				Thread.sleep(100);
-			}
-			catch(InterruptedException e) {}
-		}
-		recoverList = null;
-		System.gc();
-		RQdpDocument.ejecutarSQL();
-
-
-		RQdocument.closeStatement();
-		RSdocument.close();
-		RQdpDocument.closeStatement();
-		
-	}
 	
+	}
+
 	private void recoverData(String fecha,String idBodega, String idProducto,double saldoAnt,double valorSaldoAnt) {
 		String orden       ="";
 		String rfDocumento ="";
@@ -1062,10 +1054,35 @@ public class LNInventarios {
 		}
 		
 		public void run() {
-			System.out.println("--------------Lanzando Hilo "+index);
 			recoverData(_fecha,_bodega,_producto,_saldo,_valorSaldo);
-			recoverList.remove(index);
-			System.out.println("--------------Removido hilo "+index+"----------Numero de registros: "+recoverList.size());
+			synchronized(recoverList) {
+				recoverList.remove(index);
+				recoverList.notify();
+			}
 		}
 	}
+	
+	class Monitor extends Thread {
+		int i;
+		public void setI(int i) {
+			this.i=i;
+		}
+		public void run() {
+			int j = 0;
+			while (true) {
+				if (i!=j) {
+					System.out.println("Hilo Generado "+i);
+					j=i;
+				}
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					//e.printStackTrace();
+					break;
+				}
+			}
+		}
+	}
+
 }
