@@ -564,9 +564,9 @@ public class LNInventarios {
 
 	private void anular() throws SQLException, SQLNotFoundException,
 			SQLBadArgumentsException {
-		recoverAux("SCS0081",new String[]{CacheKeys.getKey("ndocumento")});
 		QueryRunner RQanular = new QueryRunner(bd, "SCU0006",new String[]{CacheKeys.getKey("ndocumento")});
 		RQanular.ejecutarSQL();
+		recoverAux("SCS0051",new String[]{CacheKeys.getKey("ndocumento")},true);
 	}
 
 	private String[] ponderar(String idBodega, String idProdServ,
@@ -616,8 +616,8 @@ public class LNInventarios {
 
 	public void recoverDocument() throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
 		
-		recoverAux("SCS0082",new String[]{CacheKeys.getKey("ndocumento")});
-		recoverAux("SCS0085",new String[]{CacheKeys.getKey("ndocumento")});
+		recoverAux("SCS0082",new String[]{CacheKeys.getKey("ndocumento")},true);
+		recoverAux("SCS0085",new String[]{CacheKeys.getKey("ndocumento")},true);
 		QueryRunner RQdpDocument = new QueryRunner(bd,"SCD0003",new String[]{});
 		RQdpDocument.ejecutarSQL();
 		RQdpDocument.closeStatement();
@@ -626,13 +626,13 @@ public class LNInventarios {
 	public void recover() throws SQLNotFoundException, SQLBadArgumentsException, SQLException, InterruptedException {
 		
 		QueryRunner RQdpDocument = new QueryRunner(bd,"SCD0003",new String[]{});
-		recoverAux("SCS0090",null);
+		recoverAux("SCS0090",null,false);
 		RQdpDocument.ejecutarSQL();
 		RQdpDocument.closeStatement();
 		
 	}
 
-	private void recoverAux(String sql,String args[]) {
+	private void recoverAux(String sql,String args[],boolean transaction) {
 		Calendar calendar = Calendar.getInstance();
 		long init = calendar.getTimeInMillis();
 
@@ -640,8 +640,14 @@ public class LNInventarios {
 		m.setPriority(Thread.MIN_PRIORITY);
 		m.start();
 		try {
-			Connection conn = ConnectionsPool.getMultiConnection(bd);
-
+			Connection conn = null;
+			if (transaction) {
+				conn = ConnectionsPool.getConnection(bd);
+			}
+			else {
+				conn = ConnectionsPool.getMultiConnection(bd);
+			}
+			
 			QueryRunner RQdocument = null;
 			if (args==null) {
 				RQdocument =new QueryRunner(bd,sql);
@@ -653,7 +659,7 @@ public class LNInventarios {
 			int i=0;
 			for (;RSdocument.next();i++) {
 				m.setI(i);
-				runThread(i,RSdocument.getString(1),RSdocument.getString(2),RSdocument.getString(3),RSdocument.getDouble(4),RSdocument.getDouble(5));
+				runThread(i,RSdocument.getString(1),RSdocument.getString(2),RSdocument.getString(3),RSdocument.getDouble(4),RSdocument.getDouble(5),transaction);
 			}
 
 			calendar = Calendar.getInstance();
@@ -674,7 +680,9 @@ public class LNInventarios {
 			m.interrupt();
 			RQdocument.closeStatement();
 			RSdocument.close();
-			ConnectionsPool.freeMultiConnection(bd, conn);
+			if (!transaction) {
+				ConnectionsPool.freeMultiConnection(bd, conn);
+			}
 		}
 		catch(SQLNotFoundException e) {
 			
@@ -690,7 +698,7 @@ public class LNInventarios {
 		}
 	}
 
-	private void runThread(int i,String fecha,String bodega,String idProducto,double saldo,double valorSaldo) throws InterruptedException {
+	private void runThread(int i,String fecha,String bodega,String idProducto,double saldo,double valorSaldo,boolean transaction) throws InterruptedException {
 		synchronized(recoverList) {
 			if (recoverList.size()>=20) {
 				try {
@@ -700,21 +708,21 @@ public class LNInventarios {
 					e.printStackTrace();
 				}
 			}
-			
 			recoverList.put(i,new RecoverData(recoverList,
 					  i,
 					  fecha,
 					  bodega,
 					  idProducto,
 					  saldo,
-					  valorSaldo));
+					  valorSaldo,
+					  transaction));
 				//recoverList.get(i).setPriority(Thread.MAX_PRIORITY);
 				recoverList.get(i).start();
 		}
 	
 	}
 
-	private void recoverData(String fecha,String idBodega, String idProducto,double saldoAnt,double valorSaldoAnt) {
+	private void recoverData(String fecha,String idBodega, String idProducto,double saldoAnt,double valorSaldoAnt,boolean transaction) {
 		String orden       ="";
 		String rfDocumento ="";
 		String tipoDocumento ="";
@@ -729,6 +737,13 @@ public class LNInventarios {
 		Hashtable<String,DataInventory> historyInv = new Hashtable<String,DataInventory>();
 
 		QueryRunner RQdata = null;
+		Connection conn = null;
+		if (transaction) {
+			conn = ConnectionsPool.getConnection(bd);
+		}
+		else {
+			conn = ConnectionsPool.getMultiConnection(bd);
+		}
 		/*
 		 * Consulta de saldo anterior a partir de la fecha inicial y los
 		 * registros a actualizar a partir de la fecha inicial.
@@ -756,7 +771,8 @@ public class LNInventarios {
 				RQdata = new QueryRunner(bd, "SCS0071", new String[] { idBodega,
 						idProducto });
 			}
-			ResultSet RSdata = RQdata.ejecutarSELECT();
+
+			ResultSet RSdata = RQdata.ejecutarMTSELECT(conn);
 			QueryRunner RQupdate = new QueryRunner(bd,"SCU0002");
 			/*
 			 * Se recorre el producto a actualizar
@@ -811,11 +827,11 @@ public class LNInventarios {
 						 * si no esta en el historial, toca consultar el valor de salida en la base de datos.
 						 */
 						else {
-							valorSalida = getDBValue( "SCS0078",rfDocumento,idProducto);
+							valorSalida = getDBValue(conn,"SCS0078",rfDocumento,idProducto);
 							//System.out.println("no encontro nada "+valorSalida+" rf: "+rfDocumento+" idProducto "+idProducto);
 						}
 					}
-					else if (tipoDocumento.equals("FA") || tipoDocumento.equals("FC") || tipoDocumento.equals("FM") || tipoDocumento.equals("IJ")){
+					else if (tipoDocumento.equals("CA") || tipoDocumento.equals("FA") || tipoDocumento.equals("FC") || tipoDocumento.equals("FM") || tipoDocumento.equals("IJ")){
 						valorSalida=pinventario;
 						ponderar=false;
 					}
@@ -854,10 +870,10 @@ public class LNInventarios {
 						 * Si el documento referencia no se encuentra en el historico se debe buscar en la base de datos
 						 */
 						else {
-							valorEntrada = getDBValue( "SCS0079",orden,idProducto);
+							valorEntrada = getDBValue(conn,"SCS0079",orden,idProducto);
 						}
 					}
-					else if (tipoDocumento.equals("IJ") && pinventario!=0){
+					else if (tipoDocumento.equals("IJ")) {// && pinventario!=0){
 							valorEntrada=pinventario;
 							ponderar=false;
 					}
@@ -877,7 +893,7 @@ public class LNInventarios {
 				double nuevoValorSalida = saldoAnt==salida && valorSalida==pinventario?valorSaldoAnt:salida*valorSalida;
 				
 				saldoAnt = saldoAnt + entrada - salida;
-				valorSaldoAnt =roundValue(valorSaldoAnt + nuevoValorEntrada - nuevoValorSalida);
+				valorSaldoAnt = saldoAnt==0?0:roundValue(valorSaldoAnt + nuevoValorEntrada - nuevoValorSalida);
 
 				/*
 				 * Si ponderar es verdadero entonces se pondera el valor del inventario teniendo en cuenta
@@ -910,7 +926,7 @@ public class LNInventarios {
 				/* 
 				 * Actualizando en la base de datos
 				 */
-				RQupdate.ejecutarSQL(new String[] {
+				RQupdate.ejecutarSQL(conn,new String[] {
 										String.valueOf(pinventario),
 										String.valueOf(valorEntrada),
 										String.valueOf(valorSalida),
@@ -937,6 +953,10 @@ public class LNInventarios {
 			RQupdate.closeStatement();
 			RQdata.closeStatement();
 			RSdata.close();
+			if (!transaction) {
+				ConnectionsPool.freeMultiConnection(bd, conn);
+			}
+
 		} catch (SQLNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -950,9 +970,9 @@ public class LNInventarios {
 
 	}
 
-	private double getDBValue(String sql,String orden,String idProducto) throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
+	private double getDBValue(Connection conn,String sql,String orden,String idProducto) throws SQLNotFoundException, SQLBadArgumentsException, SQLException {
 		QueryRunner RQventrada = new QueryRunner(bd,sql,new String[] { orden,idProducto });
-		ResultSet RSventrada = RQventrada.ejecutarSELECT();
+		ResultSet RSventrada = RQventrada.ejecutarMTSELECT(conn);
 		double valor = 0;
 		if (RSventrada.next()) {
 			valor = RSventrada.getDouble(1);
@@ -1042,8 +1062,9 @@ public class LNInventarios {
 		Integer index;
 		double _saldo;
 		double _valorSaldo;
+		boolean _transaction;
 		
-		RecoverData(HashMap<Integer,RecoverData> recoverList,Integer index,String fecha,String bodega,String producto,double saldo,double valorSaldo) {
+		RecoverData(HashMap<Integer,RecoverData> recoverList,Integer index,String fecha,String bodega,String producto,double saldo,double valorSaldo,boolean transaction) {
 			this.recoverList=recoverList;
 			this.index=index;
 			this._fecha=fecha;
@@ -1051,10 +1072,11 @@ public class LNInventarios {
 			this._producto=producto;
 			this._saldo=saldo;
 			this._valorSaldo=valorSaldo;
+			this._transaction=transaction;
 		}
 		
 		public void run() {
-			recoverData(_fecha,_bodega,_producto,_saldo,_valorSaldo);
+			recoverData(_fecha,_bodega,_producto,_saldo,_valorSaldo,_transaction);
 			synchronized(recoverList) {
 				recoverList.remove(index);
 				recoverList.notify();

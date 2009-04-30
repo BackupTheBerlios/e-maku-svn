@@ -1216,15 +1216,15 @@ public class LNContabilidad {
 	public void anular() throws SQLNotFoundException, SQLBadArgumentsException,
 			SQLException, InterruptedException {
 		String idDocumento = CacheKeys.getKey("ndocumento");
-		recoverAux("SCS0052",new String[] { idDocumento });
 		QueryRunner RQanular = new QueryRunner(bd, "SCU0005",new String[]{idDocumento});
 		RQanular.ejecutarSQL();
+		recoverAux("SCS0052",new String[] { idDocumento },true);
 		RQanular.closeStatement();
 	}
 
 	public void recoverDocument() throws SQLNotFoundException, SQLBadArgumentsException, SQLException, InterruptedException {
-		recoverAux("SCS0081",new String[]{CacheKeys.getKey("ndocumento")});
-		recoverAux("SCS0086",new String[]{CacheKeys.getKey("ndocumento")});
+		recoverAux("SCS0081",new String[]{CacheKeys.getKey("ndocumento")},true);
+		recoverAux("SCS0086",new String[]{CacheKeys.getKey("ndocumento")},true);
 		QueryRunner RQdpDocument = new QueryRunner(bd,"SCD0004",new String[]{});
 		RQdpDocument.ejecutarSQL();
 	}
@@ -1238,7 +1238,7 @@ public class LNContabilidad {
 	 */
 	
 	public void recoverCost() throws SQLNotFoundException, SQLBadArgumentsException, SQLException, InterruptedException {
-		recoverAux("SCS0087",null);
+		recoverAux("SCS0087",null,false);
 	}
 	
 	/**
@@ -1253,10 +1253,10 @@ public class LNContabilidad {
 	 */
 	
 	public void recover() {
-		recoverAux("SCS0094",null);
+		recoverAux("SCS0094",null,false);
 	}
 
-	private void recoverAux(String sql,String args[]) {
+	private void recoverAux(String sql,String args[],boolean transaction) {
 		Calendar calendar = Calendar.getInstance();
 		long init = calendar.getTimeInMillis();
 
@@ -1264,7 +1264,13 @@ public class LNContabilidad {
 		m.setPriority(Thread.MIN_PRIORITY);
 		m.start();
 		try {
-			Connection conn = ConnectionsPool.getMultiConnection(bd);
+			Connection conn = null;
+			if (transaction) {
+				conn = ConnectionsPool.getConnection(bd);
+			}
+			else {
+				conn = ConnectionsPool.getMultiConnection(bd);
+			}
 
 			QueryRunner RQdocument = null;
 			if (args==null) {
@@ -1282,11 +1288,9 @@ public class LNContabilidad {
 				String idProducto = RSdocument.getString(4)==null?"-1":RSdocument.getString(4);
 				double saldo = RSdocument.getDouble(5);
 				m.setI(i);
-				runThread(i,fecha,cta,idTercero,idProducto,saldo);
+				runThread(i,fecha,cta,idTercero,idProducto,saldo,transaction);
 			}
 
-			calendar = Calendar.getInstance();
-			long end = calendar.getTimeInMillis();
 
 			synchronized(recoverList) {
 				while (recoverList.size()>0) {
@@ -1298,12 +1302,17 @@ public class LNContabilidad {
 					}
 				}
 			}	
+			calendar = Calendar.getInstance();
+			long end = calendar.getTimeInMillis();
+
 			System.out.println("Auxiliar recosteado en " + (end-init)/1000 + " segundos ");
 			
 			m.interrupt();
 			RQdocument.closeStatement();
 			RSdocument.close();
-			ConnectionsPool.freeMultiConnection(bd, conn);
+			if (!transaction) {
+				ConnectionsPool.freeMultiConnection(bd, conn);
+			}
 		}
 		catch(SQLNotFoundException e) {
 			
@@ -1319,7 +1328,7 @@ public class LNContabilidad {
 		}
 	}
 	
-	private void runThread(int i,String fecha,String cta,String idTercero,String idProducto,double saldo) throws InterruptedException {
+	private void runThread(int i,String fecha,String cta,String idTercero,String idProducto,double saldo,boolean transaction) throws InterruptedException {
 		synchronized(recoverList) {
 			if (recoverList.size()>=20) {
 				try {
@@ -1335,14 +1344,15 @@ public class LNContabilidad {
 					  cta,
 					  idTercero,
 					  idProducto,
-					  0));
+					  0,
+					  transaction));
 				//recoverList.get(i).setPriority(Thread.MAX_PRIORITY);
 				recoverList.get(i).start();
 		}
 	
 	}
 	
-	private void recoverData(String fecha,String idCta,String idTercero,String idProducto,double saldoAnt,int hilo) {
+	private void recoverData(String fecha,String idCta,String idTercero,String idProducto,double saldoAnt,int hilo,boolean transaction) {
 		
 		/*
 		 * Si la fecha no es nula entonces se recuperara el auxiliar desde la fecha obtenida,
@@ -1353,6 +1363,13 @@ public class LNContabilidad {
 		QueryRunner RQnaturaleza= null;
 		ResultSet RSnaturaleza  = null;
 		Connection conn = null;
+		if (transaction) {
+			conn = ConnectionsPool.getConnection(bd);
+		}
+		else {
+			conn = ConnectionsPool.getMultiConnection(bd);
+		}
+
 		try {
 			if (LNDocuments.getActionDocument().equals(LNDocuments.EDIT_DOCUMENT) ||
 					LNDocuments.getActionDocument().equals(LNDocuments.DELETE_DOCUMENT)) {
@@ -1385,14 +1402,14 @@ public class LNContabilidad {
 				RSnaturaleza.close();
 				cacheNat.put(idCta, naturaleza);
 			}
-			conn = ConnectionsPool.getMultiConnection(bd);
 			RSdata=RQdata.ejecutarMTSELECT(conn);
 			double saldo=0;
+			//System.out.println("recostenando fecha "+fecha+" cta "+idCta+" tercero "+idTercero+" producto "+idProducto+" saldo "+saldoAnt+" hilo "+hilo);
 			if (naturaleza) {
-				saldo=roundValue(recoverDebit(conn,hilo,saldoAnt,RSdata));
+				saldo=roundValue(recoverDebit(conn,hilo,saldoAnt,RSdata,transaction));
 			}
 			else {
-				saldo=roundValue(recoverCredit(conn,hilo,saldoAnt,RSdata));
+				saldo=roundValue(recoverCredit(conn,hilo,saldoAnt,RSdata,transaction));
 			}
 			LinkingCache.setSaldoLibroAux(bd,"",idCta,
 					idTercero.equals("-1")?"":idTercero,
@@ -1442,7 +1459,7 @@ public class LNContabilidad {
 	 * @throws SQLNotFoundException
 	 * @throws SQLBadArgumentsException
 	 */
-	private double recoverDebit(Connection conn,int hilo,double saldoAnt,ResultSet RSdata) 
+	private double recoverDebit(Connection conn,int hilo,double saldoAnt,ResultSet RSdata,boolean transaction) 
 	throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
 		//System.out.println("inciando up");
     	QueryRunner RQupdate = new QueryRunner(bd,"SCU0003");
@@ -1452,7 +1469,8 @@ public class LNContabilidad {
 		double debe  = 0;
 		double haber = 0;
 		double saldo = saldoAnt;
-		for (int i=0;RSdata.next();i++) {
+		int i=0;
+		for (;RSdata.next();i++) {
 			orden = RSdata.getString(1);
 			debe  = RSdata.getDouble(2);
 			haber = RSdata.getDouble(3);
@@ -1462,9 +1480,12 @@ public class LNContabilidad {
 					orden
 				});
 		}
+		//System.out.println("hilo "+hilo +"ok registros "+i);
 		RQupdate.closeStatement();
-		ConnectionsPool.freeMultiConnection(bd, conn);
-        conn=null;
+		if (!transaction) {
+			ConnectionsPool.freeMultiConnection(bd, conn);
+	        conn=null;
+		}
     	return saldo;
 	}
 	
@@ -1479,7 +1500,7 @@ public class LNContabilidad {
 	 * @throws SQLNotFoundException
 	 * @throws SQLBadArgumentsException
 	 */
-	private double recoverCredit(Connection conn,int hilo,double saldoAnt,ResultSet RSdata) 
+	private double recoverCredit(Connection conn,int hilo,double saldoAnt,ResultSet RSdata,boolean transaction) 
 	throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
 		//System.out.println("inciando up");
     	QueryRunner RQupdate = new QueryRunner(bd,"SCU0003");
@@ -1489,7 +1510,8 @@ public class LNContabilidad {
 		double haber = 0;
 		double saldo = saldoAnt;
 
-		for (int i=0;RSdata.next();i++) {
+		int i=0;
+		for (;RSdata.next();i++) {
 			orden = RSdata.getString(1);
 			debe  = RSdata.getDouble(2);
 			haber = RSdata.getDouble(3);
@@ -1499,9 +1521,12 @@ public class LNContabilidad {
 					orden
 					});
 		}
+		//System.out.println("hilo "+hilo +"ok registros "+i);
     	RQupdate.closeStatement();
-		ConnectionsPool.freeMultiConnection(bd, conn);
-        conn=null;
+		if (!transaction) {
+			ConnectionsPool.freeMultiConnection(bd, conn);
+	        conn=null;
+		}
     	
 		return saldo;
 	}
@@ -1545,18 +1570,20 @@ public class LNContabilidad {
 		String _producto;
 		Integer index;
 		double _saldoAnt;
+		boolean _transaction;
 		
-		RecoverData(Integer index,String fecha,String cuenta,String tercero,String producto,double saldoAnt) {
+		RecoverData(Integer index,String fecha,String cuenta,String tercero,String producto,double saldoAnt,boolean transaction) {
 			this.index=index;
 			this._saldoAnt=saldoAnt;
 			this._fecha=fecha;
 			this._cuenta=cuenta;
 			this._tercero=tercero;
 			this._producto=producto;
+			this._transaction=transaction;
 		}
 		
 		public void run() {
-			recoverData(_fecha,_cuenta,_tercero,_producto,_saldoAnt,index);
+			recoverData(_fecha,_cuenta,_tercero,_producto,_saldoAnt,index,_transaction);
 			synchronized(recoverList) {
 				recoverList.remove(index);
 				recoverList.notify();

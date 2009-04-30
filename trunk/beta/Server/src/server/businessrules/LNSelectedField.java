@@ -123,21 +123,18 @@ public class LNSelectedField {
             	 * Si en la logica de negocios encuentra un LNData entonces....
             	 */
             	if (data.getName().equals("LNData")) {
-            		System.out.println("Es un Data");
             		Element args = (Element)data.getChildren("parameters").iterator().next();
     				parametrizar(args,bd);
     				/*
     				 * Si es un paquete simple entonces lo procesa
     				 */
     				if (((Element)pack.getChildren().iterator().next()).getName().equals("field")) {
-                		System.out.println("Es un field sin cosas");
-    	            	getFields(pack);
+                    	getFields(pack);
     	            }
     				/*
     				 * Sin no es porque viene un conjunto de paquetes que deben ser procesados
     				 */
     				else {
-    					System.out.println("Es un conjunto de packages");
     					getSubPackage(pack);
     				}
             	}
@@ -149,14 +146,12 @@ public class LNSelectedField {
     				 * Si es un paquete simple entonces lo procesa
     				 */
  	            	if (((Element)pack.getChildren().iterator().next()).getName().equals("field")) {
-	            		System.out.println("Es un field con cosas");
-		            	getFields(bd,data,pack);
+	            		getFields(bd,data,pack);
 		            }
  	   				/*
     				 * Sin no es porque viene un conjunto de paquetes que deben ser procesados
     				 */
  		            else {
-		            	System.out.println("debe ser subarg");
 						getSubPackage(bd,data,pack);
 		            }
             	}
@@ -165,7 +160,6 @@ public class LNSelectedField {
             	 */
             	
             	else {
-            		System.out.println("Hay un conjunto de sentencias q deben ser procesadas");
             		analizar((Element)data.clone(),(Element)pack.clone(),bd,true);
             	}
             }
@@ -190,7 +184,6 @@ public class LNSelectedField {
 			} else if ("conditional".equals(attribute)) {
 				conditional = value;
 			} else if ("discartKey".equals(attribute)) {
-				System.out.println("Este es value: "+value.toString());
 				discartKeys.add(value);
 			}
 		}
@@ -301,7 +294,6 @@ public class LNSelectedField {
 		 * Luego se adicionan los valores del paquete
 		 */
 		for (int j = 0; j < cols.length; j++) {
-			System.out.println("solicitando col: "+cols[j]);
 			fieldSQL.add(((Element) lpack.get(cols[j])).getValue());
 		}
 		RQfields.ejecutarSQL(fieldSQL.toArray(new String[fieldSQL.size()]));
