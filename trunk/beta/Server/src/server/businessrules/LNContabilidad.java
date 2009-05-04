@@ -1343,7 +1343,7 @@ public class LNContabilidad {
 					  cta,
 					  idTercero,
 					  idProducto,
-					  0,
+					  saldo,
 					  transaction));
 				//recoverList.get(i).setPriority(Thread.MAX_PRIORITY);
 				recoverList.get(i).start();

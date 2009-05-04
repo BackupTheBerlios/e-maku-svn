@@ -384,7 +384,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
      */
     
     public synchronized void setValueAt(Object value, int rowIndex, final int colIndex) {
-        System.out.println("por setValueAt");
+        System.out.println("por setValueAt "+value+" row "+rowIndex+" colIndex "+colIndex);
     	/*
          * Esta clase se encarga de solicitar la busqueda al Servidor de transacciones
          * y cargarla a sus respectivos campos
@@ -1133,52 +1133,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 										catch (IllegalAccessException IAEe) {
 											IAEe.printStackTrace();
 										}
-										
-										//if (argConstructor!=null) {
-											VdataRows.get(rowIndex).set(col,obj);
-											fireTableCellUpdated(rowIndex,col);
-											/*
-											calcular(rowIndex,colIndex);	
-						                    totalizar();
-						                    */
-											/* Comentado para añadir llamado a metodo calcular y totalizar por 
-											 * inconcistencia en generacion de formulas por valores obtenidos
-											 * desde una consulta.
-											 * 2007-06-23   pipelx
-											 * 
-											 * Este codigo analiza las columnas por beanshell antes de insertarlas 
-											if (formulas!=null) {
-												try{
-									        		for (int i=0;i<formulas.size();i++) {
-									        			
-									                    Formula formula = (Formula)formulas.get(i);
-									                    String var = formula.getFormula();
-									                    switch(formula.getType()) {
-												            case BEANSHELL:
-												            		procesarFormulas(var,rowIndex,false);
-												            		break;
-									                    }
-									        		}
-												}
-												catch(NumberFormatException NFEe) {
-														NFEe.printStackTrace();
-												    message("ERR_FORMULA",NFEe.getMessage());
-												    errFormula=true;
-												}
-												catch(ArrayIndexOutOfBoundsException AIOOBEe) {
-														AIOOBEe.printStackTrace();
-												    message("ERR_FORMULA");
-												    errFormula=true;
-												} catch (EvalError e) {
-														e.printStackTrace();
-												    message("ERR_FORMULA");
-												    errFormula=true;
-												}
-
-
-											}
-											*/
-										//}
+										VdataRows.get(rowIndex).set(col,obj);
 				        			}
 				        		}
 				        	}
@@ -2062,7 +2017,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     	 * 
     	 * 2007-06-25                         pipelx.
     	 */
-    	
+    	System.out.println("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-");
     	loadingQuery = true;
     	Element rootNode = doc.getRootElement();
     	String rootNodeName = rootNode.getName();
@@ -2159,10 +2114,18 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		            				Object obj = addCols(j,listCols);
 		            				if (!((Element)listCols.get(j)).getValue().trim().equals("NR")) {
 		                				if (j==0 && search) {
+		                					System.out.println("por set");
 		                					setValueAt(obj,index,j);
 		                				}
 		                				else {
+		                					System.out.println("por up");
 		                					updateCells(obj,index,j);
+											System.out.println("sqlCode "+sqlCode);
+											if (sqlCode.equals("") && formulas!=null) {
+												calcular(index,j);
+												totalizar();
+											}
+
 		                				}
 		            				}
 		                		}
