@@ -90,7 +90,9 @@ public class ConnectionsPool {
 	}
 
 	public static void freeMultiConnection(String nombreBD,Connection conn) {
-		Hpoolbds.get(nombreBD).freeConnection(conn);
+		if (conn!=null) {
+			Hpoolbds.get(nombreBD).freeConnection(conn);
+		}
 	}
 
 	public static boolean chekDataBase(String DataBase) {

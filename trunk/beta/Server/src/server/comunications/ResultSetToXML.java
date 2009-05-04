@@ -90,26 +90,11 @@ public class ResultSetToXML extends Document implements Runnable {
      * Metodo encargado de ejcutar y transmitir la sentencia sql
      */
     public void run() {
-    		Connection conn=null;
+    		Connection conn = ConnectionsPool.getMultiConnection(bd);
     		Statement st = null;
         	ResultSet RSdatos	= null;
         	try {
             	String sqlCode = null;
-            	while (true) {
-            		try {
-	            		conn = ConnectionsPool.getMultiConnection(bd);
-	            		if (conn!=null) {
-	            			break;
-	            		}
-	            		else {
-	            			System.out.println("Conexiones agotadas al motor de base de datos...");
-	            			Thread.sleep(1000);
-	            		}
-            		}
-            		catch(InterruptedException e) {
-            			e.printStackTrace();
-            		}
-            	}
             	st = conn.createStatement();
             	
 	            bufferSocket = new ByteArrayOutputStream();
