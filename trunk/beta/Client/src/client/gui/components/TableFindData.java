@@ -354,16 +354,16 @@ public class TableFindData extends JPanel implements AnswerListener,
 				}
 
 			};
-			loadingQuery();
+			loadingQuery(tagDataColumn);
 		} else {
 			if (valideLink > 0) {
 				TMFDtabla = new EmakuTableModel(GFforma, sqlCode, rows,
 						formulas, exportTotalCols, importTotalCol, impValues,
-						totales, externalValues, ATFDargs, valideLink, keyLink);
+						totales, externalValues, ATFDargs, valideLink, keyLink,tagDataColumn);
 			} else {
 				TMFDtabla = new EmakuTableModel(GFforma, sqlCode, rows,
 						formulas, exportTotalCols, importTotalCol, impValues,
-						totales, externalValues, ATFDargs);
+						totales, externalValues, ATFDargs,tagDataColumn);
 			}
 			TMFDtabla.setTagDataColumn(tagDataColumn);
 			TMFDtabla.setConditionatedRecord(conditionatedRecord);
@@ -600,9 +600,18 @@ public class TableFindData extends JPanel implements AnswerListener,
 		JTtabla.getSelectionModel().addListSelectionListener(
 				new ListSelectionListener() {
 					public void valueChanged(ListSelectionEvent e) {
-
 						Runnable sselection = new Runnable() {
 							public void run() {
+								synchronized(TMFDtabla) {
+									if (formulas!=null && !TMFDtabla.isCalculado()) {
+										try {
+											TMFDtabla.wait();
+										} catch (InterruptedException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+									}
+
 									int sel = JTtabla.getSelectedRow();
 									if (sel == -1) {
 										return;
@@ -619,19 +628,18 @@ public class TableFindData extends JPanel implements AnswerListener,
 													obj.toString());
 										}
 									}
-
+	
 									if (sendRecordOnSelectedRow) {
 										Element element = new Element("table");
 										// boolean fullRow =
 										// sendRecord(sel,element,singleSendRecord);
-										System.out.println("llamando desde valueChanged");
 										sendRecord(sel, element,singleSendRecord);
 										// if (fullRow) {
 										RecordEvent event = new RecordEvent(this, element);
 										notificando(event,singleSendRecord);
 										// }
 									}
-
+	
 									if (protectSelected) {
 										if (sel > 0) {
 											if (TMFDtabla.getValueAt(sel - 1, 0) == null
@@ -645,6 +653,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 														false);
 											}
 										}
+									}
+									TMFDtabla.setCalculado(false);
 								}
 							}
 						};
@@ -654,15 +664,17 @@ public class TableFindData extends JPanel implements AnswerListener,
 				});
 	}
 
-	private void loadingQuery() {
+	private void loadingQuery(int tagDataColumn) {
 		class loadingSQL extends Thread {
 			private String initSQL;
 
 			private String[] initArgs;
-
-			loadingSQL(String initSQL, String[] initArgs) {
+			private int tagDataColumn;
+			
+			loadingSQL(String initSQL, String[] initArgs,int tagDataColumn) {
 				this.initSQL = initSQL;
 				this.initArgs = initArgs;
+				this.tagDataColumn=tagDataColumn;
 			}
 
 			public void run() {
@@ -672,7 +684,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 							initArgs);
 					TMFDtabla = new EmakuTableModel(GFforma, sqlCode, doc,
 							formulas, exportTotalCols, importTotalCol, totales,
-							externalValues, ATFDargs);
+							externalValues, ATFDargs,tagDataColumn);
 					JTtabla.setModel(TMFDtabla);
 					propertiesTable();
 
@@ -696,7 +708,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 		for (int j = 0; j < numInitImps; i++, j++) {
 			args[i] = initImps[j];
 		}
-		new loadingSQL(initSQL, args).start();
+		new loadingSQL(initSQL, args,tagDataColumn).start();
 	}
 
 	public JPanel getPanel() {
@@ -1094,11 +1106,11 @@ public class TableFindData extends JPanel implements AnswerListener,
 		}
 	}
 
-	public synchronized  boolean sendRecord(int rowIndex, Element element, String record) {
-
+	public boolean sendRecord(int rowIndex, Element element, String record) {
 		int j = 0;
 		int cont = 0;
 		String elmName = element.getName();
+		ArrayList<Integer> retornos = new ArrayList<Integer>();
 		/*
 		 * Este codigo verifica que el registro este lleno en su totalidad,
 		 * cuando se llena una tabla a partir de una consulta esta validación se
@@ -1127,28 +1139,34 @@ public class TableFindData extends JPanel implements AnswerListener,
 				try {
 					Element col = new Element("col");
 					String tok = stk.nextToken();
-					System.out.println("tok: "+tok);
 					try {
-						int column = Integer.parseInt(tok);
-						String cellVal = TMFDtabla.getValueAt(rowIndex, column)
-								.toString();
-						if (ATFDargs[column].getType().equals("COMBOSQL")) {
-							String value = "";
-							StringTokenizer stkVal = new StringTokenizer(
-									cellVal, " ");
-							while (true) {
-								try {
-									value = stkVal.nextToken();
-								} catch (NoSuchElementException NSEe) {
-									break;
-								}
-							}
-							cellVal = value;
+						if (tok.equals("NR")) {
+							col.setText("NR");
 						}
-						col.setText(cellVal);
-						currentVal += cellVal;
+						else {
+							int column = Integer.parseInt(tok);
+							retornos.add(column);
+							String cellVal = TMFDtabla.getValueAt(rowIndex, column)
+									.toString();
+							if (ATFDargs[column].getType().equals("COMBOSQL")) {
+								String value = "";
+								StringTokenizer stkVal = new StringTokenizer(
+										cellVal, " ");
+								while (true) {
+									try {
+										value = stkVal.nextToken();
+									} catch (NoSuchElementException NSEe) {
+										break;
+									}
+								}
+								cellVal = value;
+							}
+							col.setText(cellVal);
+							currentVal += cellVal;
+						}
 						row.addContent(col);
-					} catch (NumberFormatException NFEe) {
+					} 
+					catch (NumberFormatException NFEe) {
 						col.setText(tok.substring(1, tok.length() - 1));
 						row.addContent(col);
 					}
@@ -1169,6 +1187,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 			if (!arriveAnswerEvent) {
 				boolean containValue = false;
 				for (int i = 0; i < lastValue.size(); i++) {
+					
 					if (lastValue.containsKey(currentVal)
 							&& lastValue.get(currentVal) == rowIndex) {
 						containValue = true;
@@ -1189,6 +1208,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 		return fullRow;
 	}
 
+	
 	class TModelListener implements TableModelListener {
 
 		JTable table;
@@ -1231,30 +1251,19 @@ public class TableFindData extends JPanel implements AnswerListener,
 	}
 
 	private void verificaSendRecord(int row, Element e, String recordType) {
-		if (recordType!=null && sendRecord(row, e, recordType) && row==TMFDtabla.getCurrentIndex()-1) {
+		boolean send = sendRecord(row,e,recordType);
+		if (recordType!=null && send) {// && row==TMFDtabla.getCurrentIndex()-1) {
 			RecordEvent event = new RecordEvent(this, e);
 			notificando(event,recordType);
 		}
 	}
 
 	public void arriveRecordEvent(RecordEvent e) {
-		System.out.println("llego--");
-    	XMLOutputter out = new XMLOutputter();
-    	out.setFormat(org.jdom.output.Format.getPrettyFormat());
-		Element elm = (Element) ((Element) e.getElement()).clone();
-		Document doc = new Document();
-		doc.setRootElement(elm);
-    	try {
-			out.output(doc,System.out);
-		} catch (IOException ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
-		}
-
+		
 		if (e.getElement().getChildren().size() > 0) {
-			//Document doc = new Document();
-			//Element elm = (Element) ((Element) e.getElement()).clone();
-			//doc.setRootElement(elm);
+			Document doc = new Document();
+			Element elm = (Element) ((Element) e.getElement()).clone();
+			doc.setRootElement(elm);
 			TMFDtabla.setQuery(doc, e.isRecalculable());
 			e.setRowsLoaded(TMFDtabla.getRowsLoaded());
 			if (JTtabla.isFocusOwner()) {
@@ -1503,4 +1512,5 @@ public class TableFindData extends JPanel implements AnswerListener,
 		JTtabla.updateUI();
 		TMFDtabla.totalizar();
 	}
+	
 }

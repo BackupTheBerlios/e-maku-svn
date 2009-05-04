@@ -84,9 +84,8 @@ public class LNContabilidad {
 	private double base;
 
 	private int colCost = -1;
-
-	private boolean debug;
 	
+	private boolean debug;
 	private static Hashtable<String,Boolean> cacheNat = new Hashtable<String,Boolean>();
 	private HashMap<Integer,RecoverData> recoverList = new HashMap<Integer,RecoverData>();
 

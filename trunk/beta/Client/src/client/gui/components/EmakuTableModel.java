@@ -108,8 +108,9 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     private int currentIndex = 0;
     private boolean isInitQuery;
     private String [] argsQuery;
-	private Hashtable<String,Integer> arrivedKeys = new Hashtable<String, Integer>();
+	private Hashtable<String,ArrayList> arrivedKeys = new Hashtable<String,ArrayList>();
 	private Hashtable<String, Integer> rowsLoaded = new Hashtable<String, Integer>();
+	private boolean calculado;
     
     public EmakuTableModel(GenericForm GFforma,
             		  String sqlCode,
@@ -120,8 +121,9 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             		  Vector impValues,
             		  int[] totales,
             		  Hashtable externalValues,
-            		  ColumnsArgsGenerator[] ATFDargs) {
-        Cargar(GFforma, sqlCode, rows, formulas,exportTotalCols,importTotalCols,impValues,totales,externalValues,ATFDargs);
+            		  ColumnsArgsGenerator[] ATFDargs,
+            		  int tagData) {
+        Cargar(GFforma, sqlCode, rows, formulas,exportTotalCols,importTotalCols,impValues,totales,externalValues,ATFDargs,tagData);
         
     }
 
@@ -133,7 +135,8 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             		  HashMap importTotalCols,
             		  int[] totales,
             		  Hashtable externalValues,
-			  		  ColumnsArgsGenerator[] ATFDargs) {
+			  		  ColumnsArgsGenerator[] ATFDargs,
+            		  int tagData) {
     	this.isInitQuery=true;
 		this.GFforma=GFforma;
 		this.sqlCode=sqlCode;
@@ -143,6 +146,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         this.externalValues=externalValues;
 		this.ATFDargs=ATFDargs;
 		this.initSQL=true;
+		this.tagDataColumn=tagData;
     	argsQuery = new String[1];
 		VdataRows = new Vector<Vector<Object>>();
         totalCol = new Hashtable<String,Double>();
@@ -163,14 +167,25 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 			Vector<Object> col = new Vector<Object>();
 			for (int j=0;j<ATFDargs.length;j++) {
 			    col.add(addCols(j,Lcol));
+				if (tagDataColumn==j) {
+					String value = ((Element)Lcol.get(j)).getText();
+					if (arrivedKeys.containsKey(value.trim())) {
+						arrivedKeys.get(value.trim()).add(i);
+					}
+					else {
+						ArrayList<Integer> row =new ArrayList<Integer>();
+						row.add(i);
+						arrivedKeys.put(value.trim(),row);
+					}
+				}
 			}
 			/* Se adiciona la nueva fila al vector de filas */
 			VdataRows.add(col);
 			if (formulas!=null) {
 				calcular(i,0,false);
 			}
-			
         }
+        currentIndex=VdataRows.size();
         totalizar();
     }
     
@@ -184,11 +199,11 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     		int[] totales, 
     		Hashtable externalValues, 
     		ColumnsArgsGenerator[] ATFDargs, 
-    		int valideLink, int keyLink) {
+    		int valideLink, int keyLink,int tagData) {
     	
 	    	this.valideLink = valideLink;
 	    	this.keyLink = keyLink;
-	    	Cargar(GFforma, sqlCode, rows, formulas,exportTotalCols,importTotalCols,impValues,totales,externalValues,ATFDargs);
+	    	Cargar(GFforma, sqlCode, rows, formulas,exportTotalCols,importTotalCols,impValues,totales,externalValues,ATFDargs,tagData);
 	    	
     }
     
@@ -201,7 +216,8 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		  Vector impValues,
 		  int[] totales,
 		  Hashtable externalValues,
-		  ColumnsArgsGenerator[] ATFDargs) {
+		  ColumnsArgsGenerator[] ATFDargs,
+		  int tagData) {
     	
 		this.GFforma=GFforma;
         this.sqlCode=sqlCode;
@@ -219,7 +235,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         this.importTotalCol = importTotalCols;
     	argsQuery = new String[impValues.size()+1];
     	GFforma.addInitiateFinishListener(this);
-        
+        this.tagDataColumn=tagData;
         for (int i=0;i<rows;i++) {
             Vector<Object> newRows = new Vector<Object>();
             for (int j=0;j<ATFDargs.length;j++) {
@@ -553,6 +569,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
      */
     
     private void calcular(int rowIndex,int colIndex,boolean initQuery) {
+    	synchronized(this) {
 	    	boolean calc = false;
 	    	if (rowIndex>=0) {
 	    		if (rowIndex>0) {
@@ -562,74 +579,77 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	    		if (rowIndex==0)
 	    			calc= true;
 	    	}
-    		
-        if (!errFormula && calc) {
-	        	/* Procesando formulas con Clases Locales*/
-	        	if (formulas!=null) {
-	        		try {
-		        		for (int i=0;i<formulas.size();i++) {
-		                    Formula formula = (Formula)formulas.get(i);
-		                    String var = formula.getFormula();
-		                    if ( getColIndex(var) != colIndex || formula.getType()!=SIMPLE ) {
-			                    switch(formula.getType()) {
-					            case SIMPLE:
-					            		procesarFormulas(var,rowIndex,true);
-					            		break;
-					            case BEANSHELL:
-					            		procesarFormulas(var,rowIndex,false);
-					            		break;
-					            case SUPER:
-						            	for (int j = 0 ; j < rows && !"".equals(getValueAt(j,0)); j++ ) {
-								        	procesarFormulas(var,j,false);
-						            	}
-						            	break;
-					            case SIMPLENQ:
-						            	if (initQuery) {
+	
+	        if (!errFormula && calc) {
+		        	/* Procesando formulas con Clases Locales*/
+		        	if (formulas!=null) {
+		        		try {
+			        		for (int i=0;i<formulas.size();i++) {
+			                    Formula formula = (Formula)formulas.get(i);
+			                    String var = formula.getFormula();
+			                    if ( getColIndex(var) != colIndex || formula.getType()!=SIMPLE ) {
+				                    switch(formula.getType()) {
+						            case SIMPLE:
 						            		procesarFormulas(var,rowIndex,true);
-						            	}
-						            	break;
-					            case BEANSHELLNQ:
-						            	if (initQuery) {
+						            		break;
+						            case BEANSHELL:
 						            		procesarFormulas(var,rowIndex,false);
-						            	}
-						            	break;
-					            case SUPERNQ:
-						            	if (initQuery) {
+						            		break;
+						            case SUPER:
 							            	for (int j = 0 ; j < rows && !"".equals(getValueAt(j,0)); j++ ) {
-									        	procesarFormulas(var,j,true);
-									        }
-						            	}
-						            	break;
-					            case SUPERBEANNQ:
-						            	if (initQuery) {
-						            		for (int j = 0 ; j < rows && !"".equals(getValueAt(j,0)); j++ ) {
 									        	procesarFormulas(var,j,false);
-						            		}
-						            	}
-						            	break;
+							            	}
+							            	break;
+						            case SIMPLENQ:
+							            	if (initQuery) {
+							            		procesarFormulas(var,rowIndex,true);
+							            	}
+							            	break;
+						            case BEANSHELLNQ:
+							            	if (initQuery) {
+							            		procesarFormulas(var,rowIndex,false);
+							            	}
+							            	break;
+						            case SUPERNQ:
+							            	if (initQuery) {
+								            	for (int j = 0 ; j < rows && !"".equals(getValueAt(j,0)); j++ ) {
+										        	procesarFormulas(var,j,true);
+										        }
+							            	}
+							            	break;
+						            case SUPERBEANNQ:
+							            	if (initQuery) {
+							            		for (int j = 0 ; j < rows && !"".equals(getValueAt(j,0)); j++ ) {
+										        	procesarFormulas(var,j,false);
+							            		}
+							            	}
+							            	break;
+				                    }
 			                    }
-		                    }
+			        		}
 		        		}
-	        		}
-	        		catch(NumberFormatException NFEe) {
-	        				NFEe.printStackTrace();
-	        		    message("ERR_FORMULA",NFEe.getMessage());
-	        		    errFormula=true;
-	        		}
-	        		catch(ArrayIndexOutOfBoundsException AIOOBEe) {
-	        				AIOOBEe.printStackTrace();
-	        		    message("ERR_FORMULA");
-	        		    errFormula=true;
-	        		} catch (EvalError e) {
-	        				e.printStackTrace();
-	        		    message("ERR_FORMULA");
-	        		    errFormula=true;
-	        		}
-
-
-	        	}
-        }
-        initQuery = true;
+		        		catch(NumberFormatException NFEe) {
+		        				NFEe.printStackTrace();
+		        		    message("ERR_FORMULA",NFEe.getMessage());
+		        		    errFormula=true;
+		        		}
+		        		catch(ArrayIndexOutOfBoundsException AIOOBEe) {
+		        				AIOOBEe.printStackTrace();
+		        		    message("ERR_FORMULA");
+		        		    errFormula=true;
+		        		} catch (EvalError e) {
+		        				e.printStackTrace();
+		        		    message("ERR_FORMULA");
+		        		    errFormula=true;
+		        		}
+	
+	
+		        	}
+		        }
+	        initQuery = true;
+	        calculado=true;
+	        notify();
+		}
     }
 
     
@@ -646,6 +666,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         /* Recorriendo cada formula */
         String key=var.substring(0,1);
         String newVar=reemplazarFormula(var,rowIndex,valueOld);
+        System.out.println("procesando.. "+newVar);
         Object result = null;
         int col= getColIndex(key);
         
@@ -2041,7 +2062,6 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     	 * 
     	 * 2007-06-25                         pipelx.
     	 */
-    	System.out.println("Recalcular: "+search);
     	
     	loadingQuery = true;
     	Element rootNode = doc.getRootElement();
@@ -2049,7 +2069,6 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     	Element header = rootNode.getChild("header");
         List listRows = rootNode.getChildren("row");
         int max = listRows.size();
-        
         if (max>0) {
         	if (tagDataColumn==-1) {
                 /*
@@ -2090,7 +2109,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
                 }
             }
             else if (tagDataColumn>-1) synchronized (arrivedKeys) {
-            	
+
             	/* Limpiamos la tabla en caso de que llegue otro answer */
 				if (header!=null) {
 					clean();
@@ -2114,75 +2133,97 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             		String valueKey = tagDataElement.getValue().trim();
             		/* Se verifica si ese valor ya esta indexado */
             		if (arrivedKeys.containsKey(valueKey)) {
-            			int index = arrivedKeys.get(valueKey);
-            			/* Se actualiza la fila indexada */
-            			if (delete) {
-            				deleteRow(index);
-            				arrivedKeys.remove(valueKey);
-            				Object [] keys = arrivedKeys.keySet().toArray();
-            				for (int j=0; j < keys.length ; j++) {
-            					Integer current = arrivedKeys.get(keys[j]);
-            					if (index < current) {
-            						arrivedKeys.put((String) keys[j],current-1);
-            					}
-            				}
-            			}
-            			else {
-	            			for (int j=0;j<ATFDargs.length;j++) {
-
-	            				Object obj = addCols(j,listCols);
-	            				if (j==0 && search) {
-	        						setValueAt(obj,index,j);
+            			Iterator indexs = arrivedKeys.get(valueKey).iterator();
+            			while (indexs.hasNext()) {
+            				int index = (Integer)indexs.next();
+	            			/* Se actualiza la fila indexada */
+	            			if (delete) {
+	            				deleteRow(index);
+	            				arrivedKeys.remove(valueKey);
+	            				Object [] keys = arrivedKeys.keySet().toArray();
+	            				for (int j=0; j < keys.length ; j++) {
+	            					Iterator currents = arrivedKeys.get(keys[j]).iterator();
+	            					ArrayList<Integer> rows = new ArrayList<Integer>();
+	            					while(currents.hasNext()) {
+	            						int current = (Integer)currents.next();
+		            					if (index < current) {
+		            						rows.add(current-1);
+		            					}
+	            					}
+	            					arrivedKeys.remove((String)keys[j]);
+            						arrivedKeys.put((String) keys[j],rows);
 	            				}
-	            				else {
-	            					updateCells(obj,index,j);
-	            				}
-	                		}
+	            			}
+	            			else {
+		            			for (int j=0;j<ATFDargs.length;j++) {
+		            				Object obj = addCols(j,listCols);
+		            				if (!((Element)listCols.get(j)).getValue().trim().equals("NR")) {
+		                				if (j==0 && search) {
+		                					setValueAt(obj,index,j);
+		                				}
+		                				else {
+		                					updateCells(obj,index,j);
+		                				}
+		            				}
+		                		}
+	            			}
             			}
             		}
             		/* Si la llave no esta indexada entonces procedemos a
             		 * isertar los datos en la ultima fila
             		 */
             		else {
-            			/* Esto es para adicionar mas filas si la tabla se queda
-            			 * corta
-            			 */
-            			if (VdataRows.size() <= i) {
-            				Vector<Object> col = new Vector<Object>();
-                			for (int k=0;k<ATFDargs.length;k++) {
-                			    col.add(addCols(k,listCols));
-                			}
-                			VdataRows.add(col);
-                			rows++;
-                			fireTableDataChanged();
-            			}
-            			arrivedKeys.put(valueKey, currentRow);
-            			String record = "";
-            			boolean addRecord = true;
-            			for (int j=0;j<ATFDargs.length && j < listCols.size();j++) {
-            				Element col = (Element)listCols.get(j);
-            				if (conditionatedRecord!=null && !BeanShell.eval(formulaReplacer(conditionatedRecord,listCols))) {
-            					addRecord = false;
-            					break;
-            				}
-            				Object obj = addCols(j,listCols);
-            				if (j==0 && search) {
-            					record+=col.getValue().trim();
-		                    	setValueAt(obj,currentRow,j);
-    		    			}
-            				else {
-            					updateCells(obj,currentRow,j);
-            				}
-                		}
-            			if (addRecord) {
-	            			if (header!=null) {
-	            				this.rowsLoaded.put(record,currentRow);
+            			try {
+	            			/* Esto es para adicionar mas filas si la tabla se queda
+	            			 * corta
+	            			 */
+	            			if (VdataRows.size() <= i) {
+	    	            			
+	            				Vector<Object> col = new Vector<Object>();
+	                			for (int k=0;k<ATFDargs.length;k++) {
+	                				if (!((Element)listCols.get(k)).getValue().trim().equals("NR")) {
+	                					col.add(addCols(k,listCols));
+	                				}
+	                			}
+	                			VdataRows.add(col);      
+	                			rows++;
+	                			fireTableDataChanged();
 	            			}
-	            			else {
-	            				this.rowsLoaded.remove(record);
+	            			String record = "";
+	            			boolean addRecord = true;
+	            			for (int j=0;j<ATFDargs.length && j < listCols.size();j++) {
+	            				Element col = (Element)listCols.get(j);
+	            				if (conditionatedRecord!=null && !BeanShell.eval(formulaReplacer(conditionatedRecord,listCols))) {
+	            					addRecord = false;
+	            					break;
+	            				}
+	            				Object obj = addCols(j,listCols);
+	            				if (!((Element)listCols.get(j)).getValue().trim().equals("NR")) {
+		            			
+		            				if (j==0 && search) {
+		            					record+=col.getValue().trim();
+				                    	setValueAt(obj,currentRow,j);
+		    		    			}
+		            				else {
+		            					updateCells(obj,currentRow,j);
+		            				}
+	            				}
+	                		}
+	            			if (addRecord) {
+		            			if (header!=null) {
+		            				this.rowsLoaded.put(record,currentRow);
+		            			}
+		            			else {
+		            				this.rowsLoaded.remove(record);
+		            			}
+		            			currentRow++;
 	            			}
-	            			currentRow++;
-            			}
+	            			
+	        				ArrayList<Integer> rows = new ArrayList<Integer>();
+	        				rows.add(currentRow);
+	        				arrivedKeys.put(valueKey, rows);
+
+	            		}catch(ArrayIndexOutOfBoundsException e) {}
             		} 
             	}
             }
@@ -2410,6 +2451,13 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 
 	public boolean isInitQuery() {
 		return isInitQuery;
+	}
+
+	public boolean isCalculado() {
+		return calculado;
+	}
+	public void setCalculado(boolean calculado) {
+		this.calculado=calculado;
 	}
 
 }
