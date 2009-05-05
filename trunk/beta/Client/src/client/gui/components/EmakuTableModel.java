@@ -666,7 +666,6 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         /* Recorriendo cada formula */
         String key=var.substring(0,1);
         String newVar=reemplazarFormula(var,rowIndex,valueOld);
-        System.out.println("procesando.. "+newVar);
         Object result = null;
         int col= getColIndex(key);
         
@@ -2111,9 +2110,9 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	            			}
 	            			else {
 		            			for (int j=0;j<ATFDargs.length;j++) {
-		            				Object obj = addCols(j,listCols);
 		            				if (!((Element)listCols.get(j)).getValue().trim().equals("NR")) {
-		                				if (j==0 && search) {
+		            					Object obj = addCols(j,listCols);
+			            				if (j==0 && search) {
 		                					System.out.println("por set");
 		                					setValueAt(obj,index,j);
 		                				}

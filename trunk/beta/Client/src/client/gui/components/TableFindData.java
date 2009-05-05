@@ -1,26 +1,68 @@
 package client.gui.components;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.lang.reflect.*;
-import java.math.*;
-import java.text.*;
-import java.util.*;
+import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.Format;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import javax.swing.AbstractCellEditor;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
-import org.jdom.*;
+import org.jdom.Document;
+import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
 
-import com.toedter.calendar.*;
-import common.gui.components.*;
-import common.gui.forms.*;
-import common.misc.text.*;
-import common.transactions.*;
+import com.toedter.calendar.JDateChooser;
+import common.gui.components.AnswerEvent;
+import common.gui.components.AnswerListener;
+import common.gui.components.DataErrorException;
+import common.gui.components.RecordEvent;
+import common.gui.components.RecordListener;
+import common.gui.components.VoidPackageException;
+import common.gui.forms.EndEventGenerator;
+import common.gui.forms.ExternalValueChangeEvent;
+import common.gui.forms.ExternalValueChangeListener;
+import common.gui.forms.GenericForm;
+import common.gui.forms.InstanceFinishingListener;
+import common.gui.forms.NotFoundComponentException;
+import common.misc.text.TextDataValidator;
+import common.transactions.TransactionServerException;
+import common.transactions.TransactionServerResultSet;
 
 /**
  * TableFindData.java Creado el 06-abr-2005
@@ -111,6 +153,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 
 	private boolean arriveAnswerEvent;
 	private boolean singleValueRecord;
+	private int groupValueRecord = -1;
 
 	private String[] initImps;
 
@@ -284,6 +327,12 @@ public class TableFindData extends JPanel implements AnswerListener,
 			} else if (args.getAttributeValue("attribute").equals(
 					"singleValueRecord")) {
 				singleValueRecord = Boolean.parseBoolean(args.getValue());
+			}else if (args.getAttributeValue("attribute").equals(
+					"groupValueRecord")) {
+				try {
+					groupValueRecord = Integer.parseInt(args.getValue());
+				}
+				catch(NumberFormatException e) {}
 			}else if (args.getAttributeValue("attribute").equals("valideLink")) {
 				valideLink = Integer.parseInt(args.getValue());
 			} else if (args.getAttributeValue("attribute").equals("keyLink")) {
@@ -1110,7 +1159,6 @@ public class TableFindData extends JPanel implements AnswerListener,
 		int j = 0;
 		int cont = 0;
 		String elmName = element.getName();
-		ArrayList<Integer> retornos = new ArrayList<Integer>();
 		/*
 		 * Este codigo verifica que el registro este lleno en su totalidad,
 		 * cuando se llena una tabla a partir de una consulta esta validación se
@@ -1127,14 +1175,18 @@ public class TableFindData extends JPanel implements AnswerListener,
 				j++;
 			}
 		}
+		String currentVal = "";
 
 		boolean fullRow = cont == ATFDargs.length ? true : false;
-		if (fullRow || arriveAnswerEvent || singleValueRecord) {
+		if (!fullRow) {
+			return false;
+		}
+		
+		if ((fullRow || arriveAnswerEvent || singleValueRecord) && groupValueRecord==-1) {
 
 			Element row = new Element("row");
 			StringTokenizer stk = new StringTokenizer(record, ",");
 			boolean next = true;
-			String currentVal = "";
 			while (next) {
 				try {
 					Element col = new Element("col");
@@ -1145,7 +1197,6 @@ public class TableFindData extends JPanel implements AnswerListener,
 						}
 						else {
 							int column = Integer.parseInt(tok);
-							retornos.add(column);
 							String cellVal = TMFDtabla.getValueAt(rowIndex, column)
 									.toString();
 							if (ATFDargs[column].getType().equals("COMBOSQL")) {
@@ -1176,38 +1227,142 @@ public class TableFindData extends JPanel implements AnswerListener,
 			}
 			element.addContent(row);
 
-			/*
-			 * Este codigo verifica que el registro no exista anteriormente si
-			 * proviene de un arriveAnswer, la validación no se realiza
-			 */
-			if ("delete".equals(elmName)) {
-				//lastValue.remove(currentVal);
-				return true;
-			} 
-			if (!arriveAnswerEvent) {
-				boolean containValue = false;
-				for (int i = 0; i < lastValue.size(); i++) {
-					
-					if (lastValue.containsKey(currentVal)
-							&& lastValue.get(currentVal) == rowIndex) {
-						containValue = true;
-						break;
-					}
+		} 
+		else if (fullRow || arriveAnswerEvent || groupValueRecord !=-1) {
+			currentVal = groupDataRecord(rowIndex,element,record);
+		}
+		
+		/*
+		 * Este codigo verifica que el registro no exista anteriormente si
+		 * proviene de un arriveAnswer, la validación no se realiza
+		 */
+		if ("delete".equals(elmName)) {
+			//lastValue.remove(currentVal);
+			return true;
+		} 
+		if (!arriveAnswerEvent) {
+			boolean containValue = false;
+			for (int i = 0; i < lastValue.size(); i++) {
+				
+				if (lastValue.containsKey(currentVal)
+						&& lastValue.get(currentVal) == rowIndex) {
+					containValue = true;
+					break;
 				}
-				if (!containValue) {
-					lastValue.put(currentVal, rowIndex);
-					return true;
-				} else {
-					return false;
-				}
-			} else {
+			}
+			if (!containValue) {
 				lastValue.put(currentVal, rowIndex);
 				return true;
+			} else {
+				return false;
 			}
+		} else {
+			lastValue.put(currentVal, rowIndex);
+			return true;
 		}
-		return fullRow;
 	}
 
+	public String groupDataRecord(int rowIndex,Element element,String record) {
+		Hashtable<Integer,Double> totalCols = new Hashtable<Integer,Double>();
+		String groupVar = (String)TMFDtabla.getValueAt(rowIndex,groupValueRecord);
+		StringTokenizer rgtk = new StringTokenizer(record,",");
+		
+		/*
+		 * Recorremos el registro a retornar y sacamos las columnas totalizables
+		 */
+		while (true) {
+			try {
+				try {
+					int i = Integer.parseInt(rgtk.nextToken());
+					if (TMFDtabla.getValueAt(0,i) instanceof Number && i!=groupValueRecord) {
+						totalCols.put(i,0.0);
+					}
+				}
+				catch(NumberFormatException nfe) {}
+			} catch (NoSuchElementException NSEe) {
+				break;
+			}
+		}
+
+		/*
+		 * Recorremos la tabla y totalizamos las columnas totalizables 
+		 */
+		for (int i=0;i<TMFDtabla.getRowCount() && !TMFDtabla.getValueAt(i,0).equals("");i++) {
+			if (TMFDtabla.getValueAt(i,groupValueRecord).equals(groupVar)) {
+				for (int j=0;j<TMFDtabla.getColumnCount();j++) {
+					if (totalCols.containsKey(j)) {
+						double acum = totalCols.get(j);
+						double val = 0;
+						Object obj = TMFDtabla.getValueAt(i,j);
+						if (obj instanceof BigDecimal) {
+							val = ((BigDecimal)obj).doubleValue();
+						}
+						else {
+							val = (Double)obj;
+						}
+						acum+=val;
+						totalCols.put(j,acum);
+					}
+				}
+			}
+		}
+
+		
+		/*
+		 * Armamos el xml retornado
+		 */
+		
+		Element row = new Element("row");
+		StringTokenizer stk = new StringTokenizer(record, ",");
+		boolean next = true;
+		String currentVal = "";
+		while (next) {
+			try {
+				Element col = new Element("col");
+				String tok = stk.nextToken();
+				try {
+					if (tok.equals("NR")) {
+						col.setText("NR");
+					}
+					else {
+						int column = Integer.parseInt(tok);
+						if (totalCols.containsKey(column)) {
+							String val = String.valueOf(totalCols.get(column));
+							col.setText(val);
+							currentVal +=val;
+						}
+						else {
+							String cellVal = TMFDtabla.getValueAt(rowIndex, column).toString();
+							if (ATFDargs[column].getType().equals("COMBOSQL")) {
+								String value = "";
+								StringTokenizer stkVal = new StringTokenizer(
+										cellVal, " ");
+								while (true) {
+									try {
+										value = stkVal.nextToken();
+									} catch (NoSuchElementException NSEe) {
+										break;
+									}
+								}
+								cellVal = value;
+							}
+							col.setText(cellVal);
+							currentVal += cellVal;
+						}
+					}
+					row.addContent(col);
+				} 
+				catch (NumberFormatException NFEe) {
+					col.setText(tok.substring(1, tok.length() - 1));
+					row.addContent(col);
+				}
+			} catch (NoSuchElementException NSEe) {
+				next = false;
+			}
+		}
+		element.addContent(row);
+		return currentVal;
+	}
 	
 	class TModelListener implements TableModelListener {
 
@@ -1259,7 +1414,17 @@ public class TableFindData extends JPanel implements AnswerListener,
 	}
 
 	public void arriveRecordEvent(RecordEvent e) {
-		
+		/*
+		try {
+	        XMLOutputter xmlOutputter = new XMLOutputter();
+	        xmlOutputter.setFormat(org.jdom.output.Format.getPrettyFormat());
+	        xmlOutputter.output(doc,System.out);
+	    }
+	    catch (IOException ex) {
+	        ex.printStackTrace();
+	    }
+
+	*/
 		if (e.getElement().getChildren().size() > 0) {
 			Document doc = new Document();
 			Element elm = (Element) ((Element) e.getElement()).clone();
