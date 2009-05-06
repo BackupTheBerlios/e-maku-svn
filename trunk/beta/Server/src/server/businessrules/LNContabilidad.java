@@ -772,7 +772,6 @@ public class LNContabilidad {
 
 	public double columnData(Element pack) throws SQLNotFoundException,
 			SQLBadArgumentsException, SQLException, DontHaveKeyException {
-
 		/*
 		 * Cada columna de una fila, puede generar un asiento contable, la
 		 * definicion de que asiento genera cada columna se parametriza como
@@ -800,6 +799,7 @@ public class LNContabilidad {
 		 * obtiene los datos de las columnas ...
 		 */
 		for (int k = 0; k < colData.size(); k++) {
+			System.out.println("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-");
 			int col = Integer.parseInt(colData.get(k));
 			Element element = (Element) colElement.get(col);
 
@@ -819,7 +819,7 @@ public class LNContabilidad {
 			boolean debito = false;
 			String account = colAccount.get(k);
 			
-			System.out.println("cuenta: "+account);
+			//System.out.println("cuenta: "+account);
 
 			/*
 			 * Ser verifica si en las columnas viene especificado el codigo del
@@ -863,11 +863,6 @@ public class LNContabilidad {
 				debito = naturaleza.booleanValue();
 			}
 
-			if (debug) {
-				System.out.println("La cuenta a procesar es: "+account);
-				System.out.println("La cuenta esta registrada: "+cuentaregistrada);
-				System.out.println("Valor del movimiento: "+valueAccount);
-			}
 			/*
 			 * Si la columna actual genera asiento y el valor de la columna es
 			 * mayor a 0 entonces ...
@@ -884,6 +879,13 @@ public class LNContabilidad {
 			if (valueAccount != 0 && !"IdProdServ".equals(account.trim()) && cuentaregistrada) {
 				double baseAccount = LinkingCache
 						.getPCBase(bd, account.trim());
+
+				if (debug) {
+					System.out.println("La cuenta a procesar es: "+account);
+					System.out.println("La cuenta esta registrada: "+cuentaregistrada);
+					System.out.println("Valor del movimiento: "+valueAccount);
+					System.out.println("idProdServ: "+idProdServ);
+				}
 
 				/*
 				 * Si el valor recibido es negativo, entonces lo pasamos a positivo y cambiamos la 
@@ -910,7 +912,7 @@ public class LNContabilidad {
 					 * predefinido
 					 */
 					String idCta = LinkingCache.getPCIdCta(bd, account);
-
+					System.out.println("idCta: "+idCta);
 					/*
 					 * Una vez verificado esto, se procede a generar el asiento
 					 * dependiendo de su tipo
@@ -948,7 +950,9 @@ public class LNContabilidad {
 								valueAccount = bigDecimal.doubleValue();
 							} catch (NumberFormatException NFEe) {
 							}
-
+							System.out.println("cantidades existentes del producto "+idProdServ+": "+LinkingCache.getVSaldoInventario(bd, bodega, idProdServ));
+							System.out.println("costo de promedio del producto "+idProdServ+": "+LinkingCache.getPCosto(bd,bodega, idProdServ));
+							System.out.println("valor de valueAccount:  (costo*cant) "+valueAccount);
 						}
 
 						asientosConTipo(idCta, 
@@ -1011,6 +1015,7 @@ public class LNContabilidad {
 				}
 			}
 		}
+		System.out.println("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-");
 
 		return partidaDoble;
 
@@ -1053,6 +1058,7 @@ public class LNContabilidad {
 
 		if (tipo == LIBRO_AUX_INV) {
 			saldo = LinkingCache.getSaldoLibroAux(bd, "", idCta, "", idTipo);
+			System.out.println("Saldo almacenado: "+saldo);
 			LNUndoSaldos.setSaldoAntLibroAux(bd, "", idCta, "", idTipo,
 					new Double(saldo));
 		} else {
@@ -1080,18 +1086,22 @@ public class LNContabilidad {
 			asiento[6] = "0";
 			if (natCta) {
 				nsaldo = saldo + value;
+				System.out.println("nuevo saldo: "+saldo+"+"+value+"="+nsaldo);
 			}
 			else {
 				nsaldo = saldo - value;
+				System.out.println("nuevo saldo: "+saldo+"-"+value+"="+nsaldo);
 			}
 		} else {
 			asiento[5] = "0";
 			asiento[6] = String.valueOf(value);
 			if (natCta) {
 				nsaldo = saldo - value;
+				System.out.println("nuevo saldo: "+saldo+"-"+value+"="+nsaldo);
 			}
 			else {
 				nsaldo = saldo + value;
+				System.out.println("nuevo saldo: "+saldo+"+"+value+"="+nsaldo);
 			}
 		}
 		
@@ -1100,6 +1110,7 @@ public class LNContabilidad {
 			BigDecimal bigDecimal = new BigDecimal(nsaldo);
 			bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
 			nsaldo = bigDecimal.doubleValue();
+			System.out.println("Saldo redondeado: "+nsaldo);
 		} catch (NumberFormatException NFEe) {
 		}
 		asiento[7] = String.valueOf(nsaldo);

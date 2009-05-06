@@ -468,12 +468,6 @@ public class LinkingCache {
           		  subkey.substring(0,subkey.length()-1)+" valor: "+
                     rs.getObject(rsValue));
             */ 
-            if (tabla.containsKey("K-" + 
-          		  bd + 
-        		  "-" +
-        		  subkey.substring(0,subkey.length()-1))) {
-            	System.out.println("registro repetido "+sql);
-            }
             tabla.put("K-" + 
             		  bd + 
             		  "-" +
@@ -737,6 +731,7 @@ public class LinkingCache {
 
     public static double getSaldoLibroAux(String bd, String centro, String cta, String id_tercero, String id_prod_serv) {
     	if (Hlibro_aux.containsKey("K-"+bd+"-"+centro+"-"+cta+"-"+id_tercero+"-"+id_prod_serv)) {
+    		System.out.println("Saldo a consultar: "+"K-"+bd+"-"+centro+"-"+cta+"-"+id_tercero+"-"+id_prod_serv);
     		return ((Double)Hlibro_aux.get("K-"+bd+"-"+centro+"-"+cta+"-"+id_tercero+"-"+id_prod_serv)).doubleValue();
         }
         else {
