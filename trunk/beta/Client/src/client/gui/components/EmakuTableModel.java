@@ -2110,23 +2110,25 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	            			}
 	            			else {
 		            			for (int j=0;j<ATFDargs.length;j++) {
-		            				if (!((Element)listCols.get(j)).getValue().trim().equals("NR")) {
-		            					Object obj = addCols(j,listCols);
-			            				if (j==0 && search) {
-		                					System.out.println("por set");
-		                					setValueAt(obj,index,j);
-		                				}
-		                				else {
-		                					System.out.println("por up");
-		                					updateCells(obj,index,j);
-											System.out.println("sqlCode "+sqlCode);
-											if (sqlCode.equals("") && formulas!=null) {
-												calcular(index,j);
-												totalizar();
-											}
-
-		                				}
-		            				}
+		            				try {
+			            				if (!((Element)listCols.get(j)).getValue().trim().equals("NR")) {
+			            					Object obj = addCols(j,listCols);
+				            				if (j==0 && search) {
+			                					System.out.println("por set");
+			                					setValueAt(obj,index,j);
+			                				}
+			                				else {
+			                					System.out.println("por up");
+			                					updateCells(obj,index,j);
+												System.out.println("sqlCode "+sqlCode);
+												if (sqlCode.equals("") && formulas!=null) {
+													calcular(index,j);
+													totalizar();
+												}
+	
+			                				}
+			            				}
+		            				} catch(IndexOutOfBoundsException e) {}
 		                		}
 	            			}
             			}
