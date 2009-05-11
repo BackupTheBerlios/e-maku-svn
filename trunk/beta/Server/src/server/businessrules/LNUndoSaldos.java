@@ -59,6 +59,19 @@ public class LNUndoSaldos {
 			HSaldoAntInv.put(key,saldos);
 		}
 	}	
+	/**
+	 * Este metodo inserta saldos anteriores de Libros Auxiliares
+     * @param bd Nombre de la base de datos
+     * @param centro Codigo del centro costo en el que se va a buscar la cuenta
+     * @param cta Cuenta en la que se va a buscar el saldo
+     * @param saldo el nuevo valor del saldo
+	 */
+	public static void setSaldoAntLibroAux(String bd,String centro,String cta,String id_terceros,String id_prod_serv,Double saldo) {
+        String key = "K-"+bd+"-"+centro+"-"+cta+"-"+id_terceros+"-"+id_prod_serv;
+        if (!HSaldoAntLibroAux.containsKey(key)) {
+        	HSaldoAntLibroAux.put(key,saldo);
+        }
+	}
 	
 	/**
 	 * Este metodo deshace todos los saldos de las tablas que mueven saldos
@@ -72,7 +85,7 @@ public class LNUndoSaldos {
 			while(Ekeys.hasMoreElements()) {
 				String key = Ekeys.nextElement();
 				InfoInventario saldos = Evalues.nextElement();
-	        	System.out.println("Restaurando saldo "+key+" a costo "+saldos.getPcosto()+" saldo "+saldos.getSaldo()+" vsaldo "+saldos.getSaldo());
+	        	System.out.println("Restaurando saldo "+key+" costo "+saldos.getPcosto()+" saldo "+saldos.getSaldo()+" vsaldo "+saldos.getVsaldo());
 				LinkingCache.setInventario(key,saldos);
 			}
 			HSaldoAntInv.clear();
