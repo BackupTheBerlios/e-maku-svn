@@ -461,13 +461,13 @@ public class LinkingCache {
         	for (String subData:key) {
         		subkey+=rs.getString(subData).trim()+"-";
         	}
-        	
+        	/*
             System.out.println("K-" + 
           		  bd + 
           		  "-" +
           		  subkey.substring(0,subkey.length()-1)+" valor: "+
                     rs.getObject(rsValue));
-             
+             */
             tabla.put("K-" + 
             		  bd + 
             		  "-" +

@@ -130,6 +130,7 @@ public class LNDocuments {
         LNDocuments.pack=_pack;
         LNDocuments.idTransaction=_idTransaction;
         partidaDoble = 0;
+        LNUndoSaldos.clearSaldosAnteriores();
         /*
          * Se procede a validar la informacion de la parametrizacion
          */

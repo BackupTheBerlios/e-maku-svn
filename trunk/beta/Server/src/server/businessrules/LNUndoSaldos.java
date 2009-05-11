@@ -104,6 +104,9 @@ public class LNUndoSaldos {
 		}
 	}
 	
-	
+	public static void clearSaldosAnteriores() {
+		HSaldoAntInv.clear();
+		HSaldoAntLibroAux.clear();
+	}
 }
 
