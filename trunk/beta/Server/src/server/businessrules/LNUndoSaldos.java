@@ -53,7 +53,7 @@ public class LNUndoSaldos {
 	 */
 
 	public static void setSaldoAntInv(String bd,String bodega,String idProdServ,double value) {
-		String key = "K-"+bd+"-"+bodega+"-"+idProdServ+"-"+value;
+		String key = "K-"+bd+"-"+bodega+"-"+idProdServ;
 		if (!HSaldoAntInv.containsKey(key)) {
 			HSaldoAntInv.put(key,new Double(value));
 		}
