@@ -98,7 +98,7 @@ public class LNUndoSaldos {
 				String key = Ekeys.nextElement();
 				double saldo = (Evalues.nextElement()).doubleValue();
 	        	System.out.println("Restaurando saldo "+key+" a "+saldo);
-				LinkingCache.setVSaldoInventario(key,saldo);
+				LinkingCache.setSaldoLibroAux(key,saldo);
 			}
 			HSaldoAntLibroAux.clear();
 		}
