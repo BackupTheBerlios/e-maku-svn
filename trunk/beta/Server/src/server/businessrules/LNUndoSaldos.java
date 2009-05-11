@@ -77,21 +77,27 @@ public class LNUndoSaldos {
 	 */
 
 	public static void undoSaldos() {
+		System.out.println("----------------------------INVENTARIOS---------------------------------");
 		if (HSaldoAntInv.size()>0) {
 			Enumeration<String> Ekeys = HSaldoAntInv.keys();
 			Enumeration<Double> Evalues = HSaldoAntInv.elements();
 			while(Ekeys.hasMoreElements()) {
-				LinkingCache.setVSaldoInventario(Ekeys.nextElement(),
-												(Evalues.nextElement()).doubleValue());
+				String key = Ekeys.nextElement();
+				double saldo = (Evalues.nextElement()).doubleValue();
+	        	System.out.println("Restaurando saldo "+key+" a "+saldo);
+				LinkingCache.setVSaldoInventario(key,saldo);
 			}
 			HSaldoAntInv.clear();
 		}
+		System.out.println("----------------------------CONTABILIDAD---------------------------------");
 		if (HSaldoAntLibroAux.size()>0) {
 			Enumeration<String> Ekeys = HSaldoAntLibroAux.keys();
 			Enumeration<Double> Evalues = HSaldoAntLibroAux.elements();
 			while(Ekeys.hasMoreElements()) {
-				LinkingCache.setVSaldoInventario(Ekeys.nextElement(),
-												(Evalues.nextElement()).doubleValue());
+				String key = Ekeys.nextElement();
+				double saldo = (Evalues.nextElement()).doubleValue();
+	        	System.out.println("Restaurando saldo "+key+" a "+saldo);
+				LinkingCache.setVSaldoInventario(key,saldo);
 			}
 			HSaldoAntLibroAux.clear();
 		}
