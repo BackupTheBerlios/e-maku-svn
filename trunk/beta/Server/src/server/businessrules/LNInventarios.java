@@ -15,6 +15,7 @@ import org.jdom.Element;
 import server.businessrules.LNContabilidad.Monitor;
 import server.businessrules.LNContabilidad.RecoverData;
 import server.database.connection.ConnectionsPool;
+import server.database.sql.InfoInventario;
 import server.database.sql.LinkingCache;
 import server.database.sql.QueryRunner;
 import server.database.sql.SQLBadArgumentsException;
@@ -224,6 +225,7 @@ public class LNInventarios {
 		/*
 		 * Se captura los saldos antes del movimiento
 		 */
+		double pcosto = LinkingCache.getPCosto(bd, record[2], record[3]);
 		saldo = LinkingCache.getSaldoInventario(bd, record[2], record[3]);
 		vsaldo = LinkingCache.getVSaldoInventario(bd, record[2], record[3]);
 
@@ -231,7 +233,7 @@ public class LNInventarios {
 		 * Se almacena primer saldo de la transaccion
 		 */
 
-		LNUndoSaldos.setSaldoAntInv(bd, record[2], record[3], saldo);
+		LNUndoSaldos.setSaldoAntInv(bd, record[2], record[3], new InfoInventario(pcosto,saldo,vsaldo));
 		String[] ponderado = null;
 		double cantidad = Double.parseDouble(record[4]);
 		double entrada = cantidad > 0 ? Double.parseDouble(record[5])
@@ -539,6 +541,7 @@ public class LNInventarios {
 		/*
 		 * Se captura los saldos antes del movimiento
 		 */
+		double pcosto = LinkingCache.getPCosto(bd, record[2],record[3]); 
 		saldo = LinkingCache.getSaldoInventario(bd, record[2], record[3]);
 		vsaldo = LinkingCache.getVSaldoInventario(bd, record[2], record[3]);
 
@@ -546,7 +549,7 @@ public class LNInventarios {
 		 * Se almacena primer saldo de la transaccion
 		 */
 
-		LNUndoSaldos.setSaldoAntInv(bd, record[2], record[3], saldo);
+		LNUndoSaldos.setSaldoAntInv(bd, record[2], record[3], new InfoInventario(pcosto,saldo,vsaldo));
 
 		return record;
 	}
