@@ -166,18 +166,9 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 			List Lcol = Erow.getChildren();
 			Vector<Object> col = new Vector<Object>();
 			for (int j=0;j<ATFDargs.length;j++) {
-			    col.add(addCols(j,Lcol));
-				if (tagDataColumn==j) {
-					String value = ((Element)Lcol.get(j)).getText();
-					if (arrivedKeys.containsKey(value.trim())) {
-						arrivedKeys.get(value.trim()).add(i);
-					}
-					else {
-						ArrayList<Integer> row =new ArrayList<Integer>();
-						row.add(i);
-						arrivedKeys.put(value.trim(),row);
-					}
-				}
+			    Object obj = addCols(j,Lcol);
+				col.add(obj);
+			    addKeyTagData(obj,i,j);
 			}
 			/* Se adiciona la nueva fila al vector de filas */
 			VdataRows.add(col);
@@ -2039,7 +2030,9 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
                     if (VdataRows.size() <= i) {
         				Vector<Object> col = new Vector<Object>();
             			for (int k=0;k<ATFDargs.length;k++) {
-            			    col.add(addCols(k,Lcol));
+            			    Object obj = addCols(k,Lcol);
+            				col.add(obj);
+            				addKeyTagData(obj,i,k);
             			}
             			/* Se adiciona la nueva fila al vector de filas */
             			VdataRows.add(col);
@@ -2047,7 +2040,9 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             			fireTableDataChanged();
         			}
             		for (int j=0;j<ATFDargs.length;j++) {
-            			updateCells(addCols(j,Lcol),i,j);
+            			Object obj = addCols(j,Lcol);
+            			updateCells(obj,i,j);
+            			addKeyTagData(obj,i,j);
             		}
                 	/*}
                 	catch (ArrayIndexOutOfBoundsException IAOBEe) {
@@ -2076,7 +2071,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 				if ("delete".equals(rootNodeName)) {
 					delete = true;
 				}
-				
+				System.out.println("va por tagdata");
             	for (int i=0;i < max; i ++){
             		Element row=(Element)listRows.get(i);
             		List listCols=row.getChildren();
@@ -2197,7 +2192,21 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         loadingQuery = false;
         doc = null;
     }
-
+    private void addKeyTagData(Object obj,int row,int col) {
+		if (tagDataColumn==col) {
+			String value = obj.toString();
+			System.out.println("tag data es igual obj: "+value);
+			if (arrivedKeys.containsKey(value.trim())) {
+				arrivedKeys.get(value.trim()).add(row);
+			}
+			else {
+				ArrayList<Integer> register =new ArrayList<Integer>();
+				register.add(row);
+				arrivedKeys.put(value.trim(),register);
+			}
+		}    	
+    }
+    
 	private String formulaReplacer(String var,List table) {
 		String newVar = "";
 		for (int j = 0; j < var.length(); j++) {
