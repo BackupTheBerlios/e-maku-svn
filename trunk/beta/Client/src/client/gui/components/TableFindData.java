@@ -1034,7 +1034,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 			}
 		}
 		JTtabla.getSelectionModel().clearSelection();
-		TMFDtabla.setQuery(doc,false);
+		TMFDtabla.setQuery(doc,false,true);
 		/*Thread t = new Thread() {
 			public void run() {
 				if (sendRecord != null || singleSendRecord != null) {
@@ -1429,7 +1429,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 			Document doc = new Document();
 			Element elm = (Element) ((Element) e.getElement()).clone();
 			doc.setRootElement(elm);
-			TMFDtabla.setQuery(doc, e.isRecalculable());
+			TMFDtabla.setQuery(doc, e.isRecalculable(),false);
 			e.setRowsLoaded(TMFDtabla.getRowsLoaded());
 			if (JTtabla.isFocusOwner()) {
 				JTtabla.scrollRectToVisible(JTtabla.getCellRect(TMFDtabla.getCurrentIndex(), 0, false));

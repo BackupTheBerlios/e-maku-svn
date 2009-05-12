@@ -462,7 +462,7 @@ public class LinkingCache {
         		subkey+=rs.getString(subData).trim()+"-";
         	}
         	/*
-            System.out.println("K-" + 
+            System.out.println("K-" + gººº
           		  bd + 
           		  "-" +
           		  subkey.substring(0,subkey.length()-1)+" valor: "+

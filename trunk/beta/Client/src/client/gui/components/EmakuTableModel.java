@@ -1991,9 +1991,6 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		return pack;
     }
     
-    public void setQuery(Document doc) {
-    	setQuery(doc,false);
-    }
     
     /**
      * Este metodo se encarga de cargar la tabla a partir de un
@@ -2001,7 +1998,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
      * @param doc
      * @param search
      */
-    public void setQuery(Document doc,boolean search) {
+    public void setQuery(Document doc,boolean search,boolean arriveAnswer) {
     	/*
     	 * Anteriormente la carga de los datos se hacia en un hilo,
     	 * el hilo lo elimine porque no encontre razon para trabajarlo,
@@ -2024,7 +2021,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         List listRows = rootNode.getChildren("row");
         int max = listRows.size();
         if (max>0) {
-        	if (tagDataColumn==-1) {
+        	if (tagDataColumn==-1 || arriveAnswer) {
                 /*
                  * Se limpia la tabla antes de desplegar la consulta nueva
                  */
