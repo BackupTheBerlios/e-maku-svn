@@ -94,7 +94,7 @@ public class XLSReportMaker extends Thread {
 		            beans.put("foo", rsdc.getRows());
 		            XLSTransformer transformer = new XLSTransformer();
 		            String path = "jar:file:"+System.getenv("EMAKU_HOME")+"/lib"+File.separator+
-		                          "emaku/"+jarFile+"!/"+jarDirectory+template;
+		                          "companies/"+jarFile+"!/"+jarDirectory+template;
 		            try {
 		            	URL url = new URL(path);
 		            	System.out.println("Read template =>" + url);
