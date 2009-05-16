@@ -375,7 +375,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
      */
     
     public synchronized void setValueAt(Object value, int rowIndex, final int colIndex) {
-        System.out.println("por setValueAt "+value+" row "+rowIndex+" colIndex "+colIndex);
+        //System.out.println("por setValueAt "+value+" row "+rowIndex+" colIndex "+colIndex);
     	/*
          * Esta clase se encarga de solicitar la busqueda al Servidor de transacciones
          * y cargarla a sus respectivos campos
@@ -2004,7 +2004,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     	 * 
     	 * 2007-06-25                         pipelx.
     	 */
-    	System.out.println("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-");
+    	//System.out.println("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-");
     	loadingQuery = true;
     	Element rootNode = doc.getRootElement();
     	String rootNodeName = rootNode.getName();
@@ -2071,7 +2071,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 				if ("delete".equals(rootNodeName)) {
 					delete = true;
 				}
-				System.out.println("va por tagdata");
+				//System.out.println("va por tagdata");
             	for (int i=0;i < max; i ++){
             		Element row=(Element)listRows.get(i);
             		List listCols=row.getChildren();
@@ -2106,13 +2106,13 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 			            				if (!((Element)listCols.get(j)).getValue().trim().equals("NR")) {
 			            					Object obj = addCols(j,listCols);
 				            				if (j==0 && search) {
-			                					System.out.println("por set");
+			                					//System.out.println("por set");
 			                					setValueAt(obj,index,j);
 			                				}
 			                				else {
-			                					System.out.println("por up");
+			                					//System.out.println("por up");
 			                					updateCells(obj,index,j);
-												System.out.println("sqlCode "+sqlCode);
+												//System.out.println("sqlCode "+sqlCode);
 												if (sqlCode.equals("") && formulas!=null) {
 													calcular(index,j);
 													totalizar();
@@ -2120,7 +2120,8 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	
 			                				}
 			            				}
-		            				} catch(IndexOutOfBoundsException e) {}
+	            					}
+		            				catch(IndexOutOfBoundsException e) {}
 		                		}
 	            			}
             			}
@@ -2129,6 +2130,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             		 * isertar los datos en la ultima fila
             		 */
             		else {
+            			System.out.println("no esta en la llave");
             			try {
 	            			/* Esto es para adicionar mas filas si la tabla se queda
 	            			 * corta
@@ -2147,24 +2149,28 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	            			}
 	            			String record = "";
 	            			boolean addRecord = true;
-	            			for (int j=0;j<ATFDargs.length && j < listCols.size();j++) {
-	            				Element col = (Element)listCols.get(j);
-	            				if (conditionatedRecord!=null && !BeanShell.eval(formulaReplacer(conditionatedRecord,listCols))) {
-	            					addRecord = false;
-	            					break;
-	            				}
-	            				Object obj = addCols(j,listCols);
-	            				if (!((Element)listCols.get(j)).getValue().trim().equals("NR")) {
-		            			
-		            				if (j==0 && search) {
-		            					record+=col.getValue().trim();
-				                    	setValueAt(obj,currentRow,j);
-		    		    			}
-		            				else {
-		            					updateCells(obj,currentRow,j);
+        					//System.out.println("getValue "+getValueAt(currentRow,0));
+	            			if (!sqlCode.equals("") || !getValueAt(currentRow,0).equals("")) {
+	            			
+		            			for (int j=0;j<ATFDargs.length && j < listCols.size();j++) {
+		            				Element col = (Element)listCols.get(j);
+		            				if (conditionatedRecord!=null && !BeanShell.eval(formulaReplacer(conditionatedRecord,listCols))) {
+		            					addRecord = false;
+		            					break;
 		            				}
-	            				}
-	                		}
+		            				Object obj = addCols(j,listCols);
+		            				if (!((Element)listCols.get(j)).getValue().trim().equals("NR")) {
+		            					//System.out.println("llenando "+obj);
+			            				if (j==0 && search) {
+			            					record+=col.getValue().trim();
+					                    	setValueAt(obj,currentRow,j);
+			    		    			}
+			            				else {
+			            					updateCells(obj,currentRow,j);
+			            				}
+		            				}
+		                		}
+        					}
 	            			if (addRecord) {
 		            			if (header!=null) {
 		            				this.rowsLoaded.put(record,currentRow);
@@ -2195,7 +2201,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     private void addKeyTagData(Object obj,int row,int col) {
 		if (tagDataColumn==col) {
 			String value = obj.toString();
-			System.out.println("tag data es igual obj: "+value);
+			//System.out.println("tag data es igual obj: "+value);
 			if (arrivedKeys.containsKey(value.trim())) {
 				arrivedKeys.get(value.trim()).add(row);
 			}
