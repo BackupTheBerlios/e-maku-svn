@@ -444,7 +444,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
     		
 		    if (pack.size() > 0 || !namePackage.equals("TRANSACTION")) {
 		   		try {
-		   			formatPackageStructure(pack,typePackage,idManualTransaction);
+		   			formatPackageStructure(pack,namePackage,idManualTransaction);
 				} catch (MalformedProfileException e) {
 					e.printStackTrace();
 				}
