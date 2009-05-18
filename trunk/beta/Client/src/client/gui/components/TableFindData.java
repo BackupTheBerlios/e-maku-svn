@@ -1414,17 +1414,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 	}
 
 	public void arriveRecordEvent(RecordEvent e) {
-		/*
-		try {
-	        XMLOutputter xmlOutputter = new XMLOutputter();
-	        xmlOutputter.setFormat(org.jdom.output.Format.getPrettyFormat());
-	        xmlOutputter.output(doc,System.out);
-	    }
-	    catch (IOException ex) {
-	        ex.printStackTrace();
-	    }
-
-	*/
+		
+	
 		if (e.getElement().getChildren().size() > 0) {
 			Document doc = new Document();
 			Element elm = (Element) ((Element) e.getElement()).clone();

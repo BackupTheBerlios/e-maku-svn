@@ -474,17 +474,19 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 			        	//updateCells(ATFDargs[2].getTypeDate(),rowIndex,2);
 						if (GFforma.containExternalValues("sequence_emaku_touch")) {
 							double sequence = GFforma.getExteralValues("sequence_emaku_touch");
+							arrivedKeys.remove(String.valueOf(sequence));
 							if (sequence>0) {
 								GFforma.setExternalValues("sequence_emaku_touch", --sequence);
 							}
 						}
 
+		        		
 			        	if (currentIndex<rowIndex) {
 			        		System.out.println("me meti por el si");
 			        		currentIndex = rowIndex ;	
 			        	}
 			        	else {
-			        		System.out.println("me meti por el no");
+			        		System.out.println("me meti por el no ");
 			        	}
 			        	notificaDeleteRecordEvent(rowIndex);
 		        }
@@ -1165,6 +1167,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     		}
     		i++;
     	}
+    	arrivedKeys.clear();
     	currentIndex = 0;
     }
     
@@ -2005,6 +2008,17 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     	 * 2007-06-25                         pipelx.
     	 */
     	//System.out.println("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-");
+    	
+		try {
+	        XMLOutputter xmlOutputter = new XMLOutputter();
+	        xmlOutputter.setFormat(org.jdom.output.Format.getPrettyFormat());
+	        xmlOutputter.output(doc,System.out);
+	    }
+	    catch (IOException ex) {
+	        ex.printStackTrace();
+	    }
+
+
     	loadingQuery = true;
     	Element rootNode = doc.getRootElement();
     	String rootNodeName = rootNode.getName();
@@ -2079,6 +2093,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             		String valueKey = tagDataElement.getValue().trim();
             		/* Se verifica si ese valor ya esta indexado */
             		if (arrivedKeys.containsKey(valueKey)) {
+            			System.out.println("llave contendia "+valueKey);
             			Iterator indexs = arrivedKeys.get(valueKey).iterator();
             			while (indexs.hasNext()) {
             				int index = (Integer)indexs.next();
@@ -2149,7 +2164,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	            			}
 	            			String record = "";
 	            			boolean addRecord = true;
-        					//System.out.println("getValue "+getValueAt(currentRow,0));
+        					System.out.println("currentRow "+currentRow+" getValue "+getValueAt(currentRow,0));
 	            			if (!sqlCode.equals("") || !getValueAt(currentRow,0).equals("")) {
 	            			
 		            			for (int j=0;j<ATFDargs.length && j < listCols.size();j++) {
@@ -2160,12 +2175,13 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		            				}
 		            				Object obj = addCols(j,listCols);
 		            				if (!((Element)listCols.get(j)).getValue().trim().equals("NR")) {
-		            					//System.out.println("llenando "+obj);
 			            				if (j==0 && search) {
 			            					record+=col.getValue().trim();
+			            					System.out.println("por setValue "+currentRow);
 					                    	setValueAt(obj,currentRow,j);
 			    		    			}
 			            				else {
+			            					System.out.println("por updateCells "+currentRow);
 			            					updateCells(obj,currentRow,j);
 			            				}
 		            				}
