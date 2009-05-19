@@ -2007,7 +2007,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     	 * 
     	 * 2007-06-25                         pipelx.
     	 */
-    	//System.out.println("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-");
+    	/*System.out.println("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-");
     	
 		try {
 	        XMLOutputter xmlOutputter = new XMLOutputter();
@@ -2016,7 +2016,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	    }
 	    catch (IOException ex) {
 	        ex.printStackTrace();
-	    }
+	    }*/
 
 
     	loadingQuery = true;
@@ -2093,7 +2093,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             		String valueKey = tagDataElement.getValue().trim();
             		/* Se verifica si ese valor ya esta indexado */
             		if (arrivedKeys.containsKey(valueKey)) {
-            			System.out.println("llave contendia "+valueKey);
+            			//System.out.println("llave contendia "+valueKey);
             			Iterator indexs = arrivedKeys.get(valueKey).iterator();
             			while (indexs.hasNext()) {
             				int index = (Integer)indexs.next();
@@ -2145,7 +2145,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             		 * isertar los datos en la ultima fila
             		 */
             		else {
-            			System.out.println("no esta en la llave");
+            			System.out.println("no esta en la llave "+valueKey);
             			try {
 	            			/* Esto es para adicionar mas filas si la tabla se queda
 	            			 * corta
@@ -2166,7 +2166,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	            			boolean addRecord = true;
         					System.out.println("currentRow "+currentRow+" getValue "+getValueAt(currentRow,0));
 	            			if (!sqlCode.equals("") || !getValueAt(currentRow,0).equals("")) {
-	            			
+	            				System.out.println("me meti... "+sqlCode);
 		            			for (int j=0;j<ATFDargs.length && j < listCols.size();j++) {
 		            				Element col = (Element)listCols.get(j);
 		            				if (conditionatedRecord!=null && !BeanShell.eval(formulaReplacer(conditionatedRecord,listCols))) {
@@ -2186,20 +2186,20 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 			            				}
 		            				}
 		                		}
+		            			if (addRecord) {
+			            			if (header!=null) {
+			            				this.rowsLoaded.put(record,currentRow);
+			            			}
+			            			else {
+			            				this.rowsLoaded.remove(record);
+			            			}
+			            			currentRow++;
+		            			}
+		            			
+		        				ArrayList<Integer> rows = new ArrayList<Integer>();
+		        				rows.add(currentRow);
+		        				arrivedKeys.put(valueKey, rows);
         					}
-	            			if (addRecord) {
-		            			if (header!=null) {
-		            				this.rowsLoaded.put(record,currentRow);
-		            			}
-		            			else {
-		            				this.rowsLoaded.remove(record);
-		            			}
-		            			currentRow++;
-	            			}
-	            			
-	        				ArrayList<Integer> rows = new ArrayList<Integer>();
-	        				rows.add(currentRow);
-	        				arrivedKeys.put(valueKey, rows);
 
 	            		}catch(ArrayIndexOutOfBoundsException e) {}
             		} 
