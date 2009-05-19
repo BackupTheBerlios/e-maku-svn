@@ -840,18 +840,9 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 					value+=atf.getValue();
 				}
 			}
-			
-			StringTokenizer st = new StringTokenizer(value,"\n");
-			for (int j=0; j < height && st.hasMoreElements(); j++) {
-				String tok = st.nextToken();
-				g2d.drawString(tok,col,row);
-				row+=rowAcum;
-			}
-
-			/*
 			g2d.drawString(value,col,row);
 			row+=rowAcum;
-			*/
+			
 		}
 		else if ("DATE".equals(type)) {
 			String mask = attribs.get("mask").getValue();
