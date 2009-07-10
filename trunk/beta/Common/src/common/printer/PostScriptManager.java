@@ -797,7 +797,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 			int width = attribs.get("width").getIntValue();
 			int height = attribs.get("height").getIntValue();
 			
-			value = value.replaceAll("\n", " ");
+			//value = value.replaceAll("\n", " ");
 			StringBuffer buf = new StringBuffer(value);
 			int lastspace = -1;
 			int linestart = 0;
@@ -807,6 +807,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 					lastspace = i;
 				}
 				if (buf.charAt(i) == '\n') {
+					System.out.println("Encontre un enter");
 					lastspace = -1;
 					linestart = i + 1;
 				}
@@ -827,6 +828,7 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 			StringTokenizer st = new StringTokenizer(buf.toString(),"\n");
 			for (int j=0; j < height && st.hasMoreElements(); j++) {
 				String tok = st.nextToken();
+				System.out.println("va un renglon...");
 				g2d.drawString(tok,col,row);
 				row+=rowAcum;
 			}
