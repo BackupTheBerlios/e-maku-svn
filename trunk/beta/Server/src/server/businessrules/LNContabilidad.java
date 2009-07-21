@@ -483,7 +483,7 @@ public class LNContabilidad {
 					/*
 					 * Si el tercero viene en el paquete entonces se toma ese tercero
 					 */
-					if (!"".equals(elm2.getText())) {
+					if (!"".equals(elm2.getText()) && !"NULL".equals(elm2.getText())) {
 						asiento[k] = elm2.getText().trim();
 					}
 					/*
@@ -632,7 +632,6 @@ public class LNContabilidad {
 		double valueAccount = 0;
 
 		List lpack = pack.getChildren();
-		naturaleza.booleanValue();
 
 		if (accountKey != -1) {
 			String charCta = ((Element) lpack.get(accountKey)).getValue();
