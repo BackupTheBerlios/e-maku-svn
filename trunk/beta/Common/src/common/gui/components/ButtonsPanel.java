@@ -53,17 +53,17 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
     private GenericForm GFforma;
     private Hashtable <String,Vector<?>>Heventos;
     private Hashtable <String,Vector>Hform;
-    private Hashtable <String,JButton>Hbuttons;
+    private Hashtable <String,XMLButton>Hbuttons;
     private String idTransaction;
     private String accel = "";
-	private String idReport;
+	//private String idReport;
     private PlainPrintingManager plainManager = new PlainPrintingManager();
     private PostScriptManager postScriptManager = new PostScriptManager();
-	private String typePackage = "TRANSACTION";
+	//private String typePackage = "TRANSACTION";
 	private String lastNumber;
 	private boolean actionFinish;
 	private boolean badActionFinish;
-    
+   
     public ButtonsPanel(GenericForm GFforma, Document doc) {
 
         this.GFforma = GFforma;
@@ -72,7 +72,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 		ClientHeaderValidator.addErrorListener(this);
 
         Heventos = new Hashtable<String,Vector<?>>();
-        Hbuttons = new Hashtable<String,JButton>();
+        Hbuttons = new Hashtable<String,XMLButton>();
         Hform = new Hashtable<String,Vector>();
         
         Element args = doc.getRootElement();
@@ -85,6 +85,8 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
             String label = null;
             String icon = null;
             String keyStroke = null;
+            String typePackage=null;
+            String idReport=null;
             boolean enabled=true;
             
             if ("false".equals(e.getAttributeValue("enabled")))
@@ -114,14 +116,18 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
             		}
             	}
             }
+            XMLButton xbutton = null;
             if (label!=null) {
             	button = buildButton(label,icon,enabled,keyStroke);
             	name = label;
+                xbutton = new XMLButton(button,typePackage,idReport);
             }
             else {
 	            button = buildButton(name,enabled);
+                xbutton = new XMLButton(button);
+
             }
-            Hbuttons.put(name, button);
+            Hbuttons.put(name,xbutton);
             this.add(button);
         }
     }
@@ -142,7 +148,6 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
     	}
     	button.setActionCommand(label);
     	button.setEnabled(enabled);
-    	
     	setAccelerators(button,keyStroke);
 		return button;
 	}
@@ -199,7 +204,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
         	/*if (!bool) {
                 KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
             }*/
-            Hbuttons.get(name).setEnabled(bool);
+            Hbuttons.get(name).getButton().setEnabled(bool);
         }
     }
     
@@ -397,6 +402,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
         }
     }
     
+	@SuppressWarnings("unchecked")
     private synchronized void builTransaction(Vector<Components> vec,String action,Element printJob,String idManualTransaction) 
     throws InvocationTargetException, NotFoundComponentException, IOException {
         Vector <Element>pack = new Vector<Element>();
@@ -435,16 +441,17 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
         }
     	if (printJob==null) {
     		String namePackage;
-    		if (!"REPORT".equals(action)) {
+    		if (!("REPORT".equals(action) || "EXCEL".equals(action))) {
     			namePackage="TRANSACTION";
     		}
     		else {
-    			namePackage=typePackage;
+    			System.out.println("action: "+Hbuttons.get(action).getTypePackage());
+    			namePackage=Hbuttons.get(action).getTypePackage();
     		}
     		
 		    if (pack.size() > 0 || !namePackage.equals("TRANSACTION")) {
 		   		try {
-		   			formatPackageStructure(pack,namePackage,idManualTransaction);
+		   			formatPackageStructure(pack,namePackage,idManualTransaction,Hbuttons.get(action).getIdReport());
 				} catch (MalformedProfileException e) {
 					e.printStackTrace();
 				}
@@ -490,33 +497,33 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
     	                
     	                if (action.equals("NEW")) {
 
-    	                    button = (JButton) Hbuttons.get("SAVE");
+    	                    button = Hbuttons.get("SAVE").getButton();
     	                    if (button != null) {
     	                        button.setEnabled(true);
     	                    }
-    	                    button = (JButton) Hbuttons.get("SAVEAS");
+    	                    button = Hbuttons.get("SAVEAS").getButton();
     	                    if (button != null) {
     	                        button.setEnabled(true);
     	                    }
     	                    
-    	                    button = (JButton) Hbuttons.get(action);
+    	                    button = Hbuttons.get(action).getButton();
 //    	                    button.setEnabled(false);
 
     	                } else if (action.equals("SAVE") || action.equals("SAVEAS")) {
 
-    	                    button = (JButton) Hbuttons.get("NEW");
+    	                    button = Hbuttons.get("NEW").getButton();
     	                    if (button != null) {
     	                        button.setEnabled(true);
     	                    }
-    	                    button = (JButton) Hbuttons.get("SAVEAS");
+    	                    button = Hbuttons.get("SAVEAS").getButton();
     	                    if (button != null) {
     	                        button.setEnabled(true);
     	                    }
-    	                    button = (JButton) Hbuttons.get("PRINT");
+    	                    button = Hbuttons.get("PRINT").getButton();
     	                    if (button != null) {
     	                        button.setEnabled(true);
     	                    }
-    	                    button = (JButton) Hbuttons.get(action);
+    	                    button = Hbuttons.get(action).getButton();
     	                    button.setEnabled(false);
     	                }
     	                
@@ -527,7 +534,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
     	                        ITEe.getCause().getMessage(), Language
     	                                .getWord("ERROR_MESSAGE"),
     	                        JOptionPane.ERROR_MESSAGE);
-    	                Hbuttons.get(action).setEnabled(true);
+    	                Hbuttons.get(action).getButton().setEnabled(true);
     	            }
     	            catch (NotFoundComponentException NFCEe) {
     	                NFCEe.printStackTrace();
@@ -541,7 +548,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
     	new ActionThread(action).start();
     }
     
-    private void formatPackageStructure(Vector pack,String packageName,String idManualTransaction) 
+    private void formatPackageStructure(Vector pack,String packageName,String idManualTransaction,String idReport) 
     throws MalformedProfileException, IOException {
         Document transaction = new Document();
         transaction.setRootElement(new Element(packageName));
@@ -694,7 +701,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
     	if (name!=null && !"".equals(name) &&
     			state!=null && !"".equals(state) ) {
     		if (Hbuttons.containsKey(name)) {
-    			((JButton)Hbuttons.get(name)).setEnabled(Boolean.parseBoolean(state));
+    			Hbuttons.get(name).getButton().setEnabled(Boolean.parseBoolean(state));
     		}
     		else {
     			JOptionPane.showInternalMessageDialog(GFforma.getDesktopPane(),
@@ -785,5 +792,30 @@ class Components {
 			return true;
 		}
 		return false;
+	}
+}
+
+class XMLButton {
+	JButton button;
+	String typePackage;
+	String idReport;
+	
+	public XMLButton(JButton button) {
+		this.button=button;
+	}
+	public XMLButton(JButton button,String typePackage,String idReport) {
+		this.button=button;
+		this.typePackage=typePackage;
+		this.idReport=idReport;
+	}
+	
+	public JButton getButton() {
+		return button;
+	}
+	public String getIdReport() {
+		return idReport;
+	}
+	public String getTypePackage() {
+		return typePackage;
 	}
 }
