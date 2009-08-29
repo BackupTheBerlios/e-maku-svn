@@ -91,6 +91,7 @@ public class ResultSetToXML extends Document implements Runnable {
      */
     public void run() {
     		Connection conn = ConnectionsPool.getMultiConnection(bd);
+    		System.out.println("bd: "+bd);
     		Statement st = null;
         	ResultSet RSdatos	= null;
         	try {
