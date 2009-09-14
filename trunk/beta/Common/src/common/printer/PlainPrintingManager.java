@@ -214,7 +214,10 @@ public class PlainPrintingManager implements AbstractManager ,SuccessListener{
 		}
 		else if ("scp".equals(name)) {
 			String  value = e.getValue();
-			textPrinterBuffer.insertString( textPrinterBuffer.Convert(value),row,col,null);
+			String converted = textPrinterBuffer.Convert(value);
+			if (converted!=null) {
+				textPrinterBuffer.insertString( textPrinterBuffer.Convert(value),row,col,null);
+			}
 			passed = true;
 		}
 		else  if ("header".equals(name)) {

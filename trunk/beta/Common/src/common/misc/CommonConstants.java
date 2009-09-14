@@ -54,5 +54,6 @@ public class CommonConstants {
     	ScpCodes.put("CR",13);
     	ScpCodes.put("SS",15);
     	ScpCodes.put("LF",10);
+    	ScpCodes.put("NL",10); // Compatibilidad con volcafe.
     }
 }
