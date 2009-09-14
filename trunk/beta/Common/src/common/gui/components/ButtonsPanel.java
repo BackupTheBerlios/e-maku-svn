@@ -46,7 +46,7 @@ import common.transactions.*;
  * @author <A href='mailto:cristian@qhatu.net'>Cristian David
  *         Cepeda </A>
  */
-public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,SuccessListener,ErrorListener{
+public class ButtonsPanel extends JPanel implements MouseListener, KeyListener,SuccessListener,ErrorListener{
 
     private static final long serialVersionUID = 8883108186183650115L;
 
@@ -63,6 +63,7 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 	private String lastNumber;
 	private boolean actionFinish;
 	private boolean badActionFinish;
+	private long lastTime = Calendar.getInstance().getTimeInMillis();
    
     public ButtonsPanel(GenericForm GFforma, Document doc) {
 
@@ -166,7 +167,8 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
     }
 
 	public void setAccelerators(JButton button, String keyStroke) {
-		button.addActionListener(this);
+		//button.addActionListener(this);
+		button.addMouseListener(this);
         button.addKeyListener(this);
 		String name = button.getActionCommand();
 		if (keyStroke!=null) {
@@ -191,7 +193,11 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
         button.getActionMap().put("answer", new AbstractAction("answer") {
 			private static final long serialVersionUID = 7031745964120299130L;
 					public void actionPerformed(ActionEvent evt) {
-                         ((JButton)evt.getSource()).doClick();
+						JButton b = ((JButton)evt.getSource());
+						if ((evt.getWhen() - lastTime) > 3000) {
+							lastTime = evt.getWhen();
+							actionThread(b.getActionCommand());
+						}
 					}
         });
 	}
@@ -464,9 +470,10 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
     	}
     }
     
-    public void actionPerformed(ActionEvent e) {
+    /*public void actionPerformed(ActionEvent e) {
+    	System.out.println("When: " + e.getWhen());
         actionEvent(e.getActionCommand());
-    }
+    }*/
 
     private void actionEvent(String action) {
     	actionThread(action);
@@ -743,6 +750,38 @@ public class ButtonsPanel extends JPanel implements ActionListener, KeyListener,
 		if (idTransaction!=null && idTransaction.equals(e.getIdPackage())) {
 			lastNumber = numeration;
 			badActionFinish=true;
+		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		if (e.getClickCount() == 1) { 
+			JButton b = (JButton) e.getSource();
+			this.actionThread(b.getActionCommand());
 		}
 	}
 }
