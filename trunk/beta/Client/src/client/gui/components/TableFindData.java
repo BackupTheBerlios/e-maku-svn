@@ -118,6 +118,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 
 	private String initSQL;
 
+	private boolean reload;
+	
 	private String[] initArgs;
 
 	private Color colorSelected;
@@ -154,6 +156,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 	private boolean arriveAnswerEvent;
 	private boolean singleValueRecord;
 	private int groupValueRecord = -1;
+	private	int tagDataColumn = -1;
 
 	private String[] initImps;
 
@@ -183,7 +186,6 @@ public class TableFindData extends JPanel implements AnswerListener,
 		Element parameters = doc.getRootElement();
 		Iterator i = parameters.getChildren("arg").iterator();
 		Vector<String> impValues = new Vector<String>();
-		int tagDataColumn = -1;
 		String conditionatedRecord = null;
 
 		while (i.hasNext()) {
@@ -259,6 +261,9 @@ public class TableFindData extends JPanel implements AnswerListener,
 				this.singleSendRecord = args.getValue();
 			} else if (args.getAttributeValue("attribute").equals("deleteRecord")) {
 				deleteRecord=args.getValue();
+			} else if (args.getAttributeValue("attribute").equals("reload")) {
+				reload=Boolean.parseBoolean(args.getValue());
+				System.out.println("reload "+reload);
 			}
 			/*
 			 * Se captura las columnas que generaran totales
@@ -376,34 +381,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 		}
 
 		if (initSQL != null) {
-			JTtabla = new JTable() {
-
-				private static final long serialVersionUID = -9216942827014115821L;
-
-				public Component prepareRenderer(TableCellRenderer renderer,
-						int rowIndex, int vColIndex) {
-					Component c = super.prepareRenderer(renderer, rowIndex,
-							vColIndex);
-					if (rowIndex % 2 == 0
-							&& !isCellSelected(rowIndex, vColIndex)) {
-						if (colorBackground != null) {
-							c.setBackground(colorBackground);
-						}
-					} else {
-						// If not shaded, match the table's background
-						c.setBackground(getBackground());
-					}
-
-					if (isCellSelected(rowIndex, vColIndex)) {
-						if (colorSelected != null) {
-							c.setBackground(colorSelected);
-						}
-					}
-					return c;
-				}
-
-			};
-			loadingQuery(tagDataColumn);
+			loadTable();
 		} else {
 			if (valideLink > 0) {
 				TMFDtabla = new EmakuTableModel(GFforma, sqlCode, rows,
@@ -463,6 +441,37 @@ public class TableFindData extends JPanel implements AnswerListener,
 		this.setLayout(new BorderLayout());
 		this.add(JSPtabla, BorderLayout.CENTER);
 
+	}
+	
+	private void loadTable() {
+		JTtabla = new JTable() {
+
+			private static final long serialVersionUID = -9216942827014115821L;
+
+			public Component prepareRenderer(TableCellRenderer renderer,
+					int rowIndex, int vColIndex) {
+				Component c = super.prepareRenderer(renderer, rowIndex,
+						vColIndex);
+				if (rowIndex % 2 == 0
+						&& !isCellSelected(rowIndex, vColIndex)) {
+					if (colorBackground != null) {
+						c.setBackground(colorBackground);
+					}
+				} else {
+					// If not shaded, match the table's background
+					c.setBackground(getBackground());
+				}
+
+				if (isCellSelected(rowIndex, vColIndex)) {
+					if (colorSelected != null) {
+						c.setBackground(colorSelected);
+					}
+				}
+				return c;
+			}
+
+		};
+		loadingQuery(tagDataColumn);
 	}
 
 	/**
@@ -1067,6 +1076,10 @@ public class TableFindData extends JPanel implements AnswerListener,
 		if (enabled)
 			JTtabla.changeSelection(0, 0, false, false);
 		JTtabla.getSelectionModel().clearSelection();
+		if (reload) {
+			System.out.println("limpiando");
+			loadingQuery(tagDataColumn);
+		}
 	}
 
 	public EmakuTableModel getTMFDtabla() {
