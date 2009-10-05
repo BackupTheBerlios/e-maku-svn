@@ -456,7 +456,13 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
 	            		icon = new ImageIcon(this.getClass().getResource(Icons.getIcon(node.getIcon())));
 	            	}
 	            	catch(NullPointerException NPEe) {
-	            		icon = new ImageIcon(this.getClass().getResource(node.getIcon()));
+	            		try {
+	            			icon = new ImageIcon(this.getClass().getResource(node.getIcon()));
+	            		}
+	            		catch(NullPointerException NPE2e) {
+							System.out.println("icono "+node.getIcon());
+
+	            		}
 	            	}			
 					label.setText(node.toString());
 					label.setIcon(icon);

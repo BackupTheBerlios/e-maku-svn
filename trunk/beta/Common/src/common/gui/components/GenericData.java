@@ -198,6 +198,7 @@ public class GenericData extends JPanel implements DateListener,
 				boolean withOutArgsQuery = false;
 				String sqlInit = null;
 				String sqlLocal = null;
+				String getValue = null;
 				Vector<String> sqlCode = new Vector<String>();
 				
 				while (j.hasNext()) {
@@ -247,6 +248,8 @@ public class GenericData extends JPanel implements DateListener,
 							constantValue = new Vector<String>();
 						}
 						constantValue.addElement(elm.getValue());
+					} else if ("getValue".equals(elm.getAttributeValue("attribute"))) {
+						getValue = elm.getValue();
 					} else if ("calculateExportValue".equals(elm.getAttributeValue("attribute"))) {
 						calculateExportValue = elm.getValue();
 					} else if ("calculateBSExportValue".equals(elm.getAttributeValue("attribute"))) {
@@ -350,7 +353,7 @@ public class GenericData extends JPanel implements DateListener,
 				XMLText.setQueryOnInit(queryOnInit);
 				XMLText.setWithOutArgsQuery(withOutArgsQuery);
 				XMLText.setSqlInit(sqlInit);
-				
+				XMLText.setNameVariableValue(getValue);
 				if (exportValue != null) {
 					XMLText.setExportvalue(exportValue);
 				}
@@ -1141,7 +1144,9 @@ public class GenericData extends JPanel implements DateListener,
 						}
 					}
 				}*/
-				
+				if (xmltf.isGetvalue()) {
+					xmltf.setText(GFforma.getExternalValueString(xmltf.getNameVariableValue()));
+				}
 				if (xmltf.isCalculateExportvalue()) {
 					String formula = xmltf.getCalculateExportValue();
 					double valor = formulaHandler(formula);

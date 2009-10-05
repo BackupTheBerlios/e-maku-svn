@@ -503,16 +503,21 @@ public class ButtonsPanel extends JPanel implements MouseListener, KeyListener,S
     	                JButton button = null;
     	                
     	                if (action.equals("NEW")) {
-
-    	                    button = Hbuttons.get("SAVE").getButton();
-    	                    if (button != null) {
-    	                        button.setEnabled(true);
-    	                    }
-    	                    button = Hbuttons.get("SAVEAS").getButton();
-    	                    if (button != null) {
-    	                        button.setEnabled(true);
-    	                    }
-    	                    
+    	                	try {
+	    	                    button = Hbuttons.get("SAVE").getButton();
+	    	                    if (button != null) {
+	    	                        button.setEnabled(true);
+	    	                    }
+    	                	}
+    	                	catch(NullPointerException npe1) {}
+    	                	try {
+	    	                    button = Hbuttons.get("SAVEAS").getButton();
+	    	                    if (button != null) {
+	    	                        button.setEnabled(true);
+	    	                    }
+    	                	}
+    	                	catch(NullPointerException npe1) {}
+    	            
     	                    button = Hbuttons.get(action).getButton();
 //    	                    button.setEnabled(false);
 
@@ -739,6 +744,8 @@ public class ButtonsPanel extends JPanel implements MouseListener, KeyListener,S
 		String numeration = e.getNdocument();
 		if (e.getIdPackage().equals(idTransaction)) {
 			lastNumber = numeration;
+			System.out.println("Exportando: "+lastNumber);
+			GFforma.setExternalValues("lastnumber",lastNumber);
 			actionFinish=true;
 		}
 

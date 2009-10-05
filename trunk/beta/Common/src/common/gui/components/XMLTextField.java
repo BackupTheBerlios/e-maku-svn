@@ -77,6 +77,7 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	private String formatDate;
 	private int nChars;
 	private boolean typed;
+	public String nameVariableValue;
 	private String nameField = null;
 	private boolean cleaning;
 	private boolean systemDate;
@@ -670,6 +671,18 @@ public class XMLTextField extends JTextField implements UpdateCodeListener {
 	}
 	public void setTyped(boolean typed) {
 		this.typed = typed;
+	}
+	public boolean isGetvalue() {
+		if (nameVariableValue==null)
+			return false;
+		return true;
+	}
+
+	public String getNameVariableValue() {
+		return nameVariableValue;
+	}
+	public void setNameVariableValue(String nameVariableValue) {
+		this.nameVariableValue = nameVariableValue;
 	}
 
 }
