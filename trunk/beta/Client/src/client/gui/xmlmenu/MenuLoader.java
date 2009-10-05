@@ -139,7 +139,12 @@ public class MenuLoader extends JMenuBar {
 	            		jMenu.setIcon(new ImageIcon(this.getClass().getResource(Icons.getIcon(value))));
 	            	}
 	            	catch(NullPointerException NPEe) {
-	            		jMenu.setIcon(new ImageIcon(this.getClass().getResource(value)));
+	            		try {
+	            			jMenu.setIcon(new ImageIcon(this.getClass().getResource(value)));
+	            		}
+	            		catch(NullPointerException NPEe2) {
+	            			//NPEe2.printStackTrace();
+	            		}
 	            	}
 	            else if (subData.getName().equals("JSeparator"))
 	                jMenu.add(new JSeparator());
@@ -205,9 +210,14 @@ public class MenuLoader extends JMenuBar {
 	                        Icons.getIcon(subData.getValue()))));
             	}
             	catch (NullPointerException NPEe) {
-            	    xmlMenuItem.setIcon(new ImageIcon(this.getClass().getResource(
-	                        subData.getValue())));
-            	}
+            		try {
+            			xmlMenuItem.setIcon(new ImageIcon(this.getClass().getResource(
+            					subData.getValue())));
+            		}
+            		catch(NullPointerException e) {
+            			System.out.println("Icon: "+subData.getValue());
+            		}
+            		}
             }
             else if (subData.getName().equals("Text")) {
                 xmlMenuItem.setText(Language.getWord(subData.getValue()));
