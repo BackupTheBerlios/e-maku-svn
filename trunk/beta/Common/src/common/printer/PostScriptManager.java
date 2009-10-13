@@ -190,12 +190,23 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 			Attribute ATorientation  = rootTemplate.getAttribute("orientation");
 			String orientation = ATorientation!=null ? ATorientation.getValue() : null;
 			
-			Rectangle pageSize = new Rectangle(width,height);
-
+			Rectangle pageSize = null;
+			
+			pageSize =new Rectangle(width,height);
+			/*
+			if (orientation!=null && "LANDSCAPE".equals(orientation)) {
+				pageSize =new Rectangle(height,width);			
+			}
+			else {
+				pageSize =new Rectangle(width,height);			
+			}
+			*/
 			document = new com.lowagie.text.Document(pageSize);
+			
 			try {
 //				pdfWriter = PdfWriter.getInstance(document,new FileOutputStream("prueba.pdf"));
 				pdfWriter = PdfWriter.getInstance(document,outPut);
+				
 				document.addTitle("outout.pdf");
 				document.open();
 				
@@ -206,10 +217,13 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 				e.printStackTrace();
 			}*/
 			cb = pdfWriter.getDirectContent();
-			g2d = cb.createGraphicsShapes(width,height,false,1f);
 			if (orientation!=null && "LANDSCAPE".equals(orientation)) {
-				g2d.translate(width-10,0);
-				g2d.rotate(90*Math.PI/180);
+				g2d = cb.createGraphicsShapes(height,width,false,1f);
+				g2d.translate(0,200);
+				//g2d.rotate(90*Math.PI/360);
+			}
+			else {
+				g2d = cb.createGraphicsShapes(width,height,false,1f);
 			}
 			
 			objects.add(g2d);
