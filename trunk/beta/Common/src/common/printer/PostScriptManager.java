@@ -193,14 +193,14 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 			Rectangle pageSize = null;
 			
 			pageSize =new Rectangle(width,height);
-			/*
+			
 			if (orientation!=null && "LANDSCAPE".equals(orientation)) {
 				pageSize =new Rectangle(height,width);			
 			}
 			else {
 				pageSize =new Rectangle(width,height);			
 			}
-			*/
+			
 			document = new com.lowagie.text.Document(pageSize);
 			
 			try {
