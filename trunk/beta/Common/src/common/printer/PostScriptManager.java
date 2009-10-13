@@ -219,8 +219,8 @@ public class PostScriptManager implements AbstractManager, SuccessListener, Prin
 			cb = pdfWriter.getDirectContent();
 			if (orientation!=null && "LANDSCAPE".equals(orientation)) {
 				g2d = cb.createGraphicsShapes(height,width,false,1f);
-				g2d.translate(0,200);
-				//g2d.rotate(90*Math.PI/360);
+				g2d.translate(height-10,0);
+				g2d.rotate(90*Math.PI/180);
 			}
 			else {
 				g2d = cb.createGraphicsShapes(width,height,false,1f);
