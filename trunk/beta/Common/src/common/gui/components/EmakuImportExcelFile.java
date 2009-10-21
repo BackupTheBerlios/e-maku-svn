@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -14,6 +16,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
 import jxl.Cell;
+import jxl.CellType;
+import jxl.NumberCell;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
@@ -135,6 +139,7 @@ public class EmakuImportExcelFile extends JPanel implements Couplable,ActionList
 			public void run() {
 				try {
 					workbook = Workbook.getWorkbook(file);
+					
 					element = new Element("table");
 					//for (Sheet sheet:workbook.getSheets()) {
 					Sheet sheet = workbook.getSheet(0);
@@ -144,7 +149,13 @@ public class EmakuImportExcelFile extends JPanel implements Couplable,ActionList
 							 for(Cell celda:celdas) {
 							 //for (int j=2;j<5;j++) {
 								 //Cell celda = celdas[j];
-								 rows.addContent(new Element("col").setText(celda.getContents()));
+								 if (celda.getType()== CellType.NUMBER) {
+									 NumberCell nc = (NumberCell) celda;
+									 rows.addContent(new Element("col").setText(""+nc.getValue()));
+								 }
+								 else {
+									 rows.addContent(new Element("col").setText(celda.getContents()));
+								 }
 							 }
 							 element.addContent(rows);
 						 }
