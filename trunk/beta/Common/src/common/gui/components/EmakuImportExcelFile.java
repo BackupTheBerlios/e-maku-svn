@@ -146,6 +146,7 @@ public class EmakuImportExcelFile extends JPanel implements Couplable,ActionList
 						 for(int i=3;i<sheet.getRows();i++) {
 							 Cell[] celdas = sheet.getRow(i);
 							 rows = new Element("row");
+							 int clean = 0;
 							 for(Cell celda:celdas) {
 							 //for (int j=2;j<5;j++) {
 								 //Cell celda = celdas[j];
@@ -156,6 +157,13 @@ public class EmakuImportExcelFile extends JPanel implements Couplable,ActionList
 								 else {
 									 rows.addContent(new Element("col").setText(celda.getContents()));
 								 }
+								 
+								 if (celda.getType() == CellType.EMPTY) {
+									 clean++;
+								 } 
+							 }
+							 if (celdas.length==clean) {
+								 break;
 							 }
 							 element.addContent(rows);
 						 }

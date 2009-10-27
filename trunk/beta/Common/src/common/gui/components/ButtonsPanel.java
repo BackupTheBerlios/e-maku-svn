@@ -531,6 +531,11 @@ public class ButtonsPanel extends JPanel implements MouseListener, KeyListener,S
     	                    if (button != null) {
     	                        button.setEnabled(true);
     	                    }
+    	                    button = Hbuttons.get("SAVE").getButton();
+    	                    if (button != null) {
+    	                        button.setEnabled(true);
+    	                    }
+
     	                    button = Hbuttons.get("PRINT").getButton();
     	                    if (button != null) {
     	                        button.setEnabled(true);
