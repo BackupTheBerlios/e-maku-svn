@@ -948,6 +948,19 @@ public class LNDocuments {
         		
         	//}
         }
+        else if ("LNComboInventarios".equals(driver)) {
+            LNComboInventarios LNIprocesar = new LNComboInventarios(parameters,EmakuServerSocket.getBd(sock));
+            if (method.equals("movimientos")) {
+            	LNIprocesar.movimientos(pack);
+            }
+            else if(method.equals("traslados")) {
+            	LNIprocesar.traslados(pack);
+            }
+            else {
+                throw new NoSuchMethodException(method);
+            }
+        }
+
         else {
             validExternalClass(driver,method,parameters,pack);
         }

@@ -2,6 +2,8 @@ package server.control;
 
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import common.comunications.SocketWriter;
 import common.misc.language.Language;
@@ -15,6 +17,9 @@ import server.comunications.EmakuServerSocket;
 import server.database.connection.ConnectionsPool;
 import server.database.sql.LinkingCache;
 import server.database.sql.AccountsTotalCalculator;
+import server.database.sql.QueryRunner;
+import server.database.sql.SQLBadArgumentsException;
+import server.database.sql.SQLNotFoundException;
 import server.misc.ServerConstants;
 import server.reports.*;
 
@@ -61,7 +66,7 @@ public class HeadersValidator {
          */
         Element raiz = doc.getRootElement();
         String nom_raiz = raiz.getName();
-        /*
+        
         try {
 	        XMLOutputter xmlOutputter = new XMLOutputter();
 	        xmlOutputter.setFormat(Format.getPrettyFormat());
@@ -70,7 +75,7 @@ public class HeadersValidator {
 	    catch (IOException e) {
 	        e.printStackTrace();
 	    }
-	    */
+	    
         /*
          *  Validaci�n de solicitud de paquetes, se verifica si el socket ya fue
          *  autenticado, si lo fue entonces se procede a validar la solicitud 
@@ -246,7 +251,50 @@ public class HeadersValidator {
             	SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock, new AcpFailure(Language.getWord("ACPFAILURE")));
             }
 
-        } 
+        }
+        /*
+         * Corre recuperacion de informacion en el ST por actualizacion externa.
+         */
+        else if (nom_raiz.equals("RELOAD")) {
+        	if (ConnectionsPool.chekDataBase(raiz.getChild("db").getValue())) {
+	            UserDataStructure loguser = new UserDataStructure(raiz);
+	            
+	        	if (loguser.valid()) {
+	                String bd = loguser.getBD();
+	                String login = loguser.getLogin();
+	                EmakuServerSocket.setLogin(sock, bd, login);
+	        		System.out.println("Voy por reload.. "+raiz.getChild("db").getValue());
+	    			QueryRunner RQtransaction;
+					try {
+						RQtransaction = new QueryRunner(raiz.getChild("db").getValue(),"SCS0093");
+		    			ResultSet rs = RQtransaction.ejecutarSELECT();
+		    			String initProdServ = "85000";
+		    			if (rs.next()) {
+		    				initProdServ = rs.getString(1);
+		    			}
+		        		LinkingCache.reloadAsientosPr(raiz.getChild("db").getValue(),"SCS0092",new String[]{initProdServ});
+						RunTransaction.successMessage(sock,"T-755","Actualizacion remota exitosa");
+					} catch (SQLNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SQLBadArgumentsException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	            } else {
+	                SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock, new AcpFailure(Language.getWord("ACPFAILURE")));
+	            }
+	        	
+            } else {
+            	LogAdmin.setMessage(Language.getWord("DBNFEX") + raiz.getChild("db").getValue(), ServerConstants.ERROR);
+            	SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock, new AcpFailure(Language.getWord("ACPFAILURE")));
+            }
+
+        }
+        
         /*
          *  Recepcion de un paquete error
          */
