@@ -1,11 +1,14 @@
 package common.control;
 
 //import java.io.IOException;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Vector;
 
 import org.jdom.Document;
 import org.jdom.Element;
 
+import common.comunications.SendReloadPackage;
 import common.transactions.Cache;
 import common.transactions.TransactionServerResultSet;
 
@@ -92,6 +95,16 @@ public class ClientHeaderValidator {
          */
         
         else if(nombre.equals("UPDATECODE")) {
+			try {
+				new SendReloadPackage("localhost",9117,"mt1010","emaku","rosa");
+			} catch (NoSuchAlgorithmException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
             String key = raiz.getChildText("idDocument");
             String consecutive = raiz.getChildText("consecutive");
                        UpdateCodeEvent event = new UpdateCodeEvent(new ClientHeaderValidator(),key,consecutive);
@@ -137,6 +150,8 @@ public class ClientHeaderValidator {
          */
         
         else if(nombre.equals("SUCCESS")) {
+        	
+
             String id = raiz.getChildText("id");
             String ndocument = "";
             String message  = "";

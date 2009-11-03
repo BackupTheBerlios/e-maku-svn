@@ -36,7 +36,7 @@ public class SocketConnector extends Thread {
 
 	//private static Hashtable Hsockets = new Hashtable();
     private static SocketChannel socket;
-    private PackageToXML packageXML;
+    private static PackageToXML packageXML;
     /**
      * Este constructor inicializa el hilo de conexion al
      * servidor de transacciones.
@@ -47,7 +47,7 @@ public class SocketConnector extends Thread {
     public SocketConnector(String host,int port,PackageToXML packageXML) 
     throws UnresolvedAddressException, IOException{
     	this.setName("SocketConnector");
-    	this.packageXML=packageXML;
+    	SocketConnector.packageXML=packageXML;
         socket = SocketChannel.open();
         socket.configureBlocking(false);
         InetSocketAddress addr = new InetSocketAddress(host,port);
@@ -117,5 +117,9 @@ public class SocketConnector extends Thread {
 //    	SocketChannel socket = (SocketChannel)Hsockets.get(key);
         return socket.isConnected();
     }
+
+	public static PackageToXML getPackageXML() {
+		return packageXML;
+	}
     
 }
