@@ -17,13 +17,13 @@ import javax.swing.JPasswordField;
 import org.jdom.Document;
 import org.jdom.Element;
 
-import client.misc.MD5;
 
 import common.gui.components.AnswerEvent;
 import common.gui.components.Couplable;
 import common.gui.components.VoidPackageException;
 import common.gui.forms.EndEventGenerator;
 import common.gui.forms.GenericForm;
+import common.misc.MD5;
 import common.misc.language.Language;
 import common.misc.text.TextDataValidator;
 

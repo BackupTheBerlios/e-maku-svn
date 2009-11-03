@@ -806,7 +806,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     						}
 
     						/* Codigo pendiente para analizar */
-    						String txt = getValueAt(rowIndex,col).toString();
+    						String txt = getValueAt(rowIndex,col)!=null?getValueAt(rowIndex,col).toString():"";
     						if ("STRING".equals(ATFDargs[col].getType()) || 
     								"COMBOSQL".equals(ATFDargs[col].getType())) {
     							newVar+="".equals(txt)?"\"\"":"\""+txt+"\"";
@@ -2007,7 +2007,8 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     	 * 
     	 * 2007-06-25                         pipelx.
     	 */
-    	/*System.out.println("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-");
+    	/*
+    	System.out.println("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-");
     	
 		try {
 	        XMLOutputter xmlOutputter = new XMLOutputter();
@@ -2016,9 +2017,9 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	    }
 	    catch (IOException ex) {
 	        ex.printStackTrace();
-	    }*/
+	    }
 
-
+		*/
     	loadingQuery = true;
     	Element rootNode = doc.getRootElement();
     	String rootNodeName = rootNode.getName();
@@ -2288,9 +2289,11 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 					e.printStackTrace();
 				}
             }
-            else if (ATFDargs[j].getType().equals("INTEGER") || ATFDargs[j].getType().equals("INTEGER")) {
-            	Number n = new Double(newValue);
-            	obj = new Integer(n.intValue());
+            else if (ATFDargs[j].getType().equals("INT") || ATFDargs[j].getType().equals("INTEGER")) {
+            	if (!newValue.equals("")) {
+	            	Number n = new Double(newValue);
+	            	obj = new Integer(n.intValue());
+            	}
             }
             else {
                 try {

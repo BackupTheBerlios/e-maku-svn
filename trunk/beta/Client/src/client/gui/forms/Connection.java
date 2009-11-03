@@ -33,12 +33,12 @@ import client.comunications.CNXSender;
 import client.control.HeadersValidator;
 import client.gui.components.panels.AuthenticationPanel;
 import client.misc.ClientConstants;
-import client.misc.MD5;
 import client.misc.settings.ConfigFileHandler;
 
 import common.comunications.PackageToXML;
 import common.comunications.SocketConnector;
 import common.comunications.SocketWriter;
+import common.misc.MD5;
 import common.misc.language.Language;
 import common.misc.parameters.EmakuParametersStructure;
 

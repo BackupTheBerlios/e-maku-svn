@@ -3,6 +3,7 @@ package client.control;
 import java.awt.Cursor;
 import java.awt.HeadlessException;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 import javax.swing.JOptionPane;
 
@@ -17,6 +18,7 @@ import client.misc.settings.ConfigFileHandler;
 
 import common.comunications.ArrivedPackageEvent;
 import common.comunications.ArrivedPackageListener;
+import common.comunications.SendReloadPackage;
 import common.comunications.SocketConnector;
 import common.control.ClientHeaderValidator;
 import common.control.ErrorMessageException;
