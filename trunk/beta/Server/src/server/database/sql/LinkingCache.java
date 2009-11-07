@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -61,6 +62,7 @@ public class LinkingCache {
     
     private static Hashtable <String,BusinessRulesStructure>Hlogica_drivers = new Hashtable<String,BusinessRulesStructure>();
     private static Hashtable <String,InfoInventario>Hinventarios = new Hashtable<String,InfoInventario>();
+    private static Hashtable <String,ArrayList>HcombosProd = new Hashtable<String,ArrayList>();
     private static Hashtable <String,String>Hconsecutive = new Hashtable<String,String>();
     private static Hashtable <String,PerfilCta>Hperfil_cta = new Hashtable<String,PerfilCta>();
     private static Hashtable <String,Date>lockDate = new Hashtable<String,Date>();
@@ -289,6 +291,38 @@ public class LinkingCache {
 	         */
 	
 	        Hlibro_aux.putAll(loadCache(bd,"SCS0041", new String[]{"centro","id_cta","id_tercero","id_prod_serv"},"saldo"));
+	        
+	        /* 
+	         * Se realiza la consulta para obtener los productos que forman un producto combo
+	         */
+			
+	        rs = st.executeQuery(SQLFormatAgent.getSentencia(bd,"SCS0096"));
+	
+	        /*
+	         * Se almacena la informaci�n en un objeto InfoInventario y luego en la
+	         * tabla hashtable Hinventarios
+	         */
+	
+	        int lastcb = -1;
+	        ArrayList<ComboProductos> cb = null;
+	        while (rs.next()) {
+	        	int id_cb_prod_serv=rs.getInt("id_cb_prod_serv");
+	        	
+	        	if (id_cb_prod_serv==lastcb) {
+	        		cb.add(new ComboProductos(rs.getInt("id_prod_serv"),rs.getInt("cantidad")));
+	        	}
+	        	else {
+	        		if (lastcb!=-1) {
+	        			HcombosProd.put("K-" + bd + "-"+ rs.getInt("id_cb_prod_serv"),cb);
+	        		}
+	        		lastcb=id_cb_prod_serv;
+	        		cb = new ArrayList<ComboProductos>();
+	        		cb.add(new ComboProductos(rs.getInt("id_prod_serv"),rs.getInt("cantidad")));
+	        	}
+	        }
+			HcombosProd.put("K-" + bd + "-"+ rs.getInt("id_cb_prod_serv"),cb);
+
+
         }
         catch (SQLException SQLEe) {
         	SQLEe.printStackTrace();
@@ -333,6 +367,52 @@ public class LinkingCache {
         StatementsClosingHandler.close(rs);
         st=null;
         rs=null;
+    }
+    
+    public static void reloadCombo(String bd) {
+    	
+        Statement st;
+		try {
+			st = ConnectionsPool.getConnection(bd).createStatement();
+	        /* 
+	         * Se realiza la consulta para obtener los productos que forman un producto combo
+	         */
+			
+	        ResultSet rs = st.executeQuery(SQLFormatAgent.getSentencia(bd,"SCS0096"));
+
+	        /*
+	         * Se almacena la informaci�n en un objeto InfoInventario y luego en la
+	         * tabla hashtable Hinventarios
+	         */
+
+	        int lastcb = -1;
+	        ArrayList<ComboProductos> cb = null;
+	        while (rs.next()) {
+	        	int id_cb_prod_serv=rs.getInt("id_cb_prod_serv");
+	        	
+	        	if (id_cb_prod_serv==lastcb) {
+	        		cb.add(new ComboProductos(rs.getInt("id_prod_serv"),rs.getInt("cantidad")));
+	        	}
+	        	else {
+	        		if (lastcb!=-1) {
+	        			HcombosProd.put("K-" + bd + "-"+ rs.getInt("id_cb_prod_serv"),cb);
+	        		}
+	        		lastcb=id_cb_prod_serv;
+	        		cb = new ArrayList<ComboProductos>();
+	        		cb.add(new ComboProductos(rs.getInt("id_prod_serv"),rs.getInt("cantidad")));
+	        	}
+	        }
+			HcombosProd.put("K-" + bd + "-"+ rs.getInt("id_cb_prod_serv"),cb);
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
     }
 
     public static void removeAsientosPr(String bd,String sql,String[] args) 
@@ -532,15 +612,13 @@ public class LinkingCache {
      * @return retorna el saldo de la consulta
      */
 
-    public static double getSaldoInventario(
-            String bd, String bodega,String id_prod_serv) {
-        if (Hinventarios.containsKey("K-"+bd+"-"+bodega+"-"+id_prod_serv)) {
-        	
-            return Hinventarios.get("K-"+bd+"-"+bodega+"-"+id_prod_serv).getSaldo();
+    public static ArrayList<ComboProductos> getComboProductos(
+            String bd, String id_prod_serv) {
+        if (HcombosProd.containsKey("K-"+bd+"-"+id_prod_serv)) {
+            return HcombosProd.get("K-"+bd+"-"+id_prod_serv);
         }
-        else {
-            return (double)0;
-        }
+        
+        return null;
     }
 
     /**
@@ -599,6 +677,24 @@ public class LinkingCache {
             String bd, String bodega,String id_prod_serv) {
         if (Hinventarios.containsKey("K-"+bd+"-"+bodega+"-"+id_prod_serv)) {
             return Hinventarios.get("K-"+bd+"-"+bodega+"-"+id_prod_serv).getVsaldo();
+        }
+        else {
+            return (double)0;
+        }
+    }
+
+    /**
+     * Por definir...
+     * @param bd
+     * @param bodega
+     * @param id_prod_serv
+     * @return
+     */
+    public static double getSaldoInventario(
+            String bd, String bodega,String id_prod_serv) {
+        if (Hinventarios.containsKey("K-"+bd+"-"+bodega+"-"+id_prod_serv)) {
+        	
+            return Hinventarios.get("K-"+bd+"-"+bodega+"-"+id_prod_serv).getSaldo();
         }
         else {
             return (double)0;

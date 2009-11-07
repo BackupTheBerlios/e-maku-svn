@@ -64,9 +64,10 @@ public class HeadersValidator {
         /*
          * Obtenemos la raiz del documento si el documento tiene raiz
          */
+    	
         Element raiz = doc.getRootElement();
         String nom_raiz = raiz.getName();
-        
+        /*
         try {
 	        XMLOutputter xmlOutputter = new XMLOutputter();
 	        xmlOutputter.setFormat(Format.getPrettyFormat());
@@ -75,7 +76,7 @@ public class HeadersValidator {
 	    catch (IOException e) {
 	        e.printStackTrace();
 	    }
-	    
+	    */
         /*
          *  Validaci�n de solicitud de paquetes, se verifica si el socket ya fue
          *  autenticado, si lo fue entonces se procede a validar la solicitud 

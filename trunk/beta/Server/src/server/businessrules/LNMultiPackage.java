@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import common.misc.language.Language;
+import server.comunications.EmakuServerSocket;
+import server.database.sql.LinkingCache;
 import server.database.sql.SQLBadArgumentsException;
 import server.database.sql.SQLNotFoundException;
 
@@ -120,6 +122,16 @@ public class LNMultiPackage {
         	doc=null;
         	pack=null;
         }
+        
+        /*
+         * Solo para mostrar restaurantes...
+         */
+        
+        LinkingCache.reloadCombo(EmakuServerSocket.getBd(sock));
+        
+        /*
+         * -----------------------------------------
+         */
         LNGtransaccion.setAutoCommit(true);
         LNGtransaccion = null;
     	System.gc();
