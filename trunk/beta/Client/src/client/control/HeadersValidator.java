@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -151,10 +152,17 @@ public class HeadersValidator implements ArrivedPackageListener {
     }
     
     private static void displayError() {
-        JOptionPane.showMessageDialog(
-        						MainWindow.getFrame(),
-        						root.getChild("errorMsg").getText(),
-        						"",
-        						JOptionPane.ERROR_MESSAGE);
+    	final String msg = root.getChild("errorMsg").getText();
+    	Runnable showModalDialog = new Runnable() {
+            public void run() {
+            	JOptionPane.showMessageDialog(
+						MainWindow.getFrame(),
+						msg,
+						"",
+						JOptionPane.ERROR_MESSAGE);
+            }
+        };
+        SwingUtilities.invokeLater(showModalDialog);
+    	System.out.println("error: "+root.getChild("errorMsg").getText());
     }
 }
