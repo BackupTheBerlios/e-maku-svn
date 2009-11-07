@@ -95,7 +95,8 @@ public class ClientHeaderValidator {
          */
         
         else if(nombre.equals("UPDATECODE")) {
-			try {
+			/*
+        	try {
 				new SendReloadPackage("localhost",9117,"mt1010","emaku","rosa");
 			} catch (NoSuchAlgorithmException e1) {
 				// TODO Auto-generated catch block
@@ -104,7 +105,7 @@ public class ClientHeaderValidator {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-
+			*/
             String key = raiz.getChildText("idDocument");
             String consecutive = raiz.getChildText("consecutive");
                        UpdateCodeEvent event = new UpdateCodeEvent(new ClientHeaderValidator(),key,consecutive);
