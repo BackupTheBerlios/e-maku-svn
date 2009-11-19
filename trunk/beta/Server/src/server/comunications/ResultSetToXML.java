@@ -109,9 +109,17 @@ public class ResultSetToXML extends Document implements Runnable {
 	                sqlCode = SQLFormatAgent.getSentencia(bd, sql, args);
 	            }
 	            System.out.println("ejecutando "+sql);
-	            RSdatos = st.executeQuery(sqlCode);
-	
-                ResultSetMetaData RSMDinfo = RSdatos.getMetaData();
+	            // Con JDBC2 en adelante ya no funciona RSdatos = st.executeQuery(sqlCode);
+	            st.execute(sqlCode);
+	            while ((RSdatos = st.getResultSet())==null) {
+	            	int rowCount = st.getUpdateCount();
+	            	if (rowCount ==-1) {
+	            		break;
+		        	}
+	            	st.getMoreResults();
+	            }
+	            
+	            ResultSetMetaData RSMDinfo = RSdatos.getMetaData();
                 int columnas = RSMDinfo.getColumnCount();
                 System.out.println("preparando para transmitir");
                 synchronized(sock) {
