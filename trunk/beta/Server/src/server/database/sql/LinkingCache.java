@@ -305,7 +305,9 @@ public class LinkingCache {
 	
 	        int lastcb = -1;
 	        ArrayList<ComboProductos> cb = null;
+	        boolean data = false;
 	        while (rs.next()) {
+	        	data = true;
 	        	int id_cb_prod_serv=rs.getInt("id_cb_prod_serv");
 	        	
 	        	if (id_cb_prod_serv==lastcb) {
@@ -320,9 +322,9 @@ public class LinkingCache {
 	        		cb.add(new ComboProductos(rs.getInt("id_prod_serv"),rs.getInt("cantidad")));
 	        	}
 	        }
-			HcombosProd.put("K-" + bd + "-"+ rs.getInt("id_cb_prod_serv"),cb);
-
-
+	        if (data) {
+	        	HcombosProd.put("K-" + bd + "-"+ rs.getInt("id_cb_prod_serv"),cb);
+	        }
         }
         catch (SQLException SQLEe) {
         	SQLEe.printStackTrace();

@@ -175,9 +175,10 @@ public class ReportMaker extends Thread {
 				} else {
 					rs = new QueryRunner(EmakuServerSocket.getBd(socket), sql).ejecutarMTSELECT(conn);
 				}
-				
-				int resultSize = rs.getFetchSize();
-				if (resultSize == 0) {
+				// invalidos para jdbc2 o superior
+				//int resultSize = rs.getFetchSize();
+				//rs.getFetchSize();
+				if (rs==null) {
 					os = paintPDFMessage(os, "/reports/images/report_noresult_",false);
 				} 
 				else {
