@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import common.comunications.SocketWriter;
 import common.misc.language.Language;
 import common.misc.log.LogAdmin;
+import server.businessrules.LNContabilidad;
+import server.businessrules.LNInventarios;
 import server.businessrules.RunTransaction;
 import server.comunications.AcpFailure;
 import server.comunications.CacheXML;
@@ -263,17 +265,23 @@ public class HeadersValidator {
 	        	if (loguser.valid()) {
 	                String bd = loguser.getBD();
 	                String login = loguser.getLogin();
+	                String tipoDoc = loguser.getTipoDoc();
 	                EmakuServerSocket.setLogin(sock, bd, login);
 	        		System.out.println("Voy por reload.. "+raiz.getChild("db").getValue());
 	    			QueryRunner RQtransaction;
 					try {
 						RQtransaction = new QueryRunner(raiz.getChild("db").getValue(),"SCS0093");
 		    			ResultSet rs = RQtransaction.ejecutarSELECT();
-		    			String initProdServ = "85000";
+		    			String initProdServ = "0";
 		    			if (rs.next()) {
 		    				initProdServ = rs.getString(1);
 		    			}
+		    			String db = EmakuServerSocket.getBd(sock);
 		        		LinkingCache.reloadAsientosPr(raiz.getChild("db").getValue(),"SCS0092",new String[]{initProdServ});
+		        		new LNInventarios(db);
+		        		new LNContabilidad(db).recover();
+		        		LinkingCache.reloadConsecutive(db, tipoDoc);
+		                
 						RunTransaction.successMessage(sock,"T-755","Actualizacion remota exitosa");
 					} catch (SQLNotFoundException e) {
 						// TODO Auto-generated catch block
@@ -282,6 +290,9 @@ public class HeadersValidator {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}

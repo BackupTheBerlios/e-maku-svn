@@ -30,8 +30,15 @@ public class UserDataStructure {
     private Element data;
     private String bd;
     private String login;
+    private String tipoDoc;
     
-    public String getBD(){
+    public String getTipoDoc() {
+		return tipoDoc;
+	}
+	public void setTipoDoc(String tipoDoc) {
+		this.tipoDoc = tipoDoc;
+	}
+	public String getBD(){
         return bd;
     }
     public String getLogin() {
@@ -49,7 +56,11 @@ public class UserDataStructure {
 	        bd = data.getChild("db").getValue();
 	        login = data.getChild("login").getValue();
 	        String password = data.getChild("password").getValue();
-        	return UserValidator.validdb(bd,login,password);
+        	Element td = data.getChild("tipoDoc");
+        	if (td!=null) {
+        		tipoDoc = td.getValue();
+        	}
+	        return UserValidator.validdb(bd,login,password);
 
         }
         catch (NullPointerException NPEe) {

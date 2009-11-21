@@ -18,7 +18,7 @@ public class SendReloadPackage extends Thread {
 	
 	private SocketChannel socket;
 	
-	public SendReloadPackage(String host,int port,String bd,String login,String password) throws IOException, NoSuchAlgorithmException {
+	public SendReloadPackage(String host,int port,String bd,String tipoDoc,String login,String password) throws IOException, NoSuchAlgorithmException {
         socket = SocketChannel.open();
         socket.configureBlocking(false);
         InetSocketAddress addr = new InetSocketAddress(host,port);
@@ -35,15 +35,16 @@ public class SendReloadPackage extends Thread {
         		catch(InterruptedException IEe) {}
         }
         this.start();
-        SocketWriter.writing(socket,getPackage(bd,login,password));
+        SocketWriter.writing(socket,getPackage(bd,tipoDoc,login,password));
 	}
 
-	 public Document getPackage(String bd, String login, String password ) throws NoSuchAlgorithmException{
+	 public Document getPackage(String bd, String tipoDoc,String login, String password ) throws NoSuchAlgorithmException{
 	        
     	Element rootNode = new Element("RELOAD");
         Document doc = new Document(rootNode);
         
         rootNode.addContent(new Element("db").setText(bd));
+        rootNode.addContent(new Element("tipoDoc").setText(tipoDoc));
         rootNode.addContent(new Element("login").setText(login));
         rootNode.addContent(new Element("password").setText(new MD5(password).getDigest()));
         

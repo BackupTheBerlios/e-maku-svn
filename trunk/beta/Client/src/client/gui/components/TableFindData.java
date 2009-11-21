@@ -688,6 +688,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 									}
 	
 									if (sendRecordOnSelectedRow) {
+										System.out.println("notificando");
 										Element element = new Element("table");
 										// boolean fullRow =
 										// sendRecord(sel,element,singleSendRecord);
@@ -1159,6 +1160,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 		for (RecordListener l : recordListener) {
 			l.arriveRecordEvent(event);
 			rowsLoaded = event.getRowsLoaded();
+			//System.out.println("notificando.. "+rowsLoaded+" --- "+rowsLoaded.size());
 			if (rowsLoaded!=null && rowsLoaded.size() > 0) {
 				for (int i = 0 ; i < TMFDtabla.getCurrentIndex(); i++)  {
 					System.out.println("llamando desde notificando");

@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 
-ROOT=/media/home/cristian/emaku/beta
+ROOT=/home/emaku/beta
 
 COMPILE=`which compile`
 

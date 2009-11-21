@@ -74,6 +74,11 @@ public class LNInventarios {
 
 	double vsaldo;
 
+	
+	public LNInventarios (String bd) throws SQLNotFoundException, SQLBadArgumentsException, SQLException, InterruptedException {
+		this.bd=bd;
+		recover();
+	}
 	/**
 	 * Este es el constructor de la clase, los parametros recibidos son un
 	 * String que almacena el numero de columnas de las cuales tomara los
@@ -81,6 +86,7 @@ public class LNInventarios {
 	 * informara si se tendra en cuenta los datos de las llaves externas, o si
 	 * no.
 	 */
+	
 
 	public LNInventarios(Element parameters, String bd) {
 

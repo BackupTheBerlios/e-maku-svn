@@ -13,6 +13,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.channels.SocketChannel;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
@@ -45,6 +46,7 @@ import bsh.EvalError;
 import bsh.Interpreter;
 
 import common.comunications.DateSender;
+import common.comunications.SendReloadPackage;
 import common.comunications.SocketConnector;
 import common.comunications.SocketWriter;
 import common.comunications.UpdateCodeSender;
@@ -1454,7 +1456,47 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 			}
 		}
 	}
+	/**
+	 * Este metodo se encarga de enviar un paquete de actualizacion a un Servidor de transacciones
+	 * remoto, dentro del paquete xml que recibe se encuentra la informacion necesaria para envio
+	 * y autenticacion.
+	 * @param element
+	 * @throws IOException 
+	 * @throws NoSuchAlgorithmException 
+	 */
 	
+	public void sendReloadPackage(Element element) throws NoSuchAlgorithmException, IOException {
+		String host = null;
+		int port = 9117;
+		String database = null;
+		String tipoDoc = null;
+		String user = null;
+		String password = null;
+		Iterator arg = element.getChildren("arg").iterator();
+		while (arg.hasNext()) {
+			Element elm = (Element)arg.next();
+			if ("host".equals(elm.getAttributeValue("attribute"))) {
+				host = elm.getValue();
+			}
+			else if ("port".equals(elm.getAttributeValue("attribute"))) {
+				port = Integer.parseInt(elm.getValue());
+			}
+			else if ("database".equals(elm.getAttributeValue("attribute"))) {
+				database = elm.getValue();
+			}
+			else if ("tipoDoc".equals(elm.getAttributeValue("attribute"))) {
+				tipoDoc = elm.getValue();
+			}
+			else if ("user".equals(elm.getAttributeValue("attribute"))) {
+				user = elm.getValue();
+			}
+			else if ("password".equals(elm.getAttributeValue("attribute"))) {
+				password = elm.getValue();
+			}
+		}
+		
+		new SendReloadPackage(host,port,database,tipoDoc,user,password);
+	}
 	
 	public Element getPackage() {
 		Element elementXML = new Element("package");

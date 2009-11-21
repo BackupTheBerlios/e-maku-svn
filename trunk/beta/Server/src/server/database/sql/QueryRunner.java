@@ -85,7 +85,16 @@ public class QueryRunner extends Element {
         	
 	    	st = ConnectionsPool.getConnection(bd).createStatement();
 	        //System.out.println("SENTENCIA SQL :: "+sql);
-	        ResultSet rs = st.executeQuery(sql);
+	        ResultSet rs = null;
+	        st.execute(sql);
+            // Con JDBC2 en adelante ya no funciona RSdatos = st.executeQuery(sqlCode);
+            while ((rs = st.getResultSet())==null) {
+            	int rowCount = st.getUpdateCount();
+            	if (rowCount ==-1) {
+            		break;
+	        	}
+            	st.getMoreResults();
+            }
 	        return rs;
     	}
 		catch(SQLException SQLEe) {
