@@ -1380,8 +1380,8 @@ public class LNContabilidad {
 		}
 
 		try {
-			if (LNDocuments.getActionDocument().equals(LNDocuments.EDIT_DOCUMENT) ||
-					LNDocuments.getActionDocument().equals(LNDocuments.DELETE_DOCUMENT)) {
+			if (LNDocuments.getActionDocument()!=null && (LNDocuments.getActionDocument().equals(LNDocuments.EDIT_DOCUMENT) ||
+					LNDocuments.getActionDocument().equals(LNDocuments.DELETE_DOCUMENT))) {
 					fecha = CacheKeys.getMinDate();
 			}
 			
