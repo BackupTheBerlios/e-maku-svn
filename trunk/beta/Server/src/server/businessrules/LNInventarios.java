@@ -767,8 +767,8 @@ public class LNInventarios {
 				System.out.println("Valor Sdo Ant: "+valorSaldoAnt);
 				*/
 			}
-			else if (LNDocuments.getActionDocument().equals(LNDocuments.EDIT_DOCUMENT) ||
-					LNDocuments.getActionDocument().equals(LNDocuments.DELETE_DOCUMENT)) {
+			else if (LNDocuments.getActionDocument()!= null && (LNDocuments.getActionDocument().equals(LNDocuments.EDIT_DOCUMENT) ||
+					LNDocuments.getActionDocument().equals(LNDocuments.DELETE_DOCUMENT))) {
 						fecha = CacheKeys.getMinDate();
 			}
 			/*

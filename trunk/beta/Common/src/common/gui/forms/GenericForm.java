@@ -1472,9 +1472,10 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 		String tipoDoc = null;
 		String user = null;
 		String password = null;
-		Iterator arg = element.getChildren("arg").iterator();
+		Iterator arg = element.getChild("subarg").getChildren().iterator();
 		while (arg.hasNext()) {
 			Element elm = (Element)arg.next();
+			System.out.println("elemento: "+elm.getName());
 			if ("host".equals(elm.getAttributeValue("attribute"))) {
 				host = elm.getValue();
 			}
