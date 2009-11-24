@@ -560,6 +560,7 @@ public class ButtonsPanel extends JPanel implements MouseListener, KeyListener,S
         Element id = new Element("id");
         idTransaction = "T"+TransactionServerResultSet.getId();
         System.out.println("Id Transaccion :" + idTransaction);
+        GFforma.setExternalValues("recordtransaction",""+idTransaction);
         id.setText(idTransaction);
         
         Element driver = new Element("driver");

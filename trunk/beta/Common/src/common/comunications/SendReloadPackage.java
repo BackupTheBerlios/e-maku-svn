@@ -24,18 +24,21 @@ public class SendReloadPackage extends Thread {
         InetSocketAddress addr = new InetSocketAddress(host,port);
         socket.connect(addr);
         int k=0;
+        boolean connect = true;
         while(!socket.finishConnect()){
         		try {
         			Thread.sleep(100);
         			k++;
         			if (k==50) {
-        				throw new ConnectException();
+        				connect=false;
     				}
         		}
         		catch(InterruptedException IEe) {}
         }
-        this.start();
-        SocketWriter.writing(socket,getPackage(bd,tipoDoc,login,password));
+        if (connect) {
+	        this.start();
+	        SocketWriter.writing(socket,getPackage(bd,tipoDoc,login,password));
+        }
 	}
 
 	 public Document getPackage(String bd, String tipoDoc,String login, String password ) throws NoSuchAlgorithmException{

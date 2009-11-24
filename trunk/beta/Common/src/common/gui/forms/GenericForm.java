@@ -50,6 +50,9 @@ import common.comunications.SendReloadPackage;
 import common.comunications.SocketConnector;
 import common.comunications.SocketWriter;
 import common.comunications.UpdateCodeSender;
+import common.control.ClientHeaderValidator;
+import common.control.SuccessEvent;
+import common.control.SuccessListener;
 import common.gui.components.Couplable;
 import common.gui.components.GenericData;
 import common.gui.components.VoidPackageException;
@@ -82,7 +85,7 @@ import common.transactions.TransactionServerResultSet;
  * @author <A href='mailto:felipe@qhatu.net'>Luis Felipe Hernandez </A>
  */
 
-public class GenericForm extends JInternalFrame implements InternalFrameListener {
+public class GenericForm extends JInternalFrame implements InternalFrameListener,SuccessListener {
 
     /*
      * Un evento puede llamar varios metodos de componentes distintos, estos se
@@ -101,7 +104,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
      */
 
     private String idTransaction = null;
-
+    
     /*
      * Si la transaccion a ejecutarce necesita de un password, este es recibido
      * por referencia y almacenado en esta variable
@@ -150,7 +153,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 	private ArrayList<GenericForm> forms = new ArrayList<GenericForm>();
 	private enum TypeExportValue{STRING,DOUBLE};
 	private ArrayList<String> notCleanValue = new ArrayList<String>();
-	
+	private boolean sendReloadPackage;
     /**
      * 
      * este construcor se instancia cuando se generara una forma hija
@@ -166,6 +169,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
         this.password = this.GFforma.getPassword();
         this.child = true;
         this.addInternalFrameListener(this);
+		ClientHeaderValidator.addSuccessListener(this);
         Element e = (Element)elm.clone();
         Document form = new Document();
         form.setRootElement(e);
@@ -215,6 +219,7 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
         this.JDPpanel = JDPpanel;
         this.size = size;
         this.idTransaction = idTransaction;
+		ClientHeaderValidator.addSuccessListener(this);
         this.addInternalFrameListener(this);
         new InitShell();
         generar(doc);
@@ -1475,7 +1480,6 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 		Iterator arg = element.getChild("subarg").getChildren().iterator();
 		while (arg.hasNext()) {
 			Element elm = (Element)arg.next();
-			System.out.println("elemento: "+elm.getName());
 			if ("host".equals(elm.getAttributeValue("attribute"))) {
 				host = elm.getValue();
 			}
@@ -1495,8 +1499,52 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 				password = elm.getValue();
 			}
 		}
+		class sendReload extends Thread {
+			String host = null;
+			int port = 9117;
+			String database = null;
+			String tipoDoc = null;
+			String user = null;
+			String password = null;
+
+			public sendReload(String host,int port,String database,String tipoDoc,String user,String password) {
+				this.host=host;
+				this.port=port;
+				this.database=database;
+				this.tipoDoc=tipoDoc;
+				this.user=user;
+				this.password=password;
+			}
+			
+			public void run() {
+				int times=0;
+				try {
+					while (!sendReloadPackage) {
+						System.out.print(".");
+						if (times<=500) {
+							Thread.sleep(100);
+						}
+						else {
+							new InterruptedException();
+							return;
+						}
+						times++;
+					}
+					new SendReloadPackage(host,port,database,tipoDoc,user,password);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (NoSuchAlgorithmException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 		
-		new SendReloadPackage(host,port,database,tipoDoc,user,password);
+		new sendReload(host,port,database,tipoDoc,user,password).start();
+		
 	}
 	
 	public Element getPackage() {
@@ -1866,6 +1914,13 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 		this.idTransaction = mnuTransaction;
 		for (GenericForm f : forms) {
 			f.setIdTransaction(mnuTransaction);
+		}
+	}
+
+	public void cathSuccesEvent(SuccessEvent e) {
+		String numeration = e.getNdocument();
+		if (numeration!=null && !"".equals(numeration) && this.getExternalValueString("recordtransaction").equals(e.getIdPackage())) {
+			sendReloadPackage = true;
 		}
 	}
 }
