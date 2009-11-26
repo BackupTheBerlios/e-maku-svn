@@ -69,7 +69,7 @@ public class HeadersValidator {
     	
         Element raiz = doc.getRootElement();
         String nom_raiz = raiz.getName();
-        
+        /*
         try {
 	        XMLOutputter xmlOutputter = new XMLOutputter();
 	        xmlOutputter.setFormat(Format.getPrettyFormat());
@@ -77,7 +77,7 @@ public class HeadersValidator {
 	    }
 	    catch (IOException e) {
 	        e.printStackTrace();
-	    }
+	    }*/
 	    
         /*
          *  Validaci�n de solicitud de paquetes, se verifica si el socket ya fue

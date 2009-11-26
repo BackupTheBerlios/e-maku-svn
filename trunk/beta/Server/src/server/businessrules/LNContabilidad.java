@@ -546,6 +546,7 @@ public class LNContabilidad {
 			/*
 			 * Se reemplaza el numero de la cuenta contable por su id
 			 */
+			boolean natCta = LinkingCache.isPCNaturaleza(bd, asiento[4]);
 			asiento[4] = LinkingCache.getPCIdCta(bd, asiento[4]);
 			double saldo = LinkingCache.getSaldoLibroAux(bd, 
 														asiento[3].equals("NULL")?"":asiento[3],
@@ -555,7 +556,18 @@ public class LNContabilidad {
 			double movimiento = 0;
 			if (Double.parseDouble(asiento[7]) != 0.0) {
 				movimiento = Double.parseDouble(asiento[7]);
-				double nsaldo = saldo + movimiento;
+				double nsaldo = 0;
+				
+				if (natCta) {
+					nsaldo = saldo + movimiento;
+					System.out.println("debito: "+debito+" natCta "+natCta+"nuevo saldo: "+saldo+"+"+movimiento+"="+nsaldo);
+				}
+				else {
+					nsaldo = saldo - movimiento;
+					System.out.println("debito: "+debito+" natCta "+natCta+"nuevo saldo: "+saldo+"-"+movimiento+"="+nsaldo);
+				}
+
+				
 				asiento[9] = String.valueOf(nsaldo);
 				partidaDoble += movimiento;
 				LNUndoSaldos.setSaldoAntLibroAux(bd, 														
@@ -573,7 +585,17 @@ public class LNContabilidad {
 						        new Double(nsaldo));
 			} else {
 				movimiento = Double.parseDouble(asiento[8]);
-				double nsaldo = saldo - movimiento;
+				double nsaldo = 0;
+				
+				if (natCta) {
+					nsaldo = saldo - movimiento;
+					System.out.println("debito: "+debito+" natCta "+natCta+"nuevo saldo: "+saldo+"-"+movimiento+"="+nsaldo);
+				}
+				else {
+					nsaldo = saldo + movimiento;
+					System.out.println("debito: "+debito+" natCta "+natCta+"nuevo saldo: "+saldo+"+"+movimiento+"="+nsaldo);
+				}
+
 				asiento[9] = String.valueOf(nsaldo);
 				partidaDoble -= movimiento;
 				try {
@@ -1085,22 +1107,22 @@ public class LNContabilidad {
 			asiento[6] = "0";
 			if (natCta) {
 				nsaldo = saldo + value;
-				System.out.println("nuevo saldo: "+saldo+"+"+value+"="+nsaldo);
+				System.out.println("debito: "+debito+" natCta "+natCta+"nuevo saldo: "+saldo+"+"+value+"="+nsaldo);
 			}
 			else {
 				nsaldo = saldo - value;
-				System.out.println("nuevo saldo: "+saldo+"-"+value+"="+nsaldo);
+				System.out.println("debito: "+debito+" natCta "+natCta+"nuevo saldo: "+saldo+"-"+value+"="+nsaldo);
 			}
 		} else {
 			asiento[5] = "0";
 			asiento[6] = String.valueOf(value);
 			if (natCta) {
 				nsaldo = saldo - value;
-				System.out.println("nuevo saldo: "+saldo+"-"+value+"="+nsaldo);
+				System.out.println("debito: "+debito+" natCta "+natCta+"nuevo saldo: "+saldo+"-"+value+"="+nsaldo);
 			}
 			else {
 				nsaldo = saldo + value;
-				System.out.println("nuevo saldo: "+saldo+"+"+value+"="+nsaldo);
+				System.out.println("debito: "+debito+" natCta "+natCta+"nuevo saldo: "+saldo+"+"+value+"="+nsaldo);
 			}
 		}
 		

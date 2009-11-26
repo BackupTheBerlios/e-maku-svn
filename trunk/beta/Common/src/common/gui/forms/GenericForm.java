@@ -1919,7 +1919,8 @@ public class GenericForm extends JInternalFrame implements InternalFrameListener
 
 	public void cathSuccesEvent(SuccessEvent e) {
 		String numeration = e.getNdocument();
-		if (numeration!=null && !"".equals(numeration) && this.getExternalValueString("recordtransaction").equals(e.getIdPackage())) {
+		String idPackage = this.getExternalValueString("recordtransaction");
+		if (numeration!=null && !"".equals(numeration) && e.getIdPackage().equals(idPackage)) {
 			sendReloadPackage = true;
 		}
 	}

@@ -1005,11 +1005,13 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         deleteRecordListener.remove(listener);
     }
 
-    public synchronized void notificaDeleteRecordEvent(int row) {
+    public void notificaDeleteRecordEvent(int row) {
     	DeleteRecordEvent event = new DeleteRecordEvent(this,row);
-        for (DeleteRecordListener l:deleteRecordListener) {
-            l.deleteRecordEvent(event);
-        }
+    	synchronized(deleteRecordListener) {
+	        for (DeleteRecordListener l:deleteRecordListener) {
+	            l.deleteRecordEvent(event);
+	        }
+    	}
     }
     
 
