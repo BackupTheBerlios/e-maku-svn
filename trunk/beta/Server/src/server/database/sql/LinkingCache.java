@@ -991,7 +991,7 @@ public class LinkingCache {
             Enumeration sockets = clientes.keys();
             while (sockets.hasMoreElements()) {
             	SocketChannel sock = (SocketChannel)sockets.nextElement();
-                if (EmakuServerSocket.getBd(sock).equals(bd)) {
+                if (bd.equals(EmakuServerSocket.getBd(sock))) {
 		            SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,
 		                    UPDATECODESender.getPackage(key,
 		                                              LinkingCache.getConsecutive(bd,key)));
