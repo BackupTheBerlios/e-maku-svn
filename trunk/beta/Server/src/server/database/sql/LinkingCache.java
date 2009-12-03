@@ -482,7 +482,7 @@ public class LinkingCache {
                                 		  			 rs.getDouble("saldo"),
                                 		  			 rs.getDouble("valor_saldo")));
         }
-        st.execute("SCU0008");
+        st.execute(SQLFormatAgent.getSentencia(bd,"SCU0008"));
         StatementsClosingHandler.close(st);
         StatementsClosingHandler.close(rs);
         st=null;
