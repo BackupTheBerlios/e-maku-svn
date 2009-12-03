@@ -452,6 +452,43 @@ public class LinkingCache {
     	Hasientos_pr.putAll(loadCache(bd,sql,args, new String[]{"id_prod_serv","id_asientos_prod_serv"},"id_asientos_pr"));
     }
 
+    public static void reloadInventarios(String bd,String sql,String[] args) 
+    throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+        /* Se realiza la consulta para obtener el precio de costo, el saldo y el valor del saldo
+         * de la tabla inventarios
+         */
+		
+    	Statement st = ConnectionsPool.getConnection(bd).createStatement();
+        ResultSet rs= st.executeQuery(SQLFormatAgent.getSentencia(bd,sql,args));
+
+        /*
+         * Se almacena la informaci�n en un objeto InfoInventario y luego en la
+         * tabla hashtable Hinventarios
+         */
+        int id_bodega=0;
+        int id_prod_serv = 0;
+        String key = null;
+        while (rs.next()) {
+        	id_bodega=rs.getInt("id_bodega");
+            id_prod_serv=rs.getInt("id_prod_serv");
+            
+            key="K-" + bd + "-"+id_bodega+"-"+id_prod_serv;
+            if (Hinventarios.containsKey(key)) {
+            	Hinventarios.remove(key);
+            }
+
+            Hinventarios.put(key,
+                                  new InfoInventario(rs.getDouble("pinventario"),
+                                		  			 rs.getDouble("saldo"),
+                                		  			 rs.getDouble("valor_saldo")));
+        }
+        st.execute("SCU0008");
+        StatementsClosingHandler.close(st);
+        StatementsClosingHandler.close(rs);
+        st=null;
+        rs=null;
+        
+    }
     public static void reloadCtasAsientos(String bd,String[] args) 
     throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
     	Hctas_asientos.putAll(loadCache(bd,"SCS0055", args,new String[]{"id_asientos_pr","char_cta"},"naturaleza"));

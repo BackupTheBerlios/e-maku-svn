@@ -279,6 +279,7 @@ public class HeadersValidator {
 		    			String db = EmakuServerSocket.getBd(sock);
 		        		LinkingCache.reloadAsientosPr(raiz.getChild("db").getValue(),"SCS0092",new String[]{initProdServ});
 		        		new LNInventarios(db);
+		        		LinkingCache.reloadInventarios(raiz.getChild("db").getValue(),"SCS0097",new String[]{tipoDoc});
 		        		new LNContabilidad(db).recover();
 		        		LinkingCache.reloadConsecutive(db, tipoDoc);
 		                
