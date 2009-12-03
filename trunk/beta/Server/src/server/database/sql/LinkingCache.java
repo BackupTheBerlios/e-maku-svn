@@ -2,6 +2,7 @@ package server.database.sql;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SocketChannel;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -476,7 +477,7 @@ public class LinkingCache {
             if (Hinventarios.containsKey(key)) {
             	Hinventarios.remove(key);
             }
-
+            System.out.println("adicionando: "+key+" pinventario: "+rs.getDouble("pinventario")+" saldo "+rs.getDouble("saldo")+" valor_saldo "+rs.getDouble("valor_saldo"));
             Hinventarios.put(key,
                                   new InfoInventario(rs.getDouble("pinventario"),
                                 		  			 rs.getDouble("saldo"),
@@ -832,10 +833,13 @@ public class LinkingCache {
 
     public static double getPCosto(
             String bd, String bodega,String id_prod_serv) {
+    	System.out.println("key PCosto: "+"K-"+bd+"-"+bodega+"-"+id_prod_serv);
         if (Hinventarios.containsKey("K-"+bd+"-"+bodega+"-"+id_prod_serv)) {
+        	System.out.println("valor: "+Hinventarios.get("K-"+bd+"-"+bodega+"-"+id_prod_serv).getPcosto());
             return Hinventarios.get("K-"+bd+"-"+bodega+"-"+id_prod_serv).getPcosto();
         }
         else {
+        	System.out.print("llave no existente retorno 0");
             return (double)0;
         }
     }
@@ -1029,9 +1033,9 @@ public class LinkingCache {
             while (sockets.hasMoreElements()) {
             	SocketChannel sock = (SocketChannel)sockets.nextElement();
                 if (bd.equals(EmakuServerSocket.getBd(sock))) {
-		            SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,
-		                    UPDATECODESender.getPackage(key,
-		                                              LinkingCache.getConsecutive(bd,key)));
+			            SocketWriter.writing(EmakuServerSocket.getHchannelclients(),sock,
+			                    UPDATECODESender.getPackage(key,
+			                                              LinkingCache.getConsecutive(bd,key)));
                 }
             }
         }

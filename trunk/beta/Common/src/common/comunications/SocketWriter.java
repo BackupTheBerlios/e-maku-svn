@@ -63,7 +63,7 @@ public class SocketWriter {
 	        	if (channels!=null) {
 	        		channels.remove(sock);
 	        	}
-	        	e.printStackTrace();
+	        	//e.printStackTrace();
 	        	return false;
 	        }
 	        catch (IOException e) {
