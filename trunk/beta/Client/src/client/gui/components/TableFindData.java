@@ -165,6 +165,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 	private Hashtable<String, Integer> rowsLoaded = new Hashtable<String, Integer>();
 	
 	private String deleteRecord;
+	private boolean keyRecord;
 
 	/**
 	 * Constructor ...
@@ -261,6 +262,9 @@ public class TableFindData extends JPanel implements AnswerListener,
 				this.singleSendRecord = args.getValue();
 			} else if (args.getAttributeValue("attribute").equals("deleteRecord")) {
 				deleteRecord=args.getValue();
+			} else if (args.getAttributeValue("attribute").equals("keyRecord")) {
+				this.keyRecord=Boolean.parseBoolean(args.getValue());
+				System.out.println("keyRecord "+Boolean.parseBoolean(args.getValue()));
 			} else if (args.getAttributeValue("attribute").equals("reload")) {
 				reload=Boolean.parseBoolean(args.getValue());
 				System.out.println("reload "+reload);
@@ -386,11 +390,11 @@ public class TableFindData extends JPanel implements AnswerListener,
 			if (valideLink > 0) {
 				TMFDtabla = new EmakuTableModel(GFforma, sqlCode, rows,
 						formulas, exportTotalCols, importTotalCol, impValues,
-						totales, externalValues, ATFDargs, valideLink, keyLink,tagDataColumn);
+						totales, externalValues, ATFDargs, valideLink, keyLink,tagDataColumn,keyRecord);
 			} else {
 				TMFDtabla = new EmakuTableModel(GFforma, sqlCode, rows,
 						formulas, exportTotalCols, importTotalCol, impValues,
-						totales, externalValues, ATFDargs,tagDataColumn);
+						totales, externalValues, ATFDargs,tagDataColumn,keyRecord);
 			}
 			TMFDtabla.setTagDataColumn(tagDataColumn);
 			TMFDtabla.setConditionatedRecord(conditionatedRecord);
@@ -743,7 +747,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 							initArgs);
 					TMFDtabla = new EmakuTableModel(GFforma, sqlCode, doc,
 							formulas, exportTotalCols, importTotalCol, totales,
-							externalValues, ATFDargs,tagDataColumn);
+							externalValues, ATFDargs,tagDataColumn,keyRecord);
 					JTtabla.setModel(TMFDtabla);
 					propertiesTable();
 
@@ -926,7 +930,7 @@ public class TableFindData extends JPanel implements AnswerListener,
 	public Element getPackage() throws VoidPackageException {
 		Element pack = TMFDtabla.getPackage();
 		if (pack.getChildren().size() == 0 && !returnNullValue) {
-			throw new VoidPackageException("Tabla Data");
+			throw new VoidPackageException("Tabla Data ");
 		}
 		return pack;
 	}
@@ -1435,6 +1439,8 @@ public class TableFindData extends JPanel implements AnswerListener,
 			Document doc = new Document();
 			Element elm = (Element) ((Element) e.getElement()).clone();
 			doc.setRootElement(elm);
+			
+			
 			TMFDtabla.setQuery(doc, e.isRecalculable(),false);
 			e.setRowsLoaded(TMFDtabla.getRowsLoaded());
 			if (JTtabla.isFocusOwner()) {

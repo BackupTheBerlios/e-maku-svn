@@ -439,6 +439,7 @@ public class ButtonsPanel extends JPanel implements MouseListener, KeyListener,S
 		            										   new Object[]{comp.getArgs()});
             	}
             	else {
+            		System.out.println("paquete: "+comp.getDriver());
             		elementos = (Element) GFforma.invokeMethod(comp.getDriver(), comp.getMethod());
             	}
 	            if (elementos != null)

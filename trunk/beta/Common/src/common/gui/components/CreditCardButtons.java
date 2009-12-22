@@ -6,13 +6,18 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.text.BadLocationException;
 
+import org.jdom.Document;
+
 import common.gui.forms.GenericForm;
+import common.transactions.TransactionServerException;
+import common.transactions.TransactionServerResultSet;
 
 /**
  * CreditCardButton.java Creado el 10-feb-2009
@@ -41,6 +46,8 @@ public class CreditCardButtons extends JPanel implements ActionListener {
 	
 	private GenericForm genericForm;
 	private EmakuTouchField emakuTouchField;
+	private Vector<String> sqlCode;
+	private Vector<AnswerListener> answerListener = new Vector<AnswerListener>();
 	private JButton[][] ccButtons = {{new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_american_express_100x65.png"))),
 								  	  new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_diners_100x65.png"))),
 									  new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_mastercard_100x65.png")))},
@@ -62,11 +69,12 @@ public class CreditCardButtons extends JPanel implements ActionListener {
 	private String importValueButton;
 	private String keyValue;
 	
-	public CreditCardButtons(GenericForm genericForm,EmakuTouchField emakuTouchField,Font font,String importValueButton,String keyValue) {
+	public CreditCardButtons(GenericForm genericForm,Vector<String> sqlCodeCard,EmakuTouchField emakuTouchField,Font font,String importValueButton,String keyValue) {
 		this.genericForm=genericForm;
 		this.emakuTouchField=emakuTouchField;
 		this.importValueButton=importValueButton;
 		this.keyValue=keyValue;
+		this.sqlCode=sqlCodeCard;
 		JPanel cards = new JPanel(new GridLayout(3,3));
 		int i=0;
 		for(JButton[] row:ccButtons) {
@@ -97,12 +105,28 @@ public class CreditCardButtons extends JPanel implements ActionListener {
 		JButton b = (JButton)e.getSource();
 		String value = b.getText();
 		if ("".equals(value)) {
+			System.out.println("b.name: "+b.getName());
 			genericForm.setExternalValues(keyValue, b.getName());
 			if (emakuTouchField.getText().equals("") || emakuTouchField.getText().equals("0")) {
 				emakuTouchField.doFormat(genericForm.getExteralValues(importValueButton));
 			}
 			else {
 				emakuTouchField.doFormat();
+			}
+			
+			/* sqlCode query */
+			for (int i=0; i < sqlCode.size() ; i++) {
+    			Document doc = null;
+	            String sql = sqlCode.get(i);
+	         
+	            try {
+	                doc = TransactionServerResultSet.getResultSetST(sql,new String[]{b.getName()});
+	            }
+	            catch (TransactionServerException te) {
+	                te.printStackTrace();
+	            }
+	            AnswerEvent event = new AnswerEvent(this,sql,doc);
+		        notificando(event);
 			}
 		}
 		else if ("X".equals(value)) {
@@ -126,6 +150,22 @@ public class CreditCardButtons extends JPanel implements ActionListener {
 				emakuTouchField.getDocument().insertString(offset,value,null);
 			} catch (BadLocationException ex) {
 				ex.printStackTrace();
+			}
+		}
+	}
+		
+	public void addAnswerListener(AnswerListener listener ) {
+		 answerListener.addElement(listener);
+	}
+
+	public void removeAnswerListener(AnswerListener listener ) {
+		 answerListener.removeElement(listener);
+	}
+	
+	private void notificando(AnswerEvent event) {
+		for(AnswerListener l:answerListener) {
+			if (l.containSqlCode(event.getSqlCode())) {
+				l.arriveAnswerEvent(event);
 			}
 		}
 	}

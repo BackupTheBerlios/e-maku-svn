@@ -111,6 +111,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	private Hashtable<String,ArrayList> arrivedKeys = new Hashtable<String,ArrayList>();
 	private Hashtable<String, Integer> rowsLoaded = new Hashtable<String, Integer>();
 	private boolean calculado;
+	private boolean keyRecord;
     
     public EmakuTableModel(GenericForm GFforma,
             		  String sqlCode,
@@ -122,8 +123,9 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             		  int[] totales,
             		  Hashtable externalValues,
             		  ColumnsArgsGenerator[] ATFDargs,
-            		  int tagData) {
-        Cargar(GFforma, sqlCode, rows, formulas,exportTotalCols,importTotalCols,impValues,totales,externalValues,ATFDargs,tagData);
+            		  int tagData,
+            		  boolean keyRecord) {
+        Cargar(GFforma, sqlCode, rows, formulas,exportTotalCols,importTotalCols,impValues,totales,externalValues,ATFDargs,tagData,keyRecord);
         
     }
 
@@ -136,7 +138,8 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
             		  int[] totales,
             		  Hashtable externalValues,
 			  		  ColumnsArgsGenerator[] ATFDargs,
-            		  int tagData) {
+            		  int tagData,
+            		  boolean keyRecord) {
     	this.isInitQuery=true;
 		this.GFforma=GFforma;
 		this.sqlCode=sqlCode;
@@ -147,6 +150,7 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		this.ATFDargs=ATFDargs;
 		this.initSQL=true;
 		this.tagDataColumn=tagData;
+		this.keyRecord=keyRecord;
     	argsQuery = new String[1];
 		VdataRows = new Vector<Vector<Object>>();
         totalCol = new Hashtable<String,Double>();
@@ -190,11 +194,12 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
     		int[] totales, 
     		Hashtable externalValues, 
     		ColumnsArgsGenerator[] ATFDargs, 
-    		int valideLink, int keyLink,int tagData) {
+    		int valideLink, int keyLink,int tagData,
+    		boolean keyRecord) {
     	
 	    	this.valideLink = valideLink;
 	    	this.keyLink = keyLink;
-	    	Cargar(GFforma, sqlCode, rows, formulas,exportTotalCols,importTotalCols,impValues,totales,externalValues,ATFDargs,tagData);
+	    	Cargar(GFforma, sqlCode, rows, formulas,exportTotalCols,importTotalCols,impValues,totales,externalValues,ATFDargs,tagData,keyRecord);
 	    	
     }
     
@@ -208,7 +213,8 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 		  int[] totales,
 		  Hashtable externalValues,
 		  ColumnsArgsGenerator[] ATFDargs,
-		  int tagData) {
+		  int tagData,
+		  boolean keyRecord) {
     	
 		this.GFforma=GFforma;
         this.sqlCode=sqlCode;
@@ -219,6 +225,8 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
         this.externalValues=externalValues;
         this.ATFDargs=ATFDargs;
         this.impValues = impValues;
+        this.keyRecord=keyRecord;
+        System.out.println("Cargar keyRecord: "+keyRecord);
         VdataRows = new Vector<Vector<Object>>();
         totalCol = new Hashtable<String,Double>();
         keysExports = new HashMap<String,Integer>();
@@ -2019,8 +2027,8 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	    catch (IOException ex) {
 	        ex.printStackTrace();
 	    }
-
 		*/
+		
     	loadingQuery = true;
     	Element rootNode = doc.getRootElement();
     	String rootNodeName = rootNode.getName();
@@ -2116,6 +2124,25 @@ implements ChangeValueListener,InstanceFinishingListener, ExternalValueChangeLis
 	            					arrivedKeys.remove((String)keys[j]);
             						arrivedKeys.put((String) keys[j],rows);
 	            				}
+	            			}
+	            			else if (keyRecord) {
+	            				//System.out.println("keyRecord "+index);
+		            			for (int j=1;j<ATFDargs.length;j++) {
+		            				try {
+			            				if (!((Element)listCols.get(j)).getValue().trim().equals("NR")) {
+			            					Object obj = addCols(j,listCols);
+				            					//System.out.println("por up "+obj+" col "+index+" row "+j);
+			                					//updateCells(obj,index-1,j);
+				            					setValueAt(obj,index-1,j);
+			                			        //System.out.println("sqlCode "+sqlCode);
+												if (sqlCode.equals("") && formulas!=null) {
+													calcular(index-1,j);
+													totalizar();
+												}
+			            				}
+	            					}
+		            				catch(IndexOutOfBoundsException e) {}
+		                		}
 	            			}
 	            			else {
 		            			for (int j=0;j<ATFDargs.length;j++) {

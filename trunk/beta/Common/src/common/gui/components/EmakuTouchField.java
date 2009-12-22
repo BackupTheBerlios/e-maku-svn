@@ -71,12 +71,16 @@ KeyListener, FocusListener, AnswerListener {
 		Iterator args = rootElement.getChildren().iterator();
 		popupTouch = new JPopupMenu();
 		Vector<String> sqlCode = new Vector<String>();
+		Vector<String> sqlCodeCard = new Vector<String>();
 		this.getCaret().setBlinkRate(500);
 		URL url = null;
 		while (args.hasNext()) {
 			final Element elm = (Element) args.next();
 			if ("sqlCode".equals(elm.getAttributeValue("attribute"))) {
 				sqlCode.add(elm.getValue());
+			}
+			if ("sqlCodeCard".equals(elm.getAttributeValue("attribute"))) {
+				sqlCodeCard.add(elm.getValue());
 			}
 			else if ("sqlLocal".equals(elm.getAttributeValue("attribute"))) {
 				setSqlLocal(elm.getValue());
@@ -202,7 +206,7 @@ KeyListener, FocusListener, AnswerListener {
 		}
 
 		if (cardSelection!=null) {
-			creditCard = new CreditCardButtons(genericForm,this,font,importValueButton,keyValue);
+			creditCard = new CreditCardButtons(genericForm,sqlCodeCard,this,font,importValueButton,keyValue);
 			JBcard = new JButton(new ImageIcon(this.getClass().getResource("/icons/ico_card_32x32.png")));
 			JBcard.setFocusable(false);
 			JBcard.setActionCommand("card");
@@ -490,12 +494,23 @@ KeyListener, FocusListener, AnswerListener {
 	public void arriveAnswerEvent(AnswerEvent AEe) {
 	}
 
-	public void addAnswerListener(AnswerListener listener) {
-		AnswerListener.addElement(listener);
+	public void addAnswerListener(AnswerListener listener) {	
+		if (cardSelection==null) {
+			AnswerListener.addElement(listener);
+		}
+		else {	
+			creditCard.addAnswerListener(listener);
+		}
 	}
 
 	public void removeAnswerListener(AnswerListener listener) {
-		AnswerListener.removeElement(listener);
+		if (cardSelection==null) {
+			AnswerListener.removeElement(listener);
+		}
+		else {
+			creditCard.removeAnswerListener(listener);
+		}
+
 	}
 	
 	private void notificando(AnswerEvent event) {
