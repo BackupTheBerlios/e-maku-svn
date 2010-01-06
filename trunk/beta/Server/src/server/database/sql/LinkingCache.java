@@ -922,6 +922,61 @@ public class LinkingCache {
         return Hlogica_drivers.get("K-"+bd+"-"+id_transaction);
     }
 
+    public static void reloadTransaction(String bd,String code) 
+    throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+        /*
+         * Se realiza la consulta para obtener los drivers de la tabla
+         * transacciones
+         */
+
+    	Connection cn = ConnectionsPool.getConnection(bd);
+        Statement st = cn.createStatement();
+        ResultSet rs = st.executeQuery(SQLFormatAgent.getSentencia(bd,"SCS0099",new String[]{code}));
+
+        /*
+         * Se almacena la información en la tabla hashtable Hlogica_drivers
+         */
+
+        SAXBuilder builder = new SAXBuilder(false);
+
+        while (rs.next()) {
+            try {
+            ByteArrayInputStream bufferInDrv;
+            ByteArrayInputStream bufferInMth;
+            Document docDrv = null;
+            Document docMth = null;
+            try {
+                bufferInDrv = new ByteArrayInputStream(rs.getString("args_driver").getBytes());
+                docDrv = builder.build(bufferInDrv);	                
+            }
+            catch(NullPointerException NPEe) {}
+            
+            try {
+                bufferInMth = new ByteArrayInputStream(rs.getString("args_metodo").getBytes());
+                docMth = builder.build(bufferInMth);
+            }
+            catch(NullPointerException NPEe) {}
+            Hlogica_drivers.remove("K-" + bd + "-"+code);
+            Hlogica_drivers.put("K-" + bd + "-"+code, 
+                    new BusinessRulesStructure(rs.getString("driver"),
+                            			  docDrv,
+                            			  rs.getString("metodo"),
+                            			  docMth));
+            }
+            catch(IOException IOEe) {
+                LogAdmin.setMessage(Language.getWord("ERR_LOADING_LG") + " "
+                        + bd + " "+rs.getString("codigo")+" "+IOEe.getMessage(),
+                        ServerConstants.ERROR);
+            }
+            catch(JDOMException JDOMEe) {
+                LogAdmin.setMessage(Language.getWord("ERR_LOADING_LG") + " "
+                        + bd + " "+rs.getString("codigo")+" " + JDOMEe.getMessage(),
+                        ServerConstants.ERROR);
+            }
+        }
+
+    }
+    
     /**
      * Este metodo retorna una sentencia SQL
      * @param key Codigo de la sentencia SQL
@@ -930,6 +985,27 @@ public class LinkingCache {
 
     public static String getSentenciaSQL(String key) {
         return (String)Hinstrucciones.get(key);
+    }
+    
+    /**
+     * Este metodo recarga una sentencia_sql
+     * @throws SQLException 
+     * @throws SQLBadArgumentsException 
+     * @throws SQLNotFoundException 
+     * 
+     */
+    
+    public static void setSentenciaSQL(String bd,String code) 
+    throws SQLException, SQLNotFoundException, SQLBadArgumentsException {
+        Connection cn = ConnectionsPool.getConnection(bd);
+        Statement st = cn.createStatement();
+        ResultSet rs = st.executeQuery(SQLFormatAgent.getSentencia(bd,"SCS0098",new String[]{code}));
+        Hinstrucciones.remove("K-"+bd+"-"+code);
+		while (rs.next()) {
+	        Hinstrucciones.put("K-"+bd+"-"+
+	                code,
+	                rs.getString("sentencia"));
+		}
     }
     
     /**

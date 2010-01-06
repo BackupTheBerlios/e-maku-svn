@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.channels.SocketChannel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Hashtable;
+import java.util.Iterator;
 
 import common.comunications.SocketWriter;
 import common.misc.language.Language;
@@ -156,6 +158,54 @@ public class HeadersValidator {
                 CacheXML cache_answer = new CacheXML(bd,codigo);
                 cache_answer.transmition(sock);
             } 
+            /*
+             * Recarga una sentencia sql
+             */
+            else if (nom_raiz.equals("RELOADDATA")) {
+                String bd = EmakuServerSocket.getBd(sock);
+            	String transaction = null;
+            	String sqlCode = null;
+                Element elm = raiz.getChild("package");
+                Iterator i = elm.getChildren().iterator();
+                while(i.hasNext()) {
+                		Element e = (Element)i.next();
+                		if (e.getAttributeValue("attribute").equals("sentence")) {
+                			sqlCode = e.getValue();
+                		}
+                		else if (e.getAttributeValue("attribute").equals("transaction")) {
+                			transaction = e.getValue();
+                		}
+                }
+                try {
+                	if (sqlCode!=null) {
+                		LinkingCache.setSentenciaSQL(bd,sqlCode);
+                	}
+                	if (transaction!=null) {
+                		LinkingCache.reloadTransaction(bd, transaction);
+                		Iterator<SocketChannel> keys = EmakuServerSocket.getSocketKeys();
+    	                while (keys.hasNext()) {
+    	                	SocketChannel sockConnection = keys.next();
+    	                	String bdSocket = EmakuServerSocket.getBd(sockConnection);
+    	                	if (bdSocket.equals(bd)) {
+    	                		String loginSocket = EmakuServerSocket.getLoging(sockConnection);
+    	                		ACPSender docacp = new ACPSender(sockConnection,bd,loginSocket,transaction);
+    	    	                docacp.start();
+    	                	}
+    	                }
+                	}
+					RunTransaction.successMessage(sock,"T-756","Parametrizaciones actualizadas");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLBadArgumentsException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                
+            }
     
             /*
              *  Validacion de solicitud de la fecha

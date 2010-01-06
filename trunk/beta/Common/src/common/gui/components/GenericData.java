@@ -889,20 +889,24 @@ public class GenericData extends JPanel implements DateListener,
 			for (; i < max; i++) {
 				XMLTextField Field = (XMLTextField) VFields.get(i);
 				String text = Field.getText();
+				Element elm = null;
 				if (Field.isReturnValue()) {
 					if (Field.isNullValue()) {
+						elm = Field.getElementText();
 						if (returnNullValue && text.equals("")) {
-							Element elm = Field.getElementText();
 							elm.setText("NULL");
 							System.out.println("adicionando paquete NULL: "+elm.getText());
 							pack.addContent(elm);
 						}
 						else {
-							pack.addContent(Field.getElementText());
+							if (Field.getAddAttribute() != null) {
+								elm.setAttribute("attribute", Field.getAddAttribute());
+							}
+							pack.addContent(elm);
 						}
 					} else {
 						if (!text.equals("")) {
-							Element elm = Field.getElementText();
+							elm = Field.getElementText();
 							if (Field.getAddAttribute() != null) {
 								elm.setAttribute("attribute", Field.getAddAttribute());
 							}

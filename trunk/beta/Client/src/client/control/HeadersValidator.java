@@ -81,6 +81,7 @@ public class HeadersValidator implements ArrivedPackageListener {
          */
         
         try {
+        	
 			if (!ClientHeaderValidator.validGeneral(doc)) {
 			    /*
 			     *  Validacion paquete ACP
@@ -118,11 +119,6 @@ public class HeadersValidator implements ArrivedPackageListener {
 						e.printStackTrace();
 					}
 			    }
-			    
-			    
-
-			    
-			    
 			    
 			    
 			    /*

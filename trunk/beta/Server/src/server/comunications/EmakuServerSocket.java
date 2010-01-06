@@ -216,6 +216,11 @@ public class EmakuServerSocket {
     public static Hashtable getHchannelclients() {
         return Hchannelclients;
     }
+    
+    public static Iterator<SocketChannel> getSocketKeys() {
+    	Iterator<SocketChannel> skeys = Hchannelclients.keySet().iterator();
+    	return skeys;
+    }
 
     public static String getCompanyNameKey(SocketChannel sock) {
         return "K-"+ getBd(sock) + "-company";

@@ -86,6 +86,7 @@ public class PackageToXML extends Thread {
 	                            LogAdmin.setMessage("\n--------------------\n"+tmp+"\n"+new String(EmakuServerSocket.getBufferTmp(channel).toByteArray())+"\n------------------\n", ServerConstants.ERROR);
 	                        }
                         	catch(NullPointerException e) {
+                        		e.printStackTrace();
                         		System.out.println("Aqui tambien se caia esta mierda...");
                         	}
 	                        finally {
